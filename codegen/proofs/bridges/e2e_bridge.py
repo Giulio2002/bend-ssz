@@ -52,7 +52,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import json
 import re
 from codegen.proofs.support.light_split import unlight as _unlight   # parse modules as before their light split (codegen/proofs/support/light_split.py)
-from codegen.core.shared_bridges import import_lines, unpack_pairs  # noqa: E402
+from codegen.core.shared_bridges import import_lines, import_list, unpack_pairs  # noqa: E402
 import sys
 
 from codegen.core.paths import ROOT, OBJ  # noqa: E402
@@ -74,12 +74,9 @@ VIEW_TODO = set()  # (the bit vectors are bridged by e2e_bits.bw)
 from codegen.proofs.facades import api_gate as AG  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the modules import the per-name files they use
 
-HEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-        'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
-        'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-        'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS',
-        'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP',
-        'import ../proofs/obj/spec_fixed.bend as F', 'import ./e2e_support.bend as E']
+HEAD = [*import_list(
+    'Base E2E API B D=digest O T S P Spec=fulu_schemas VS=type_validator_soundness Encoding SP '
+    'F E=e2e_support')]
 
 SUPPORT = '''import Base
 ''' + import_lines('E2E API B S Encoding Legal Roots Domain Bytes') + '''
@@ -1021,12 +1018,9 @@ def decode_a(r, m, cache):
     return {'di': di[0], 'dn': dn[0], 'dr': dr[0]}, None
 
 
-DHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-         'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T',
-         'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec',
-         'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP',
-         'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-         'import ../proofs/obj/spec_fixed.bend as F', 'import ./e2e_bytes.bend as E']
+DHEAD = [*import_list(
+    'Base E2E API B O T S P Spec=fulu_schemas Encoding SP VS=type_validator_soundness FD F '
+    'E=e2e_bytes')]
 
 
 def text_dec(rows, k):
@@ -1114,13 +1108,9 @@ def at_depth(o: O.Words, +d: Nat) -> Bool:
     case O.Words{ws, +n}: FD.array__perfect(U32, d, FD.array__freeze(U32, ws))
 """
 
-WHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
-         'import ../types/schema.bend as S', 'import ../spec/codec.bend as Encoding',
-         'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-         'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/packed_obj.bend as PK',
-         'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/schema_shapes.bend as SH',
-         'import ./e2e_support.bend as E', 'import ./e2e_tree.bend as E3']
+WHEAD = [*import_list(
+    'Base E2E API B D=digest O S Encoding VS=type_validator_soundness FD F PK=packed_obj '
+    'WO=words_obj SH E=e2e_support E3')]
 
 
 def family_w(X, m, cache):
@@ -1269,11 +1259,9 @@ def decode_w(r, m, cache):
     return {'di': di[0], 'dn': dn[0], 'dr': dr[0], 'dobj': mi.group(1)}
 
 
-VDHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-          'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
-          'import ../types/primitive.bend as P', 'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP',
-          'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-          'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/packed_obj.bend as PK', 'import ./e2e_bytes.bend as E']
+VDHEAD = [*import_list(
+    'Base E2E API B O S P Encoding SP VS=type_validator_soundness FD F PK=packed_obj '
+    'E=e2e_bytes')]
 
 
 def text_wdec(rows):
@@ -1309,10 +1297,9 @@ def text_wdec(rows):
     return '\n'.join(L) + '\n'
 
 
-RHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
-         'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-         'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/words_obj.bend as WO', 'import ./e2e_support.bend as E']
+RHEAD = [*import_list(
+    'Base E2E API B D=digest O VS=type_validator_soundness FD PK=packed_obj WO=words_obj '
+    'E=e2e_support')]
 
 
 def wvalid(r):
@@ -1367,12 +1354,9 @@ def text_wroot(rows):
 
 # ---- word storage, any depth (the root worker's <X>_encode_any / <X>_decodes_any) ----
 
-ANYHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-           'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
-           'import ../spec/codec.bend as Encoding', 'import ../proofs/type_validator_soundness.bend as VS',
-           'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F',
-           'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/words_obj.bend as WO',
-           'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/words_root.bend as WR', 'import ./e2e_support.bend as E']
+ANYHEAD = [*import_list(
+    'Base E2E API B O S Encoding VS=type_validator_soundness FD F PK=packed_obj WO=words_obj '
+    'VSP WR E=e2e_support')]
 
 
 def any_info(X):
@@ -2090,7 +2074,7 @@ def text_broot(rows):
             if f not in files:
                 files.append(f)
     al = {f: f'M{i}' for i, f in enumerate(files)}
-    L = list(RHEAD) + ['import ../types/schema.bend as S', 'import ../proofs/obj/words_root.bend as WR', 'import ../types/fulu_obj.bend as T', 'import ../spec/fulu_schemas.bend as Spec']
+    L = list(RHEAD) + [*import_list('S WR T Spec=fulu_schemas')]
     L += [f'import ../proofs/obj/{f} as {a}' for f, a in al.items()]
     L += ['', '# GENERATED by e2e_bridge (codegen). Do not edit.',
           f'# {rows[0]["R"]} and the next names (word-storage branches): the object API\'s root is END_TO_END\'s',
@@ -2118,17 +2102,11 @@ def text_broot(rows):
 # give the bounds for n <= 4 * 2^K, K one below the laws' depth bound (the premise hS). A name
 # is bridged once its view lemma is written: vv, the root view of OBJ(t, n) is the codec law's
 # value VAL(t, n) when CHK(t, n) holds (VDEC_VIEWS).
-VDEC_HEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-             'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S',
-             'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec', 'import ../spec/primitives.bend as SP',
-             'import ../spec/decoding_relation.bend as Decoding', 'import ../proofs/type_validator_soundness.bend as TVS',
-             'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
-             'import ../proofs/obj/arr_copy.bend as AC', 'import ./e2e_bytes.bend as E', 'import ./e2e_load.bend as L', 'import ./e2e_cap.bend as C']
+VDEC_HEAD = [*import_list('Base E2E API B O T S P Spec=fulu_schemas SP Decoding TVS FD A F AC E=e2e_bytes L C=e2e_cap')]
 VDEC_VIEWS = {
     'DataColumnsByRootIdentifier': {
         'view': 'RT.v_DataColumnsByRootIdentifier',
-        'imports': ['import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
-                    'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/root_types.bend as RT', 'import ./e2e_ulist.bend as U'],
+        'imports': [*import_list('VD VSP VB UL=ulist_obj RT=root_types U')],
         'text': r'''# ---- the view of a decoded object is the codec law's value ----
 
 def cnt(+n: U32, +hc: {DC.whole(DC.LL(n)) == True{} : Bool}) -> {U32.to_nat(U32.shrn(DC.LL(n), 3n)) == DC.CQ(n) : Nat}:
@@ -2484,10 +2462,9 @@ def vroot_bytes32_ulist(R, X):
     case = lambda fields: '\n'.join(f'      ({f}, w{i + 1}) = {"w" if i == 0 else "w" + str(i)}' for i, f in enumerate(fields))
     rb = (f'      rt2(h, o, rep, x0, t, N, Equal.trans({D}, o, {D}{{x0, RT.pj_{X}_1(o)}}, {O1}, eo,\n'
           f'        Equal.cong(O.Words, {D}, z => {D}{{x0, z}}, RT.pj_{X}_1(o), O.Words{{FD.array__thaw(U32, t), N}}, ew)))')
-    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S',
-            'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/gvalid_types.bend as GV', 'import ./e2e_support.bend as E']
+    imps = [*import_list(
+        'Base E2E API B D=digest O T S Spec=fulu_schemas VS=type_validator_soundness FD '
+        'RT=root_types GV=gvalid_types E=e2e_support')]
     return '\n'.join(imps) + f"""
 
 # GENERATED by e2e_bridge (codegen). Do not edit.
@@ -2765,11 +2742,9 @@ def {R}_e2e_encode(-o: O.Bits, +rep: BOr.rep_bits(o, GS.{X}()), +hs: BL.{SD}(o))
 
 def broot_batch(rows):
     """(iv) for bit lists: rows of (R, X)."""
-    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
-            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
-            'import ../proofs/obj/generic_specs.bend as GS', 'import ../proofs/obj/bitlist_obj.bend as BO',
-            'import ../proofs/obj/root_gtypes.bend as RG', 'import ../proofs/obj/gvalid_gpacked.bend as GV', 'import ./e2e_support.bend as E']
+    imps = [*import_list(
+        'Base E2E API B D=digest O S VS=type_validator_soundness FD GS BO=bitlist_obj RG '
+        'GV=gvalid_gpacked E=e2e_support')]
     imps += [f'import ../types/{R}_hashtreeroot_generated.bend as {R}_h' for R, X in rows]
     out = ['\n'.join(imps), '',
            '# GENERATED by e2e_bridge (codegen). Do not edit.',
