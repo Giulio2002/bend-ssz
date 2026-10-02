@@ -46,6 +46,11 @@ def legality():
         "def union_null_1() -> S.type_legal(T.Union{T.Chain{T.Null{}, ch(1n)}}):\n  ({==}, ({==}, ({==}, pr(1n))))\n"
         "def union_null_127() -> S.type_legal(T.Union{T.Chain{T.Null{}, ch(127n)}}):\n  ({==}, ({==}, ({==}, pr(127n))))\n"
         # Union{Chain{head, rest}}: {forest} & {n <= 127} & legal(head, False) & legal(rest, True)
+        "def bitvector_1() -> S.type_legal(T.BitVector{1n}):\n  ({==}, {==})\n"
+        # CompatibleUnion{[1], Chain{Boolean, End}}: {forest} & {0 < n} & {len ids == n} & selectors(ids) & legal(options, True) &
+        # mutually_compatible(options) (a derivation Fork{Fork{Leaf, Leaf}, Leaf} of All{} options options)
+        "def compatible_union_1() -> S.type_legal(T.CompatibleUnion{[1], ch(1n)}):\n"
+        "  ({==}, ({==}, ({==}, (({==}, ({==}, ({==}, Unit{}))), (pr(1n), (C.Fork{C.Fork{C.Leaf{}, C.Leaf{}}, C.Leaf{}}, {==}))))))\n"
         "def union_127() -> S.type_legal(T.Union{T.Chain{T.Boolean{}, ch(127n)}}):\n  ({==}, ({==}, ({==}, pr(127n))))\n")
 
 
@@ -79,8 +84,10 @@ def outputs():
         "bit_root": mod([("K", "spec/bit_root.bend")],
                         law("chunk_limit_1", "", "K.chunk_limit(1n) == 1n : Nat") + law("chunk_limit_257", "", "K.chunk_limit(257n) == 2n : Nat")),
         "packing": mod([("Pack", "spec/packing.bend")], packing()),
-        "tree": mod([("K", "spec/tree.bend")], law("capacity_0", "", "K.capacity(0n) == 1n : Nat") + law("capacity_3", "", "K.capacity(3n) == 8n : Nat")),
-        "type_legality": mod(S + [("S", "spec/type_legality.bend")], legality()),
+        "tree": mod([("K", "spec/tree.bend"), ("P", "spec/primitives.bend")],
+                    law("capacity_0", "", "K.capacity(0n) == 1n : Nat") + law("capacity_3", "", "K.capacity(3n) == 8n : Nat")
+                    + law("tree_empty_0", "", "K.tree(0n, []) == P.zero_bytes(32n) : +List<U32>")),
+        "type_legality": mod(S + [("S", "spec/type_legality.bend"), ("C", "spec/compatibility.bend")], legality()),
         "fulu_schemas": mod(S + [("F", "spec/fulu_schemas.bend")],
                             law("schema52", "", f"F.Schema52() == T.Vector{{F.Schema8(), {sync_size()}n}} : T.Schema")),
         "root_relation": mod([("R", "spec/root_relation.bend")],
