@@ -219,6 +219,37 @@ class Scratch:
             return 124, 'timeout'
 
 
+FULLCHECK_LOCK = '/srv/ssz-optimization/agents/.fullcheck.lock'
+
+
+def wait_flock():
+    """Never start a check while a full check holds the lock (the server is shared): test it, do not rely on a freeze."""
+    while os.path.exists(FULLCHECK_LOCK):
+        r = subprocess.run(['flock', '-n', FULLCHECK_LOCK, 'true'], capture_output=True)
+        if r.returncode == 0:
+            return
+        time.sleep(15)
+
+
+def run_guarded(cmd, cwd, env, timeout):
+    """One private check: waits for the flock, runs at nice 19 in its own process group, and on the time limit kills the
+    WHOLE group (check.sh and the bend it started), then reaps it. Returns (returncode, output); raises TimeoutExpired."""
+    import signal
+    wait_flock()
+    p = subprocess.Popen(['nice', '-n', '19'] + cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         text=True, start_new_session=True)
+    try:
+        out, _ = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        p.communicate()
+        raise
+    return p.returncode, out
+
+
 def classify(rec):
     """The cause group of a mutation: what a gap in it would mean."""
     text = rec.get('text', '')
@@ -296,7 +327,8 @@ def proof_wide(S, a, names):
             text = f.read_text()
             lines = text.split('\n')
             hit = [st for st in sites(text, True) if st[2] == r0['operator'] and st[3] == r0['before'] and st[4] == r0['after']
-                   and lines[st[0]].strip()[:200] == r0['text'] and def_name(text, st[0]) == r0['def']]
+                   and lines[st[0]].strip()[:200] == r0['text'] and def_name(text, st[0]) == r0['def']
+                   and st[1] == r0.get('col', st[1])]
             api = S / r0['checked']
             if hit and api.exists():
                 tasks.append({'type': r0['type'], 'family': r0.get('family', ''), 'file': f, 'api': api, 'site': hit[0],
@@ -320,10 +352,12 @@ def proof_wide(S, a, names):
                 shutil.copyfile(f, dest)
         env = {**os.environ, 'CHECK_PINS_VERIFIED': '1', 'CHECK_MEMMAX': '12G'}
         t0 = time.monotonic()
-        p = subprocess.run([str(S / 'tools/check.sh'), t['api'].relative_to(S).as_posix()], cwd=d, env=env,
-                           capture_output=True, text=True)
+        try:
+            rc, out = run_guarded([str(S / 'tools/check.sh'), t['api'].relative_to(S).as_posix()], d, env, 900)
+        except subprocess.TimeoutExpired:
+            rc, out = 124, 'timeout'
         shutil.rmtree(d, ignore_errors=True)
-        return p.stdout + p.stderr, time.monotonic() - t0
+        return out, time.monotonic() - t0
 
     results = []
     with cf.ThreadPoolExecutor(a.proof_jobs) as ex:
@@ -383,12 +417,10 @@ def deep_proof(S, a):
         t0 = time.monotonic()
         for p in prv:
             try:
-                q = subprocess.run([str(S / 'tools/check.sh'), p.relative_to(S).as_posix()], cwd=d, env=env,
-                                   capture_output=True, text=True, timeout=a.deep_timeout)
+                _rc, out = run_guarded([str(S / 'tools/check.sh'), p.relative_to(S).as_posix()], d, env, a.deep_timeout)
             except subprocess.TimeoutExpired:
                 res['outcome'] = 'timeout'
                 break
-            out = q.stdout + q.stderr
             if 'ALL PROOFS CHECK' not in out:
                 m = re.search(r'Error:[^\n]*(\n- [^\n]*)?', out)
                 res.update(outcome='killed', killed_in=p.relative_to(S).as_posix(), error=(m.group(0)[:160] if m else out[-160:]))
@@ -488,11 +520,39 @@ def lib_wide(S, a):
         imps += sorted((i for i in rev.get(f, ()) if pin_dir in i.parents and i not in imps), key=lambda i: i.name)
         for st in picked:
             tasks.append({'file': f, 'site': st, 'checkers': [f] + imps, 'def': def_name(text, st[0])})
+    # also check against the proof files that USE the mutated definition: a facade that names Schema10 fails when
+    # Schema10 changes, while the two smallest importers of the file may not mention it at all
+    need = {t['def'] for t in tasks if t['def']}
+    users = collections.defaultdict(list)
+    tokre = re.compile(r'\b\w+\b')
+    for r in [S / d for d in ('proofs', 'e2e')]:
+        for c in r.rglob('*.bend'):
+            toks = set(tokre.findall(c.read_text())) & need
+            for tk in toks:
+                users[tk].append(c.resolve())
+    for t in tasks:
+        cand = [c for c in users.get(t['def'], []) if c != t['file']]
+        cand.sort(key=lambda c: c.stat().st_size)
+        extra = []
+        for c in cand[:60]:
+            if t['file'] in cone_of(c):
+                extra.append(c)
+            if len(extra) >= 3:
+                break
+        t['checkers'] = list(dict.fromkeys(t['checkers'] + extra))
+    if a.lib_pins:
+        pins = sorted(pathlib.Path(g).resolve() for g in glob.glob(str(S / a.lib_pins)))
+        for t in tasks:
+            t['checkers'] = list(dict.fromkeys(t['checkers'] + [c for c in pins if t['file'] in cone_of(c)]))
+    random.Random(f'{a.seed}:order').shuffle(tasks)
+    deadline = time.monotonic() + a.lib_budget if a.lib_budget else None
     print(f'lib {a.lib}: {len(tasks)} mutants over {len(files)} files', flush=True)
     tmp = pathlib.Path(os.environ.get('MUT_TMP', '/tmp')) / f'mutlib-{os.getpid()}'
 
     def run(i, t):
         st, f = t['site'], t['file']
+        if deadline and time.monotonic() > deadline:
+            return {'outcome': 'not run', 'seconds': 0}
         d = tmp / str(i)
         hub = (S / 'vendor/bendhub' / HUB).resolve()
         inhub = hub in f.parents
@@ -518,12 +578,10 @@ def lib_wide(S, a):
             if not (d / c.relative_to(S)).exists():
                 continue
             try:
-                q = subprocess.run([str(S / 'tools/check.sh'), c.relative_to(S).as_posix()], cwd=d, env=env,
-                                   capture_output=True, text=True, timeout=a.lib_timeout)
+                _rc, out = run_guarded([str(S / 'tools/check.sh'), c.relative_to(S).as_posix()], d, env, a.lib_timeout)
             except subprocess.TimeoutExpired:
                 slow = True
                 continue
-            out = q.stdout + q.stderr
             if 'ALL PROOFS CHECK' not in out:
                 m = re.search(r'Error:[^\n]*(\n- [^\n]*)?', out)
                 res = {'outcome': 'killed', 'killed_in': c.relative_to(S).as_posix(), 'error': (m.group(0)[:160] if m else out[-160:])}
@@ -545,6 +603,8 @@ def lib_wide(S, a):
                    'checked': [c.relative_to(S).as_posix() for c in t['checkers']],
                    'text': t['file'].read_text().split('\n')[st[0]].strip()[:200], **r}
             results.append(rec)
+            with open(a.out + '.partial', 'a') as pf:
+                pf.write(json.dumps(rec) + '\n')
             if n_done % 50 == 0 or n_done == len(futs):
                 print(f'lib: {n_done}/{len(futs)}, survived so far {sum(1 for x in results if x["outcome"] == "survived")}, '
                       f'too slow {sum(1 for x in results if x["outcome"] == "too slow")}, {time.monotonic() - started_global:.0f}s', flush=True)
@@ -561,10 +621,12 @@ def main():
     ap.add_argument('--workers', type=int, default=8)
     ap.add_argument('--no-proofs', action='store_true')
     ap.add_argument('--proof-wide', type=int, default=0, help='proof side only, wide: this many mutants per name and operation')
-    ap.add_argument('--proof-jobs', type=int, default=12)
+    ap.add_argument('--proof-jobs', type=int, default=6)
     ap.add_argument('--lib', default=None, choices=sorted(LIB_GROUPS), help='mutate the library code of this group (collections, e2e, sha256, spec) instead of the generated codec files')
     ap.add_argument('--lib-per-file', type=int, default=4)
     ap.add_argument('--lib-files', type=int, default=0, help='only the first N files of the group (a pilot)')
+    ap.add_argument('--lib-budget', type=int, default=0, help='seconds: after this no new mutant starts (it is reported `not run`)')
+    ap.add_argument('--lib-pins', default=None, help='glob of extra checkers (relative to the root) added for every mutant whose cone they reach, e.g. proofs/obj/specpin_*.bend')
     ap.add_argument('--lib-only', default=None, help='only these files of the group (comma-separated paths relative to the root)')
     ap.add_argument('--lib-timeout', type=int, default=120, help='a mutant check over this many seconds is `too slow`, not a kill')
     ap.add_argument('--replay', default=None, help='with --proof-wide: instead of drawing, re-check the survivors of this earlier report (by file, def, operator, before, after and line text) on the current tree')
@@ -608,8 +670,9 @@ def main():
         res = lib_wide(S, a)
         sv = [r for r in res if r['outcome'] == 'survived']
         slow = [r for r in res if r['outcome'] == 'too slow']
+        notrun = sum(1 for r in res if r['outcome'] == 'not run')
         rep = {'group': a.lib, 'seed': a.seed, 'lib_per_file': a.lib_per_file, 'mutants': len(res),
-               'killed': sum(1 for r in res if r['outcome'] == 'killed'), 'survived': len(sv), 'too_slow': len(slow),
+               'killed': sum(1 for r in res if r['outcome'] == 'killed'), 'survived': len(sv), 'too_slow': len(slow), 'not_run': notrun,
                'survivors_by_operator': dict(collections.Counter(r['operator'] for r in sv)),
                'survivors': sv, 'too_slow_list': slow, 'results': res, 'elapsed_s': round(time.monotonic() - started, 1),
                'provenance': stamp(__file__)}

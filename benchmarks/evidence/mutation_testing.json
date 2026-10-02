@@ -174,10 +174,10 @@
  ],
  "history": "docs/RESULTS.md rounds table",
  "provenance": {
-  "git_commit": "da19f102292c966ede4ecd80d19abde7feab85a4",
+  "git_commit": "3f8a1a1b491d9b9e45224274801623916916650a",
   "git_dirty": false,
-  "git_tree": "08766e790065be2383abe5c5b798456483700615",
-  "utc": "2026-10-02T04:45:29Z",
+  "git_tree": "4398d9d12774de4924337b029a3a684139fd0f8d",
+  "utc": "2026-10-02T12:02:05Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -545,12 +545,322 @@
    "fixtures.manifest.json": "6e3148de2130b274ac2bf8bfef5b5dc86d65191b6ae7cc0c0924d50f619d15b8"
   },
   "harness_sha256": {
-   "tests_generated/mutation_testing.py": "e59dbc34e42f8f91a8ad1dff897d2b6facfa7cf14c4cc7b9ce82b95f071da031",
+   "tests_generated/mutation_testing.py": "25a3ea322db1ccf66a8b77e2ae794e1795ed09b8b18ef58b355cc8e04f406974",
    "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
    "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
    "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
    "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
+  }
+ },
+ "final_passes": {
+  "replay_column_key": {
+   "mutants": 926,
+   "killed": 676,
+   "survived": 250,
+   "proof_equivalent": 248,
+   "killed_on_final_main": 2
+  },
+  "e2e": {
+   "mutants": 822,
+   "killed": 783,
+   "survived": 30,
+   "too_slow": 9
+  },
+  "sha256_sample": {
+   "mutants": 36,
+   "killed": 34,
+   "survived": 2,
+   "out_of_scope": 2
+  },
+  "spec": {
+   "exhaustive": true,
+   "main": "dc852a8f",
+   "mutants": 1049,
+   "killed": 1018,
+   "survived": 31,
+   "status": "open: pins in progress; loop not finished",
+   "survivors": [
+    {
+     "file": "spec/bit_root.bend",
+     "line": 11,
+     "col": 35,
+     "operator": "const-1",
+     "before": "256n",
+     "after": "255n",
+     "def": "chunk_limit"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 16,
+     "col": 40,
+     "operator": "const-1",
+     "before": "1n",
+     "after": "0n",
+     "def": "Schema5"
+    },
+    {
+     "file": "spec/type_legality.bend",
+     "line": 64,
+     "col": 99,
+     "operator": "const+1",
+     "before": "127n",
+     "after": "128n",
+     "def": "legal"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 55,
+     "col": 24,
+     "operator": "const+1",
+     "before": "1n",
+     "after": "2n",
+     "def": "count"
+    },
+    {
+     "file": "spec/root_relation_serializable.bend",
+     "line": 64,
+     "col": 181,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 147,
+     "col": 49,
+     "operator": "const+1",
+     "before": "32n",
+     "after": "33n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 44,
+     "col": 40,
+     "operator": "const+1",
+     "before": "512n",
+     "after": "513n",
+     "def": "Schema14"
+    },
+    {
+     "file": "spec/bit_root.bend",
+     "line": 16,
+     "col": 29,
+     "operator": "const+1",
+     "before": "31n",
+     "after": "32n",
+     "def": "chunks"
+    },
+    {
+     "file": "spec/type_legality.bend",
+     "line": 63,
+     "col": 157,
+     "operator": "const+1",
+     "before": "127n",
+     "after": "128n",
+     "def": "legal"
+    },
+    {
+     "file": "spec/tree.bend",
+     "line": 29,
+     "col": 35,
+     "operator": "const+1",
+     "before": "1n",
+     "after": "2n",
+     "def": "tree"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 64,
+     "col": 40,
+     "operator": "const-1",
+     "before": "128n",
+     "after": "127n",
+     "def": "Schema23"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 16,
+     "col": 40,
+     "operator": "const+1",
+     "before": "1n",
+     "after": "2n",
+     "def": "Schema5"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 216,
+     "col": 42,
+     "operator": "const+1",
+     "before": "2048n",
+     "after": "2049n",
+     "def": "Schema110"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 26,
+     "col": 41,
+     "operator": "const+1",
+     "before": "8n",
+     "after": "9n",
+     "def": "Schema10"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 213,
+     "col": 49,
+     "operator": "const-1",
+     "before": "17n",
+     "after": "16n",
+     "def": "Schema108"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 143,
+     "col": 52,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/bit_root.bend",
+     "line": 11,
+     "col": 28,
+     "operator": "const+1",
+     "before": "255n",
+     "after": "256n",
+     "def": "chunk_limit"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 64,
+     "col": 40,
+     "operator": "const+1",
+     "before": "128n",
+     "after": "129n",
+     "def": "Schema23"
+    },
+    {
+     "file": "spec/root_relation_serializable.bend",
+     "line": 44,
+     "col": 54,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 56,
+     "col": 12,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "count"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 44,
+     "col": 40,
+     "operator": "const-1",
+     "before": "512n",
+     "after": "511n",
+     "def": "Schema14"
+    },
+    {
+     "file": "spec/tree.bend",
+     "line": 29,
+     "col": 35,
+     "operator": "const-1",
+     "before": "1n",
+     "after": "0n",
+     "def": "tree"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 55,
+     "col": 24,
+     "operator": "const-1",
+     "before": "1n",
+     "after": "0n",
+     "def": "count"
+    },
+    {
+     "file": "spec/bit_root.bend",
+     "line": 16,
+     "col": 29,
+     "operator": "const-1",
+     "before": "31n",
+     "after": "30n",
+     "def": "chunks"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 163,
+     "col": 128,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 26,
+     "col": 41,
+     "operator": "const-1",
+     "before": "8n",
+     "after": "7n",
+     "def": "Schema10"
+    },
+    {
+     "file": "spec/type_legality.bend",
+     "line": 57,
+     "col": 71,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "legal"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 213,
+     "col": 49,
+     "operator": "const+1",
+     "before": "17n",
+     "after": "18n",
+     "def": "Schema108"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 147,
+     "col": 49,
+     "operator": "const-1",
+     "before": "32n",
+     "after": "31n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 216,
+     "col": 42,
+     "operator": "const-1",
+     "before": "2048n",
+     "after": "2047n",
+     "def": "Schema110"
+    },
+    {
+     "file": "spec/type_legality.bend",
+     "line": 53,
+     "col": 66,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "legal"
+    }
+   ]
   }
  }
 }

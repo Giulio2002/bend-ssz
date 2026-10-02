@@ -231,6 +231,63 @@ sha256 `stream_correct` `&2 -> &1` twice (an erased label: equivalent) and `hex_
 `spec/bytes.bend:13:37` (`vector_domain`, `1n -> 2n` in the pattern `1n+p`): constants of the specification transcription that no
 law catches. The spec is frozen: only copies in private trees were mutated.
 
+**Audit of the exclusions** (`docs/EXCLUSION_AUDIT.md`, `docs/EXCLUSION_AUDIT_HIDDEN.json`; an independent re-derivation of every rule,
+each checked by a Bend law or by a differential run of original against mutant). The first exclusion list hid 219 mutants. Verdict:
+
+| rule | entries | verdict |
+| --- | --- | --- |
+| argument never read | 127 | sound for the site examined (45 Bend laws, one per callee, parameter and literal pair, all check); the key also hid 4 offset sites that are NOT equivalent |
+| flag read only by `O.is_poisoned` | 30 | 29 sound, 1 unsound (`v4_b32_pk_ok`: in the LightClient types the flag is OR-ed into the running length that `ser_done` writes) |
+| `words_ok` bounds / unit | 47 | sound for the site examined; the key also hid 35 sibling sites (`lo`, `unit`, `hi`) that change the accepted lengths |
+| `bits_ok` limit | 1 | sound (Bend law) |
+| vec_bool `ok_n` / `ok_nz` | 13 | sound; the key also covered 5 `case True{}` pattern sites that do not compile (invalid, harmless) |
+| Transaction bound 2^30 -> 2^30+1 | 1 | NOT equivalent, killable by a proof law (no longer classified uncoverable) |
+
+The defect was common to all rules: an entry was keyed by file, def, operator, before, after and line text, so it hid every site of
+that line with the same literal while the rule had examined one column (42 of 219 entries matched more than one site). 41 real
+mutants were hidden (4 offsets, 35 `words_ok` siblings, 1 flag, 1 bound) and 5 invalid ones. The key now includes the column (one
+entry per site), the flag and bound entries are removed, and the rule "a flag is equivalent" requires that the consumers of the flag
+across ALL facades were checked. The 41 are closed with proof laws (`agent/mutfix-hidden`).
+
+**Final passes (budgeted; the loop stops here).** Corrected-key replay: 926 distinct survivors of all earlier rounds (one entry per
+site, the column in the key): 676 now fail the checker, 250 survive, 248 of them proof-equivalent by the rules above and 2 (`is_lt`
+of the `_pwd` alignment guard of `bitvector_16` and `bitvector_33`) survive only on a tree older than the final main: re-checked on the
+final main they are killed (`zpwdcmp_*` laws). Library targets: **e2e** 822 mutants over 215 files, 783 killed, 30 survived (28 inside
+the proof term of a lemma, statement unchanged; 2 statement survivors, `e2e_mw` p1028 `pw(10n)` -> `pw(11n)`, no caller needs the exact
+bound, and `e2e_gvt` v2dD `shrn(8, 2n)` -> `shrn(9, 2n)`, the same value, both shown equivalent by fixer D), 9 too slow. **sha256**
+(sample of 10 files): 36 mutants, 34 killed, 2 survived, both out of scope (a test-vector statement `stream_correct` and the hex
+rendering `hex_digit`). **collections** (167 files): 616 mutants, 604 killed, 11 survived (all inside lemma proof terms), 1 too slow.
+**spec, exhaustive** (every mutation site of the 32 spec files that has one; main dc852a8f; checkers: the file, its two smallest importers,
+up to 3 proof files that mention the mutated definition, and every `specpin_*` module; 40 minute budget, 706 s used): 1049 mutants, 1018
+killed, **31 survived**, 0 too slow, 0 not run. An earlier sampled pass (232 mutants, 8 per file) had found 8 of them. **Open: pins in
+progress.** None is proved equivalent except the four progressive-limit sites, which are provisionally equivalent by fixer C's lemma
+(a progressive limit that only reaches a branch that ignores it; not yet verified for all four sites). The 31 (each pair is `+1`, `-1`):
+`bit_root.bend:11:28`, `:11:35` (`chunk_limit` `255n`/`256n`); `bit_root.bend:16:29` (`Pack.scan(.., 31n, ..)`, 2); `fulu_schemas.bend`
+Schema5 `16:40`, Schema10 `26:41`, Schema14 `44:40`, Schema23 `64:40`, Schema108 `213:49`, Schema110 `216:42` (a size or length constant of the
+type's schema, 12); `root_relation.bend:55:24` (2) and `:56:12` (`count`); `:147:49` (Null `zero_bytes(32n)`, 2); `root_relation.bend:143:52`,
+`:163:128` and `root_relation_serializable.bend:44:54`, `:64:181` (progressive aggregate limit `0n` -> `1n`, the four provisionally equivalent
+sites); `tree.bend:29:35` (`zero_subtree(1n+p)`, 2); `type_legality.bend:53:66`, `:57:71` (`0n` -> `1n` in `is_lt(0n, n)`: would make a length-1
+vector illegal), `:63:157`, `:64:99` (`127n` -> `128n`, the union field-count limit). The other 27 are **critical** (not shown equivalent, in
+code the proofs must pin). **The loop is not finished:** it stops when the pins for this list are on main and one confirming exhaustive
+pass leaves only survivors that are proved equivalent or documented as limitations.
+
+| pass | mutants | killed | survived | critical |
+| --- | --- | --- | --- | --- |
+| codec scope, proof side, rounds 1-8 | about 24,000 (see the table above) | | 0 gaps at round 8 | 0 |
+| codec replay, column key (926) | 926 | 676 | 250 (248 equivalent, 2 killed on the final main) | 0 |
+| collections | 616 | 604 | 11 (proof terms) + 1 too slow | 0 |
+| e2e | 822 | 783 | 30 (28 proof terms, 2 equivalent) + 9 too slow | 0 |
+| sha256 (sample) | 36 | 34 | 2 (out of scope) | 0 |
+| spec, exhaustive (main dc852a8f) | 1049 | 1018 | 31 (4 provisionally equivalent) | **27, open** |
+
+**Final limitations.** (1) 9 e2e mutants exceeded the 120 s budget and are unjudged: `e2e_bbsl.bend:395:50`, `e2e_dbb.bend:153:1175`,
+`e2e_dbk.bend:72:3384` and `:64:210`, `e2e_dpx_tot.bend:60:3293`, `e2e_ml_l16_Deposit.bend:178:273`, `e2e_support.bend:18:87`,
+`e2e_ulist.bend:76:24` and `:78:96`. (2) The exclusion rules were audited independently by sampling and by Bend laws
+(docs/EXCLUSION_AUDIT.md), not for every site. (3) Every equivalence relies on the pinned checker. (4) The hex rendering of the vendored
+SHA-256 and its test-vector statements are out of scope. (5) For the library targets each mutant is checked by the file itself, the two
+smallest direct importers and up to three files that mention the mutated definition: a survivor may be caught by a file outside that
+sample. (6) The passes are samples (4 mutants per file for the libraries, 8 for the spec, 10 files for sha256), not exhaustive.
+
 **Known out-of-scope item: the hex rendering of the vendored SHA-256.** `hex_digit` (`U32.is_lt(x, 10)`) and `hex_word_go`
 (the shift `4n`) in `proofs/crypto/sha/packed/core_model.bend` of bend-collections 1.0.0.0 render a digest as a hex string. No
 law of this repository reaches them (our laws use the byte API and the FIPS 180-4 model, never the hex strings), and the package
@@ -268,12 +325,12 @@ each with the same sha256.
 
 All against the independent oracle `codegen/core/oracle.py` (written from the specification, sharing
 no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-02<!-- /fig --> on the ssz server at
-<!-- fig:evidence_commit -->da19f102<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+<!-- fig:evidence_commit -->3f8a1a1b<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
 the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
 |---|---|---|
-| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->240<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->131<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->1,920<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->15,360<!-- /fig --> random and <!-- fig:fuzz_boundary -->34,228<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->16<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->3,840<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->2<!-- /fig --> minutes |
+| `fuzz_objects.json` | `tests_generated/fuzz_objects.py` | <!-- fig:fuzz_types -->240<!-- /fig --> types (<!-- fig:fuzz_fulu -->109<!-- /fig --> Fulu, <!-- fig:fuzz_generic -->131<!-- /fig --> generic), seed 20260921: <!-- fig:fuzz_valid -->1,920<!-- /fig --> valid values (random, zero, maximal, empty, list-boundary), <!-- fig:fuzz_random -->15,360<!-- /fig --> random and <!-- fig:fuzz_boundary -->34,228<!-- /fig --> field-boundary corruptions (<!-- fig:fuzz_kinds -->16<!-- /fig --> kinds in all), <!-- fig:fuzz_history -->3,840<!-- /fig --> mutation-history steps through the object setters of <!-- fig:fuzz_setter_types -->64<!-- /fig --> types (the others are leaves and aliases without setters); <!-- fig:fuzz_mismatches -->0<!-- /fig --> mismatches; about <!-- fig:fuzz_elapsed -->3<!-- /fig --> minutes |
 | `object_mutations.json` | `benchmarks/checks/object_mutations.py` | malformed variants of every ssz_static case (5,455 inputs); the verdict of each comes from the oracle; 0 disagreements |
 | `object_mutation_tests.json` | `tests_generated/mutations.py` | 8 field/element updates through the object API against the oracle's re-encoding, rejections leave the value unchanged |
 | `invalid_objects.json` | `tests_generated/invalid_objects.py` | 14 cases: representable but invalid objects (built with raw constructors) are refused by the checked encoder, each with a valid control |
