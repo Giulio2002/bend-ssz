@@ -3,6 +3,7 @@ import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/uint64_def_generated.bend as uint64_d
+import ../../types/FuluCell_encode_ssz_generated.bend as FuluCell_e
 import ../../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_e
 import ../../types/schema.bend as P0_S
@@ -45,6 +46,9 @@ def FuluMatrixEntry__encode_eval__MatrixEntry_spec_bytes(+x0: U32, +x1: U32, +x2
 
 def FuluMatrixEntry__encode_eval__MatrixEntry_encode_capsym(o: FuluMatrixEntry_d.MatrixEntry) -> {FuluMatrixEntry_e.MatrixEntry_encode(o) == FuluMatrixEntry_e.MatrixEntry_enc_out(FuluMatrixEntry_e.MatrixEntry_put(P1_O.out_at(10n), 0, o)) : FuluMatrixEntry_d.MatrixEntry & P1_B.Buf}:
   P1_PRV.MatrixEntry_encode_capsym(o)
+
+def FuluMatrixEntry__encode_eval__MatrixEntry_cf_acc(out: Array<U32>, +pos: U32, cell: P2_O.Words, kzg_proof: FuluBytes48_d.Bytes48, column_index: P2_O.U64, row_index: P2_O.U64) -> {FuluMatrixEntry_e.MatrixEntry_putk(out, pos, FuluMatrixEntry_d.MatrixEntry{cell, kzg_proof, column_index, row_index}) == FuluMatrixEntry_e.MatrixEntry_pw0(pos, 0, kzg_proof, column_index, row_index, FuluCell_e.b2048_putk(out, (pos + 0 : U32), cell)) : Array<U32> & (FuluMatrixEntry_d.MatrixEntry & U32)}:
+  P2_PRV.MatrixEntry_cf_acc(out, pos, cell, kzg_proof, column_index, row_index)
 
 def FuluMatrixEntry__encode_eval__MatrixEntry_cf_flag() -> {Pair.snd(FuluMatrixEntry_d.MatrixEntry, U32, Pair.snd(Array<U32>, FuluMatrixEntry_d.MatrixEntry & U32, FuluMatrixEntry_e.MatrixEntry_putk(P2_O.out_at(10n), 0, FuluMatrixEntry_d.MatrixEntry_default()))) == 0 : U32}:
   P2_PRV.MatrixEntry_cf_flag()

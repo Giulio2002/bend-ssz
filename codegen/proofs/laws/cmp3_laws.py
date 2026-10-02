@@ -11,7 +11,8 @@
    equivalent, and the statement is about P_pwd, so it does not change with the mutation. (is_lt and is_ge are not
    equivalent: is_lt(x, 0) is never true, which sends an aligned position to the unaligned writer P_pwu, whose default
    case is the three-byte shift, and is_ge(x, 0) is always true; the statements about the encoders kill both.)
-2. The accumulator of a record's checked writer (`P_pw0(pos, 0, ..)`: its second argument is OR-ed with the flag of the boxed
+2. The accumulator of a record's checked writer (<X>_cf_acc: the call `X_putk(out, pos, X{f..}) == P_pw0(pos, 0, ..)` with variable fields,
+   symbolic, for every name whose putk has this call; <X>_cf_flag: the default object's flag, small names) (`P_pw0(pos, 0, ..)`: its second argument is OR-ed with the flag of the boxed
    child and read only through `is_poisoned` (bit 31) by the serializer, so a start of 1 is invisible to every
    statement about the bytes). zflag_<X>.bend: <X>_cf_flag, the flag `X_putk` reports for the default object of the name
    is 0: {snd(snd(T.X_putk(O.out_at(d), 0, T.X_default()))) == 0}, by computation. A start other than 0 fails it.
@@ -41,6 +42,15 @@ MAX_DEPTH = 10
 
 def qtype(r):
     return ' & '.join(t.strip() if t.strip().startswith('B.') or t.strip() in ('Bool', 'U32') else qual(t.strip()) for t in r.split(' & '))
+
+
+def types_table():
+    """{type name: [(field, field type)]} of the single-constructor object types of the generated def files"""
+    tab = {}
+    for p in sorted((ROOT / 'types').glob('*_def_generated.bend')):
+        for m in re.finditer(r'^type (\w+) is (?:Data|Type):\n  \1\{([^}\n]*)\}', p.read_text(), re.M):
+            tab[m.group(1)] = [tuple(x.strip().split(': ')) for x in m.group(2).split(',')]
+    return tab
 
 
 def qexpr(e):
@@ -77,13 +87,26 @@ def name_laws(runtime):
                       f'    {{T.{P}_pwd(_, s, out, q, {args}) == T.{P}_pwd(U32.is_eq(s, 0), s, out, q, {args}) : Array<U32>}}\n'
                       f'  {{==}}')
     # 2: the accumulator of a record's checked writer
+    tt = types_table()
     for m in re.finditer(r'^def (\w+)_encode\(o: ([\w.]+)\) -> [^\n:]*: \w+_enc_(?:out|put)\((\w+)_put(?:n)?\(O\.out_at\((\d+)n\), 0, o\)\)$', text, re.M):
         X, d = m.group(1), int(m.group(4))
         R = m.group(2)
-        pk = re.search(rf'^def {X}_putk\(out: Array<U32>, \+pos: U32, o: ([\w.]+)\) -> Array<U32> & \(([\w.]+) & U32\):\n  match o:\n    case [^\n]*: \w+_pw0\(pos, 0, ', text, re.M)
-        if pk and d <= MAX_DEPTH and re.search(rf'^def {X}_default\(\)', text, re.M):
-            Q = qual(R)
-            flag[X] = (f'def {X}_cf_flag()\n    -> {{Pair.snd({Q}, U32, Pair.snd(Array<U32>, {Q} & U32, T.{X}_putk(O.out_at({d}n), 0, T.{X}_default()))) == 0 : U32}}:\n  {{==}}')
+        pk = re.search(rf'^def {X}_putk\(out: Array<U32>, \+pos: U32, o: ([\w.]+)\) -> Array<U32> & \(([\w.]+) & U32\):\n  match o:\n    case ([\w.]+)\{{([^}}\n]*)\}}: (\w+)_pw0\(pos, 0, (.*)\)$', text, re.M)
+        if not pk:
+            continue
+        Q = qual(R)
+        laws = []
+        # the start of the accumulator at the call: the same call with variable fields (cheap for every size)
+        fields = [x.strip().lstrip('+') for x in pk.group(4).split(',')]
+        decl = tt.get(R)
+        if decl and [f for f, _ in decl] == fields:
+            params = ', '.join(('+' if t == 'U32' else '') + f'{f}: {qual(re.sub(r"\w+_d\.", "", t))}' for f, t in decl)
+            laws.append(f'def {X}_cf_acc(out: Array<U32>, +pos: U32, {params})\n    -> {{T.{X}_putk(out, pos, T.{R}{{{", ".join(fields)}}}) == T.{pk.group(5)}_pw0(pos, 0, {qexpr(pk.group(6))}) : Array<U32> & ({Q} & U32)}}:\n  {{==}}')
+        # the flag of the default object, by computation (small objects)
+        if d <= MAX_DEPTH and re.search(rf'^def {X}_default\(\)', text, re.M):
+            laws.append(f'def {X}_cf_flag()\n    -> {{Pair.snd({Q}, U32, Pair.snd(Array<U32>, {Q} & U32, T.{X}_putk(O.out_at({d}n), 0, T.{X}_default()))) == 0 : U32}}:\n  {{==}}')
+        if laws:
+            flag[X] = laws
     # 3: the arm offsets of a union
     for m in re.finditer(r'^def (\w+)_(ok|rd)(\d+)\(c: Bool, \+s: U32, buf: B\.Buf, \+off: U32, \+len: U32\) -> ([^\n:]*):\n  match c:\n    case True\{\}: ([^\n]*)\n    case False\{\}: ([^\n]*)$', text, re.M):
         X, kind, i, ret, te, fe = m.groups()
@@ -117,8 +140,8 @@ def main():
         for X, law in flag.items():
             if ('f', X) not in seen:
                 seen.add(('f', X))
-                out[ROOT / f'proofs/obj/zflag_{X}.bend'] = module(tmod, X, [law])
-                cnt[1] += 1
+                out[ROOT / f'proofs/obj/zflag_{X}.bend'] = module(tmod, X, law)
+                cnt[1] += len(law)
         for X, laws in uarm.items():
             if ('u', X) not in seen:
                 seen.add(('u', X))
