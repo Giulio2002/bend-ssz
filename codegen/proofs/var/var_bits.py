@@ -125,14 +125,8 @@ def byte_module():
             else:
                 w(f'      {name}_{k - 1}({", ".join(bk(k, "c"))}, nz)')
             w('')
-        w(f'law {name}:')
-        w('  for +w: Word(8n)')
-        w('  for +nz: {U32.is_eq(PD.embed8(w), 0) == False{} : Bool}')
-        w(f'  {stmt("PD.embed8(w)", "w")}')
-        w(f'def {name}(w, nz):')
-        w('  match w:')
-        w(f'    case {PAT}: {name}_7(c0, c1, c2, c3, c4, c5, c6, c7, nz)')
-        w('')
+        for line in TPL.render('byte_module_lines', PAT=PAT, name=name, stmt=stmt).split('\n'):
+            w(line)
     # inv_k
     for k in range(8):
         bs = [f'b{i}' for i in range(k)]
@@ -146,9 +140,8 @@ def byte_module():
             w('  ({==}, {==})')
         else:
             E = e8(hk(k))
-            w(f'  %Equal.sym(U32, {oct}, {E}, BLf.oct8({", ".join(hk(k))})) :')
-            w(f'    DK.P2({{U32.is_eq(_, 0) == False{{}} : Bool}}, {{{k}n == hb(_) : Nat}})')
-            w(f'  ({{==}}, hb{k}({", ".join(bs)}))')
+            for line in TPL.render('byte_module_lines_2', E=E, bs=bs, hk=hk, k=k, oct=oct).split('\n'):
+                w(line)
         w('')
     return '\n'.join(L) + '\n'
 
