@@ -1067,7 +1067,6 @@ def emit_hex_laws(L, w):
     SHRS = [3, 10]
     def rotshr(r, rot):
         q_, m = divmod(r, 4)
-        nmf = f'rot{r}' if rot else f'shr{r}'
         ls, rs, es = [], [], []
         for i in range(8):
             ts, forms = [], []
