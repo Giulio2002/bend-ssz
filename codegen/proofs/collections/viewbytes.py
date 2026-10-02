@@ -150,14 +150,9 @@ def idx(+p: U32, +q: Nat, +hq: {U32.to_nat(U32.shrn(p, 2n)) == q : Nat})
 '''
     d = dict(ftw=FTh(TW), tw=TW, ft=FTh('t'), slw=SL(TW), upd=UPDW, slt=SL('t'), limu=LIM(UPDW), limw=LIM(SL('t')), idx=IDX)
     # bytes value
-    BV = lambda inner: 'S.BytesValue{%s}' % inner
-    RHS0 = 'VS.bytes_set(S.BytesValue{WS.btake(U32.to_nat(n), %s)}, U32.to_nat(p), v)'
     # the statement: wview after == bytes_set
     w('''def view_set(%s)
     -> {S.BytesValue{WO.wview(%s)} == VS.bytes_set(S.BytesValue{WO.wview(%s)}, U32.to_nat(p), v) : S.Value}:''' % (prem, OW(TW), OW('t')))
-    bt = lambda W: 'WS.btake(U32.to_nat(n), FX.limbs(F.array__slots(U32, %s)))' % W
-    def lines(Wl, Wr, limL, limR, idxL, idxR, stage):
-        pass
     # the stages: each states the current goal with the hole where the rewrite lands
     def goal(lhs_inner, rhs_inner, rhs_k):
         return 'S.BytesValue{%s} == VS.bytes_set(S.BytesValue{%s}, %s, v) : S.Value' % (lhs_inner, rhs_inner, rhs_k)
@@ -196,7 +191,6 @@ def it1_set(+m: Nat, +xs: +List<U32>, +k: Nat, +v: U32)
     M4 = goal1(it(bl('_')), it(bl('FX.limbs(%s)' % SL('t'))), 'U32.to_nat(p)')
     M5 = goal1(it('_'), it(bl('FX.limbs(%s)' % SL('t'))), 'U32.to_nat(p)')
     M6 = goal1(it('VS.list_set(%s, %s, v)' % (bl('FX.limbs(%s)' % SL('t')), IDX)), it(bl('FX.limbs(%s)' % SL('t'))), '_')
-    c2 = common.replace('  %%Equal.sym(Nat, U32.to_nat(p), %(idx)s, idx(p, q, hq)) :\n    {%(L5)s}\n', '')
     w((common.split('  %%Equal.sym(Nat, U32.to_nat(p)')[0]) % dict(d, L0=M1, L1=M2, L2=M3, L3=M4, L4=M5, L5=M6) + '''  %%Equal.sym(Nat, U32.to_nat(p), %(idx)s, idx(p, q, hq)) :
     {%(L5)s}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, %(a)s, VS.items_set(%(b)s, %(idx)s, %(es)s), it1_set(U32.to_nat(n), %(bt)s, %(idx)s, v))
@@ -274,9 +268,7 @@ def it1_snoc(+xs: +List<U32>, +v: U32)
     Lw = LIM(SL('t'))
     def gapp(lhs_inner, rhs_inner, cnt, k=None):
         return 'S.BytesValue{%s} == VS.bytes_snoc(S.BytesValue{%s}, v) : S.Value' % (lhs_inner, rhs_inner)
-    B = lambda cnt, L: 'WS.btake(%s, %s)' % (cnt, L)
     tn, tnb = 'U32.to_nat(n)', 'U32.to_nat(nb)'
-    SLthaw = lambda T: LIM(SL(FTh(T)))
     w('def view_app(%s)\n    -> {S.BytesValue{WO.wview(%s)} == VS.bytes_snoc(S.BytesValue{WO.wview(%s)}, v) : S.Value}:' % (premA, OWn(TW), OW('t')))
     w('''  %%Equal.sym(F.array__Tree<U32>, %(ftw)s, %(tw)s, F.array__freeze_thaw(U32, %(tw)s)) :
     {S.BytesValue{WS.btake(%(tnb)s, FX.limbs(F.array__slots(U32, _)))} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, FX.limbs(F.array__slots(U32, %(ft)s)))}, v) : S.Value}
