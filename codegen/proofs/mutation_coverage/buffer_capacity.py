@@ -2,16 +2,16 @@
 """Laws that pin the capacity of the checked serializer's output buffer, found by mutation testing (an
 `O.out_at(d)` in `X_serialize` changed to `O.out_at(d - 1)`).
 
-    python3 codegen/proofs/laws/mutation_laws_cap.py [--check]
+    python3 codegen/proofs/mutation_coverage/buffer_capacity.py [--check]
 
 `O.out_at(d)` is `Array.new(U32, d, 0)`: a zero array of 2^d words, and word indices are taken modulo that size, so an
 encoder whose buffer is one power of two too small writes over its own head without any error. The encoders
 (`X_encode`) are pinned by the statements about their output (a smaller buffer changes the emitted words or the
 array), but `X_serialize` (the checked serializer, its own `out_at`) had no statement for most names: a name's
-serialize_valid law exists only for scalars and byte vectors, and `X_serialize_in` (mutation_laws.py) only for byte
+serialize_valid law exists only for scalars and byte vectors, and `X_serialize_in` (reported_size_and_vector_bound.py) only for byte
 vectors of up to 4096 bytes.
 
-proofs/obj/capacity_<X>.bend (one module per name) holds, for every name whose serializer allocates with `O.out_at`:
+proofs/mutation_coverage/capacity/<X>.bend (one module per name) holds, for every name whose serializer allocates with `O.out_at`:
 
   <X>_serialize_cap    : {T.X_serialize(D) == (D, O.encoded(<the encoder's buffer for D>)) : ..}
       D is the name's default object (every field zero, storage of the right size: valid), by computation. The
@@ -27,7 +27,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -55,13 +56,13 @@ def name_laws(runtime):
 
 
 def module(tmod, X, law):
-    return law_module('mutation_laws_cap', [f'# {X}: the checked serializer\'s output buffer is the encoder\'s (same capacity)',
-                                            '# (found by mutation testing; codegen/proofs/laws/mutation_laws_cap.py). By computation.'], [law], tmod)
+    return law_module('buffer_capacity', [f'# {X}: the checked serializer\'s output buffer is the encoder\'s (same capacity)',
+                                            '# (found by mutation testing; codegen/proofs/mutation_coverage/buffer_capacity.py). By computation.'], [law], tmod)
 
 
 def main():
-    out, cnt = per_name(name_laws, module, 'capacity', weigh=lambda law: 1)
-    if finish(RR.rewire_out(out), ('capacity_*.bend',), 'stale capacity laws: ', 'capacity laws are current', '--check' in sys.argv):
+    out, cnt = per_name(name_laws, module, lambda X: LAYOUT.module_path('capacity', X), weigh=lambda law: 1)
+    if LAYOUT.finish(RR.rewire_out(out), 'buffer_capacity', ('capacity',), 'stale capacity laws: ', 'capacity laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

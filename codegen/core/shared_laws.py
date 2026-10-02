@@ -9,8 +9,8 @@ codegen/core, which must not import the generators' layers.
     RUNTIMES                          the two runtime modules the per-name law generators read
     run_single(name, out, text, check)  a generator with one output file
     run_each(name, outs, check)       a generator with a handful of files, each reported on its own
-    per_name(name_laws, make, stem, weigh)
-                                      {path: text} of one proofs/obj/<stem>_<X>.bend per name over both runtimes (a name found in
+    per_name(name_laws, make, place, weigh)
+                                      {path: text} of one module per name, at place(X), over both runtimes (a name found in
                                       both runtimes is written once, from the first) and the law count per runtime
     law_module(gen, comments, laws, tmod, extra_imports)
                                       the text of one such module
@@ -62,8 +62,8 @@ def run_each(name, outs, check):
         print(f'{name}: proofs/obj/{o.name}')
 
 
-def per_name(name_laws, make, stem, weigh=len):
-    """one module `proofs/obj/<stem>_<X>.bend` = make(tmod, X, laws) per name X of `name_laws(runtime)`, over both runtimes;
+def per_name(name_laws, make, place, weigh=len):
+    """one module at `place(X)` = make(tmod, X, laws) per name X of `name_laws(runtime)`, over both runtimes;
     `weigh(laws)` is what a name adds to the count of its runtime."""
     out, counts, seen = {}, [], set()
     for runtime, tmod in RUNTIMES:
@@ -72,7 +72,7 @@ def per_name(name_laws, make, stem, weigh=len):
             if X in seen:
                 continue
             seen.add(X)
-            out[OBJ / f'{stem}_{X}.bend'] = make(tmod, X, laws)
+            out[place(X)] = make(tmod, X, laws)
             n += weigh(laws)
         counts.append(n)
     return out, counts

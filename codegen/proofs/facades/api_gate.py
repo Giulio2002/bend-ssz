@@ -40,10 +40,12 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import json
+import os
 import re
 import sys
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.core.paths import ROOT, OBJ  # noqa: E402
 OUT = ROOT / 'proofs/gate'
 
@@ -220,6 +222,62 @@ def pname(p):
     return p.split(':')[0].strip().lstrip('+-@').strip()
 
 
+# ---- the proving files -------------------------------------------------------------------------
+# A proving file is named by its key: a bare file name for proofs/obj/<name>.bend, and `mutation_coverage/<group>/<name>.bend`
+# (the path below proofs/) for the laws that exist because mutation testing found a gap. The scan reads proofs/obj first and then
+# the mutation-coverage modules, in the order of LAYOUT.GROUPS: the bridges and the facades read the first law of a kind, and the
+# first proving import of an encode facade must stay the name's own spec/encx file, so the mutation-coverage laws come last.
+
+def proving_files():
+    """Every proving file, as a path: proofs/obj first, then proofs/mutation_coverage group by group (each sorted)."""
+    files = sorted(OBJ.glob('*.bend'))
+    for g in LAYOUT.GROUPS:
+        files += sorted((LAYOUT.MUTATION_COVERAGE / g).glob('*.bend'))
+    return files
+
+
+def file_key(f):
+    return f.name if f.parent == OBJ else str(f.relative_to(LAYOUT.PROOFS))
+
+
+def proof_path(key):
+    return OBJ / key if '/' not in key else LAYOUT.PROOFS / key
+
+
+def gate_stem(key):
+    """the file stem of the gate module of a proving file (flat: Bend import paths take no extra dots)"""
+    return key[:-5].replace('/', '__')
+
+
+def prv_import(key):
+    """the import path of proving file `key` from proofs/api or proofs/gate"""
+    return f"../obj/{key}" if "/" not in key else f"../{key}"
+
+
+def below_proofs(key):
+    """the path of proving file `key` below proofs/"""
+    return f"obj/{key}" if "/" not in key else key
+
+
+def proving_imports(key, src):
+    """[(path, alias or None)] of the imports of proving file `key`, as a module of proofs/api or proofs/gate writes them: a bare
+    file's `./x` is `../obj/x`; a mutation-coverage file's relative imports are re-based on this directory."""
+    out = []
+    for l in src.split('\n'):
+        m = re.match(r'import (\S+)( as (\w+))?$', l)
+        if not m:
+            continue
+        path = m.group(1)
+        if '/' not in key:
+            if path.startswith('./'):
+                path = '../obj/' + path[2:]
+        elif path.startswith('.'):
+            there = os.path.normpath(os.path.join(os.path.dirname(proof_path(key)), path))
+            path = os.path.relpath(there, OUT)
+        out.append((path, m.group(3)))
+    return out
+
+
 # ---- the map ----------------------------------------------------------------------------------
 
 def scan():
@@ -230,9 +288,10 @@ def scan():
     late = []
     api = re.compile(r'T\.(\w+?)_(decode|encode|ok|hash_tree_root|serialize|bx_size)\(')
     spc = re.compile(r'Decoding\.(?:decodes|outside_image)\(\w+\.(\w+)\(\)|\{s == \w+\.(\w+)\(\) : S\.Schema\}')
-    for f in sorted(OBJ.glob('*.bend')):
+    for f in proving_files():
+        key = file_key(f)
         bl = blocks(f.read_text())
-        parsed[f.name] = bl
+        parsed[key] = bl
         for k, n, params, st in bl:
             # the runtime's symbols read as T.<sym> (a module imports the split files: RR.unwire)
             hyps = RR.unwire(' '.join(params))
@@ -240,11 +299,11 @@ def scan():
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
-            if n.endswith('_serialize_vsym'):     # codegen/proofs/laws/mutation_laws_validity.py: the statement names the validity pass
+            if n.endswith('_serialize_vsym'):     # codegen/proofs/mutation_coverage/validity_checks.py: the statement names the validity pass
                 xs.add(n[:-len('_serialize_vsym')])
-            if n.endswith('_serialize_vflag'):    # codegen/proofs/laws/hidden_flag_laws.py: the statement names the writer's pk_ok
+            if n.endswith('_serialize_vflag'):    # codegen/proofs/mutation_coverage/poison_flag.py: the statement names the writer's pk_ok
                 xs.add(n[:-len('_serialize_vflag')])
-            ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/laws/mutation_laws_arith.py: the writers' own names are not X's
+            ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/mutation_coverage/word_positions.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
@@ -253,18 +312,18 @@ def scan():
             for X in xs & U:
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):
-                        ent.setdefault((X, kind), []).append((f.name, n))
-            # codegen/proofs/laws/mutation_laws_const.py: proofs/obj/mutconst_<X>.bend holds <X>_mc_<tag> laws, one module
+                        ent.setdefault((X, kind), []).append((key, n))
+            # codegen/proofs/mutation_coverage/encoder_constants.py: proofs/mutation_coverage/constants/<X>.bend holds <X>_mc_<tag> laws, one module
             # per name (the name is in the file name); the root wrapper's law belongs to the root facade, the others to
             # the encode facade (serialize_valid)
-            pre = re.match(r'(mutconst|mutsmall)_', f.name)      # mutation_laws_const.py / mutation_laws_small.py
-            if pre and k == 'def' and f.stem[len(pre.group(0)):] in U:
-                X = f.stem[len(pre.group(0)):]
+            per_name_laws = f.parent.name in ('constants', 'size') and f.parent.parent == LAYOUT.MUTATION_COVERAGE   # encoder_constants.py / write_start_and_sizes.py
+            if per_name_laws and k == 'def' and f.stem in U:
+                X = f.stem
                 mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
-                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (f.name, n)))
-    for key, v in late:      # after every other law: the bridges read the first law of a kind
-        ent.setdefault(key, []).append(v)
+                    late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (key, n)))
+    for lkey, v in late:      # after every other law: the bridges read the first law of a kind
+        ent.setdefault(lkey, []).append(v)
     return fulu, gen, ent, parsed
 
 
@@ -272,18 +331,11 @@ def scan():
 
 def gate_module(xlaws, fname, parsed_file, src):
     """One module per proving file; xlaws: [(X, [(kind, law)])]."""
-    imports = [l for l in src.split('\n') if l.startswith('import ')]
-    fixed = []
-    for l in imports:
-        m = re.match(r'import (\S+)( as (\w+))?$', l)
-        path = m.group(1)
-        if path.startswith('./'):
-            path = '../obj/' + path[2:]
-        fixed.append(f'import {path}{m.group(2) or ""}')
+    fixed = [f'import {path}' + (f' as {alias}' if alias else '') for path, alias in proving_imports(fname, src)]
     local = {n for _, n, _, _ in parsed_file}
-    L = fixed + [f'import ../obj/{fname} as PRV', '',
+    L = fixed + [f'import {prv_import(fname)} as PRV', '',
                  '# GENERATED by api_gate (codegen). Do not edit.',
-                 f'# The object API laws that proofs/obj/{fname} proves ({", ".join(X for X, _ in xlaws)}), each discharged by that law.', '']
+                 f'# The object API laws that proofs/{below_proofs(fname)} proves ({", ".join(X for X, _ in xlaws)}), each discharged by that law.', '']
     for X, kind, law in [(X, k, n) for X, laws in xlaws for k, n in laws]:
         blk = next(b for b in parsed_file if b[1] == law)
         _, n, params, st = blk
@@ -326,9 +378,8 @@ def outputs():
             byfile.setdefault(f, {}).setdefault(X, []).append((kind, n))
     for f, xs in sorted(byfile.items()):
         xlaws = [(X, sorted(set(laws), key=lambda kn: (KINDS.index(kn[0]), kn[1]))) for X, laws in sorted(xs.items())]
-        stem = f[:-5]
-        name = f'g__{stem}.bend'
-        out[OUT / name] = gate_module(xlaws, f, parsed[f], (OBJ / f).read_text())
+        name = f'g__{gate_stem(f)}.bend'
+        out[OUT / name] = gate_module(xlaws, f, parsed[f], proof_path(f).read_text())
     return out
 
 

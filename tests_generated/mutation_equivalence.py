@@ -112,7 +112,7 @@ def bits_equiv(x,line):
     b=arg_index(line,x)
     if b and b[0] in('O.bits_ok','bits_ok') and b[1]==1 and b[2][2]=='True{}': return 'bits_ok: limit is only read under Bool.or(big, ..) and big is True{}'
 def pk_equiv(x,line):
-    if x['file'].endswith('FuluExecutionBranch_encode_ssz_generated.bend'): return None   # its flag is OR-ed into the length of the light-client serializers (docs/EXCLUSION_AUDIT.md)
+    if x['file'].endswith('FuluExecutionBranch_encode_ssz_generated.bend'): return None   # its flag is OR-ed into the length of the light-client serializers (docs/mutation_testing/EXCLUSION_AUDIT.md)
     if (x['def'] or '').endswith('pk_ok') and x['before']=='0' and x['after']=='1' and re.search(r'\(o, 0\)',line): return 'the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1'
 
 def boolvec_equiv(x,line):
@@ -131,14 +131,14 @@ def boolvec_equiv(x,line):
 
 def le_eq_equiv(x, line):
     """is_eq(pos .&. 3, 0) -> is_le(...) at a `_pwd(` guard: U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x. The law
-    le_eq of proofs/obj/zpwdcmp_lib.bend states it, and the facade imports that library (checked here)."""
+    le_eq of proofs/mutation_coverage/alignment/writer_guard_library.bend states it, and the facade imports that library (checked here)."""
     if x['operator'] != 'cmp' or x['before'] != 'U32.is_eq(' or x['after'] != 'U32.is_le(' or '_pwd(' not in line or '.&. 3' not in line:
         return None
-    lib = pathlib.Path('proofs/obj/zpwdcmp_lib.bend')
+    lib = pathlib.Path('proofs/mutation_coverage/alignment/writer_guard_library.bend')
     api = pathlib.Path(x['checked'])
-    if not lib.exists() or not re.search(r'^def le_eq\b', lib.read_text(), re.M) or 'zpwdcmp_lib' not in api.read_text():
+    if not lib.exists() or not re.search(r'^def le_eq\b', lib.read_text(), re.M) or 'writer_guard_library' not in api.read_text():
         return None
-    return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/obj/zpwdcmp_lib.bend, imported by the facade'
+    return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/mutation_coverage/alignment/writer_guard_library.bend, imported by the facade'
 
 
 def proof_equiv(x):

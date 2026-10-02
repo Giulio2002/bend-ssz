@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""More laws that pin constants of the frozen spec no other law reaches (docs/MUTATION_PROOFS.md section 8): the spec is
+"""More laws that pin constants of the frozen spec no other law reaches (docs/mutation_testing/MUTATION_PROOFS.md section 8): the spec is
 never edited; each law states a spec function on witnesses in a small module that imports the spec file.
 
-    python3 codegen/proofs/laws/spec_pins_more.py [--check]
+    python3 codegen/proofs/mutation_coverage/spec_constants_extra.py [--check]
 
-  specpin_bit_root       chunk_limit(1n) == 1n, chunk_limit(257n) == 2n              (ceil(N / 256): the 255n)
-  specpin_packing        pack of 33 bytes is two chunks, the first of 32 bytes        (the room 31n of scan)
-  specpin_tree           capacity(0n) == 1n, capacity(3n) == 8n                       (a depth-0 tree holds one leaf)
-  specpin_type_legality  inhabitants of type_legal for a union of 1 option behind Null, of 127 options behind Null and
+  spec/bit_root.bend       chunk_limit(1n) == 1n, chunk_limit(257n) == 2n              (ceil(N / 256): the 255n)
+  spec/packing.bend        pack of 33 bytes is two chunks, the first of 32 bytes        (the room 31n of scan)
+  spec/tree.bend           capacity(0n) == 1n, capacity(3n) == 8n                       (a depth-0 tree holds one leaf)
+  spec/type_legality.bend  inhabitants of type_legal for a union of 1 option behind Null, of 127 options behind Null and
                          of 127 options (a type error when the field-count bounds 0n / 127n move)
-  specpin_fulu_schemas   Schema52() is Vector[Schema8(), SYNC_COMMITTEE_SIZE] (the value is read from codegen/fulu.yaml)
-  specpin_root_relation  aggregate(True, a, ..) == aggregate(True, b, ..): the limit of a progressive sequence is unread (the 0n of
+  spec/fulu_schemas.bend   Schema52() is Vector[Schema8(), SYNC_COMMITTEE_SIZE] (the value is read from codegen/fulu.yaml)
+  spec/root_relation.bend  aggregate(True, a, ..) == aggregate(True, b, ..): the limit of a progressive sequence is unread (the 0n of
                          `sequence(.., 0n, True{}, ..)` is equivalent: no statement can depend on it)
-  specpin_representation erase puts the placeholder length 0n in every erased type, whatever the length it replaces
+  spec/representation.bend erase puts the placeholder length 0n in every erased type, whatever the length it replaces
                          (the placeholder is irrelevant to `shape`, proofs/representation_erasure.bend: shape(v, s) ==
                          shape(v, erase(s)); the pins make the chosen placeholder explicit)
 """
@@ -23,9 +23,10 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
 
-H = writer.header("spec_pins_more")
+H = writer.header("spec_constants_extra")
 
 
 def mod(imports, body):
@@ -95,15 +96,14 @@ def outputs():
                                  "R.aggregate(True{}, a, c, l, o) == R.aggregate(True{}, b, c, l, o) : Type")),
         "representation": mod(S + [("S", "spec/representation.bend")], representation()),
     }
-    return {ROOT / f"proofs/obj/specpin_{k}.bend": v for k, v in o.items()}
+    return {LAYOUT.module_path("spec", k): v for k, v in o.items()}
 
 
 def main():
     out = outputs()
-    if "--check" in sys.argv:
-        return writer.check(out, "stale spec pins: ", "spec pins are current")
-    writer.write(out)
-    print(f"{len(out)} modules")
+    LAYOUT.check_or_write(out, "stale spec constant laws: ", "spec constant laws are current", "--check" in sys.argv)
+    if "--check" not in sys.argv:
+        print(f"{len(out)} modules")
 
 
 if __name__ == "__main__":

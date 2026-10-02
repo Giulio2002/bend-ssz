@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Laws that pin the validity checks of the encoders (docs/MUTATION_PROOFS.md, group "validity-check").
+"""Laws that pin the validity checks of the encoders (docs/mutation_testing/MUTATION_PROOFS.md, group "validity-check").
 
-    python3 codegen/proofs/laws/mutation_laws_validity.py [--check]
+    python3 codegen/proofs/mutation_coverage/spec_constants.py [--check]
 
 The checked serializer of every name is `X_ser_pick(P_valid(o), o)` (a Data object) or a pass that threads the
 storage (words and bits). The existing laws say what follows from `P_valid(o) == True` and from `== False`; none says
 when the validity pass is one or the other, so a changed bound, a forced result or a wrong poison flag was invisible.
-For every name this file writes, into proofs/obj/mutval_<runtime>_<X>.bend (one file per name: a facade
+For every name this file writes, into proofs/mutation_coverage/validity/<runtime>_<X>.bend (one file per name: a facade
 imports and re-checks only its own),
 
   <X>_serialize_vdom(o)         a Data name: `X_serialize(o) == X_ser_pick(DOM(o), o)`, DOM the schema's domain written out:
@@ -29,7 +29,7 @@ imports and re-checks only its own),
 The storage of the objects is a concrete zero array with room (the check reads the storage's size, so a variable one
 would leave it stuck); that bounds the edges that can be stated: nothing above IN_MAX bytes or bits is (Blob's
 131072-byte encoding did not check in 600 s; a list limit of 2^30 would need 2^28 words). Byte vectors that
-codegen/proofs/laws/mutation_laws.py already covers are skipped. Every statement is by computation.
+codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py already covers are skipped. Every statement is by computation.
 They are named so that api_gate files them under serialize_valid, so they reach each name's
 proofs/api/<X>_encode_ssz_proof_generated.bend.
 """
@@ -42,7 +42,8 @@ import sys
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema, generic  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
+from codegen.core.shared_laws import RUNTIMES  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -105,7 +106,7 @@ def domain_laws(runtime, text, sink):
         cm = re.search(rf'^def {P}_valid\(o: [\w.]+\) -> Bool:\n  match o:\n    case (\w+)\{{([^}}]*)\}}: U32\.is_lt\((\w+), (\d+)\)$', text, re.M)
         if vm and vm.group(1) == 'True{}':
             if not always_valid(t):
-                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `True{{}}`, the schema has a range ({t.kind} {t.size})')
+                raise SystemExit(f'validity_checks: {X}: the validity pass is `True{{}}`, the schema has a range ({t.kind} {t.size})')
             w(f'# ---- {X}: every object is valid ----')
             w(f'def {X}_serialize_vdom(+o: {Rq}) -> {{T.{X}_serialize(o) == T.{X}_ser_pick(True{{}}, o) : O.Encoded}}:')
             w('  {==}')
@@ -113,7 +114,7 @@ def domain_laws(runtime, text, sink):
         elif vm and t.kind == 'uint' and t.size in (1, 2):
             K = (1 << (8 * t.size)) - 1
             if vm.group(1) != f'U32.is_le(o, {K})':
-                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `{vm.group(1)}`, the schema says at most {K}')
+                raise SystemExit(f'validity_checks: {X}: the validity pass is `{vm.group(1)}`, the schema says at most {K}')
             w(f'# ---- {X}: valid exactly up to {K} ----')
             w(f'def {X}_serialize_vdom(+o: {Rq}) -> {{T.{X}_serialize(o) == T.{X}_ser_pick(U32.is_le(o, {K}), o) : O.Encoded}}:')
             w('  {==}')
@@ -125,12 +126,12 @@ def domain_laws(runtime, text, sink):
             elif t.kind == 'bits' and t.size % 32:
                 want = 1 << (t.size % 32)
             else:
-                raise SystemExit(f'mutation_laws_validity: {X}: a range check the schema does not have')
+                raise SystemExit(f'validity_checks: {X}: a range check the schema does not have')
             if M != want:
-                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass checks below {M}, the schema says {want}')
+                raise SystemExit(f'validity_checks: {X}: the validity pass checks below {M}, the schema says {want}')
             fs = [f.strip().lstrip('+') for f in fields.split(',')]
             if fs[-1] != last:
-                raise SystemExit(f'mutation_laws_validity: {X}: the range check is not on the last word')
+                raise SystemExit(f'validity_checks: {X}: the range check is not on the last word')
             o = f'T.{con}{{{", ".join(fs)}}}'
             w(f'# ---- {X}: valid exactly when the last word is below {M} ----')
             w(f'def {X}_serialize_vdom({", ".join("+" + f + ": U32" for f in fs)}) -> {{T.{X}_serialize({o}) == T.{X}_ser_pick(U32.is_lt({last}, {M}), {o}) : O.Encoded}}:')
@@ -158,7 +159,7 @@ def edge_laws(text, sink):
                 continue
             lo, hi, big, unit = int(wm.group(1)), int(wm.group(2)), wm.group(3) == 'True', int(wm.group(4))
             if lo == hi and not big and unit == 1 and 0 < lo <= 4096 and not v.startswith('O.bools_ok('):
-                continue  # a byte vector: codegen/proofs/laws/mutation_laws.py
+                continue  # a byte vector: codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py
             if lo > IN_MAX or (lo == hi and not big and hi > IN_MAX):
                 continue
             ins = [lo] if lo else [0, unit]
@@ -241,7 +242,7 @@ def symbolic_laws(runtime, text, sink):
             gen = f'O.words_ok(o, {lo}, {hi}, {"True" if big else "False"}{{}}, {unit})'
             gen = f'O.bools_ok({gen})' if bools else gen
             if v != gen:
-                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `{v}`, the schema says `{gen}`')
+                raise SystemExit(f'validity_checks: {X}: the validity pass is `{v}`, the schema says `{gen}`')
             ok = f'Bool.and(Bool.and(U32.is_le({lo}, n), Bool.or({"True" if big else "False"}{{}}, U32.is_le(n, {hi}))), O.unit_ok({unit}, n))'
             wk = f'O.wk_cap({ok}, n, Array.size(U32, ws))'
             wk = f'O.bools_ok({wk})' if bools else wk
@@ -256,7 +257,7 @@ def symbolic_laws(runtime, text, sink):
             lim = 0 if big else t.size
             gen = f'O.bits_ok(o, {lim}, {"True" if big else "False"}{{}})'
             if v != gen:
-                raise SystemExit(f'mutation_laws_validity: {X}: the validity pass is `{v}`, the schema says `{gen}`')
+                raise SystemExit(f'validity_checks: {X}: the validity pass is `{v}`, the schema says `{gen}`')
             bk = f'O.bk_cap(Bool.or({"True" if big else "False"}{{}}, U32.is_le(k, {lim})), k, Array.size(U32, ws))'
             w(f'# ---- {X}: the validity pass is the schema\'s limit and storage check ----')
             w(f'def {X}_serialize_vsym(ws: Array<U32>, +k: U32) -> {{T.{P}_valid(O.Bits{{ws, k}}) == {bk} : O.Bits & Bool}}:')
@@ -270,8 +271,8 @@ def module(runtime, tmod):
     sink = Sink()
     n = domain_laws(runtime, text, sink) + edge_laws(text, sink) + symbolic_laws(runtime, text, sink)
     head = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-            writer.header('mutation_laws_validity'),
-            '# Laws that pin the validity checks of the encoders (found by mutation testing; docs/MUTATION_VALIDITY.md).',
+            writer.header('spec_constants'),
+            '# Laws that pin the validity checks of the encoders (found by mutation testing; docs/mutation_testing/MUTATION_VALIDITY.md).',
             '# Each is by computation. One file per name: a facade imports (and re-checks) only its own.', '']
     return {X: '\n'.join(head + lines) + '\n' for X, lines in sink.by.items()}, n
 
@@ -281,9 +282,9 @@ def main():
     for runtime, tmod in RUNTIMES:
         files, n = module(runtime, tmod)
         for X, t in files.items():
-            out[OBJ / f'mutval_{runtime}_{X}.bend'] = t
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}')] = t
         cnt.append(n)
-    if finish(RR.rewire_out(out), ('mutval_*.bend',), 'stale validity laws: ', 'validity laws are current', '--check' in sys.argv):
+    if LAYOUT.finish(RR.rewire_out(out), 'validity_checks', ('validity',), 'stale validity laws: ', 'validity laws are current', '--check' in sys.argv):
         print(f'{cnt} laws in {len(out)} files')
 
 

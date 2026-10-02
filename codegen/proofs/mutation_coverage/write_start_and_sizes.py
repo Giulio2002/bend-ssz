@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Laws that pin the write start, the length constants and the reported sizes of the generated encoders, and the
-read offset of the record decoders (docs/MUTATION_PROOFS.md, section 6: mutation round 2).
+read offset of the record decoders (docs/mutation_testing/MUTATION_PROOFS.md, section 6: mutation round 2).
 
-    python3 codegen/proofs/laws/mutation_laws_small.py [--check]
+    python3 codegen/proofs/mutation_coverage/write_start_and_sizes.py [--check]
 
-proofs/obj/mutsmall_<X>.bend, one module per name; api_gate files `<X>_ms_<tag>` in the name's encode facade.
+proofs/mutation_coverage/size/<X>.bend, one module per name; api_gate files `<X>_ms_<tag>` in the name's encode facade.
 
   <X>_ms_serdepth   {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(Kn), 0, o))}      (symbolic in o)
       the checked serializer of a fixed-size name writes at byte 0 of an output of exactly the depth K that holds
@@ -30,11 +30,10 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import finish  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
-from codegen.proofs.laws import mutation_laws_const as MC  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
+from codegen.proofs.mutation_coverage import encoder_constants as MC  # noqa: E402
 
 SIZE_MAX = 4096   # bytes: the default object of a `_ms_size` law is computed
 
@@ -125,7 +124,7 @@ def laws_of(tx, X, syms):
     mn = re.search(r'O\.ser_done\(O\.is_poisoned\(fl\), (\d+), out\)', so + '\n' + sp)
     mx = None
     if ser and not mn:
-        import codegen.proofs.laws.mutation_laws_const as _mc
+        import codegen.proofs.mutation_coverage.encoder_constants as _mc
         _mc.default_size(X)
         t = _mc.SCHEMA.get(X)
         mx = None if t is None else max_size(t)
@@ -251,11 +250,11 @@ def module(tmod, by):
     out = {}
     for X, laws in by.items():
         L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
-             f'import ../../types/{tmod}.bend as T', '', writer.header('mutation_laws_small'),
-             f'# {X}: write start, length constants, reported sizes and read offsets (mutation round 2; docs/MUTATION_PROOFS.md, section 6)', '']
+             f'import ../../types/{tmod}.bend as T', '', writer.header('write_start_and_sizes'),
+             f'# {X}: write start, length constants, reported sizes and read offsets (mutation round 2; docs/mutation_testing/MUTATION_PROOFS.md, section 6)', '']
         for tag, text in laws:
             L += [text, '']
-        out[ROOT / f'proofs/obj/mutsmall_{X}.bend'] = '\n'.join(L)
+        out[LAYOUT.module_path('size', X)] = '\n'.join(L)
     return out
 
 
@@ -277,7 +276,7 @@ def outputs():
 
 def main():
     out = outputs()
-    if finish(RR.rewire_out(out), ('mutsmall_*.bend',), 'stale mutation small laws: ', 'mutation small laws are current', '--check' in sys.argv):
+    if LAYOUT.finish(RR.rewire_out(out), 'write_start_and_sizes', ('size',), 'stale write start laws: ', 'write start laws are current', '--check' in sys.argv):
         print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
 
 

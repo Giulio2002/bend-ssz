@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Laws that pin two parts of the runtime the other laws of a name leave to its callers, found by mutation testing
-(docs/MUTATION_PROOFS.md): the reported size of a boxed fixed-size object, and the upper bound of a byte vector's
+(docs/mutation_testing/MUTATION_PROOFS.md): the reported size of a boxed fixed-size object, and the upper bound of a byte vector's
 validity check.
 
-    python3 codegen/proofs/laws/mutation_laws.py [--check]
+    python3 codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py [--check]
 
-proofs/obj/mutation_laws_<fulu|generic>.bend holds
+proofs/mutation_coverage/size/size_and_bound_<fulu|generic>.bend holds
 
   <X>_encoded_size(o: O.Boxed<X>, v: X)      for every name whose size pass reports a literal size
       : {size(T.<X>_bx_size(o)) == size(T.<X>_encode(v))}
@@ -32,7 +32,8 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
+from codegen.core.shared_laws import RUNTIMES  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -50,9 +51,9 @@ def valid_bytes(text, p):
 def module(runtime, tmod):
     text = RR.mono_text(runtime)
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws'),
+         writer.header('reported_size_and_vector_bound'),
          '# Laws that pin the reported size of a boxed fixed-size object and the first refused length of a byte vector',
-         '# (found by mutation testing; docs/MUTATION_PROOFS.md). Each is by computation.', '']
+         '# (found by mutation testing; docs/mutation_testing/MUTATION_PROOFS.md). Each is by computation.', '']
     w = L.append
     enc = set(re.findall(r'^def (\w+)_encode\(', text, re.M))
     n = 0
@@ -95,9 +96,9 @@ def main():
     for runtime, tmod in RUNTIMES:
         t, n = module(runtime, tmod)
         if n:
-            out[OBJ / f'mutation_laws_{runtime}.bend'] = t
+            out[LAYOUT.module_path('size', f'size_and_bound_{runtime}')] = t
         cnt.append(n)
-    if finish(RR.rewire_out(out), ('mutation_laws_*.bend',), 'stale mutation laws: ', 'mutation laws are current', '--check' in sys.argv):
+    if LAYOUT.finish(RR.rewire_out(out), 'reported_size_and_vector_bound', ('size',), 'stale size and bound laws: ', 'size and bound laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

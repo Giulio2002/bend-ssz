@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Proof laws for three mutation classes the earlier laws left open (auditor round on 9e96b9d5).
 
-    python3 codegen/proofs/laws/cmp3_laws.py [--check]
+    python3 codegen/proofs/mutation_coverage/fixed_writer_guards.py [--check]
 
 1. The guard of the fixed-size writers (`P_put(out, pos, o) = P_pwd(U32.is_eq((pos .&. 3), 0), (pos .&. 3), out, pos >> 2, w..)`).
-   zpwdcmp_<X>.bend: <X>_cmp_pwd, for every s, out, q and word values w..:
+   alignment/<X>_writer_guard.bend: <X>_cmp_pwd, for every s, out, q and word values w..:
        {T.P_pwd(U32.is_le(s, 0), s, out, q, w..) == T.P_pwd(U32.is_eq(s, 0), s, out, q, w..) : Array<U32>}
-   by the lemma `le_eq` of zpwdcmp_lib.bend, `U32.is_le(x, 0) == U32.is_eq(x, 0)` for every symbolic x (U32.cmp is Nat.cmp of the
+   by the lemma `le_eq` of writer_guard_library.bend, `U32.is_le(x, 0) == U32.is_eq(x, 0)` for every symbolic x (U32.cmp is Nat.cmp of the
    values; Nat.cmp(n, 0) is EQ for 0 and GT otherwise): a guard written is_le is the original guard, so those mutants are
    equivalent, and the statement is about P_pwd, so it does not change with the mutation. (is_lt and is_ge are not
    equivalent: is_lt(x, 0) is never true, which sends an aligned position to the unaligned writer P_pwu, whose default
@@ -14,14 +14,14 @@
 2. The accumulator of a record's checked writer (<X>_cf_acc: the call `X_putk(out, pos, X{f..}) == P_pw0(pos, 0, ..)` with variable fields,
    symbolic, for every name whose putk has this call; <X>_cf_flag: the default object's flag, small names) (`P_pw0(pos, 0, ..)`: its second argument is OR-ed with the flag of the boxed
    child and read only through `is_poisoned` (bit 31) by the serializer, so a start of 1 is invisible to every
-   statement about the bytes). zflag_<X>.bend: <X>_cf_flag, the flag `X_putk` reports for the default object of the name
+   statement about the bytes). alignment/<X>_flag.bend: <X>_cf_flag, the flag `X_putk` reports for the default object of the name
    is 0: {snd(snd(T.X_putk(O.out_at(d), 0, T.X_default()))) == 0}, by computation. A start other than 0 fails it.
-3. The arm offsets of a union's reader and validator. zuarm_<X>.bend: <X>_ua_<helper>_<t|f>, for every arm helper
+3. The arm offsets of a union's reader and validator. alignment/<X>_union_arm.bend: <X>_ua_<helper>_<t|f>, for every arm helper
    `X_ok<i>` / `X_rd<i>` (symbolic selector, buffer, offset and length): the arm the flag chooses reads its payload at
    offset + 1 with length - 1 (the selector is one byte), stated against the helper's own body with the schema's constant
    written out, e.g.
        {T.X_rd1(False{}, s, buf, off, len) == T.X_rw0(T.P_read(buf, (off + 1 : U32), (len - 1 : U32))) : ..}
-   (the payload of the fall-through arm has no seed: mutation_laws_small.py's witnesses skip it).
+   (the payload of the fall-through arm has no seed: write_start_and_sizes.py's witnesses skip it).
 
 Named so that api_gate files them (encode_eval for 1 and 2, ok_eval for 3); the modules are z-prefixed so that they sort
 after the name's own proving files.
@@ -34,7 +34,7 @@ import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import finish  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -59,8 +59,8 @@ def qexpr(e):
 
 
 def lib_module():
-    L = ['import Base', 'import ../compact/found.bend as F', '', writer.header('cmp3_laws'),
-         '# U32.is_le(x, 0) is U32.is_eq(x, 0) for every x (codegen/proofs/laws/cmp3_laws.py).', '',
+    L = ['import Base', 'import ../compact/found.bend as F', '', writer.header('fixed_writer_guards'),
+         '# U32.is_le(x, 0) is U32.is_eq(x, 0) for every x (codegen/proofs/mutation_coverage/fixed_writer_guards.py).', '',
          'def cl(+n: Nat) -> {Cmp.is_le(Nat.cmp(n, 0n)) == Cmp.is_eq(Nat.cmp(n, 0n)) : Bool}:', '  match n:', '    case 0n: {==}',
          '    case 1n+ +p: {==}', '',
          'def le_eq(+x: U32) -> {U32.is_le(x, 0) == U32.is_eq(x, 0) : Bool}:',
@@ -117,12 +117,12 @@ def name_laws(runtime):
     return pwd, flag, uarm
 
 
-def module(tmod, X, laws, lib=False, tag='zpwdcmp'):
+def module(tmod, X, laws, lib=False, tag='writer_guard'):
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O']
     if lib:
-        L.append('import ./zpwdcmp_lib.bend as ZL')
-    L += [f'import ../../types/{tmod}.bend as T', '', writer.header('cmp3_laws'),
-          f'# {X}: mutation classes the earlier laws left open (codegen/proofs/laws/cmp3_laws.py). By computation unless noted.', '']
+        L.append('import ./writer_guard_library.bend as ZL')
+    L += [f'import ../../types/{tmod}.bend as T', '', writer.header('fixed_writer_guards'),
+          f'# {X}: mutation classes the earlier laws left open (codegen/proofs/mutation_coverage/fixed_writer_guards.py). By computation unless noted.', '']
     for t in laws:
         L += [t, '']
     return '\n'.join(L)
@@ -130,25 +130,25 @@ def module(tmod, X, laws, lib=False, tag='zpwdcmp'):
 
 def main():
     out, cnt, seen = {}, [0, 0, 0], set()
-    out[ROOT / 'proofs/obj/zpwdcmp_lib.bend'] = lib_module()
+    out[LAYOUT.module_path('alignment', 'writer_guard_library')] = lib_module()
     for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
         pwd, flag, uarm = name_laws(runtime)
         for X, law in pwd.items():
             if ('p', X) not in seen:
                 seen.add(('p', X))
-                out[ROOT / f'proofs/obj/zpwdcmp_{X}.bend'] = module(tmod, X, [law], lib=True)
+                out[LAYOUT.module_path('alignment', f'{X}_writer_guard')] = module(tmod, X, [law], lib=True)
                 cnt[0] += 1
         for X, law in flag.items():
             if ('f', X) not in seen:
                 seen.add(('f', X))
-                out[ROOT / f'proofs/obj/zflag_{X}.bend'] = module(tmod, X, law)
+                out[LAYOUT.module_path('alignment', f'{X}_flag')] = module(tmod, X, law)
                 cnt[1] += len(law)
         for X, laws in uarm.items():
             if ('u', X) not in seen:
                 seen.add(('u', X))
-                out[ROOT / f'proofs/obj/zuarm_{X}.bend'] = module(tmod, X, laws)
+                out[LAYOUT.module_path('alignment', f'{X}_union_arm')] = module(tmod, X, laws)
                 cnt[2] += len(laws)
-    if finish(RR.rewire_out(out), ('zpwdcmp_*.bend', 'zflag_*.bend', 'zuarm_*.bend'), 'stale cmp3 laws: ', 'cmp3 laws are current', '--check' in sys.argv):
+    if LAYOUT.finish(RR.rewire_out(out), 'fixed_writer_guards', ('alignment',), 'stale fixed writer guard laws: ', 'fixed writer guard laws are current', '--check' in sys.argv):
         print(f'{cnt} laws (pwd names, flag names, union arm laws)')
 
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Laws that pin the offsets the decoders read at and the reported size of a boxed container, the two proof-side
-mutation groups `offset` and `reported-size` that no earlier statement noticed (docs/MUTATION_PROOFS.md).
+mutation groups `offset` and `reported-size` that no earlier statement noticed (docs/mutation_testing/MUTATION_PROOFS.md).
 
-    python3 codegen/proofs/laws/mutation_laws_offset.py [--check]
+    python3 codegen/proofs/mutation_coverage/decoder_offsets.py [--check]
 
-Per name X, proofs/obj/offset_laws_<X>.bend holds (kind `decode_offsets` of api_gate, filed in the
+Per name X, proofs/mutation_coverage/offsets/<X>.bend holds (kind `decode_offsets` of api_gate, filed in the
 name's decode facade):
 
   <X>_decode_build(buf, size, b2, e: {P_ok(buf, 0, size) == (b2, True{})})
@@ -20,14 +20,14 @@ name's decode facade):
       `off - K`: on a power-of-two buffer the word index 2^30 - K/4 is the same tree path as K/4, so no statement over
       the tight buffer of the object can see it) does not match the hypothesis.
 
-proofs/obj/offset_size_<X>.bend, for a name whose size pass is a literal and whose boxed size pass is the
-match form (Deposit, ProposerSlashing, ...; the literal boxed form is mutation_laws.py's):
+proofs/mutation_coverage/offsets/<X>_reported_size.bend, for a name whose size pass is a literal and whose boxed size pass is the
+match form (Deposit, ProposerSlashing, ...; the literal boxed form is reported_size_and_vector_bound.py's):
 
   <X>_encoded_size(v, rest)
       : {(snd(T.<X>_bx_size(O.BSome{v, rest})), snd(T.<X>_bx_size(O.BNone{}))) == (N, 0)}
       the size the boxed size pass reports for a present element is the schema's fixed size N of the type, and an
       absent element counts 0 (the encoder's size of such a container is not a literal, so it cannot be the
-      right-hand side; the literal-boxed form of mutation_laws.py compares with the encoder).
+      right-hand side; the literal-boxed form of reported_size_and_vector_bound.py compares with the encoder).
 
 By computation / one rewrite per field; named so that api_gate files them under `decode_offsets` and `encoded_size`.
 """
@@ -39,7 +39,7 @@ import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
-from codegen.core.shared_laws import finish  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import generate as G  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
@@ -56,7 +56,7 @@ BXM = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+?)>\) -> [^\n]*:\n  ma
 
 def header(tmod, what):
     return ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
-            f'import ../../types/{tmod}.bend as T', '', writer.header('mutation_laws_offset'), f'# {what}', '']
+            f'import ../../types/{tmod}.bend as T', '', writer.header('decoder_offsets'), f'# {what}', '']
 
 
 def build_law(X, P, R):
@@ -128,7 +128,7 @@ def runtime_files(runtime, tmod, shapes):
         if X not in builds or builds[X][1] != P:
             continue
         L = header(tmod, 'The decoder of the whole buffer is the builder at start offset 0, and a fixed container\'s decoder reads each field at its\n'
-                         '# schema offset (found by mutation testing; docs/MUTATION_PROOFS.md). By one rewrite of the validator / field reads, then computation.')
+                         '# schema offset (found by mutation testing; docs/mutation_testing/MUTATION_PROOFS.md). By one rewrite of the validator / field reads, then computation.')
         L += [f'# ---- {X}: decode is some(build) of the validated buffer ----'] + build_law(X, P, qual(builds[X][0]))
         nb += 1
         s = shapes.get(X)
@@ -136,15 +136,15 @@ def runtime_files(runtime, tmod, shapes):
         if fl:
             L += [f'# ---- {X}: decode reads each field at its schema offset ----'] + fl
             nf += 1
-        out[ROOT / f'proofs/obj/offset_laws_{X}.bend'] = '\n'.join(L) + '\n'
+        out[LAYOUT.module_path('offsets', X)] = '\n'.join(L) + '\n'
     for X, lit in sorted(sizes.items()):
         s = shapes.get(X)
         if X in bxm and X in enc and s is not None and s.fixed:
             N = s.fsize        # the schema's fixed size, not the pass's literal
             L = header(tmod, 'The boxed size pass of a container whose size pass is a literal reports the encoding\'s length for a present element and 0 for an\n'
-                             '# absent one (found by mutation testing; docs/MUTATION_PROOFS.md). By computation.')
+                             '# absent one (found by mutation testing; docs/mutation_testing/MUTATION_PROOFS.md). By computation.')
             L += size_law(X, bxm[X], N)
-            out[ROOT / f'proofs/obj/offset_size_{X}.bend'] = '\n'.join(L) + '\n'
+            out[LAYOUT.module_path('offsets', f'{X}_reported_size')] = '\n'.join(L) + '\n'
             ns += 1
     return out, (nb, nf, ns)
 
@@ -167,7 +167,7 @@ def main():
         assert not dup, f'a name in both runtimes: {sorted(dup)[:3]}'
         out.update(o)
         cnt.append(c)
-    if finish(RR.rewire_out(out), ('offset_laws_*.bend', 'offset_size_*.bend'), 'stale offset mutation laws: ', 'offset mutation laws are current',
+    if LAYOUT.finish(RR.rewire_out(out), 'decoder_offsets', ('offsets',), 'stale decoder offset laws: ', 'decoder offset laws are current',
               '--check' in sys.argv):
         print(f'{len(out)} files; (decode_build, decode_fields, size) per runtime: {cnt}')
 

@@ -2,7 +2,7 @@
 """Laws that pin the word positions the encoders and the decoder write and read, found by mutation testing
 (the `arithmetic` survivors: `q + k` / `pos + k` / `off + k` changed to `- k`).
 
-    python3 codegen/proofs/laws/mutation_laws_arith.py [--check]
+    python3 codegen/proofs/mutation_coverage/word_positions.py [--check]
 
 Why the existing statements missed them. A word index in the runtime's arrays is taken modulo the array's size (the
 tree walk reads the low `d` bits of the index of a `2^d` word array), and every statement about an encoder or
@@ -12,7 +12,7 @@ invisible. The unaligned writers `P_pw1..3` run only at a byte offset that is no
 encoder passes, so nothing evaluates them at all. These laws evaluate the same definitions on a larger buffer, or
 at an offset the top level never uses, where the two indices differ.
 
-proofs/obj/wordpos_<X>.bend (one module per name, so a facade imports only its own) holds, for the
+proofs/mutation_coverage/offsets/<X>_word_positions.bend (one module per name, so a facade imports only its own) holds, for the
 names that have the form:
 
   <X>_arith_pw<K>   K = 1, 2, 3: the unaligned writer P_pw<K> of a word list (leaf scalars, byte vectors, bit
@@ -37,7 +37,8 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 
 M32 = (1 << 32) - 1
@@ -166,13 +167,13 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    return law_module('mutation_laws_arith', [f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
-                                              '# (found by mutation testing; codegen/proofs/laws/mutation_laws_arith.py). Each is by computation.'], laws, tmod)
+    return law_module('word_positions', [f'# {X}: the word positions of its writers and reader, on buffers where a wrong sign names another word',
+                                              '# (found by mutation testing; codegen/proofs/mutation_coverage/word_positions.py). Each is by computation.'], laws, tmod)
 
 
 def main():
-    out, cnt = per_name(name_laws, lambda tmod, X, ls: module(tmod, X, ls) + '\n', 'wordpos')
-    if finish(RR.rewire_out(out), ('wordpos_*.bend',), 'stale arithmetic mutation laws: ', 'arithmetic mutation laws are current', '--check' in sys.argv):
+    out, cnt = per_name(name_laws, lambda tmod, X, ls: module(tmod, X, ls) + '\n', lambda X: LAYOUT.module_path('offsets', f'{X}_word_positions'))
+    if LAYOUT.finish(RR.rewire_out(out), 'word_positions', ('offsets',), 'stale word position laws: ', 'word position laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Symbolic capacity laws: the allocation depth of an encoder or checked serializer, pinned without computing
-anything (a continuation of mutation_laws_cap.py, whose default-object law is too slow past 2^10 words).
+anything (a continuation of buffer_capacity.py, whose default-object law is too slow past 2^10 words).
 
-    python3 codegen/proofs/laws/mutation_laws_capsym.py [--check]
+    python3 codegen/proofs/mutation_coverage/symbolic_buffer_capacity.py [--check]
 
 `O.out_at(d)` is a zero array of 2^d words and word indices wrap modulo its size, so an encoder whose `d` is one too
-small silently overwrites its own head. mutation_laws_cap.py states, for the default object, that the serializer's
+small silently overwrites its own head. buffer_capacity.py states, for the default object, that the serializer's
 buffer is the encoder's; computing it costs 74 s at 2^13 words and 406 s at 2^15 (Blob), and does not finish for
 HistoricalBatch (2^17).
 
-proofs/obj/zcapsym_<X>.bend (one module per name) holds, for every name whose serializer or encoder allocates with
+proofs/mutation_coverage/capacity/<X>_symbolic.bend (one module per name) holds, for every name whose serializer or encoder allocates with
 `O.out_at(d)` (an encoder that reports its size inline, `O.out_done(N, P_put(O.out_at(d), 0, o))`, is stated the same way):
 
   <X>_serialize_capsym(o)   : {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(dn), 0, o)) : ..}
@@ -23,7 +23,7 @@ array in the stuck term and so the statement's value; no write loop is evaluated
 size of the name (1 s for Blob).
 
 Named so that api_gate files them under serialize_valid and encode_eval: they land in the name's encode facade. The
-module is zcapsym_ so that it sorts after every other proving file of encode_eval: a facade's first proving import must stay
+api_gate scans proofs/mutation_coverage after proofs/obj, so these modules come after every other proving file of encode_eval: a facade's first proving import stays
 the name's own spec/encx file (e2e_var_b/e2e_var_c read it as P0). Consequence: a facade that holds a heavy statement
 before this law (LightClientBootstrap_encode) still evaluates it first on a mutant.
 """
@@ -33,7 +33,8 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -93,14 +94,14 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    return law_module('mutation_laws_capsym', [f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
-                                               '# (found by mutation testing; codegen/proofs/laws/mutation_laws_capsym.py). By computation on a variable object.'],
+    return law_module('symbolic_buffer_capacity', [f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
+                                               '# (found by mutation testing; codegen/proofs/mutation_coverage/symbolic_buffer_capacity.py). By computation on a variable object.'],
                       laws, tmod)
 
 
 def main():
-    out, cnt = per_name(name_laws, module, 'zcapsym')
-    if finish(RR.rewire_out(out), ('zcapsym_*.bend',), 'stale capsym laws: ', 'capsym laws are current', '--check' in sys.argv):
+    out, cnt = per_name(name_laws, module, lambda X: LAYOUT.module_path('capacity', f'{X}_symbolic'))
+    if LAYOUT.finish(RR.rewire_out(out), 'symbolic_buffer_capacity', ('capacity',), 'stale symbolic capacity laws: ', 'capsym laws are current', '--check' in sys.argv):
         print(f'{cnt} laws; depth differs from the size-derived one: {MISMATCH}')
 
 

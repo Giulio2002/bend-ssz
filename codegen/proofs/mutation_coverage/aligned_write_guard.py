@@ -2,33 +2,33 @@
 """Equivalence laws for the aligned-or-general path choice of the word-vector writers, found by mutation testing
 (`U32.is_eq((pos .&. 3), 0)` changed to `is_lt` / `is_le` / `is_ge` in `X_put`).
 
-    python3 codegen/proofs/laws/cmp_laws.py [--check]
+    python3 codegen/proofs/mutation_coverage/aligned_write_guard.py [--check]
 
 `P_put(out, pos, Words{ws, n})` of a word-stored vector picks, by `pos .&. 3 == 0`, between two writers of the same
 words: the unrolled aligned chain (`P_pa0 .. P_paK`, single-word stores) and the general `O.put_words`. They agree at
 every aligned position, so a guard that always takes the general writer (`is_lt(x, 0)` is never true; `is_le(x, 0)`
 is `is_eq` on unsigned words) changes nothing, and a guard that takes the chain at an unaligned position is wrong.
 
-proofs/obj/zcmpeq_<X>.bend (one module per name whose put has that guard) proves, for every X:
+proofs/mutation_coverage/alignment/<X>_aligned_path.bend (one module per name whose put has that guard) proves, for every X:
 
   <X>_cmp_all    for every aligned position pos (e3: pos .&. 3 == 0), every word index q = pos >> 2 with value Q, and every
                  pair of perfect trees D (destination, 2^dd words, Q + nw <= 2^dd) and S (the nw source words):
                    P_put(thaw D, pos, Words{thaw S, N}) == P_pw(False{}, thaw D, pos, thaw S, N)
                  the writer the guard picks equals the general writer. The proof models both writers on trees (`cpt`):
                  the chain by `<X>_fa<i>` (one lemma per word, the index q + i tracked through arr_copy.bend's `ix`, `getv`,
-                 `setv`), the general writer by arr_copy.bend's `put_al` / `blk` and zcmpeq_lib.bend's `tl<k>` (the tail
+                 `setv`), the general writer by arr_copy.bend's `put_al` / `blk` and aligned_path_library.bend's `tl<k>` (the tail
                  of `O.acopy`, whose index terms `(q + n) - r` the checker does not fold, so only their values are
                  tracked), glued by `<X>_acg`.
   <X>_cmp_unal   for every unaligned position (the guard is False), every buffer and word list:
                  P_put(out, pos, Words{ws, n}) == P_pw(False{}, out, pos, ws, n): the guard sends it to the general writer,
                  and a guard that takes the chain there (`is_ge`) fails this statement.
 
-zcmpeq_guard.bend: on the four values of pos .&. 3, `is_le(k, 0) == is_eq(k, 0)`, `is_lt(k, 0)` is never true, `is_ge(k, 0)`
+aligned_path_guard.bend: on the four values of pos .&. 3, `is_le(k, 0) == is_eq(k, 0)`, `is_lt(k, 0)` is never true, `is_ge(k, 0)`
 always. Together: a guard `is_le` is the original guard on every position; a guard `is_lt` always takes the general
 writer, which by `<X>_cmp_all` agrees with the chain on every aligned position and is what the original does on the
 others; neither changes the result of `X_put`.
 
-Named so that api_gate files them under encode_eval; the module is zcmpeq_ so that it sorts after the name's own
+Named so that api_gate files them under encode_eval; api_gate reads the mutation-coverage modules after the name's own
 proving files (a facade's first proving import must stay the spec/encx file).
 """
 import sys as _sys
@@ -38,8 +38,8 @@ import re
 import sys
 
 from codegen.core import writer  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
+from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 
 
@@ -100,11 +100,11 @@ PERF = ('+ps: {F.array__perfect(U32, ds, S) == True{} : Bool}, +pd: {F.array__pe
 
 
 def lib_module():
-    """zcmpeq_lib: the model of O.ac_w and of the tail of O.acopy (k = 1 .. 7 words) on perfect trees"""
+    """aligned_path_library: the model of O.ac_w and of the tail of O.acopy (k = 1 .. 7 words) on perfect trees"""
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F',
-         'import ./arr_copy.bend as AC', '', writer.header('cmp_laws'),
+         'import ./arr_copy.bend as AC', '', writer.header('aligned_write_guard'),
          '# The model of the tail of O.acopy (fewer than eight single-word copies) on perfect trees, for symbolic indices a, b',
-         '# whose values A, Bn are tracked (codegen/proofs/laws/cmp_laws.py; arr_copy.bend has the blocks).', '']
+         '# whose values A, Bn are tracked (codegen/proofs/mutation_coverage/aligned_write_guard.py; arr_copy.bend has the blocks).', '']
     w = L.append
     w(f'def acw(+b: U32, +Bn: Nat, +dd: Nat, +D: F.array__Tree<U32>, src: Array<U32>, +w: U32, +eb: {{U32.to_nat(b) == Bn : Nat}}, +hdd: {{Nat.is_lt(dd, 32n) == True{{}} : Bool}},')
     w(f'    +hk: {{Nat.is_lt(Bn, {P2("dd")}) == True{{}} : Bool}}, +pd: {{F.array__perfect(U32, dd, D) == True{{}} : Bool}})')
@@ -246,18 +246,18 @@ def name_proof(X, P, nw, N):
 
 
 def module(tmod, X, laws):
-    return law_module('cmp_laws', [f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
-                                   '# (found by mutation testing; codegen/proofs/laws/cmp_laws.py). By computation on variable words.'], laws, tmod,
-                      ['import ../compact/found.bend as F', 'import ./arr_copy.bend as AC', 'import ./zcmpeq_lib.bend as ZL'])
+    return law_module('aligned_write_guard', [f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
+                                   '# (found by mutation testing; codegen/proofs/mutation_coverage/aligned_write_guard.py). By computation on variable words.'], laws, tmod,
+                      ['import ../compact/found.bend as F', 'import ./arr_copy.bend as AC', 'import ./aligned_path_library.bend as ZL'])
 
 
 def guard_module():
     """the guard's own arithmetic: pos .&. 3 is one of 0..3, and on those `is_le(k, 0)` is `is_eq(k, 0)` (an unsigned
     word is <= 0 only when it is 0) and `is_lt(k, 0)` is never true: so a guard written `is_le` is the original, and
-    one written `is_lt` always takes the general writer (the statements of zcmpeq_<X> say that this changes no word)"""
-    L = ['import Base', '', writer.header('cmp_laws'),
+    one written `is_lt` always takes the general writer (the statements of <X>_aligned_path say that this changes no word)"""
+    L = ['import Base', '', writer.header('aligned_write_guard'),
          '# The comparison of the aligned-or-general writer choice, on every value of pos .&. 3 (found by mutation testing;',
-         '# codegen/proofs/laws/cmp_laws.py). By computation.', '']
+         '# codegen/proofs/mutation_coverage/aligned_write_guard.py). By computation.', '']
     for k in range(4):
         L.append(f'def guard_le_is_eq_{k}() -> {{U32.is_le({k}, 0) == U32.is_eq({k}, 0) : Bool}}:\n  {{==}}\n')
         L.append(f'def guard_lt_is_never_{k}() -> {{U32.is_lt({k}, 0) == False{{}} : Bool}}:\n  {{==}}\n')
@@ -266,10 +266,10 @@ def guard_module():
 
 
 def main():
-    out, cnt = per_name(name_laws, module, 'zcmpeq')
-    out[ROOT / 'proofs/obj/zcmpeq_guard.bend'] = guard_module()
-    out[ROOT / 'proofs/obj/zcmpeq_lib.bend'] = lib_module()
-    if finish(RR.rewire_out(out), ('zcmpeq_*.bend',), 'stale cmp laws: ', 'cmp laws are current', '--check' in sys.argv):
+    out, cnt = per_name(name_laws, module, lambda X: LAYOUT.module_path('alignment', f'{X}_aligned_path'))
+    out[LAYOUT.module_path('alignment', 'aligned_path_guard')] = guard_module()
+    out[LAYOUT.module_path('alignment', 'aligned_path_library')] = lib_module()
+    if LAYOUT.finish(RR.rewire_out(out), 'aligned_write_guard', ('alignment',), 'stale aligned write guard laws: ', 'aligned write guard laws are current', '--check' in sys.argv):
         print(f'{cnt} laws')
 
 

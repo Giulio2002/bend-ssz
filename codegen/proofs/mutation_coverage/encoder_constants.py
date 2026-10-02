@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Laws that pin constants of the generated encoders the other laws of a name leave to its callers, found by mutation
-testing (docs/MUTATION_PROOFS.md, "constant" and "hashtreeroot-constant" survivors).
+testing (docs/mutation_testing/MUTATION_PROOFS.md, "constant" and "hashtreeroot-constant" survivors).
 
-    python3 codegen/proofs/laws/mutation_laws_const.py [--check]
+    python3 codegen/proofs/mutation_coverage/encoder_constants.py [--check]
 
-proofs/obj/mutconst_<X>.bend, one module per name (a facade imports only its own name's laws), holds, for the names
+proofs/mutation_coverage/constants/<X>.bend, one module per name (a facade imports only its own name's laws), holds, for the names
 the forms below apply to, laws named <X>_mc_<tag> (api_gate files them in the name's facades by the tag):
 
   <X>_mc_poison_<P>      the checked writer P_pk marks an invalid value with the runtime's poison marker
@@ -26,7 +26,7 @@ the forms below apply to, laws named <X>_mc_<tag> (api_gate files them in the na
                          the runtime's hasher length (64n) and segment 0 (the digest is independent of both, the
                          returned scratch buffer is not).                           (symbolic)
 
-What is not here, and why (docs/MUTATION_PROOFS.md): a literal argument that the callee never reads cannot be pinned by
+What is not here, and why (docs/mutation_testing/MUTATION_PROOFS.md): a literal argument that the callee never reads cannot be pinned by
 any statement (the checker compares by conversion, and the argument disappears): the hasher length and segment of the
 leaf wrappers (u8_root ... u256_root and their aliases read neither), the offset of a proglist validator (`P_ok`
 ignores it), and the depth of `O.out_at(d)` where 2^d words is merely a larger capacity.
@@ -39,10 +39,10 @@ import sys
 
 from codegen.core import writer  # noqa: E402
 from codegen.core import schema  # noqa: E402
-from codegen.core.shared_laws import finish  # noqa: E402
+from codegen.core import mutation_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
-from codegen.proofs.laws import mutation_laws as ML  # noqa: E402
+from codegen.proofs.mutation_coverage import reported_size_and_vector_bound as ML  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
 
 SER_MAX = 8192          # bytes: a `_mc_ser` witness is computed through its encoding
@@ -348,13 +348,13 @@ def module(tmod, laws_by_name):
     out = {}
     for X, laws in laws_by_name.items():
         L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../../src/digest.bend as D',
-             f'import ../../types/{tmod}.bend as T', '', writer.header('mutation_laws_const'),
+             f'import ../../types/{tmod}.bend as T', '', writer.header('encoder_constants'),
              f'# {X}: constants of the generated encoder / serializer / root wrapper the other laws leave to callers',
-             '# (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.', '']
+             '# (mutation testing; docs/mutation_testing/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.', '']
         for tag, text in laws:
             L.append(text)
             L.append('')
-        out[ROOT / f'proofs/obj/mutconst_{X}.bend'] = '\n'.join(L)
+        out[LAYOUT.module_path('constants', X)] = '\n'.join(L)
     return out
 
 
@@ -376,7 +376,7 @@ def outputs():
 
 def main():
     out = outputs()
-    if finish(RR.rewire_out(out), ('mutconst_*.bend',), 'stale mutation const laws: ', 'mutation const laws are current', '--check' in sys.argv):
+    if LAYOUT.finish(RR.rewire_out(out), 'encoder_constants', ('constants',), 'stale encoder constant laws: ', 'encoder constant laws are current', '--check' in sys.argv):
         print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
 
 

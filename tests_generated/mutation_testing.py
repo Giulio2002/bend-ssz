@@ -439,7 +439,7 @@ def lib_importers(S):
 def lib_wide(S, a):
     """Mutants of the library code the proofs rely on: a draw of --lib-per-file mutants for each file of a group; each
     runs alone in a private tree (the union import cone of its checkers, the package copied whole for the SHA-256
-    vendor); the checkers are the file itself and the two smallest proof files that import it, and the mutant is
+    vendor); the checkers are the file itself, the two smallest proof files that import it and every spec pin of proofs/mutation_coverage/spec that imports it, and the mutant is
     killed if any of them fails. A check over --lib-timeout seconds is `too slow`, not a kill."""
     import glob
     files = []
@@ -482,6 +482,10 @@ def lib_wide(S, a):
                 if pool[o] and len(picked) < a.lib_per_file:
                     picked.append(pool[o].pop())
         imps = sorted((i for i in rev.get(f, ()) if i != f), key=lambda i: i.stat().st_size)[:2]
+        # the spec pins (proofs/mutation_coverage/spec, codegen/proofs/mutation_coverage/spec_constants*.py) exist to fail a mutated
+        # spec constant: every one that imports the mutated file is a checker, whatever its size
+        pin_dir = (S / 'proofs/mutation_coverage/spec').resolve()
+        imps += sorted((i for i in rev.get(f, ()) if pin_dir in i.parents and i not in imps), key=lambda i: i.name)
         for st in picked:
             tasks.append({'file': f, 'site': st, 'checkers': [f] + imps, 'def': def_name(text, st[0])})
     print(f'lib {a.lib}: {len(tasks)} mutants over {len(files)} files', flush=True)
