@@ -1,0 +1,825 @@
+## ROUND 2, area 4: hash_tree_root rules: the object runtime's tree code (src/obj.bend), zero hashes (src/digest.bend), the streaming merkleizer (src/merkle_fast.bend: not used by the object runtime), and the reference library (src/merkle, mixing, progressive, packing, tree, bit_root, byte_root, root)
+=== r2-h01-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+sym: len_chunk,mix_len
+spec: mix_in_length appends the length as a 32-byte little-endian chunk
+fault: the length chunk is not byte-swapped (the word is big-endian in SHA)
+why: endianness of the length chunk
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}
+=== r2-h01-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+sym: len_chunk,mix_len
+spec: mix_in_length appends the length as a 32-byte chunk, length in the first word
+fault: the length is put in the second word
+why: word index of the length
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{0, B.swap32(n), 0, 0, 0, 0, 0, 0}
+=== r2-h01-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+sym: len_chunk,mix_len
+spec: mix_in_length(root, length) = H(root || length_chunk)
+fault: the operands are swapped: H(length_chunk || root)
+why: argument order of the node
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)
+=== r2-h01-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+sym: len_chunk,mix_len
+spec: the length mixed in is the element count
+fault: the length mixed in is n + 1
+why: one-based count
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk((n + 1 : U32)))
+=== r2-h01-mix-in-length
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mix_count,words_root
+spec: a packed list mixes in its element count (byte length >> log2 element size)
+fault: the count is the byte length (the shift is dropped)
+why: element size forgotten
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, n)))
+=== r2-h01-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+sym: mix_count,words_root
+spec: a packed list of uint16 mixes in bytes / 2
+fault: the shift is one larger (bytes / 4)
+why: shift off by one
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, 1n+shift))))
+=== r2-h01-mix-in-length
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_rooted,bits_root
+spec: a bit list mixes in its bit count (not its byte count)
+fault: the byte count ceil(k/8) is mixed in
+why: bytes confused with bits
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, bits_nbytes(k))))
+=== r2-h01-mix-in-length
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_rooted,bits_root
+spec: a bit list mixes in its bit count (the delimiter is not counted)
+fault: the count includes the delimiter bit (k + 1)
+why: wire length confused with the logical length
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
+=== r2-h02-chunk-count
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunks_of,words_root
+spec: the number of chunks of n bytes is ceil(n / 32)
+fault: floor(n / 32): a partial last chunk is dropped
+why: ceil written as floor
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(U32.to_nat(n), 32n)
+=== r2-h02-chunk-count
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunks_of,words_root
+spec: the number of chunks of n bytes is ceil(n / 32)
+fault: n / 32 + 1 chunks (a full extra zero chunk when n is a multiple of 32)
+why: ceil written as floor plus one
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.add(Nat.div(U32.to_nat(n), 32n), 1n)
+=== r2-h02-chunk-count
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunks_of,words_root
+spec: the number of chunks of n bytes is ceil(n / 32)
+fault: the rounding constant is 32 instead of 31
+why: rounding constant
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
+=== r2-h02-chunk-count
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: words_root
+spec: an empty byte list has an all-zero data tree
+fault: the chunk-presence flag is 0 <= chunks (always true)
+why: strict comparison lost
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
+=== r2-h02-chunk-count
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: words_root
+spec: the tree has 2^depth leaves
+fault: the tree width is 2^depth * 2
+why: width constant
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, Nat.double(pow2n(U32.to_nat(depth))), 0n,
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mtree,words_root
+spec: the right half of a tree starts at s + w/2
+fault: the right half starts at s + w
+why: split point
+-              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              mtree(p, 1n, Nat.is_lt(Nat.add(s, w), n), hl, lf, Nat.div(w, 2n), Nat.add(s, w), n,
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mtree,words_root
+spec: the right half is inside the chunk count iff s + w/2 < n
+fault: the right half is inside iff s + w/2 <= n
+why: off-by-one in the occupancy test (reads a chunk that does not exist: zero in storage, but the value hashed is the real zero chunk)
+-              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              mtree(p, 1n, Nat.is_le(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mtree,words_root
+spec: an all-zero subtree of depth d has root Z(d)
+fault: the zero subtree of an empty right half uses Z(d - 1) (zconst(p) for depth 1+p)
+why: zero hash level off by one
+-              (h, (ws, D.zconst(1n+p)))
+-            case True{}:
+-              mtree(p, 1n,
++              (h, (ws, D.zconst(p)))
++            case True{}:
++              mtree(p, 1n,
+=== r2-h03-subtree-split
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: ctree,elems_root
+spec: the same zero-subtree rule inside an element's own tree
+fault: the zero subtree of an element's empty right half uses Z(d - 1)
+why: zero hash level off by one
+-              (h, (ws, D.zconst(1n+p)))
+-            case True{}:
+-              ctree(p, 1n,
++              (h, (ws, D.zconst(p)))
++            case True{}:
++              ctree(p, 1n,
+=== r2-h03-subtree-split
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: ctree,elems_root
+spec: the right half of an element tree starts at s + w/2
+fault: the element tree's right half starts at s + w
+why: split point
+-              ctree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, base, ew, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              ctree(p, 1n, Nat.is_lt(Nat.add(s, w), n), hl, base, ew, Nat.div(w, 2n), Nat.add(s, w), n,
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mt_join
+spec: a node is H(left || right)
+fault: the join hashes right || left
+why: operand order
+-  (ws, dr) = r
+-  (h, (ws, D.node(hl, dl, dr)))
++  (ws, dr) = r
++  (h, (ws, D.node(hl, dr, dl)))
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: mtree,leaf_at,chunkn,e8
+spec: chunk i is words 8i .. 8i + 7
+fault: chunk i starts at word 4i (two doublings)
+why: stride of a chunk
+-def e8(+i: Nat) -> Nat: Nat.double(Nat.double(Nat.double(i)))
++def e8(+i: Nat) -> Nat: Nat.double(Nat.double(i))
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunkn,cn6
+spec: a chunk is eight consecutive words
+fault: the seventh word is read from b + 6 (repeats a word)
+why: index slip in the unrolled chunk read
+-  cn7(b, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, U32.from_nat(Nat.add(b, 7n))))
++  cn7(b, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, U32.from_nat(Nat.add(b, 6n))))
+=== r2-h03-subtree-split
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunkn,cn7,echunkn,ec7
+spec: the words of a chunk are big-endian for SHA
+fault: the last word of a chunk is not byte-swapped
+why: endianness of one word
+count: 2
+-B.swap32(a6), B.swap32(a7)})
++B.swap32(a6), a7})
+=== r2-h04-element-chunks
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: echunkn,ec4,rdc
+spec: words past an element's end read as zero (j + k < ew)
+fault: word 8c+4 is taken inside the element when j + 4 <= ew (reads the next element's first word)
+why: off-by-one in the element bound
+-  ec5(b, j, ew, a0, a1, a2, a3, a4, rdc(Nat.is_lt(Nat.add(j, 5n), ew), ws, Nat.add(b, Nat.add(j, 5n))))
++  ec5(b, j, ew, a0, a1, a2, a3, a4, rdc(Nat.is_le(Nat.add(j, 5n), ew), ws, Nat.add(b, Nat.add(j, 5n))))
+=== r2-h04-element-chunks
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: echunkn,ec0,rdc
+spec: word 8c of an element chunk is read only inside the element
+fault: the first word of the chunk is read unconditionally
+why: bound forgotten on the first word
+-  ec0(b, e8(c), ew, rdc(Nat.is_lt(Nat.add(e8(c), 0n), ew), ws, Nat.add(b, Nat.add(e8(c), 0n))))
++  ec0(b, e8(c), ew, rdc(True{}, ws, Nat.add(b, Nat.add(e8(c), 0n))))
+=== r2-h04-element-chunks
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: elems_root,LElems
+spec: an element of ew words has ceil(ew / 8) chunks
+fault: the chunk count of an element is floor(ew / 8)
+why: ceil written as floor
+-        LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
++        LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn(ew, 3n))},
+=== r2-h04-element-chunks
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: elems_root,leaf_at
+spec: element i starts at word i * ew
+fault: element i starts at word i * (ew + 1)
+why: stride of an element
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, Nat.add(ew, 1n)), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
+=== r2-h04-element-chunks
+type: FuluDataColumnSidecar
+ops: root
+file: src/obj.bend
+sym: elems_root
+spec: the element count is words / (4 ew) bytes
+fault: the element count divides by 4 ew + 4
+why: divisor mistyped
+-      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew : U32)))), hl,
++      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew + 4 : U32)))), hl,
+=== r2-h05-scalar-chunks
+type: FuluBeaconBlockHeader
+ops: root
+file: src/obj.bend
+sym: bool_chunk
+spec: a boolean root is 0x01 followed by 31 zero bytes
+fault: true is chunk 0x00000001 in the first word (big-endian word, wrong byte)
+why: endianness of the boolean chunk
+-    case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++    case True{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+=== r2-h05-scalar-chunks
+type: FuluValidator
+ops: root
+file: src/obj.bend
+sym: bool_chunk
+spec: false hashes as the zero chunk
+fault: false is the all-ones chunk word
+why: constant mistyped
+-    case False{}: D.zero()
++    case False{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+=== r2-h05-scalar-chunks
+type: FuluCheckpoint
+ops: root
+file: src/obj.bend
+sym: u32_chunk
+spec: a uint32 root is its little-endian bytes padded to 32
+fault: the value is not byte-swapped
+why: endianness of the uint chunk
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{v, 0, 0, 0, 0, 0, 0, 0}
+=== r2-h05-scalar-chunks
+type: FuluCheckpoint
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: a uint64 root is its 8 little-endian bytes padded to 32
+fault: the two words are swapped (high word first)
+why: word order of a uint64
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+=== r2-h05-scalar-chunks
+type: FuluCheckpoint
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: a uint64 root pads the 8 bytes with zeros
+fault: the high word is dropped
+why: truncation to 32 bits
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(lo), 0, 0, 0, 0, 0, 0, 0}
+=== r2-h06-bit-roots
+type: bitlist_513
+ops: root
+file: src/obj.bend
+sym: bits_root,bits_rooted
+spec: a bit list's chunks are its bits ceil(k / 8) bytes, without the delimiter
+fault: the chunked bytes are k (bit count) instead of ceil(k / 8)
+why: bits confused with bytes
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, k}, depth, seg))
+=== r2-h06-bit-roots
+type: progbitlist
+ops: root
+file: src/obj.bend
+sym: bits_root_prog,words_root_prog
+spec: a progressive bit list: progressive tree over the bit chunks, then the bit count
+fault: the byte count is used as the mixed length
+why: bytes confused with bits
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, bits_nbytes(k), words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
+=== r2-h06-bit-roots
+type: bitlist_513
+ops: root
+file: src/obj.bend
+sym: bits_nbytes
+spec: ceil(k / 8) bytes for k bits
+fault: the byte count is floor(k / 8)
+why: ceil written as floor
+-def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
++def bits_nbytes(+nbits: U32) -> U32: U32.shrn(nbits, 3n)
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: ptree
+spec: the progressive tree's next segment has depth + 2 (4x leaves)
+fault: the next segment has depth + 1 (2x leaves)
+why: growth factor
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 1n), Nat.add(s, pow2n(dep)), n, st))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: ptree
+spec: the progressive tree's next segment has depth + 2
+fault: the next segment has depth + 3
+why: growth factor
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 3n), Nat.add(s, pow2n(dep)), n, st))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: ptree
+spec: an empty remainder of a progressive tree is the zero chunk, not a node
+fault: the remainder is inside when s + 2^dep <= n (an empty remainder is hashed as a node)
+why: off-by-one in the emptiness test
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_le(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: pt_right,prog_root
+spec: merkleize_progressive(chunks) = H(merkleize_progressive(rest), merkleize(first 2^dep chunks))
+fault: the segment's tree has width 2^(dep+1)
+why: width of a segment
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, Nat.double(pow2n(dep)), s, n, (h, (ws, D.zero()))))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: prog_root
+spec: the recursion fuel is the chunk count plus one (each step consumes a chunk)
+fault: the fuel is the chunk count (designed equivalent: log4 n steps suffice)
+why: fuel off by one
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: prog_root
+spec: an empty progressive list is the zero chunk
+fault: the emptiness flag is 0 <= n (an empty list is hashed as a node)
+why: strict comparison lost
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+n, Nat.is_le(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+=== r2-h07-progressive
+type: ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: ptree,pt_right
+spec: the right child is the full segment tree, the left child is the remainder
+fault: the segment and the remainder are joined in swapped order
+why: operand order
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  (h2, r2) = mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero())))
++  (ws2, dr2) = r2
++  (h2, (ws2, D.node(hl, dr2, dl)))
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(1) = SHA-256(Z(1 - 1) || Z(1 - 1))
+fault: the first word of the constant Z(1) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{4121296194,
++D{4121296195,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(6) = SHA-256(Z(6 - 1) || Z(6 - 1))
+fault: the first word of the constant Z(6) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{3633176558,
++D{3633176559,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(18) = SHA-256(Z(18 - 1) || Z(18 - 1))
+fault: the first word of the constant Z(18) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{2515454130,
++D{2515454131,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(20) = SHA-256(Z(20 - 1) || Z(20 - 1))
+fault: the first word of the constant Z(20) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{3453724597,
++D{3453724598,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(40) = SHA-256(Z(40 - 1) || Z(40 - 1))
+fault: the first word of the constant Z(40) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{1811844395,
++D{1811844396,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(41) = SHA-256(Z(41 - 1) || Z(41 - 1))
+fault: the first word of the constant Z(41) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{2817670377,
++D{2817670378,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the zero-subtree root Z(63) = SHA-256(Z(63 - 1) || Z(63 - 1))
+fault: the first word of the constant Z(63) is off by one
+why: one digit of a hard-coded SHA-256 constant
+-D{3972334281,
++D{3972334282,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: Z(0) is the all-zero chunk
+fault: Z(0) is not zero (first word 1)
+why: constant mistyped
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++    case 0n: D{1, 0, 0, 0, 0, 0, 0, 0}
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: the table covers depth 0..63; beyond it the value is never used
+fault: the table ends one level early: Z(63) answers the zero chunk
+why: table truncated
+-                                                                                                                                  case 0n: D{3972334281,
++                                                                                                                                  case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++                                                                                                                                  case 1n+kk: D{3972334281,
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: node,hash_pair
+spec: a Merkle node is SHA-256(left || right)
+fault: the node hashes right || left
+why: operand order
+-  of_result(PKG.sha256(pair_words(l, r), hl))
++  of_result(PKG.sha256(pair_words(r, l), hl))
+=== r2-h08-zero-hashes
+type: FuluExecutionRequests
+ops: root
+file: src/digest.bend
+sym: node
+spec: a Merkle node hashes 64 bytes
+fault: the message length is hl - 1 (63 bytes)
+why: message length off by one
+-  of_result(PKG.sha256(pair_words(l, r), hl))
++  of_result(PKG.sha256(pair_words(l, r), Nat.sub(hl, 1n)))
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: close_pick,close,full_in
+spec: an empty tree of depth d is Z(d); a full one is the stack top (streaming merkleizer, unused by the object runtime)
+fault: the empty tree answers Z(0)
+why: slot index
+-        case True{}: B.get_digest(buf, (960 + depth : U32))
++        case True{}: B.get_digest(buf, (960 + 0 : U32))
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: depth_go,depth_of
+spec: the depth for limit leaves is ceil(log2 limit) (streaming merkleizer, unused by the object runtime)
+fault: the depth rounds down: (limit + 1) is replaced by limit
+why: ceil written as floor
+-        case _: depth_go(p, U32.shrn((limit + 1 : U32), 1n), (d + 1 : U32))
++        case _: depth_go(p, U32.shrn(limit, 1n), (d + 1 : U32))
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: climb
+spec: the stack entry is the LEFT sibling when bit k of the count is set (streaming merkleizer, unused by the object runtime)
+fault: climb hashes the stack entry on the right
+why: operand order
+-    case True{}: D.hash_pair(other, acc)
++    case True{}: D.hash_pair(acc, other)
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: prog_start
+spec: segment k of a progressive tree starts at chunk (4^k - 1) / 3 (streaming merkleizer, unused by the object runtime)
+fault: the start is 4^k / 3
+why: constant mistyped
+-def prog_start(+k: U32) -> U32: U32.div((prog_cap(k) - 1 : U32), 3)
++def prog_start(+k: U32) -> U32: U32.div(prog_cap(k), 3)
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: ready_pick,fill_zeros
+spec: Z(k + 1) = H(Z(k), Z(k)) fills the hasher's zero table (the table is read by no root of the object runtime)
+fault: the table fill hashes Z(k) with the zero chunk
+why: wrong operand
+-    case 1n+p: fill_zeros(p, (i + 1 : U32), D.hash_pair(z, z), B.set_digest(buf, (960 + i : U32), z))
++    case 1n+p: fill_zeros(p, (i + 1 : U32), D.hash_pair(z, D.zero()), B.set_digest(buf, (960 + i : U32), z))
+=== r2-h09-streaming-merkleizer
+type: FuluExecutionRequests
+ops: root
+file: src/merkle_fast.bend
+sym: ready_seen
+spec: a hasher's zero table is filled once
+fault: the table is never filled
+why: the readiness test is inverted
+-  ready_pick(Bool.not(U32.is_eq(first_word(d), 0)), buf)
++  ready_pick(U32.is_eq(first_word(d), 0), buf)
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/merkle.bend
+sym: zero_hash
+spec: zero_hash(d + 1) = H(zero_hash(d) || zero_hash(d))
+fault: zero_hash(d + 1) hashes the child with the zero chunk
+why: wrong operand
+-      H.hash(List.append(&2, U32, child, child))
++      H.hash(List.append(&2, U32, child, P.pad(32n, [])))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/merkle.bend
+sym: hash_pair,pair_checked
+spec: a node hashes two exact 32-byte chunks
+fault: the right operand's length is not checked
+why: validity conjunction weakened
+-  pair_checked(Bool.and(P.valid_bytes(32n, left), P.valid_bytes(32n, right)), left, right)
++  pair_checked(P.valid_bytes(32n, left), left, right)
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/mixing.bend
+sym: mix_in_selector
+spec: mix_in_selector(root, selector) = H(root || selector as a 32-byte chunk); selector < 256
+fault: the selector bound is dropped
+why: range check forgotten
+-  M.pair_checked(Bool.and(P.valid_bytes(32n, root), U32.is_lt(selector, 256)), root, P.pad(32n, [selector]))
++  M.pair_checked(P.valid_bytes(32n, root), root, P.pad(32n, [selector]))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/mixing.bend
+sym: mix_in_selector
+spec: the selector chunk is the selector byte followed by 31 zero bytes
+fault: the selector chunk is padded on the left (31 zero bytes then the selector would be big-endian; here the pad length is 31)
+why: pad width
+-  M.pair_checked(Bool.and(P.valid_bytes(32n, root), U32.is_lt(selector, 256)), root, P.pad(32n, [selector]))
++  M.pair_checked(Bool.and(P.valid_bytes(32n, root), U32.is_lt(selector, 256)), root, P.pad(31n, [selector]))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/mixing.bend
+sym: mix_in_length
+spec: mix_in_length(root, length) = H(root || uint256 length)
+fault: the root and the root length chunk are mixed in the other order
+why: operand order
+-  M.pair_checked(P.valid_bytes(32n, root), root, P.uint_bytes(length))
++  M.pair_checked(P.valid_bytes(32n, root), P.uint_bytes(length), root)
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/progressive.bend
+sym: tree,join
+spec: merkleize_progressive(chunks, n) = H(merkleize_progressive(rest, 4n), merkleize(first n chunks, n))
+fault: the depth grows by 1 (2x) instead of 2 (4x)
+why: growth factor
+-        case Con{h, t}: join(Tree.consume(depth, h <> t), rest => tree(p, 2n+depth, rest))
++        case Con{h, t}: join(Tree.consume(depth, h <> t), rest => tree(p, 1n+depth, rest))
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/progressive.bend
+sym: tree,join
+spec: H(rest_root, segment_root): the remainder is the LEFT operand
+fault: the segment is the left operand
+why: operand order
+-  Hash.hash(Lists.append(U32, next(rest), right))
++  Hash.hash(Lists.append(U32, right, next(rest)))
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/progressive.bend
+sym: tree
+spec: the empty progressive tree is the zero chunk
+fault: the fuel is one less than the chunk count
+why: fuel off by one
+-    case Some{tree(Lists.length(+List<U32>, chunks), 0n, chunks)}
++    case Some{tree(Nat.sub(Lists.length(+List<U32>, chunks), 1n), 0n, chunks)}
+=== r2-h10-reference-library
+type: bytelist_256
+ops: root
+file: src/packing.bend
+sym: scan,finish
+spec: chunks are 32 bytes; the last chunk is zero-padded to 32
+fault: a chunk completes after 30 bytes (room starts at 30)
+why: chunk size off by one
+-    case True{}: Some{scan(xs, 31n, [], [])}
++    case True{}: Some{scan(xs, 30n, [], [])}
+=== r2-h10-reference-library
+type: bytelist_256
+ops: root
+file: src/packing.bend
+sym: scan
+spec: after a full chunk the next chunk starts with 32 free bytes (room 31)
+fault: after a full chunk the room is 30
+why: chunk size off by one
+-        case 0n: scan(t, 31n, [], List.append(&2, U32, buffer, [h]) <> chunks)
++        case 0n: scan(t, 30n, [], List.append(&2, U32, buffer, [h]) <> chunks)
+=== r2-h10-reference-library
+type: bytelist_256
+ops: root
+file: src/packing.bend
+sym: finish
+spec: the last partial chunk is padded with zeros up to 32 bytes
+fault: the pad is one byte short
+why: padding length
+-    case Con{h, t}: List.reverse(&2, +List<U32>, List.append(&2, U32, h <> t, P.pad(1n+room, [])) <> chunks)
++    case Con{h, t}: List.reverse(&2, +List<U32>, List.append(&2, U32, h <> t, P.pad(room, [])) <> chunks)
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/tree.bend
+sym: consume
+spec: a missing subtree of depth d is zero_hash(d)
+fault: the missing subtree of depth 1+p is zero_hash(p)
+why: zero level off by one
+-        case Nil{}: (M.zero_hash(1n+p), [])
++        case Nil{}: (M.zero_hash(p), [])
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/tree.bend
+sym: finish
+spec: residual chunks past the capacity make the root fail
+fault: residual chunks are ignored
+why: over-capacity not rejected
+-        case Con{h, t}: None{}
++        case Con{h, t}: Some{root}
+=== r2-h10-reference-library
+type: bitlist_9
+ops: root
+file: src/bit_root.bend
+sym: chunk_limit
+spec: the chunk limit of a bitlist/bitvector of n bits is (n + 255) / 256
+fault: the limit is (n + 256) / 256
+why: rounding constant
+-  Nat.div(Nat.add(capacity, 255n), 256n)
++  Nat.div(Nat.add(capacity, 256n), 256n)
+=== r2-h10-reference-library
+type: bitlist_9
+ops: root
+file: src/bit_root.bend
+sym: list_gate
+spec: a bit list mixes in its bit count
+fault: the bit count is encoded in 8 bytes
+why: length width
+-      mix_length_bytes(Merkle.merkleize(chunk_limit(capacity), chunks(bits)), Length.encode(32n, List.length(&2, Bool, bits)))
++      mix_length_bytes(Merkle.merkleize(chunk_limit(capacity), chunks(bits)), Length.encode(8n, List.length(&2, Bool, bits)))
+=== r2-h10-reference-library
+type: bitlist_9
+ops: root
+file: src/root.bend
+sym: length_mix
+spec: a list mixes in its count as a 32-byte uint256
+fault: the count is encoded in 8 bytes
+why: length width
+-    case Some{n}: Bits.mix_length_bytes(root, Length.encode(32n, n))
++    case Some{n}: Bits.mix_length_bytes(root, Length.encode(8n, n))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/root.bend
+sym: count_limit
+spec: the chunk limit of a basic list is (limit * size + 31) / 32, of a composite list is limit
+fault: the basic-size limit rounds down
+why: ceil written as floor
+-    case Some{s}: Nat.div(Nat.add(Nat.mul(limit, s), 31n), 32n)
++    case Some{s}: Nat.div(Nat.mul(limit, s), 32n)
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/root.bend
+sym: active_chunks
+spec: an inactive field of a progressive container contributes a zero chunk
+fault: an inactive field contributes nothing (the slot is skipped)
+why: inactive slot dropped
+-        case False{}: P.pad(32n, []) <> active_chunks(t, chunks)
++        case False{}: active_chunks(t, chunks)
+=== r2-h10-reference-library
+type: ProgressiveTestStruct
+ops: root
+file: src/root.bend
+sym: active_root
+spec: a progressive container mixes in its active-field bitvector padded to 32 bytes
+fault: the active-field chunk is padded to 31 bytes
+why: padding width
+-    case Some{rs}: single(Bits.mix_length_bytes(Cached.progressive(active_chunks(active, rs), table), Some{P.pad(32n, BitPack.pack(active))}))
++    case Some{rs}: single(Bits.mix_length_bytes(Cached.progressive(active_chunks(active, rs), table), Some{P.pad(31n, BitPack.pack(active))}))
+=== r2-h10-reference-library
+type: CompatibleUnionBC
+ops: root
+file: src/root.bend
+sym: selector_mix
+spec: a union root mixes in the selector (not the option index)
+fault: the selector chunk is the selector plus one
+why: selector confusion
+-    case Some{xs}: single(Mixing.mix_in_selector(xs, selector))
++    case Some{xs}: single(Mixing.mix_in_selector(xs, (selector + 1 : U32)))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/root.bend
+sym: valid_value
+spec: a Vector[T, n] value must have exactly n elements
+fault: the count of a vector may be any value at most n
+why: equality weakened
+-        case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_eq(C.count(items), n))))
++        case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_le(C.count(items), n))))
+=== r2-h10-reference-library
+type: FuluExecutionRequests
+ops: root
+file: src/root.bend
+sym: valid_value
+spec: a List[T, n] value must have at most n elements
+fault: the list limit is strict (count < n)
+why: off-by-one in the limit
+-        case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_le(C.count(items), n)))
++        case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_lt(C.count(items), n)))
