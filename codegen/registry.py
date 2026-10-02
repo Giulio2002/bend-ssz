@@ -123,6 +123,7 @@ GENERATORS = (
     Gen('encset_h', 'proofs/collections'),
     Gen('bitz', 'proofs/collections'),
     Gen('encset_t', 'proofs/collections'),
+    Gen('v16', 'proofs/collections'),
     Gen('boxedview', 'proofs/collections'),
     Gen('coll_laws', 'proofs/collections'),
     Gen('e2e_setters', 'proofs/collections', stage='last', after=('e2e_bridge',)),
