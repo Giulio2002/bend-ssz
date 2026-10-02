@@ -7,6 +7,10 @@ import ../../types/FuluCheckpoint_decode_ssz_generated.bend as CpR
 import ../../types/SmallTestStruct_def_generated.bend as StD
 import ../../types/SmallTestStruct_encode_ssz_generated.bend as StE
 import ../../types/SmallTestStruct_hashtreeroot_generated.bend as StH
+import ../../types/FuluBytes96_def_generated.bend as Bytes96D
+import ../../types/FuluSyncCommitteeContribution_def_generated.bend as ScD
+import ../../types/FuluContributionAndProof_def_generated.bend as CapD
+import ../../types/FuluContributionAndProof_hashtreeroot_generated.bend as CapH
 import ../../benchmarks/compact/objio.bend as IOx
 
 # Crash-hunt probe B: decode of a buffer shorter than the size argument, and a container holding a scalar outside
@@ -38,12 +42,18 @@ def size_line(label: String, b: B.Buf) -> IO(Unit):
 
 def case5() -> IO(Unit): size_line("encode_uint16_70000_size", StE.SmallTestStruct_encode(StD.SmallTestStruct{70000, 5}))
 
+def zero96() -> Bytes96D.Bytes96: Bytes96D.Bytes96{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+def case6() -> IO(Unit): root_line("root_boxed_none", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, O.BNone{}, zero96()}))
+def case7() -> IO(Unit): root_line("root_boxed_default", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, ScD.SyncCommitteeContribution_bx_default(), zero96()}))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
     case 2: case2()
     case 3: case3()
     case 4: case4()
+    case 6: case6()
+    case 7: case7()
     case _: case5()
 
 def main() -> IO(Unit):

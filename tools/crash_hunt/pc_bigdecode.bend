@@ -12,25 +12,27 @@ import ../../benchmarks/compact/objio.bend as IOx
 # (an all-constant word array, nothing read from a file). SSZ_CASE: 1 byte list, 2 bit list, 3 bit list then append.
 # SSZ_ARG: the size in bytes; SSZ_FILL: the word every input word is set to.
 
+def len_line(pair: O.Words & U32) -> IO(Unit):
+  (w, +n) = pair
+  IO.print("decode=some len=" ++ U32.show(n))
+
 def words_line(pair: B.Buf & Maybe<&1, O.Words>) -> IO(Unit):
   (b, m) = pair
   match m:
     case None{}: IO.print("decode=none")
     case Some{w}: len_line(O.words_len(w))
-def len_line(pair: O.Words & U32) -> IO(Unit):
-  (w, +n) = pair
-  IO.print("decode=some len=" ++ U32.show(n))
 
 def case1(+size: U32, +depth: Nat, +fill: U32) -> IO(Unit): words_line(PlR.proglist_uint8_decode(B.Buf{Array.new(U32, depth, fill), size}, size))
+
+def bits_len_line(pair: O.Bits & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print("decode=some bits=" ++ U32.show(n))
 
 def bits_line(pair: B.Buf & Maybe<&1, O.Bits>) -> IO(Unit):
   (b, m) = pair
   match m:
     case None{}: IO.print("decode=none")
     case Some{o}: bits_len_line(O.bits_len(o))
-def bits_len_line(pair: O.Bits & U32) -> IO(Unit):
-  (o, +n) = pair
-  IO.print("decode=some bits=" ++ U32.show(n))
 
 def case2(+size: U32, +depth: Nat, +fill: U32) -> IO(Unit): bits_line(PbR.progbitlist_decode(B.Buf{Array.new(U32, depth, fill), size}, size))
 
