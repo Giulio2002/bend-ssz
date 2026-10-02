@@ -6,6 +6,7 @@ import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/uint64_def_generated.bend as uint64_d
 import ../../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
+import ../../types/FuluSyncCommitteeContribution_encode_ssz_generated.bend as FuluSyncCommitteeContribution_e
 import ../../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
 import ../../types/FuluContributionAndProof_encode_ssz_generated.bend as FuluContributionAndProof_e
 import ../../types/schema.bend as P0_S
@@ -41,6 +42,9 @@ def FuluContributionAndProof__encode_eval__ContributionAndProof_spec_bytes(+x0: 
 
 def FuluContributionAndProof__encode_eval__ContributionAndProof_encode_capsym(o: FuluContributionAndProof_d.ContributionAndProof) -> {FuluContributionAndProof_e.ContributionAndProof_encode(o) == FuluContributionAndProof_e.ContributionAndProof_enc_out(FuluContributionAndProof_e.ContributionAndProof_put(P1_O.out_at(7n), 0, o)) : FuluContributionAndProof_d.ContributionAndProof & P1_B.Buf}:
   P1_PRV.ContributionAndProof_encode_capsym(o)
+
+def FuluContributionAndProof__encode_eval__ContributionAndProof_cf_acc(out: Array<U32>, +pos: U32, aggregator_index: P2_O.U64, contribution: P2_O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, selection_proof: FuluBytes96_d.Bytes96) -> {FuluContributionAndProof_e.ContributionAndProof_putk(out, pos, FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}) == FuluContributionAndProof_e.ContributionAndProof_pw0(pos, 0, aggregator_index, selection_proof, FuluSyncCommitteeContribution_e.SyncCommitteeContribution_bx_putk(out, (pos + 8 : U32), contribution)) : Array<U32> & (FuluContributionAndProof_d.ContributionAndProof & U32)}:
+  P2_PRV.ContributionAndProof_cf_acc(out, pos, aggregator_index, contribution, selection_proof)
 
 def FuluContributionAndProof__encode_eval__ContributionAndProof_cf_flag() -> {Pair.snd(FuluContributionAndProof_d.ContributionAndProof, U32, Pair.snd(Array<U32>, FuluContributionAndProof_d.ContributionAndProof & U32, FuluContributionAndProof_e.ContributionAndProof_putk(P2_O.out_at(7n), 0, FuluContributionAndProof_d.ContributionAndProof_default()))) == 0 : U32}:
   P2_PRV.ContributionAndProof_cf_flag()

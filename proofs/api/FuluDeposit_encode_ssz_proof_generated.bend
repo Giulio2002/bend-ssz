@@ -5,6 +5,7 @@ import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluDepositData_def_generated.bend as FuluDepositData_d
+import ../../types/Fulu_vec_bytevec_32_33_encode_ssz_generated.bend as Fulu_vec_bytevec_32_33_e
 import ../../types/FuluDeposit_def_generated.bend as FuluDeposit_d
 import ../../types/FuluDeposit_encode_ssz_generated.bend as FuluDeposit_e
 import ../../types/schema.bend as P0_S
@@ -47,6 +48,9 @@ def FuluDeposit__encode_eval__Deposit_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +
 
 def FuluDeposit__encode_eval__Deposit_encode_capsym(o: FuluDeposit_d.Deposit) -> {FuluDeposit_e.Deposit_encode(o) == FuluDeposit_e.Deposit_enc_out(FuluDeposit_e.Deposit_put(P1_O.out_at(9n), 0, o)) : FuluDeposit_d.Deposit & P1_B.Buf}:
   P1_PRV.Deposit_encode_capsym(o)
+
+def FuluDeposit__encode_eval__Deposit_cf_acc(out: Array<U32>, +pos: U32, proof: P2_O.Words, data: P2_O.Boxed<FuluDepositData_d.DepositData>) -> {FuluDeposit_e.Deposit_putk(out, pos, FuluDeposit_d.Deposit{proof, data}) == FuluDeposit_e.Deposit_pw0(pos, 0, data, Fulu_vec_bytevec_32_33_e.v33_b32_putk(out, (pos + 0 : U32), proof)) : Array<U32> & (FuluDeposit_d.Deposit & U32)}:
+  P2_PRV.Deposit_cf_acc(out, pos, proof, data)
 
 def FuluDeposit__encode_eval__Deposit_cf_flag() -> {Pair.snd(FuluDeposit_d.Deposit, U32, Pair.snd(Array<U32>, FuluDeposit_d.Deposit & U32, FuluDeposit_e.Deposit_putk(P2_O.out_at(9n), 0, FuluDeposit_d.Deposit_default()))) == 0 : U32}:
   P2_PRV.Deposit_cf_flag()

@@ -5136,6 +5136,10 @@
     },
     {
      "file": "zflag_ContributionAndProof.bend",
+     "law": "ContributionAndProof_cf_acc"
+    },
+    {
+     "file": "zflag_ContributionAndProof.bend",
      "law": "ContributionAndProof_cf_flag"
     }
    ],
@@ -5257,6 +5261,10 @@
     {
      "file": "zcapsym_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_encode_capsym"
+    },
+    {
+     "file": "zflag_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_cf_acc"
     },
     {
      "file": "zflag_SignedContributionAndProof.bend",
@@ -5904,6 +5912,10 @@
     },
     {
      "file": "zflag_ProposerSlashing.bend",
+     "law": "ProposerSlashing_cf_acc"
+    },
+    {
+     "file": "zflag_ProposerSlashing.bend",
      "law": "ProposerSlashing_cf_flag"
     }
    ],
@@ -6034,6 +6046,10 @@
     {
      "file": "zcapsym_HistoricalBatch.bend",
      "law": "HistoricalBatch_encode_capsym"
+    },
+    {
+     "file": "zflag_HistoricalBatch.bend",
+     "law": "HistoricalBatch_cf_acc"
     }
    ],
    "encode_spec": [
@@ -8085,6 +8101,10 @@
     {
      "file": "zcapsym_SyncCommittee.bend",
      "law": "SyncCommittee_encode_capsym"
+    },
+    {
+     "file": "zflag_SyncCommittee.bend",
+     "law": "SyncCommittee_cf_acc"
     }
    ],
    "encode_spec": [
@@ -8324,6 +8344,10 @@
     {
      "file": "zcapsym_Deposit.bend",
      "law": "Deposit_encode_capsym"
+    },
+    {
+     "file": "zflag_Deposit.bend",
+     "law": "Deposit_cf_acc"
     },
     {
      "file": "zflag_Deposit.bend",
@@ -12408,6 +12432,10 @@
     {
      "file": "zcapsym_BlobSidecar.bend",
      "law": "BlobSidecar_encode_capsym"
+    },
+    {
+     "file": "zflag_BlobSidecar.bend",
+     "law": "BlobSidecar_cf_acc"
     }
    ],
    "encode_spec": [
@@ -13197,6 +13225,10 @@
     {
      "file": "zcapsym_MatrixEntry.bend",
      "law": "MatrixEntry_encode_capsym"
+    },
+    {
+     "file": "zflag_MatrixEntry.bend",
+     "law": "MatrixEntry_cf_acc"
     },
     {
      "file": "zflag_MatrixEntry.bend",
