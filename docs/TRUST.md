@@ -68,7 +68,10 @@ Trusted (not proved here):
   rely on (collections, e2e, the vendored SHA-256, the specification transcription; private trees only; a check over 120 s is
   `too slow`, not a kill): its first pilot found constants of the specification that no law catches (the 4-byte length
   prefix of `domain`, the 2^32 size limit of `size_fits`, a `vector_domain` pattern) and the hex rendering of the vendored
-  package, which our laws do not reach (known out of scope: the package is pinned and not changed here). A proof stack overflow is not counted as detection.
+  package, which our laws do not reach (known out of scope: the package is pinned and not changed here). An independent audit of the exclusions
+  (docs/EXCLUSION_AUDIT.md) found that the first exclusion key hid sibling sites on the same line: 41 real mutants (offsets, `words_ok`
+  bounds, one serialized-length flag, the Transaction bound) were hidden and are now closed by proof laws; the key now includes the
+  column, and a rule is sound only if its consumers were checked everywhere. A proof stack overflow is not counted as detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to

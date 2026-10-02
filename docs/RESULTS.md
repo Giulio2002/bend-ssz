@@ -231,6 +231,24 @@ sha256 `stream_correct` `&2 -> &1` twice (an erased label: equivalent) and `hex_
 `spec/bytes.bend:13:37` (`vector_domain`, `1n -> 2n` in the pattern `1n+p`): constants of the specification transcription that no
 law catches. The spec is frozen: only copies in private trees were mutated.
 
+**Audit of the exclusions** (`docs/EXCLUSION_AUDIT.md`, `docs/EXCLUSION_AUDIT_HIDDEN.json`; an independent re-derivation of every rule,
+each checked by a Bend law or by a differential run of original against mutant). The first exclusion list hid 219 mutants. Verdict:
+
+| rule | entries | verdict |
+| --- | --- | --- |
+| argument never read | 127 | sound for the site examined (45 Bend laws, one per callee, parameter and literal pair, all check); the key also hid 4 offset sites that are NOT equivalent |
+| flag read only by `O.is_poisoned` | 30 | 29 sound, 1 unsound (`v4_b32_pk_ok`: in the LightClient types the flag is OR-ed into the running length that `ser_done` writes) |
+| `words_ok` bounds / unit | 47 | sound for the site examined; the key also hid 35 sibling sites (`lo`, `unit`, `hi`) that change the accepted lengths |
+| `bits_ok` limit | 1 | sound (Bend law) |
+| vec_bool `ok_n` / `ok_nz` | 13 | sound; the key also covered 5 `case True{}` pattern sites that do not compile (invalid, harmless) |
+| Transaction bound 2^30 -> 2^30+1 | 1 | NOT equivalent, killable by a proof law (no longer classified uncoverable) |
+
+The defect was common to all rules: an entry was keyed by file, def, operator, before, after and line text, so it hid every site of
+that line with the same literal while the rule had examined one column (42 of 219 entries matched more than one site). 41 real
+mutants were hidden (4 offsets, 35 `words_ok` siblings, 1 flag, 1 bound) and 5 invalid ones. The key now includes the column (one
+entry per site), the flag and bound entries are removed, and the rule "a flag is equivalent" requires that the consumers of the flag
+across ALL facades were checked. The 41 are closed with proof laws (`agent/mutfix-hidden`).
+
 **Known out-of-scope item: the hex rendering of the vendored SHA-256.** `hex_digit` (`U32.is_lt(x, 10)`) and `hex_word_go`
 (the shift `4n`) in `proofs/crypto/sha/packed/core_model.bend` of bend-collections 1.0.0.0 render a digest as a hex string. No
 law of this repository reaches them (our laws use the byte API and the FIPS 180-4 model, never the hex strings), and the package
