@@ -117,15 +117,16 @@ _EXCL = None
 
 def excluded(rel, dn, st, line):
     """True if this mutation is on the known-equivalent / uncoverable list (tests_generated/mutation_exclusions.json:
-    file, def, operator, before, after and the line's text; a class and the reason are recorded with each entry).
+    file, def, operator, before, after, the line's text and the COLUMN of the site within it; a class and the reason are recorded
+    with each entry). One entry hides one site: a sibling site of the same line with the same literal is drawn on its own.
     Such sites are never drawn and never reported as survivors."""
     global _EXCL
     if _EXCL is None:
         _EXCL = set()
         if EXCLUSIONS_FILE.exists():
             for e in json.loads(EXCLUSIONS_FILE.read_text())['entries']:
-                _EXCL.add((e['file'], e['def'], e['operator'], e['before'], e['after'], e['text']))
-    return (rel, dn, st[2], st[3], st[4], line.strip()[:200]) in _EXCL
+                _EXCL.add((e['file'], e['def'], e['operator'], e['before'], e['after'], e['text'], e['col']))
+    return (rel, dn, st[2], st[3], st[4], line.strip()[:200], st[1] - (len(line) - len(line.lstrip()))) in _EXCL
 
 
 def def_name(text, lineno):

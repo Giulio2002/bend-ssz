@@ -112,6 +112,7 @@ def bits_equiv(x,line):
     b=arg_index(line,x)
     if b and b[0] in('O.bits_ok','bits_ok') and b[1]==1 and b[2][2]=='True{}': return 'bits_ok: limit is only read under Bool.or(big, ..) and big is True{}'
 def pk_equiv(x,line):
+    if x['file'].endswith('FuluExecutionBranch_encode_ssz_generated.bend'): return None   # its flag is OR-ed into the length of the light-client serializers (docs/EXCLUSION_AUDIT.md)
     if (x['def'] or '').endswith('pk_ok') and x['before']=='0' and x['after']=='1' and re.search(r'\(o, 0\)',line): return 'the flag is only read by O.is_poisoned(fl) = 2^31 <= fl: false for 0 and for 1'
 
 def boolvec_equiv(x,line):
@@ -165,18 +166,19 @@ def main():
     ents, rem = {}, {}
     for fn in files:
         for x in json.load(open(fn))['survivors']:
-            key = (x['file'], x['def'], x['operator'], x['before'], x['after'], x['text'])
+            ln = pathlib.Path(x['file']).read_text().split('\n')[x['line'] - 1]
+            key = (x['file'], x['def'], x['operator'], x['before'], x['after'], x['text'], x['col'] - (len(ln) - len(ln.lstrip())))
             cls, reason = classify_survivor(x)
             if cls:
                 ents[key] = {'file': key[0], 'def': key[1], 'operator': key[2], 'before': key[3], 'after': key[4],
-                             'text': key[5], 'class': cls, 'reason': reason}
+                             'text': key[5], 'col': key[6], 'class': cls, 'reason': reason}
             else:
                 rem[key] = x
     print(len(ents), 'excluded', dict(collections.Counter(e['class'] for e in ents.values())), '|', len(rem),
           'remaining', dict(collections.Counter(x['cause'] for x in rem.values())))
     if '--write' in sys.argv:
-        out = {'note': 'mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py)',
-               'entries': sorted(ents.values(), key=lambda e: (e['class'], e['file'], e['text']))}
+        out = {'note': 'mutations that are never drawn and never reported (rules and reasons: tests_generated/mutation_equivalence.py; one entry per site: file, def, operator, literal, line text, column)',
+               'entries': sorted(ents.values(), key=lambda e: (e['class'], e['file'], e['text'], e['col']))}
         pathlib.Path('tests_generated/mutation_exclusions.json').write_text(json.dumps(out, indent=1) + '\n')
         pathlib.Path('/tmp/remaining.json').write_text(json.dumps(list(rem.values())))
 
