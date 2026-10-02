@@ -38,7 +38,7 @@ import re
 
 from codegen.core import writer  # noqa: E402
 from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import finish, per_name  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 
 
@@ -246,15 +246,9 @@ def name_proof(X, P, nw, N):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../compact/found.bend as F',
-         'import ./arr_copy.bend as AC', 'import ./zcmpeq_lib.bend as ZL', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('cmp_laws'),
-         f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
-         '# (found by mutation testing; codegen/proofs/laws/cmp_laws.py). By computation on variable words.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('cmp_laws', [f'# {X}: the aligned-or-general writer choice of its put does not change the words written',
+                                   '# (found by mutation testing; codegen/proofs/laws/cmp_laws.py). By computation on variable words.'], laws, tmod,
+                      ['import ../compact/found.bend as F', 'import ./arr_copy.bend as AC', 'import ./zcmpeq_lib.bend as ZL'])
 
 
 def guard_module():
