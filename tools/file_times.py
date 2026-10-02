@@ -21,7 +21,8 @@ fail (SOME PROOFS FAIL), timeout (the 600 s limit of check.sh) or error.
 Gentle on a shared machine: at most --jobs (default 4) checks at a time, each under `nice -n 19`; a new file is not started
 while the load average (first field of /proc/loadavg) is above --max-load (default 24), nor while a full check holds LOCK
 (`flock -n LOCK true` fails).
-Order: tier 0, the known slow e2e files (witnesses, comp, decrep, decode/set witnesses); tier 1, proofs/api (the facades);
+Order: tier 0, the known slow e2e files (witnesses, comp, decrep, decode/set witnesses); tier 1, the proofs/api facades that import edge or
+symbolic law modules (capsym, cmpeq, mutval, serialize_vsym, specpin, ...), then the other facades;
 then the --first prefixes (default: e2e/, proofs/gate/, proofs/obj/, benchmarks/, tests_generated/), then the rest.
 Roots are every .bend file outside tools/ and vendor/.
 --report prints the files over SECONDS of cpu (default 120) grouped by family and exits (it reads DIR/results.jsonl).
@@ -40,6 +41,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_FIRST = 'e2e/,proofs/gate/,proofs/obj/,benchmarks/,tests_generated/'
+EDGE = re.compile(r'(zcapsym_|zcmpeq_|mutval_|serialize_vsym|specpin|zpwdcmp_|zflag_|zuarm_|zokf_|wordpos_|capacity_|offset_laws_|mutconst_|mutsmall_)')
 TIER0 = re.compile(r'^e2e/.*(_e2e_witness|_e2e_comp|_e2e_decrep|_e2e_decode_witness|_e2e_set_witness|_e2e_dwh)')
 LOCK = '/srv/ssz-optimization/agents/.fullcheck.lock'
 
@@ -61,7 +63,7 @@ def order(files, first):
         if TIER0.match(f):
             return 0
         if f.startswith('proofs/api/'):
-            return 1
+            return 1 if EDGE.search((ROOT / f).read_text()) else 1.5
         return 2 + next((i for i, x in enumerate(pre) if f.startswith(x)), len(pre))
     return sorted(files, key=lambda f: (rank(f), f))
 
