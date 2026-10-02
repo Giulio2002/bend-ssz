@@ -22,6 +22,13 @@ if [ -x build/ch/pa ]; then
   done
 fi
 stamp probeA_done
+BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 900 $BEND tools/crash_hunt/pb_api.bend -o build/ch/pb > $OUT/compile_pb.log 2>&1
+echo "compile pb rc=$?"; tail -5 $OUT/compile_pb.log
+if [ -x build/ch/pb ]; then
+  for c in 1 2 3 4 5; do
+    ( ulimit -v 8388608; export SSZ_CASE=$c; timeout 60 nice -n 19 build/ch/pb --threads 1 --gpu off > $OUT/pb_$c.out 2> $OUT/pb_$c.err; echo "pb case $c rc=$? :: $(tr '\n' ' ' < $OUT/pb_$c.out) :: $(head -c 200 $OUT/pb_$c.err | tr '\n' ' ')" ) | tee -a $OUT/pb_summary.txt
+  done
+fi
 # C. obj programs, 4 at a time
 mk() { n=$1; src=benchmarks/objprog/$n.bend; BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 1200 $BEND $src -o build/obj-$n > $OUT/compile_$n.log 2>&1; echo "compile $n rc=$?"; }
 export -f mk; export BEND OUT

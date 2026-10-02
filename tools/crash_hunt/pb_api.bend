@@ -1,0 +1,52 @@
+import Base
+import ../../src/buffer.bend as B
+import ../../src/digest.bend as D
+import ../../src/obj.bend as O
+import ../../types/FuluCheckpoint_def_generated.bend as CpD
+import ../../types/FuluCheckpoint_decode_ssz_generated.bend as CpR
+import ../../types/SmallTestStruct_def_generated.bend as StD
+import ../../types/SmallTestStruct_encode_ssz_generated.bend as StE
+import ../../types/SmallTestStruct_hashtreeroot_generated.bend as StH
+import ../../benchmarks/compact/objio.bend as IOx
+
+# Crash-hunt probe B: decode of a buffer shorter than the size argument, and a container holding a scalar outside
+# its type (70000 for a uint16) given to the three public entry points.
+
+def maybe_line(label: String, pair: B.Buf & Maybe<&1, CpD.Checkpoint>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: IO.print(label ++ "=some")
+    case None{}: IO.print(label ++ "=none")
+
+def case1() -> IO(Unit): maybe_line("decode_empty_buf_size40", CpR.Checkpoint_decode(B.empty(), 40))
+
+def root_line(label: String, pair: B.Buf & D.Digest) -> IO(Unit):
+  (h, d) = pair
+  IO.print(label ++ "=" ++ IOx.words(d))
+
+def case2() -> IO(Unit): root_line("root_uint16_70000", StH.SmallTestStruct_hash_tree_root(O.hasher(), StD.SmallTestStruct{70000, 5}))
+def case3() -> IO(Unit): root_line("root_uint16_4464", StH.SmallTestStruct_hash_tree_root(O.hasher(), StD.SmallTestStruct{4464, 5}))
+
+def enc_line(label: String, e: O.Encoded) -> IO(Unit):
+  match e:
+    case O.Encoded{ok, b}: IO.print(label ++ "_ok=" ++ O.pick_str(ok))
+
+def case4() -> IO(Unit): enc_line("serialize_uint16_70000", StE.SmallTestStruct_serialize(StD.SmallTestStruct{70000, 5}))
+
+def size_line(label: String, b: B.Buf) -> IO(Unit):
+  IO.print(label ++ "=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+
+def case5() -> IO(Unit): size_line("encode_uint16_70000_size", StE.SmallTestStruct_encode(StD.SmallTestStruct{70000, 5}))
+
+def dispatch(+c: U32) -> IO(Unit):
+  match c:
+    case 1: case1()
+    case 2: case2()
+    case 3: case3()
+    case 4: case4()
+    case _: case5()
+
+def main() -> IO(Unit):
+  do IO<Unit>:
+    +c : U32 <- IOx.env_u32("SSZ_CASE")
+    dispatch(c)
