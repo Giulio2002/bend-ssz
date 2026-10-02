@@ -51,7 +51,7 @@ OUT = ROOT / 'proofs/gate'
 
 KINDS = ['root', 'ok_eval', 'decode_accept', 'decode_spec', 'decode_unique', 'decode_reject', 'decode_none',
          'encode_eval', 'encode_spec', 'roundtrip', 'encoded_size', 'reject_short', 'reject_long',
-         'decode_tree', 'decode_input', 'serialize_valid', 'decode_offsets']
+         'decode_tree', 'decode_input', 'serialize_valid', 'decode_offsets', 'decode_first_offset']
 CORE = KINDS[:9]
 
 # law-name forms per kind (<X> the name; bare names are the per-name modules' laws)
@@ -72,7 +72,8 @@ LAW_FORMS = {
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
     'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag|fields|reject_\w+|bool_\w+|bits_\w+)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
-    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields', r'<X>_decode_first_offset'],
+    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
+    'decode_first_offset': [r'<X>_decode_first_offset'],
 }
 
 
@@ -110,7 +111,9 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'serialize_valid':
         return concl.startswith(f'{{T.{X}_serialize(') or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes)\(', concl) is not None
     if kind == 'decode_offsets':
-        return (concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)) or concl.startswith(f'{{T.{X}_ok(')
+        return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
+    if kind == 'decode_first_offset':
+        return concl.startswith(f'{{T.{X}_ok(')
     return False
 
 
