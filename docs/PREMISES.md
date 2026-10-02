@@ -407,8 +407,8 @@ input, the encoding of the default object (`bs0 = obytes(X_encode(default))`, `n
 The default object is the smallest input available (every list empty, every fixed-size part zero), except that a default holding empty boxes where a vector needs values (ComplexTestStruct's `vec_VarTestStruct_2` field: its default elements are `BNone`, not a legal decoded shape, and the decoder rejects the encoding of such an object) is replaced by `DV()`, the default with valid elements there, as in the bridge witnesses; a non-empty input is not witnessed. Not
 witnessed (<!-- fig:dw_pending -->2<!-- /fig --> names: <!-- fig:dw_pending_names -->FuluBeaconState, FuluLightClientUpdate<!-- /fig -->; `e2e/DECODE_WITNESS.txt` lists every name and the reason):
 FuluBeaconState's default encoding is 2.7 MB (the fixed-size parts: `block_roots`, `state_roots`, `randao_mixes`, `slashings`, ...), too large for the checker to
-evaluate the encoder and the window check over it; a witness would need a symbolic decoder-acceptance proof over the zero-run windows, a separate
-architecture. For it the evidence is the acceptance witness of its variable-size substructures that are witnessed here, the composed theorems of the
+evaluate the encoder and the window check over it; a witness needs a symbolic decoder-acceptance proof over the zero-run windows, a separate
+architecture (design, measurements and the first slice: `docs/BS_WITNESS_DESIGN.md`). For it the evidence is the acceptance witness of its variable-size substructures that are witnessed here, the composed theorems of the
 substructures' own names, and the 295 official vectors; its composed theorem is not instantiated at a concrete accepted input.
 
 The light-client bootstrap (25 KB) is witnessed (the light-client update, 50 KB, is not yet: with all three theorems in one file it took 1327 s, over the 600 s budget of one file; the four costly hypotheses together take 193 s in one module, and the three theorem files built over that module, in `decode_witness.py` as BIG + SPLIT, are not yet checked) in a different shape, because the checker compares the unary Nat of the byte count:

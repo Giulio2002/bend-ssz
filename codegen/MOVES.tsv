@@ -171,6 +171,7 @@ codegen/mutation_laws.py	codegen/proofs/laws/mutation_laws.py
 codegen/mutation_laws_cap.py	codegen/proofs/laws/mutation_laws_cap.py
 codegen/mutation_laws_capsym.py	codegen/proofs/laws/mutation_laws_capsym.py
 codegen/cmp_laws.py	codegen/proofs/laws/cmp_laws.py
+codegen/cmp3_laws.py	codegen/proofs/laws/cmp3_laws.py
 codegen/okfalse_laws.py	codegen/proofs/laws/okfalse_laws.py
 codegen/mutation_laws_const.py	codegen/proofs/laws/mutation_laws_const.py
 codegen/mutation_laws_small.py	codegen/proofs/laws/mutation_laws_small.py
@@ -180,6 +181,7 @@ codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py
 codegen/mutation_laws_validity.py	codegen/proofs/laws/mutation_laws_validity.py
 codegen/u64_tail.py	codegen/proofs/collections/u64_tail.py
 codegen/encset.py	codegen/proofs/collections/encset.py
+codegen/zero_run.py	codegen/proofs/witnesses/zero_run.py
 codegen/encset_w.py	codegen/proofs/collections/encset_w.py
 codegen/subword_tz.py	codegen/proofs/collections/subword_tz.py
 codegen/encset_b.py	codegen/proofs/collections/encset_b.py

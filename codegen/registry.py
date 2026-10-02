@@ -56,6 +56,7 @@ GENERATORS = (
     Gen('mutation_laws', 'proofs/laws'),
     Gen('mutation_laws_cap', 'proofs/laws'),
     Gen('okfalse_laws', 'proofs/laws'),
+    Gen('cmp3_laws', 'proofs/laws'),
     Gen('cmp_laws', 'proofs/laws'),
     Gen('mutation_laws_capsym', 'proofs/laws'),
     Gen('mutation_laws_const', 'proofs/laws'),
@@ -136,6 +137,7 @@ GENERATORS = (
     # codegen/proofs/witnesses/
     Gen('decode_witness', 'proofs/witnesses'),
     Gen('obytes_len', 'proofs/witnesses'),
+    Gen('zero_run', 'proofs/witnesses'),
     Gen('coll_witness', 'proofs/witnesses'),
     Gen('e2e_witness', 'proofs/witnesses', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/composed/
