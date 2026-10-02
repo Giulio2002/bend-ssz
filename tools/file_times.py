@@ -41,7 +41,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_FIRST = 'e2e/,proofs/gate/,proofs/obj/,benchmarks/,tests_generated/'
-EDGE = re.compile(r'(zcapsym_|zcmpeq_|mutval_|serialize_vsym|specpin|zpwdcmp_|zflag_|zuarm_|zokf_|wordpos_|capacity_|offset_laws_|mutconst_|mutsmall_)')
+EDGE = re.compile(r'(zcapsym_|zcmpeq_|mutval_|serialize_vsym|specpin|zpwdcmp_|zflag_|zuarm_|zokf_|wordpos_|capacity_|offset_laws_|mutconst_|mutsmall_|pkflag|spec_audit)')
 TIER0 = re.compile(r'^e2e/.*(_e2e_witness|_e2e_comp|_e2e_decrep|_e2e_decode_witness|_e2e_set_witness|_e2e_dwh)')
 LOCK = '/srv/ssz-optimization/agents/.fullcheck.lock'
 
