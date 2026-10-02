@@ -32,8 +32,7 @@ import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
 
-from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import finish, per_name  # noqa: E402
+from codegen.core.shared_laws import finish, law_module, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
@@ -93,14 +92,9 @@ def name_laws(runtime):
 
 
 def module(tmod, X, laws):
-    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
-         writer.header('mutation_laws_capsym'),
-         f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
-         '# (found by mutation testing; codegen/proofs/laws/mutation_laws_capsym.py). By computation on a variable object.', '']
-    for t in laws:
-        L.append(t)
-        L.append('')
-    return '\n'.join(L)
+    return law_module('mutation_laws_capsym', [f'# {X}: the allocation depth of its encoder and checked serializer is the schema\'s',
+                                               '# (found by mutation testing; codegen/proofs/laws/mutation_laws_capsym.py). By computation on a variable object.'],
+                      laws, tmod)
 
 
 def main():
