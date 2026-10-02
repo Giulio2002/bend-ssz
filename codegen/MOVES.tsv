@@ -180,3 +180,4 @@ codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py
 codegen/mutation_laws_validity.py	codegen/proofs/laws/mutation_laws_validity.py
 codegen/u64_tail.py	codegen/proofs/collections/u64_tail.py
 codegen/encset.py	codegen/proofs/collections/encset.py
+codegen/encset_w.py	codegen/proofs/collections/encset_w.py
