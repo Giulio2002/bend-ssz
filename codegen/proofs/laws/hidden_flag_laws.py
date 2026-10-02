@@ -19,11 +19,10 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 
 from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import OBJ, RUNTIMES, finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: O\.Words\) -> [^\n]*: ([^\n]*)$', re.M)
 
@@ -51,15 +50,11 @@ def module(text, tmod):
 
 def main():
     out = {}
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
+    for runtime, tmod in RUNTIMES:
         for X, t in module(RR.mono_text(runtime), tmod).items():
-            out[ROOT / f'proofs/obj/pkflag_{runtime}_{X}.bend'] = t
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('pkflag_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale flag laws: ', 'flag laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{len(out)} files')
+            out[OBJ / f'pkflag_{runtime}_{X}.bend'] = t
+    if finish(out, ('pkflag_*.bend',), 'stale flag laws: ', 'flag laws are current'):
+        print(f'{len(out)} files')
 
 
 if __name__ == '__main__':
