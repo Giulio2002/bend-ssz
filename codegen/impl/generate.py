@@ -1540,33 +1540,8 @@ def emit_bitlist(s, w):
 # ---------------------------------------------------------------------------
 # Sequences of composite elements: an array of element objects and a count.
 
-def emit_seq(s, w):
-    p, t, e = s.p, s.t, s.elem
-    R, E = e.rep, e.p
-    S = f'{p}_Seq'
-    is_list = t.kind in ('list', 'plist')
-    w(f'type {S} is Type:')
-    w(f'  {S}{{items: Array<{R}>, n: U32}}')
-    # storage: capacity for n elements (at least one slot)
-    if e.data:
-        w(f'def {p}_fill(+d: Nat) -> Array<{R}>: Array.new({R}, d, {E}_default())')
-    else:
-        w(f'def {p}_fill(+d: Nat) -> Array<{R}>:')
-        w('  match d:')
-        w(f'    case 0n: ALeaf{{{placeholder(e)}}}')
-        w(f'    case 1n+q: ANode{{{p}_fill(q), {p}_fill(q)}}')
-    w(f'def {p}_cap(+n: U32) -> Nat: B.words_depth(n)')
-    count = t.size
-    if is_list:
-        w(f'def {p}_default() -> {S}: {S}{{{p}_fill(0n), 0}}')
-    else:
-        w(f'def {p}_default() -> {S}: {S}{{{p}_fill({p}_cap({count})), {count}}}')
-    # element access for the loops: Data elements are read, linear ones swapped out
-    if e.data:
-        take = f'Array.get({R}, arr, i)'
-    else:
-        take = f'Array.swap({R}, arr, i, {placeholder(e)})'
-    # ---- read ----
+def _seq_fixed_reader(w, p, e, R, E, S, is_list, count):
+    """the reader of a sequence of fixed-size elements: the read loop, its finish and the count/length checks"""
     if e.fixed:
         es = e.fsize
         w(f'def {p}_rd(+k: Nat, +i: U32, +off: U32, arr: Array<{R}>, pair: B.Buf & {R}) -> B.Buf & Array<{R}>:')
@@ -1627,7 +1602,10 @@ def emit_seq(s, w):
             w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & {S}: {p}_read_nz(U32.is_eq(len, 0), buf, off, len)')
         else:
             w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & {S}: {p}_rv_count(off, len, B.read32(buf, off))')
-    # ---- size, put ----
+
+
+def _seq_size_put(w, p, e, R, E, S):
+    """the sequence's size pass and writer, for fixed-size and variable-size elements"""
     if e.fixed:
         es = e.fsize
         w(f'def {p}_size(o: {S}) -> {S} & U32:')
@@ -1766,18 +1744,10 @@ def emit_seq(s, w):
         w('  (out, sq)')
         w(f'def {p}_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<{R}>) -> Array<U32> & {S}:')
         w(f'  {p}_pv_drop({p}_pvn_nz(empty, out, pos, arr, n))')
-    w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & {S}:')
-    w('  match o:')
-    w(f'    case {S}{{arr, +n}}: {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)')
-    if e.fixed and not s.fixed:
-        w(f'def {p}_ptn_fin(+n: U32, pair: Array<U32> & {S}) -> Array<U32> & ({S} & U32):')
-        w('  (out, sq) = pair')
-        w(f'  (out, (sq, (n * {e.fsize} : U32)))')
-        w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & ({S} & U32):')
-        w('  match o:')
-        w(f'    case {S}{{arr, +n}}: {p}_ptn_fin(n, {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))')
-    # ---- root: the recursive tree over the element roots, O.mtree's shape
-    # (phase m = 0 computes a subtree, m = 1 holds the left sibling's root).
+
+
+def _seq_root_tree(w, p, t, e, R, E):
+    """the root: the recursive tree over the element roots"""
     lim = log2ceil(t.size)
     ST = f'B.Buf & (Array<{R}> & D.Digest)'
     if e.data:
@@ -1834,6 +1804,11 @@ def emit_seq(s, w):
     w('          (h, r) = st')
     w('          (arr, dl) = r')
     w(f'          {p}_mj(hl, dl, {p}_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))')
+    return lim, ST
+
+
+def _seq_progressive_root(s, w, p, lim, ST):
+    """the progressive root: merkleize_progressive over the element roots"""
     if s.prog:
         # merkleize_progressive over the element roots (O.ptree's shape)
         w(f'def {p}_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: {ST}) -> {ST}:')
@@ -1878,6 +1853,53 @@ def emit_seq(s, w):
         w(f'            {p}_mt(q, 0n, True{{}}, hl, seg, O.pow2n(q), 0n, n, st))')
         tree_call = (f'{p}_mt0({lim}n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), '
                      f'(h, (arr, D.zero())))')
+    return tree_call
+
+
+def emit_seq(s, w):
+    p, t, e = s.p, s.t, s.elem
+    R, E = e.rep, e.p
+    S = f'{p}_Seq'
+    is_list = t.kind in ('list', 'plist')
+    w(f'type {S} is Type:')
+    w(f'  {S}{{items: Array<{R}>, n: U32}}')
+    # storage: capacity for n elements (at least one slot)
+    if e.data:
+        w(f'def {p}_fill(+d: Nat) -> Array<{R}>: Array.new({R}, d, {E}_default())')
+    else:
+        w(f'def {p}_fill(+d: Nat) -> Array<{R}>:')
+        w('  match d:')
+        w(f'    case 0n: ALeaf{{{placeholder(e)}}}')
+        w(f'    case 1n+q: ANode{{{p}_fill(q), {p}_fill(q)}}')
+    w(f'def {p}_cap(+n: U32) -> Nat: B.words_depth(n)')
+    count = t.size
+    if is_list:
+        w(f'def {p}_default() -> {S}: {S}{{{p}_fill(0n), 0}}')
+    else:
+        w(f'def {p}_default() -> {S}: {S}{{{p}_fill({p}_cap({count})), {count}}}')
+    # element access for the loops: Data elements are read, linear ones swapped out
+    if e.data:
+        take = f'Array.get({R}, arr, i)'
+    else:
+        take = f'Array.swap({R}, arr, i, {placeholder(e)})'
+    # ---- read ----
+    _seq_fixed_reader(w, p, e, R, E, S, is_list, count)
+    # ---- size, put ----
+    _seq_size_put(w, p, e, R, E, S)
+    w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & {S}:')
+    w('  match o:')
+    w(f'    case {S}{{arr, +n}}: {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)')
+    if e.fixed and not s.fixed:
+        w(f'def {p}_ptn_fin(+n: U32, pair: Array<U32> & {S}) -> Array<U32> & ({S} & U32):')
+        w('  (out, sq) = pair')
+        w(f'  (out, (sq, (n * {e.fsize} : U32)))')
+        w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & ({S} & U32):')
+        w('  match o:')
+        w(f'    case {S}{{arr, +n}}: {p}_ptn_fin(n, {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))')
+    # ---- root: the recursive tree over the element roots, O.mtree's shape
+    # (phase m = 0 computes a subtree, m = 1 holds the left sibling's root).
+    lim, ST = _seq_root_tree(w, p, t, e, R, E)
+    tree_call = _seq_progressive_root(s, w, p, lim, ST)
     mixed = 'd' if t.kind == 'vector' else 'O.mix_len(hl, d, n)'
     w(f'def {p}_rt_fin(+hl: Nat, +n: U32, pair: {ST}) -> B.Buf & ({S} & D.Digest):')
     w('  (h, r) = pair')
