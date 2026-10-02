@@ -21,7 +21,7 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 
 def ok_s(label: String, e: O.Encoded) -> IO(Unit):
   match e:
-    case O.Encoded{ok, b}: IO.print(label ++ "=" ++ O.pick_str(ok))
+    case O.Encoded{ok, b}: IO.print(label ++ "=" ++ O.pick_str(ok) ++ " size=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
 
 def slash(label: String, pair: SD.AttesterSlashing & O.Encoded) -> IO(Unit):
   (o, e) = pair
