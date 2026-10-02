@@ -3,6 +3,20 @@
   "branch": "agent/crash-hunt",
   "base": "origin/main b1764b5a8",
   "counts": {"total": 9, "CRASH": 3, "WRONG": 5, "INFO": 1, "OK_suites": 5},
+  "fix_status": {
+    "branch": "agent/crash-fix",
+    "regression": "tools/crash_hunt/regress.sh (cases 1-12 of tools/crash_hunt/pf_fixed.bend), proofs/slop/crash/crash_fix_laws_generated.bend",
+    "CH-01": "fixed (statements and lock moved, docs/crash_hunt_statement_diff.md)",
+    "CH-02": "documented: _encode has the precondition X_valid(o); _serialize is the checked entry (docs/API_CONTRACTS.md)",
+    "CH-03": "documented: _hash_tree_root has the precondition X_valid(o)",
+    "CH-04": "fixed (statements and lock moved)",
+    "CH-05": "fixed in X_decode_checked (window below 2^31)",
+    "CH-06": "fixed in X_decode_checked (window inside the buffer); X_decode keeps its precondition",
+    "CH-07": "documented: the 2^31 byte size limit",
+    "CH-08": "documented: no error channel, precondition X_valid",
+    "CH-09": "documented: _build and _read are unchecked by design",
+    "CH-10": "fixed: the default of a vector of variable-size elements holds present elements; new finding (WRONG), see docs/CRASH_HUNT.md"
+  },
   "ok_suites": [
     {"id": "OK-1", "what": "hostile _decode, 240 names, byte-level mutators", "runs": 40508, "crash": 0, "wrong": 0},
     {"id": "OK-2", "what": "mutation driver (set_elem/append/set_field) with extreme indices and seeds", "runs": 10656, "crash": 0, "wrong": 0},
