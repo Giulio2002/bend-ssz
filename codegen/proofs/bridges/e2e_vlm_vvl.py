@@ -16,7 +16,7 @@ list's limit conjunct in its head check (HC), the root_types_light mirrors and r
 import re
 
 from codegen.proofs.bridges import e2e_var_c as EVC
-from codegen.core.shared_bridges import import_lines  # noqa: E402
+from codegen.core.shared_bridges import import_lines, import_list  # noqa: E402
 from codegen.proofs.support.light_split import unlight as _unlight
 
 from codegen.core.paths import ROOT  # noqa: E402
@@ -309,11 +309,7 @@ def vl({WPD}, +hchk: {{W.CHKw(t, x, off, len) == True{{}} : Bool}})
     -> {{RT.xv_{L}(W.OBJw(d, t, x, off, len)) == W.VALw(t, x, len) : S.Value}}:
   vw_{L}(d, t, x, off, len, eo, hd, hw, hw32, pf, hchk)
 '''
-    head = ['import Base', 'import ../src/obj.bend as O', 'import ../src/buffer.bend as B', 'import ../types/schema.bend as S',
-            'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
-            'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VLS',
-            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vvlu.bend as VVU',
-            'import ../proofs/obj/root_types_light.bend as RT'] + (['import ../proofs/obj/root_types.bend as RTH'] if heavy else []) + [
+    head = [*import_list('Base O B S FD A Order VB VD VLS VC UCT VVU RT=root_types_light')] + (['import ../proofs/obj/root_types.bend as RTH'] if heavy else []) + [
             f'import ../proofs/obj/{mod}.bend as W', f'import ../proofs/obj/var_winx_{E}.bend as YW',
             f'import ../types/{EF}.bend as {EA}', f'import ../types/{LF}.bend as {LD}', 'import ./e2e_wxa.bend as WXA']
     return '\n'.join(head) + f'''
