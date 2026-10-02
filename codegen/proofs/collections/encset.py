@@ -226,7 +226,7 @@ def %(c)s_api_encode_set(+t: F.array__Tree<%(EL)s>, +N: U32, +i: U32, +m: %(EL)s
 '''
 
 
-REC_LISTS = ('l8192_DepositRequest', 'l16_WithdrawalRequest', 'l2_ConsolidationRequest', 'l16_Withdrawal', 'l16_SignedVoluntaryExit', 'l16_SignedBLSToExecutionChange')
+REC_LISTS = ('l2048_Eth1Data', 'l1099511627776_Validator', 'l16777216_HistoricalSummary', 'l134217728_PendingDeposit', 'l134217728_PendingPartialWithdrawal', 'l262144_PendingConsolidation', 'l8192_DepositRequest', 'l16_WithdrawalRequest', 'l2_ConsolidationRequest', 'l16_Withdrawal', 'l16_SignedVoluntaryExit', 'l16_SignedBLSToExecutionChange')
 
 
 def rec_facts(c):
@@ -235,11 +235,19 @@ def rec_facts(c):
     imps = {a: p for p, a in re.findall(r'^import (\S+) as (\w+)', txt, re.M)}
     me = re.search(r'^def EL_%s\(\+A: \w+\.array__Tree<(.+?)>, \+j: Nat\) -> (.+?): VRL\.mget\(.+, (\S+_default\(\))\)$' % re.escape(c), txt, re.M)
     R, dflt = me.group(1), me.group(3)
-    mi = re.search(r'^def ITW_%s\(c: Nat.*\n  match c:\n    case 0n: S.EmptyItems\{\}\n    case 1n\+q: S.Items\{(\w+)\(EL_%s\(A, j\)\), ITW_%s\(q, A, 1n\+j\)\}' % ((re.escape(c),) * 3), txt, re.M)
+    itn = re.search(r'^def (IT\w)_%s\(c: Nat' % re.escape(c), txt, re.M).group(1)
+    mi = re.search(r'^def %s_%s\(c: Nat.*\n  match c:\n    case 0n: S.EmptyItems\{\}\n    case 1n\+q: S.Items\{(\w+)\(EL_%s\(A, j\)\), %s_%s\(q, A, 1n\+j\)\}' % (itn, re.escape(c), re.escape(c), itn, re.escape(c)), txt, re.M)
     mseq = re.search(r'^def THL_%s\(.*?\) -> (\S+_Seq):' % re.escape(c), txt, re.M)
     mlim = re.search(r'^def okl_lim_%s\(.*?\{(U32\.is_le\(N, \d+\)) == True' % re.escape(c), txt, re.M)
     ms = re.search(r'^def encx_spec_%sB\(.*?\n.*?\n    -> \{Codec.parts\(VALL_%s\(A, N\), (.+?)\) == Some\{\[S\.Variable\{ENCL_' % (re.escape(c), re.escape(c)), txt, re.M)
-    return dict(c=c, R=R, dflt=dflt, rvw=mi.group(1), seq=mseq.group(1), lim=mlim.group(1), schema=ms.group(1), imps=imps)
+    lim = mlim.group(1) if mlim else None
+    P2, P3 = 'F.array__perfect(%s, E.TDM_%s(T2), T2)' % (R, c), 'Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%s(T2)))' % c
+    T1 = 'Nat.is_lt(E.TDM_%s(T2), 31n)' % c
+    if lim:
+        chain = ('  and_i(%s, Bool.and(%s, Bool.and(%s, %s)), c1,\n    and_i(%s, Bool.and(%s, %s), c2,\n      and_i(%s, %s, c3, E.okl_lim_%s(A, N, h))))' % (T1, P2, P3, lim, P2, P3, lim, P3, lim, c))
+    else:
+        chain = '  and_i(%s, Bool.and(%s, %s), c1,\n    and_i(%s, %s, c2, c3))' % (T1, P2, P3, P2, P3)
+    return dict(c=c, R=R, dflt=dflt, rvw=mi.group(1), itn=itn, chain=chain, seq=mseq.group(1), lim=lim, schema=ms.group(1), imps=imps)
 
 
 REC_LEMMAS = """# ---- the elements of the slots: the written one at the index, the old ones elsewhere ----
@@ -250,10 +258,10 @@ def itw_%(c)s(k: Nat, +W: List<&2, %(R)s>, +i: Nat) -> S.Value:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{E.%(rvw)s(ela_%(c)s(W, i)), itw_%(c)s(q, W, 1n+i)}
 
-def %(c)s_itw_eq(+k: Nat, +A: F.array__Tree<%(R)s>, +j: Nat) -> {E.ITW_%(c)s(k, A, j) == itw_%(c)s(k, F.array__slots(%(R)s, A), j) : S.Value}:
+def %(c)s_itw_eq(+k: Nat, +A: F.array__Tree<%(R)s>, +j: Nat) -> {E.%(itn)s_%(c)s(k, A, j) == itw_%(c)s(k, F.array__slots(%(R)s, A), j) : S.Value}:
   match k:
     case 0n: {==}
-    case 1n+ +q: Equal.cong(S.Value, S.Value, z => S.Items{E.%(rvw)s(ela_%(c)s(F.array__slots(%(R)s, A), j)), z}, E.ITW_%(c)s(q, A, 1n+j), itw_%(c)s(q, F.array__slots(%(R)s, A), 1n+j), %(c)s_itw_eq(q, A, 1n+j))
+    case 1n+ +q: Equal.cong(S.Value, S.Value, z => S.Items{E.%(rvw)s(ela_%(c)s(F.array__slots(%(R)s, A), j)), z}, E.%(itn)s_%(c)s(q, A, 1n+j), itw_%(c)s(q, F.array__slots(%(R)s, A), 1n+j), %(c)s_itw_eq(q, A, 1n+j))
 
 """
 
@@ -275,9 +283,7 @@ def %(c)s_okl_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.
   +c1 = F.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), E.okl_d_%(c)s(A, N, h))
   +c2 = F.logic__subst(Nat, z => {F.array__perfect(%(R)s, z, T2) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), pf2)
   +c3 = F.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), VB.pw(z)) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), E.okl_n_%(c)s(A, N, h))
-  and_i(Nat.is_lt(E.TDM_%(c)s(T2), 31n), Bool.and(F.array__perfect(%(R)s, E.TDM_%(c)s(T2), T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s)), c1,
-    and_i(F.array__perfect(%(R)s, E.TDM_%(c)s(T2), T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s), c2,
-      and_i(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s, c3, E.okl_lim_%(c)s(A, N, h))))
+%(chain)s
 
 # ---- the value of the written list: the old value with item i replaced ----
 def %(c)s_vall_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool})
@@ -288,11 +294,11 @@ def %(c)s_vall_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E
   +hj = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(N), F.spec_common__pow2(d), hs, E.okl_n_%(c)s(A, N, h))
   +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), Equal.sym(Nat, F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), F.spec_common__pow2(d), F.array__slots_length(%(R)s, d, A, pf)), hj)
   +hsl = F.array__upd_slots(%(R)s, d, A, U32.to_nat(i), v, hj, pf)
-  %%Equal.sym(S.Value, E.ITW_%(c)s(U32.to_nat(N), T2, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, T2), 0n), %(c)s_itw_eq(U32.to_nat(N), T2, 0n)) :
+  %%Equal.sym(S.Value, E.%(itn)s_%(c)s(U32.to_nat(N), T2, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, T2), 0n), %(c)s_itw_eq(U32.to_nat(N), T2, 0n)) :
     {S.Sequence{_} == VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
   %%Equal.sym(List<&2, %(R)s>, F.array__slots(%(R)s, T2), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), hsl) :
     {S.Sequence{itw_%(c)s(U32.to_nat(N), _, 0n)} == VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
-  %%Equal.sym(S.Value, E.ITW_%(c)s(U32.to_nat(N), A, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, A), 0n), %(c)s_itw_eq(U32.to_nat(N), A, 0n)) :
+  %%Equal.sym(S.Value, E.%(itn)s_%(c)s(U32.to_nat(N), A, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, A), 0n), %(c)s_itw_eq(U32.to_nat(N), A, 0n)) :
     {S.Sequence{itw_%(c)s(U32.to_nat(N), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), 0n)} == VS.field_set(S.Sequence{_}, U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, itw_%(c)s(U32.to_nat(N), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), 0n),
     VS.items_set(itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, A), 0n), U32.to_nat(i), E.%(rvw)s(v)),
