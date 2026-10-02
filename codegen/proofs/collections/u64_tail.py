@@ -108,10 +108,6 @@ def tail_m(m):
     out.append('    -> {WS.bdrop(%dn, WS.cb(%s, iq)) == %s : +List<U32>}:' % (r, W2, ZB))
     for k in range(a, 8):
         out.append('  +e%d = WW.wd_after([x0, x1], d, t, qw, Nat.add(O.e8(iq), %dn), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(qw, 2n), Nat.add(O.e8(z), %dn)) == True{} : Bool}, qc, iq, Equal.sym(Nat, iq, qc, eiq), y_le(i, qw, qc, c, %dn, %dn, hq, hlt, hc, {==})), hb, pf)' % (k, k, k, m, k))
-    # the goal: the limbs of the written words, the first a dropped, then each kept word rewritten to the old one
-    cur = list(w2)
-    lines = []
-    goal = lambda ws: '{WS.bdrop(%dn, %s) == WS.bdrop(%dn, %s) : +List<U32>}' % (r, CB(ws), r, CB(w1))
     out.append('  Equal.trans(+List<U32>, WS.bdrop(%dn, WS.cb(%s, iq)), WS.bdrop(%dn, WS.cb(%s, iq)), %s,' % (r, W2, r, W, ZB))
     out.append('    bdeq_m%d(d, t, qw, x0, x1, iq, %s),' % (m, ', '.join(['e%d' % k for k in range(a, 8)])))
     out.append('    slack)')
