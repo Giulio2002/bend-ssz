@@ -440,6 +440,13 @@ def within(expr, n):
     return 'True{}' if big == 'True{}' else f'U32.is_le({expr}, {lim})'
 
 
+def append_room(n, limit):
+    """The guard of an append to a list of n elements whose count can reach 2^32 - 1 (bit lists, byte lists, element arrays,
+    cached lists): n < limit. The older `n + 1 <= limit` wrapped to 0 at n = 2^32 - 1 and accepted the append
+    (docs/CRASH_HUNT.md CH-04); a limit that no U32 count reaches is the largest count, 2^32 - 1, itself."""
+    return f'U32.is_lt({n}, {min(limit, (1 << 32) - 1)})'
+
+
 def emit_ok(s, w):
     p, k, t = s.p, s.kind, s.t
     if k == 'box':
@@ -729,18 +736,32 @@ def emit_access(s, w):
         cond = 'U32.is_lt(i, n)' if dom is None else f'Bool.and(U32.is_lt(i, n), {dom})'
         w(f'def {p}_set_n(+i: U32, {pl}v: {er}, pair: O.Words & U32) -> O.Words & Bool:')
         w('  (o, +n) = pair')
-        w(f'  {p}_put_at({cond}, o, i, v)')
+        if er == 'O.Words':
+            # a cell is a packed word array of exactly `es` bytes: the setter refuses any other length
+            # (words_blit copies as many words as the argument claims; docs/CRASH_HUNT.md CH-01)
+            w(f'  {p}_set_v(i, o, n, v)')
+            w(f'def {p}_set_v(+i: U32, o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:')
+            w('  match v:')
+            w(f'    case O.Words{{vws, +vn}}: {p}_put_at(Bool.and({cond}, U32.is_eq(vn, {es})), o, i, O.Words{{vws, vn}})')
+        else:
+            w(f'  {p}_put_at({cond}, o, i, v)')
         w(f'def {p}_set(o: O.Words, +i: U32, {pl}v: {er}) -> O.Words & Bool: {p}_set_n(i, v, {p}_len(o))')
         if is_list:
             w(f'def {p}_grow(ok: Bool, o: O.Words, +n: U32, {pl}v: {er}) -> O.Words & Bool:')
             w('  match ok:')
             w(f'    case True{{}}: {p}_put_at(True{{}}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * {es} : U32)), ((n + 1 : U32) * {es} : U32)), n, v)')
             w('    case False{}: (o, False{})')
-            lim_ok = within('(n + 1 : U32)', t.size)
+            lim_ok = append_room('n', t.size) if es == 1 else within('(n + 1 : U32)', t.size)    # es >= 2: n < 2^31, n + 1 cannot wrap
             acond = lim_ok if dom is None else f'Bool.and({lim_ok}, {dom})'
             w(f'def {p}_app_n({pl}v: {er}, pair: O.Words & U32) -> O.Words & Bool:')
             w('  (o, +n) = pair')
-            w(f'  {p}_grow({acond}, o, n, v)')
+            if er == 'O.Words':
+                w(f'  {p}_app_v(o, n, v)')
+                w(f'def {p}_app_v(o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:')
+                w('  match v:')
+                w(f'    case O.Words{{vws, +vn}}: {p}_grow(Bool.and({acond}, U32.is_eq(vn, {es})), o, n, O.Words{{vws, vn}})')
+            else:
+                w(f'  {p}_grow({acond}, o, n, v)')
             w(f'def {p}_append(o: O.Words, {pl}v: {er}) -> O.Words & Bool: {p}_app_n(v, {p}_len(o))')
         return
     if k in ('fixwords',):
@@ -793,7 +814,7 @@ def emit_access(s, w):
         w('    case False{}: (o, False{})')
         w(f'def {p}_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:')
         w('  (o, +n) = pair')
-        w(f'  {p}_push({within("(n + 1 : U32)", t.size)}, o, v)')
+        w(f'  {p}_push({append_room("n", t.size)}, o, v)')
         w(f'def {p}_append(o: O.Bits, v: Bool) -> O.Bits & Bool: {p}_app_n(v, O.bits_len(o))')
         return
     if k == 'seq':
@@ -867,7 +888,7 @@ def emit_access(s, w):
             w(f'    case False{{}}: ({S}{{arr, n}}, False{{}})')
             w(f'def {p}_append(o: {S}, v: {Pe}) -> {S} & Bool:')
             w('  match o:')
-            w(f'    case {S}{{arr, +n}}: {p}_app_in({within("(n + 1 : U32)", t.size)}, arr, n, v)')
+            w(f'    case {S}{{arr, +n}}: {p}_app_in({append_room("n", t.size)}, arr, n, v)')
         return
 
 
@@ -1873,8 +1894,17 @@ def emit_seq(s, w):
     count = t.size
     if is_list:
         w(f'def {p}_default() -> {S}: {S}{{{p}_fill(0n), 0}}')
-    else:
+    elif e.data:
         w(f'def {p}_default() -> {S}: {S}{{{p}_fill({p}_cap({count})), {count}}}')
+    else:
+        # A vector of elements with storage of their own holds `count` PRESENT elements, each the default of its type: an absent
+        # slot (the empty box) has no bytes, so the serializer would write the offsets of elements it never writes
+        # (docs/CRASH_HUNT.md CH-10).
+        w(f'def {p}_dfill(+k: Nat, +i: U32, arr: Array<{R}>) -> Array<{R}>:')
+        w('  match k:')
+        w('    case 0n: arr')
+        w(f'    case 1n+q: {p}_dfill(q, (i + 1 : U32), Array.set({R}, arr, i, {E}_default()))')
+        w(f'def {p}_default() -> {S}: {S}{{{p}_dfill({count}n, 0, {p}_fill({p}_cap({count}))), {count}}}')
     # ---- read ----
     _seq_fixed_reader(w, p, e, R, E, S, is_list, count)
     # ---- size, put ----
@@ -1977,7 +2007,7 @@ def emit_seq_cache(s, w):
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, False{{}})')
     w(f'def {p}_capp(c: {C}, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
-    w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_in({within("(n + 1 : U32)", t.size)}, arr, n, d, nodes, lo, hi, v)')
+    w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_in({append_room("n", t.size)}, arr, n, d, nodes, lo, hi, v)')
     w(f'def {p}_capp_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}) -> {C} & Bool:')
     w('  match ok:')
     w(f'    case True{{}}: ({p}_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{{}})')
@@ -3041,6 +3071,17 @@ def emit_api(g, name, s, w):
     w(f'def {name}_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
     w(f'  {name}_built(size, {p}_ok(buf, 0, size))')
     w(f'def {name}_build(buf: B.Buf, +size: U32) -> B.Buf & {R}: {p}_read(buf, 0, size)')
+    # The checked entry (docs/CRASH_HUNT.md CH-05, CH-06): `_decode` takes the window size from the caller and trusts that it
+    # lies inside the buffer and below the 2^31 byte limit of every size in this library; the checked one verifies both and
+    # answers None otherwise. For every window it accepts, it is `_decode`.
+    w(f'def {name}_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
+    w('  match ok:')
+    w(f'    case True{{}}: {name}_decode(buf, size)')
+    w('    case False{}: (buf, None{})')
+    w(f'def {name}_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, {R}>:')
+    w('  (buf, +n) = pair')
+    w(f'  {name}_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)')
+    w(f'def {name}_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dchk(size, B.size(buf))')
     # encode
     if s.data:
         # the output of a fixed-size value has a size known here, so the

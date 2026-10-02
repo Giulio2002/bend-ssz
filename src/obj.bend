@@ -1351,10 +1351,16 @@ def bl_fin(+n: U32, pair: Words & Array<U32>) -> Words & Words:
   (o, ws) = pair
   (o, Words{ws, n})
 
+# The words of src are copied in at byte p (aligned). An empty src copies nothing: its word count minus one would wrap to
+# 2^32 - 1 iterations (docs/CRASH_HUNT.md CH-01).
+def bl_some(empty: Bool, o: Words, +p: U32, ws: Array<U32>, +n: U32) -> Words & Words:
+  match empty:
+    case True{}: (o, Words{ws, n})
+    case False{}: bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
+
 def words_blit(o: Words, +p: U32, src: Words) -> Words & Words:
   match src:
-    case Words{ws, +n}:
-      bl_fin(n, bl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n), o, Array.get(U32, ws, 0)))
+    case Words{ws, +n}: bl_some(U32.is_eq(n, 0), o, p, ws, n)
 
 def u64_lo_of(v: U64) -> U32:
   match v:

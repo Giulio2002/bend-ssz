@@ -279,9 +279,9 @@ def app_state(+ta: F.array__Tree<FuluValidator_d.Validator>, +dw: Nat, +t: F.arr
   {==}
 
 # The runtime's append guard: `capp` appends only when it holds. This list's
-# limit (2^40) is above every U32 length, so its guard is True{}; each generated
-# list (codegen/cached_laws.py) substitutes its own n + 1 <= limit.
-def guard(+n: U32) -> Bool: True{}
+# limit (2^40) is above every U32 length, so its guard is the largest count, n < 2^32 - 1 (docs/CRASH_HUNT.md CH-04: the older
+# `n + 1 <= limit` wrapped at 2^32 - 1); each generated list (codegen/proofs/laws/cached_root_laws.py) substitutes its own n < limit.
+def guard(+n: U32) -> Bool: U32.is_lt(n, 4294967295)
 
 # An append into a cache with room (n < 2^d): the items tree updated at n, n + 1 elements.
 law capp_eq:

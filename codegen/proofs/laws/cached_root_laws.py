@@ -75,7 +75,7 @@ def build(name, elem, depth):
     for alias in ('CL2.', 'CL.', 'L2.', 'L3.', 'CS.', 'CM.', 'CA.', 'CG.'):
         text = re.sub(r'(?<![A-Za-z0-9_])' + re.escape(alias), '', text)
     guard = app_guard_cached(name)
-    text = text.replace('def guard(+n: U32) -> Bool: True{}', f'def guard(+n: U32) -> Bool: U32.is_le((n + 1 : U32), {guard})')
+    text = text.replace('def guard(+n: U32) -> Bool: U32.is_lt(n, 4294967295)', f'def guard(+n: U32) -> Bool: U32.is_lt(n, {guard})')
     text = text.replace(T_LIST, name)
     text = text.replace(f'T.{T_ELEM}_default()', f'T.{elem}_default()').replace(f'T.{T_ELEM}_root(', f'T.{elem}_root(')
     text = text.replace(f'RN.d_{T_ELEM}(', f'RN.d_{elem}(').replace(f'RN.st_{T_ELEM}(', f'RN.st_{elem}(')
@@ -209,7 +209,7 @@ import ./root_types.bend as RT
 # The public producers of @L values establish its representation invariant
 # RT.rep_@L(o, s), the hypothesis of the root law RT.rs_@L: `default()`,
 # `uncache(c)` of a valid cache (CA.inv), `set(o, i, v)` for i < n, and
-# `append(o, v)` when the runtime accepts it (its guard n + 1 <= @G holds) and
+# `append(o, v)` when the runtime accepts it (its guard n < @G holds) and
 # n < 2^k with k <= 30, and `read` (the list decoder) for a nonempty or empty
 # field. Each mutation law also says the producer reports success.
 
@@ -262,8 +262,8 @@ def tr_pw(-o: T.@L_Seq, +t: F.array__Tree<T.@E>, +N: U32, +P: Nat, +eo: {o == T.
   h
 
 def tr_g(-o: T.@L_Seq, +t: F.array__Tree<T.@E>, +N: U32, +eo: {o == T.@L_Seq{F.array__thaw(T.@E, t), N} : T.@L_Seq},
-    +h: {U32.is_le(U32.add(RT.xlen_o_@L(o), 1), @G) == True{} : Bool}) -> {U32.is_le(U32.add(N, 1), @G) == True{} : Bool}:
-  %Equal.cong(T.@L_Seq, U32, RT.xlen_o_@L, o, T.@L_Seq{F.array__thaw(T.@E, t), N}, eo) : {U32.is_le(U32.add(_, 1), @G) == True{} : Bool}
+    +h: {U32.is_lt(RT.xlen_o_@L(o), @G) == True{} : Bool}) -> {U32.is_lt(N, @G) == True{} : Bool}:
+  %Equal.cong(T.@L_Seq, U32, RT.xlen_o_@L, o, T.@L_Seq{F.array__thaw(T.@E, t), N}, eo) : {U32.is_lt(_, @G) == True{} : Bool}
   h
 
 def tr_fit(-o: T.@L_Seq, +t: F.array__Tree<T.@E>, +N: U32, +P: Nat, +eo: {o == T.@L_Seq{F.array__thaw(T.@E, t), N} : T.@L_Seq},
@@ -326,7 +326,7 @@ def app_eq(+t: F.array__Tree<T.@E>, +dw: Nat, +N: U32, +v: T.@E, +k: Nat,
     +pf: {F.array__perfect(T.@E, dw, t) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool},
     +hlt: {Nat.is_lt(U32.to_nat(N), O.pow2n(k)) == True{} : Bool},
-    +hg: {U32.is_le(U32.add(N, 1), @G) == True{} : Bool})
+    +hg: {U32.is_lt(N, @G) == True{} : Bool})
     -> {T.@L_append(T.@L_Seq{F.array__thaw(T.@E, t), N}, v) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}:
   +c = CA.fits(dw, N)
   +D2 = CA.rdepth(c, dw, N)
@@ -335,7 +335,7 @@ def app_eq(+t: F.array__Tree<T.@E>, +dw: Nat, +N: U32, +v: T.@E, +k: Nat,
   +hn1 = n1_le(N, O.pow2n(k), en1, hlt)
   +hr = CA.rt_room(c, dw, N, k, hk, hn1, en1, {==})
   +pr = CA.rt_perfect(c, dw, N, t, pf)
-  %Equal.sym(Bool, U32.is_le(U32.add(N, 1), @G), True{}, hg) :
+  %Equal.sym(Bool, U32.is_lt(N, @G), True{}, hg) :
     {T.@L_app_in(_, F.array__thaw(T.@E, t), N, v) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}
   %Equal.sym(Array<T.@E> & U32, Array.size(T.@E, F.array__thaw(T.@E, t)), (F.array__thaw(T.@E, t), F.u32__pow2u(dw)), F.array__size_thaw(T.@E, dw, t, pf)) :
     {(T.@L_Seq{Array.set(T.@E, T.@L_room_sized(N, _), N, v), (N + 1 : U32)}, True{}) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}
@@ -356,7 +356,7 @@ law append_rep:
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}
   for +rep: RT.rep_@L(o, s)
   for +hlt: {Nat.is_lt(U32.to_nat(RT.xlen_o_@L(o)), O.pow2n(k)) == True{} : Bool}
-  for +hg: {U32.is_le(U32.add(RT.xlen_o_@L(o), 1), @G) == True{} : Bool}
+  for +hg: {U32.is_lt(RT.xlen_o_@L(o), @G) == True{} : Bool}
   for +hfit: {Nat.is_le(U32.to_nat(U32.add(RT.xlen_o_@L(o), 1)), SH.ListOf_limit(s)) == True{} : Bool}
   DK.P2({okb(T.@L_append(o, v)) == True{} : Bool}, RT.rep_@L(sq(T.@L_append(o, v)), s))
 def append_rep(o, s, v, k, hk, rep, hlt, hg, hfit):
@@ -499,7 +499,7 @@ def read_empty_rep(buf, off, len, s, heq):
 
 def app_guard(name):
     types = RR.mono_text('fulu')
-    m = re.search(rf'^def {name}_append\(.*\n.*\n.*_app_in\(U32\.is_le\(\(n \+ 1 : U32\), (\d+)\), arr, n, v\)', types, re.M)
+    m = re.search(rf'^def {name}_append\(.*\n.*\n.*_app_in\(U32\.is_lt\(n, (\d+)\), arr, n, v\)', types, re.M)
     return m.group(1) if m else None
 
 
@@ -539,7 +539,7 @@ def build_spec(name, elem, depth, eq):
 
 def app_guard_cached(name):
     types = RR.mono_text('fulu')
-    m = re.search(rf'^def {name}_capp\(.*\n.*\n.*_capp_in\(U32\.is_le\(\(n \+ 1 : U32\), (\d+)\), arr', types, re.M)
+    m = re.search(rf'^def {name}_capp\(.*\n.*\n.*_capp_in\(U32\.is_lt\(n, (\d+)\), arr', types, re.M)
     if not m:
         raise SystemExit(f'{name}: capp guard not in the expected form')
     return m.group(1)

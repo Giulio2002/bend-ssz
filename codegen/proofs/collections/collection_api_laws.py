@@ -152,11 +152,16 @@ def info(c):
                 I['ln'] = 'n'
         else:
             I['ln'] = 'n'
-        sb = body(t, c + '_set_n')[2].split('\n')[-1].strip()
+        # a cell collection (O.Words elements) checks the argument's length: its guard is in `_set_v` / `_app_v`, which open the
+        # argument as O.Words{vws, vn}; the laws then take vws and vn as parameters
+        sv = body(t, c + '_set_v')
+        I['vwords'] = bool(sv)
+        sb = (sv or body(t, c + '_set_n'))[2].split('\n')[-1].strip()
+        sb = re.sub(r'^case [^:]*: ', '', sb)
         I['GS'] = subst_n(call_args(sb, c + '_put_at')[0], I['ln'])
-        a = body(t, c + '_app_n')
+        a = body(t, c + '_app_v') or body(t, c + '_app_n')
         if a:
-            ab = a[2].split('\n')[-1].strip()
+            ab = re.sub(r'^case [^:]*: ', '', a[2].split('\n')[-1].strip())
             fn = c + '_grow' if ab.startswith(c + '_grow(') else c + '_push'
             I['afn'] = fn
             args = call_args(ab, fn)
@@ -209,6 +214,13 @@ def laws(I, imps):
     vm = I['vm']
     out = []
     w = out.append
+    # v is erased unless a guard reads it (a byte element's value check)
+    vb = ('+v: %s' if re.search(r'(?<![\w.])v(?![\w.])', (GS or '') + (GA or '')) else '-v: %s') % VT
+    V = 'v'
+    if I.get('vwords'):
+        # the cell argument is taken apart: its storage (erased) and its length (the guard reads it)
+        vb, V = '-vws: Array<U32>, +vn: U32', '%s{vws, vn}' % T
+    VA = 'vws, vn' if I.get('vwords') else 'v'     # the argument names of the flag lemmas
     if I['kind'] == 'seq':
         EL = q(I['EL'])
         OBJ = '%s.%s{arr, n}' % (DA, I['T'])
@@ -219,21 +231,19 @@ def laws(I, imps):
     else:
         OBJ = '%s{ws, n}' % T
         bind = '-ws: Array<U32>, +n: U32'
-        put = lambda g: '%s.%s_put_at(%s, %s, i, v)' % (DA, c, g, OBJ)
+        put = lambda g: '%s.%s_put_at(%s, %s, i, %s)' % (DA, c, g, OBJ, V)
         app = lambda g: '%s.%s(%s)' % (DA, I['afn'], ', '.join([g] + [OBJ if x == 'o' else q(x) for x in I['aargs']]))
         getin = lambda g: '%s.%s_get_in(%s, %s, i)' % (DA, c, g, OBJ)
-    SET = '%s.%s_set(%s, i, v)' % (DA, c, OBJ)
-    APP = '%s.%s_append(%s, v)' % (DA, c, OBJ)
+    SET = '%s.%s_set(%s, i, %s)' % (DA, c, OBJ, V)
+    APP = '%s.%s_append(%s, %s)' % (DA, c, OBJ, V)
     GET = '%s.%s_get(%s, i)' % (DA, c, OBJ)
-    # v is erased unless a guard reads it (a byte element's value check)
-    vb = ('+v: %s' if re.search(r'(?<![\w.])v(?![\w.])', (GS or '') + (GA or '')) else '-v: %s') % VT
     n = 0
     w('# ---- %s ----' % c)
     # the flags: exactly the guard (a case split on the guard's value)
     w('def %s_flag_set(b: Bool, %s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:' % (c, bind, vb, T, put('b')))
     w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
     w('def %s_api_set_flag(%s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vb, T, SET, GS))
-    w('  %s_flag_set(%s, %s, i, v)' % (c, GS, 'arr, n' if I['kind'] == 'seq' else 'ws, n'))
+    w('  %s_flag_set(%s, %s, i, %s)' % (c, GS, 'arr, n' if I['kind'] == 'seq' else 'ws, n', VA))
     w('def %s_api_set_rejected(%s, +i: U32, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vb, GS, SET, OBJ, T))
     w('  %%Equal.sym(Bool, %s, False{}, e) : {%s == (%s, False{}) : %s & Bool}' % (GS, put('_'), OBJ, T))
     w('  {==}')
@@ -245,7 +255,7 @@ def laws(I, imps):
         w('def %s_flag_append(b: Bool, %s, %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:' % (c, bind, vb, T, app('b')))
         w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
         w('def %s_api_append_flag(%s, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vb, T, APP, GA))
-        w('  %s_flag_append(%s, %s, v)' % (c, GA, 'arr, n' if I['kind'] == 'seq' else 'ws, n'))
+        w('  %s_flag_append(%s, %s, %s)' % (c, GA, 'arr, n' if I['kind'] == 'seq' else 'ws, n', VA))
         w('def %s_api_append_rejected(%s, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vb, GA, APP, OBJ, T))
         w('  %%Equal.sym(Bool, %s, False{}, e) : {%s == (%s, False{}) : %s & Bool}' % (GA, app('_'), OBJ, T))
         w('  {==}')
@@ -1057,9 +1067,13 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
     c = I['c']
     m = re.match(r'([\w.]+)\(O\.words_blit\(o, \(i \* (\d+) : U32\), v\)\)$', q(I['put_true']))
     at = body(I['text'], c + '_at')
-    if not m or GS != GG or I['ET'] != 'O.Words' or not at:
+    K = m.group(2) if m else None
+    # the setter's guard is the index test and the argument's length (the cell is exactly K bytes): GSV, the guard at a K-byte value
+    if not m or GS != 'Bool.and(%s, U32.is_eq(vn, %s))' % (GG, K) or I['ET'] != 'O.Words' or not at:
         return 0
-    K = m.group(2)
+    GSV = 'Bool.and(%s, U32.is_eq(%s, %s))' % (GG, K, K)
+    HGV = 'F.logic__and_intro(%s, U32.is_eq(%s, %s), hg, {==})' % (GG, K, K)
+    GS = GG     # the laws below keep their hypothesis hg: {index test == True}; the length test at K evaluates
     assert at[2].strip() == 'O.words_slice(o, (i * %s : U32), %s)' % (K, K), at
     W = int(K) // 4
     imps['WR'] = 'proofs/obj/words_rw.bend'
@@ -1089,7 +1103,7 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
       '+pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(%s, F.spec_common__pow2(dv)) == True{} : Bool}, '
       '+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, %s)' % (c, WN, GS, BASE, hr))
     w('    -> {%s == %s}:' % (GETF('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, %s))' % (DA, c, O0, V)), RES))
-    w('  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s}' % (GS, GETF('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RES))
+    w('  %%Equal.sym(Bool, %s, True{}, %s) : {%s == %s}' % (GSV, HGV, GETF('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RES))
     BLIT = lambda x: GETF('%s.%s_blit(O.bl_fin(%s, %s))' % (DA, c, K, x))
     w('  %%Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, tv), 0), (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n)), '
       'WR.get_thaw(dv, tv, 0, 0n, hdv, {==}, F.nat__lt_le_trans(0n, %s, F.spec_common__pow2(dv), {==}, hv), pfv)) : {%s == %s}'
@@ -1135,7 +1149,7 @@ def cells_readback(w, I, q, DA, GS, GG, imps):
       '+pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(%s, F.spec_common__pow2(dv)) == True{} : Bool}, '
       '+hg: {%s == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, %s, %s, %s)' % (c, WN, GS, BASE, hr, hqe, hcap))
     w('    -> {%s == %s : S.Value}:' % (VEW('Pair.fst(O.Words, Bool, %s.%s_set(%s, i, %s))' % (DA, c, O0, V)), RESV))
-    w('  %%Equal.sym(Bool, %s, True{}, hg) : {%s == %s : S.Value}' % (GS, VEW('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RESV))
+    w('  %%Equal.sym(Bool, %s, True{}, %s) : {%s == %s : S.Value}' % (GSV, HGV, VEW('Pair.fst(O.Words, Bool, %s.%s_put_at(_, %s, i, %s))' % (DA, c, O0, V)), RESV))
     BL = lambda x: '%s.%s_blit(O.bl_fin(%s, %s))' % (DA, c, K, x)
     w('  %%Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, tv), 0), (F.array__thaw(U32, tv), WR.at(F.array__slots(U32, tv), 0n)), '
       'WR.get_thaw(dv, tv, 0, 0n, hdv, {==}, F.nat__lt_le_trans(0n, %s, F.spec_common__pow2(dv), {==}, hv), pfv)) : {%s == %s : S.Value}'
@@ -1952,8 +1966,9 @@ def coll_bits(cs):
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
             n += 1
             # the spec value: the bits of the list after a roomy append are the bits before and the new bit
-            mlim = re.match(r'U32\.is_le\(\(n \+ 1 : U32\), (\d+)\)$', I['GA'])
+            mlim = re.match(r'U32\.is_lt\(n, (\d+)\)$', I['GA'])
             assert mlim, I['GA']
+            LE1 = 'BV2.lt_le1(n, %s, ha)' % mlim.group(1)     # the guard n < limit as n + 1 <= limit (bits_view.bend)
             imps['BV2'] = 'proofs/obj/bits_view.bend'
             imps['BO'] = 'proofs/obj/bitlist_obj_light.bend'
             OBn = lambda t_: 'O.Bits{F.array__thaw(U32, %s), %s}' % (t_, N1)
@@ -1971,7 +1986,7 @@ def coll_bits(cs):
             L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom)) : {%s == %s : +List<Bool>}' % (WB, NBY, WB, NBY, NBY, VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
             L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, OBn('t'), Xn, N1, JWn, VGn('O.bit_put(n, v, _)'), RHSn))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, NWn, OBn(T1n), N1, JWn, NWn, VGn('_'), RHSn))
-            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, ha), hg, hq, hk)' % (N1, mlim.group(1)))
+            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, %s), hg, hq, hk)' % (N1, mlim.group(1), LE1))
             L.append('')
             n += 1
             GW = grow_parts(NBY, NBY)
@@ -2002,7 +2017,7 @@ def coll_bits(cs):
                      % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bit_put(n, v, _)'), RHSn))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
                      % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('_'), RHSn))
-            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, ha), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, ha, {==}), BV2.n1(n, %s, hg, ha), hq))' % (D2g, KK, N1, mlim.group(1), N1, KB, N1, mlim.group(1), KB, mlim.group(1)))
+            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, %s), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, %s, {==}), BV2.n1(n, %s, hg, %s), hq))' % (D2g, KK, N1, mlim.group(1), LE1, N1, KB, N1, mlim.group(1), KB, LE1, mlim.group(1), LE1))
             L.append('')
             n += 1
         L.append('')
