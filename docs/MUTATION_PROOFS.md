@@ -216,3 +216,14 @@ Equivalent, with the proof-level reason:
 * `representation.bend` `erase` placeholders: semantically irrelevant (`shape` never reads a length, so `shape(v, s) == shape(v, erase(s))`
   holds for any placeholder: proofs/representation_erasure.bend, and `erase(X{n}) == erase(X{m})`); they are nonetheless killed by the
   `erase_*` pins, which fix the chosen constant.
+
+### Spec pass, third draw (spec_pins_more.py)
+
+* `tree.bend` `tree(0n, [])`, `zero_subtree(0n)` (`0n -> 1n`): `tree(0n, []) == zero_bytes(32n)` (the empty depth-0 tree is the zero chunk, stated against
+  `primitives.zero_bytes`, not against `zero_subtree`). Killed (statement mismatch).
+* `type_legality.bend` BitVector `0 < n`: `type_legal(BitVector{1n})` is inhabited; the mutant (`1 < n`) makes it a type error. Killed.
+* `type_legality.bend` CompatibleUnion `0 < field_count(options)`: `type_legal(CompatibleUnion{[1], Chain{Boolean, End}})` is inhabited, with the
+  derivation `Fork{Fork{Leaf, Leaf}, Leaf}` for `mutually_compatible`; the mutant needs two options and the term no longer typechecks. Killed.
+* `root_relation.bend:143` `aggregate(True{}, 0n -> 1n, ProgressiveBits ..)`: equivalent, by the same lemma as `root_relation_serializable`:
+  `specpin_root_relation.bend` proves `aggregate(True{}, a, c, l, o) == aggregate(True{}, b, c, l, o)` for all arguments (the limit only reaches `tree`,
+  whose `True` arm ignores it); the module imports the mutated file and still checks.
