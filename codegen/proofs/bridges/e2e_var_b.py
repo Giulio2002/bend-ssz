@@ -6859,12 +6859,8 @@ CREC_PREM = {}
 CREC_INFO = {}
 
 
-def crec_text(X, parts, mod, extra_imports=(), note=''):
-    """e2e/<mod>.bend: R_X / SZ / mk_X for X. parts: {field index: part entry} for the fields that are parts; the
-    others are fixed values (their view RN.v_<kind>) or the sync aggregate's words (kind 'sa').
-    A part entry: R (its record, R(po)), ex (its record's names, in order), view, L (its byte count, on po), mk
-    (its builder: po, s, r, bound -> text), prem ([(name, po -> type)]), bound (po -> the size premise its builder
-    takes, derived from the container's), box (the boxed type when the field is O.Boxed of the part)."""
+def _crec_load_interfaces(X):
+    """the record's encode interface, its encode record and the root types, with the facts read off them (MW names, OBJC, VALC, OKTW)"""
     OT = f'Fulu{X}_d.{X}'
     SC = f'Spec.{X}()'
     it = _unlight((_OBJ / f'encx_{X}_iface.bend').read_text())
@@ -6876,6 +6872,12 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     objc = _re.search(r'^def OBJC\(.*?\) -> \S+: (.*)$', K, _re.M).group(1)
     valc = _re.search(r'^def VALC\(.*?\) -> S\.Value: (.*)$', it, _re.M).group(1)
     okt = _band(_re.search(r'^def OKTW\(.*?\) -> Bool: (.*)$', it, _re.M).group(1))
+    return MWN, OT, SC, it, objc, okt, rt, valc
+
+
+def _crec_positions(X, OT, objc):
+    """the object's positions (one level of groups) and the builder of the object from them"""
+    POS = None
     # the object's positions (one level of groups)
     top = _peel(objc, OT)
     groups = None
@@ -6892,6 +6894,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         for g, ps in groups:
             out.append(f'{g}{{{", ".join(xs[i:i + len(ps)])}}}'); i += len(ps)
         return f'{OT}{{{", ".join(out)}}}'
+    return POS, n, objt
+
+
+def _crec_values_and_views(X, SC, rt, valc, n):
+    """the item values of the record's value, the views of root_types' v_X and the projection / schema accessors"""
     # the values
     items, v = [], valc.strip()
     v = _peel(v, 'S.Sequence')[0]
@@ -6908,6 +6915,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     assert len(views) == n
     pj = lambda j, o='o': f'RT.pj_{X}_{j}({o})'
     sch = lambda j: 'SH.Chain_head(' + 'SH.Chain_tail(' * j + f'SH.Container_fields({SC})' + ')' * j + ')'
+    return items, pj, sch, views
+
+
+def _crec_field_kinds(parts, MWN, POS, n, items, views):
+    """classify every field: a part, the sync aggregate's words, or a fixed value with its kind"""
     kinds = {}
     for j in range(n):
         if j in parts:
@@ -6926,6 +6938,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         m_ = _re.fullmatch(r'LV_(\w+)\(' + _re.escape(POS[j]) + r'\)', items[j])
         fxk[j] = m_.group(1)
         assert views[j] in (f'RN.v_{fxk[j]}', f'RN_L.v_{fxk[j]}'), (views[j], fxk[j])
+    return FX_, PT, SA, fxk, kinds
+
+
+def _crec_byte_bound(parts, MWN, it, okt, POS, PT):
+    """the byte bound (OKTW's last conjunct), the sum of the byte counts and each part's names in the record"""
     # the bound: the conjuncts are the parts' facts (in order), then the byte bound
     # the OKW laws: the container's encoding below 2^31 bytes (OKTW's last conjunct, ENDC's sum), no 4 * 2^28 bound
     bnd = okt[-1]
@@ -6946,11 +6963,25 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         ex[j] = [a for a in MWN if _re.search(r'(?<![\w.])' + a + r'(?![\w])', arg_s)]
         assert ex[j] and all(_re.search(r'(?<![\w.])' + a + r'(?![\w])', terms[1 + i]) for a in ex[j]), (j, terms[1 + i])
         assert all(_re.search(r'(?<![\w.])' + a + r'(?![\w])', okt[i]) for a in ex[j]), (j, okt[i])
+    return BND, BQ, SUML, ex, terms
+
+
+def _crec_part_accessors(parts, pj, PT, BND, terms):
+    """the parts' accessors: their objects, byte counts, the sum and its size premise"""
     po = lambda j, o='o': (f'RT.pjb_{parts[j]["bx"]}_bx({pj(j, o)})' if parts.get(j, {}).get('box') else pj(j, o))
     tl = {j: parts[j]['L'](po(j)) for j in PT}
     ll = {j: terms[1 + i] for i, j in enumerate(PT)}
     SUMT = lambda o='o': _sum_of([terms[0]] + [parts[j]['L'](po(j, o)) for j in PT])
     SZ = lambda o='o': f'{{{BND(SUMT(o))} == True{{}} : Bool}}'
+    return SUMT, SZ, ll, po, tl
+
+
+def _crec_witness_sums(X, parts, OT, PT, BND, terms, SUMT, po):
+    """the nested record's sums and the size premise with its witnesses (SZW), and the record predicate R_X"""
+    CH_ = None
+    WN = None
+    leaf = None
+    sumf = None
     NEST = [j for j in PT if parts[j].get('crec')]
     assert not NEST or PT == NEST and len(NEST) == 1
     if NEST:
@@ -6976,6 +7007,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     RX = (f'def R_{X}(po: {OT}) -> Data:\n'
           f'  DK.Ex(CI.MW, m => DK.P2({{po == CI.TH(m) : {OT}}}, DK.P2({{RT.v_{X}(CI.TH(m)) == CI.VAL(m) : S.Value}},\n'
           f'    DK.P2({{CI.OKW(m) == True{{}} : Bool}}, {{LY.LN(CI.ENC(m)) == {SUMT("po")} : Nat}}))))\n')
+    return CH_, NEST, RX, SZWd, WIT, WN, leaf, sumf
+
+
+def _crec_view_lemma(X, parts, OT, n, objt, views, fxk, kinds):
+    """the view of the record's object (OBJH, VALH, vz)"""
     # ---- the view of the record's object
     zs = [f'z{j}' for j in range(n)]
     ys = [f'Y{j}' for j in range(n)]
@@ -6998,6 +7034,13 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         cur_ = [f'{views[j]}(z{j})' if j < k else ('_' if j == k else f'Y{j}') for j in range(n)]
         vz.append(f'  %e{k} : {{{LHS} == VALH({", ".join(cur_)}) : S.Value}}')
     vz += ['  {==}', '']
+    return ftys, vz
+
+
+def _crec_kx_header(parts, MWN, OT, POS, n, objt, pj, FX_, PT, SA, fxk, kinds, po):
+    """the header of kX: the object from its fields, the sync aggregate's words and the parameter lists"""
+    BV = None
+    sw = None
     # ---- kX: the record, from the fields
     c0 = objt([POS[j] if kinds[j] == 'fx' else pj(j) for j in range(n)])
     W = MWN
@@ -7015,6 +7058,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     reca = ', '.join(f'w{j}' for j in PT)
     head = f'-o: {OT}' + (f', {fxp}' if fxp else '') + f', +eo: {{o == {c0} : {OT}}}'
     heada = 'o' + (f', {fxa}' if fxa else '') + ', eo'
+    return BV, W, boxa, boxp, c0, head, heada, reca, recp, sa, sw
+
+
+def _crec_kx_body(parts, OT, objc, okt, POS, n, items, pj, PT, fxk, kinds, BND, SUML, ex, terms, SUMT, ll, po, tl, ftys, BV, W, c0, sw):
+    """the body of kX: the parts' records unpacked, the object's equations, the byte bound and the result tuple"""
     L = []
     for j in PT:
         names = ex[j] + [f'e{j}', f'v{j}', f'k{j}', f'l{j}']
@@ -7066,6 +7114,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
              f'  +eL = Equal.trans(Nat, LY.LN(CI.ENC({MWv})), {SUML}, {SUMT()}, CI.lenEW({", ".join(W)}, okP),',
              f'    {_trans_chain("Nat", [SUML] + xs[1:], qs) if len(qs) > 1 else qs[0]})',
              f'  ({MWv}, ({eq}, (vz({", ".join(vzargs)}), (okP, eL))))'])
+    return body
+
+
+def _crec_kx_defs(X, pj, SZ, boxa, boxp, head, heada, reca, recp, sa, sw, body):
+    """kX and, for the sync aggregate, its words' record (R_S, sa2, sa1, kS)"""
     kx = [f'# the record, from the fields and the parts\' records']
     sap = ''
     if sa is not None:
@@ -7091,6 +7144,13 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
             f'def kS({head}, +wS: R_S({pj(sa)}){boxp}, {recp}, +hZ: {SZ()}) -> R_{X}(o):\n'
             f'  (+bv, s1) = wS\n  (+sg, +es{sa}) = s1\n'
             f'  kX({heada}, bv, sg, es{sa}{boxa}, {reca}, hZ)\n')
+    return kx, out_defs
+
+
+def _crec_mk_unpack(X, parts, OT, SC, POS, n, FX_, PT, kinds, BND, BQ, terms, SZ, po, tl, CH_, NEST, WIT, WN, leaf, sumf):
+    """mk_X: the representation unpacked, with the parts' size bounds from hZ"""
+    HZN = None
+    hZf = None
     # ---- mk_X: from rep
     prem = []
     for j in PT:
@@ -7148,6 +7208,11 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
             mk.append(f'  +hZ{i_} = FD.logic__subst(Nat, z => {{{BND(mixn(i_, "z"))} == True{{}} : Bool}}, {nm}, {lv_[i_]}, e{nm}, {prev})')
             prev = f'hZ{i_}'
         hZf = prev
+    return HZN, hZf, mk
+
+
+def _crec_mk_call(parts, pj, sch, PT, po, NEST, WIT, boxa, heada, sa, HZN, hZf, mk):
+    """mk_X's result: the parts' builders applied, then kX / kS"""
     calls = []
     for j in PT:
         r_ = f'ri{j}' if parts[j].get('box') else f'r{j}'
@@ -7156,6 +7221,10 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         mk.append(f'  kS({heada}, sa1({pj(sa)}, {sch(sa)}, r{sa}){boxa}, {", ".join(calls)}, {hZf if WIT else "hZ"})')
     else:
         mk.append(f'  kX({heada}{boxa}, {", ".join(calls)}, {hZf if WIT else "hZ"})')
+
+
+def _crec_assemble(X, extra_imports, note, it, views, fxk, RX, SZWd, vz, sa, kx, out_defs, mk):
+    """the module text: imports, helper lemmas, the definitions in order"""
     helpers = ('# a part of a sum is below the sum\'s strict bound\n'
                'def pre_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_lt(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_lt(a, c) == True{} : Bool}:\n'
                '  FD.nat__le_lt_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)\n'
@@ -7181,6 +7250,28 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
             f"# {X}'s encode record (CI.MW) of an object the root law represents (mk_{X}): the object its thaw (TH), its view the\n"
             f"# record's value (VAL), the record's facts (OK), its byte count from the object alone. {note}\n\n"
             + helpers + '\n' + lvs + RX + '\n' + SZWd + "# the view of the record's object\n" + '\n'.join(vz) + '\n' + '\n'.join(kx) + '\n' + '\n'.join(out_defs) + '\n' + '\n'.join(mk) + '\n')
+
+
+def crec_text(X, parts, mod, extra_imports=(), note=''):
+    """e2e/<mod>.bend: R_X / SZ / mk_X for X. parts: {field index: part entry} for the fields that are parts; the
+    others are fixed values (their view RN.v_<kind>) or the sync aggregate's words (kind 'sa').
+    A part entry: R (its record, R(po)), ex (its record's names, in order), view, L (its byte count, on po), mk
+    (its builder: po, s, r, bound -> text), prem ([(name, po -> type)]), bound (po -> the size premise its builder
+    takes, derived from the container's), box (the boxed type when the field is O.Boxed of the part)."""
+    MWN, OT, SC, it, objc, okt, rt, valc = _crec_load_interfaces(X)
+    POS, n, objt = _crec_positions(X, OT, objc)
+    items, pj, sch, views = _crec_values_and_views(X, SC, rt, valc, n)
+    FX_, PT, SA, fxk, kinds = _crec_field_kinds(parts, MWN, POS, n, items, views)
+    BND, BQ, SUML, ex, terms = _crec_byte_bound(parts, MWN, it, okt, POS, PT)
+    SUMT, SZ, ll, po, tl = _crec_part_accessors(parts, pj, PT, BND, terms)
+    CH_, NEST, RX, SZWd, WIT, WN, leaf, sumf = _crec_witness_sums(X, parts, OT, PT, BND, terms, SUMT, po)
+    ftys, vz = _crec_view_lemma(X, parts, OT, n, objt, views, fxk, kinds)
+    BV, W, boxa, boxp, c0, head, heada, reca, recp, sa, sw = _crec_kx_header(parts, MWN, OT, POS, n, objt, pj, FX_, PT, SA, fxk, kinds, po)
+    body = _crec_kx_body(parts, OT, objc, okt, POS, n, items, pj, PT, fxk, kinds, BND, SUML, ex, terms, SUMT, ll, po, tl, ftys, BV, W, c0, sw)
+    kx, out_defs = _crec_kx_defs(X, pj, SZ, boxa, boxp, head, heada, reca, recp, sa, sw, body)
+    HZN, hZf, mk = _crec_mk_unpack(X, parts, OT, SC, POS, n, FX_, PT, kinds, BND, BQ, terms, SZ, po, tl, CH_, NEST, WIT, WN, leaf, sumf)
+    _crec_mk_call(parts, pj, sch, PT, po, NEST, WIT, boxa, heada, sa, HZN, hZf, mk)
+    return _crec_assemble(X, extra_imports, note, it, views, fxk, RX, SZWd, vz, sa, kx, out_defs, mk)
 
 
 def _dl_part(L, E, al, rl):
