@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m06-vector-composite/01
+# type: ComplexTestStruct
+# ops: root
+# spec: Vector[VarTestStruct,2] has 2 leaves: depth 1
+# fault: depth 2
+# why: depth = N
+# file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+--- a/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
++++ b/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+@@ -80,3 +80,3 @@
+   match o:
+-    case vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
++    case vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+ 

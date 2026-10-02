@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v02-vector-length-encode/02
+# type: vec_uint16_5
+# ops: encode
+# spec: serializing a Vector[uint16,5] requires exactly five elements
+# fault: validity accepts a vector of 9 bytes or more (lower bound 9)
+# why: off by one on the lower bound
+# file: types/vec_uint16_5_encode_ssz_generated.bend
+--- a/types/vec_uint16_5_encode_ssz_generated.bend
++++ b/types/vec_uint16_5_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 10, 10, False{}, 2)
++def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 9, 10, False{}, 2)
+ 

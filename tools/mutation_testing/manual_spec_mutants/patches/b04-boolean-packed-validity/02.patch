@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b04-boolean-packed-validity/02
+# type: vec_bool_5
+# ops: decode
+# spec: every element of a Vector[boolean, 5] must be 0x00 or 0x01
+# fault: the vector validator checks only the first four elements (loop bound n-2 instead of n-1)
+# why: off by one in the element loop
+# file: types/vec_bool_5_decode_ssz_generated.bend
+--- a/types/vec_bool_5_decode_ssz_generated.bend
++++ b/types/vec_bool_5_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+     case True{}: (buf, True{})
+-    case False{}: v5_bool_ck(U32.to_nat((n - 1 : U32)), 0, off, True{}, O.ok_bool(buf, off))
++    case False{}: v5_bool_ck(U32.to_nat((n - 2 : U32)), 0, off, True{}, O.ok_bool(buf, off))
+ 

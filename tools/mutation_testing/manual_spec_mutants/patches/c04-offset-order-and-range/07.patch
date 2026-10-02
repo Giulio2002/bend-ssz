@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/07
+# type: ComplexTestStruct
+# ops: decode
+# spec: a variable part ends where the next offset starts
+# fault: the first variable part (a List[uint16]) is given the rest of the buffer instead of the bytes up to the next offset
+# why: forgetting to subtract the next offset
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -104,3 +104,3 @@
+   match ok:
+-    case True{}: ComplexTestStruct_v4(off, len, o0, o1, o2, o3, list_uint16_128_r.l128_u16_ok(buf, (off + o0 : U32), (o1 - o0 : U32)))
++    case True{}: ComplexTestStruct_v4(off, len, o0, o1, o2, o3, list_uint16_128_r.l128_u16_ok(buf, (off + o0 : U32), (len - o0 : U32)))
+     case False{}: (buf, False{})

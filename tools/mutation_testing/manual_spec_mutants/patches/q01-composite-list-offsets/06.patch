@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/06
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: offsets must lie within the buffer
+# fault: the upper-bound test is dropped
+# why: forgetting the range check
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   (buf, +b) = pair
+-  pl_VarTestStruct_eb(b, O.and_pair(acc, pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  pl_VarTestStruct_eb(b, O.and_pair(acc, pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b))), buf, off, a, b)))
+ 

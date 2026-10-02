@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT b02-boolean-encode/02
+# type: boolean
+# ops: encode
+# spec: false serializes as 0x00, true as 0x01
+# fault: the boolean writer writes the byte 1 for false and nothing for true (the arms are swapped)
+# why: inverted match arms
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -437,4 +437,4 @@
+   match b:
+-    case True{}: w8(out, p, 1)
+-    case False{}: out
++    case True{}: out
++    case False{}: w8(out, p, 1)
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q03-vector-of-variable/05
+# type: ComplexTestStruct
+# ops: decode
+# spec: designed control: with first == 8 required, the bound first <= len is NOT implied (len may be < 8)
+# fault: the bound first <= len is dropped
+# why: redundant-looking check removed
+# file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+--- a/types/vec_VarTestStruct_2_decode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_decode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+   (buf, +first) = pair
+-  v2_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_eq(first, 8)), buf, off, len, first)
++  v2_VarTestStruct_first(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_eq(first, 8)), buf, off, len, first)
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl06-bitlist-root/03
+# type: bitlist_5
+# ops: root
+# spec: the Bitlist[5] limit is one chunk (depth 0)
+# fault: the tree depth is 1 (one level too deep)
+# why: limit in bits used as chunk count
+# file: types/bitlist_5_hashtreeroot_generated.bend
+--- a/types/bitlist_5_hashtreeroot_generated.bend
++++ b/types/bitlist_5_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits5_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
++def bits5_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
+ 

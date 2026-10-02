@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l01-list-limit-decode/04
+# type: VarTestStruct
+# ops: decode
+# spec: the limit of a List[uint16,1024] is enforced
+# fault: no limit check at all
+# why: relying on the caller's size cap
+# file: types/list_uint16_1024_decode_ssz_generated.bend
+--- a/types/list_uint16_1024_decode_ssz_generated.bend
++++ b/types/list_uint16_1024_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def l1024_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), U32.is_le(U32.div(len, 2), 1024)))
++def l1024_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}))
+ 

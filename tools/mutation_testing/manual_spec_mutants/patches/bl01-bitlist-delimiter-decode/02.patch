@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl01-bitlist-delimiter-decode/02
+# type: bitlist_5
+# ops: decode
+# spec: an empty byte string is not a Bitlist value
+# fault: the empty input is accepted
+# why: < instead of <= on the length
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1145,3 +1145,3 @@
+ def ok_bitlist(buf: B.Buf, +off: U32, +len: U32, +lim: U32, big: Bool) -> B.Buf & Bool:
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+ 

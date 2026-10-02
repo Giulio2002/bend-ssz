@@ -1,0 +1,19 @@
+# MANUAL SPEC MUTANT m01-zero-subtree-levels/05
+# type: bitlist_513
+# ops: root
+# spec: a missing leaf is the zero chunk
+# fault: an out-of-range leaf at the bottom level is Z(1) instead of Z(0)
+# why: zero-hash table indexed from one
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -820,3 +820,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(0n)))
++              (h, (ws, D.zconst(1n)))
+             case True{}:
+@@ -860,3 +860,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(0n)))
++              (h, (ws, D.zconst(1n)))
+             case True{}:

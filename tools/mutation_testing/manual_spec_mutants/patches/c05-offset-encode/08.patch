@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/08
+# type: ComplexTestStruct
+# ops: encode
+# spec: offset i = fixed part + lengths of the variable parts before i
+# fault: the running offset advances by the part length plus one
+# why: off by one when accumulating
+# file: types/bytelist_256_encode_ssz_generated.bend
+--- a/types/bytelist_256_encode_ssz_generated.bend
++++ b/types/bytelist_256_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, O.padd(cur, (sz + 1 : U32))))
+ 

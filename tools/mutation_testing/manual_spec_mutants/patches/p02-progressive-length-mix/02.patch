@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p02-progressive-length-mix/02
+# type: proglist_uint64
+# ops: root
+# spec: progressive list of uint64 mixes in the element count (bytes / 8)
+# fault: shift 2 (bytes / 4)
+# why: shift copied from uint32
+# file: types/proglist_uint64_hashtreeroot_generated.bend
+--- a/types/proglist_uint64_hashtreeroot_generated.bend
++++ b/types/proglist_uint64_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def pl_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root_prog(hl, h, o, seg))
++def pl_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 2n, O.words_root_prog(hl, h, o, seg))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u02-uint-decode/03
+# type: uint256
+# ops: decode
+# spec: uint256 little-endian decode
+# fault: the 256-bit reader swaps limbs 6 and 7
+# why: wrong limb order in the last record fields
+# file: types/uint256_decode_ssz_generated.bend
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, uint256_d.Uint256{w0, w1, w2, w3, w4, w5, w6, x})
++  (buf, uint256_d.Uint256{w0, w1, w2, w3, w4, w5, x, w6})
+ 

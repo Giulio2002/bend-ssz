@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/04
+# type: CompatibleUnionA
+# ops: decode
+# spec: an empty input is not a union value (no selector byte)
+# fault: the empty input is accepted (selector read as 0 past the end)
+# why: forgetting the selector byte needs one byte
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -26,3 +26,3 @@
+ 
+-def CompatibleUnionA_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionA_ok_nz(U32.is_le(1, len), buf, off, len)
++def CompatibleUnionA_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionA_ok_nz(U32.is_le(0, len), buf, off, len)
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/04
+# type: uint32
+# ops: decode
+# spec: deserialize requires exactly 4 bytes for uint32
+# fault: the uint32 length check demands 3 bytes
+# why: constant typo (bits/8 - 1)
+# file: types/uint32_decode_ssz_generated.bend
+--- a/types/uint32_decode_ssz_generated.bend
++++ b/types/uint32_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u32_ok_len(U32.is_eq(len, 4), buf, off)
++def u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u32_ok_len(U32.is_eq(len, 3), buf, off)
+ 

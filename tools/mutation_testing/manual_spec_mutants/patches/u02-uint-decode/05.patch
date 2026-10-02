@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u02-uint-decode/05
+# type: uint32
+# ops: decode
+# spec: uint32 little-endian decode of an SSZ offset or scalar at an unaligned position
+# fault: the unaligned 4-byte read joins the two words with the wrong shift (8 instead of 16 for a 2-byte misalignment)
+# why: shift table typo in the three-way unaligned join
+# file: src/buffer.bend
+--- a/src/buffer.bend
++++ b/src/buffer.bend
+@@ -60,3 +60,3 @@
+     case 1: (U32.shrn(lo, 8n) .|. U32.shln(hi, 24n) : U32)
+-    case 2: (U32.shrn(lo, 16n) .|. U32.shln(hi, 16n) : U32)
++    case 2: (U32.shrn(lo, 16n) .|. U32.shln(hi, 8n) : U32)
+     case _: (U32.shrn(lo, 24n) .|. U32.shln(hi, 8n) : U32)

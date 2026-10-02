@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u01-uint-encode-byte-order/05
+# type: uint128
+# ops: encode
+# spec: uint128 little-endian: limb 0 is the least significant
+# fault: the aligned 128-bit writer swaps limbs 0 and 1
+# why: an off-by-one in limb indexing when expanding a multi-limb integer
+# file: types/uint128_encode_ssz_generated.bend
+--- a/types/uint128_encode_ssz_generated.bend
++++ b/types/uint128_encode_ssz_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def u128_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3)
++def u128_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w1), (q + 1 : U32), w0), (q + 2 : U32), w2), (q + 3 : U32), w3)
+ 

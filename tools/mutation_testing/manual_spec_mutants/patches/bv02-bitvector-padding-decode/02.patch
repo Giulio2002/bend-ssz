@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv02-bitvector-padding-decode/02
+# type: bitvector_5
+# ops: decode
+# spec: bits 5..7 of the last byte of Bitvector[5] must be zero
+# fault: the padding mask for 5 used bits is 63 (bit 5 may be set)
+# why: mask table typo (2^6-1 instead of 2^5-1)
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1115,3 +1115,3 @@
+     case 4: 15
+-    case 5: 31
++    case 5: 63
+     case 6: 63

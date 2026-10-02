@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p03-progressive-container/08
+# type: ProgressiveSingleFieldContainerTestStruct
+# ops: root
+# spec: merkleize_progressive([A]) = hash(rest=zero, first=A)
+# fault: children swapped: hash(A, zero)
+# why: operand order
+# file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+--- a/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleFieldContainerTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, D.node(hl, d_f_A, D.zero()), 1))
+ 

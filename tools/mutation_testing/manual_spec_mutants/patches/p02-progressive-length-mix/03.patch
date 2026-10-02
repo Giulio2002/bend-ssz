@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p02-progressive-length-mix/03
+# type: progbitlist
+# ops: root
+# spec: progressive bitlist: chunks exclude the delimiter
+# fault: the delimiter byte is chunked
+# why: chunking the serialization
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1018,3 +1018,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes((k + 8 : U32))}, seg))
+ 

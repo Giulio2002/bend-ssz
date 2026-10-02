@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f02-hash-message-length/01
+# type: FuluBytes48
+# ops: root
+# spec: every Merkle node hashes the 64-byte concatenation of its two children
+# fault: the node message length parameter is 32 (only the left child hashed)
+# why: confusing chunk size and message size
+# file: types/FuluBytes48_hashtreeroot_generated.bend
+--- a/types/FuluBytes48_hashtreeroot_generated.bend
++++ b/types/FuluBytes48_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+ 
+-def Bytes48_hash_tree_root(h: B.Buf, +o: FuluBytes48_d.Bytes48) -> B.Buf & D.Digest: b48_root(64n, h, o, 0)
++def Bytes48_hash_tree_root(h: B.Buf, +o: FuluBytes48_d.Bytes48) -> B.Buf & D.Digest: b48_root(32n, h, o, 0)
+ 

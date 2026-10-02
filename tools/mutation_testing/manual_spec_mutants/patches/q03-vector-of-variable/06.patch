@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q03-vector-of-variable/06
+# type: ComplexTestStruct
+# ops: decode
+# spec: each element's window ends at the next offset
+# fault: the element window of each element extends to the end of the buffer
+# why: forgetting the next offset
+# file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+--- a/types/vec_VarTestStruct_2_decode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_decode_ssz_generated.bend
+@@ -53,3 +53,3 @@
+   match ok:
+-    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
+     case False{}: (buf, False{})

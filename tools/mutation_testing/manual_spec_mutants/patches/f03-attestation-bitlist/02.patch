@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f03-attestation-bitlist/02
+# type: FuluAttestation
+# ops: decode
+# spec: aggregation_bits may have exactly 131072 bits
+# fault: the limit is 131071
+# why: strict bound
+# file: types/Fulu_bitlist_131072_decode_ssz_generated.bend
+--- a/types/Fulu_bitlist_131072_decode_ssz_generated.bend
++++ b/types/Fulu_bitlist_131072_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def bits131072_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 131072, False{})
++def bits131072_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 131071, False{})
+ 

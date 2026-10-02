@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl01-bitlist-delimiter-decode/04
+# type: bitlist_8
+# ops: decode
+# spec: a bit list of length n has its delimiter at bit n
+# fault: the decoder never clears the delimiter, it stays in the value
+# why: forgetting that the delimiter is not data
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -959,3 +959,3 @@
+   match w:
+-    case Words{ws, +n}: (buf, Bits{clear_bit(ws, nbits), nbits})
++    case Words{ws, +n}: (buf, Bits{ws, nbits})
+ 

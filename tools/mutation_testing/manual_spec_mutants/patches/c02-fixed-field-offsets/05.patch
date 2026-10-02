@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c02-fixed-field-offsets/05
+# type: FixedTestStruct
+# ops: encode
+# spec: a container value is valid only if all its fields are valid
+# fault: the container validity checks no field (field A is not range-checked)
+# why: assuming the fixed-size fields are valid by construction
+# file: types/FixedTestStruct_encode_ssz_generated.bend
+--- a/types/FixedTestStruct_encode_ssz_generated.bend
++++ b/types/FixedTestStruct_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   match o:
+-    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: uint8_e.u8_valid(f_A)
++    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: True{}
+ 

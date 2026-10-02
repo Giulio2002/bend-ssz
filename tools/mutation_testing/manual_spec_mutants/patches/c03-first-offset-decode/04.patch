@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c03-first-offset-decode/04
+# type: VarTestStruct
+# ops: decode
+# spec: a container shorter than its fixed part is invalid
+# fault: the minimum length check is 6 instead of 7
+# why: off by one in the fixed size
+# file: types/VarTestStruct_decode_ssz_generated.bend
+--- a/types/VarTestStruct_decode_ssz_generated.bend
++++ b/types/VarTestStruct_decode_ssz_generated.bend
+@@ -54,3 +54,3 @@
+ 
+-def VarTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: VarTestStruct_ok_len(U32.is_le(7, len), buf, off, len)
++def VarTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: VarTestStruct_ok_len(U32.is_le(6, len), buf, off, len)
+ 

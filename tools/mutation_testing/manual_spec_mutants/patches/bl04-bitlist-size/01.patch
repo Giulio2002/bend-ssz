@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl04-bitlist-size/01
+# type: bitlist_8
+# ops: encode
+# spec: a Bitlist of len bits serializes to len/8 + 1 bytes
+# fault: the size pass reports ceil(len/8) bytes
+# why: bitvector size rule applied to a bitlist (no room for the delimiter when len%8==0)
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -976,3 +976,3 @@
+   match b:
+-    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
++    case Bits{ws, +k}: (Bits{ws, k}, U32.shrn((k + 7 : U32), 3n))
+ 

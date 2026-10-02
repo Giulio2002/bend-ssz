@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/04
+# type: FuluCheckpoint
+# ops: root
+# spec: a 2-field container root is hash(root(epoch), root(root))
+# fault: the two field roots are swapped
+# why: reordered field hashes
+# file: types/FuluCheckpoint_hashtreeroot_generated.bend
+--- a/types/FuluCheckpoint_hashtreeroot_generated.bend
++++ b/types/FuluCheckpoint_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_root) = pair
+-  (h, D.node(hl, d_epoch, d_root))
++  (h, D.node(hl, d_root, d_epoch))
+ 

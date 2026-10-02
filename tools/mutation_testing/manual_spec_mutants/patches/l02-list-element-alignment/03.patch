@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l02-list-element-alignment/03
+# type: VarTestStruct
+# ops: encode
+# spec: list elements are whole
+# fault: the unit check is dropped from the packed-collection validity
+# why: assuming whole elements by construction
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1496,3 +1496,3 @@
+     case Words{ws, +n}:
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), True{}), n, Array.size(U32, ws))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/08
+# type: ComplexTestStruct
+# ops: root
+# spec: Vector[FixedTestStruct,4] has 4 leaves: depth 2
+# fault: depth 1 (only the first two elements are hashed)
+# why: depth = log2(N) - 1
+# file: types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
+--- a/types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
++++ b/types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
+@@ -79,3 +79,3 @@
+   match o:
+-    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
++    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+ 

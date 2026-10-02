@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl03-bitlist-encode-delimiter/03
+# type: bitlist_5
+# ops: encode
+# spec: the delimiter is bit number len
+# fault: the delimiter is bit len+1
+# why: off by one in the shift
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -981,3 +981,3 @@
+   (out, w) = pair
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, ((k + 1 : U32) .&. 7 : U32))), w)
+ 

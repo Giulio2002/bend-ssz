@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c06-container-validity-composition/02
+# type: VarTestStruct
+# ops: encode
+# spec: serialize refuses an invalid value (the poison flag of field validity reaches the result)
+# fault: the poison of the scalar fields is not merged into the final flag
+# why: dropping the carry
+# file: types/VarTestStruct_encode_ssz_generated.bend
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+   (f_B, c) = r
+-  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (VarTestStruct_d.VarTestStruct{f_A, f_B, f_C}, (c .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)))
++  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (VarTestStruct_d.VarTestStruct{f_A, f_B, f_C}, c))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u04-uint-range/03
+# type: uint8,FixedTestStruct
+# ops: encode
+# spec: single-byte write must keep only the low byte
+# fault: the byte writer does not mask its argument to 8 bits
+# why: assuming callers already checked the range
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -424,3 +424,3 @@
+ def w8(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
+-  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 3 : U32)))
++  or_word(out, U32.shrn(p, 2n), shl_bytes(x, (p .&. 3 : U32)))
+ 

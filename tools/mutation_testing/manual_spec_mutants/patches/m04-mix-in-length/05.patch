@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m04-mix-in-length/05
+# type: ComplexTestStruct
+# ops: root
+# spec: the mixed length of a ByteList is the byte count
+# fault: the byte count is halved
+# why: shift copied from a uint16 list
+# file: types/bytelist_256_hashtreeroot_generated.bend
+--- a/types/bytelist_256_hashtreeroot_generated.bend
++++ b/types/bytelist_256_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bl256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 3, seg))
++def bl256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 3, seg))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/06
+# type: ComplexTestStruct
+# ops: root
+# spec: ByteList[256] has chunk limit 8: depth 3
+# fault: depth 8 (the byte limit is used as the depth)
+# why: byte limit mistaken for the depth
+# file: types/bytelist_256_hashtreeroot_generated.bend
+--- a/types/bytelist_256_hashtreeroot_generated.bend
++++ b/types/bytelist_256_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bl256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 3, seg))
++def bl256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 4, seg))
+ 

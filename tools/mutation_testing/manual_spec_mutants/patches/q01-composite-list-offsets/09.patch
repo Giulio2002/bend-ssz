@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/09
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the last element ends at the end of the buffer
+# fault: the last element's end is len-1 in the validation walk
+# why: end index off by one
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -71,3 +71,3 @@
+   match last:
+-    case True{}: (buf, len)
++    case True{}: (buf, (len - 1 : U32))
+     case False{}: B.read32(buf, (off + 4 * (i + 1 : U32) : U32))

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/01
+# type: VarTestStruct
+# ops: root
+# spec: pack: the chunk count is ceil(bytes/32)
+# fault: chunk count computed as floor(bytes/32) + 1 style: adds 32 (an extra chunk when bytes is a multiple of 32)
+# why: ceil written as (n + 32) / 32
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -892,3 +892,3 @@
+ # the proofs reason about it with Nat division alone).
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
+ 

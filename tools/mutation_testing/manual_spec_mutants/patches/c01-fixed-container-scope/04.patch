@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c01-fixed-container-scope/04
+# type: FuluCheckpoint
+# ops: decode
+# spec: Checkpoint is exactly 40 bytes
+# fault: the scope check accepts 40 or more
+# why: scope treated as a prefix
+# file: types/FuluCheckpoint_decode_ssz_generated.bend
+--- a/types/FuluCheckpoint_decode_ssz_generated.bend
++++ b/types/FuluCheckpoint_decode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+ 
+-def Checkpoint_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Checkpoint_ok_len(U32.is_eq(len, 40), buf, off)
++def Checkpoint_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Checkpoint_ok_len(U32.is_le(40, len), buf, off)
+ 

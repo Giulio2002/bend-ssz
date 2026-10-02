@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/07
+# type: ComplexTestStruct
+# ops: encode
+# spec: offset i = fixed part + lengths of the variable parts before i
+# fault: the running offset does not advance past the first variable part
+# why: the length of the previous part is forgotten
+# file: types/list_uint16_128_encode_ssz_generated.bend
+--- a/types/list_uint16_128_encode_ssz_generated.bend
++++ b/types/list_uint16_128_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, cur))
+ 

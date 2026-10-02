@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/01
+# type: ComplexTestStruct
+# ops: decode
+# spec: offsets must be non-decreasing
+# fault: the second offset is only checked against the buffer length (out-of-order accepted)
+# why: forgetting the monotonicity check
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -127,3 +127,3 @@
+   (buf, +o1) = pair
+-  ComplexTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ComplexTestStruct_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+ 

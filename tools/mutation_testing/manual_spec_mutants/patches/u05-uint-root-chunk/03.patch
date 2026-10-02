@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u05-uint-root-chunk/03
+# type: uint64
+# ops: root
+# spec: hash_tree_root(uint64): the chunk has 24 zero padding bytes
+# fault: the 64-bit chunk duplicates the low limb into the padding
+# why: copy-paste of a limb into the next slot
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1058,3 +1058,3 @@
+   match v:
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0}
+ 

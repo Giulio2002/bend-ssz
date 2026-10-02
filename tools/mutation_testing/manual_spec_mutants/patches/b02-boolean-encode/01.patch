@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b02-boolean-encode/01
+# type: boolean
+# ops: encode
+# spec: true serializes as 0x01
+# fault: true is written as 0xFF
+# why: C-style true = all bits set
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -437,3 +437,3 @@
+   match b:
+-    case True{}: w8(out, p, 1)
++    case True{}: w8(out, p, 255)
+     case False{}: out

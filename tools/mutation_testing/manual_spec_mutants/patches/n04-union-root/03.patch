@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n04-union-root/03
+# type: CompatibleUnionABCA
+# ops: root
+# spec: option 2 mixes in selector 2
+# fault: option 2 mixes in selector 1
+# why: copy-paste of the first option's constant
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, O.mix_len(hl, d, 2)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, O.mix_len(hl, d, 1)))
+ 

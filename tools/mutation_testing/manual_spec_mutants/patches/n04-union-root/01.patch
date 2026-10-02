@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n04-union-root/01
+# type: CompatibleUnionA
+# ops: root
+# spec: root = mix_in_selector(root(value), selector) with selector 1
+# fault: selector 0 is mixed in
+# why: zero-based selector
+# file: types/CompatibleUnionA_hashtreeroot_generated.bend
+--- a/types/CompatibleUnionA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionA_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionA_d.CompatibleUnionA_c0{v}, O.mix_len(hl, d, 1)))
++  (h, (CompatibleUnionA_d.CompatibleUnionA_c0{v}, O.mix_len(hl, d, 0)))
+ 

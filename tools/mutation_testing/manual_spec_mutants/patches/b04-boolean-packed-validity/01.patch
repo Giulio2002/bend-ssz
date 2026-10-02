@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b04-boolean-packed-validity/01
+# type: vec_bool_5
+# ops: encode
+# spec: every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)
+# fault: the packed-boolean scan lets bit 1 of each byte through (mask 0xFCFCFCFC)
+# why: mask built for "bits above 1" but shifted by one
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1505,3 +1505,3 @@
+     case 1n+q Tuple{ws, +x}:
+-      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4278124286 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))
++      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4244438268 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))
+ def bools_fin(+n: U32, ok: Bool, pair: Array<U32> & Bool) -> Words & Bool:

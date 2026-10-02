@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/01
+# type: vec_uint64_5
+# ops: root
+# spec: a Vector[uint64,5] has 2 chunks: depth 1
+# fault: depth 0 (a single chunk: the second chunk is dropped)
+# why: depth computed from the byte length of a packed value in words
+# file: types/vec_uint64_5_hashtreeroot_generated.bend
+--- a/types/vec_uint64_5_hashtreeroot_generated.bend
++++ b/types/vec_uint64_5_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v5_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
++def v5_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
+ 

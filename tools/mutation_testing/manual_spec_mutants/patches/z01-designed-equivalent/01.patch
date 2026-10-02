@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT z01-designed-equivalent/01
+# type: bitlist_5
+# ops: decode
+# spec: designed control: the bit-list high-bit table, entry for v >= 2: pick(v>=2, 1, 0)
+# fault: the last table entry returns 1 for v >= 2 and 0 otherwise: change nothing semantically (v>=2 vs v>=3 differ only for v=2: delimiter at bit 1)
+# why: mutation of the lowest threshold: v=2 yields bit 0 instead of 1
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -963,3 +963,3 @@
+   pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 16), 4,
+-    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 0)))))))
++    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 3), 1, 0)))))))
+ 

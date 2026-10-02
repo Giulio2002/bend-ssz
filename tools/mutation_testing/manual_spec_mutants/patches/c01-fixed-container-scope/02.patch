@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c01-fixed-container-scope/02
+# type: FixedTestStruct
+# ops: decode
+# spec: a fixed-size container is deserialized from exactly its size (short input invalid)
+# fault: the scope check accepts any length at most 13
+# why: bound instead of equality
+# file: types/FixedTestStruct_decode_ssz_generated.bend
+--- a/types/FixedTestStruct_decode_ssz_generated.bend
++++ b/types/FixedTestStruct_decode_ssz_generated.bend
+@@ -34,3 +34,3 @@
+ 
+-def FixedTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: FixedTestStruct_ok_len(U32.is_eq(len, 13), buf, off)
++def FixedTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: FixedTestStruct_ok_len(U32.is_le(len, 13), buf, off)
+ 

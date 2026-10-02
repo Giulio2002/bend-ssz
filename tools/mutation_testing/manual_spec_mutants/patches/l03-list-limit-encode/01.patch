@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l03-list-limit-encode/01
+# type: VarTestStruct
+# ops: encode
+# spec: serializing a List[uint16,1024] with 1025 elements is invalid
+# fault: the encoder's validity bound is 2050 bytes (1025 elements)
+# why: limit+1
+# file: types/list_uint16_1024_encode_ssz_generated.bend
+--- a/types/list_uint16_1024_encode_ssz_generated.bend
++++ b/types/list_uint16_1024_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def l1024_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 2048, False{}, 2)
++def l1024_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 2050, False{}, 2)
+ 

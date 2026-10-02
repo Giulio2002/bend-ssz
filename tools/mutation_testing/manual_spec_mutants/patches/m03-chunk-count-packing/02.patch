@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/02
+# type: VarTestStruct
+# ops: root
+# spec: pack: the chunk count is ceil(bytes/32)
+# fault: chunk count computed as (n + 30) / 32 (drops the partial last chunk when bytes = 32k+1)
+# why: off-by-one rounding constant
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -892,3 +892,3 @@
+ # the proofs reason about it with Nat division alone).
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 30n), 32n)
+ 

@@ -1,0 +1,345 @@
+## containers: fixed part, offsets, variable parts (SSZ 4.3, 4.8)
+=== c01-fixed-container-scope
+type: FixedTestStruct
+ops: decode
+file: types/FixedTestStruct_decode_ssz_generated.bend
+spec: a fixed-size container is deserialized from exactly its size (trailing bytes are invalid)
+fault: the scope check accepts any length at least 13 (trailing bytes ignored)
+why: scope treated as a prefix
+-U32.is_eq(len, 13)
++U32.is_le(13, len)
+=== c01-fixed-container-scope
+type: FixedTestStruct
+ops: decode
+file: types/FixedTestStruct_decode_ssz_generated.bend
+spec: a fixed-size container is deserialized from exactly its size (short input invalid)
+fault: the scope check accepts any length at most 13
+why: bound instead of equality
+-U32.is_eq(len, 13)
++U32.is_le(len, 13)
+=== c01-fixed-container-scope
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+spec: Checkpoint is exactly 40 bytes
+fault: the scope check demands 32 (the root size only)
+why: size of the last field used as the container size
+-U32.is_eq(len, 40)
++U32.is_eq(len, 32)
+=== c01-fixed-container-scope
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+spec: Checkpoint is exactly 40 bytes
+fault: the scope check accepts 40 or more
+why: scope treated as a prefix
+-U32.is_eq(len, 40)
++U32.is_le(40, len)
+=== c02-fixed-field-offsets
+type: FixedTestStruct
+ops: decode
+file: types/FixedTestStruct_decode_ssz_generated.bend
+spec: fields of a fixed container are laid out back to back (field C at offset 1+8)
+fault: field C is read from offset 8 (overlapping field B)
+why: offset sum miscounted
+-uint32_r.u32_read(buf, (off + 9 : U32), 4)
++uint32_r.u32_read(buf, (off + 8 : U32), 4)
+=== c02-fixed-field-offsets
+type: FixedTestStruct
+ops: encode
+file: types/FixedTestStruct_encode_ssz_generated.bend
+spec: fields of a fixed container are written back to back (field C at offset 9)
+fault: field C is written at offset 8
+why: offset sum miscounted
+-uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 9 : U32), f_C)
++uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 8 : U32), f_C)
+=== c02-fixed-field-offsets
+type: FixedTestStruct
+ops: encode
+file: types/FixedTestStruct_encode_ssz_generated.bend
+spec: fields are serialized in declaration order
+fault: fields A and C are swapped on the wire
+why: reordered field writes
+-uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 9 : U32), f_C)
++uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_C), (pos + 1 : U32), f_B), (pos + 9 : U32), f_A)
+=== c02-fixed-field-offsets
+type: FixedTestStruct
+ops: encode
+file: types/FixedTestStruct_encode_ssz_generated.bend
+spec: a fixed container serializes to exactly its size
+fault: the reported length is 12
+why: size constant off by one
+-O.out_done(13, FixedTestStruct_put(O.out_at(2n), 0, o))
++O.out_done(12, FixedTestStruct_put(O.out_at(2n), 0, o))
+=== c02-fixed-field-offsets
+type: FixedTestStruct
+ops: encode
+file: types/FixedTestStruct_encode_ssz_generated.bend
+spec: a container value is valid only if all its fields are valid
+fault: the container validity checks no field (field A is not range-checked)
+why: assuming the fixed-size fields are valid by construction
+-match o:
+-    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: uint8_e.u8_valid(f_A)
++match o:
++    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: True{}
+=== c03-first-offset-decode
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+spec: the first offset must equal the size of the fixed part (7)
+fault: the first offset may be any value at least 7 (gap bytes accepted)
+why: only checking that the offset does not point into the fixed part
+-VarTestStruct_c0(U32.is_eq(o0, 7), buf, off, len, o0)
++VarTestStruct_c0(U32.is_le(7, o0), buf, off, len, o0)
+=== c03-first-offset-decode
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+spec: the first offset must equal the size of the fixed part (7)
+fault: the first offset may be any value at most 7 (overlap with the fixed part accepted)
+why: only checking that the offset is within the buffer
+-VarTestStruct_c0(U32.is_eq(o0, 7), buf, off, len, o0)
++VarTestStruct_c0(U32.is_le(o0, 7), buf, off, len, o0)
+=== c03-first-offset-decode
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+spec: the first offset must equal the size of the fixed part (7)
+fault: the first offset is not checked
+why: trusting the offset
+-VarTestStruct_c0(U32.is_eq(o0, 7), buf, off, len, o0)
++VarTestStruct_c0(True{}, buf, off, len, o0)
+=== c03-first-offset-decode
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+spec: a container shorter than its fixed part is invalid
+fault: the minimum length check is 6 instead of 7
+why: off by one in the fixed size
+-VarTestStruct_ok_len(U32.is_le(7, len), buf, off, len)
++VarTestStruct_ok_len(U32.is_le(6, len), buf, off, len)
+=== c03-first-offset-decode
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the first offset of ComplexTestStruct must be 71
+fault: the first offset check accepts any offset at least 71
+why: weak first-offset test
+-ComplexTestStruct_c0(U32.is_eq(o0, 71), buf, off, len, o0)
++ComplexTestStruct_c0(U32.is_le(71, o0), buf, off, len, o0)
+=== c03-first-offset-decode
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the container is at least as long as its fixed part (71)
+fault: the minimum length is 70
+why: fixed size off by one
+-ComplexTestStruct_ok_len(U32.is_le(71, len), buf, off, len)
++ComplexTestStruct_ok_len(U32.is_le(70, len), buf, off, len)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: offsets must be non-decreasing
+fault: the second offset is only checked against the buffer length (out-of-order accepted)
+why: forgetting the monotonicity check
+-ComplexTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++ComplexTestStruct_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: every offset must lie within the buffer
+fault: the second offset is not checked against the buffer length
+why: forgetting the range check
+-ComplexTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++ComplexTestStruct_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: equal consecutive offsets are legal (an empty variable part)
+fault: offsets must strictly increase (empty variable parts rejected)
+why: <  instead of <=
+-ComplexTestStruct_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++ComplexTestStruct_c2(Bool.and(U32.is_lt(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the third offset must not be below the second, nor beyond the buffer
+fault: the third offset is not checked at all
+why: copy-paste error leaving one check out
+-ComplexTestStruct_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++ComplexTestStruct_c2(True{}, buf, off, len, o0, o1, o2)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the last offset must not be beyond the buffer
+fault: the last offset may equal len+1 would be allowed (bound is len + 1 via is_le(o3, len+1))
+why: off by one on the buffer bound
+-ComplexTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++ComplexTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, (len + 1 : U32))), buf, off, len, o0, o1, o2, o3)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the last offset must be within the buffer
+fault: the last offset is not compared with the buffer length
+why: forgetting the upper bound on the last offset
+-ComplexTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++ComplexTestStruct_c3(U32.is_le(o2, o3), buf, off, len, o0, o1, o2, o3)
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: a variable part ends where the next offset starts
+fault: the first variable part (a List[uint16]) is given the rest of the buffer instead of the bytes up to the next offset
+why: forgetting to subtract the next offset
+-list_uint16_128_r.l128_u16_ok(buf, (off + o0 : U32), (o1 - o0 : U32))
++list_uint16_128_r.l128_u16_ok(buf, (off + o0 : U32), (len - o0 : U32))
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: a variable part ends where the next offset starts
+fault: the ByteList part is validated with the window up to the end of the buffer
+why: forgetting to subtract the next offset
+-bytelist_256_r.bl256_ok(buf, (off + o1 : U32), (o2 - o1 : U32))
++bytelist_256_r.bl256_ok(buf, (off + o1 : U32), (len - o1 : U32))
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the last variable part ends at the end of the buffer
+fault: the last variable part (Vector[VarTestStruct,2]) is validated without the last byte
+why: end index off by one
+-vec_VarTestStruct_2_r.v2_VarTestStruct_ok(buf, (off + o3 : U32), (len - o3 : U32))
++vec_VarTestStruct_2_r.v2_VarTestStruct_ok(buf, (off + o3 : U32), ((len - o3 : U32) - 1 : U32))
+=== c04-offset-order-and-range
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+spec: the second offset is stored right after the first one at fixed position 7
+fault: the second offset is read from position 6
+why: offset slot miscounted
+-ComplexTestStruct_v1(off, len, o0, B.read32(buf, (off + 7 : U32)))
++ComplexTestStruct_v1(off, len, o0, B.read32(buf, (off + 6 : U32)))
+=== c04-offset-order-and-range
+type: ProgressiveVarTestStruct
+ops: decode
+file: types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+spec: variable-size progressive container: first offset equals the fixed part size (9)
+fault: the first offset may be any value at least 9
+why: weak first-offset test
+-ProgressiveVarTestStruct_c0(U32.is_eq(o0, 9), buf, off, len, o0)
++ProgressiveVarTestStruct_c0(U32.is_le(9, o0), buf, off, len, o0)
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: types/list_uint16_1024_encode_ssz_generated.bend
+spec: the offset of the first variable part is the fixed size (7)
+fault: the offset written is the fixed size plus 4
+why: counting a second offset slot
+-O.w32(out, (pos + hoff : U32), cur)
++O.w32(out, (pos + hoff : U32), (cur + 4 : U32))
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: types/list_uint16_1024_encode_ssz_generated.bend
+spec: the offset is written into the fixed part at its slot
+fault: the offset is written 4 bytes further (at the slot after the real one)
+why: slot index miscounted
+-O.w32(out, (pos + hoff : U32), cur)
++O.w32(out, (pos + hoff + 1 : U32), cur)
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: types/VarTestStruct_encode_ssz_generated.bend
+spec: the offset of the first variable part equals the fixed-part size (7)
+fault: the running offset starts at 8
+why: fixed size miscounted
+-list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 7, f_B)
++list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 8, f_B)
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: types/VarTestStruct_encode_ssz_generated.bend
+spec: the serialization length is fixed part + variable parts
+fault: the size pass starts at 6
+why: fixed size miscounted
+-VarTestStruct_sz0(f_A, f_C, 7, list_uint16_1024_e.l1024_u16_size(f_B))
++VarTestStruct_sz0(f_A, f_C, 6, list_uint16_1024_e.l1024_u16_size(f_B))
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: types/VarTestStruct_encode_ssz_generated.bend
+spec: field C (uint8) is at fixed offset 6, the offset slot at 2
+fault: field C is written at offset 5
+why: offset sum miscounted
+-uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C)
++uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 5 : U32), f_C)
+=== c05-offset-encode
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: the offset is a little-endian uint32
+fault: the aligned 32-bit store (offsets are stored with it) writes big-endian
+why: network byte order for offsets
+-    case True{}: Array.set(U32, out, U32.shrn(p, 2n), x)
++    case True{}: Array.set(U32, out, U32.shrn(p, 2n), B.swap32(x))
+=== c05-offset-encode
+type: ComplexTestStruct
+ops: encode
+file: types/list_uint16_128_encode_ssz_generated.bend
+spec: offset i = fixed part + lengths of the variable parts before i
+fault: the running offset does not advance past the first variable part
+why: the length of the previous part is forgotten
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, cur))
+=== c05-offset-encode
+type: ComplexTestStruct
+ops: encode
+file: types/bytelist_256_encode_ssz_generated.bend
+spec: offset i = fixed part + lengths of the variable parts before i
+fault: the running offset advances by the part length plus one
+why: off by one when accumulating
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, O.padd(cur, (sz + 1 : U32))))
+=== c05-offset-encode
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+spec: sizes add up exactly
+fault: the checked size accumulator adds one extra byte
+why: accumulator initialised or bumped by one
+-def padd(+a: U32, +b: U32) -> U32: ((a + b : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
++def padd(+a: U32, +b: U32) -> U32: ((a + b + 1 : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
+=== c05-offset-encode
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+spec: variable parts follow the fixed part in field order
+fault: not a single-character change: the first fixed-size field is written at the wrong position (pos+1)
+why: miscount of the first slot
+-uint16_e.u16_put(out, (pos + 0 : U32), f_A)
++uint16_e.u16_put(out, (pos + 1 : U32), f_A)
+=== c06-container-validity-composition
+type: VarTestStruct
+ops: encode
+file: types/VarTestStruct_encode_ssz_generated.bend
+spec: a container is valid only if every field is valid (the uint8 field C is range-checked)
+fault: validity forgets field C
+why: checking only the variable field and the first scalar
+-Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), list_uint16_1024_e.l1024_u16_valid(f_B))
++uint16_e.u16_valid(f_A), list_uint16_1024_e.l1024_u16_valid(f_B))
+=== c06-container-validity-composition
+type: VarTestStruct
+ops: encode
+file: types/VarTestStruct_encode_ssz_generated.bend
+spec: serialize refuses an invalid value (the poison flag of field validity reaches the result)
+fault: the poison of the scalar fields is not merged into the final flag
+why: dropping the carry
+-(c .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
++c

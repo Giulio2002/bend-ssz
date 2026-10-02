@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv01-bitvector-length/02
+# type: bitvector_9
+# ops: decode
+# spec: Bitvector[9] is exactly 2 bytes
+# fault: length check accepts 2 or more bytes (trailing bytes ignored)
+# why: scope treated as a prefix
+# file: types/bitvector_9_decode_ssz_generated.bend
+--- a/types/bitvector_9_decode_ssz_generated.bend
++++ b/types/bitvector_9_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def bv9_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv9_ok_len(U32.is_eq(len, 2), buf, off)
++def bv9_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv9_ok_len(U32.is_le(2, len), buf, off)
+ 

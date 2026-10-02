@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c03-first-offset-decode/05
+# type: ComplexTestStruct
+# ops: decode
+# spec: the first offset of ComplexTestStruct must be 71
+# fault: the first offset check accepts any offset at least 71
+# why: weak first-offset test
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -136,3 +136,3 @@
+   (buf, +o0) = pair
+-  ComplexTestStruct_c0(U32.is_eq(o0, 71), buf, off, len, o0)
++  ComplexTestStruct_c0(U32.is_le(71, o0), buf, off, len, o0)
+ 

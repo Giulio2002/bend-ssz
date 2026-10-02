@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/01
+# type: uint16
+# ops: decode
+# spec: deserialize requires exactly N/8 bytes (short input rejected)
+# fault: the uint16 length check accepts any length at most 2
+# why: using <= for a size bound that is an equality
+# file: types/uint16_decode_ssz_generated.bend
+--- a/types/uint16_decode_ssz_generated.bend
++++ b/types/uint16_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u16_ok_len(U32.is_eq(len, 2), buf, off)
++def u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u16_ok_len(U32.is_le(len, 2), buf, off)
+ 

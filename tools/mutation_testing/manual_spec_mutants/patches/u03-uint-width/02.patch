@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/02
+# type: uint64
+# ops: decode
+# spec: deserialize requires exactly N/8 bytes (trailing bytes rejected)
+# fault: the uint64 length check accepts any length at least 8
+# why: forgetting that scope must be exact and treating the buffer as a prefix
+# file: types/uint64_decode_ssz_generated.bend
+--- a/types/uint64_decode_ssz_generated.bend
++++ b/types/uint64_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u64_ok_len(U32.is_eq(len, 8), buf, off)
++def u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u64_ok_len(U32.is_le(8, len), buf, off)
+ 

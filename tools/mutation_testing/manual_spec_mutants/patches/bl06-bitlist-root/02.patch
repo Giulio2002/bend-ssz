@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl06-bitlist-root/02
+# type: bitlist_5
+# ops: root
+# spec: the mixed-in length of a Bitlist is its number of bits
+# fault: the mixed length counts the delimiter (k+1)
+# why: length of the serialization used
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -998,3 +998,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
+ 

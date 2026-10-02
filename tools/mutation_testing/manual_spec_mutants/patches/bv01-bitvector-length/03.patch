@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv01-bitvector-length/03
+# type: bitvector_512
+# ops: decode
+# spec: Bitvector[512] is exactly 64 bytes
+# fault: length check demands 65 bytes (N/8+1 as for a bitlist)
+# why: bitlist size rule applied to a bitvector
+# file: types/Fulu_bitvector_512_decode_ssz_generated.bend
+--- a/types/Fulu_bitvector_512_decode_ssz_generated.bend
++++ b/types/Fulu_bitvector_512_decode_ssz_generated.bend
+@@ -83,3 +83,3 @@
+ 
+-def bv512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv512_ok_len(U32.is_eq(len, 64), buf, off)
++def bv512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv512_ok_len(U32.is_eq(len, 65), buf, off)
+ 

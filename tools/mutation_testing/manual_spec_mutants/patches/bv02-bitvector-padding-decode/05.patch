@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv02-bitvector-padding-decode/05
+# type: bitvector_7
+# ops: decode
+# spec: bit 7 of the last byte of Bitvector[7] must be zero
+# fault: the padding mask for 7 used bits accepts bit 7 (mask 255)
+# why: mask table typo
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1117,3 +1117,3 @@
+     case 6: 63
+-    case _: 127
++    case _: 255
+ 

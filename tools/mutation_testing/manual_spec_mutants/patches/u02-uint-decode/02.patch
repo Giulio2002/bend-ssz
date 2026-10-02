@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u02-uint-decode/02
+# type: FixedTestStruct,uint64
+# ops: decode
+# spec: uint64 little-endian decode: the first limb read is the low one
+# fault: the 64-bit reader returns (hi, lo)
+# why: building the pair in the wrong order
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1042,3 +1042,3 @@
+   (lo, hi) = w
+-  (buf, U64{lo, hi})
++  (buf, U64{hi, lo})
+ 

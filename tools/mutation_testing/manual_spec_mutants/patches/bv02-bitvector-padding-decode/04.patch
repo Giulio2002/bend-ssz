@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv02-bitvector-padding-decode/04
+# type: bitvector_9
+# ops: decode
+# spec: padding bits are in the last byte
+# fault: the padding check inspects byte 0 instead of byte 1
+# why: byte index off by one
+# file: types/bitvector_9_decode_ssz_generated.bend
+--- a/types/bitvector_9_decode_ssz_generated.bend
++++ b/types/bitvector_9_decode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+ 
+-def bv9_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 1 : U32), 1)
++def bv9_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 1)
+ 

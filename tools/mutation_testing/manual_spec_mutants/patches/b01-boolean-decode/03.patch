@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b01-boolean-decode/03
+# type: boolean
+# ops: decode
+# spec: boolean 0x01 decodes to true
+# fault: the boolean reader treats every non-zero byte as true (the validator already rejects >1, so this should be dead in behavior)
+# why: truthiness instead of the equality test
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1025,3 +1025,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_eq(v, 1))
++  (buf, Bool.not(U32.is_eq(v, 0)))
+ 

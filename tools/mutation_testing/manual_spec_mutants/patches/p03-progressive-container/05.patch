@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p03-progressive-container/05
+# type: ProgressiveVarTestStruct
+# ops: root
+# spec: the mixed-in active_fields is a 32-byte chunk
+# fault: the active_fields is not mixed in (the progressive root is returned)
+# why: forgetting mix_in_active_fields
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+ def ProgressiveVarTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest):
+-  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
++  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A)))
+ 

@@ -1,0 +1,97 @@
+## Vector[variable-size element, N] (first offset must be exactly 4*N), plus designed-equivalent controls
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: a Vector[T,2] of variable-size elements has exactly 2 offsets: the first offset is 8
+fault: the first offset may be any value at least 8 (more elements than N)
+why: treating the vector like a list whose count comes from the first offset
+-U32.is_eq(first, 8)
++U32.is_le(8, first)
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: a Vector[T,2] of variable-size elements has exactly 2 offsets: the first offset is 8
+fault: the first offset may be any value at most 8 (fewer elements than N)
+why: treating the vector like a list whose count comes from the first offset
+-U32.is_eq(first, 8)
++U32.is_le(first, 8)
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: an empty scope is not a Vector[T,2] (a vector has no empty value)
+fault: the empty scope is accepted as an empty list would be
+why: list handling reused for a vector
+-    case True{}: (buf, False{})
+-    case False{}: v2_VarTestStruct_head(len, off, B.read32(buf, off))
++    case True{}: (buf, True{})
++    case False{}: v2_VarTestStruct_head(len, off, B.read32(buf, off))
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: designed control: with first == 8 required, the alignment test of the first offset is implied
+fault: the alignment test (first mod 4 == 0) is dropped (expected equivalent: first == 8 already implies it)
+why: redundant check removed by a refactoring
+-Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_eq(first, 8))
++U32.is_le(first, len), U32.is_eq(first, 8))
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: designed control: with first == 8 required, the bound first <= len is NOT implied (len may be < 8)
+fault: the bound first <= len is dropped
+why: redundant-looking check removed
+-Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_eq(first, 8))
++U32.is_eq((first .&. 3 : U32), 0), U32.is_eq(first, 8))
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: each element's window ends at the next offset
+fault: the element window of each element extends to the end of the buffer
+why: forgetting the next offset
+-VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
+=== q03-vector-of-variable
+type: ComplexTestStruct
+ops: decode
+file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+spec: offsets must be in order and within the buffer
+fault: the order test between consecutive offsets is dropped
+why: forgetting monotonicity
+-U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(b, len))
+=== bl01-bitlist-delimiter-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: the delimiter is the highest set bit of the last byte (last byte 0b10 puts it at bit 1)
+fault: the lowest threshold of the high-bit table is 3: a last byte of 2 puts the delimiter at bit 0
+why: threshold typo in the high-bit table
+-pick(U32.is_ge(v, 2), 1, 0)
++pick(U32.is_ge(v, 3), 1, 0)
+=== z01-designed-equivalent
+type: uint16
+ops: encode
+file: types/uint16_encode_ssz_generated.bend
+spec: designed control: encoder buffer capacity is not part of the contract (out_at(0n) holds 1 word, 2 bytes need 1 word)
+fault: the output buffer is allocated with depth 1 instead of 0 (capacity only)
+why: over-allocation
+-O.out_done(2, u16_put(O.out_at(0n), 0, o))
++O.out_done(2, u16_put(O.out_at(1n), 0, o))
+=== z01-designed-equivalent
+type: bitlist_5
+ops: root
+file: src/obj.bend
+spec: designed control: the seg parameter is only a scratch-segment index
+fault: unused parameter replaced
+why: dead parameter change
+-def bits_root(+hl: Nat, h: B.Buf, b: Bits, +depth: U32, +seg: U32) -> B.Buf & (Bits & D.Digest):
+-  match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++def bits_root(+hl: Nat, h: B.Buf, b: Bits, +depth: U32, +seg: U32) -> B.Buf & (Bits & D.Digest):
++  match b:
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, 0))

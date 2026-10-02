@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u01-uint-encode-byte-order/07
+# type: uint256
+# ops: encode
+# spec: uint256 little-endian; width 32 bytes
+# fault: the writer reports an encoded length of 31 bytes (one byte short)
+# why: length constant computed as bits/8 - 1 (off by one)
+# file: types/uint256_encode_ssz_generated.bend
+--- a/types/uint256_encode_ssz_generated.bend
++++ b/types/uint256_encode_ssz_generated.bend
+@@ -33,3 +33,3 @@
+ 
+-def uint256_encode(+o: uint256_d.Uint256) -> B.Buf: O.out_done(32, u256_put(O.out_at(3n), 0, o))
++def uint256_encode(+o: uint256_d.Uint256) -> B.Buf: O.out_done(31, u256_put(O.out_at(3n), 0, o))
+ 

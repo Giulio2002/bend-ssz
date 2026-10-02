@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b03-boolean-root/01
+# type: boolean
+# ops: root
+# spec: hash_tree_root(true) = 0x01 followed by 31 zero bytes
+# fault: the true chunk has its 1 in the last byte of the first word instead of the first byte
+# why: big-endian word confusion
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1051,3 +1051,3 @@
+   match b:
+-    case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++    case True{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+     case False{}: D.zero()

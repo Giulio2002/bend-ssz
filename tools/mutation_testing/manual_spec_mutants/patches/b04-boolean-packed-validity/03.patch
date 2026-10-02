@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b04-boolean-packed-validity/03
+# type: vec_bool_5
+# ops: decode
+# spec: Vector[boolean, N] has exactly N bytes
+# fault: the Vector[boolean,5] length check accepts any length at most 5
+# why: bound instead of equality
+# file: types/vec_bool_5_decode_ssz_generated.bend
+--- a/types/vec_bool_5_decode_ssz_generated.bend
++++ b/types/vec_bool_5_decode_ssz_generated.bend
+@@ -33,3 +33,3 @@
+ 
+-def v5_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_bool_ok_len(U32.is_eq(len, 5), buf, off)
++def v5_bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_bool_ok_len(U32.is_le(len, 5), buf, off)
+ 

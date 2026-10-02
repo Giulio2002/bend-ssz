@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b01-boolean-decode/04
+# type: boolean
+# ops: decode
+# spec: boolean is exactly one byte
+# fault: the boolean length check accepts any length at least 1 (trailing bytes ignored)
+# why: scope treated as a lower bound
+# file: types/boolean_decode_ssz_generated.bend
+--- a/types/boolean_decode_ssz_generated.bend
++++ b/types/boolean_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bool_ok_len(U32.is_eq(len, 1), buf, off)
++def bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bool_ok_len(U32.is_le(1, len), buf, off)
+ 

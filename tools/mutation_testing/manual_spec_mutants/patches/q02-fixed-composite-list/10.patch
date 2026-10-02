@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q02-fixed-composite-list/10
+# type: FuluExecutionRequests
+# ops: decode
+# spec: offsets must lie within the buffer
+# fault: the bound of the last offset is dropped
+# why: forgetting range check
+# file: types/FuluExecutionRequests_decode_ssz_generated.bend
+--- a/types/FuluExecutionRequests_decode_ssz_generated.bend
++++ b/types/FuluExecutionRequests_decode_ssz_generated.bend
+@@ -76,3 +76,3 @@
+   (buf, +o2) = pair
+-  ExecutionRequests_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++  ExecutionRequests_c2(U32.is_le(o1, o2), buf, off, len, o0, o1, o2)
+ 

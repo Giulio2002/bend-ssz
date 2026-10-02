@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b01-boolean-decode/05
+# type: boolean
+# ops: decode
+# spec: boolean is exactly one byte (empty input is invalid)
+# fault: the boolean length check accepts the empty input (reads a missing byte as 0 = false)
+# why: <= instead of ==
+# file: types/boolean_decode_ssz_generated.bend
+--- a/types/boolean_decode_ssz_generated.bend
++++ b/types/boolean_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bool_ok_len(U32.is_eq(len, 1), buf, off)
++def bool_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bool_ok_len(U32.is_le(len, 1), buf, off)
+ 

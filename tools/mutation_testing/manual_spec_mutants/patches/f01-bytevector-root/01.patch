@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f01-bytevector-root/01
+# type: FuluBytes48
+# ops: root
+# spec: pack: the last chunk is right-padded with zero bytes (Bytes48 = 1.5 chunks)
+# fault: the padding of the partial chunk starts with a 1 byte (PKCS-style padding)
+# why: padding scheme confusion
+# file: types/FuluBytes48_hashtreeroot_generated.bend
+--- a/types/FuluBytes48_hashtreeroot_generated.bend
++++ b/types/FuluBytes48_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case FuluBytes48_d.Bytes48{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), 0, 0, 0, 0}))
++    case FuluBytes48_d.Bytes48{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), 1, 0, 0, 0}))
+ 

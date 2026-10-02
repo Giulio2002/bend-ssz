@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/08
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: each element's window ends at the next offset
+# fault: the element window extends to the end of the whole buffer
+# why: forgetting the next offset
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -58,3 +58,3 @@
+   match ok:
+-    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++    case True{}: VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
+     case False{}: (buf, False{})

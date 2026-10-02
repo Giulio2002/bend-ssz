@@ -1,0 +1,345 @@
+## uintN, little-endian, exact N/8 bytes (SSZ 4.1) and boolean
+=== u01-uint-encode-byte-order
+type: uint16
+ops: encode
+file: src/obj.bend
+spec: uintN serializes little-endian (byte 0 is the least significant)
+fault: uint16 writer emits the high byte first (big-endian, the network-byte-order habit)
+why: an implementer used to htons() writes the 16-bit value most significant byte first
+-  w8(w8(out, p, x), (p + 1 : U32), U32.shrn(x, 8n))
++  w8(w8(out, p, U32.shrn(x, 8n)), (p + 1 : U32), x)
+=== u01-uint-encode-byte-order
+type: uint64,FixedTestStruct
+ops: encode
+file: src/obj.bend
+spec: uint64 little-endian: low 32-bit limb at the lower address
+fault: aligned 64-bit write stores the high limb first (limb order swapped, bytes inside limbs right)
+why: treating the pair (lo, hi) as (hi, lo) when storing a 64-bit integer into two words
+-    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 1 : U32), hi)
++    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), hi), (U32.shrn(p, 2n) + 1 : U32), lo)
+=== u01-uint-encode-byte-order
+type: uint64,FixedTestStruct
+ops: encode
+file: src/obj.bend
+spec: uint64 little-endian, also when the value is at an unaligned offset
+fault: the unaligned 64-bit path writes the limbs in swapped order
+why: copy-paste of the aligned path with the arguments reversed
+-    case False{}: w32(w32(out, p, lo), (p + 4 : U32), hi)
++    case False{}: w32(w32(out, p, hi), (p + 4 : U32), lo)
+=== u01-uint-encode-byte-order
+type: uint32
+ops: encode
+file: src/obj.bend
+spec: uint32 little-endian, aligned write
+fault: the aligned 32-bit write stores the byte-swapped word
+why: htonl() applied on a little-endian target
+-    case True{}: Array.set(U32, out, U32.shrn(p, 2n), x)
++    case True{}: Array.set(U32, out, U32.shrn(p, 2n), B.swap32(x))
+=== u01-uint-encode-byte-order
+type: uint128
+ops: encode
+file: types/uint128_encode_ssz_generated.bend
+spec: uint128 little-endian: limb 0 is the least significant
+fault: the aligned 128-bit writer swaps limbs 0 and 1
+why: an off-by-one in limb indexing when expanding a multi-limb integer
+-Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2)
++Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w1), (q + 1 : U32), w0), (q + 2 : U32), w2)
+=== u01-uint-encode-byte-order
+type: uint256
+ops: encode
+file: types/uint256_encode_ssz_generated.bend
+spec: uint256 little-endian: limb 7 is the most significant and is written last
+fault: the aligned 256-bit writer stores the top two limbs swapped
+why: wrong limb order in the last two stores
+-(q + 6 : U32), w6), (q + 7 : U32), w7)
++(q + 6 : U32), w7), (q + 7 : U32), w6)
+=== u01-uint-encode-byte-order
+type: uint256
+ops: encode
+file: types/uint256_encode_ssz_generated.bend
+spec: uint256 little-endian; width 32 bytes
+fault: the writer reports an encoded length of 31 bytes (one byte short)
+why: length constant computed as bits/8 - 1 (off by one)
+-O.out_done(32, u256_put(O.out_at(3n), 0, o))
++O.out_done(31, u256_put(O.out_at(3n), 0, o))
+=== u02-uint-decode
+type: uint16
+ops: decode
+file: src/obj.bend
+spec: uint16 decodes exactly its two bytes (the bytes after them belong to the next field)
+fault: the 16-bit reader keeps three bytes (mask 0xFFFFFF instead of 0xFFFF)
+why: reading a word with a mask for the wrong width
+-  (buf, (v .&. 65535 : U32))
++  (buf, (v .&. 16777215 : U32))
+=== u02-uint-decode
+type: FixedTestStruct,uint64
+ops: decode
+file: src/obj.bend
+spec: uint64 little-endian decode: the first limb read is the low one
+fault: the 64-bit reader returns (hi, lo)
+why: building the pair in the wrong order
+-  (buf, U64{lo, hi})
++  (buf, U64{hi, lo})
+=== u02-uint-decode
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+spec: uint256 little-endian decode
+fault: the 256-bit reader swaps limbs 6 and 7
+why: wrong limb order in the last record fields
+-  (buf, uint256_d.Uint256{w0, w1, w2, w3, w4, w5, w6, x})
++  (buf, uint256_d.Uint256{w0, w1, w2, w3, w4, w5, x, w6})
+=== u02-uint-decode
+type: uint128
+ops: decode
+file: types/uint128_decode_ssz_generated.bend
+spec: uint128 little-endian decode: the byte at offset 4 starts limb 1
+fault: the 128-bit reader reads limb 1 from offset 8 (skips a limb)
+why: stride of 8 copied from the uint64 reader
+-(off + 4 : U32)
++(off + 8 : U32)
+=== u02-uint-decode
+type: uint32
+ops: decode
+file: src/buffer.bend
+spec: uint32 little-endian decode of an SSZ offset or scalar at an unaligned position
+fault: the unaligned 4-byte read joins the two words with the wrong shift (8 instead of 16 for a 2-byte misalignment)
+why: shift table typo in the three-way unaligned join
+-    case 2: (U32.shrn(lo, 16n) .|. U32.shln(hi, 16n) : U32)
++    case 2: (U32.shrn(lo, 16n) .|. U32.shln(hi, 8n) : U32)
+=== u03-uint-width
+type: uint16
+ops: decode
+file: types/uint16_decode_ssz_generated.bend
+spec: deserialize requires exactly N/8 bytes (short input rejected)
+fault: the uint16 length check accepts any length at most 2
+why: using <= for a size bound that is an equality
+-U32.is_eq(len, 2)
++U32.is_le(len, 2)
+=== u03-uint-width
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+spec: deserialize requires exactly N/8 bytes (trailing bytes rejected)
+fault: the uint64 length check accepts any length at least 8
+why: forgetting that scope must be exact and treating the buffer as a prefix
+-U32.is_eq(len, 8)
++U32.is_le(8, len)
+=== u03-uint-width
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+spec: deserialize requires exactly 32 bytes for uint256
+fault: the uint256 length check is removed
+why: the fixed-size path trusts the caller's scope
+-U32.is_eq(len, 32)
++U32.is_le(0, len)
+=== u03-uint-width
+type: uint32
+ops: decode
+file: types/uint32_decode_ssz_generated.bend
+spec: deserialize requires exactly 4 bytes for uint32
+fault: the uint32 length check demands 3 bytes
+why: constant typo (bits/8 - 1)
+-U32.is_eq(len, 4)
++U32.is_eq(len, 3)
+=== u03-uint-width
+type: uint8
+ops: decode
+file: types/uint8_decode_ssz_generated.bend
+spec: deserialize requires exactly one byte for uint8
+fault: the uint8 length check accepts two bytes (a uint16 slip)
+why: wrong width constant
+-U32.is_eq(len, 1)
++U32.is_le(len, 2)
+=== u03-uint-width
+type: uint128
+ops: decode
+file: types/uint128_decode_ssz_generated.bend
+spec: deserialize requires exactly 16 bytes for uint128
+fault: the uint128 length check accepts at least 16 (a uint256 value prefix)
+why: confusing exact and lower bound
+-U32.is_eq(len, 16)
++U32.is_le(16, len)
+=== u04-uint-range
+type: uint8
+ops: encode
+file: types/uint8_encode_ssz_generated.bend
+spec: a uint8 value is below 2^8; the serializer must not truncate a larger one
+fault: the uint8 validity bound is 256 instead of 255 (accepts 256 and truncates it)
+why: off by one in the maximum value
+-U32.is_le(o, 255)
++U32.is_le(o, 256)
+=== u04-uint-range
+type: uint16
+ops: encode
+file: types/uint16_encode_ssz_generated.bend
+spec: a uint16 value is below 2^16
+fault: the uint16 validity bound is dropped (any 32-bit word is accepted and truncated on write)
+why: the value is already stored in a 32-bit word, so the range check looks redundant
+-U32.is_le(o, 65535)
++True{}
+=== u04-uint-range
+type: uint8,FixedTestStruct
+ops: encode
+file: src/obj.bend
+spec: single-byte write must keep only the low byte
+fault: the byte writer does not mask its argument to 8 bits
+why: assuming callers already checked the range
+-shl_bytes((x .&. 255 : U32), (p .&. 3 : U32))
++shl_bytes(x, (p .&. 3 : U32))
+=== u05-uint-root-chunk
+type: uint16
+ops: root
+file: src/obj.bend
+spec: hash_tree_root of a uintN is its little-endian serialization right-padded to 32 bytes
+fault: the 32-bit scalar chunk is built without the byte swap (big-endian value in the first word)
+why: confusing the SHA-256 big-endian word order with SSZ little-endian bytes
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{v, 0, 0, 0, 0, 0, 0, 0}
+=== u05-uint-root-chunk
+type: uint64
+ops: root
+file: src/obj.bend
+spec: hash_tree_root(uint64) = 8 little-endian bytes then 24 zero bytes
+fault: the 64-bit chunk puts the high limb first
+why: limb order slip in the chunk constructor
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+=== u05-uint-root-chunk
+type: uint64
+ops: root
+file: src/obj.bend
+spec: hash_tree_root(uint64): the chunk has 24 zero padding bytes
+fault: the 64-bit chunk duplicates the low limb into the padding
+why: copy-paste of a limb into the next slot
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0}
+=== u05-uint-root-chunk
+type: uint256
+ops: root
+file: types/uint256_hashtreeroot_generated.bend
+spec: hash_tree_root(uint256) is its 32 little-endian bytes (no hashing of a single chunk)
+fault: the top limb of the 256-bit chunk is not byte-swapped
+why: the last of eight identical expressions was edited by hand
+-B.swap32(w6), B.swap32(w7)}
++B.swap32(w6), w7}
+=== u05-uint-root-chunk
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+spec: hash_tree_root(uint128) is 16 little-endian bytes padded with 16 zero bytes
+fault: the padding is not zero: limb 3 is repeated into limb 4
+why: filling the chunk by repetition
+-B.swap32(w3), 0, 0, 0, 0}
++B.swap32(w3), B.swap32(w3), 0, 0, 0}
+=== b01-boolean-decode
+type: boolean
+ops: decode
+file: src/obj.bend
+spec: boolean decodes only 0x00 and 0x01
+fault: the boolean validator accepts 2 as well (bound 2 instead of 1)
+why: off by one on the maximum
+-  (buf, U32.is_le(v, 1))
++  (buf, U32.is_le(v, 2))
+=== b01-boolean-decode
+type: boolean
+ops: decode
+file: src/obj.bend
+spec: boolean decodes only 0x00 and 0x01 (every other byte value is invalid)
+fault: the boolean validator accepts every byte value (non-zero is true)
+why: C-style truthiness
+-  (buf, U32.is_le(v, 1))
++  (buf, True{})
+=== b01-boolean-decode
+type: boolean
+ops: decode
+file: src/obj.bend
+spec: boolean 0x01 decodes to true
+fault: the boolean reader treats every non-zero byte as true (the validator already rejects >1, so this should be dead in behavior)
+why: truthiness instead of the equality test
+-  (buf, U32.is_eq(v, 1))
++  (buf, Bool.not(U32.is_eq(v, 0)))
+=== b01-boolean-decode
+type: boolean
+ops: decode
+file: types/boolean_decode_ssz_generated.bend
+spec: boolean is exactly one byte
+fault: the boolean length check accepts any length at least 1 (trailing bytes ignored)
+why: scope treated as a lower bound
+-U32.is_eq(len, 1)
++U32.is_le(1, len)
+=== b01-boolean-decode
+type: boolean
+ops: decode
+file: types/boolean_decode_ssz_generated.bend
+spec: boolean is exactly one byte (empty input is invalid)
+fault: the boolean length check accepts the empty input (reads a missing byte as 0 = false)
+why: <= instead of ==
+-U32.is_eq(len, 1)
++U32.is_le(len, 1)
+=== b02-boolean-encode
+type: boolean
+ops: encode
+file: src/obj.bend
+spec: true serializes as 0x01
+fault: true is written as 0xFF
+why: C-style true = all bits set
+-    case True{}: w8(out, p, 1)
++    case True{}: w8(out, p, 255)
+=== b02-boolean-encode
+type: boolean
+ops: encode
+file: src/obj.bend
+spec: false serializes as 0x00, true as 0x01
+fault: the boolean writer writes the byte 1 for false and nothing for true (the arms are swapped)
+why: inverted match arms
+-    case True{}: w8(out, p, 1)
+-    case False{}: out
++    case True{}: out
++    case False{}: w8(out, p, 1)
+=== b03-boolean-root
+type: boolean
+ops: root
+file: src/obj.bend
+spec: hash_tree_root(true) = 0x01 followed by 31 zero bytes
+fault: the true chunk has its 1 in the last byte of the first word instead of the first byte
+why: big-endian word confusion
+-    case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++    case True{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+=== b03-boolean-root
+type: boolean
+ops: root
+file: src/obj.bend
+spec: hash_tree_root(false) = 32 zero bytes
+fault: the false chunk is the true chunk (the arms are swapped)
+why: inverted match arms
+-    case False{}: D.zero()
++    case False{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
+=== b04-boolean-packed-validity
+type: vec_bool_5
+ops: encode
+file: src/obj.bend
+spec: every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)
+fault: the packed-boolean scan lets bit 1 of each byte through (mask 0xFCFCFCFC)
+why: mask built for "bits above 1" but shifted by one
+-U32.is_eq((x .&. 4278124286 : U32), 0)
++U32.is_eq((x .&. 4244438268 : U32), 0)
+=== b04-boolean-packed-validity
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+spec: every element of a Vector[boolean, 5] must be 0x00 or 0x01
+fault: the vector validator checks only the first four elements (loop bound n-2 instead of n-1)
+why: off by one in the element loop
+-v5_bool_ck(U32.to_nat((n - 1 : U32)), 0, off, True{}, O.ok_bool(buf, off))
++v5_bool_ck(U32.to_nat((n - 2 : U32)), 0, off, True{}, O.ok_bool(buf, off))
+=== b04-boolean-packed-validity
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+spec: Vector[boolean, N] has exactly N bytes
+fault: the Vector[boolean,5] length check accepts any length at most 5
+why: bound instead of equality
+-U32.is_eq(len, 5)
++U32.is_le(len, 5)

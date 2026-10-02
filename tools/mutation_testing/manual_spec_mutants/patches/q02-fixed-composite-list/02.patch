@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q02-fixed-composite-list/02
+# type: FuluExecutionRequests
+# ops: decode
+# spec: a List[ConsolidationRequest, 2] may have exactly 2 elements
+# fault: the count limit is strict
+# why: < instead of <=
+# file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+--- a/types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
++++ b/types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+ 
+-def l2_ConsolidationRequest_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 116) * 116 : U32)), U32.is_le(U32.div(len, 116), 2)))
++def l2_ConsolidationRequest_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 116) * 116 : U32)), U32.is_lt(U32.div(len, 116), 2)))
+ 

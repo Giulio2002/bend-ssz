@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l03-list-limit-encode/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: serializing a ByteList[256] of 257 bytes is invalid
+# fault: the encoder's validity bound is 257
+# why: limit+1
+# file: types/bytelist_256_encode_ssz_generated.bend
+--- a/types/bytelist_256_encode_ssz_generated.bend
++++ b/types/bytelist_256_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 1)
++def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 257, False{}, 1)
+ 

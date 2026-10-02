@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/01
+# type: FixedTestStruct
+# ops: root
+# spec: a 3-field container pads to 4 leaves with a zero chunk
+# fault: the fourth leaf repeats the third root
+# why: padding with the last element instead of zero
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_f_C) = pair
+-  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero())))
++  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_C)))
+ 

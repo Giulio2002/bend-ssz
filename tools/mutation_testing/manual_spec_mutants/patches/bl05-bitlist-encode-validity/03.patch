@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl05-bitlist-encode-validity/03
+# type: bitlist_5
+# ops: encode
+# spec: bits past the length (before the delimiter) must be zero in the value
+# fault: the stray-bit check on the last word is dropped
+# why: assuming the value is canonical
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1519,3 +1519,3 @@
+   (ws, +x) = pair
+-  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
++  (Bits{ws, k}, ok)
+ def bk_cap(ok: Bool, +k: U32, pair: Array<U32> & U32) -> Bits & Bool:

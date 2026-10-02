@@ -1,0 +1,581 @@
+## vectors, lists, bitvectors, bitlists (SSZ 4.2)
+=== v01-vector-length-decode
+type: vec_uint16_5
+ops: decode
+file: types/vec_uint16_5_decode_ssz_generated.bend
+spec: a Vector[T,N] value has exactly N elements (N*size bytes)
+fault: vector validator accepts any length at most 10 bytes
+why: bound instead of equality
+-U32.is_eq(len, 10)
++U32.is_le(len, 10)
+=== v01-vector-length-decode
+type: vec_uint16_5
+ops: decode
+file: types/vec_uint16_5_decode_ssz_generated.bend
+spec: a Vector[T,N] value has exactly N elements; extra bytes are invalid
+fault: vector validator accepts any length at least 10 bytes
+why: scope treated as a prefix
+-U32.is_eq(len, 10)
++U32.is_le(10, len)
+=== v01-vector-length-decode
+type: vec_uint16_5
+ops: decode
+file: types/vec_uint16_5_decode_ssz_generated.bend
+spec: Vector[uint16, 5] is 10 bytes
+fault: the reader copies only 8 bytes (a 4-element vector), the fifth element is lost
+why: element count computed as N-1
+-O.copy_into(buf, off, 10,
++O.copy_into(buf, off, 8,
+=== v01-vector-length-decode
+type: vec_uint64_5
+ops: decode
+file: types/vec_uint64_5_decode_ssz_generated.bend
+spec: Vector[uint64, 5] is exactly 40 bytes
+fault: the length check compares against 5 (the element count) instead of 40 bytes
+why: element count used where a byte length is needed
+-U32.is_eq(len, 40)
++U32.is_eq(len, 5)
+=== v01-vector-length-decode
+type: vec_uint8_3
+ops: decode
+file: types/vec_uint8_3_decode_ssz_generated.bend
+spec: Vector[byte, 3] is exactly three bytes
+fault: the byte-vector length check accepts 4 bytes (rounded up to the word size)
+why: length rounded to a 4-byte word
+-U32.is_eq(len, 3)
++U32.is_le(len, 4)
+=== v02-vector-length-encode
+type: vec_uint16_5
+ops: encode
+file: types/vec_uint16_5_encode_ssz_generated.bend
+spec: serializing a Vector[uint16,5] requires exactly five elements
+fault: validity accepts a vector of up to 11 bytes (hi bound 11)
+why: off by one on the upper bound
+-O.words_ok(o, 10, 10, False{}, 2)
++O.words_ok(o, 10, 11, False{}, 2)
+=== v02-vector-length-encode
+type: vec_uint16_5
+ops: encode
+file: types/vec_uint16_5_encode_ssz_generated.bend
+spec: serializing a Vector[uint16,5] requires exactly five elements
+fault: validity accepts a vector of 9 bytes or more (lower bound 9)
+why: off by one on the lower bound
+-O.words_ok(o, 10, 10, False{}, 2)
++O.words_ok(o, 9, 10, False{}, 2)
+=== v02-vector-length-encode
+type: vec_uint16_5
+ops: encode
+file: types/vec_uint16_5_encode_ssz_generated.bend
+spec: vector elements are whole uint16s
+fault: validity ignores the element size (unit 1 instead of 2)
+why: bytes treated as the element
+-O.words_ok(o, 10, 10, False{}, 2)
++O.words_ok(o, 10, 10, False{}, 1)
+=== v02-vector-length-encode
+type: vec_uint16_5
+ops: encode
+file: types/vec_uint16_5_encode_ssz_generated.bend
+spec: the serialization of Vector[uint16,5] has 10 bytes
+fault: the encoder reports 12 bytes (rounded up to a word multiple)
+why: padding the length to the word size
+-O.out_done(10, out)
++O.out_done(12, out)
+=== v02-vector-length-encode
+type: vec_uint8_3
+ops: encode
+file: types/vec_uint8_3_encode_ssz_generated.bend
+spec: Vector[byte, 3] has no padding in its serialization
+fault: validity accepts any length at most 4 (hi bound 4)
+why: word-size rounding of the bound
+-O.words_ok(o, 3, 3, False{}, 1)
++O.words_ok(o, 3, 4, False{}, 1)
+=== l01-list-limit-decode
+type: VarTestStruct
+ops: decode
+file: types/list_uint16_1024_decode_ssz_generated.bend
+spec: a List[uint16,1024] has at most 1024 elements
+fault: the limit check allows 1025 elements
+why: off by one (limit+1)
+-U32.is_le(U32.div(len, 2), 1024)
++U32.is_le(U32.div(len, 2), 1025)
+=== l01-list-limit-decode
+type: VarTestStruct
+ops: decode
+file: types/list_uint16_1024_decode_ssz_generated.bend
+spec: a List[uint16,1024] may have exactly 1024 elements
+fault: the limit check is strict (rejects 1024 elements)
+why: < instead of <=
+-U32.is_le(U32.div(len, 2), 1024)
++U32.is_lt(U32.div(len, 2), 1024)
+=== l01-list-limit-decode
+type: VarTestStruct
+ops: decode
+file: types/list_uint16_1024_decode_ssz_generated.bend
+spec: the list limit counts elements, not bytes
+fault: the limit is compared with the byte length
+why: byte length used for element count
+-U32.is_le(U32.div(len, 2), 1024)
++U32.is_le(len, 1024)
+=== l01-list-limit-decode
+type: VarTestStruct
+ops: decode
+file: types/list_uint16_1024_decode_ssz_generated.bend
+spec: the limit of a List[uint16,1024] is enforced
+fault: no limit check at all
+why: relying on the caller's size cap
+-U32.is_le(U32.div(len, 2), 1024)
++True{}
+=== l01-list-limit-decode
+type: ComplexTestStruct
+ops: decode
+file: types/bytelist_256_decode_ssz_generated.bend
+spec: ByteList[256] has at most 256 bytes
+fault: the limit check allows 257 bytes
+why: off by one (limit+1)
+-U32.is_le(len, 256)
++U32.is_le(len, 257)
+=== l01-list-limit-decode
+type: ComplexTestStruct
+ops: decode
+file: types/bytelist_256_decode_ssz_generated.bend
+spec: ByteList[256] may have exactly 256 bytes
+fault: the limit check is strict
+why: < instead of <=
+-U32.is_le(len, 256)
++U32.is_lt(len, 256)
+=== l02-list-element-alignment
+type: VarTestStruct
+ops: decode
+file: types/list_uint16_1024_decode_ssz_generated.bend
+spec: the scope of a List[uint16] is a multiple of 2 bytes
+fault: no alignment check (odd byte lengths accepted)
+why: the element count is len/2 so the remainder looks harmless
+-U32.is_eq(len, (U32.div(len, 2) * 2 : U32))
++True{}
+=== l02-list-element-alignment
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: list elements are whole; the byte length of a List[uint16] is even
+fault: the unit check of a packed collection tests bit 1 instead of bit 0
+why: mask typo
+-    case 2: U32.is_eq((n .&. 1 : U32), 0)
++    case 2: U32.is_eq((n .&. 2 : U32), 0)
+=== l02-list-element-alignment
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: list elements are whole
+fault: the unit check is dropped from the packed-collection validity
+why: assuming whole elements by construction
+-Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n))
++Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), True{})
+=== l03-list-limit-encode
+type: VarTestStruct
+ops: encode
+file: types/list_uint16_1024_encode_ssz_generated.bend
+spec: serializing a List[uint16,1024] with 1025 elements is invalid
+fault: the encoder's validity bound is 2050 bytes (1025 elements)
+why: limit+1
+-O.words_ok(o, 0, 2048, False{}, 2)
++O.words_ok(o, 0, 2050, False{}, 2)
+=== l03-list-limit-encode
+type: VarTestStruct
+ops: encode
+file: types/list_uint16_1024_encode_ssz_generated.bend
+spec: serializing a List[uint16,1024] with 1024 elements is valid
+fault: the encoder's validity bound is 2046 bytes (limit-1)
+why: strict bound
+-O.words_ok(o, 0, 2048, False{}, 2)
++O.words_ok(o, 0, 2046, False{}, 2)
+=== l03-list-limit-encode
+type: ComplexTestStruct
+ops: encode
+file: types/bytelist_256_encode_ssz_generated.bend
+spec: serializing a ByteList[256] of 257 bytes is invalid
+fault: the encoder's validity bound is 257
+why: limit+1
+-O.words_ok(o, 0, 256, False{}, 1)
++O.words_ok(o, 0, 257, False{}, 1)
+=== l03-list-limit-encode
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: list limit is an upper bound on the length
+fault: a packed collection is valid at hi (the strict form n < hi) so the limit itself is refused
+why: < instead of <=
+-Bool.or(big, U32.is_le(n, hi))
++Bool.or(big, U32.is_lt(n, hi))
+=== l03-list-limit-encode
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+spec: list limit is an upper bound on the length
+fault: any packed collection is valid regardless of the upper bound (big = True)
+why: the limit check treated as the caller's job
+-Bool.or(big, U32.is_le(n, hi))
++True{}
+=== l04-list-tail-bytes
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: serialization of a 2-byte-aligned list writes exactly its bytes (nothing past the length)
+fault: the tail check of the last storage word tests the wrong shift for a half word
+why: shift table typo (case _ is 3-byte tail, the 2-byte tail uses 16)
+-    case _: U32.is_eq(U32.shrn(x, 24n), 0)
++    case _: U32.is_eq(U32.shrn(x, 31n), 0)
+=== l04-list-tail-bytes
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: serialization contains exactly the bytes of the list
+fault: the 2-byte-tail check is weakened (shift 24 instead of 16)
+why: shift table typo
+-    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
++    case 2: U32.is_eq(U32.shrn(x, 24n), 0)
+=== bv01-bitvector-length
+type: bitvector_5
+ops: decode
+file: types/bitvector_5_decode_ssz_generated.bend
+spec: Bitvector[5] is exactly 1 byte
+fault: length check accepts at most 1 byte (empty accepted)
+why: bound instead of equality
+-U32.is_eq(len, 1)
++U32.is_le(len, 1)
+=== bv01-bitvector-length
+type: bitvector_9
+ops: decode
+file: types/bitvector_9_decode_ssz_generated.bend
+spec: Bitvector[9] is exactly 2 bytes
+fault: length check accepts 2 or more bytes (trailing bytes ignored)
+why: scope treated as a prefix
+-U32.is_eq(len, 2)
++U32.is_le(2, len)
+=== bv01-bitvector-length
+type: bitvector_512
+ops: decode
+file: types/Fulu_bitvector_512_decode_ssz_generated.bend
+spec: Bitvector[512] is exactly 64 bytes
+fault: length check demands 65 bytes (N/8+1 as for a bitlist)
+why: bitlist size rule applied to a bitvector
+-U32.is_eq(len, 64)
++U32.is_eq(len, 65)
+=== bv02-bitvector-padding-decode
+type: bitvector_5
+ops: decode
+file: types/bitvector_5_decode_ssz_generated.bend
+spec: the unused high bits of the last byte of a Bitvector must be zero (deserialization)
+fault: no padding check
+why: ignoring bits the application cannot see
+-def bv5_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 5)
++def bv5_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
+=== bv02-bitvector-padding-decode
+type: bitvector_5
+ops: decode
+file: src/obj.bend
+spec: bits 5..7 of the last byte of Bitvector[5] must be zero
+fault: the padding mask for 5 used bits is 63 (bit 5 may be set)
+why: mask table typo (2^6-1 instead of 2^5-1)
+-    case 5: 31
++    case 5: 63
+=== bv02-bitvector-padding-decode
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+spec: bits 1..7 of the second byte of Bitvector[9] must be zero
+fault: the padding mask for one used bit is 3
+why: mask table typo
+-    case 1: 1
++    case 1: 3
+=== bv02-bitvector-padding-decode
+type: bitvector_9
+ops: decode
+file: types/bitvector_9_decode_ssz_generated.bend
+spec: padding bits are in the last byte
+fault: the padding check inspects byte 0 instead of byte 1
+why: byte index off by one
+-O.ok_pad(buf, (off + 1 : U32), 1)
++O.ok_pad(buf, (off + 0 : U32), 1)
+=== bv02-bitvector-padding-decode
+type: bitvector_7
+ops: decode
+file: src/obj.bend
+spec: bit 7 of the last byte of Bitvector[7] must be zero
+fault: the padding mask for 7 used bits accepts bit 7 (mask 255)
+why: mask table typo
+-    case _: 127
++    case _: 255
+=== bv02-bitvector-padding-decode
+type: bitvector_5
+ops: decode
+file: src/obj.bend
+spec: the padding bits are those above the used bits (bits r..7)
+fault: the padding test is inverted: it requires the padding to be non-zero
+why: ~mask vs mask confusion
+-  (buf, U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0))
++  (buf, Bool.not(U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0)))
+=== bv03-bitvector-padding-encode
+type: bitvector_5
+ops: encode
+file: types/bitvector_5_encode_ssz_generated.bend
+spec: serializing a Bitvector[5] whose value has bits above 5 is invalid (padding must be zero)
+fault: the validity bound is 64 (bit 5 allowed)
+why: off by one in the bit count
+-U32.is_lt(w0, 32)
++U32.is_lt(w0, 64)
+=== bv03-bitvector-padding-encode
+type: bitvector_5
+ops: encode
+file: src/obj.bend
+spec: serializing a bit vector with a set bit past N is invalid
+fault: the above-N table for r=5 masks from bit 6
+why: constant typo in a 32-entry table
+-    case 5: U32.is_eq((x .&. 4294967264 : U32), 0)
++    case 5: U32.is_eq((x .&. 4294967232 : U32), 0)
+=== bv03-bitvector-padding-encode
+type: bitvector_9
+ops: encode
+file: types/bitvector_9_encode_ssz_generated.bend
+spec: a Bitvector[9] value has bits 9..15 clear
+fault: the validity bound is 1024 (bit 9 allowed)
+why: off by one in the bit count
+-U32.is_lt(w0, 512)
++U32.is_lt(w0, 1024)
+=== bv04-bitvector-root
+type: bitvector_5
+ops: root
+file: types/bitvector_5_hashtreeroot_generated.bend
+spec: hash_tree_root(Bitvector[N]) merkleizes the packed bits (little-endian bytes padded to 32)
+fault: the packed word is not byte-swapped into the chunk
+why: SHA-256 word order confusion
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{w0, 0, 0, 0, 0, 0, 0, 0}
+=== bv04-bitvector-root
+type: bitvector_512
+ops: root
+file: types/Fulu_bitvector_512_hashtreeroot_generated.bend
+spec: Bitvector[512] has two chunks; root = hash(chunk0, chunk1)
+fault: the two chunks are hashed in the wrong order
+why: swapped operands of the single hash
+-D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)})
++D.node(hl, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
+=== bv04-bitvector-root
+type: bitvector_512
+ops: root
+file: types/Fulu_bitvector_512_hashtreeroot_generated.bend
+spec: Bitvector[512] root has no length mixing
+fault: the root mixes in the bit count 512 like a Bitlist
+why: bitlist rule applied to a bitvector
+-(h, D.node(hl, D.D{B.swap32(w0)
++(h, O.mix_len(hl, D.node(hl, D.D{B.swap32(w0)
+=== bl01-bitlist-delimiter-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: a Bitlist value's last byte must be non-zero (it holds the delimiter bit)
+fault: a zero last byte is accepted (no delimiter required)
+why: treating the delimiter as optional
+-  (buf, bsel(U32.is_eq(v, 0), False{},
++  (buf, bsel(U32.is_eq(v, 0), True{},
+=== bl01-bitlist-delimiter-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: an empty byte string is not a Bitlist value
+fault: the empty input is accepted
+why: < instead of <= on the length
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+=== bl01-bitlist-delimiter-decode
+type: bitlist_8
+ops: decode
+file: src/obj.bend
+spec: the delimiter is the highest set bit of the last byte (bit 7 counts)
+fault: a last byte of exactly 128 is treated as delimiter at bit 6
+why: threshold typo in the high-bit table
+-def high_bit(+v: U32) -> U32:
+-  pick(U32.is_ge(v, 128), 7, pick(
++def high_bit(+v: U32) -> U32:
++  pick(U32.is_ge(v, 129), 7, pick(
+=== bl01-bitlist-delimiter-decode
+type: bitlist_8
+ops: decode
+file: src/obj.bend
+spec: a bit list of length n has its delimiter at bit n
+fault: the decoder never clears the delimiter, it stays in the value
+why: forgetting that the delimiter is not data
+-    case Words{ws, +n}: (buf, Bits{clear_bit(ws, nbits), nbits})
++    case Words{ws, +n}: (buf, Bits{ws, nbits})
+=== bl01-bitlist-delimiter-decode
+type: bitlist_8
+ops: decode
+file: src/obj.bend
+spec: the number of bits is 8*(len-1) + index of the delimiter
+fault: the bit count is taken as 8*(len-1) (the delimiter index is ignored)
+why: counting whole bytes only
+-  bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++  bits_clear((8 * (len - 1 : U32) + 0 : U32), copy_in(buf, off, len))
+=== bl02-bitlist-limit-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: a Bitlist[N] has at most N bits
+fault: the limit check accepts N+1 bits
+why: off by one (limit+1)
+-U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
++U32.to_nat(high_bit(v))), Nat.add(U32.to_nat(lim), 1n)))))
+=== bl02-bitlist-limit-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: a Bitlist[N] may have exactly N bits
+fault: the limit check is strict (N bits rejected)
+why: < instead of <=
+-  (buf, bsel(U32.is_eq(v, 0), False{},
+-    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(
++  (buf, bsel(U32.is_eq(v, 0), False{},
++    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_lt(
+=== bl02-bitlist-limit-decode
+type: bitlist_513
+ops: decode
+file: src/obj.bend
+spec: the Bitlist limit is in bits
+fault: the limit is compared with the byte count
+why: bytes used for bits
+-Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim))
++Nat.is_le(U32.to_nat(len), U32.to_nat(lim))
+=== bl02-bitlist-limit-decode
+type: bitlist_5
+ops: decode
+file: src/obj.bend
+spec: the Bitlist limit is enforced
+fault: the limit check is ignored (always true)
+why: relying on the caller's size cap
+-Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim))
++True{}
+=== bl03-bitlist-encode-delimiter
+type: bitlist_5
+ops: encode
+file: src/obj.bend
+spec: serialization appends one 1 bit at index len (the delimiter)
+fault: no delimiter is written
+why: forgetting the delimiter
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (out, w)
+=== bl03-bitlist-encode-delimiter
+type: bitlist_8
+ops: encode
+file: src/obj.bend
+spec: the delimiter is at bit len%8 of byte len/8 (a new byte when len%8==0)
+fault: the delimiter is placed at the byte of ceil(len/8)
+why: ceil vs floor
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (w8(out, (p + U32.shrn((k + 7 : U32), 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
+=== bl03-bitlist-encode-delimiter
+type: bitlist_5
+ops: encode
+file: src/obj.bend
+spec: the delimiter is bit number len
+fault: the delimiter is bit len+1
+why: off by one in the shift
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, ((k + 1 : U32) .&. 7 : U32))), w)
+=== bl04-bitlist-size
+type: bitlist_8
+ops: encode
+file: src/obj.bend
+spec: a Bitlist of len bits serializes to len/8 + 1 bytes
+fault: the size pass reports ceil(len/8) bytes
+why: bitvector size rule applied to a bitlist (no room for the delimiter when len%8==0)
+-    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
++    case Bits{ws, +k}: (Bits{ws, k}, U32.shrn((k + 7 : U32), 3n))
+=== bl04-bitlist-size
+type: bitlist_8
+ops: encode
+file: src/obj.bend
+spec: a Bitlist of len bits serializes to len/8 + 1 bytes
+fault: the size pass of the checked serializer reports ceil(len/8)
+why: same slip in the second size function
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), U32.shrn((k + 7 : U32), 3n), 2147483648))
+=== bl05-bitlist-encode-validity
+type: bitlist_5
+ops: encode
+file: src/obj.bend
+spec: serializing a Bitlist[5] with 6 bits is invalid
+fault: the validity bound is limit+1
+why: off by one
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, (limit + 1 : U32))), k, Array.size(U32, ws))
+=== bl05-bitlist-encode-validity
+type: bitlist_5
+ops: encode
+file: src/obj.bend
+spec: a Bitlist[5] may have 5 bits
+fault: the validity bound is strict (limit-1)
+why: strict inequality
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_lt(k, limit)), k, Array.size(U32, ws))
+=== bl05-bitlist-encode-validity
+type: bitlist_5
+ops: encode
+file: src/obj.bend
+spec: bits past the length (before the delimiter) must be zero in the value
+fault: the stray-bit check on the last word is dropped
+why: assuming the value is canonical
+-  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
++  (Bits{ws, k}, ok)
+=== bl06-bitlist-root
+type: bitlist_5
+ops: root
+file: src/obj.bend
+spec: hash_tree_root(Bitlist) = mix_in_length(merkleize(pack_bits(bits)), len): the delimiter is not chunked
+fault: the delimiter byte is included in the chunked data (bits_nbytes(k+1))
+why: chunking the serialization instead of the bits
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes((k + 8 : U32))}, depth, seg))
+=== bl06-bitlist-root
+type: bitlist_5
+ops: root
+file: src/obj.bend
+spec: the mixed-in length of a Bitlist is its number of bits
+fault: the mixed length counts the delimiter (k+1)
+why: length of the serialization used
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
+=== bl06-bitlist-root
+type: bitlist_5
+ops: root
+file: types/bitlist_5_hashtreeroot_generated.bend
+spec: the Bitlist[5] limit is one chunk (depth 0)
+fault: the tree depth is 1 (one level too deep)
+why: limit in bits used as chunk count
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+=== bl06-bitlist-root
+type: bitlist_513
+ops: root
+file: types/bitlist_513_hashtreeroot_generated.bend
+spec: Bitlist[513] has chunk limit (513+255)//256 = 3, depth 2
+fault: the depth is 1 (floor(513/256))
+why: chunk count rounded down
+-O.bits_root(hl, h, o, 2, seg)
++O.bits_root(hl, h, o, 1, seg)
+=== bl06-bitlist-root
+type: bitlist_513
+ops: root
+file: types/bitlist_513_hashtreeroot_generated.bend
+spec: Bitlist[513] has chunk limit 3, depth 2
+fault: the depth is 3 (next power of two of the bit limit rounded up twice)
+why: depth from the wrong limit
+-O.bits_root(hl, h, o, 2, seg)
++O.bits_root(hl, h, o, 3, seg)
+=== bl06-bitlist-root
+type: bitlist_513
+ops: root
+file: src/obj.bend
+spec: the Bitlist root mixes the length with a 32-byte little-endian chunk
+fault: the length chunk is built without byte swap (big-endian)
+why: SHA word order confusion in the length chunk
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p02-progressive-length-mix/01
+# type: proglist_uint16
+# ops: root
+# spec: progressive list root = mix_in_length(merkleize_progressive(chunks), element count)
+# fault: the byte length is mixed in
+# why: shift omitted
+# file: types/proglist_uint16_hashtreeroot_generated.bend
+--- a/types/proglist_uint16_hashtreeroot_generated.bend
++++ b/types/proglist_uint16_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def pl_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root_prog(hl, h, o, seg))
++def pl_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root_prog(hl, h, o, seg))
+ 

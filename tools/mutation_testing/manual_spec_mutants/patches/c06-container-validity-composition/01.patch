@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c06-container-validity-composition/01
+# type: VarTestStruct
+# ops: encode
+# spec: a container is valid only if every field is valid (the uint8 field C is range-checked)
+# fault: validity forgets field C
+# why: checking only the variable field and the first scalar
+# file: types/VarTestStruct_encode_ssz_generated.bend
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -96,3 +96,3 @@
+   match o:
+-    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_va0(f_A, f_C, Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), list_uint16_1024_e.l1024_u16_valid(f_B))
++    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_va0(f_A, f_C, uint16_e.u16_valid(f_A), list_uint16_1024_e.l1024_u16_valid(f_B))
+ 

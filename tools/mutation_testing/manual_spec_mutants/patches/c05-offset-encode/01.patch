@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/01
+# type: VarTestStruct
+# ops: encode
+# spec: the offset of the first variable part is the fixed size (7)
+# fault: the offset written is the fixed size plus 4
+# why: counting a second offset slot
+# file: types/list_uint16_1024_encode_ssz_generated.bend
+--- a/types/list_uint16_1024_encode_ssz_generated.bend
++++ b/types/list_uint16_1024_encode_ssz_generated.bend
+@@ -31,3 +31,3 @@
+ def l1024_u16_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+-  l1024_u16_pvb(cur, l1024_u16_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
++  l1024_u16_pvb(cur, l1024_u16_putk(O.w32(out, (pos + hoff : U32), (cur + 4 : U32)), (pos + cur : U32), v))
+ 

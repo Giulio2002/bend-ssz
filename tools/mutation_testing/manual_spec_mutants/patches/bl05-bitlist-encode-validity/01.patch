@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl05-bitlist-encode-validity/01
+# type: bitlist_5
+# ops: encode
+# spec: serializing a Bitlist[5] with 6 bits is invalid
+# fault: the validity bound is limit+1
+# why: off by one
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1554,3 +1554,3 @@
+   match o:
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, (limit + 1 : U32))), k, Array.size(U32, ws))
+ 

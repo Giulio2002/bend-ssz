@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p02-progressive-length-mix/04
+# type: progbitlist
+# ops: decode
+# spec: ProgressiveBitlist has no limit but a non-empty value with a non-zero last byte
+# fault: the unbounded bitlist accepts a zero last byte
+# why: skipping the delimiter test when there is no limit
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1133,3 +1133,3 @@
+   (buf, +v) = pair
+-  (buf, bsel(U32.is_eq(v, 0), False{},
++  (buf, bsel(U32.is_eq(v, 0), big,
+     bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))

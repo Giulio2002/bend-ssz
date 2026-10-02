@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/01
+# type: CompatibleUnionA
+# ops: decode
+# spec: only the declared selectors are valid; selector 0 is not an option of a CompatibleUnion
+# fault: selectors up to 1 accepted (selector 0 with a payload reads as option 1)
+# why: <= instead of == in the selector test
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +s) = pair
+-  CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++  CompatibleUnionA_ok0(U32.is_le(s, 1), s, buf, off, len)
+ 

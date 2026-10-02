@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/11
+# type: ProgressiveVarTestStruct
+# ops: decode
+# spec: variable-size progressive container: first offset equals the fixed part size (9)
+# fault: the first offset may be any value at least 9
+# why: weak first-offset test
+# file: types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+--- a/types/ProgressiveVarTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+@@ -69,3 +69,3 @@
+   (buf, +o0) = pair
+-  ProgressiveVarTestStruct_c0(U32.is_eq(o0, 9), buf, off, len, o0)
++  ProgressiveVarTestStruct_c0(U32.is_le(9, o0), buf, off, len, o0)
+ 

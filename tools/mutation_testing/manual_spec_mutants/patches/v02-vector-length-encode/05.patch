@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v02-vector-length-encode/05
+# type: vec_uint8_3
+# ops: encode
+# spec: Vector[byte, 3] has no padding in its serialization
+# fault: validity accepts any length at most 4 (hi bound 4)
+# why: word-size rounding of the bound
+# file: types/vec_uint8_3_encode_ssz_generated.bend
+--- a/types/vec_uint8_3_encode_ssz_generated.bend
++++ b/types/vec_uint8_3_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v3_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 3, 3, False{}, 1)
++def v3_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 3, 4, False{}, 1)
+ 

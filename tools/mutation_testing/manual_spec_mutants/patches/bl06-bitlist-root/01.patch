@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl06-bitlist-root/01
+# type: bitlist_5
+# ops: root
+# spec: hash_tree_root(Bitlist) = mix_in_length(merkleize(pack_bits(bits)), len): the delimiter is not chunked
+# fault: the delimiter byte is included in the chunked data (bits_nbytes(k+1))
+# why: chunking the serialization instead of the bits
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1013,3 +1013,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes((k + 8 : U32))}, depth, seg))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n03-union-encode/05
+# type: CompatibleUnionA
+# ops: encode
+# spec: a union value is valid only if its payload is valid
+# fault: validity does not check the payload
+# why: assuming the payload type invariant
+# file: types/CompatibleUnionA_encode_ssz_generated.bend
+--- a/types/CompatibleUnionA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionA_encode_ssz_generated.bend
+@@ -42,3 +42,3 @@
+   match o:
+-    case CompatibleUnionA_d.CompatibleUnionA_c0{+v}: (CompatibleUnionA_d.CompatibleUnionA_c0{v}, ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(v))
++    case CompatibleUnionA_d.CompatibleUnionA_c0{+v}: (CompatibleUnionA_d.CompatibleUnionA_c0{v}, True{})
+ 

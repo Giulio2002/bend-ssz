@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/02
+# type: CompatibleUnionA
+# ops: decode
+# spec: selectors outside the declared options are invalid (including 128..255)
+# fault: any selector at least 1 is accepted (out-of-bounds selectors read as option 1)
+# why: >= instead of == in the selector test
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +s) = pair
+-  CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++  CompatibleUnionA_ok0(U32.is_le(1, s), s, buf, off, len)
+ 

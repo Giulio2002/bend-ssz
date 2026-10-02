@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q03-vector-of-variable/02
+# type: ComplexTestStruct
+# ops: decode
+# spec: a Vector[T,2] of variable-size elements has exactly 2 offsets: the first offset is 8
+# fault: the first offset may be any value at most 8 (fewer elements than N)
+# why: treating the vector like a list whose count comes from the first offset
+# file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+--- a/types/vec_VarTestStruct_2_decode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_decode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+   (buf, +first) = pair
+-  v2_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_eq(first, 8)), buf, off, len, first)
++  v2_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), U32.is_le(first, 8)), buf, off, len, first)
+ 

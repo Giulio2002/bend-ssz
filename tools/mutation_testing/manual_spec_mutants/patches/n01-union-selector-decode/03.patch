@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/03
+# type: CompatibleUnionA
+# ops: decode
+# spec: selectors above 127 must not be accepted
+# fault: the selector check keeps only the low 7 bits (selector 129 reads as 1)
+# why: masking the selector to the legal range instead of rejecting
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +s) = pair
+-  CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++  CompatibleUnionA_ok0(U32.is_eq((s .&. 127 : U32), 1), s, buf, off, len)
+ 

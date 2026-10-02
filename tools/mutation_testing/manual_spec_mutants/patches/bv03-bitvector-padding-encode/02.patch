@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv03-bitvector-padding-encode/02
+# type: bitvector_5
+# ops: encode
+# spec: serializing a bit vector with a set bit past N is invalid
+# fault: the above-N table for r=5 masks from bit 6
+# why: constant typo in a 32-entry table
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1445,3 +1445,3 @@
+     case 4: U32.is_eq((x .&. 4294967280 : U32), 0)
+-    case 5: U32.is_eq((x .&. 4294967264 : U32), 0)
++    case 5: U32.is_eq((x .&. 4294967232 : U32), 0)
+     case 6: U32.is_eq((x .&. 4294967232 : U32), 0)

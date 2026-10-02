@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v01-vector-length-decode/04
+# type: vec_uint64_5
+# ops: decode
+# spec: Vector[uint64, 5] is exactly 40 bytes
+# fault: the length check compares against 5 (the element count) instead of 40 bytes
+# why: element count used where a byte length is needed
+# file: types/vec_uint64_5_decode_ssz_generated.bend
+--- a/types/vec_uint64_5_decode_ssz_generated.bend
++++ b/types/vec_uint64_5_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def v5_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_u64_ok_len(U32.is_eq(len, 40), buf, off)
++def v5_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_u64_ok_len(U32.is_eq(len, 5), buf, off)
+ 
