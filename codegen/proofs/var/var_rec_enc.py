@@ -874,59 +874,8 @@ def putx_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
 VLIST = 'l1099511627776_Validator'
 
 
-def vlist_text():
-    from codegen.impl import generate as G  # noqa: F401  kept: the import may register hooks at import time
-    p, R, RS = VLIST, 'Validator', 121
-    g, names = layout()
-    F_ = g.shape(names[R]).fields
-    ups = []          # (field, words) in putx_Validator's order
-    for f, fs in F_:
-        if fs.kind == 'u64':
-            ups.append((f, fs, [f'{f}_lo', f'{f}_hi']))
-        elif fs.kind == 'bool':
-            ups.append((f, fs, [f]))
-        else:
-            ups.append((f, fs, [f'{f}_{j}' for j in range(fs.fsize // 4)]))
-    WA = ', '.join(w for _, _, ws in ups for w in ws)
-    lines = ['  match o:', '    case T.Validator{' + ', '.join(f'+o{k}' if fs.kind != 'bool' else f'+{f}' for k, (f, fs, _) in enumerate(ups)) + '}:']
-    ind = 6
-    for k, (f, fs, ws) in enumerate(ups):
-        if fs.kind == 'bool':
-            continue
-        ctor = 'O.U64' if fs.kind == 'u64' else f'T.{fs.rep}'
-        lines.append(' ' * ind + f'match o{k}:')
-        lines.append(' ' * (ind + 2) + f'case {ctor}{{' + ', '.join('+' + w for w in ws) + '}:')
-        ind += 4
-    NEST = '\n'.join(lines)
-    PAD = ' ' * ind
-    xs = [w for f, fs, ws in ups[:3] for w in ws]
-    bv = ups[3][2][0]
-    es = [w for f, fs, ws in ups[4:] for w in ws]
-    u = lambda a, b: f'S.UnsignedValue{{P.UInt{{{a}, {b}, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
-    items = [f'S.BytesValue{{F.limbs([{", ".join(ups[0][2])}])}}', f'S.BytesValue{{F.limbs([{", ".join(ups[1][2])}])}}', u(*ups[2][2]), f'S.BooleanValue{{{bv}}}'] + \
-        [u(*ups[k][2]) for k in range(4, 8)]
-    VAL = 'S.Sequence{' + ''.join(f'S.Items{{{it}, ' for it in items) + 'S.EmptyItems{}' + '}' * len(items) + '}'
-    SPB = f'List.append(&2, U32, F.limbs([{", ".join(xs)}]), List.append(&2, U32, SP.boolean_encoding({bv}), F.limbs([{", ".join(es)}])))'
-    BYV = f'EV.BY_{R}({WA})'
-    TRR = f'FD.array__Tree<T.{R}>'
-    TH = f'FD.array__thaw(T.{R}, A)'
-    RTP = f'Array<U32> & Array<T.{R}>'
-    X0 = 'Nat.add(A.quad(q), r)'
-    S = f'{RS}n'
-    XJ = f'U32.add(X, U32.mul(i, {RS}))'
-    LLv = f'LL_{p}(A, N)'
-    ENC = f'(CHV_{p}(U32.to_nat(N), A, 0n))'
-    WSG = ', '.join(f'+{w}: Bool' if fs.kind == 'bool' else f'+{w}: U32' for f, fs, ws in ups for w in ws)
-    ys = [f'F.limbs([{", ".join(ws)}])' if fs.kind != 'bool' else f'[EV.BB({ws[0]})]' for f, fs, ws in ups]
-    dms = [f'F.domain_limbs([{", ".join(ws)}])' if fs.kind != 'bool' else f'domBB({ws[0]})' for f, fs, ws in ups]
-
-    def dom(k):
-        if k == len(ys) - 1:
-            return dms[k]
-        rest = ys[k + 1] if k + 1 == len(ys) - 1 else 'List.append(&2, U32, ' + ', List.append(&2, U32, '.join(ys[k + 1:-1]) + ', ' + ys[-1] + ')' * (len(ys) - k - 2)
-        return f'PI.append_domain({ys[k]}, {rest}, {dms[k]}, {dom(k + 1)})'
-    DOM = dom(0)
-    rbeq_cases = '\n'.join(f'    case {c}{{}}: {{{{==}}}}'.replace('{{==}}', '{==}') for c in ('True', 'False'))
+def _vlist_shared_lemmas():
+    """the pair projections and the Bool conjunction lemmas shared by the module"""
     return f'''
 def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:
   (+a, +b) = p
@@ -943,7 +892,12 @@ def and_r(+a: Bool, +b: Bool, +h: {{Bool.and(a, b) == {TRUE}}}) -> {{b == {TRUE}
     case True{{}}: h
     case False{{}}: Empty.absurd({{b == {TRUE}}}, FD.logic__false_true(h))
 
-# ---- {R}: the object's bytes, value and parts; its writer at any X ----
+'''
+
+
+def _vlist_record_laws(R, NEST, PAD, BYV, VAL, WSG, S, SPB, bv, rbeq_cases, WA, DOM, X0, es, xs):
+    """the record's bytes, value and parts, and its writer at any X"""
+    return f'''# ---- {R}: the object's bytes, value and parts; its writer at any X ----
 
 def RWB(o: T.{R}) -> +List<U32>:
 {NEST}
@@ -991,7 +945,12 @@ def putxo(+o: T.{R}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
 {NEST}
 {PAD}EV.putx_{R}({WA}, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-# ---- positions at byte stride S ----
+'''
+
+
+def _vlist_positions(X0, S, XJ, RS):
+    """positions at the byte stride of a record: the products, the position and the room of record j"""
+    return f'''# ---- positions at byte stride S ----
 
 def bmul(+dd: Nat, +i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {{U32.to_nat(Su) == S : Nat}}, +ei: {{U32.to_nat(i) == j : Nat}},
     +hdd: {{Nat.is_lt(dd, 29n) == {TRUE}}}, +hm: {{Nat.is_le(Nat.mul(j, S), VB.pw(2n+dd)) == {TRUE}}})
@@ -1032,7 +991,12 @@ def ynext(+j: Nat, +q: Nat, +r: Nat) -> {{YB(1n+j, q, r) == Nat.add(YB(j, q, r),
     Equal.cong(Nat, Nat, z => Nat.add({X0}, z), Nat.add({S}, Nat.mul(j, {S})), Nat.add(Nat.mul(j, {S}), {S}), FD.nat__add_comm({S}, Nat.mul(j, {S}))),
     Equal.sym(Nat, Nat.add(Nat.add({X0}, Nat.mul(j, {S})), {S}), Nat.add({X0}, Nat.add(Nat.mul(j, {S}), {S})), FD.nat__add_assoc({X0}, Nat.mul(j, {S}), {S})))
 
-# ---- {p}: the object's records, their bytes and values ----
+'''
+
+
+def _vlist_record_values(p, TRR, R, TH, S):
+    """the list's records, their bytes and values, and the root laws of the list"""
+    return f'''# ---- {p}: the object's records, their bytes and values ----
 
 def EL_{p}(+A: {TRR}, +j: Nat) -> T.{R}: VRL.mget(T.{R}, FD.spec_common__nth(T.{R}, FD.array__slots(T.{R}, A), j), T.{R}_default())
 def AG_{p}(+A: {TRR}, +i: U32) -> Array<T.{R}> & T.{R}: Array.get(T.{R}, {TH}, i)
@@ -1135,7 +1099,12 @@ def lenV_{p}(c, A, j):
           Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, Rs)), List.length(&2, U32, Y), {S}, lenb(EL_{p}(A, j))),
           Equal.cong(Nat, Nat, z => Nat.add({S}, z), List.length(&2, U32, Rs), Nat.mul(q, {S}), lenV_{p}(q, A, 1n+j))))
 
-# ---- {p}: the write loop at X = 4 q + r (record j at byte X + {RS} j) ----
+'''
+
+
+def _vlist_write_loop(p, R, RS, TRR, XJ, TH, RTP, X0, S):
+    """the write loop at X = 4q + r: the perfect tree, a record's write and the loop over the records"""
+    return f'''# ---- {p}: the write loop at X = 4 q + r (record j at byte X + {RS} j) ----
 
 # the records j, j + 1, ..., j + k of A (index i = j) written from X + {RS} j on
 def WX_{p}(k: Nat, +i: U32, +j: Nat, +dd: Nat, D: {TR}, +X: U32, +A: {TRR}) -> {TR}:
@@ -1248,7 +1217,12 @@ def ptx_{p}(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: {
         VRX.spl_catx(B0, Yj, Y, rest, YB(1n+j, q, r), UA.BYT(D1), hX, eXn, by))
       (rt3, by3)
 
-# ---- {p}: the list's encoder window ----
+'''
+
+
+def _vlist_encoder_window(p, TRR, TH, R, S, ENC, X0, LLv, RTP, RS):
+    """the list's encoder window: its object, bytes, the writer's model, validity and the runtime writer"""
+    return f'''# ---- {p}: the list's encoder window ----
 
 def TDM_{p}(t: {TRR}) -> Nat:
   match t:
@@ -1370,7 +1344,12 @@ def putx_{p}(+A: {TRR}, +N: U32, +h: {{OKL_{p}(A, N) == {TRUE}}}, +dd: Nat, +D: 
   +byb = PB(RTN_{p}(b, A, N, dd, D, X), BYN_{p}(b, A, N, dd, D, X, q, r), g)
   (putk_rt_{p}(A, N, h, dd, D, X, q, r, rtb), (byb, pfLb_{p}(b, A, N, dd, D, X, pf)))
 
-# ---- sizes ----
+'''
+
+
+def _vlist_sizes(p, TRR, R, RS, TH, LLv, S, X0):
+    """the sizes: the runtime's size pass and the size the writer returns"""
+    return f'''# ---- sizes ----
 
 # The runtime's size pass.
 def sizex_{p}(+A: {TRR}, +N: U32, +h: {{OKL_{p}(A, N) == {TRUE}}}) -> {{T.{p}_size(THL_{p}(A, N)) == (THL_{p}(A, N), U32.mul(N, {RS})) : T.{p}_Seq & U32}}:
@@ -1387,7 +1366,12 @@ def szx_{p}(+A: {TRR}, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {{Nat.is_lt(dd,
   bmul(dd, N, U32.to_nat(N), {RS}, {S}, {{==}}, {{==}}, hd,
     FD.nat__le_trans({LLv}, Nat.add({X0}, {LLv}), VB.pw(2n+dd), Order.left_below_sum({X0}, {LLv}), VRX.xend(q, r, {LLv}, dd, hl)))
 
-# ---- {p}: the spec side ----
+'''
+
+
+def _vlist_spec_side(p, TRR, LLv, S):
+    """the spec side: the list's value and the encx_spec statement"""
+    return f'''# ---- {p}: the spec side ----
 
 # The value of the list: the records' values.
 def VALL_{p}(+A: {TRR}, +N: U32) -> S.Value: S.Sequence{{ITV_{p}(U32.to_nat(N), A, 0n)}}
@@ -1417,6 +1401,70 @@ def encx_spec_{p}(+A: {TRR}, +N: U32, +h: {{OKL_{p}(A, N) == {TRUE}}}, +dx: Nat,
     {{Codec.one(Some{{_}}, None{{}}) == Some{{[S.Variable{{(CHV_{p}(c, A, 0n))}}]}} : Maybe<&2, +List<S.Part>>}}
   {{==}}
 '''
+
+
+def vlist_text():
+    from codegen.impl import generate as G  # noqa: F401  kept: the import may register hooks at import time
+    p, R, RS = VLIST, 'Validator', 121
+    g, names = layout()
+    F_ = g.shape(names[R]).fields
+    ups = []          # (field, words) in putx_Validator's order
+    for f, fs in F_:
+        if fs.kind == 'u64':
+            ups.append((f, fs, [f'{f}_lo', f'{f}_hi']))
+        elif fs.kind == 'bool':
+            ups.append((f, fs, [f]))
+        else:
+            ups.append((f, fs, [f'{f}_{j}' for j in range(fs.fsize // 4)]))
+    WA = ', '.join(w for _, _, ws in ups for w in ws)
+    lines = ['  match o:', '    case T.Validator{' + ', '.join(f'+o{k}' if fs.kind != 'bool' else f'+{f}' for k, (f, fs, _) in enumerate(ups)) + '}:']
+    ind = 6
+    for k, (f, fs, ws) in enumerate(ups):
+        if fs.kind == 'bool':
+            continue
+        ctor = 'O.U64' if fs.kind == 'u64' else f'T.{fs.rep}'
+        lines.append(' ' * ind + f'match o{k}:')
+        lines.append(' ' * (ind + 2) + f'case {ctor}{{' + ', '.join('+' + w for w in ws) + '}:')
+        ind += 4
+    NEST = '\n'.join(lines)
+    PAD = ' ' * ind
+    xs = [w for f, fs, ws in ups[:3] for w in ws]
+    bv = ups[3][2][0]
+    es = [w for f, fs, ws in ups[4:] for w in ws]
+    u = lambda a, b: f'S.UnsignedValue{{P.UInt{{{a}, {b}, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
+    items = [f'S.BytesValue{{F.limbs([{", ".join(ups[0][2])}])}}', f'S.BytesValue{{F.limbs([{", ".join(ups[1][2])}])}}', u(*ups[2][2]), f'S.BooleanValue{{{bv}}}'] + \
+        [u(*ups[k][2]) for k in range(4, 8)]
+    VAL = 'S.Sequence{' + ''.join(f'S.Items{{{it}, ' for it in items) + 'S.EmptyItems{}' + '}' * len(items) + '}'
+    SPB = f'List.append(&2, U32, F.limbs([{", ".join(xs)}]), List.append(&2, U32, SP.boolean_encoding({bv}), F.limbs([{", ".join(es)}])))'
+    BYV = f'EV.BY_{R}({WA})'
+    TRR = f'FD.array__Tree<T.{R}>'
+    TH = f'FD.array__thaw(T.{R}, A)'
+    RTP = f'Array<U32> & Array<T.{R}>'
+    X0 = 'Nat.add(A.quad(q), r)'
+    S = f'{RS}n'
+    XJ = f'U32.add(X, U32.mul(i, {RS}))'
+    LLv = f'LL_{p}(A, N)'
+    ENC = f'(CHV_{p}(U32.to_nat(N), A, 0n))'
+    WSG = ', '.join(f'+{w}: Bool' if fs.kind == 'bool' else f'+{w}: U32' for f, fs, ws in ups for w in ws)
+    ys = [f'F.limbs([{", ".join(ws)}])' if fs.kind != 'bool' else f'[EV.BB({ws[0]})]' for f, fs, ws in ups]
+    dms = [f'F.domain_limbs([{", ".join(ws)}])' if fs.kind != 'bool' else f'domBB({ws[0]})' for f, fs, ws in ups]
+
+    def dom(k):
+        if k == len(ys) - 1:
+            return dms[k]
+        rest = ys[k + 1] if k + 1 == len(ys) - 1 else 'List.append(&2, U32, ' + ', List.append(&2, U32, '.join(ys[k + 1:-1]) + ', ' + ys[-1] + ')' * (len(ys) - k - 2)
+        return f'PI.append_domain({ys[k]}, {rest}, {dms[k]}, {dom(k + 1)})'
+    DOM = dom(0)
+    rbeq_cases = '\n'.join(f'    case {c}{{}}: {{{{==}}}}'.replace('{{==}}', '{==}') for c in ('True', 'False'))
+    return (
+        _vlist_shared_lemmas() +
+        _vlist_record_laws(R, NEST, PAD, BYV, VAL, WSG, S, SPB, bv, rbeq_cases, WA, DOM, X0, es, xs) +
+        _vlist_positions(X0, S, XJ, RS) +
+        _vlist_record_values(p, TRR, R, TH, S) +
+        _vlist_write_loop(p, R, RS, TRR, XJ, TH, RTP, X0, S) +
+        _vlist_encoder_window(p, TRR, TH, R, S, ENC, X0, LLv, RTP, RS) +
+        _vlist_sizes(p, TRR, R, RS, TH, LLv, S, X0) +
+        _vlist_spec_side(p, TRR, LLv, S))
 
 
 def vlist_module():
