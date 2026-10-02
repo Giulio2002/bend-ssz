@@ -327,7 +327,8 @@ def proof_wide(S, a, names):
             text = f.read_text()
             lines = text.split('\n')
             hit = [st for st in sites(text, True) if st[2] == r0['operator'] and st[3] == r0['before'] and st[4] == r0['after']
-                   and lines[st[0]].strip()[:200] == r0['text'] and def_name(text, st[0]) == r0['def']]
+                   and lines[st[0]].strip()[:200] == r0['text'] and def_name(text, st[0]) == r0['def']
+                   and st[1] == r0.get('col', st[1])]
             api = S / r0['checked']
             if hit and api.exists():
                 tasks.append({'type': r0['type'], 'family': r0.get('family', ''), 'file': f, 'api': api, 'site': hit[0],
