@@ -74,6 +74,14 @@ def per_name(name_laws, make, stem, weigh=len):
     return out, counts
 
 
+def law_module(gen, comments, laws, tmod, extra_imports=()):
+    """the text of one per-name law module: the imports every one has (B, O, then `extra_imports`, then the runtime's types as T),
+    the GENERATED header of generator `gen`, the `comments`, and the `laws`, each followed by a blank line."""
+    head = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', *extra_imports,
+            f'import ../../types/{tmod}.bend as T', '', writer.header(gen), *comments, '']
+    return '\n'.join(head + [piece for law in laws for piece in (law, '')])
+
+
 def finish(out, globs, stale_msg, ok_msg):
     """--check (exit 1 on a stale file or an orphan: a proofs/obj file matching one of `globs` that `out` does not hold) or write
     `out` through the runtime split and delete the orphans. Returns True when it wrote."""
