@@ -483,6 +483,26 @@ def lib_wide(S, a):
         imps = sorted((i for i in rev.get(f, ()) if i != f), key=lambda i: i.stat().st_size)[:2]
         for st in picked:
             tasks.append({'file': f, 'site': st, 'checkers': [f] + imps, 'def': def_name(text, st[0])})
+    # also check against the proof files that USE the mutated definition: a facade that names Schema10 fails when
+    # Schema10 changes, while the two smallest importers of the file may not mention it at all
+    need = {t['def'] for t in tasks if t['def']}
+    users = collections.defaultdict(list)
+    tokre = re.compile(r'\b\w+\b')
+    for r in [S / d for d in ('proofs', 'e2e')]:
+        for c in r.rglob('*.bend'):
+            toks = set(tokre.findall(c.read_text())) & need
+            for tk in toks:
+                users[tk].append(c.resolve())
+    for t in tasks:
+        cand = [c for c in users.get(t['def'], []) if c != t['file']]
+        cand.sort(key=lambda c: c.stat().st_size)
+        extra = []
+        for c in cand[:60]:
+            if t['file'] in cone_of(c):
+                extra.append(c)
+            if len(extra) >= 3:
+                break
+        t['checkers'] = list(dict.fromkeys(t['checkers'] + extra))
     print(f'lib {a.lib}: {len(tasks)} mutants over {len(files)} files', flush=True)
     tmp = pathlib.Path(os.environ.get('MUT_TMP', '/tmp')) / f'mutlib-{os.getpid()}'
 
