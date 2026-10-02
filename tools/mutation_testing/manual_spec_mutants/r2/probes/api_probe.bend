@@ -97,7 +97,7 @@ def c37() -> IO(Unit): wlen("wl_len_after_16", WL.l16_WithdrawalRequest_len(wl_n
 
 def c38() -> IO(Unit): bget("bits_get_0_after_true_push", BB.bits9_get(Pair.fst(O.Bits, Bool, BB.bits9_append(BB.bits9_default(), True{})), 0))
 def cells2() -> O.Words: O.Words{Array.new(U32, 11n, 0), 4096}
-def c39() -> IO(Unit): len_p("cells_len_3", CL.l4096_b2048_len(O.Words{Array.new(U32, 11n, 0), 6144}))
+def c39() -> IO(Unit): len_p("cells_len_2047", CL.l4096_b2048_len(O.Words{Array.new(U32, 0n, 0), 4192256}))
 def wlen_p(label: String, pair: O.Words & Maybe<&1, O.Words>) -> IO(Unit):
   (o, m) = pair
   match m:
