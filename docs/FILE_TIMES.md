@@ -20,3 +20,22 @@ Generator-only cuts applied so far (statements and frozen.lock.json unchanged): 
 lemmas that name EB moved out of e2e_dbs.bend into e2e_dbs_sz.bend (e2e_dbs 117 s to 33 s), and p_hZ of
 the BeaconState decrep moved into its own module. They do not apply to the Block family: its decrep does
 not import EB at all; its cost is the locked record modules.
+
+## The block witness umbrellas (standalone, not summed)
+
+In the full check three umbrellas held two or three witness roots each and took 364 to 468 s under load (gatep2: 461 s, 468 s,
+~364 s). Measured alone (tools/check.sh, nice 19, load below 10, 24 GB heap as the umbrellas of these roots get):
+
+| File | wall s | CPU s | peak GB | class |
+|---|---|---|---|---|
+| e2e/FuluSignedBeaconBlock_e2e_decode_witness_generated.bend | 166 | 197 | 20 | block family (known exception, above) |
+| e2e/FuluBeaconBlock_e2e_decode_witness_generated.bend | 174 | 202 | 23 | block family |
+| e2e/FuluBeaconBlockBody_e2e_decode_witness_generated.bend | 145 | 173 | 25 | block family |
+| e2e/FuluPendingAttestation_e2e_set_witness_generated.bend | 35 | 45 | 7 | not slow |
+| e2e/FuluPendingAttestation_e2e_witness_generated.bend | 36 | 44 | 4 | not slow |
+| e2e/FuluBeaconBlock_e2e_set_witness_generated.bend | 35 | 44 | 7 | not slow |
+| e2e/FuluBeaconBlockBody_e2e_set_witness_generated.bend | 35 | 45 | 7 | not slow |
+
+No file is over 360 s; the long umbrellas were the sum of a block decode witness and small files, slowed by load.
+tools/umb_hist.tsv now marks the three block decode witness roots `solo`: tools/umbrellas.py gives each its own umbrella
+(wall = the single file: 155 to 168 s at load about 10, run side by side). The plan has 82 umbrellas over the same 3800 roots.

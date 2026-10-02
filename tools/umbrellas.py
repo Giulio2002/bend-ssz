@@ -50,6 +50,9 @@ def imports(f):
     return out
 
 
+SOLO_SECONDS = 100.0
+
+
 def family_split(u, clo, w):
     """Split an oversized umbrella u = (cost, roots, modules) by root family and size: proofs/gate (and its slop/ folders),
     proofs/slop, proofs/api, proofs/obj, e2e and the rest are checked in separate umbrellas, and a family is cut into
@@ -192,12 +195,24 @@ def main():
         umbs.sort(key=lambda u: -u[0])
 
     if os.path.exists(a.hist):
-        hist = {}
+        hist, solos = {}, set()
         for line in open(a.hist):
             q = line.rstrip('\n').split('\t')
             if len(q) >= 2 and not line.startswith('#'):
                 hist[q[0]] = float(q[1])
+                if len(q) >= 3 and q[2] == 'solo':
+                    solos.add(q[0])
         if hist:
+            # a root marked `solo` in the history file and measured at SOLO_SECONDS or more on its own gets an umbrella of its own: the wall is
+            # then the slowest single file, not the sum under load (the three block witness umbrellas of 412 to 462 s held files of
+            # 35 to 174 s each standalone)
+            def solo(c, ms, nm):
+                big = [m for m in ms if m in solos and hist[m] >= SOLO_SECONDS]
+                if len(ms) < 2 or not big:
+                    return [(c, ms, nm)]
+                rest = [m for m in ms if m not in big]
+                return [(hist[m], [m], nm) for m in big] + ([(c, rest, nm)] if rest else [])
+            umbs = [x for u in umbs for x in solo(*u)]
             umbs = sorted(((hist.get(ms[0], c), ms, nm) for c, ms, nm in umbs), key=lambda u: -u[0])
     covered = set().union(*[clo[r] for _, ms, _ in umbs for r in ms]) if umbs else set()
     miss = [f for f in want if idx[f] not in covered]

@@ -1,4 +1,5 @@
-# measured wall seconds per umbrella (first root, seconds), from a 78-umbrella full check at load 17-24 (tools/umbrellas.py --hist)
+# measured wall seconds per umbrella (first root, seconds); a root with a third column `solo` (measured alone at 100 s or more) gets an umbrella of its own (tools/umbrellas.py --hist). Block witness roots: standalone wall at load < 10
+PROOF.bend	132
 benchmarks/compact/ocache.bend	5
 benchmarks/compact/omut.bend	59
 benchmarks/objprog/f11_generated.bend	107
@@ -10,19 +11,16 @@ benchmarks/objprog/x10_generated.bend	102
 benchmarks/objprog/x11_generated.bend	6
 benchmarks/objprog/x14_generated.bend	126
 benchmarks/objprog/x15_generated.bend	98
-e2e/b131072_api_witness_generated.bend	5
-e2e/b256_api_witness_generated.bend	9
-e2e/bitlist_15_e2e_decode_witness_generated.bend	97
-e2e/bits131072_api_witness_generated.bend	8
 e2e/BitsStruct_e2e_decode_witness_generated.bend	105
 e2e/BitsStruct_e2e_set_witness_generated.bend	139
-e2e/bl1073741824_api_witness_generated.bend	9
 e2e/FixedTestStruct_e2e_comp_generated.bend	141
 e2e/FuluAttestationData_e2e_comp_generated.bend	257
 e2e/FuluAttestation_e2e_decode_witness_generated.bend	120
-e2e/FuluBeaconBlockBody_e2e_decode_witness_generated.bend	424
+e2e/FuluBeaconBlockBody_e2e_decode_witness_generated.bend	145	solo
+e2e/FuluBeaconBlockBody_e2e_set_witness_generated.bend	35
 e2e/FuluBeaconBlockBody_e2e_witness_generated.bend	103
-e2e/FuluBeaconBlock_e2e_decode_witness_generated.bend	412
+e2e/FuluBeaconBlock_e2e_decode_witness_generated.bend	174	solo
+e2e/FuluBeaconBlock_e2e_set_witness_generated.bend	35
 e2e/FuluBeaconBlock_e2e_witness_generated.bend	105
 e2e/FuluBeaconState_e2e_witness_generated.bend	199
 e2e/FuluBlob_e2e_comp_generated.bend	102
@@ -32,36 +30,42 @@ e2e/FuluExecutionPayload_e2e_decode_witness_generated.bend	110
 e2e/FuluFinalityBranch_e2e_comp_generated.bend	202
 e2e/FuluLightClientFinalityUpdate_e2e_decode_witness_generated.bend	91
 e2e/FuluLightClientUpdate_e2e_decode_witness_generated.bend	96
-e2e/FuluPendingAttestation_e2e_set_witness_generated.bend	462
+e2e/FuluPendingAttestation_e2e_set_witness_generated.bend	35
+e2e/FuluPendingAttestation_e2e_witness_generated.bend	36
+e2e/FuluSignedBeaconBlock_e2e_decode_witness_generated.bend	166	solo
 e2e/FuluSignedBeaconBlock_e2e_set_witness_generated.bend	65
 e2e/FuluSignedBeaconBlock_e2e_witness_generated.bend	109
 e2e/FuluVoluntaryExit_e2e_comp_generated.bend	90
+e2e/ProgressiveSingleFieldContainerTestStruct_e2e_set_witness_generated.bend	119
+e2e/b131072_api_witness_generated.bend	5
+e2e/b256_api_witness_generated.bend	9
+e2e/bitlist_15_e2e_decode_witness_generated.bend	97
+e2e/bits131072_api_witness_generated.bend	8
+e2e/bl1073741824_api_witness_generated.bend	9
 e2e/l1099511627776_Validator_api_witness_generated.bend	10
 e2e/l128_u64_api_witness_generated.bend	5
 e2e/l134217728_PendingDeposit_api_witness_generated.bend	9
-e2e/l16777216_b32_api_witness_generated.bend	10
 e2e/l16777216_HistoricalSummary_api_witness_generated.bend	11
+e2e/l16777216_b32_api_witness_generated.bend	10
 e2e/l16_Deposit_api_witness_generated.bend	11
 e2e/l1_AttesterSlashing_api_witness_generated.bend	11
 e2e/l262144_PendingConsolidation_api_witness_generated.bend	11
 e2e/l8192_DepositRequest_api_witness_generated.bend	9
 e2e/proglist_bool_e2e_decode_witness_generated.bend	112
 e2e/proglist_uint128_e2e_decode_witness_generated.bend	91
-e2e/ProgressiveSingleFieldContainerTestStruct_e2e_set_witness_generated.bend	119
 e2e/v512_b48_api_witness_generated.bend	9
 e2e/vec_bool_512_e2e_comp_generated.bend	113
 e2e/vec_uint128_16_e2e_ser_generated.bend	93
 e2e/vec_uint16_512_e2e_ser_generated.bend	114
 e2e/vec_uint64_16_e2e_ser_generated.bend	68
 e2e/vec_uint8_513_e2e_ser_generated.bend	90
-PROOF.bend	132
 proofs/api/BitsStruct_decode_ssz_proof_generated.bend	155
-proofs/api/bitvector_513_encode_ssz_proof_generated.bend	287
 proofs/api/FuluAttestation_encode_ssz_proof_generated.bend	77
 proofs/api/FuluAttesterSlashing_decode_ssz_proof_generated.bend	100
 proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend	77
 proofs/api/FuluLightClientBootstrap_decode_ssz_proof_generated.bend	85
 proofs/api/FuluLightClientFinalityUpdate_decode_ssz_proof_generated.bend	81
+proofs/api/bitvector_513_encode_ssz_proof_generated.bend	287
 proofs/api/vec_bool_513_hashtreeroot_proof_generated.bend	51
 proofs/gate/g__codec_5_generated.bend	50
 proofs/gate/g__root_SignedBeaconBlock_generated.bend	83
