@@ -3,7 +3,7 @@ import ../../spec/primitives.bend as SP
 import ../../spec/layout.bend as Layout
 import ../../spec/nat_bytes.bend as N
 import ../../types/schema.bend as S
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../../proofs/primitive_invariants.bend as V
 import ./spec_fixed.bend as FX

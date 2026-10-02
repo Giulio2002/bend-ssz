@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as FX
@@ -15,8 +15,8 @@ import ./vbrt.bend as VR
 import ./vbitc.bend as VBC
 import ./vdepth.bend as VD
 import ./vbytes.bend as VBY
-import ./word_mul.bend as WM
-import ./vua_bits.bend as UB
+import ./word_mul_generated.bend as WM
+import ./vua_bits_generated.bend as UB
 import ./vua.bend as UA
 
 # The unaligned-offset layer, U2: the runtime's shifted word copies

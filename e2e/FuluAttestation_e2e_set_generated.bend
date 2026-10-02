@@ -2,9 +2,9 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../proofs/obj/bitlist_obj_light.bend as BO
-import ./e2e_bitv.bend as BTV
+import ./e2e_bitv_generated.bend as BTV
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
@@ -13,12 +13,12 @@ import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ./FuluAttestation_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluAttestation_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT_L
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 
@@ -27,7 +27,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluAttestation_e2e_set_aggregation_bits_view(o: FuluAttestation_d.Attestation, w: O.Bits)
     -> {RT_L.v_Attestation(FuluAttestation_d.Attestation_set_aggregation_bits(o, w)) == VS.field_set(RT_L.v_Attestation(o), 0n, S.BitsValue{BO.bview(w)}) : S.Value}:
   match o:

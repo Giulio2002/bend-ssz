@@ -4,7 +4,7 @@ import ../../spec/layout.bend as Layout
 import ../../spec/nat_bytes.bend as N
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
 import ./vu32.bend as VU

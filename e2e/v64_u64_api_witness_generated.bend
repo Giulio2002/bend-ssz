@@ -1,7 +1,7 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_api_4.bend as W_proofs_obj_coll_api_4
-import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_api_4_generated.bend as W_proofs_obj_coll_api_4
+import ../proofs/obj/packed_obj_light_generated.bend as W_proofs_obj_packed_obj_light
 import ../proofs/obj/value_set.bend as W_proofs_obj_value_set
 import ../proofs/obj/words_rw.bend as W_proofs_obj_words_rw
 import ../src/obj.bend as W_src_obj

@@ -1,6 +1,6 @@
 import Base
-import ./e2e_fixd.bend as X
-import ../proofs/compact/found.bend as FD
+import ./e2e_fixd_generated.bend as X
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
@@ -10,7 +10,7 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/type_validator_soundness.bend as VS
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
@@ -31,11 +31,11 @@ import ../types/FuluCell_hashtreeroot_generated.bend as FuluCell_h
 import ../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../types/FuluMatrixEntry_hashtreeroot_generated.bend as FuluMatrixEntry_h
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/root_types.bend as M0
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/gvalid_types.bend as M1
+import ../proofs/obj/root_types_generated.bend as M0
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/gvalid_types_generated.bend as M1
 import ../proofs/obj/words_obj_light.bend as M0_WO
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ../proofs/obj/words_spec.bend as M0_WO_WS
 import ../spec/primitives.bend as M0_WO_SP
 

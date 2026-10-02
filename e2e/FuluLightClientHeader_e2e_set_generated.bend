@@ -1,9 +1,9 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
-import ./e2e_blist.bend as BL_e
+import ./e2e_blist_generated.bend as BL_e
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
@@ -11,13 +11,13 @@ import ../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClie
 import ../types/FuluLightClientHeader_hashtreeroot_generated.bend as FuluLightClientHeader_h
 import ./FuluLightClientHeader_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
 import ./FuluLightClientHeader_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT_L
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 
@@ -26,7 +26,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluLightClientHeader_e2e_set_beacon_view(o: FuluLightClientHeader_d.LightClientHeader, +w: FuluBeaconBlockHeader_d.BeaconBlockHeader)
     -> {RT_L.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader_set_beacon(o, w)) == VS.field_set(RT_L.v_LightClientHeader(o), 0n, RN.v_BeaconBlockHeader(w)) : S.Value}:
   match o:

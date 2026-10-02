@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./ctree.bend as CT
 
 # The work of the cached root: how many nodes a sweep rehashes.

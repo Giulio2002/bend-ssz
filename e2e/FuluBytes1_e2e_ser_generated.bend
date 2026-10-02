@@ -1,8 +1,8 @@
 import Base
 import ./FuluBytes1_e2e_generated.bend as W_e2e_FuluBytes1_e2e_generated
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./e2e_valid.bend as V
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/leaf_small.bend as W_proofs_obj_leaf_small
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp

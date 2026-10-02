@@ -1,11 +1,11 @@
 import Base
 import ./FuluDataColumnsByRootIdentifier_e2e_set_generated.bend as SET
-import ./e2e_support.bend as E
-import ./e2e_ulist.bend as U
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT_L
-import ../proofs/obj/schema_shapes.bend as SH
+import ./e2e_support_generated.bend as E
+import ./e2e_ulist_generated.bend as U
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT_L
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light

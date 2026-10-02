@@ -5,15 +5,15 @@ import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../proofs/obj/pbits_obj_light.bend as PBO
-import ../proofs/obj/prep_setters_g2.bend as PS
+import ../proofs/obj/prep_setters_g2_generated.bend as PS
 import ../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
 import ../types/ProgressiveBitsStruct_hashtreeroot_generated.bend as ProgressiveBitsStruct_h
 import ./ProgressiveBitsStruct_e2e_root_generated.bend as R
-import ../proofs/obj/root_gnames_light.bend as RN
-import ../proofs/obj/root_gtypes2_light.bend as RT_L
+import ../proofs/obj/root_gnames_light_generated.bend as RN
+import ../proofs/obj/root_gtypes2_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/schema_shapes_generated.bend as SH
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/wbits_obj_light.bend as WBV
 import ../types/bitvector_256_def_generated.bend as bitvector_256_d
@@ -24,7 +24,7 @@ import ../types/bitvector_257_def_generated.bend as bitvector_257_d
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def ProgressiveBitsStruct_e2e_set_f_A_view(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct, +w: bitvector_256_d.Bitvector256)
     -> {RT_L.v_ProgressiveBitsStruct(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(o, w)) == VS.field_set(RT_L.v_ProgressiveBitsStruct(o), 0n, RN.v_bv256(w)) : S.Value}:
   match o:

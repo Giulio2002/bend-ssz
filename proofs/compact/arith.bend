@@ -1,5 +1,5 @@
 import Base
-import ./found.bend as F
+import ./found_generated.bend as F
 
 # U32 arithmetic facts used by the compact runtime proofs, derived from the
 # checked word laws in found.bend.

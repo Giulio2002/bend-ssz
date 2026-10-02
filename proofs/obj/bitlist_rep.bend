@@ -5,11 +5,11 @@ import ../../spec/bit_root.bend as Bm
 import ../../spec/primitives.bend as SP
 import ../../spec/bit_packing.bend as Bp
 import ./spec_fixed.bend as FX
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 
 import ./bitlist_obj_light.bend as BL
 

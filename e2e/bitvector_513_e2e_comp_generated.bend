@@ -2,13 +2,13 @@ import Base
 import ./bitvector_513_e2e_dec_generated.bend as DB
 import ./bitvector_513_e2e_generated.bend as EB
 import ./bitvector_513_e2e_root_generated.bend as RB
-import ./e2e_comp.bend as C
-import ./e2e_load.bend as L
-import ./e2e_mask.bend as MK
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/gbits_bitvector_513_light.bend as M2
-import ../proofs/obj/generic_specs.bend as Spec
+import ./e2e_comp_generated.bend as C
+import ./e2e_load_generated.bend as L
+import ./e2e_mask_generated.bend as MK
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/gbits_bitvector_513_light_generated.bend as M2
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp
 import ../spec/primitives.bend as SP
@@ -29,7 +29,7 @@ import ../types/schema.bend as S
 def pe_e(+bs: +List<U32>) -> {M2.bitvector_513_last(bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), MK.cf1(FD.flat__nthc(L.wlp(bs), 16n))}) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(M2.bitvector_513_last(bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), MK.cf1(FD.flat__nthc(L.wlp(bs), 16n))}))), Word.zero(31n))} : U32}:
   {==}
 
-# the decoder's object with its masked words in clean form (e2e/e2e_mask.bend)
+# the decoder's object with its masked words in clean form (e2e/e2e_mask_generated.bend)
 def oeq(+bs: +List<U32>, +eh: {U32.is_eq(U32.and(B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 16n)), U32.not(O.low_mask(1))), 0) == True{} : Bool}) -> {bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), U32.and(FD.flat__nthc(L.wlp(bs), 16n), 255)} == bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), MK.cf1(FD.flat__nthc(L.wlp(bs), 16n))} : bitvector_513_d.Bitvector513}:
   %Equal.sym(U32, U32.and(FD.flat__nthc(L.wlp(bs), 16n), 255), MK.cf1(FD.flat__nthc(L.wlp(bs), 16n)), MK.pz0_1(FD.flat__nthc(L.wlp(bs), 16n), eh)) :
     {bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), _} == bitvector_513_d.Bitvector513{FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 1n), FD.flat__nthc(L.wlp(bs), 2n), FD.flat__nthc(L.wlp(bs), 3n), FD.flat__nthc(L.wlp(bs), 4n), FD.flat__nthc(L.wlp(bs), 5n), FD.flat__nthc(L.wlp(bs), 6n), FD.flat__nthc(L.wlp(bs), 7n), FD.flat__nthc(L.wlp(bs), 8n), FD.flat__nthc(L.wlp(bs), 9n), FD.flat__nthc(L.wlp(bs), 10n), FD.flat__nthc(L.wlp(bs), 11n), FD.flat__nthc(L.wlp(bs), 12n), FD.flat__nthc(L.wlp(bs), 13n), FD.flat__nthc(L.wlp(bs), 14n), FD.flat__nthc(L.wlp(bs), 15n), MK.cf1(FD.flat__nthc(L.wlp(bs), 16n))} : bitvector_513_d.Bitvector513}

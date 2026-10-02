@@ -3,7 +3,7 @@ import ../../spec/bit_packing.bend as Bp
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
 import ../../src/merkle_fast.bend as MF
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ../compact/buf.bend as BF
@@ -18,14 +18,14 @@ import ./vdepth.bend as VD
 import ./vu32.bend as VU
 import ./vua.bend as UA
 import ./vbrt.bend as VR
-import ./vuw_bits.bend as UWB
+import ./vuw_bits_generated.bend as UWB
 import ./vuw.bend as UW
 import ./vuwd.bend as UWD
-import ./word_mul.bend as WM
+import ./word_mul_generated.bend as WM
 import ./vbitenc.bend as VBT
 import ./vbitdl.bend as DL
 import ./vbitcore.bend as CO
-import ./var_bits_enc_bw.bend as BW
+import ./var_bits_enc_bw_generated.bend as BW
 
 # O.put_bits at ANY byte position X = 4 q + r: the byte-range write of the bit list's
 # ceil(K / 8) bytes (vuwd's put_words), then the delimiter byte OR-ed in at X + K / 8.

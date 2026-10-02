@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_rw.bend as WR
 import ./mtree_run.bend as MR
 

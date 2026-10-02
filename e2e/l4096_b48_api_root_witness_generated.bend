@@ -1,9 +1,9 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_root.bend as W_proofs_obj_coll_root
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_root_generated.bend as W_proofs_obj_coll_root
 import ../proofs/obj/elems48.bend as W_proofs_obj_elems48
 import ../proofs/obj/elems48_light.bend as W_proofs_obj_elems48_light
-import ../proofs/obj/root_names_light.bend as W_proofs_obj_root_names_light
+import ../proofs/obj/root_names_light_generated.bend as W_proofs_obj_root_names_light
 import ../proofs/obj/value_set.bend as W_proofs_obj_value_set
 import ../spec/root_relation.bend as W_spec_root_relation
 import ../src/buffer.bend as W_src_buffer

@@ -1,8 +1,8 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
 import ../proofs/obj/cell_rw.bend as W_proofs_obj_cell_rw
 import ../proofs/obj/cells_light.bend as W_proofs_obj_cells_light
-import ../proofs/obj/coll_api_6.bend as W_proofs_obj_coll_api_6
+import ../proofs/obj/coll_api_6_generated.bend as W_proofs_obj_coll_api_6
 import ../proofs/obj/value_set.bend as W_proofs_obj_value_set
 import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
 import ../proofs/obj/words_rw.bend as W_proofs_obj_words_rw

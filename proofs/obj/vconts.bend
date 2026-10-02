@@ -4,7 +4,7 @@ import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/primitives.bend as SP
 import ../../spec/bytes.bend as Bytes
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ../encoding_domain.bend as ED
@@ -13,7 +13,7 @@ import ../complete_regions.bend as CReg
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
-import ./vmr.bend as VMR
+import ./vmr_generated.bend as VMR
 import ./vuw.bend as UW
 import ./vcont.bend as VCN
 import ./vfits.bend as VFT

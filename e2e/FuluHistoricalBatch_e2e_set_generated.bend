@@ -2,16 +2,16 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
 import ../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
 import ../types/FuluHistoricalBatch_encode_ssz_generated.bend as FuluHistoricalBatch_e
 import ../types/FuluHistoricalBatch_hashtreeroot_generated.bend as FuluHistoricalBatch_h
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ./FuluHistoricalBatch_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
 import ./FuluBlob_e2e_root_generated.bend as R
 import ../types/schema.bend as S
@@ -23,7 +23,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluHistoricalBatch_e2e_set_block_roots_view(o: FuluHistoricalBatch_d.HistoricalBatch, w: O.Words)
     -> {M0_L.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch_set_block_roots(o, w)) == VS.field_set(M0_L.v_HistoricalBatch(o), 0n, PV.pview(w)) : S.Value}:
   match o:

@@ -6,13 +6,13 @@ import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
 import ../../types/FuluValidator_hashtreeroot_generated.bend as FuluValidator_h
 import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
 import ../../proofs/nat_order.bend as Order
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT
 import ./cidx.bend as CX
 import ./cloop.bend as CL
-import ./root_names.bend as RN
+import ./root_names_generated.bend as RN
 
 # The whole root sweep of the cached Merkle tree of BeaconState.validators on
 # the heap model of ctree.bend. The leaf loop writes each dirty leaf's model

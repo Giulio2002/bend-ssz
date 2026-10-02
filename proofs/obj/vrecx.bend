@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
@@ -11,8 +11,8 @@ import ./vua.bend as UA
 import ./vuw.bend as UW
 import ./vuwd.bend as WD
 import ./vu32.bend as VU
-import ./vme.bend as VME
-import ./vrl.bend as VRL
+import ./vme_generated.bend as VME
+import ./vrl_generated.bend as VRL
 
 # Positions and room of the fields of a fixed-size value written at a byte position
 # X = 4 q + r (hand-written; for codegen/var_rec_enc.py): a field at byte 4 k of the value is

@@ -9,7 +9,7 @@ import ../../spec/value_domain.bend as VD
 import ../../spec/primitives.bend as SP
 import ../../spec/tree.bend as Tr
 import ../../spec/limits.bend as Lim
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./mtree_spec.bend as MS
@@ -23,7 +23,7 @@ import ../../spec/bit_root.bend as Mix
 import ../../spec/nat_bytes.bend as Len
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
 import ../compact/arith.bend as AR
 import ../../proofs/nat_algebra.bend as NA

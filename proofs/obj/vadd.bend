@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./vu32.bend as VU
 import ./vua_lay.bend as LY
 

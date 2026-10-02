@@ -2,13 +2,13 @@ import Base
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT
 import ./cloc.bend as LC
 import ./cloop2.bend as CL2
-import ./root_names.bend as RN
+import ./root_names_generated.bend as RN
 
 # A write into the cached validators list (l1099511627776_Validator_cset) keeps
 # the cache invariant of ctree.bend: the element at i < n is replaced, so the

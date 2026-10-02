@@ -5,18 +5,18 @@ import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_packing.bend as Bp
 import ../../spec/bitfields.bend as SBF
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ./spec_fixed.bend as FX
-import ./spec_bits.bend as FB
+import ./spec_bits_generated.bend as FB
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vbrt.bend as VR
 import ./vuw.bend as UW
 import ./venc.bend as VE
 import ./vbitl.bend as VBL
-import ./vfx_bv1281.bend as G
+import ./vfx_bv1281_generated.bend as G
 
 # The spec side of the word-held bit vectors of the generic containers (hand-written): Bitvector[1280]
 # (40 words) and Bitvector[1281] (40 words, then one byte of the 41st), their values and parts.

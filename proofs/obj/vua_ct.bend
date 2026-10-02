@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
@@ -13,7 +13,7 @@ import ./vbytes.bend as VBY
 import ./vbspec.bend as VBS
 import ./vua.bend as UA
 import ./vua_copy.bend as UC
-import ./vua_sc.bend as USC
+import ./vua_sc_generated.bend as USC
 
 # The unaligned-offset layer, U4 (copies): copy_in of any length L at ANY byte
 # offset off returns the storage CT(d, t, off, L, dz) (copy_in_at), whose

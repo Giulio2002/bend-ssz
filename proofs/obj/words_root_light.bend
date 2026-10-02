@@ -3,7 +3,7 @@ import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../spec/primitives.bend as SP
 import ../../spec/value_domain.bend as VD
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR

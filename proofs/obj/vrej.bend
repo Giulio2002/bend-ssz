@@ -2,7 +2,7 @@ import Base
 import ../../spec/layout.bend as Layout
 import ../../spec/nat_bytes.bend as N
 import ../../types/schema.bend as S
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./vspec.bend as VS
 
 # Variable-size rejection, specification side: the offset layout of fixed

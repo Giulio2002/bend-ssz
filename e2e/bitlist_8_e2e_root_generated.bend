@@ -6,12 +6,12 @@ import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../proofs/type_validator_soundness.bend as VS
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as GS
 import ../proofs/obj/bitlist_obj_light.bend as BO
-import ../proofs/obj/root_gtypes.bend as RG
-import ../proofs/obj/gvalid_gpacked.bend as GV
-import ./e2e_support.bend as E
+import ../proofs/obj/root_gtypes_generated.bend as RG
+import ../proofs/obj/gvalid_gpacked_generated.bend as GV
+import ./e2e_support_generated.bend as E
 import ../types/bitlist_8_hashtreeroot_generated.bend as bitlist_8_h
 import ../types/bitlist_9_hashtreeroot_generated.bend as bitlist_9_h
 

@@ -9,7 +9,7 @@ import ../../spec/codec.bend as Codec
 import ../../spec/limits.bend as Lim
 import ../../spec/bit_root.bend as Mix
 import ../../spec/nat_bytes.bend as Len
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./root_support.bend as RS
@@ -17,14 +17,14 @@ import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./elems_obj.bend as EL
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
-import ./root_names.bend as RN
-import ./root_names_light.bend as RN_L
+import ./root_names_generated.bend as RN
+import ./root_names_light_generated.bend as RN_L
 import ./elems48_light.bend as LV
 
 # Vectors and lists of Bytes48 packed in words (12 words per element): each
-# element's root is the Bytes48 record law of phase A (proofs/obj/root_names.bend
+# element's root is the Bytes48 record law of phase A (proofs/obj/root_names_generated.bend
 # rs_b48) on the record of its twelve words; the runtime trees are
 # proofs/obj/elems_obj.bend's.
 

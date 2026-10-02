@@ -8,10 +8,10 @@ import ../../types/FuluFinalityBranch_hashtreeroot_generated.bend as FuluFinalit
 import ../../types/schema.bend as P0_S
 import ../../spec/root_relation.bend as P0_RR
 import ../../spec/fulu_schemas.bend as P0_Spec
-import ../compact/found.bend as P0_F
+import ../compact/found_generated.bend as P0_F
 import ../obj/words_spec.bend as P0_WS
 import ../obj/words_root_light.bend as P0_WR_L
-import ../obj/root_words.bend as P0_PRV
+import ../obj/root_words_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../../src/digest.bend as P1_D

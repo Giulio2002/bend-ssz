@@ -11,7 +11,7 @@ import ../../spec/nat_bytes.bend as Len
 import ../../spec/packing.bend as Pack
 import ../../spec/limits.bend as Lim
 import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
@@ -19,9 +19,9 @@ import ./root_support.bend as RS
 import ./words_spec.bend as WS
 import ./words_root.bend as WR
 import ./words_root_light.bend as WR_L
-import ./sha_node.bend as SN
-import ./len_bridge.bend as LB
-import ./root_leaf.bend as RL
+import ./sha_node_generated.bend as SN
+import ./len_bridge_generated.bend as LB
+import ./root_leaf_generated.bend as RL
 
 # Roots of byte lists (O.Words with a length mixed in, `O.mix_count(hl, 0n, ..)`)
 # against the specification's ByteList relation (spec/root_relation.bend: a

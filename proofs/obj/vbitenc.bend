@@ -1,10 +1,10 @@
 import Base
 import ../../spec/bit_packing.bend as Bp
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
-import ./bits_leaf.bend as BLf
-import ./bitlist_pack.bend as BK
+import ./bits_leaf_generated.bend as BLf
+import ./bitlist_pack_generated.bend as BK
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vbitl.bend as VBL

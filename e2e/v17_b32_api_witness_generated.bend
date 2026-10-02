@@ -1,6 +1,6 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_api_6.bend as W_proofs_obj_coll_api_6
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_api_6_generated.bend as W_proofs_obj_coll_api_6
 import ../proofs/obj/pv_obj_light.bend as W_proofs_obj_pv_obj_light
 import ../proofs/obj/spec_fixed.bend as W_proofs_obj_spec_fixed
 import ../proofs/obj/value_set.bend as W_proofs_obj_value_set

@@ -3,16 +3,16 @@ import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as SF
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
-import ./packed_obj_light.bend as PK
-import ./arr_copy.bend as AC
-import ./arr_vec.bend as AV
-import ./arr_emit.bend as AE
+import ./packed_obj_light_generated.bend as PK
+import ./arr_copy_generated.bend as AC
+import ./arr_vec_generated.bend as AV
+import ./arr_emit_generated.bend as AE
 import ./vspec.bend as VS
 
 # Encoding word storage of ANY depth. The root laws' representation facts (rep_*)

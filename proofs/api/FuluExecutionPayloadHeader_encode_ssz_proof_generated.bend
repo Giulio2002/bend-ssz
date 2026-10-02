@@ -9,7 +9,7 @@ import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutio
 import ../../types/FuluExecutionPayloadHeader_encode_ssz_generated.bend as FuluExecutionPayloadHeader_e
 import ../../types/schema.bend as P0_S
 import ../../types/primitive.bend as P0_P
-import ../compact/found.bend as P0_FD
+import ../compact/found_generated.bend as P0_FD
 import ../compact/arith.bend as P0_A
 import ../../proofs/nat_order.bend as P0_Order
 import ../../spec/primitives.bend as P0_SP
@@ -27,14 +27,14 @@ import ../obj/vdepth.bend as P0_VD
 import ../obj/vfix.bend as P0_VF
 import ../obj/vbytes.bend as P0_VY
 import ../obj/vbspec.bend as P0_VZ
-import ../obj/var_bytes_fix.bend as P0_VT
+import ../obj/var_bytes_fix_generated.bend as P0_VT
 import ../obj/venc.bend as P0_VE
 import ../obj/vbenc.bend as P0_VBE
 import ../obj/venc2.bend as P0_V2
-import ../obj/var_bytes_wput.bend as P0_WP
+import ../obj/var_bytes_wput_generated.bend as P0_WP
 import ../../spec/schema.bend as P0_SC
 import ../obj/vseq.bend as P0_VSQ
-import ../obj/var_bytes_ExecutionPayloadHeader_enc.bend as P0_PRV
+import ../obj/var_bytes_ExecutionPayloadHeader_enc_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/ExecutionPayloadHeader_symbolic_generated.bend as P1_PRV

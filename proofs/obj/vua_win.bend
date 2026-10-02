@@ -5,7 +5,7 @@ import ../../spec/codec.bend as Codec
 import ../../spec/schema.bend as SS
 import ../../spec/layout.bend as Layout
 import ../../proofs/decode_facts.bend as DF
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ../../proofs/nat_order.bend as Order

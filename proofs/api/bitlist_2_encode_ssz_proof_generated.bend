@@ -4,12 +4,12 @@ import ../../src/obj.bend as P0_O
 import ../../types/bitlist_2_def_generated.bend as bitlist_2_d
 import ../../types/bitlist_2_encode_ssz_generated.bend as bitlist_2_e
 import ../../types/schema.bend as P0_S
-import ../compact/found.bend as P0_F
+import ../compact/found_generated.bend as P0_F
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/bitfields.bend as P0_Bits
 import ../../spec/bit_packing.bend as P0_Bp
-import ../obj/generic_specs.bend as P0_GS
+import ../obj/generic_specs_generated.bend as P0_GS
 import ../obj/spec_fixed.bend as P0_FX
 import ../obj/vspec.bend as P0_VS
 import ../obj/vbuf.bend as P0_VB
@@ -19,10 +19,10 @@ import ../obj/vbenc.bend as P0_VBE
 import ../obj/vbitenc.bend as P0_VBT
 import ../obj/vbitdl.bend as P0_DL
 import ../obj/vbitcore.bend as P0_CO
-import ../obj/bitlist_pack.bend as P0_BK
+import ../obj/bitlist_pack_generated.bend as P0_BK
 import ../obj/bitlist_rep.bend as P0_BO
 import ../obj/vbitrep.bend as P0_VR
-import ../obj/var_bits_enc_bitlist_2.bend as P0_PRV
+import ../obj/var_bits_enc_bitlist_2_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/bitlist_2_symbolic_generated.bend as P1_PRV

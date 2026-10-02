@@ -2,12 +2,12 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluSigningData_def_generated.bend as FuluSigningData_d
 import ../types/FuluSigningData_encode_ssz_generated.bend as FuluSigningData_e
 import ../types/FuluSigningData_hashtreeroot_generated.bend as FuluSigningData_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluSigningData_e2e_generated.bend as N
 import ./FuluSigningData_e2e_generated.bend as R
 import ../types/schema.bend as S
@@ -19,7 +19,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluSigningData_e2e_set_object_root_view(+o: FuluSigningData_d.SigningData, +w: FuluBytes32_d.Bytes32)
     -> {M1_L.v_SigningData(FuluSigningData_d.SigningData_set_object_root(o, w)) == VS.field_set(M1_L.v_SigningData(o), 0n, M1_L.v_b32(w)) : S.Value}:
   match o:

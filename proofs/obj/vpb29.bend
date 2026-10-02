@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vbuf.bend as VB

@@ -6,10 +6,10 @@ import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../src/obj.bend as O
 import ./obj_support.bend as OS
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./ulist_obj.bend as UL
 import ./ulist_obj_light.bend as UL_L
-import ./blist_obj.bend as BLI
+import ./blist_obj_generated.bend as BLI
 import ./lim_sym.bend as LSY
 
 # BIG (codegen --big): the closed schema facts of BeaconState whose limits are

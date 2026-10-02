@@ -1,6 +1,6 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_api_0.bend as W_proofs_obj_coll_api_0
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_api_0_generated.bend as W_proofs_obj_coll_api_0
 import ../src/obj.bend as W_src_obj
 import ../types/Fulu_bitlist_2048_def_generated.bend as Fulu_bitlist_2048_d
 

@@ -2,7 +2,7 @@ import Base
 import ../../src/obj.bend as O
 import ../../proofs/nat_order.bend as Order
 import ../../proofs/word_split.bend as WSp
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ./mtree_defs.bend as MD
 import ./ctree.bend as CT

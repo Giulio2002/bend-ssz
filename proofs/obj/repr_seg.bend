@@ -1,5 +1,5 @@
 import Base
-import ../../proofs/compact/found.bend as F
+import ../../proofs/compact/found_generated.bend as F
 import ./repr.bend as R
 
 # Symbolic lemmas that carry repr.bend's `tree_words` to the literal tree of a

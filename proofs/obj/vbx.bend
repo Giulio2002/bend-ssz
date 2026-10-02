@@ -1,14 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ./vbuf.bend as VB
 import ./vcopy.bend as VC
 import ./vbrt.bend as VR
 import ./vbytes.bend as VBY
 import ./vua.bend as UA
-import ./vua_sc.bend as USC
+import ./vua_sc_generated.bend as USC
 import ./vua_ct.bend as UCT
 
 # Byte lists and byte vectors at ANY byte offset: copy_into (the reader of a byte

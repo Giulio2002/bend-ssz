@@ -4,7 +4,7 @@ import ../../src/obj.bend as P0_O
 import ../../types/proglist_uint128_encode_ssz_generated.bend as proglist_uint128_e
 import ../../types/schema.bend as P0_S
 import ../../types/primitive.bend as P0_P
-import ../compact/found.bend as P0_FD
+import ../compact/found_generated.bend as P0_FD
 import ../compact/arith.bend as P0_A
 import ../../proofs/nat_order.bend as P0_Order
 import ../../spec/primitives.bend as P0_SP
@@ -12,7 +12,7 @@ import ../../spec/layout.bend as P0_Layout
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/nat_bytes.bend as P0_N
-import ../obj/generic_specs.bend as P0_GS
+import ../obj/generic_specs_generated.bend as P0_GS
 import ../obj/spec_fixed.bend as P0_FX
 import ../obj/vspec.bend as P0_VS
 import ../obj/vbuf.bend as P0_VB
@@ -21,11 +21,11 @@ import ../obj/vcopy.bend as P0_VC
 import ../obj/vdepth.bend as P0_VD
 import ../obj/vlist.bend as P0_VL
 import ../obj/vfits.bend as P0_VFT
-import ../obj/var_elems.bend as P0_EL
-import ../obj/var_plist_zeros.bend as P0_Z
+import ../obj/var_elems_generated.bend as P0_EL
+import ../obj/var_plist_zeros_generated.bend as P0_Z
 import ../obj/venc.bend as P0_VE
-import ../obj/var_plist_proglist_uint128.bend as P0_DC
-import ../obj/var_plist_proglist_uint128_enc.bend as P0_PRV
+import ../obj/var_plist_proglist_uint128_generated.bend as P0_DC
+import ../obj/var_plist_proglist_uint128_enc_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/validity/generic_proglist_uint128_generated.bend as P1_PRV

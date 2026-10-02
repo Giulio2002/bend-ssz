@@ -9,7 +9,7 @@ import ../../spec/tree.bend as Tr
 import ../../spec/packing.bend as Pack
 import ./mtree_defs.bend as MD
 import ./mtree_spec.bend as MS
-import ./sha_node.bend as SN
+import ./sha_node_generated.bend as SN
 
 # Support for the per-name root laws (proofs/obj/root_*.bend): the chunk lists
 # of digests are exact SSZ chunks, and a list of digests aggregates, in the

@@ -2,7 +2,7 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
 import ../types/FuluExecutionRequests_encode_ssz_generated.bend as FuluExecutionRequests_e
 import ../types/FuluExecutionRequests_hashtreeroot_generated.bend as FuluExecutionRequests_h
@@ -10,12 +10,12 @@ import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list
 import ../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
 import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
 import ./FuluExecutionRequests_e2e_generated.bend as N
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluExecutionRequests_e2e_root_generated.bend as R
-import ./e2e_rl_ExecutionRequests.bend as RLV
-import ../proofs/obj/root_types_light.bend as RT_L
+import ./e2e_rl_ExecutionRequests_generated.bend as RLV
+import ../proofs/obj/root_types_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/value_set.bend as VS
 
@@ -24,7 +24,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluExecutionRequests_e2e_set_deposits_view(o: FuluExecutionRequests_d.ExecutionRequests, w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq)
     -> {RT_L.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests_set_deposits(o, w)) == VS.field_set(RT_L.v_ExecutionRequests(o), 0n, RT_L.xv_l8192_DepositRequest(w)) : S.Value}:
   match o:

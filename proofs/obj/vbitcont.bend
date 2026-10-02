@@ -1,8 +1,8 @@
 import Base
 import ../../spec/bit_packing.bend as Bp
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./dk.bend as DK
@@ -18,7 +18,7 @@ import ./vbitenc.bend as VBT
 import ./vbitdl.bend as DL
 import ./vbitcore.bend as CO
 import ./vbitat.bend as AT
-import ./var_bits_enc_bw.bend as BW
+import ./var_bits_enc_bw_generated.bend as BW
 import ../../src/obj.bend as O
 import ../../src/merkle_fast.bend as MF
 import ./vfix.bend as VF

@@ -1,12 +1,12 @@
 import Base
 import ./FuluSignedContributionAndProof_e2e_root_generated.bend as RB
 import ./FuluSyncCommittee_e2e_generated.bend as BR
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
-import ../proofs/compact/found.bend as FD
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/elems48_light.bend as E48
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/words_obj_light.bend as WO
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B

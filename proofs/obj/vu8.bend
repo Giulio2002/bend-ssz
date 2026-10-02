@@ -6,10 +6,10 @@ import ../../spec/layout.bend as Layout
 import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
 import ../../spec/root_relation.bend as RR
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
-import ./vmv.bend as VMV
+import ./vmv_generated.bend as VMV
 import ./pb_min.bend as PB
 
 # Lists of uint8 (List[uint8, N]): the items of a byte string (PB.it1) have

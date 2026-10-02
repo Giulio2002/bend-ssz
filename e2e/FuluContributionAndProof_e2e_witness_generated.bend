@@ -1,10 +1,10 @@
 import Base
 import ./FuluBlob_e2e_root_generated.bend as RB
 import ./FuluContributionAndProof_e2e_generated.bend as BR
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as M1
-import ../proofs/obj/schema_shapes.bend as SH
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_types_light_generated.bend as M1
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

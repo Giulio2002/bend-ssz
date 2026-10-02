@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../compact/buf.bend as BF
 import ../../proofs/nat_order.bend as Order
@@ -9,7 +9,7 @@ import ./vspec.bend as VS
 
 # Variable-size codec laws, runtime side: the word loops of src/obj.bend
 # (bulk copies, the input copy `copy_in`, the output writers) on the array
-# model of proofs/compact/found.bend. An array is `thaw(t)` for a perfect tree
+# model of proofs/compact/found_generated.bend. An array is `thaw(t)` for a perfect tree
 # t of depth d < 31; indices are U32 words whose values are carried as Nat
 # equations `to_nat(i) == n`, bounded by 2^d, so no statement mentions a
 # closed power of two and no U32 operation wraps.

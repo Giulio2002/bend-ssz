@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 
 # Mirror-tree facts shared by the generated laws of lists of Type-kind elements
 # (codegen/root_laws_b.py tlist_laws emits, per list, the Base Array size /

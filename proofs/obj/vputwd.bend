@@ -1,7 +1,7 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as FX
@@ -11,7 +11,7 @@ import ./vfix.bend as VF
 import ./vua.bend as UA
 import ./vuw.bend as UW
 import ./vuwd.bend as UWD
-import ./vuw_bits.bend as UWB
+import ./vuw_bits_generated.bend as UWB
 import ./vbenc.bend as VBE
 import ./vcopy.bend as VC
 import ./vbrt.bend as VR
@@ -19,12 +19,12 @@ import ./vuwb.bend as VWB
 import ./vbytes.bend as VY
 import ./vdepth.bend as VD
 import ../compact/reads.bend as RD
-import ./vuw1.bend as UB1
-import ./vuw2.bend as UB2
-import ./vuw3.bend as UB3
-import ./vuwp1.bend as UP1
-import ./vuwp2.bend as UP2
-import ./vuwp3.bend as UP3
+import ./vuw1_generated.bend as UB1
+import ./vuw2_generated.bend as UB2
+import ./vuw3_generated.bend as UB3
+import ./vuwp1_generated.bend as UP1
+import ./vuwp2_generated.bend as UP2
+import ./vuwp3_generated.bend as UP3
 import ./vbenc.bend as VBE2
 
 # O.put_words written data-only (hand-written): only the n bytes it writes are zero beforehand, the

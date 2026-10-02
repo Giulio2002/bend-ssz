@@ -2,7 +2,7 @@ import Base
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT
@@ -10,7 +10,7 @@ import ./cidx.bend as CX
 import ./cloc.bend as LC
 import ./cloop2.bend as CL2
 import ./cset.bend as CS
-import ./root_names.bend as RN
+import ./root_names_generated.bend as RN
 
 # The cache invariant of ctree.bend after an append into the cached validators
 # list (l1099511627776_Validator_capp inside the capacity), and for a fresh

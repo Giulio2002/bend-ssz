@@ -1,9 +1,9 @@
 import Base
 import ./FuluCommitmentIndex_e2e_dec_generated.bend as DB
 import ./FuluCommitmentIndex_e2e_generated.bend as EB
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
-import ../proofs/obj/root_names_light.bend as M1_L
+import ./e2e_comp_generated.bend as C
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ../spec/fulu_schemas.bend as Spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B

@@ -6,7 +6,7 @@ import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDat
 import ../../types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_e
 import ../../types/schema.bend as P0_S
 import ../../types/primitive.bend as P0_P
-import ../compact/found.bend as P0_FD
+import ../compact/found_generated.bend as P0_FD
 import ../compact/arith.bend as P0_A
 import ../../proofs/nat_order.bend as P0_Order
 import ../../spec/primitives.bend as P0_SP
@@ -22,13 +22,13 @@ import ../obj/vu32.bend as P0_VU
 import ../obj/vcopy.bend as P0_VC
 import ../obj/vdepth.bend as P0_VD
 import ../obj/vfix.bend as P0_VF
-import ../obj/var_fix_types.bend as P0_VT
+import ../obj/var_fix_types_generated.bend as P0_VT
 import ../obj/venc.bend as P0_VE
 import ../obj/venc2.bend as P0_V2
-import ../obj/var_codec_DataColumnsByRootIdentifier.bend as P0_DC
+import ../obj/var_codec_DataColumnsByRootIdentifier_generated.bend as P0_DC
 import ../../spec/schema.bend as P0_SC
 import ../obj/vseq.bend as P0_VSQ
-import ../obj/var_codec_DataColumnsByRootIdentifier_enc.bend as P0_PRV
+import ../obj/var_codec_DataColumnsByRootIdentifier_enc_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/size/DataColumnsByRootIdentifier_generated.bend as P1_PRV

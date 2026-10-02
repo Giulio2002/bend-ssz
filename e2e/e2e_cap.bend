@@ -1,12 +1,12 @@
 import Base
 import ../src/buffer.bend as B
 import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbuf.bend as VB
-import ./e2e_load.bend as L
+import ./e2e_load_generated.bend as L
 
 # The capacity facts for the loader: a buffer of n bytes, n <= 4 * 2^k for some k < 29,
 # is allocated at a depth d = B.capacity(n) with d < 29 (cap_lt), 2^d holds the words the

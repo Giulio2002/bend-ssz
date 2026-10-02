@@ -1,8 +1,8 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 
 # Element reads of a perfect array tree of Data-kind elements (for the generated
-# per-list tree laws in proofs/obj/root_types.bend).
+# per-list tree laws in proofs/obj/root_types_generated.bend).
 
 def lt_len(-A: Data, +dw: Nat, +t: F.array__Tree<A>, +s: Nat, +pf: {F.array__perfect(A, dw, t) == True{} : Bool},
     +hs: {Nat.is_lt(s, F.spec_common__pow2(dw)) == True{} : Bool}) -> {Nat.is_lt(s, F.spec_common__length(A, F.array__slots(A, t))) == True{} : Bool}:

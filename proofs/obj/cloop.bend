@@ -4,7 +4,7 @@ import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
 import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT

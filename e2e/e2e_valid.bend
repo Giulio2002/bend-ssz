@@ -9,7 +9,7 @@ import ../spec/schema.bend as SS
 import ../spec/codec.bend as Encoding
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 
 # What the generated validity predicates (types/<X>_encode_ssz_generated.bend, X_valid) say, in the
 # forms the e2e bridges take as premises (e2e/<Name>_e2e_generated.bend). Used by

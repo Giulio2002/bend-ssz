@@ -1,6 +1,6 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_api_4.bend as W_proofs_obj_coll_api_4
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_api_4_generated.bend as W_proofs_obj_coll_api_4
 import ../src/obj.bend as W_src_obj
 import ../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
 import ../types/Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerSlashing_16_d

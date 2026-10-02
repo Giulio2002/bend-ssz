@@ -4,12 +4,12 @@ import ../../src/buffer.bend as B
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bytes.bend as Bytes
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ./spec_fixed.bend as SF
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
-import ./arr_spec.bend as AS
+import ./arr_spec_generated.bend as AS
 
 # Byte storage held in a words tree, over the tree itself: the storage [l | r] of a byte vector
 # whose bytes are the limbs of l's words (r its padding). Stated over the variable trees l and r,

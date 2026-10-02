@@ -6,13 +6,13 @@ import ../../types/schema.bend as S
 import ../../spec/root_relation.bend as RR
 import ../../spec/byte_list.bend as BL
 import ../../spec/limits.bend as Lim
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
 import ./words_root_light.bend as WR
 import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./nat_facts.bend as NF
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR

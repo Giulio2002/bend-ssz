@@ -10,7 +10,7 @@ import ../../spec/packing.bend as Pack
 import ../../spec/limits.bend as Lim
 import ../../spec/tree.bend as Tr
 import ../../spec/value_domain.bend as VD
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./mtree_defs.bend as MD
 import ./mtree_spec.bend as MS

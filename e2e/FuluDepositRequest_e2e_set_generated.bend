@@ -2,14 +2,14 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
 import ../types/FuluDepositRequest_encode_ssz_generated.bend as FuluDepositRequest_e
 import ../types/FuluDepositRequest_hashtreeroot_generated.bend as FuluDepositRequest_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluDepositRequest_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ./FuluDepositRequest_e2e_generated.bend as R
@@ -22,7 +22,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluDepositRequest_e2e_set_pubkey_view(+o: FuluDepositRequest_d.DepositRequest, +w: FuluBytes48_d.Bytes48)
     -> {M1_L.v_DepositRequest(FuluDepositRequest_d.DepositRequest_set_pubkey(o, w)) == VS.field_set(M1_L.v_DepositRequest(o), 0n, M1_L.v_b48(w)) : S.Value}:
   match o:

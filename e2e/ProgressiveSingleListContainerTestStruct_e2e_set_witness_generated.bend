@@ -1,11 +1,11 @@
 import Base
 import ./ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend as SET
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/bitlist_obj_light.bend as BO
-import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/obj/pbits_obj_light.bend as PBO
-import ../proofs/obj/root_gtypes2_light.bend as RT_L
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/root_gtypes2_light_generated.bend as RT_L
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/value_set.bend as VS
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

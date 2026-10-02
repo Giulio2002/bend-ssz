@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS

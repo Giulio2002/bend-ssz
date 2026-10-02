@@ -1,6 +1,6 @@
 import Base
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
+import ./e2e_comp_generated.bend as C
+import ./e2e_support_generated.bend as E
 import ./uint32_e2e_dec_generated.bend as DB
 import ./uint32_e2e_generated.bend as EB
 import ../spec/fulu_schemas.bend as Spec

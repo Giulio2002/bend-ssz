@@ -1,10 +1,10 @@
 import Base
 import ./FuluBlob_e2e_generated.bend as BR
 import ./FuluBlob_e2e_root_generated.bend as RB
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
-import ./e2e_wit.bend as WT
-import ../proofs/compact/found.bend as FD
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
+import ./e2e_wit_generated.bend as WT
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../spec/fulu_schemas.bend as Spec

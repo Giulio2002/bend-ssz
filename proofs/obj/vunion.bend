@@ -2,7 +2,7 @@ import Base
 import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
@@ -12,7 +12,7 @@ import ./vuw.bend as UW
 import ./vuwd.bend as WD
 import ./vrecx.bend as VRX
 import ./vcont.bend as VCN
-import ./vuwl_u8.bend as W8
+import ./vuwl_u8_generated.bend as W8
 import ./dk.bend as DK
 
 # A union's step at X = 4 q + r (hand-written; for codegen/var_cont_enc.py's unions): the runtime

@@ -2,16 +2,16 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
 import ../types/FuluProposerSlashing_encode_ssz_generated.bend as FuluProposerSlashing_e
 import ../types/FuluProposerSlashing_hashtreeroot_generated.bend as FuluProposerSlashing_h
 import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ./FuluProposerSlashing_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluBlob_e2e_root_generated.bend as R
 import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
@@ -22,7 +22,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluProposerSlashing_e2e_set_signed_header_1_view(o: FuluProposerSlashing_d.ProposerSlashing, w: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>)
     -> {M0_L.v_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_1(o, w)) == VS.field_set(M0_L.v_ProposerSlashing(o), 0n, M0_L.v_SignedBeaconBlockHeader_bx(w)) : S.Value}:
   match o:

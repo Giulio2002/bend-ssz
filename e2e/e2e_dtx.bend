@@ -3,30 +3,30 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/FuluTransaction_def_generated.bend as FuluTransaction_d
 import ../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vu32.bend as VU
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/list_obj_light.bend as LO
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/vvl_l1048576_bl1073741824.bend as V
-import ../proofs/obj/vvlb_bl1073741824.bend as YW
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/vvl_l1048576_bl1073741824_generated.bend as V
+import ../proofs/obj/vvlb_bl1073741824_generated.bend as YW
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/vlist.bend as VLS
-import ../proofs/obj/view_seq.bend as VQ
+import ../proofs/obj/view_seq_generated.bend as VQ
 import ../proofs/obj/words_rw.bend as WR
 import ../proofs/obj/vvlu.bend as VVU
-import ./e2e_blist.bend as BL
-import ./e2e_eptx.bend as TX
+import ./e2e_blist_generated.bend as BL
+import ./e2e_eptx_generated.bend as TX
 import ../src/buffer.bend as B
 import ../proofs/obj/vdepth.bend as VD
-import ./e2e_dz.bend as DZ
+import ./e2e_dz_generated.bend as DZ
 
-# The list of transactions a decoder returns (proofs/obj/vvl_l1048576_bl1073741824.bend's mirror OBJw of the reader) satisfies
+# The list of transactions a decoder returns (proofs/obj/vvl_l1048576_bl1073741824_generated.bend's mirror OBJw of the reader) satisfies
 # the representation invariant rep_l1048576_bl1073741824 and the encode premise e2e_eptx.bend's sdt. The reader builds the array by one
 # Array.set per element into fill(cap(N)); this file shows the array is am(T) for the tree T the same writes build (RVT), element by element.
 

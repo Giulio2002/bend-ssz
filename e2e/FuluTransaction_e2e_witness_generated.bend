@@ -1,9 +1,9 @@
 import Base
 import ./FuluTransaction_e2e_generated.bend as BR
 import ./FuluTransaction_e2e_root_generated.bend as RB
-import ./e2e_blist.bend as BL
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
+import ./e2e_blist_generated.bend as BL
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/words_obj_light.bend as WO
 import ../spec/fulu_schemas.bend as Spec

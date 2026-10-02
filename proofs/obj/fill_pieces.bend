@@ -1,10 +1,10 @@
 import Base
 import ../../src/buffer.bend as B
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as AR
 import ./mtree_defs.bend as MD
 import ./words_spec.bend as WS
-import ./len_bridge.bend as LB
+import ./len_bridge_generated.bend as LB
 
 # The native driver's input path (native_bench/driver.bend `read_loop`) fills
 # the buffer in pieces of 65536 bytes at offsets 0, 65536, ... - one

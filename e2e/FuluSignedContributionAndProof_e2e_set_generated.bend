@@ -2,18 +2,18 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
 import ../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedContributionAndProof_d
 import ../types/FuluSignedContributionAndProof_encode_ssz_generated.bend as FuluSignedContributionAndProof_e
 import ../types/FuluSignedContributionAndProof_hashtreeroot_generated.bend as FuluSignedContributionAndProof_h
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ./FuluSignedContributionAndProof_e2e_generated.bend as N
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluSignedContributionAndProof_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
+import ../proofs/obj/root_names_light_generated.bend as RN
 import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/value_set.bend as VS
@@ -23,7 +23,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluSignedContributionAndProof_e2e_set_message_view(o: FuluSignedContributionAndProof_d.SignedContributionAndProof, w: FuluContributionAndProof_d.ContributionAndProof)
     -> {M0_L.v_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof_set_message(o, w)) == VS.field_set(M0_L.v_SignedContributionAndProof(o), 0n, M0_L.v_ContributionAndProof(w)) : S.Value}:
   match o:

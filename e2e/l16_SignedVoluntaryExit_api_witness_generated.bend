@@ -1,8 +1,8 @@
 import Base
-import ../proofs/compact/found.bend as W_proofs_compact_found
-import ../proofs/obj/coll_api_5.bend as W_proofs_obj_coll_api_5
-import ../proofs/obj/root_names_light.bend as W_proofs_obj_root_names_light
-import ../proofs/obj/root_types_light.bend as W_proofs_obj_root_types_light
+import ../proofs/compact/found_generated.bend as W_proofs_compact_found
+import ../proofs/obj/coll_api_5_generated.bend as W_proofs_obj_coll_api_5
+import ../proofs/obj/root_names_light_generated.bend as W_proofs_obj_root_names_light
+import ../proofs/obj/root_types_light_generated.bend as W_proofs_obj_root_types_light
 import ../proofs/obj/value_set.bend as W_proofs_obj_value_set
 import ../src/obj.bend as W_src_obj
 import ../types/FuluSignedVoluntaryExit_def_generated.bend as FuluSignedVoluntaryExit_d

@@ -1,11 +1,11 @@
 import Base
 import ./SmallTestStruct_e2e_generated.bend as W_e2e_SmallTestStruct_e2e_generated
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./e2e_valid.bend as V
 import ./ser_e2e_uintdom_generated.bend as UD
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/root_gnames_light.bend as W_proofs_obj_root_gnames_light
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/root_gnames_light_generated.bend as W_proofs_obj_root_gnames_light
 import ../proofs/power_division.bend as PD
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/word_split.bend as WSp

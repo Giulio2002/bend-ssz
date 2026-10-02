@@ -1,8 +1,8 @@
 import Base
 import ../../src/digest.bend as D
 import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
-import ./sha_node.bend as SN
-import ./zero_roots.bend as ZR
+import ./sha_node_generated.bend as SN
+import ./zero_roots_generated.bend as ZR
 
 # Digests are determined by their bytes, and the runtime node of two equal
 # zero-subtree roots is the next one (Z(k + 1) = node(Z(k), Z(k))), as digests.

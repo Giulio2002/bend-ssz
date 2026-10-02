@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ./found.bend as F
+import ./found_generated.bend as F
 import ./arith.bend as A
 
 # Every buffer read returns the buffer unchanged, at any index. Base.Array.get

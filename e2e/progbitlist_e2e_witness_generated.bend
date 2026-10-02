@@ -1,11 +1,11 @@
 import Base
-import ./e2e_bitl.bend as BL
-import ./e2e_support.bend as E
+import ./e2e_bitl_generated.bend as BL
+import ./e2e_support_generated.bend as E
 import ./progbitlist_e2e_generated.bend as BR
 import ./progbitlist_e2e_root_generated.bend as RB
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/bitlist_obj_light.bend as BO
-import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../proofs/obj/vbuf.bend as VB
 import ../src/buffer.bend as B

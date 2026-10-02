@@ -1,7 +1,7 @@
 import Base
 import ./FuluG1Point_e2e_generated.bend as W_e2e_FuluG1Point_e2e_generated
-import ./e2e_support.bend as E
-import ../proofs/obj/root_names_light.bend as W_proofs_obj_root_names_light
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/root_names_light_generated.bend as W_proofs_obj_root_names_light
 import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
 import ../src/model.bend as API
 import ../src/obj.bend as O

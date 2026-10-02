@@ -2,7 +2,7 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
@@ -10,14 +10,14 @@ import ../types/FuluIndexedAttestation_encode_ssz_generated.bend as FuluIndexedA
 import ../types/FuluIndexedAttestation_hashtreeroot_generated.bend as FuluIndexedAttestation_h
 import ./FuluIndexedAttestation_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluIndexedAttestation_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT_L
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../spec/fulu_schemas.bend as Spec
-import ./e2e_ulist.bend as U
+import ./e2e_ulist_generated.bend as U
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 
@@ -26,7 +26,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluIndexedAttestation_e2e_set_attesting_indices_view(o: FuluIndexedAttestation_d.IndexedAttestation, w: O.Words)
     -> {RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(o, w)) == VS.field_set(RT_L.v_IndexedAttestation(o), 0n, UL.uview(w)) : S.Value}:
   match o:

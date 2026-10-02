@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MS
 
 # The Merkle layer, runtime side: the recursive tree the object API runs over
@@ -10,7 +10,7 @@ import ./mtree_defs.bend as MS
 # vector, byte list, bit list and packed list root) computes, on ANY perfect
 # Array tree of words, the reference tree (proofs/obj/mtree_spec.bend) over the
 # chunk digests of the words - and hands back the hasher and the word array
-# unchanged. Array reads go through proofs/compact/found.bend's model
+# unchanged. Array reads go through proofs/compact/found_generated.bend's model
 # (`array__get`: a read of a perfect tree at an in-range index returns the
 # slot and the same tree).
 

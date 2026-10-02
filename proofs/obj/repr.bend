@@ -1,11 +1,11 @@
 import Base
-import ../../proofs/compact/found.bend as F
+import ../../proofs/compact/found_generated.bend as F
 
 # The representation bridge for buffers: a buffer array is determined by its
 # indexed words, whatever tree it is.
 #
 # Base's `Array<U32>` is a tree (`ALeaf`/`ANode`); `Array.new` builds a perfect
-# tree and `Array.set`/`Array.get` keep it perfect (proofs/compact/found.bend
+# tree and `Array.set`/`Array.get` keep it perfect (proofs/compact/found_generated.bend
 # `array__new`, `array__set`, `array__upd_perfect`), and found.bend's model
 # `array__thaw(t)` covers exactly those arrays. This module proves that every
 # perfect tree of depth d IS the canonical tree `build(d, ...)` of its slot list,

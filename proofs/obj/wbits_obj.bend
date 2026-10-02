@@ -9,20 +9,20 @@ import ../../spec/bit_packing.bend as Bp
 import ../../spec/packing.bend as Pack
 import ../../spec/limits.bend as Lim
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
 import ./words_root_light.bend as WR
 import ./words_obj.bend as WO
 import ./words_obj_light.bend as WO_L
 import ./cform.bend as CF
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./root_support.bend as RS
 import ./obj_support.bend as OS
 import ./spec_fixed.bend as FX
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 import ./wbits_obj_light.bend as LV
 
 # Bit vectors held as byte storage (O.Words{ws, N}, N = ceil(n/8) bytes: the

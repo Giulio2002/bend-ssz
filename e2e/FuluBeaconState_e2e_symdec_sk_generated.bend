@@ -1,12 +1,12 @@
 import Base
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ./e2e_zero_run_generated.bend as ZR
-import ./e2e_load.bend as L
+import ./e2e_load_generated.bend as L
 import ./e2e_symdec_lib_generated.bend as SL
 import ./e2e_symdec_sk_lib_generated.bend as K
 

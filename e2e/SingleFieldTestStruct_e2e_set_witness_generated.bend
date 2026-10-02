@@ -1,9 +1,9 @@
 import Base
 import ./SingleFieldTestStruct_e2e_set_generated.bend as SET
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames_light.bend as M0_L
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/root_gnames_light_generated.bend as M0_L
 import ../proofs/obj/value_set.bend as VS
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

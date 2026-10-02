@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as P0_F
+import ../compact/found_generated.bend as P0_F
 import ../../src/buffer.bend as P0_B
 import ../../src/digest.bend as P0_D
 import ../../src/obj.bend as P0_O
@@ -10,7 +10,7 @@ import ../obj/cform.bend as P0_CF
 import ../obj/amap.bend as P0_AM
 import ../../spec/root_relation.bend as P0_RR
 import ../../spec/fulu_schemas.bend as P0_Spec
-import ../obj/schema_shapes.bend as P0_SH
+import ../obj/schema_shapes_generated.bend as P0_SH
 import ../obj/dk.bend as P0_DK
 import ../obj/mtree_defs.bend as P0_MD
 import ../obj/words_obj_light.bend as P0_WO_L
@@ -19,7 +19,7 @@ import ../obj/pv_obj_light.bend as P0_PV_L
 import ../obj/bitlist_obj_light.bend as P0_BO_L
 import ../obj/cells_light.bend as P0_CE_L
 import ../obj/obj_support.bend as P0_OS
-import ../obj/root_names_light.bend as P0_RN_L
+import ../obj/root_names_light_generated.bend as P0_RN_L
 import ../obj/ulist_obj_light.bend as P0_UL_L
 import ../obj/elems48_light.bend as P0_E48_L
 import ../obj/xlist_support.bend as P0_XS
@@ -29,8 +29,8 @@ import ../../spec/limits.bend as P0_Lim
 import ../../spec/bit_root.bend as P0_Mix
 import ../../spec/nat_bytes.bend as P0_Len
 import ../../spec/byte_list.bend as P0_BL
-import ../obj/root_types_light.bend as P0_LV
-import ../obj/root_types.bend as P0_PRV
+import ../obj/root_types_light_generated.bend as P0_LV
+import ../obj/root_types_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../../src/digest.bend as P1_D

@@ -2,9 +2,9 @@ import Base
 import ./FuluCell_e2e_comp_generated.bend as W_e2e_FuluCell_e2e_comp_generated
 import ./FuluCell_e2e_dec_generated.bend as W_e2e_FuluCell_e2e_dec_generated
 import ./FuluCell_e2e_generated.bend as W_e2e_FuluCell_e2e_generated
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as W_e2e_e2e_tree
-import ../proofs/compact/found.bend as FD
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as W_e2e_e2e_tree
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light
 import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
 import ../spec/primitives.bend as W_spec_primitives

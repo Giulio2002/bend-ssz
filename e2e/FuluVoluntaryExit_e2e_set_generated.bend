@@ -2,11 +2,11 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluVoluntaryExit_def_generated.bend as FuluVoluntaryExit_d
 import ../types/FuluVoluntaryExit_encode_ssz_generated.bend as FuluVoluntaryExit_e
 import ../types/FuluVoluntaryExit_hashtreeroot_generated.bend as FuluVoluntaryExit_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluVoluntaryExit_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ./FuluVoluntaryExit_e2e_generated.bend as R
@@ -19,7 +19,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluVoluntaryExit_e2e_set_epoch_view(+o: FuluVoluntaryExit_d.VoluntaryExit, +w: O.U64)
     -> {M1_L.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit_set_epoch(o, w)) == VS.field_set(M1_L.v_VoluntaryExit(o), 0n, M1_L.v_u64(w)) : S.Value}:
   match o:

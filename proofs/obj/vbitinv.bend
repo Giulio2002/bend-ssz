@@ -1,11 +1,11 @@
 import Base
 import ../../src/obj.bend as O
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ../../proofs/nat_order.bend as Order
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 import ./words_spec.bend as WS
 import ./mtree_run.bend as MR
 import ./vspec.bend as VS
@@ -15,8 +15,8 @@ import ./vfix.bend as VF
 import ./dk.bend as DK
 import ./vbitenc.bend as VBT
 import ./vbitdl.bend as DL
-import ./var_bits_enc_bw.bend as BW
-import ./var_bits_enc_pad.bend as PAD
+import ./var_bits_enc_bw_generated.bend as BW
+import ./var_bits_enc_pad_generated.bend as PAD
 
 # The object invariant of the bit-list root laws (bitlist_obj wfb1) gives the
 # encoder's DL.HZ: BK.zt(slots T, K) (the bits of the last byte past K zero) and

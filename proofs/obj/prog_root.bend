@@ -7,12 +7,12 @@ import ../../spec/tree.bend as Tr
 import ../../spec/primitives.bend as SP
 import ../../proofs/nat_order.bend as Order
 import ../../proofs/nat_algebra.bend as NA
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./mtree_spec.bend as MS
 import ./words_spec.bend as WS
-import ./sha_node.bend as SN
+import ./sha_node_generated.bend as SN
 import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
 
 # The progressive chunk tree (SSZ merkleize_progressive) of the runtime:

@@ -5,9 +5,9 @@ import ../../spec/tree.bend as Tr
 import ../../spec/merkle.bend as M
 import 0xd9a2fae439ac7ff9e21e0853948f94fe/spec/crypto/sha.bend as VF
 import ./mtree_defs.bend as MD
-import ./sha_node.bend as SN
-import ./zero_roots.bend as ZR
-import ../compact/found.bend as F
+import ./sha_node_generated.bend as SN
+import ./zero_roots_generated.bend as ZR
+import ../compact/found_generated.bend as F
 
 # The Merkle layer, specification side: a reference tree over a list of
 # digests, with the node and the zero-subtree roots abstract, is the
@@ -22,7 +22,7 @@ import ../compact/found.bend as F
 # normalizes SHA-256: `hl` stays abstract, and the node enters only through
 # SN.node_at under the carried equation `hl == 64n`; the zero-subtree roots are
 # the constants D.zconst, checked against the specification in
-# proofs/obj/zero_roots.bend (trees are at most 63 levels deep).
+# proofs/obj/zero_roots_generated.bend (trees are at most 63 levels deep).
 
 # ---- list algebra -------------------------------------------------------------
 

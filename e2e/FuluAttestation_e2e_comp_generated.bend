@@ -4,11 +4,11 @@ import ./FuluAttestation_e2e_decrep_generated.bend as W_e2e_FuluAttestation_e2e_
 import ./FuluAttestation_e2e_generated.bend as EB
 import ./FuluAttestation_e2e_root_generated.bend as RB
 import ./e2e_cap.bend as CAP
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/var_bitc_Attestation.bend as DC
+import ./e2e_comp_generated.bend as C
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/var_bitc_Attestation_generated.bend as DC
 import ../proofs/obj/vbuf.bend as VB
 import ../spec/fulu_schemas.bend as Spec
 import ../spec/primitives.bend as SP

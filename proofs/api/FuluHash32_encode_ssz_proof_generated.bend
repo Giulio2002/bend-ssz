@@ -11,8 +11,8 @@ import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
-import ../obj/spec_bits.bend as P0_FB
-import ../obj/spec_codec_Hash32.bend as P0_PRV
+import ../obj/spec_bits_generated.bend as P0_FB
+import ../obj/spec_codec_Hash32_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/Hash32_symbolic_generated.bend as P1_PRV
@@ -25,10 +25,10 @@ import ../../src/obj.bend as P3_O
 import ../slop/offsets/Hash32_word_positions_generated.bend as P3_PRV
 import ../../src/buffer.bend as P4_B
 import ../../src/obj.bend as P4_O
-import ../obj/codec_1.bend as P4_PRV
+import ../obj/codec_1_generated.bend as P4_PRV
 import ../../src/buffer.bend as P5_B
 import ../../src/obj.bend as P5_O
-import ../obj/serialize_0.bend as P5_PRV
+import ../obj/serialize_0_generated.bend as P5_PRV
 import ../../src/buffer.bend as P6_B
 import ../../src/obj.bend as P6_O
 import ../slop/validity/fulu_Hash32_generated.bend as P6_PRV

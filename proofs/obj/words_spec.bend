@@ -4,10 +4,10 @@ import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
 import ../../spec/packing.bend as Pack
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MS
 import ./mtree_run.bend as MR
-import ./root_leaf.bend as RL
+import ./root_leaf_generated.bend as RL
 import ./spec_fixed.bend as FX
 
 # Packed words, specification side: the bytes of a word array, cut at the

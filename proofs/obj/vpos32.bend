@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./vcont.bend as VCN
 import ./vadd.bend as AD
 import ./vuw.bend as UW

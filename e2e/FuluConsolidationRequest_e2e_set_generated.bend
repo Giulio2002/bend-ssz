@@ -2,13 +2,13 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
 import ../types/FuluConsolidationRequest_encode_ssz_generated.bend as FuluConsolidationRequest_e
 import ../types/FuluConsolidationRequest_hashtreeroot_generated.bend as FuluConsolidationRequest_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluConsolidationRequest_e2e_generated.bend as N
 import ./FuluConsolidationRequest_e2e_generated.bend as R
 import ../types/schema.bend as S
@@ -20,7 +20,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluConsolidationRequest_e2e_set_source_address_view(+o: FuluConsolidationRequest_d.ConsolidationRequest, +w: FuluBytes20_d.Bytes20)
     -> {M1_L.v_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest_set_source_address(o, w)) == VS.field_set(M1_L.v_ConsolidationRequest(o), 0n, M1_L.v_b20(w)) : S.Value}:
   match o:

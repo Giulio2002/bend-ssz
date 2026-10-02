@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
@@ -35,7 +35,7 @@ import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_
 #                     in, and the returned cache has an empty dirty range.
 #
 # The premises on the arrays are the ones the array lemmas of
-# proofs/compact/found.bend need: a perfect tree of depth d < 32 (which is what
+# proofs/compact/found_generated.bend need: a perfect tree of depth d < 32 (which is what
 # Array.new builds and Array.set preserves), an index inside it, and the value
 # currently stored there.
 #

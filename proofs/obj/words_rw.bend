@@ -1,7 +1,7 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 
 # Word-level laws of packed object storage O.Words{thaw(t), n}, t a perfect tree of U32 words of

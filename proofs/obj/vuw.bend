@@ -1,7 +1,7 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as FX
@@ -15,8 +15,8 @@ import ./vu32.bend as VU
 import ./vcopy.bend as VC
 import ./vdepth.bend as VD
 import ../compact/reads.bend as RD
-import ./vuw_bits.bend as UWB
-import ./word_mul.bend as WM
+import ./vuw_bits_generated.bend as UWB
+import ./word_mul_generated.bend as WM
 
 # The unaligned-offset WRITE layer, W1: the runtime's writers at a byte offset
 # X = 4 q + s (s = 1, 2, 3) OR the value's bytes into the output words q, q + 1, ...

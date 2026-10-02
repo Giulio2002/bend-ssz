@@ -2,13 +2,13 @@ import Base
 import ./FixedTestStruct_e2e_root_generated.bend as RB
 import ./ProgressiveSingleFieldContainerTestStruct_e2e_dec_generated.bend as DB
 import ./ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend as EB
-import ./e2e_comp.bend as C
-import ./e2e_load.bend as L
-import ./e2e_mask.bend as MK
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames_light.bend as M1
+import ./e2e_comp_generated.bend as C
+import ./e2e_load_generated.bend as L
+import ./e2e_mask_generated.bend as MK
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/root_gnames_light_generated.bend as M1
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
@@ -26,7 +26,7 @@ import ../types/schema.bend as S
 def pe_rp(+bs: +List<U32>) -> M1.rp_ProgressiveSingleFieldContainerTestStruct(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{MK.cf8(FD.flat__nthc(L.wlp(bs), 0n))}):
   {==}
 
-# the decoder's object with its masked words in clean form (e2e/e2e_mask.bend)
+# the decoder's object with its masked words in clean form (e2e/e2e_mask_generated.bend)
 def oeq(+bs: +List<U32>) -> {ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n))} == ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{MK.cf8(FD.flat__nthc(L.wlp(bs), 0n))} : ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct}:
   %Equal.sym(U32, U32.and(FD.flat__nthc(L.wlp(bs), 0n), 255), MK.cf8(FD.flat__nthc(L.wlp(bs), 0n)), MK.mk8(FD.flat__nthc(L.wlp(bs), 0n))) :
     {ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{_} == ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{MK.cf8(FD.flat__nthc(L.wlp(bs), 0n))} : ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct}

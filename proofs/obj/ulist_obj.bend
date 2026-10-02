@@ -15,7 +15,7 @@ import ../../spec/nat_bytes.bend as Len
 import ../../proofs/integer_encoding.bend as IE
 import ../../proofs/nat_order.bend as Order
 import ../../proofs/nat_algebra.bend as NA
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
@@ -27,7 +27,7 @@ import ./words_obj_light.bend as WO
 import ./list_root.bend as LR
 import ./list_obj_light.bend as LO
 import ./nat_facts.bend as NF
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
 import ./ulist_obj_light.bend as LV
 

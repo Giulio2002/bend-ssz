@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../proofs/nat_order.bend as Order
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_run.bend as MR
 import ./words_spec.bend as WS
 import ./ctree.bend as CT

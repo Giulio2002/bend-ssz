@@ -8,10 +8,10 @@ import ../../spec/bit_root.bend as Bm
 import ../../spec/limits.bend as Lim
 import ../../spec/tree.bend as Tr
 import ../../spec/byte_list.bend as BL
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./dk.bend as DK
 import ./mtree_defs.bend as MD
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./spec_fixed.bend as FX
 import ./words_spec.bend as WS
 import ./words_root_light.bend as WR
@@ -22,7 +22,7 @@ import ./pv_obj_light.bend as PV
 import ./ulist_obj.bend as UL
 import ./ulist_obj_light.bend as UL_L
 import ./bitlist_obj_light.bend as BO
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 import ./valid_lib.bend as VL
 import ./cform.bend as CF
 

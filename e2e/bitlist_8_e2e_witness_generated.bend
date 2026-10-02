@@ -1,12 +1,12 @@
 import Base
 import ./bitlist_8_e2e_generated.bend as BR
 import ./bitlist_8_e2e_root_generated.bend as RB
-import ./e2e_bitl.bend as BL
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
+import ./e2e_bitl_generated.bend as BL
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_rep.bend as BOr
-import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/generic_specs_generated.bend as GS
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API

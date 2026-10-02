@@ -1,11 +1,11 @@
 import Base
 import ./FuluAttesterSlashing_e2e_generated.bend as BR
 import ./FuluAttesterSlashing_e2e_root_generated.bend as RB
-import ./e2e_support.bend as E
-import ./e2e_ulist.bend as U
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/schema_shapes.bend as SH
+import ./e2e_support_generated.bend as E
+import ./e2e_ulist_generated.bend as U
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS

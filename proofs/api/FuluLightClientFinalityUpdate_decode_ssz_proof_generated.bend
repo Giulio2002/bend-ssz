@@ -3,7 +3,7 @@ import ../../src/buffer.bend as P0_B
 import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
 import ../../types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend as FuluLightClientFinalityUpdate_r
 import ../../types/schema.bend as P0_S
-import ../compact/found.bend as P0_FD
+import ../compact/found_generated.bend as P0_FD
 import ../compact/arith.bend as P0_A
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
@@ -14,9 +14,9 @@ import ../obj/vspec.bend as P0_VS
 import ../obj/vbuf.bend as P0_VB
 import ../obj/vua.bend as P0_UA
 import ../obj/vua_win.bend as P0_UW
-import ../obj/var_bytesx_LightClientFinalityUpdate.bend as P0_W
-import ../obj/var_bytesx_LightClientFinalityUpdate_inv.bend as P0_XI
-import ../obj/var_bytesx_LightClientFinalityUpdate_dec.bend as P0_PRV
+import ../obj/var_bytesx_LightClientFinalityUpdate_generated.bend as P0_W
+import ../obj/var_bytesx_LightClientFinalityUpdate_inv_generated.bend as P0_XI
+import ../obj/var_bytesx_LightClientFinalityUpdate_dec_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/offsets/LightClientFinalityUpdate_generated.bend as P1_PRV

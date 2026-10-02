@@ -5,9 +5,9 @@ import ../src/buffer.bend as B
 import ../src/obj.bend as O
 import ../types/proglist_uint128_encode_ssz_generated.bend as proglist_uint128_e
 import ../types/schema.bend as S
-import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../spec/codec.bend as Encoding
@@ -18,16 +18,16 @@ import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/prog_list_light.bend as PG
-import ../proofs/obj/packed_obj_light.bend as PK
-import ../proofs/obj/var_elems.bend as EL
-import ../proofs/obj/var_plist_proglist_uint128_enc.bend as EN
-import ./e2e_support.bend as E
+import ../proofs/obj/prog_list_light_generated.bend as PG
+import ../proofs/obj/packed_obj_light_generated.bend as PK
+import ../proofs/obj/var_elems_generated.bend as EL
+import ../proofs/obj/var_plist_proglist_uint128_enc_generated.bend as EN
+import ./e2e_support_generated.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_cap.bend as CQ4
-import ./e2e_emit.bend as EM
-import ./e2e_blist.bend as BL
-import ./e2e_plw.bend as PW
+import ./e2e_emit_generated.bend as EM
+import ./e2e_blist_generated.bend as BL
+import ./e2e_plw_generated.bend as PW
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vbspec.bend as VZ
 

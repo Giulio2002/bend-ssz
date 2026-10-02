@@ -7,7 +7,7 @@ import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../spec/codec.bend as Encoding
@@ -16,18 +16,18 @@ import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/ulist_obj_light.bend as UL
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/var_codec_DataColumnsByRootIdentifier_enc.bend as EN
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/var_codec_DataColumnsByRootIdentifier_enc_generated.bend as EN
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
 import ../types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_e
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./e2e_cap.bend as C
-import ./e2e_emit.bend as EM
-import ./e2e_ulist.bend as U
+import ./e2e_emit_generated.bend as EM
+import ./e2e_ulist_generated.bend as U
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/dk.bend as DK
 import ../spec/primitives.bend as SP
 

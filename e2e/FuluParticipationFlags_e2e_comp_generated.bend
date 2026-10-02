@@ -2,11 +2,11 @@ import Base
 import ./FuluBytes1_e2e_root_generated.bend as RB
 import ./FuluParticipationFlags_e2e_dec_generated.bend as DB
 import ./FuluParticipationFlags_e2e_generated.bend as EB
-import ./e2e_comp.bend as C
-import ./e2e_load.bend as L
-import ./e2e_mask.bend as MK
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
+import ./e2e_comp_generated.bend as C
+import ./e2e_load_generated.bend as L
+import ./e2e_mask_generated.bend as MK
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
 import ../spec/fulu_schemas.bend as Spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
@@ -25,7 +25,7 @@ import ../types/schema.bend as S
 def pe_e(+bs: +List<U32>) -> {U32.is_lt(MK.cf8(FD.flat__nthc(L.wlp(bs), 0n)), 256) == True{} : Bool}:
   {==}
 
-# the decoder's object with its masked words in clean form (e2e/e2e_mask.bend)
+# the decoder's object with its masked words in clean form (e2e/e2e_mask_generated.bend)
 def oeq(+bs: +List<U32>) -> {B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)) == MK.cf8(FD.flat__nthc(L.wlp(bs), 0n)) : U32}:
   %Equal.sym(U32, U32.and(FD.flat__nthc(L.wlp(bs), 0n), 255), MK.cf8(FD.flat__nthc(L.wlp(bs), 0n)), MK.mk8(FD.flat__nthc(L.wlp(bs), 0n))) :
     {_ == MK.cf8(FD.flat__nthc(L.wlp(bs), 0n)) : U32}

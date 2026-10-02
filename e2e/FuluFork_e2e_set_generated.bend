@@ -2,12 +2,12 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBytes4_def_generated.bend as FuluBytes4_d
 import ../types/FuluFork_def_generated.bend as FuluFork_d
 import ../types/FuluFork_encode_ssz_generated.bend as FuluFork_e
 import ../types/FuluFork_hashtreeroot_generated.bend as FuluFork_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluFork_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ./FuluFork_e2e_generated.bend as R
@@ -20,7 +20,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluFork_e2e_set_previous_version_view(+o: FuluFork_d.Fork, +w: FuluBytes4_d.Bytes4)
     -> {M1_L.v_Fork(FuluFork_d.Fork_set_previous_version(o, w)) == VS.field_set(M1_L.v_Fork(o), 0n, M1_L.v_b4(w)) : S.Value}:
   match o:

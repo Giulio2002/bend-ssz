@@ -1,11 +1,11 @@
 import Base
 import ./ProgressiveTestStruct_e2e_set_generated.bend as SET
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/packed_bytes_light.bend as PB
-import ../proofs/obj/prog_list_light.bend as PG
-import ../proofs/obj/root_gtypes2_light.bend as RT_L
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/packed_bytes_light_generated.bend as PB
+import ../proofs/obj/prog_list_light_generated.bend as PG
+import ../proofs/obj/root_gtypes2_light_generated.bend as RT_L
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/words_obj_light.bend as W_proofs_obj_words_obj_light

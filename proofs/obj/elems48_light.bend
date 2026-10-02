@@ -3,12 +3,12 @@ import ../../src/obj.bend as O
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/schema.bend as S
 import ../../spec/limits.bend as Lim
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_obj_light.bend as WO
 import ./elems_obj.bend as EL
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
-import ./root_names_light.bend as RN_L
+import ./root_names_light_generated.bend as RN_L
 
 # The definitions of elems48.bend that state no root law (its light companion, codegen/light_split.py): importers that only
 # state against them skip the root laws' imports.

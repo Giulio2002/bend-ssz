@@ -1,8 +1,8 @@
 import Base
 import ./bitvector_512_e2e_generated.bend as W_e2e_bitvector_512_e2e_generated
-import ./e2e_support.bend as E
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/root_gnames_light.bend as W_proofs_obj_root_gnames_light
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/root_gnames_light_generated.bend as W_proofs_obj_root_gnames_light
 import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d

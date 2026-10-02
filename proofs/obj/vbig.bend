@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../nat_order.bend as Order
 import ../../spec/nat_bytes.bend as N
@@ -8,7 +8,7 @@ import ./vbuf.bend as VB
 import ./vcopy.bend as VC
 import ./vdepth.bend as VD
 import ./vfits.bend as VFT
-import ./arr_vec.bend as AV
+import ./arr_vec_generated.bend as AV
 import ./vspec.bend as VS
 
 # Hand-written. Facts about a large byte size L that is a power of two, 2^p, stated over

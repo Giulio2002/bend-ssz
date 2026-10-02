@@ -1,7 +1,7 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
-import ../proofs/obj/blist_obj_light.bend as BLI
+import ../proofs/obj/blist_obj_light_generated.bend as BLI
 import ../src/digest.bend as D
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
@@ -20,16 +20,16 @@ import ../types/Fulu_list_PendingDeposit_134217728_def_generated.bend as Fulu_li
 import ../types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend as Fulu_list_PendingPartialWithdrawal_134217728_d
 import ../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
 import ../src/obj.bend as O
-import ../proofs/obj/packed_bytes_light.bend as PB
-import ../proofs/obj/packed_obj_light.bend as PK
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/packed_bytes_light_generated.bend as PB
+import ../proofs/obj/packed_obj_light_generated.bend as PK
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
 import ./FuluBeaconState_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_state_light.bend as ST
+import ../proofs/obj/schema_shapes_generated.bend as SH
+import ../proofs/obj/root_state_light_generated.bend as ST
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
@@ -39,7 +39,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluBeaconState_e2e_set_genesis_time_view(o: FuluBeaconState_d.BeaconState, +w: O.U64)
     -> {ST.v_BeaconState(FuluBeaconState_d.BeaconState_set_genesis_time(o, w)) == VS.field_set(ST.v_BeaconState(o), 0n, RN.v_u64(w)) : S.Value}:
   match o:

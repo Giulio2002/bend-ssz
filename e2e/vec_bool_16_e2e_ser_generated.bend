@@ -1,9 +1,9 @@
 import Base
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as W_e2e_e2e_tree
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as W_e2e_e2e_tree
 import ./vec_bool_16_e2e_generated.bend as W_e2e_vec_bool_16_e2e_generated
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/packed_bytes_light.bend as W_proofs_obj_packed_bytes_light
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_bytes_light_generated.bend as W_proofs_obj_packed_bytes_light
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O

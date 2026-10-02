@@ -1,8 +1,8 @@
 import Base
 import ./FuluBytes1_e2e_generated.bend as BR
 import ./FuluBytes1_e2e_root_generated.bend as RB
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/leaf_small.bend as M1
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B

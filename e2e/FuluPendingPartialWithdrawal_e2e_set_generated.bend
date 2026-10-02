@@ -2,11 +2,11 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluPendingPartialWithdrawal_def_generated.bend as FuluPendingPartialWithdrawal_d
 import ../types/FuluPendingPartialWithdrawal_encode_ssz_generated.bend as FuluPendingPartialWithdrawal_e
 import ../types/FuluPendingPartialWithdrawal_hashtreeroot_generated.bend as FuluPendingPartialWithdrawal_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluPendingPartialWithdrawal_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ./FuluPendingPartialWithdrawal_e2e_generated.bend as R
@@ -19,7 +19,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluPendingPartialWithdrawal_e2e_set_validator_index_view(+o: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, +w: O.U64)
     -> {M1_L.v_PendingPartialWithdrawal(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_set_validator_index(o, w)) == VS.field_set(M1_L.v_PendingPartialWithdrawal(o), 0n, M1_L.v_u64(w)) : S.Value}:
   match o:

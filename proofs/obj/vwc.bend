@@ -5,7 +5,7 @@ import ../../spec/layout.bend as Layout
 import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
 import ../../types/schema.bend as S
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../proofs/decode_facts.bend as DF
 import ./vspec.bend as VS
 import ./vnest.bend as VN

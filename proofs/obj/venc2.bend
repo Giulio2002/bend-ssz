@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./vbuf.bend as VB
 import ./vfix.bend as VF
 

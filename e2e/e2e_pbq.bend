@@ -1,25 +1,25 @@
 import Base
 import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vdepth.bend as VD
-import ./e2e_gpb.bend as GPB
-import ../proofs/obj/var_pbits_progbitlist.bend as DC
+import ./e2e_gpb_generated.bend as GPB
+import ../proofs/obj/var_pbits_progbitlist_generated.bend as DC
 import ../proofs/obj/vpb29.bend as VP
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/vbyte.bend as VY
+import ../proofs/obj/vbyte_generated.bend as VY
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vbrt.bend as VR
-import ./e2e_bview.bend as BV
+import ./e2e_bview_generated.bend as BV
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/compact/arith.bend as A
 import ../src/obj.bend as O2
-import ./e2e_hv.bend as HV
-import ./e2e_hvk.bend as HVK
-import ./e2e_encp.bend as EP
-import ./e2e_encpd.bend as EPD
+import ./e2e_hv_generated.bend as HV
+import ./e2e_hvk_generated.bend as HVK
+import ./e2e_encp_generated.bend as EP
+import ./e2e_encpd_generated.bend as EPD
 import ../proofs/compact/reads.bend as RD
 
 # The decoded progressive bit list's size bounds (the encode records' SDPB: K + 8 <= 2^31 and 31 + (K + 1) <= 2^30), from a bound on the

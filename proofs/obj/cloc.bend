@@ -1,7 +1,7 @@
 import Base
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./ctree.bend as CT
 import ./cidx.bend as CX

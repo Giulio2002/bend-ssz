@@ -1,9 +1,9 @@
 import Base
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./e2e_valid.bend as V
 import ./ser_e2e_uintdom_generated.bend as UD
 import ./uint8_e2e_generated.bend as W_e2e_uint8_e2e_generated
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp
 import ../spec/fulu_schemas.bend as W_spec_fulu_schemas

@@ -1,10 +1,10 @@
 import Base
 import ./FixedTestStruct_e2e_root_generated.bend as RB
 import ./ProgressiveSingleFieldContainerTestStruct_e2e_generated.bend as BR
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames_light.bend as M1
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/root_gnames_light_generated.bend as M1
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/model.bend as API

@@ -2,13 +2,13 @@ import Base
 import ./bitvector_1_e2e_root_generated.bend as RB
 import ./bitvector_31_e2e_dec_generated.bend as DB
 import ./bitvector_31_e2e_generated.bend as EB
-import ./e2e_comp.bend as C
-import ./e2e_load.bend as L
-import ./e2e_mask.bend as MK
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/gbits_small_light.bend as M1
-import ../proofs/obj/generic_specs.bend as Spec
+import ./e2e_comp_generated.bend as C
+import ./e2e_load_generated.bend as L
+import ./e2e_mask_generated.bend as MK
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/gbits_small_light_generated.bend as M1
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp
 import ../spec/primitives.bend as SP
@@ -29,7 +29,7 @@ import ../types/schema.bend as S
 def pe_e(+bs: +List<U32>) -> {M1.bitvector_31_last(bitvector_31_d.Bitvector31{MK.cw31(FD.flat__nthc(L.wlp(bs), 0n))}) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(M1.bitvector_31_last(bitvector_31_d.Bitvector31{MK.cw31(FD.flat__nthc(L.wlp(bs), 0n))}))), Word.zero(1n))} : U32}:
   {==}
 
-# the decoder's object with its masked words in clean form (e2e/e2e_mask.bend)
+# the decoder's object with its masked words in clean form (e2e/e2e_mask_generated.bend)
 def oeq(+bs: +List<U32>, +eh: {U32.is_eq(U32.and(B.byte_sel(3, FD.flat__nthc(L.wlp(bs), 0n)), U32.not(O.low_mask(7))), 0) == True{} : Bool}) -> {bitvector_31_d.Bitvector31{FD.flat__nthc(L.wlp(bs), 0n)} == bitvector_31_d.Bitvector31{MK.cw31(FD.flat__nthc(L.wlp(bs), 0n))} : bitvector_31_d.Bitvector31}:
   %Equal.sym(U32, FD.flat__nthc(L.wlp(bs), 0n), MK.cw31(FD.flat__nthc(L.wlp(bs), 0n)), MK.pz3_7(FD.flat__nthc(L.wlp(bs), 0n), eh)) :
     {bitvector_31_d.Bitvector31{_} == bitvector_31_d.Bitvector31{MK.cw31(FD.flat__nthc(L.wlp(bs), 0n))} : bitvector_31_d.Bitvector31}

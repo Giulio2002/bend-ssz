@@ -1,6 +1,6 @@
 import Base
-import ./e2e_fixd.bend as X
-import ../proofs/compact/found.bend as FD
+import ./e2e_fixd_generated.bend as X
+import ../proofs/compact/found_generated.bend as FD
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -9,7 +9,7 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/type_validator_soundness.bend as VS
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
 import ../types/bitvector_5_def_generated.bend as bitvector_5_d
 import ../types/bitvector_6_def_generated.bend as bitvector_6_d
@@ -22,10 +22,10 @@ import ../types/bitvector_6_hashtreeroot_generated.bend as bitvector_6_h
 import ../types/bitvector_7_hashtreeroot_generated.bend as bitvector_7_h
 import ../types/bitvector_9_hashtreeroot_generated.bend as bitvector_9_h
 import ../types/bitvector_4_hashtreeroot_generated.bend as bitvector_4_h
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/gbits_small.bend as M0
-import ../proofs/obj/gbits_small_light.bend as M0_L
-import ../proofs/obj/gvalid_gbits_small.bend as M1
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/gbits_small_generated.bend as M0
+import ../proofs/obj/gbits_small_light_generated.bend as M0_L
+import ../proofs/obj/gvalid_gbits_small_generated.bend as M1
 import ../proofs/word_split.bend as M0_WSp
 import ../proofs/power_division.bend as M0_PD
 

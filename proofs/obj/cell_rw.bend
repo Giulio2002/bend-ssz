@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_rw.bend as WR
 import ./words_win.bend as WW
 import ./words_list.bend as WL

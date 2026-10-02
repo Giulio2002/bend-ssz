@@ -3,17 +3,17 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
 import ../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_gnames_light.bend as RN
-import ../proofs/obj/root_gtypes_light.bend as RT
-import ../proofs/obj/vfx_v4_FixedTestStruct.bend as VX
-import ../proofs/obj/vfx_u8.bend as L2
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/schema_shapes_generated.bend as SH
+import ../proofs/obj/root_gnames_light_generated.bend as RN
+import ../proofs/obj/root_gtypes_light_generated.bend as RT
+import ../proofs/obj/vfx_v4_FixedTestStruct_generated.bend as VX
+import ../proofs/obj/vfx_u8_generated.bend as L2
 import ../proofs/obj/vua.bend as VUA
 import ../proofs/obj/vbrt.bend as VRA
 import ../proofs/obj/spec_fixed.bend as FXA
-import ./e2e_dpl.bend as DPA
-import ./e2e_encvd.bend as EV
+import ./e2e_dpl_generated.bend as DPA
+import ./e2e_encvd_generated.bend as EV
 
 # A decoded Vector[FixedTestStruct, 4] (vfx_v4_FixedTestStruct.OBJ at the byte position x): its four records are copies of the input's
 # bytes (the first field a byte, below 256), the array the four writes build is the thaw of the tree of the four records, perfect at depth 2.

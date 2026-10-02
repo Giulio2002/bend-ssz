@@ -1,6 +1,6 @@
 import Base
-import ../compact/found.bend as F
-import ./vmul.bend as VM
+import ../compact/found_generated.bend as F
+import ./vmul_generated.bend as VM
 
 # Products of powers of two for vmul.mulE (E * k by repeated addition), symbolically:
 # the evaluated 512 * 4096 == 2^21 (var_multi_u32 eM0) counted two million unary steps (5 s).

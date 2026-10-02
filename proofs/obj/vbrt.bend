@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ../../proofs/nat_order.bend as Order
@@ -11,7 +11,7 @@ import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vcopy.bend as VC
 import ./vbitl.bend as VBL
-import ./vbyte.bend as VY
+import ./vbyte_generated.bend as VY
 import ./vdepth.bend as VD
 import ./vlist.bend as VL
 

@@ -1,15 +1,15 @@
 import Base
-import ./e2e_comp.bend as C
-import ./e2e_load.bend as L
-import ./e2e_mask.bend as MK
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
+import ./e2e_comp_generated.bend as C
+import ./e2e_load_generated.bend as L
+import ./e2e_mask_generated.bend as MK
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
 import ./vec_uint8_16_e2e_root_generated.bend as RB
 import ./vec_uint8_3_e2e_dec_generated.bend as DB
 import ./vec_uint8_3_e2e_generated.bend as EB
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/packed_bytes_light.bend as M1_PB
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as Spec
+import ../proofs/obj/packed_bytes_light_generated.bend as M1_PB
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
@@ -31,7 +31,7 @@ def pe_rep(+bs: +List<U32>) -> M1_PB.rep_v1(O.Words{ANode{ANode{ANode{ANode{ALea
 def pe_hc(+bs: +List<U32>) -> {E3.at_depth(O.Words{ANode{ANode{ANode{ANode{ALeaf{MK.cf24(FD.flat__nthc(L.wlp(bs), 0n))}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3}, 4n) == True{} : Bool}:
   {==}
 
-# the decoder's object with its masked words in clean form (e2e/e2e_mask.bend)
+# the decoder's object with its masked words in clean form (e2e/e2e_mask_generated.bend)
 def oeq(+bs: +List<U32>) -> {O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3} == O.Words{ANode{ANode{ANode{ANode{ALeaf{MK.cf24(FD.flat__nthc(L.wlp(bs), 0n))}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3} : O.Words}:
   %Equal.sym(U32, U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215), MK.cf24(FD.flat__nthc(L.wlp(bs), 0n)), MK.mk24(FD.flat__nthc(L.wlp(bs), 0n))) :
     {O.Words{ANode{ANode{ANode{ANode{ALeaf{_}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3} == O.Words{ANode{ANode{ANode{ANode{ALeaf{MK.cf24(FD.flat__nthc(L.wlp(bs), 0n))}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3} : O.Words}

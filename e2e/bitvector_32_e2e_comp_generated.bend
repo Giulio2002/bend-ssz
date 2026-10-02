@@ -1,10 +1,10 @@
 import Base
 import ./bitvector_32_e2e_dec_generated.bend as DB
 import ./bitvector_32_e2e_generated.bend as EB
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
-import ../proofs/obj/generic_specs.bend as GS
-import ../proofs/obj/root_gnames_light.bend as M1_L
+import ./e2e_comp_generated.bend as C
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/generic_specs_generated.bend as GS
+import ../proofs/obj/root_gnames_light_generated.bend as M1_L
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B
 import ../src/digest.bend as D

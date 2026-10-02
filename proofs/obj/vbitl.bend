@@ -4,9 +4,9 @@ import ../../spec/primitives.bend as SP
 import ../../proofs/power_division.bend as PD
 import ../../proofs/word_split.bend as WSp
 import ../../proofs/integer_decoding.bend as ID
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./vspec.bend as VS
-import ./vbyte.bend as VY
+import ./vbyte_generated.bend as VY
 import ./dk.bend as DK
 
 # Bit lists on byte lists (spec side): the bits of a byte string whose last

@@ -2,8 +2,8 @@ import Base
 import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
-import ./bitlist_pack.bend as BK
+import ../compact/found_generated.bend as F
+import ./bitlist_pack_generated.bend as BK
 import ./bitlist_rep.bend as BO
 import ./words_spec.bend as WS
 import ./vbuf.bend as VB
@@ -12,7 +12,7 @@ import ./vbitdl.bend as DL
 import ./vbitinv.bend as VI
 import ../../proofs/nat_order.bend as Order
 import ../compact/reads.bend as RD
-import ./var_bits_enc_bw.bend as BW
+import ./var_bits_enc_bw_generated.bend as BW
 
 # The bit-list root laws' representation facts (bitlist_obj rep_bits: wfb and the
 # limit) of an object O.Bits{thaw(T), K} give the encoder's hypotheses: K <= N,

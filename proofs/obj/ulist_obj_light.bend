@@ -3,10 +3,10 @@ import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/limits.bend as Lim
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_obj_light.bend as WO
 import ./list_obj_light.bend as LO
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
 
 # The definitions of ulist_obj.bend that state no root law (its light companion, codegen/light_split.py): importers that only

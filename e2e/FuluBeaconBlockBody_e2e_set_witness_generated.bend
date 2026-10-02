@@ -1,10 +1,10 @@
 import Base
 import ./FuluBeaconBlockBody_e2e_set_generated.bend as SET
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/elems48_light.bend as E48
-import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/schema_shapes.bend as SH
+import ../proofs/obj/root_names_light_generated.bend as RN
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/fulu_schemas.bend as Spec

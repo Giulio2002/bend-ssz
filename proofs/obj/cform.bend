@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../src/obj.bend as O
 import ./dk.bend as DK
 import ./words_obj_light.bend as WO

@@ -4,12 +4,12 @@ import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../spec/root_relation.bend as RR
 import ../../spec/codec.bend as Codec
-import ./schema_shapes.bend as SH
-import ../compact/found.bend as F
+import ./schema_shapes_generated.bend as SH
+import ../compact/found_generated.bend as F
 import ./obj_support.bend as OS
 import ./cform.bend as CF
 import ./list_obj_light.bend as LO
-import ./prog_list.bend as PG
+import ./prog_list_generated.bend as PG
 
 # Support for progressive lists as container fields (codegen/root_laws_b.py,
 # generic forms): the digest witness of packed progressive lists (prog_list

@@ -1,6 +1,6 @@
 import Base
 import ../../spec/nat_bytes.bend as N
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ../../proofs/nat_bytes.bend as Digits

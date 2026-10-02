@@ -1,8 +1,8 @@
 import Base
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
-import ../proofs/obj/arr_copy.bend as AC
-import ../proofs/obj/arr_enc.bend as AN
+import ../proofs/obj/arr_copy_generated.bend as AC
+import ../proofs/obj/arr_enc_generated.bend as AN
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vua.bend as UA
 import ../proofs/obj/vua_rd.bend as UR

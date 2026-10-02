@@ -2,7 +2,7 @@ import Base
 import ../../src/obj.bend as O
 import ../../proofs/nat_order.bend as Order
 import ../../proofs/nat_algebra.bend as NA
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT

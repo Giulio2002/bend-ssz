@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/primitives.bend as I
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
 import ../../proofs/nat_order.bend as Order
@@ -12,7 +12,7 @@ import ./vcopy.bend as VC
 import ./vfix.bend as VF
 import ./vnest.bend as VN
 import ./vbrt.bend as VR
-import ./vua_bits.bend as UB
+import ./vua_bits_generated.bend as UB
 
 # The unaligned-offset layer, U1: the runtime's four-byte read B.read32 at ANY
 # byte offset X of a buffer returns the word RW(t, X), whose limbs are the

@@ -1,6 +1,6 @@
 import Base
 import ../../types/schema.bend as S
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
@@ -10,10 +10,10 @@ import ./vbuf.bend as VB
 import ./vuw.bend as UW
 import ./vcont.bend as VCN
 import ./vcopy.bend as VC
-import ./arr_vec.bend as AV
+import ./arr_vec_generated.bend as AV
 import ./vfits.bend as VFT
 import ./vfixw_spec.bend as FWS
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ../../types/primitive.bend as P
 
 # vfixw_spec's word vectors at the packed vectors' literal-free sizes (vuwv_v8192_b32, ..: S = 2^E bytes, a

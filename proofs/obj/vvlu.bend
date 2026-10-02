@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
 
 # Word arithmetic of the offsets-table loops (codegen/var_vlist.py): every word is below

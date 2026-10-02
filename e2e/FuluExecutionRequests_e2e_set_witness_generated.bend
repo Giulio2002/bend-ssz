@@ -1,10 +1,10 @@
 import Base
 import ./FuluExecutionRequests_e2e_set_generated.bend as SET
-import ./e2e_rl_ExecutionRequests.bend as RLV
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as RT_L
-import ../proofs/obj/schema_shapes.bend as SH
+import ./e2e_rl_ExecutionRequests_generated.bend as RLV
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_types_light_generated.bend as RT_L
+import ../proofs/obj/schema_shapes_generated.bend as SH
 import ../proofs/obj/value_set.bend as VS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B

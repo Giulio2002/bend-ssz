@@ -2,13 +2,13 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
 import ../types/FuluSignedBeaconBlockHeader_encode_ssz_generated.bend as FuluSignedBeaconBlockHeader_e
 import ../types/FuluSignedBeaconBlockHeader_hashtreeroot_generated.bend as FuluSignedBeaconBlockHeader_h
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluSignedBeaconBlockHeader_e2e_generated.bend as N
 import ./FuluSignedBeaconBlockHeader_e2e_generated.bend as R
 import ../types/schema.bend as S
@@ -20,7 +20,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluSignedBeaconBlockHeader_e2e_set_message_view(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +w: FuluBeaconBlockHeader_d.BeaconBlockHeader)
     -> {M1_L.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_set_message(o, w)) == VS.field_set(M1_L.v_SignedBeaconBlockHeader(o), 0n, M1_L.v_BeaconBlockHeader(w)) : S.Value}:
   match o:

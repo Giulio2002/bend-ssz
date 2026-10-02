@@ -1,8 +1,8 @@
 import Base
 import ../../../../src/buffer.bend as B
 import ../../../../src/obj.bend as O
-import ../../../compact/found.bend as F
-import ../../../obj/arr_copy.bend as AC
+import ../../../compact/found_generated.bend as F
+import ../../../obj/arr_copy_generated.bend as AC
 import ../../../slop/alignment/aligned_path_library_generated.bend as ZL
 import ../../../../types/vec_uint64_16_encode_ssz_generated.bend as vec_uint64_16_e
 import ../../../slop/alignment/vec_uint64_16_aligned_path_generated.bend as PRV

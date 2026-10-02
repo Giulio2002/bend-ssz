@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../proofs/nat_order.bend as Order
 
 # U32 multiplication and division as Nat arithmetic, for products and

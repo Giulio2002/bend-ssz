@@ -8,11 +8,11 @@ import ../../types/primitive.bend as P0_P
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/primitives.bend as P0_SP
 import ../../spec/decoding_relation.bend as P0_Decoding
-import ../obj/generic_specs.bend as P0_Spec
-import ../../proofs/compact/found.bend as P0_F
+import ../obj/generic_specs_generated.bend as P0_Spec
+import ../../proofs/compact/found_generated.bend as P0_F
 import ../obj/spec_fixed.bend as P0_SF
-import ../obj/sub_pack.bend as P0_SP2
-import ../obj/sub_vec_uint16_31.bend as P0_PRV
+import ../obj/sub_pack_generated.bend as P0_SP2
+import ../obj/sub_vec_uint16_31_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/vec_uint16_31_symbolic_generated.bend as P1_PRV

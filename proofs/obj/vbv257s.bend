@@ -6,11 +6,11 @@ import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_packing.bend as Bp
 import ../../spec/bitfields.bend as SBF
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ./spec_fixed.bend as F
-import ./spec_bits.bend as FB
+import ./spec_bits_generated.bend as FB
 import ./vbitl.bend as VBL
-import ./vfx_bv257.bend as G
+import ./vfx_bv257_generated.bend as G
 import ./vbitb.bend as VBB
 import ./vbv257.bend as V
 

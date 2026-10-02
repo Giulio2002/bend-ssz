@@ -1,9 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../spec/nat_bytes.bend as N
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as A
-import ../compact/bits.bend as BT
+import ../compact/bits_generated.bend as BT
 import ../../proofs/nat_order.bend as Order
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS

@@ -15,8 +15,8 @@ import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
-import ../obj/spec_bits.bend as P0_FB
-import ../obj/spec_codec_ContributionAndProof.bend as P0_PRV
+import ../obj/spec_bits_generated.bend as P0_FB
+import ../obj/spec_codec_ContributionAndProof_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/ContributionAndProof_symbolic_generated.bend as P1_PRV

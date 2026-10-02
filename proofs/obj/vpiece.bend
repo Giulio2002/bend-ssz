@@ -3,7 +3,7 @@ import ../../src/obj.bend as O
 import ../../types/uint8_encode_ssz_generated.bend as uint8_e
 import ../../types/uint16_encode_ssz_generated.bend as uint16_e
 import ../../types/bitvector_1281_encode_ssz_generated.bend as bitvector_1281_e
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../../proofs/nat_order.bend as Order
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
@@ -16,9 +16,9 @@ import ./vuw.bend as UW
 import ./vuwd.bend as WD
 import ./spec_fixed.bend as FX
 import ./vcont.bend as VCN
-import ./vuwl_u8.bend as W8
-import ./vuwl_u16.bend as W16
-import ./vuwl_bv1281.bend as W1281
+import ./vuwl_u8_generated.bend as W8
+import ./vuwl_u16_generated.bend as W16
+import ./vuwl_bv1281_generated.bend as W1281
 import ./dk.bend as DK
 
 # The sub-word leaves as pieces of a container's region (hand-written; for codegen/var_cont_enc.py):

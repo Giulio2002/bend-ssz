@@ -1,8 +1,8 @@
 import Base
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./vec_uint128_512_e2e_generated.bend as W_e2e_vec_uint128_512_e2e_generated
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light_generated.bend as W_proofs_obj_packed_obj_light
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API
 import ../src/obj.bend as O

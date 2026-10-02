@@ -9,12 +9,12 @@ import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
-import ../obj/spec_bits.bend as P0_FB
-import ../../proofs/compact/found.bend as P0_FD
-import ../obj/arr_copy.bend as P0_AC
-import ../obj/arr_emit.bend as P0_AE
+import ../obj/spec_bits_generated.bend as P0_FB
+import ../../proofs/compact/found_generated.bend as P0_FD
+import ../obj/arr_copy_generated.bend as P0_AC
+import ../obj/arr_emit_generated.bend as P0_AE
 import ../obj/tree_bytes.bend as P0_TB
-import ../obj/spec_codec_Cell.bend as P0_PRV
+import ../obj/spec_codec_Cell_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/capacity/Cell_symbolic_generated.bend as P1_PRV

@@ -1,8 +1,8 @@
 import Base
 import ./bitlist_5_e2e_comp_generated.bend as W_e2e_bitlist_5_e2e_comp_generated
-import ./e2e_comp.bend as W_e2e_e2e_comp
-import ./e2e_support.bend as E
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
+import ./e2e_comp_generated.bend as W_e2e_e2e_comp
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
 import ../src/buffer.bend as B
 import ../src/digest.bend as W_src_digest
 import ../src/obj.bend as O

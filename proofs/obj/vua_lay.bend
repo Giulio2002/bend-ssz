@@ -4,13 +4,13 @@ import ../../spec/layout.bend as Layout
 import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
 import ../../src/primitives.bend as I
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../proofs/decode_facts.bend as DF
 import ./vspec.bend as VS
 import ./vnest.bend as VN
 import ./vdig.bend as VG
 import ./vua_win.bend as UW
-import ./vmv.bend as VMV
+import ./vmv_generated.bend as VMV
 
 # The spec's container layout (spec/layout.bend) read part by part, for a part
 # list of any shape: the offset word the fixed region holds for variable part i

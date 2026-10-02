@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
-import ./found.bend as F
-import ./bits.bend as W
+import ./found_generated.bend as F
+import ./bits_generated.bend as W
 import ./arith.bend as A
 
 # Byte denotation of the packed buffer (src/buffer.bend), proved against the

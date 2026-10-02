@@ -1,9 +1,9 @@
 import Base
 import ./FuluProposerSlashing_e2e_set_generated.bend as SET
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ../proofs/obj/value_set.bend as VS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/buffer.bend as B

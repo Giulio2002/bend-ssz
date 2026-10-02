@@ -2,9 +2,9 @@ import Base
 import ./boolean_e2e_dec_generated.bend as DB
 import ./boolean_e2e_generated.bend as EB
 import ./boolean_e2e_root_generated.bend as RB
-import ./e2e_comp.bend as C
-import ./e2e_support.bend as E
-import ../proofs/obj/root_names_light.bend as M1
+import ./e2e_comp_generated.bend as C
+import ./e2e_support_generated.bend as E
+import ../proofs/obj/root_names_light_generated.bend as M1
 import ../spec/fulu_schemas.bend as Spec
 import ../spec/primitives.bend as SP
 import ../src/buffer.bend as B

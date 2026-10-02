@@ -2,7 +2,7 @@ import Base
 import ../../src/obj.bend as O
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
@@ -10,12 +10,12 @@ import ../../spec/fulu_schemas.bend as Spec
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
-import ./vmr.bend as VMR
+import ./vmr_generated.bend as VMR
 import ./vuw.bend as UW
 import ./vcont.bend as VCN
-import ./arr_vec.bend as AV
-import ./schema_shapes.bend as SH
-import ./vfxg.bend as VXG
+import ./arr_vec_generated.bend as AV
+import ./schema_shapes_generated.bend as SH
+import ./vfxg_generated.bend as VXG
 
 # The spec side of var_cont_enc's FixW fields (hand-written; for codegen/var_cont_enc.py's iface_text):
 # a word vector held as a storage tree TB (its first W words: the parts of the vector's value over them are

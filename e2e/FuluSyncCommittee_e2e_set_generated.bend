@@ -2,20 +2,20 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
 import ../proofs/obj/elems48_light.bend as E48
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../types/FuluSyncCommittee_encode_ssz_generated.bend as FuluSyncCommittee_e
 import ../types/FuluSyncCommittee_hashtreeroot_generated.bend as FuluSyncCommittee_h
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ./FuluSyncCommittee_e2e_generated.bend as N
 import ../src/obj.bend as O
-import ../proofs/obj/prep_setters.bend as PS
+import ../proofs/obj/prep_setters_generated.bend as PS
 import ./FuluSignedContributionAndProof_e2e_root_generated.bend as R
-import ../proofs/obj/root_names_light.bend as RN
+import ../proofs/obj/root_names_light_generated.bend as RN
 import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/value_set.bend as VS
@@ -26,7 +26,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluSyncCommittee_e2e_set_pubkeys_view(o: FuluSyncCommittee_d.SyncCommittee, w: O.Words)
     -> {M0_L.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee_set_pubkeys(o, w)) == VS.field_set(M0_L.v_SyncCommittee(o), 0n, E48.eview(w)) : S.Value}:
   match o:

@@ -1,11 +1,11 @@
 import Base
-import ./e2e_support.bend as E
-import ./e2e_wit.bend as WT
+import ./e2e_support_generated.bend as E
+import ./e2e_wit_generated.bend as WT
 import ./vec_uint128_512_e2e_root_generated.bend as RB
 import ./vec_uint256_513_e2e_generated.bend as BR
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as GS
-import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as GS
+import ../proofs/obj/packed_obj_light_generated.bend as PK
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/primitives.bend as W_spec_primitives

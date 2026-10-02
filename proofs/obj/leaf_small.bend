@@ -16,8 +16,8 @@ import ../../proofs/integer_encoding.bend as IE
 import ../../proofs/integer_decoding.bend as ID
 import ../../proofs/power_division.bend as PD
 import ../../proofs/word_split.bend as WSp
-import ./root_leaf.bend as RL
-import ../../proofs/compact/found.bend as FD
+import ./root_leaf_generated.bend as RL
+import ../../proofs/compact/found_generated.bend as FD
 
 # Root laws of the one-word leaves: uint32 (every value), uint8 and
 # ParticipationFlags (values below 256, their representation invariant) and

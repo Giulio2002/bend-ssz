@@ -1,6 +1,6 @@
 import Base
 import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vbuf.bend as VB
@@ -9,12 +9,12 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vlist.bend as VL
 import ../proofs/obj/vu32.bend as VU
-import ../proofs/obj/vmul.bend as VM
+import ../proofs/obj/vmul_generated.bend as VM
 import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/cells_light.bend as CE
-import ./e2e_ve_DataColumnSidecar.bend as VEV
+import ./e2e_ve_DataColumnSidecar_generated.bend as VEV
 
-# DataColumnSidecar's three decoded lists (proofs/obj/var_codec_DataColumnSidecar_acc.bend): a whole number of 2048-byte cells and of
+# DataColumnSidecar's three decoded lists (proofs/obj/var_codec_DataColumnSidecar_acc_generated.bend): a whole number of 2048-byte cells and of
 # 48-byte commitments / proofs, copied unmasked from word q of the buffer into a zero tree of depth DZ(L): the storage premise sdd,
 # the representation invariant's tree wfe and the units' check. Hand written, like e2e_dkz.bend.
 

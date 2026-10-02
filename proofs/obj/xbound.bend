@@ -1,7 +1,7 @@
 import Base
 import ../../src/obj.bend as O
 import ../../spec/nat_bytes.bend as N
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
 import ./vbuf.bend as VB

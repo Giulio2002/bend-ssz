@@ -1,7 +1,7 @@
 import Base
 import ../../src/obj.bend as O
 import ../../types/bitvector_1281_encode_ssz_generated.bend as bitvector_1281_e
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
@@ -14,7 +14,7 @@ import ./vcopy.bend as VC
 import ./vbytes.bend as VYS
 import ./vlist.bend as VLS
 import ../compact/reads.bend as RD
-import ./vuwl_bv1281.bend as W1281
+import ./vuwl_bv1281_generated.bend as W1281
 import ./vputwd.bend as VPW
 import ./vbrt.bend as VR
 

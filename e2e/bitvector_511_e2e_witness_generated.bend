@@ -1,10 +1,10 @@
 import Base
 import ./bitvector_511_e2e_generated.bend as BR
 import ./bitvector_511_e2e_root_generated.bend as RB
-import ./e2e_support.bend as E
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/gbits_bitvector_511_light.bend as M2
-import ../proofs/obj/generic_specs.bend as Spec
+import ./e2e_support_generated.bend as E
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/gbits_bitvector_511_light_generated.bend as M2
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/power_division.bend as PD
 import ../proofs/word_split.bend as WSp
 import ../src/buffer.bend as B

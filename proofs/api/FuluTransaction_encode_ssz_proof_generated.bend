@@ -3,7 +3,7 @@ import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/FuluTransaction_encode_ssz_generated.bend as FuluTransaction_e
 import ../../types/schema.bend as P0_S
-import ../compact/found.bend as P0_FD
+import ../compact/found_generated.bend as P0_FD
 import ../compact/arith.bend as P0_A
 import ../../proofs/nat_order.bend as P0_Order
 import ../../spec/primitives.bend as P0_SP
@@ -26,8 +26,8 @@ import ../obj/vbrt.bend as P0_VBR
 import ../obj/venc.bend as P0_VE
 import ../obj/vbenc.bend as P0_VBE
 import ../obj/vua_win.bend as P0_UW
-import ../obj/vvlz.bend as P0_VZG
-import ../obj/var_codec_Transaction_enc.bend as P0_PRV
+import ../obj/vvlz_generated.bend as P0_VZG
+import ../obj/var_codec_Transaction_enc_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../slop/validity/fulu_Transaction_generated.bend as P1_PRV

@@ -4,7 +4,7 @@ import ../../types/uint8_encode_ssz_generated.bend as uint8_e
 import ../../types/uint32_encode_ssz_generated.bend as uint32_e
 import ../../types/uint64_encode_ssz_generated.bend as uint64_e
 import ../../types/uint16_encode_ssz_generated.bend as uint16_e
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
@@ -17,16 +17,16 @@ import ./vuw.bend as UW
 import ./vuwd.bend as UWD
 import ./vuwb.bend as VWB
 import ./vrecx.bend as VRX
-import ./vrl.bend as VRL
-import ./vuwl_u8.bend as W8
-import ./vuwl_u16.bend as W16
+import ./vrl_generated.bend as VRL
+import ./vuwl_u8_generated.bend as W8
+import ./vuwl_u16_generated.bend as W16
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/primitives.bend as SP
 import ../../spec/codec.bend as Codec
 import ../word_facts.bend as WF
 import ./vu8.bend as U8
-import ./vfx_u16.bend as FXB
+import ./vfx_u16_generated.bend as FXB
 import ./pb_min.bend as PBM
 
 # Byte-granular positions and the sub-word leaf writers at a byte position P (hand-written; for

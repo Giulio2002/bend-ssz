@@ -1,11 +1,11 @@
 import Base
 import ./FuluDeposit_e2e_set_generated.bend as SET
-import ./e2e_support.bend as E
-import ./e2e_tree.bend as E3
-import ../proofs/compact/found.bend as FD
+import ./e2e_support_generated.bend as E
+import ./e2e_tree_generated.bend as E3
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/obj/pv_obj_light.bend as PV
-import ../proofs/obj/root_types_light.bend as M0_L
-import ../proofs/obj/schema_shapes.bend as M0_SH
+import ../proofs/obj/root_types_light_generated.bend as M0_L
+import ../proofs/obj/schema_shapes_generated.bend as M0_SH
 import ../proofs/obj/value_set.bend as VS
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../spec/fulu_schemas.bend as Spec

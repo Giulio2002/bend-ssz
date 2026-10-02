@@ -1,5 +1,5 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 
 # The cost model of the object operations, and what it comes to.
 #

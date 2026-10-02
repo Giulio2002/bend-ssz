@@ -1,12 +1,12 @@
 import Base
-import ./e2e_bytes.bend as W_e2e_e2e_bytes
-import ./e2e_support.bend as E
+import ./e2e_bytes_generated.bend as W_e2e_e2e_bytes
+import ./e2e_support_generated.bend as E
 import ./vec_uint256_5_e2e_generated.bend as W_e2e_vec_uint256_5_e2e_generated
 import ./vec_uint256_8_e2e_comp_generated.bend as W_e2e_vec_uint256_8_e2e_comp_generated
 import ./vec_uint256_8_e2e_dec_generated.bend as W_e2e_vec_uint256_8_e2e_dec_generated
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/packed_obj_light.bend as W_proofs_obj_packed_obj_light
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/packed_obj_light_generated.bend as W_proofs_obj_packed_obj_light
 import ../spec/primitives.bend as W_spec_primitives
 import ../src/buffer.bend as W_src_buffer
 import ../src/model.bend as API

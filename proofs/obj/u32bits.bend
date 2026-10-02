@@ -1,10 +1,10 @@
 import Base
 import ../../src/obj.bend as O
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 
 # Bit-level facts about U32 words that hold for every word (no case split over the 2^32 values):
 # masking with zeros, the low bit, and the test `(z & 1) == 1`. codegen/coll_laws.py builds the
-# read-back of single bits (proofs/obj/coll_bits.bend) on these.
+# read-back of single bits (proofs/obj/coll_bits_generated.bend) on these.
 
 def band_false(+x: Bool) -> {Bool.and(x, False{}) == False{} : Bool}:
   match x:

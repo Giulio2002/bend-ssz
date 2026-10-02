@@ -1,9 +1,9 @@
 import Base
 import ../../spec/bit_packing.bend as Bp
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./spec_fixed.bend as FX
-import ./bits_leaf.bend as BLf
-import ./bitlist_pack.bend as BK
+import ./bits_leaf_generated.bend as BLf
+import ./bitlist_pack_generated.bend as BK
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./dk.bend as DK
@@ -15,7 +15,7 @@ import ./vcopy.bend as VC
 import ./vfix.bend as VF
 import ./vbenc.bend as VBE
 import ./vbitenc.bend as VBT
-import ./var_bits_enc_bw.bend as BW
+import ./var_bits_enc_bw_generated.bend as BW
 import ../../src/obj.bend as O
 
 # The words a bit list encodes to at offset 0 of a zero buffer: the first q

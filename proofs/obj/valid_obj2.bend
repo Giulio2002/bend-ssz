@@ -5,19 +5,19 @@ import ../../spec/value_domain.bend as VD
 import ../../spec/primitives.bend as SP
 import ../../spec/limits.bend as Lim
 import ../../spec/tree.bend as Tr
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../compact/arith.bend as AR
 import ./dk.bend as DK
 import ./mtree_run.bend as MR
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./words_spec.bend as WS
 import ./words_obj_light.bend as WO
 import ./elems_obj.bend as EL
 import ./elems48_light.bend as E48
 import ./cells.bend as CE
 import ./cells_light.bend as CE_L
-import ./root_names_light.bend as RN
-import ./valid_names.bend as VN
+import ./root_names_light_generated.bend as RN
+import ./valid_names_generated.bend as VN
 import ./valid_obj.bend as VO
 
 # Structural validity of the packed-element views (vectors/lists of Bytes48,

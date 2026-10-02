@@ -1,11 +1,11 @@
 import Base
 import ./FuluBeaconState_e2e_generated.bend as W_e2e_FuluBeaconState_e2e_generated
-import ./e2e_dbs_sz.bend as W_e2e_e2e_dbs_sz
-import ./e2e_rls.bend as RLS
+import ./e2e_dbs_sz_generated.bend as W_e2e_e2e_dbs_sz
+import ./e2e_rls_generated.bend as RLS
 import ../proofs/compact/arith.bend as A
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_state_light.bend as ST
-import ../proofs/obj/var_winx_BeaconState.bend as DC
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/root_state_light_generated.bend as ST
+import ../proofs/obj/var_winx_BeaconState_generated.bend as DC
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/words_obj_light.bend as WO_L
 

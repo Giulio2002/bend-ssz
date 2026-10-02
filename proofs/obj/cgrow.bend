@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
 import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
 import ../../proofs/nat_order.bend as Order
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./ctree.bend as CT
 import ./cidx.bend as CX
 import ./cloop2.bend as L2

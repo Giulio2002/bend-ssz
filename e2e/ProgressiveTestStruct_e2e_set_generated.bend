@@ -3,16 +3,16 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../proofs/obj/packed_bytes_light.bend as PB
-import ../proofs/obj/prog_list_light.bend as PG
-import ../proofs/obj/prep_setters_g2.bend as PS
+import ../proofs/obj/packed_bytes_light_generated.bend as PB
+import ../proofs/obj/prog_list_light_generated.bend as PG
+import ../proofs/obj/prep_setters_g2_generated.bend as PS
 import ../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
 import ../types/ProgressiveTestStruct_hashtreeroot_generated.bend as ProgressiveTestStruct_h
 import ./ProgressiveTestStruct_e2e_root_generated.bend as R
-import ../proofs/obj/root_gtypes2_light.bend as RT_L
+import ../proofs/obj/root_gtypes2_light_generated.bend as RT_L
 import ../types/schema.bend as S
-import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/generic_specs.bend as Spec
+import ../proofs/obj/schema_shapes_generated.bend as SH
+import ../proofs/obj/generic_specs_generated.bend as Spec
 import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/value_set.bend as VS
 import ../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
@@ -23,7 +23,7 @@ import ../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_p
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def ProgressiveTestStruct_e2e_set_f_A_view(o: ProgressiveTestStruct_d.ProgressiveTestStruct, w: O.Words)
     -> {RT_L.v_ProgressiveTestStruct(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_A(o, w)) == VS.field_set(RT_L.v_ProgressiveTestStruct(o), 0n, PB.vview1(w)) : S.Value}:
   match o:

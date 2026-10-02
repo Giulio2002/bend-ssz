@@ -2,16 +2,16 @@ import Base
 import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types_light.bend as RT
-import ../proofs/obj/var_win_Attestation.bend as WT
-import ../proofs/obj/var_win_AggregateAndProof.bend as WA
-import ../proofs/obj/var_win_SignedAggregateAndProof.bend as WS
+import ../proofs/obj/root_types_light_generated.bend as RT
+import ../proofs/obj/var_win_Attestation_generated.bend as WT
+import ../proofs/obj/var_win_AggregateAndProof_generated.bend as WA
+import ../proofs/obj/var_win_SignedAggregateAndProof_generated.bend as WS
 import ./e2e_attw.bend as ATW
-import ./e2e_bitv.bend as BTV
+import ./e2e_bitv_generated.bend as BTV
 import ../proofs/obj/bitlist_obj_light.bend as DBL
 
 # The AggregateAndProof a word-aligned window reader builds (off = 4 i) views as the value the codec reads there.

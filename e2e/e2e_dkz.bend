@@ -1,6 +1,6 @@
 import Base
 import ../src/obj.bend as O
-import ../proofs/compact/found.bend as FD
+import ../proofs/compact/found_generated.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vbuf.bend as VB
@@ -12,11 +12,11 @@ import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vbrt.bend as VR
 import ../proofs/obj/vua_ct.bend as UCT
 import ../proofs/obj/elems48_light.bend as E48
-import ../proofs/obj/var_winx_l4096_b48.bend as V
-import ../proofs/obj/var_plist_proglist_uint32.bend as P32
-import ./e2e_bvw.bend as BVW
-import ./e2e_bl48.bend as K11
-import ./e2e_dep.bend as DEP
+import ../proofs/obj/var_winx_l4096_b48_generated.bend as V
+import ../proofs/obj/var_plist_proglist_uint32_generated.bend as P32
+import ./e2e_bvw_generated.bend as BVW
+import ./e2e_bl48_generated.bend as K11
+import ./e2e_dep_generated.bend as DEP
 
 # The decoded list of KZG commitments (the reader's object of a window whose check passed): its bytes copied at any byte offset
 # (UCT.CT), 48 bytes per element, at most 4096 of them: the root laws' E48.rep_el, the encode premise K11.sdk48 (the tree below

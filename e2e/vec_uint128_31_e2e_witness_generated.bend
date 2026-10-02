@@ -1,10 +1,10 @@
 import Base
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./vec_uint128_1_e2e_root_generated.bend as RB
 import ./vec_uint128_3_e2e_generated.bend as BR
-import ../proofs/compact/found.bend as FD
-import ../proofs/obj/generic_specs.bend as GS
-import ../proofs/obj/packed_obj_light.bend as PK
+import ../proofs/compact/found_generated.bend as FD
+import ../proofs/obj/generic_specs_generated.bend as GS
+import ../proofs/obj/packed_obj_light_generated.bend as PK
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as W_proofs_obj_words_spec
 import ../src/buffer.bend as B

@@ -1,8 +1,8 @@
 import Base
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./uint128_e2e_generated.bend as W_e2e_uint128_e2e_generated
-import ../proofs/obj/generic_specs.bend as W_proofs_obj_generic_specs
-import ../proofs/obj/root_gnames_light.bend as W_proofs_obj_root_gnames_light
+import ../proofs/obj/generic_specs_generated.bend as W_proofs_obj_generic_specs
+import ../proofs/obj/root_gnames_light_generated.bend as W_proofs_obj_root_gnames_light
 import ../src/model.bend as API
 import ../src/obj.bend as O
 import ../types/uint128_def_generated.bend as uint128_d

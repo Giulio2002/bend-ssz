@@ -8,7 +8,7 @@ import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../proofs/primitive_invariants.bend as V
 import ../../proofs/nat_order.bend as Order
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./nat_facts.bend as NF
 import ./spec_fixed.bend as FX
 import ../compact/arith.bend as A

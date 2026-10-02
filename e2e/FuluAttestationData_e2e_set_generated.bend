@@ -2,13 +2,13 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
 import ../types/FuluAttestationData_encode_ssz_generated.bend as FuluAttestationData_e
 import ../types/FuluAttestationData_hashtreeroot_generated.bend as FuluAttestationData_h
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
-import ../proofs/obj/root_names_light.bend as M1_L
+import ../proofs/obj/root_names_light_generated.bend as M1_L
 import ./FuluAttestationData_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ./FuluAttestationData_e2e_generated.bend as R
@@ -21,7 +21,7 @@ import ../proofs/obj/value_set.bend as VS
 # (proofs/obj/value_set.bend: the value with field k replaced), and that law composed with the root
 # bridge (and the encode bridge where it applies): the root (encoding) of set_f(o, w) is the spec
 # root (encoding) of the value with field f replaced. Under rep, through the setter law of
-# proofs/obj/prep_setters.bend (set_f keeps rep), when the bridge has that premise.
+# proofs/obj/prep_setters_generated.bend (set_f keeps rep), when the bridge has that premise.
 def FuluAttestationData_e2e_set_slot_view(+o: FuluAttestationData_d.AttestationData, +w: O.U64)
     -> {M1_L.v_AttestationData(FuluAttestationData_d.AttestationData_set_slot(o, w)) == VS.field_set(M1_L.v_AttestationData(o), 0n, M1_L.v_u64(w)) : S.Value}:
   match o:

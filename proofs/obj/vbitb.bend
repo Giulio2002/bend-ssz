@@ -10,13 +10,13 @@ import ../../types/bitvector_8_encode_ssz_generated.bend as bitvector_8_e
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_packing.bend as Bp
-import ../compact/found.bend as FD
+import ../compact/found_generated.bend as FD
 import ../../proofs/word_split.bend as WSp
 import ../../proofs/power_division.bend as PD
 import ../../proofs/integer_decoding.bend as ID
 import ./vuwd.bend as UWD
-import ./vuw_bits.bend as UWB
-import ./bits_leaf.bend as BLf
+import ./vuw_bits_generated.bend as UWB
+import ./bits_leaf_generated.bend as BLf
 
 # One-byte bit vectors (Bitvector[1], [2], [8]) of the generic containers, as byte leaves: a valid
 # vector's word is below 256, so the runtime's OR-based bvN_put writes exactly the byte T.u8_put

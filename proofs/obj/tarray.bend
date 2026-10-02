@@ -1,8 +1,8 @@
 import Base
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 
 # Array laws for elements of any kind (Type-kind too: boxed containers, which cannot be copied, so
-# the Data mirror of proofs/compact/found.bend's array laws does not apply). Array.swap is described
+# the Data mirror of proofs/compact/found_generated.bend's array laws does not apply). Array.swap is described
 # by two structural functions over the array: put (the array after the write) and old (the element
 # that was there). No premise on the array's shape or on the index is needed: both swaps of a
 # write-then-read walk the same path, which depends only on the size and the index.

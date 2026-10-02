@@ -23277,7 +23277,7 @@ import ../types/vec_uint8_8_hashtreeroot_generated.bend as vec_uint8_8_h
 def vec_uint8_8_e2e_witness() -> {Some{E.obytes(Pair.snd(O.Words, B.Buf, vec_uint8_8_e.vec_uint8_8_encode(vec_uint8_8_d.v8_u8_default())))} == API.serialize(Spec.vec_uint8_8(), M1_PB.vview1(vec_uint8_8_d.v8_u8_default())) : Maybe<&2, +List<U32>>}:
 def vec_uint8_8_e2e_witness_root() -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint8_8_h.vec_uint8_8_hash_tree_root(B.alloc(0), vec_uint8_8_d.v8_u8_default()))))} == API.hash_tree_root(Spec.vec_uint8_8(), M1_PB.vview1(vec_uint8_8_d.v8_u8_default())) : Maybe<&2, +List<U32>>}:
 
-## proofs/obj/coll_api_0.bend
+## proofs/obj/coll_api_0_generated.bend
 import ../compact/found.bend as F
 import ../../types/FuluFinalityBranch_def_generated.bend as v7_b32_c
 import ../../src/buffer.bend as B
@@ -23379,7 +23379,7 @@ def v512_b48_api_other_set_after(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U
 def v512_b48_api_other_set_before(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +j: U32, +q: Nat, +r: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 48))) == True{} : Bool}, +hm: {U32.is_lt(j, (U32.div(n, 48))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 48 : U32), 2n)) == q : Nat}, +hp: {U32.to_nat(U32.shrn((j * 48 : U32), 2n)) == r : Nat}, +hr: {Nat.is_le(Nat.add(q, 12n), F.spec_common__pow2(d)) == True{} : Bool}, +hrr: {Nat.is_le(Nat.add(r, 12n), F.spec_common__pow2(d)) == True{} : Bool}, +h: {Nat.is_le(Nat.add(r, 12n), q) == True{} : Bool})
     -> {v512_b48_c.v512_b48_get(Pair.fst(O.Words, Bool, v512_b48_c.v512_b48_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), j) == (O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7), Nat.add(q, 8n), x8), Nat.add(q, 9n), x9), Nat.add(q, 10n), x10), Nat.add(q, 11n), x11)), n}, Some{FuluBytes48_d.Bytes48{WR.at(F.array__slots(U32, t), Nat.add(r, 0n)), WR.at(F.array__slots(U32, t), Nat.add(r, 1n)), WR.at(F.array__slots(U32, t), Nat.add(r, 2n)), WR.at(F.array__slots(U32, t), Nat.add(r, 3n)), WR.at(F.array__slots(U32, t), Nat.add(r, 4n)), WR.at(F.array__slots(U32, t), Nat.add(r, 5n)), WR.at(F.array__slots(U32, t), Nat.add(r, 6n)), WR.at(F.array__slots(U32, t), Nat.add(r, 7n)), WR.at(F.array__slots(U32, t), Nat.add(r, 8n)), WR.at(F.array__slots(U32, t), Nat.add(r, 9n)), WR.at(F.array__slots(U32, t), Nat.add(r, 10n)), WR.at(F.array__slots(U32, t), Nat.add(r, 11n))}}) : O.Words & Maybe<&1, FuluBytes48_d.Bytes48>}:
 
-## proofs/obj/coll_api_1.bend
+## proofs/obj/coll_api_1_generated.bend
 import ../compact/found.bend as F
 import ../../types/Fulu_vec_bytevec_32_33_def_generated.bend as v33_b32_c
 import ../../src/obj.bend as O
@@ -23474,7 +23474,7 @@ def l2_ConsolidationRequest_api_view_set(+d: Nat, +t: F.array__Tree<FuluConsolid
 def l2_ConsolidationRequest_api_view_append(+d: Nat, +t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +n: U32, +v: FuluConsolidationRequest_d.ConsolidationRequest, +x: FuluConsolidationRequest_d.ConsolidationRequest, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hr: {U32.is_lt(n, F.u32__pow2u(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), U32.to_nat(n)) == Some{x} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}, +pf: {F.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, d, t) == True{} : Bool}, +ha: {U32.is_lt(n, 2) == True{} : Bool}, +hcn: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat(n) : Nat})
     -> {RTL.xv_l2_ConsolidationRequest(Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_append(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, v))) == VS.seq_append(RTL.xv_l2_ConsolidationRequest(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}), RN.v_ConsolidationRequest(v)) : S.Value}:
 
-## proofs/obj/coll_api_2.bend
+## proofs/obj/coll_api_2_generated.bend
 import ../compact/found.bend as F
 import ../../types/Fulu_bytevec_256_def_generated.bend as b256_c
 import ../../src/buffer.bend as B
@@ -23562,7 +23562,7 @@ def l2048_Eth1Data_api_view_set(+d: Nat, +t: F.array__Tree<FuluEth1Data_d.Eth1Da
 def l2048_Eth1Data_api_view_append(+d: Nat, +t: F.array__Tree<FuluEth1Data_d.Eth1Data>, +n: U32, +v: FuluEth1Data_d.Eth1Data, +x: FuluEth1Data_d.Eth1Data, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hr: {U32.is_lt(n, F.u32__pow2u(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluEth1Data_d.Eth1Data, F.array__slots(FuluEth1Data_d.Eth1Data, t), U32.to_nat(n)) == Some{x} : Maybe<&2, FuluEth1Data_d.Eth1Data>}, +pf: {F.array__perfect(FuluEth1Data_d.Eth1Data, d, t) == True{} : Bool}, +ha: {U32.is_lt(n, 2048) == True{} : Bool}, +hcn: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat(n) : Nat})
     -> {STL.xv_l2048_Eth1Data(Pair.fst(l2048_Eth1Data_c.l2048_Eth1Data_Seq, Bool, l2048_Eth1Data_c.l2048_Eth1Data_append(l2048_Eth1Data_c.l2048_Eth1Data_Seq{F.array__thaw(FuluEth1Data_d.Eth1Data, t), n}, v))) == VS.seq_append(STL.xv_l2048_Eth1Data(l2048_Eth1Data_c.l2048_Eth1Data_Seq{F.array__thaw(FuluEth1Data_d.Eth1Data, t), n}), RN.v_Eth1Data(v)) : S.Value}:
 
-## proofs/obj/coll_api_3.bend
+## proofs/obj/coll_api_3_generated.bend
 import ../compact/found.bend as F
 import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as l1099511627776_Validator_c
 import ../../src/buffer.bend as B
@@ -23672,7 +23672,7 @@ def l16777216_HistoricalSummary_api_view_set(+d: Nat, +t: F.array__Tree<FuluHist
 def l16777216_HistoricalSummary_api_view_append(+d: Nat, +t: F.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +n: U32, +v: FuluHistoricalSummary_d.HistoricalSummary, +x: FuluHistoricalSummary_d.HistoricalSummary, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hr: {U32.is_lt(n, F.u32__pow2u(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluHistoricalSummary_d.HistoricalSummary, F.array__slots(FuluHistoricalSummary_d.HistoricalSummary, t), U32.to_nat(n)) == Some{x} : Maybe<&2, FuluHistoricalSummary_d.HistoricalSummary>}, +pf: {F.array__perfect(FuluHistoricalSummary_d.HistoricalSummary, d, t) == True{} : Bool}, +ha: {U32.is_lt(n, 16777216) == True{} : Bool}, +hcn: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat(n) : Nat})
     -> {STL.xv_l16777216_HistoricalSummary(Pair.fst(l16777216_HistoricalSummary_c.l16777216_HistoricalSummary_Seq, Bool, l16777216_HistoricalSummary_c.l16777216_HistoricalSummary_append(l16777216_HistoricalSummary_c.l16777216_HistoricalSummary_Seq{F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, t), n}, v))) == VS.seq_append(STL.xv_l16777216_HistoricalSummary(l16777216_HistoricalSummary_c.l16777216_HistoricalSummary_Seq{F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, t), n}), RN.v_HistoricalSummary(v)) : S.Value}:
 
-## proofs/obj/coll_api_4.bend
+## proofs/obj/coll_api_4_generated.bend
 import ../compact/found.bend as F
 import ../../types/Fulu_list_PendingDeposit_134217728_def_generated.bend as l134217728_PendingDeposit_c
 import ../../src/obj.bend as O
@@ -23772,7 +23772,7 @@ def l16_ProposerSlashing_api_append_rejected(-arr: Array<O.Boxed<FuluProposerSla
 def l16_ProposerSlashing_api_set_length(-arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +i: U32, -v: FuluProposerSlashing_d.ProposerSlashing, +e: {U32.is_lt(i, n) == True{} : Bool}) -> {Pair.snd(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, U32, l16_ProposerSlashing_c.l16_ProposerSlashing_len(Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{arr, n}, i, v)))) == n : U32}:
 def l16_ProposerSlashing_api_append_length(-arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, -v: FuluProposerSlashing_d.ProposerSlashing, +e: {U32.is_lt(n, 16) == True{} : Bool}) -> {Pair.snd(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, U32, l16_ProposerSlashing_c.l16_ProposerSlashing_len(Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_append(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{arr, n}, v)))) == (n + 1 : U32) : U32}:
 
-## proofs/obj/coll_api_5.bend
+## proofs/obj/coll_api_5_generated.bend
 import ../compact/found.bend as F
 import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as l1_AttesterSlashing_c
 import ../../src/buffer.bend as B
@@ -23868,7 +23868,7 @@ def l4096_b48_api_read_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q:
 def l4096_b48_api_view_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(((U32.div(n, 48)) + 1 : U32), 4096) == True{} : Bool}, +hfull: {U32.is_le((U32.shrn(((((U32.div(n, 48)) + 1 : U32) * 48 : U32) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == False{} : Bool}, +hd2: {Nat.is_lt(U32.to_nat(B.words_depth_u((U32.shrn(((((U32.div(n, 48)) + 1 : U32) * 48 : U32) + 31 : U32), 5n) * 8 + 8 : U32))), 32n) == True{} : Bool}, +b1: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((n + 3 : U32), 2n))), F.spec_common__pow2(d)) == True{} : Bool}, +b2: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((n + 3 : U32), 2n))), F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn(((((U32.div(n, 48)) + 1 : U32) * 48 : U32) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(((U32.div(n, 48)) * 48 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 12n), F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn(((((U32.div(n, 48)) + 1 : U32) * 48 : U32) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool}, +hqe: {q == Nat.mul(EL48L.k48(n), 12n) : Nat}, +hcn: {EL48L.k48((((U32.div(n, 48)) + 1 : U32) * 48 : U32)) == 1n+EL48L.k48(n) : Nat}, +hcov: {Nat.is_le(Nat.mul(EL48L.k48(n), 12n), 1n+U32.to_nat(U32.shrn((n + 3 : U32), 2n))) == True{} : Bool})
     -> {EL48L.eview(Pair.fst(O.Words, Bool, l4096_b48_c.l4096_b48_append(O.Words{F.array__thaw(U32, t), n}, FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}))) == VS.seq_append(EL48L.eview(O.Words{F.array__thaw(U32, t), n}), RN_L.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})) : S.Value}:
 
-## proofs/obj/coll_api_6.bend
+## proofs/obj/coll_api_6_generated.bend
 import ../compact/found.bend as F
 import ../../types/FuluBlob_def_generated.bend as b131072_c
 import ../../src/buffer.bend as B
@@ -23946,7 +23946,7 @@ def l4096_b2048_api_read_set_word(+d: Nat, +t: F.array__Tree<U32>, +tv: F.array_
 def l4096_b2048_api_view_set(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +dv: Nat, +tv: F.array__Tree<U32>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hdv: {Nat.is_lt(dv, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +pfv: {F.array__perfect(U32, dv, tv) == True{} : Bool}, +hv: {Nat.is_le(512n, F.spec_common__pow2(dv)) == True{} : Bool}, +hg: {U32.is_lt(i, (U32.div(n, 2048))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 2048 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 512n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == O.e8(Nat.mul(U32.to_nat(i), 64n)) : Nat}, +hcap: {Nat.is_le(O.e8(Nat.mul(CL.kc(n), 64n)), F.spec_common__pow2(d)) == True{} : Bool})
     -> {CL.eview(Pair.fst(O.Words, Bool, l4096_b2048_c.l4096_b2048_set(O.Words{F.array__thaw(U32, t), n}, i, O.Words{F.array__thaw(U32, tv), 2048}))) == VS.field_set(CL.eview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.BytesValue{WO.wview(O.Words{F.array__thaw(U32, tv), 2048})}) : S.Value}:
 
-## proofs/obj/coll_bits.bend
+## proofs/obj/coll_bits_generated.bend
 import ./words_rw.bend as WR
 import ../../src/obj.bend as O
 import ../../src/merkle_fast.bend as M
@@ -23989,7 +23989,7 @@ def bits2048_api_read_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: 
 def bits2048_api_view_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_lt(n, 2048) == True{} : Bool}, +hfull: {U32.is_le((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == False{} : Bool}, +hd2: {Nat.is_lt(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))), 32n) == True{} : Bool}, +b1: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(d)) == True{} : Bool}, +b2: {Nat.is_le(Nat.add(0n, 1n+U32.to_nat(U32.shrn((O.bits_nbytes((n + 1 : U32)) + 3 : U32), 2n))), F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool}, +hg: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(U32.to_nat(B.words_depth_u((U32.shrn((O.bits_nbytes((n + 1 : U32)) + 31 : U32), 5n) * 8 + 8 : U32))))) == True{} : Bool})
     -> {BO.bview(Pair.fst(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{F.array__thaw(U32, t), n}, v))) == List.append(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), n}), [v]) : +List<Bool>}:
 
-## proofs/obj/coll_bytes.bend
+## proofs/obj/coll_bytes_generated.bend
 import ./words_rw.bend as WR
 import ../../src/obj.bend as O
 import ../compact/found.bend as F
@@ -24072,7 +24072,7 @@ def b2048_api_other_word(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +j: 
 def b2048_api_other_byte(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +j: U32, +q: Nat, +v: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hg: {U32.is_lt(i, n) == True{} : Bool}, +hv: {U32.is_le(v, 255) == True{} : Bool}, +hm: {U32.is_lt(j, n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(i, 2n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool}, +hr: {U32.to_nat(U32.shrn(j, 2n)) == q : Nat}, +ne: {U32.is_eq(U32.and(i, 3), U32.and(j, 3)) == False{} : Bool})
     -> {b2048_c.b2048_get(Pair.fst(O.Words, Bool, b2048_c.b2048_set(O.Words{F.array__thaw(U32, t), n}, i, v)), j) == (O.Words{F.array__thaw(U32, F.array__upd(U32, d, t, q, O.merge_word(WR.at(F.array__slots(U32, t), q), v, U32.and(i, 3), 1))), n}, Some{U32.and(O.shr_bytes(WR.at(F.array__slots(U32, t), q), U32.and(j, 3)), 255)}) : O.Words & Maybe<&1, U32>}:
 
-## proofs/obj/coll_root.bend
+## proofs/obj/coll_root_generated.bend
 import ./value_set.bend as VS
 import ../../types/schema.bend as S
 import ./schema_shapes.bend as SH
@@ -24217,7 +24217,7 @@ def v17_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Wor
 def l128_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: UL_L.rep_ul(o, s), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
     -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(o, i, O.U64{x0, x1})), depth))]):
 
-## proofs/obj/coll_seq.bend
+## proofs/obj/coll_seq_generated.bend
 import ./tarray.bend as TA
 import ../../src/obj.bend as O
 import ../../types/Fulu_list_DepositRequest_8192_def_generated.bend as l8192_DepositRequest_c
@@ -24358,7 +24358,7 @@ def l16_SignedBLSToExecutionChange_api_read_set(arr: Array<FuluSignedBLSToExecut
 def l16_SignedBLSToExecutionChange_api_read_append(arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +n: U32, +N: U32, +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +hz: {TA.sz(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_room(arr, n)) == N : U32}, +ha: {U32.is_lt(n, 16) == True{} : Bool}, +hw: {U32.is_lt(n, (n + 1 : U32)) == True{} : Bool})
     -> {l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_get(Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_append(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{arr, n}, v)), n) == (l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{Array.set(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_room(arr, n), n, v), (n + 1 : U32)}, Some{v}) : l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
 
-## proofs/obj/fields_0.bend
+## proofs/obj/fields_0_generated.bend
 import ../../src/obj.bend as O
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
@@ -24369,7 +24369,7 @@ def ContributionAndProof_swap_contribution(+x0: O.U64, x1: O.Boxed<FuluSyncCommi
 def SignedContributionAndProof_swap_message(x0: FuluContributionAndProof_d.ContributionAndProof, +x1: FuluBytes96_d.Bytes96, y: FuluContributionAndProof_d.ContributionAndProof)
     -> {FuluSignedContributionAndProof_d.SignedContributionAndProof_swap_message(FuluSignedContributionAndProof_d.SignedContributionAndProof{x0, x1}, y) == (FuluSignedContributionAndProof_d.SignedContributionAndProof{y, x1}, x0) : FuluSignedContributionAndProof_d.SignedContributionAndProof & FuluContributionAndProof_d.ContributionAndProof}:
 
-## proofs/obj/fields_1.bend
+## proofs/obj/fields_1_generated.bend
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
@@ -24392,7 +24392,7 @@ def Attestation_swap_aggregation_bits(x0: O.Bits, +x1: FuluAttestationData_d.Att
 def AggregateAndProof_swap_aggregate(+x0: O.U64, x1: O.Boxed<FuluAttestation_d.Attestation>, +x2: FuluBytes96_d.Bytes96, y: O.Boxed<FuluAttestation_d.Attestation>)
     -> {FuluAggregateAndProof_d.AggregateAndProof_swap_aggregate(FuluAggregateAndProof_d.AggregateAndProof{x0, x1, x2}, y) == (FuluAggregateAndProof_d.AggregateAndProof{x0, y, x2}, x1) : FuluAggregateAndProof_d.AggregateAndProof & O.Boxed<FuluAttestation_d.Attestation>}:
 
-## proofs/obj/fields_2.bend
+## proofs/obj/fields_2_generated.bend
 import ../../src/obj.bend as O
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
@@ -24422,7 +24422,7 @@ def Deposit_swap_proof(x0: O.Words, x1: O.Boxed<FuluDepositData_d.DepositData>, 
 def Deposit_swap_data(x0: O.Words, x1: O.Boxed<FuluDepositData_d.DepositData>, y: O.Boxed<FuluDepositData_d.DepositData>)
     -> {FuluDeposit_d.Deposit_swap_data(FuluDeposit_d.Deposit{x0, x1}, y) == (FuluDeposit_d.Deposit{x0, y}, x1) : FuluDeposit_d.Deposit & O.Boxed<FuluDepositData_d.DepositData>}:
 
-## proofs/obj/fields_3.bend
+## proofs/obj/fields_3_generated.bend
 import ../../src/obj.bend as O
 import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -24447,7 +24447,7 @@ def ExecutionPayloadHeader_g1_swap_extra_data(+x0: O.U64, +x1: O.U64, x2: O.Word
 def ExecutionPayloadHeader_obj_g1_swap_extra_data(g0: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0, +g2: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2, +x0: O.U64, +x1: O.U64, x2: O.Words, +x3: uint256_d.Uint256, +x4: FuluBytes32_d.Bytes32, +x5: FuluBytes32_d.Bytes32, +x6: FuluBytes32_d.Bytes32, +x7: O.U64, y: O.Words)
     -> {FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_swap_extra_data(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{g0, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x0, x1, x2, x3, x4, x5, x6, x7}, g2}, y) == (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{g0, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x0, x1, y, x3, x4, x5, x6, x7}, g2}, x2) : FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & O.Words}:
 
-## proofs/obj/fields_4.bend
+## proofs/obj/fields_4_generated.bend
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
 import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
@@ -24525,7 +24525,7 @@ def BeaconState_g2_swap_current_sync_committee(x0: O.Words, +x1: Fulu_bitvector_
 def BeaconState_g2_swap_next_sync_committee(x0: O.Words, +x1: Fulu_bitvector_4_d.Bitvector4, +x2: FuluCheckpoint_d.Checkpoint, +x3: FuluCheckpoint_d.Checkpoint, +x4: FuluCheckpoint_d.Checkpoint, x5: O.Words, x6: FuluSyncCommittee_d.SyncCommittee, x7: FuluSyncCommittee_d.SyncCommittee, y: FuluSyncCommittee_d.SyncCommittee)
     -> {FuluBeaconState_d.BeaconState_g2_swap_next_sync_committee(FuluBeaconState_d.BeaconState_g2{x0, x1, x2, x3, x4, x5, x6, x7}, y) == (FuluBeaconState_d.BeaconState_g2{x0, x1, x2, x3, x4, x5, x6, y}, x7) : FuluBeaconState_d.BeaconState_g2 & FuluSyncCommittee_d.SyncCommittee}:
 
-## proofs/obj/fields_5.bend
+## proofs/obj/fields_5_generated.bend
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -24629,7 +24629,7 @@ def BeaconBlockBody_g0_swap_deposits(+x0: FuluBytes96_d.Bytes96, +x1: FuluEth1Da
 def BeaconBlockBody_g0_swap_voluntary_exits(+x0: FuluBytes96_d.Bytes96, +x1: FuluEth1Data_d.Eth1Data, +x2: FuluBytes32_d.Bytes32, x3: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, x4: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq, x5: Fulu_list_Attestation_8_d.l8_Attestation_Seq, x6: Fulu_list_Deposit_16_d.l16_Deposit_Seq, x7: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, y: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq)
     -> {FuluBeaconBlockBody_d.BeaconBlockBody_g0_swap_voluntary_exits(FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, x3, x4, x5, x6, x7}, y) == (FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, x3, x4, x5, x6, y}, x7) : FuluBeaconBlockBody_d.BeaconBlockBody_g0 & Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq}:
 
-## proofs/obj/fields_6.bend
+## proofs/obj/fields_6_generated.bend
 import ../../src/obj.bend as O
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
@@ -24707,7 +24707,7 @@ def DataColumnSidecar_swap_signed_block_header(+x0: O.U64, x1: O.Words, x2: O.Wo
 def DataColumnSidecar_swap_kzg_commitments_inclusion_proof(+x0: O.U64, x1: O.Words, x2: O.Words, x3: O.Words, x4: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, x5: O.Words, y: O.Words)
     -> {FuluDataColumnSidecar_d.DataColumnSidecar_swap_kzg_commitments_inclusion_proof(FuluDataColumnSidecar_d.DataColumnSidecar{x0, x1, x2, x3, x4, x5}, y) == (FuluDataColumnSidecar_d.DataColumnSidecar{x0, x1, x2, x3, x4, y}, x5) : FuluDataColumnSidecar_d.DataColumnSidecar & O.Words}:
 
-## proofs/obj/prep_setters.bend
+## proofs/obj/prep_setters_generated.bend
 import ./root_state_light.bend as ST
 import ./blist_obj_light.bend as BLI
 import ./packed_obj_light.bend as PK
@@ -25858,7 +25858,7 @@ law BeaconState_set_proposer_lookahead_rep:
   for +rv: PK.rep_v8(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))))))))))))))))))))))))
   ST.rep_BeaconState(FuluBeaconState_d.BeaconState_set_proposer_lookahead(o, v), s)
 
-## proofs/obj/prep_setters_g1.bend
+## proofs/obj/prep_setters_g1_generated.bend
 import ../../src/obj.bend as O
 import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
@@ -25941,7 +25941,7 @@ law ComplexTestStruct_set_f_G_rep:
   for +rv: RT.rep_v2_VarTestStruct(v, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))
   RT.rep_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, v), s)
 
-## proofs/obj/prep_setters_g2.bend
+## proofs/obj/prep_setters_g2_generated.bend
 import ../../src/obj.bend as O
 import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d

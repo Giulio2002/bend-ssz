@@ -4,11 +4,11 @@ import ../../types/schema.bend as S
 import ../../spec/bit_root.bend as Bm
 import ../../spec/bit_packing.bend as Bp
 import ../../spec/primitives.bend as SP
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ./words_spec.bend as WS
-import ./schema_shapes.bend as SH
+import ./schema_shapes_generated.bend as SH
 import ./dk.bend as DK
-import ./bitlist_pack.bend as BK
+import ./bitlist_pack_generated.bend as BK
 
 # The definitions of bitlist_obj.bend that state no root law (its light companion, codegen/light_split.py): importers that only
 # state against them skip the root laws' imports.

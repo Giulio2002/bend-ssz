@@ -1,5 +1,5 @@
 import Base
-import ./e2e_support.bend as E
+import ./e2e_support_generated.bend as E
 import ./uint32_e2e_generated.bend as W_e2e_uint32_e2e_generated
 import ../spec/fulu_schemas.bend as W_spec_fulu_schemas
 import ../src/model.bend as API

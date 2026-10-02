@@ -1,6 +1,6 @@
 import Base
 import ../../spec/nat_bytes.bend as N
-import ../compact/found.bend as F
+import ../compact/found_generated.bend as F
 import ../../proofs/nat_order.bend as Order
 
 # The spec's 4-byte size bound N.fits(4n, x) for every x <= 2^a with a < 32,
