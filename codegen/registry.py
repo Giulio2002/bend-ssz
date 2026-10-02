@@ -146,6 +146,7 @@ GENERATORS = (
     Gen('zero_run', 'proofs/witnesses'),
     Gen('sym_decode', 'proofs/witnesses', stage='last', after=('zero_run',)),
     Gen('sym_skel', 'proofs/witnesses', stage='last', after=('sym_decode', 'e2e_compose')),
+    Gen('sym_bs', 'proofs/witnesses', stage='last', after=('sym_decode',)),
     Gen('coll_witness', 'proofs/witnesses'),
     Gen('e2e_witness', 'proofs/witnesses', stage='last', after=('e2e_setters',), pool='witness-compose'),
     # codegen/proofs/composed/
