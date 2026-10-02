@@ -79,14 +79,8 @@ def vars_of(expr):
     return sorted(set(re.findall(r'\ba(\d+)\b', expr)), key=int)
 
 
-def emit(w, name, sig, lhs, rhs, res):
-    """Emit `def {name}(+x: U32) -> {lhs == rhs : U32}` from residuals `res`."""
-    if res['lhs'] == 'same':
-        w(f'def {name}(+x: U32) -> {{{lhs} == {rhs} : U32}}:')
-        w('  match x:')
-        w(f'    case {word(BITS)}: {{==}}')
-        return
-    L, R = res['lhs'], res['rhs']
+def _emit_bit_lemmas(w, name, L, R):
+    """One lemma per bit (a case split on the variables of that bit's two residuals); returns the 32 proof terms joined."""
     for i in range(32):
         vs = vars_of(L[i] + ' ' + R[i])
         w(f'def {name}_b{i}(' + ', '.join(f'+a{v}: Bool' for v in vs) + f') -> {{{L[i]} == {R[i]} : Bool}}:')
@@ -103,10 +97,21 @@ def emit(w, name, sig, lhs, rhs, res):
                 w(f'{ind}  case {c}:')
                 cases(k + 1, ind + '    ')
         cases(0, '  ')
+    return ', '.join(f'{name}_b{i}(' + ', '.join(f'a{v}' for v in vars_of(L[i] + ' ' + R[i])) + ')' for i in range(32))
+
+
+def emit(w, name, sig, lhs, rhs, res):
+    """Emit `def {name}(+x: U32) -> {lhs == rhs : U32}` from residuals `res`."""
+    if res['lhs'] == 'same':
+        w(f'def {name}(+x: U32) -> {{{lhs} == {rhs} : U32}}:')
+        w('  match x:')
+        w(f'    case {word(BITS)}: {{==}}')
+        return
+    L, R = res['lhs'], res['rhs']
+    proofs = _emit_bit_lemmas(w, name, L, R)
     w(f'def {name}(+x: U32) -> {{{lhs} == {rhs} : U32}}:')
     w('  match x:')
     w(f'    case {word(BITS)}:')
-    proofs = ', '.join(f'{name}_b{i}(' + ', '.join(f'a{v}' for v in vars_of(L[i] + ' ' + R[i])) + ')' for i in range(32))
     w(f'      BT.word32_eq({", ".join(L)}, {", ".join(R)}, {proofs})')
 
 
@@ -117,22 +122,6 @@ def emit_bits(w, name, lhs, rhs, res):
         w(f'def {name}({sig}) -> {{{lhs} == {rhs} : U32}}: {{==}}')
         return
     L, R = res['lhs'], res['rhs']
-    for i in range(32):
-        vs = vars_of(L[i] + ' ' + R[i])
-        w(f'def {name}_b{i}(' + ', '.join(f'+a{v}: Bool' for v in vs) + f') -> {{{L[i]} == {R[i]} : Bool}}:')
-        if not vs:
-            w('  {==}')
-            continue
-
-        def cases(k, ind):
-            if k == len(vs):
-                w(f'{ind}{{==}}')
-                return
-            w(f'{ind}match a{vs[k]}:')
-            for c in ('True{}', 'False{}'):
-                w(f'{ind}  case {c}:')
-                cases(k + 1, ind + '    ')
-        cases(0, '  ')
+    proofs = _emit_bit_lemmas(w, name, L, R)
     w(f'def {name}({sig}) -> {{{lhs} == {rhs} : U32}}:')
-    proofs = ', '.join(f'{name}_b{i}(' + ', '.join(f'a{v}' for v in vars_of(L[i] + ' ' + R[i])) + ')' for i in range(32))
     w(f'  BT.word32_eq({", ".join(L)}, {", ".join(R)}, {proofs})')

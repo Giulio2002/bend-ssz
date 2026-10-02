@@ -18,19 +18,8 @@ import re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_rest import close_paren  # noqa: E402
 E2E = ROOT / 'e2e'
-
-
-def close_paren(t, i):
-    d = 0
-    for k in range(i, len(t)):
-        if t[k] == '(':
-            d += 1
-        elif t[k] == ')':
-            d -= 1
-            if d == 0:
-                return k
-    raise ValueError
 
 
 def text():

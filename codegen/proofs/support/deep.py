@@ -698,6 +698,25 @@ def derive32(ex, anchor, new, decl, derive):
     return (fn.rsplit('.', 1)[0] + '.' + f if '.' in fn else f) + '(' + ', '.join(args[:-1] + [new]) + ')'
 
 
+def _arg_end(blk, j, k):
+    """The index of the comma or bracket that ends argument k (0-based) of the call whose arguments start at j."""
+    d = cnt = 0
+    while True:
+        c = blk[j]
+        if c in '([{':
+            d += 1
+        elif c in ')]}':
+            if d == 0:
+                break
+            d -= 1
+        elif c == ',' and d == 0:
+            if cnt == k:
+                break
+            cnt += 1
+        j += 1
+    return j
+
+
 def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), derive=None, needed_only=False, seeds=()):
     """The W twins of text that take premise anchor also take new (right after it, of type decl(anchor's type)), and
     every call in a twin to a twin taking new (local, or imported: {'X.': {name: index of new}}) passes new right
@@ -799,20 +818,7 @@ def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), der
             if ins in args[k + 1:]:
                 continue   # passed by hand already
             # the end of argument k
-            j, d, cnt = m.end(), 0, 0
-            while True:
-                c = blk[j]
-                if c in '([{':
-                    d += 1
-                elif c in ')]}':
-                    if d == 0:
-                        break
-                    d -= 1
-                elif c == ',' and d == 0:
-                    if cnt == k:
-                        break
-                    cnt += 1
-                j += 1
+            j = _arg_end(blk, m.end(), k)
             edits.append((j, ins))
         for j, ins in sorted(edits, reverse=True):
             blk = blk[:j] + f', {ins}' + blk[j:]
@@ -840,20 +846,7 @@ def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), der
                 continue
             args, _ = _args(blk, m.end())
             k = anc[name + 'W']
-            j, d, cnt = m.end(), 0, 0
-            while True:
-                c = blk[j]
-                if c in '([{':
-                    d += 1
-                elif c in ')]}':
-                    if d == 0:
-                        break
-                    d -= 1
-                elif c == ',' and d == 0:
-                    if cnt == k:
-                        break
-                    cnt += 1
-                j += 1
+            j = _arg_end(blk, m.end(), k)
             tps = ps if kind == 'def' else ['+' + x.group(1) + ': ' + x.group(2) for x in re.finditer(r'^  for \+(\w+): (.*)$', blk, re.M)]
             w = wrap(tps[[q.lstrip('+').split(':')[0].strip() for q in tps].index(anchor)].split(':', 1)[1].strip(), tps) if callable(wrap) else wrap
             blk = blk[:j] + f', {w}' + blk[j:]
