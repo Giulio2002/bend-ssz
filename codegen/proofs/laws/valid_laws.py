@@ -75,7 +75,6 @@ def valid_shape(s, w, RN):
     E = RA.spec_schema(s)
     rp = vneeds_rp(s)
     head = f'def rv_{p}(+o: {R}' + (f', +rp: {RN}.rp_{p}(o)' if rp else '') + f') -> {{VD.root_valid({RN}.v_{p}(o), {E}) == True{{}} : Bool}}:'
-    Z7 = ', '.join(['0'] * 7)
     if k == 'bool':
         w(head + ' {==}')
     elif k == 'u8':
@@ -587,7 +586,6 @@ class VB:
 
     def okdepth(self, fs):
         """The depth term of a box of byte list's ok (literal, or the DV entry)."""
-        g = self.gen
         inner = fs.inner
         d = G.log2ceil(max(1, (inner.t.size + 31) // 32))
         return f'OS.dv_{d}(dv)' if d >= RBmod().BIGD else f'{d}n'
@@ -755,7 +753,7 @@ class VB:
         p = s.p
         R = RA.qual(s.rep)
         m = g.meta[p]
-        F, kinds, sx, cf = m['F'], m['kinds'], m['sx'], m.get('cf', 'SH.Container_fields')
+        F, kinds, sx = m['F'], m['kinds'], m['sx']
         n = len(F)
         prog = s.t is not None and s.t.kind == 'pcontainer'
         wide = n > G.GROUP
@@ -1568,7 +1566,6 @@ def emit_blists(w):
         w(f'        {{VD.root_valid(S.Sequence{{{itsz}}}, S.ListOf{{{elem}, L}}) == True{{}} : Bool}}')
         if K == 'h':
             rv = f'VO.items_valid({k}, F.array__slots(U32, t), 0n)'
-            le = f'Equal.sym(Nat, {k}, VD.items_length({its}), VO.items_len({k}, F.array__slots(U32, t), 0n))'
             w(f'      %Equal.sym(Bool, VD.root_valid({its}, {R}), True{{}}, {rv}) :')
             w(f'        {{Bool.and(Nat.is_le(VD.items_length({its}), L), _) == True{{}} : Bool}}')
             w(f'      %Equal.sym(Nat, VD.items_length({its}), {k}, VO.items_len({k}, F.array__slots(U32, t), 0n)) :')
