@@ -235,7 +235,6 @@ def text(c):
              % (c, QQ, XK, PK, QQ, QK, c, c, c, c))
     L.append('')
     for s in (0, 2):
-        HJ = 'A.quad(q)' if s == 0 else 'Nat.add(A.quad(q), 2n)'
         sfx = '_s%d' % s
         NW = 'O.merge_word(WR.at(F.array__slots(U32, T), q), v, %d, 2)' % s
         T2 = 'F.array__upd(U32, dw, T, q, %s)' % NW
