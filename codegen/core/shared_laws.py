@@ -82,6 +82,21 @@ def law_module(gen, comments, laws, tmod, extra_imports=()):
     return '\n'.join(head + [piece for law in laws for piece in (law, '')])
 
 
+def sync_pairs(outs, gen, ok_msg):
+    """--check / write for a generator that owns a list of (path, text) files; the exit code: 1 on the first stale file."""
+    if checking():
+        for path, text in outs:
+            if not path.exists() or path.read_text() != text:
+                print(f'{path} is stale; run codegen/proofs/laws/{gen}.py')
+                return 1
+        print(ok_msg)
+        return 0
+    for path, text in outs:
+        if not path.exists() or path.read_text() != text:
+            path.write_text(text)
+    return 0
+
+
 def light_pair(out, text, gen, ok_msg):
     """--check / write for a generator whose output `out` has a light companion `<stem>_light.bend` that holds the representation defs
     importers state against (rep_*, wf_*, hview, cnt1, cnt2; codegen/proofs/support/light_split.py). Returns the exit code."""
