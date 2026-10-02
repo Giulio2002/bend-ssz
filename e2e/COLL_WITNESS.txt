@@ -8,37 +8,52 @@ bits2048	5 witnessed
 bl1073741824	5 witnessed
 bl32	5 witnessed
 l1048576_bl1073741824	7 witnessed
+  pending l1048576_bl1073741824_api_root_set: the representation premise RT.rep_l1048576_bl1073741824(o, s) is not read
 l1099511627776_Validator	10 witnessed
   pending l1099511627776_Validator_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
 l1099511627776_u64	14 witnessed
   pending l1099511627776_u64_api_append_rejected: the premise is literally {True == False}: the list limit exceeds the U32 range, so the list is never full and the rejection statement is vacuous by design; the accepted direction of the same premise structure (append while the length is below the limit) is witnessed by the append_flag, append_length, read_append and view_append statements of this collection
+  pending l1099511627776_u64_api_root_set: the representation premise UL_L.rep_ul(o, s) is not read
 l1099511627776_u8	5 witnessed
 l128_u64	15 witnessed
+  pending l128_u64_api_root_set: the representation premise UL_L.rep_ul(o, s) is not read
 l131072_u64	15 witnessed
+  pending l131072_u64_api_root_set: the representation premise UL_L.rep_ul(o, s) is not read
 l134217728_PendingDeposit	11 witnessed
 l134217728_PendingPartialWithdrawal	11 witnessed
 l16777216_HistoricalSummary	11 witnessed
 l16777216_b32	15 witnessed
   pending l16777216_b32_api_root_set: the representation premise BLI.rep_lh(o, s) is not read
 l16_Deposit	7 witnessed
+  pending l16_Deposit_api_root_set: the representation premise RT.rep_l16_Deposit(o, s) is not read
 l16_ProposerSlashing	7 witnessed
+  pending l16_ProposerSlashing_api_root_set: the representation premise RT.rep_l16_ProposerSlashing(o, s) is not read
 l16_SignedBLSToExecutionChange	11 witnessed
+  pending l16_SignedBLSToExecutionChange_api_root_set: the representation premise RTL.rep_l16_SignedBLSToExecutionChange(o, s) is not read
 l16_SignedVoluntaryExit	11 witnessed
+  pending l16_SignedVoluntaryExit_api_root_set: the representation premise RTL.rep_l16_SignedVoluntaryExit(o, s) is not read
 l16_Withdrawal	11 witnessed
+  pending l16_Withdrawal_api_root_set: the representation premise RTL.rep_l16_Withdrawal(o, s) is not read
 l16_WithdrawalRequest	11 witnessed
+  pending l16_WithdrawalRequest_api_root_set: the representation premise RTL.rep_l16_WithdrawalRequest(o, s) is not read
 l1_AttesterSlashing	7 witnessed
+  pending l1_AttesterSlashing_api_root_set: the representation premise RT.rep_l1_AttesterSlashing(o, s) is not read
 l2048_Eth1Data	11 witnessed
 l262144_PendingConsolidation	11 witnessed
 l2_ConsolidationRequest	11 witnessed
+  pending l2_ConsolidationRequest_api_root_set: the representation premise RTL.rep_l2_ConsolidationRequest(o, s) is not read
 l4096_b2048	8 witnessed
 l4096_b48	16 witnessed
 l8192_DepositRequest	11 witnessed
+  pending l8192_DepositRequest_api_root_set: the representation premise RTL.rep_l8192_DepositRequest(o, s) is not read
 l8_Attestation	7 witnessed
+  pending l8_Attestation_api_root_set: the representation premise RT.rep_l8_Attestation(o, s) is not read
 v17_b32	10 witnessed
 v33_b32	10 witnessed
 v4_b32	10 witnessed
 v512_b48	10 witnessed
 v64_u64	9 witnessed
+  pending v64_u64_api_root_set: the representation premise PK_L.rep_v8(o, s) is not read
 v65536_b32	9 witnessed
   pending v65536_b32_api_root_set: the object holds 65536 elements: its premises compare Nat numbers of that size in unary (the length 65536, e32 of 65535, pow2 of 19), deeper than the rigid checker's stack; the vectors up to 512 elements are witnessed
 v6_b32	10 witnessed
@@ -46,6 +61,7 @@ v7_b32	10 witnessed
 v8192_b32	9 witnessed
   pending v8192_b32_api_root_set: the object holds 8192 elements: its premises compare Nat numbers of that size in unary (the length 8192, e32 of 8191, pow2 of 16), deeper than the rigid checker's stack; the vectors up to 512 elements are witnessed
 v8192_u64	9 witnessed
+  pending v8192_u64_api_root_set: the representation premise PK_L.rep_v8(o, s) is not read
 BitsStruct (setters)	10 witnessed
 ComplexTestStruct (setters)	0 witnessed
   pending ComplexTestStruct: e2e_witness: nonempty default list vec_VarTestStruct_2_d.v2_VarTestStruct_default

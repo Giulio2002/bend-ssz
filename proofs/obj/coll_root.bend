@@ -1,15 +1,32 @@
 import Base
-import ../../src/buffer.bend as B
-import ../../src/digest.bend as D
-import ../../src/obj.bend as O
-import ../../types/schema.bend as S
 import ../compact/found.bend as F
-import ../../spec/root_relation.bend as RR
-import ./schema_shapes.bend as SH
-import ./words_obj_light.bend as WO
-import ./words_win.bend as WW
 import ./value_set.bend as VS
+import ../../types/schema.bend as S
+import ./schema_shapes.bend as SH
+import ../../spec/root_relation.bend as RR
+import ../../src/digest.bend as D
+import ../../src/buffer.bend as B
+import ../../src/obj.bend as O
+import ./dk.bend as DK
+import ./view_seq.bend as VQ
+import ./root_types.bend as RTH
+import ./root_types_light.bend as RT
+import ./obj_support.bend as OS
+import ../nat_order.bend as Order
 import ./words_rw.bend as WR
+import ./words_win.bend as WW
+import ./coll_seq.bend as CSQ
+import ../../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as l1048576_bl1073741824_c
+import ../../types/FuluTransaction_def_generated.bend as FuluTransaction_d
+import ../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as l16_ProposerSlashing_c
+import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
+import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as l1_AttesterSlashing_c
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/Fulu_list_Attestation_8_def_generated.bend as l8_Attestation_c
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/Fulu_list_Deposit_16_def_generated.bend as l16_Deposit_c
+import ../../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+import ./words_obj_light.bend as WO
 import ./coll_b32.bend as CW_b32
 import ./view_b32.bend as VI_b32
 import ./pv_obj.bend as PVR
@@ -17,9 +34,17 @@ import ./pv_obj_light.bend as PVL
 import ../../types/FuluFinalityBranch_def_generated.bend as v7_b32_c
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ./root_names_light.bend as RN_L
-import ./dk.bend as DK
 import ./spec_fixed.bend as FX
 import ../../types/Fulu_vec_bytevec_32_8192_def_generated.bend as v8192_b32_c
+import ./coll_u64.bend as CW_u64
+import ./view_u64.bend as VI_u64
+import ./ulist_obj.bend as UL
+import ./ulist_obj_light.bend as UL_L
+import ../../types/Fulu_list_uint64_131072_def_generated.bend as l131072_u64_c
+import ../../types/primitive.bend as P
+import ./u64_tail.bend as UT
+import ./list_obj_light.bend as LO
+import ./words_spec.bend as WS
 import ./coll_b48.bend as CW_b48
 import ./view_b48.bend as VI_b48
 import ./elems48.bend as E48
@@ -28,21 +53,371 @@ import ../../types/Fulu_vec_bytevec_48_512_def_generated.bend as v512_b48_c
 import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/Fulu_vec_bytevec_32_33_def_generated.bend as v33_b32_c
 import ../../types/FuluCurrentSyncCommitteeBranch_def_generated.bend as v6_b32_c
+import ./root_names_light.bend as RN
+import ./root_types_light.bend as RTL
+import ../../types/Fulu_list_DepositRequest_8192_def_generated.bend as l8192_DepositRequest_c
+import ../../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
+import ../../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as l16_WithdrawalRequest_c
+import ../../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
+import ../../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as l2_ConsolidationRequest_c
+import ../../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
+import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as l16_Withdrawal_c
+import ../../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
 import ./blist_obj_light.bend as BLI
 import ../../types/Fulu_list_bytevec_32_16777216_def_generated.bend as l16777216_b32_c
 import ./blist_obj.bend as BLO
-import ./list_obj_light.bend as LO
 import ../../spec/limits.bend as Lim
-import ./words_spec.bend as WS
+import ../../types/Fulu_list_uint64_1099511627776_def_generated.bend as l1099511627776_u64_c
 import ../../types/Fulu_vec_bytevec_32_65536_def_generated.bend as v65536_b32_c
+import ./packed_obj_light.bend as PK_L
+import ../../types/Fulu_vec_uint64_8192_def_generated.bend as v8192_u64_c
+import ./packed_obj.bend as PK
+import ../../types/Fulu_vec_uint64_64_def_generated.bend as v64_u64_c
 import ../../types/FuluExecutionBranch_def_generated.bend as v4_b32_c
+import ../../types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend as l16_SignedVoluntaryExit_c
+import ../../types/FuluSignedVoluntaryExit_def_generated.bend as FuluSignedVoluntaryExit_d
+import ../../types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend as l16_SignedBLSToExecutionChange_c
+import ../../types/FuluSignedBLSToExecutionChange_def_generated.bend as FuluSignedBLSToExecutionChange_d
 import ../../types/Fulu_list_bytevec_48_4096_def_generated.bend as l4096_b48_c
 import ../../types/Fulu_vec_bytevec_32_17_def_generated.bend as v17_b32_c
+import ../../types/Fulu_list_uint64_128_def_generated.bend as l128_u64_c
 
 # GENERATED by coll_laws (codegen). Do not edit.
 # The root of a collection after an accepted set: the digest of the object after the set is a specification root of the view
 # with that item replaced, through the collection's *_rs law (the digest of an object is a specification root of its view,
 # under the representation invariant, which the set keeps).
+# an index below the length of a list has an item
+def nth_ex_step(-A: Data, +x: A, +r: List<&2, A>, +j: Nat, +ih: DK.Ex(A, y => {F.spec_common__nth(A, r, j) == Some{y} : Maybe<&2, A>}))
+    -> DK.Ex(A, y => {F.spec_common__nth(A, Con{x, r}, 1n+j) == Some{y} : Maybe<&2, A>}):
+  (+y, +e) = ih
+  (y, e)
+
+def nth_ex(-A: Data, +xs: List<&2, A>, +i: Nat, +h: {Nat.is_lt(i, F.spec_common__length(A, xs)) == True{} : Bool})
+    -> DK.Ex(A, y => {F.spec_common__nth(A, xs, i) == Some{y} : Maybe<&2, A>}):
+  match xs i:
+    case Nil{} _: Empty.absurd(DK.Ex(A, y => {F.spec_common__nth(A, Nil{}, i) == Some{y} : Maybe<&2, A>}), F.nat__lt_zero_absurd(i, h))
+    case Con{+x, +r} 0n: (x, {==})
+    case Con{+x, +r} 1n+ +j: nth_ex_step(A, x, r, j, nth_ex(A, r, j, h))
+def l1048576_bl1073741824_ereps_other(+k: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.WMr>, +sE: S.Schema, +h: RT.ereps_l1048576_bl1073741824(k, W, i0, sE), +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> RT.ereps_l1048576_bl1073741824(k, F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0, sE):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+a, +b) = h
+      (F.logic__subst(RT.MB<RT.WMr>, z => RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(z), sE), RT.xat_l1048576_bl1073741824(W, i0), RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), Equal.sym(RT.MB<RT.WMr>, RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), RT.xat_l1048576_bl1073741824(W, i0), VQ.l1048576_bl1073741824_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))), a),
+        l1048576_bl1073741824_ereps_other(q, W, 1n+i0, J, e, sE, b, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0))))
+
+def l1048576_bl1073741824_ereps_set(+k: Nat, +r: Nat, +W: List<&2, RT.MB<RT.WMr>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.WMr>, +sE: S.Schema, +h: RT.ereps_l1048576_bl1073741824(k, W, i0, sE), +re: RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(e), sE), +hJ: {J == Nat.add(i0, r) : Nat}, +hl: {Nat.is_lt(J, F.spec_common__length(RT.MB<RT.WMr>, W)) == True{} : Bool})
+    -> RT.ereps_l1048576_bl1073741824(k, F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0, sE):
+  match k r:
+    case 0n _: {==}
+    case 1n+ +q 0n:
+      (+a, +b) = h
+      +ji = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      (F.logic__subst(RT.MB<RT.WMr>, z => RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(z), sE), e, RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), Equal.trans(RT.MB<RT.WMr>, e, RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), J), RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), Equal.sym(RT.MB<RT.WMr>, RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), J), e, VQ.l1048576_bl1073741824_xat_same(W, J, e, hl)), Equal.cong(Nat, RT.MB<RT.WMr>, z => RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), z), J, i0, ji)), re),
+        l1048576_bl1073741824_ereps_other(q, W, 1n+i0, J, e, sE, b, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, ji), F.nat__lt_succ(i0))))
+    case 1n+ +q 1n+ +r1:
+      (+a, +b) = h
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, 1n+Nat.add(i0, r1), J, Equal.sym(Nat, J, 1n+Nat.add(i0, r1), Equal.trans(Nat, J, Nat.add(i0, 1n+r1), 1n+Nat.add(i0, r1), hJ, F.nat__add_succ(i0, r1))), F.nat__succ_le_lt(i0, 1n+Nat.add(i0, r1), Order.below_sum(i0, r1)))
+      (F.logic__subst(RT.MB<RT.WMr>, z => RT.rep_bl1073741824_bx(RT.th_bl1073741824_bx(z), sE), RT.xat_l1048576_bl1073741824(W, i0), RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), Equal.sym(RT.MB<RT.WMr>, RT.xat_l1048576_bl1073741824(F.spec_common__update(RT.MB<RT.WMr>, W, J, e), i0), RT.xat_l1048576_bl1073741824(W, i0), VQ.l1048576_bl1073741824_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))), a),
+        l1048576_bl1073741824_ereps_set(q, r1, W, 1n+i0, J, e, sE, b, re, F.logic__subst(Nat, z => {J == z : Nat}, Nat.add(i0, 1n+r1), Nat.add(1n+i0, r1), WW.add_shift_plain(i0, r1), hJ), hl))
+
+def l1048576_bl1073741824_root_sq(+d: Nat, +t: F.array__Tree<RT.MB<RT.WMr>>, +n: U32, +i: U32, -v: O.Words, +m: RT.MB<RT.WMr>, +x: RT.MB<RT.WMr>, +hm: {RT.th_bl1073741824_bx(m) == FuluTransaction_d.bl1073741824_bx_wrap(v) : O.Boxed<O.Words>}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.WMr>>}, +pf: {F.array__perfect(RT.MB<RT.WMr>, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, i, v)) == l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), n} : l1048576_bl1073741824_c.l1048576_bl1073741824_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_put_in(_, RT.am_l1048576_bl1073741824(t), n, i, v)) == l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), n} : l1048576_bl1073741824_c.l1048576_bl1073741824_Seq}
+  %Equal.sym(Array<O.Boxed<O.Words>>, Array.set(O.Boxed<O.Words>, RT.am_l1048576_bl1073741824(t), i, FuluTransaction_d.bl1073741824_bx_wrap(v)), RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), Equal.trans(Array<O.Boxed<O.Words>>, Array.set(O.Boxed<O.Words>, RT.am_l1048576_bl1073741824(t), i, FuluTransaction_d.bl1073741824_bx_wrap(v)), Array.set(O.Boxed<O.Words>, RT.am_l1048576_bl1073741824(t), i, RT.th_bl1073741824_bx(m)), RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), Equal.cong(O.Boxed<O.Words>, Array<O.Boxed<O.Words>>, z => Array.set(O.Boxed<O.Words>, RT.am_l1048576_bl1073741824(t), i, z), FuluTransaction_d.bl1073741824_bx_wrap(v), RT.th_bl1073741824_bx(m), Equal.sym(O.Boxed<O.Words>, RT.th_bl1073741824_bx(m), FuluTransaction_d.bl1073741824_bx_wrap(v), hm)), RT.amset_l1048576_bl1073741824(d, t, i, m, x, hd, hi, hx, pf))) : {l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{_, n} == l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), n} : l1048576_bl1073741824_c.l1048576_bl1073741824_Seq}
+  {==}
+
+def l1048576_bl1073741824_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, +s: S.Schema, +rep: RT.rep_l1048576_bl1073741824(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l1048576_bl1073741824(s, dv) == True{} : Bool}, +eq: RTH.eqs_l1048576_bl1073741824(s), +i: U32, v: O.Words, +m: RT.MB<RT.WMr>, +hm: {RT.th_bl1073741824_bx(m) == FuluTransaction_d.bl1073741824_bx_wrap(v) : O.Boxed<O.Words>}, +rv: RT.rep_bl1073741824_bx(FuluTransaction_d.bl1073741824_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l1048576_bl1073741824(o)) == True{} : Bool}, +t: F.array__Tree<RT.MB<RT.WMr>>, +d: Nat, +n: U32, +eo: {o == l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n} : l1048576_bl1073741824_c.l1048576_bl1073741824_Seq}, +pf: {F.array__perfect(RT.MB<RT.WMr>, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +er: RT.ereps_l1048576_bl1073741824(U32.to_nat(n), F.array__slots(RT.MB<RT.WMr>, t), 0n, SH.ListOf_element(s)), +hv: {Nat.is_le(U32.to_nat(RT.xlen_o_l1048576_bl1073741824(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(RT.MB<RT.WMr>, x => {F.spec_common__nth(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.WMr>>}))
+    -> RR.roots(VS.field_set(RT.xv_l1048576_bl1073741824(o), U32.to_nat(i), VQ.vm_l1048576_bl1073741824(RT.fz_bl1073741824_bx(FuluTransaction_d.bl1073741824_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1048576_bl1073741824(hl, Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l1048576_bl1073741824_root_sq(d, t, n, i, v, m, x, hm, hd, hi, hx, pf, hsn)
+  +vs0 = CSQ.l1048576_bl1073741824_api_view_set(d, t, n, i, v, hd, hi, pf, hsn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.WMr>, d, t, pf)), hi)
+  +rm = F.logic__subst(O.Boxed<O.Words>, z => RT.rep_bl1073741824_bx(z, SH.ListOf_element(s)), FuluTransaction_d.bl1073741824_bx_wrap(v), RT.th_bl1073741824_bx(m), Equal.sym(O.Boxed<O.Words>, RT.th_bl1073741824_bx(m), FuluTransaction_d.bl1073741824_bx_wrap(v), hm), rv)
+  +e2 = l1048576_bl1073741824_ereps_set(U32.to_nat(n), U32.to_nat(i), F.array__slots(RT.MB<RT.WMr>, t), 0n, U32.to_nat(i), m, SH.ListOf_element(s), er, rm, {==}, hil)
+  +e3 = F.logic__subst(List<&2, RT.MB<RT.WMr>>, z => RT.ereps_l1048576_bl1073741824(U32.to_nat(n), z, 0n, SH.ListOf_element(s)), F.spec_common__update(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t), U32.to_nat(i), m), F.array__slots(RT.MB<RT.WMr>, F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), Equal.sym(List<&2, RT.MB<RT.WMr>>, F.array__slots(RT.MB<RT.WMr>, F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), F.spec_common__update(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t), U32.to_nat(i), m), F.array__upd_slots(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m, hi, pf)), e2)
+  +hv2 = F.logic__subst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l1048576_bl1073741824(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, eo, hv)
+  %Equal.sym(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, o, l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, eo) :
+    RR.roots(VS.field_set(RT.xv_l1048576_bl1073741824(_), U32.to_nat(i), VQ.vm_l1048576_bl1073741824(RT.fz_bl1073741824_bx(FuluTransaction_d.bl1073741824_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1048576_bl1073741824(hl, Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(_, i, v))))])
+  %vs0 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l1048576_bl1073741824(hl, Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, i, v))))])
+  %Equal.sym(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, i, v)), l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), n}, sq) :
+    RR.roots(RT.xv_l1048576_bl1073741824(_), s, [D.bytes(RTH.xd_l1048576_bl1073741824(hl, _))])
+  RTH.rs_l1048576_bl1073741824(hl, ehl, h, l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m)), n}, s, ((F.array__upd(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m), (d, (n, ({==}, (F.array__upd_perfect(RT.MB<RT.WMr>, d, t, U32.to_nat(i), m, pf), (hd, (hn, e3))))))), hv2), dv, edv, ok, eq)
+
+def l1048576_bl1073741824_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, +s: S.Schema, +rep: RT.rep_l1048576_bl1073741824(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l1048576_bl1073741824(s, dv) == True{} : Bool}, +eq: RTH.eqs_l1048576_bl1073741824(s), +i: U32, v: O.Words, +m: RT.MB<RT.WMr>, +hm: {RT.th_bl1073741824_bx(m) == FuluTransaction_d.bl1073741824_bx_wrap(v) : O.Boxed<O.Words>}, +rv: RT.rep_bl1073741824_bx(FuluTransaction_d.bl1073741824_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l1048576_bl1073741824(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RT.xv_l1048576_bl1073741824(o), U32.to_nat(i), VQ.vm_l1048576_bl1073741824(RT.fz_bl1073741824_bx(FuluTransaction_d.bl1073741824_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1048576_bl1073741824(hl, Pair.fst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, Bool, l1048576_bl1073741824_c.l1048576_bl1073741824_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, w6) = w5
+  (+hn, +er) = w6
+  +hsn = F.logic__subst(l1048576_bl1073741824_c.l1048576_bl1073741824_Seq, z => {U32.is_lt(i, RT.xlen_o_l1048576_bl1073741824(z)) == True{} : Bool}, o, l1048576_bl1073741824_c.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.WMr>, d, t, pf)), hi)
+  l1048576_bl1073741824_root_go(hl, ehl, h, o, s, rep, dv, edv, ok, eq, i, v, m, hm, rv, hs, t, d, n, eo, pf, hd, hn, er, hv, hi, hsn, nth_ex(RT.MB<RT.WMr>, F.array__slots(RT.MB<RT.WMr>, t), U32.to_nat(i), hil))
+
+def l16_ProposerSlashing_ereps_other(+k: Nat, +W: List<&2, RT.MB<RT.M_ProposerSlashing>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_ProposerSlashing>, +sE: S.Schema, +h: RT.ereps_l16_ProposerSlashing(k, W, i0, sE), +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> RT.ereps_l16_ProposerSlashing(k, F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0, sE):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+a, +b) = h
+      (F.logic__subst(RT.MB<RT.M_ProposerSlashing>, z => RT.rep_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(z), sE), RT.xat_l16_ProposerSlashing(W, i0), RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_ProposerSlashing>, RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), RT.xat_l16_ProposerSlashing(W, i0), VQ.l16_ProposerSlashing_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))), a),
+        l16_ProposerSlashing_ereps_other(q, W, 1n+i0, J, e, sE, b, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0))))
+
+def l16_ProposerSlashing_ereps_set(+k: Nat, +r: Nat, +W: List<&2, RT.MB<RT.M_ProposerSlashing>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_ProposerSlashing>, +sE: S.Schema, +h: RT.ereps_l16_ProposerSlashing(k, W, i0, sE), +re: RT.rep_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(e), sE), +hJ: {J == Nat.add(i0, r) : Nat}, +hl: {Nat.is_lt(J, F.spec_common__length(RT.MB<RT.M_ProposerSlashing>, W)) == True{} : Bool})
+    -> RT.ereps_l16_ProposerSlashing(k, F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0, sE):
+  match k r:
+    case 0n _: {==}
+    case 1n+ +q 0n:
+      (+a, +b) = h
+      +ji = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      (F.logic__subst(RT.MB<RT.M_ProposerSlashing>, z => RT.rep_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(z), sE), e, RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), Equal.trans(RT.MB<RT.M_ProposerSlashing>, e, RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), J), RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_ProposerSlashing>, RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), J), e, VQ.l16_ProposerSlashing_xat_same(W, J, e, hl)), Equal.cong(Nat, RT.MB<RT.M_ProposerSlashing>, z => RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), z), J, i0, ji)), re),
+        l16_ProposerSlashing_ereps_other(q, W, 1n+i0, J, e, sE, b, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, ji), F.nat__lt_succ(i0))))
+    case 1n+ +q 1n+ +r1:
+      (+a, +b) = h
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, 1n+Nat.add(i0, r1), J, Equal.sym(Nat, J, 1n+Nat.add(i0, r1), Equal.trans(Nat, J, Nat.add(i0, 1n+r1), 1n+Nat.add(i0, r1), hJ, F.nat__add_succ(i0, r1))), F.nat__succ_le_lt(i0, 1n+Nat.add(i0, r1), Order.below_sum(i0, r1)))
+      (F.logic__subst(RT.MB<RT.M_ProposerSlashing>, z => RT.rep_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(z), sE), RT.xat_l16_ProposerSlashing(W, i0), RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_ProposerSlashing>, RT.xat_l16_ProposerSlashing(F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, W, J, e), i0), RT.xat_l16_ProposerSlashing(W, i0), VQ.l16_ProposerSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))), a),
+        l16_ProposerSlashing_ereps_set(q, r1, W, 1n+i0, J, e, sE, b, re, F.logic__subst(Nat, z => {J == z : Nat}, Nat.add(i0, 1n+r1), Nat.add(1n+i0, r1), WW.add_shift_plain(i0, r1), hJ), hl))
+
+def l16_ProposerSlashing_root_sq(+d: Nat, +t: F.array__Tree<RT.MB<RT.M_ProposerSlashing>>, +n: U32, +i: U32, -v: FuluProposerSlashing_d.ProposerSlashing, +m: RT.MB<RT.M_ProposerSlashing>, +x: RT.MB<RT.M_ProposerSlashing>, +hm: {RT.th_ProposerSlashing_bx(m) == FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_ProposerSlashing>>}, +pf: {F.array__perfect(RT.MB<RT.M_ProposerSlashing>, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, i, v)) == l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), n} : l16_ProposerSlashing_c.l16_ProposerSlashing_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_put_in(_, RT.am_l16_ProposerSlashing(t), n, i, v)) == l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), n} : l16_ProposerSlashing_c.l16_ProposerSlashing_Seq}
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.am_l16_ProposerSlashing(t), i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), Equal.trans(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.am_l16_ProposerSlashing(t), i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.am_l16_ProposerSlashing(t), i, RT.th_ProposerSlashing_bx(m)), RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), Equal.cong(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, z => Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.am_l16_ProposerSlashing(t), i, z), FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), RT.th_ProposerSlashing_bx(m), Equal.sym(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.th_ProposerSlashing_bx(m), FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), hm)), RT.amset_l16_ProposerSlashing(d, t, i, m, x, hd, hi, hx, pf))) : {l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{_, n} == l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), n} : l16_ProposerSlashing_c.l16_ProposerSlashing_Seq}
+  {==}
+
+def l16_ProposerSlashing_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: RT.rep_l16_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l16_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RTH.eqs_l16_ProposerSlashing(s), +i: U32, v: FuluProposerSlashing_d.ProposerSlashing, +m: RT.MB<RT.M_ProposerSlashing>, +hm: {RT.th_ProposerSlashing_bx(m) == FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, +rv: RT.rep_ProposerSlashing_bx(FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l16_ProposerSlashing(o)) == True{} : Bool}, +t: F.array__Tree<RT.MB<RT.M_ProposerSlashing>>, +d: Nat, +n: U32, +eo: {o == l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n} : l16_ProposerSlashing_c.l16_ProposerSlashing_Seq}, +pf: {F.array__perfect(RT.MB<RT.M_ProposerSlashing>, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +er: RT.ereps_l16_ProposerSlashing(U32.to_nat(n), F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), 0n, SH.ListOf_element(s)), +hv: {Nat.is_le(U32.to_nat(RT.xlen_o_l16_ProposerSlashing(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(RT.MB<RT.M_ProposerSlashing>, x => {F.spec_common__nth(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_ProposerSlashing>>}))
+    -> RR.roots(VS.field_set(RT.xv_l16_ProposerSlashing(o), U32.to_nat(i), VQ.vm_l16_ProposerSlashing(RT.fz_ProposerSlashing_bx(FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_ProposerSlashing(hl, Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_ProposerSlashing_root_sq(d, t, n, i, v, m, x, hm, hd, hi, hx, pf, hsn)
+  +vs0 = CSQ.l16_ProposerSlashing_api_view_set(d, t, n, i, v, hd, hi, pf, hsn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_ProposerSlashing>, d, t, pf)), hi)
+  +rm = F.logic__subst(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, z => RT.rep_ProposerSlashing_bx(z, SH.ListOf_element(s)), FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), RT.th_ProposerSlashing_bx(m), Equal.sym(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, RT.th_ProposerSlashing_bx(m), FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), hm), rv)
+  +e2 = l16_ProposerSlashing_ereps_set(U32.to_nat(n), U32.to_nat(i), F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), 0n, U32.to_nat(i), m, SH.ListOf_element(s), er, rm, {==}, hil)
+  +e3 = F.logic__subst(List<&2, RT.MB<RT.M_ProposerSlashing>>, z => RT.ereps_l16_ProposerSlashing(U32.to_nat(n), z, 0n, SH.ListOf_element(s)), F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), U32.to_nat(i), m), F.array__slots(RT.MB<RT.M_ProposerSlashing>, F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), Equal.sym(List<&2, RT.MB<RT.M_ProposerSlashing>>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), F.spec_common__update(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), U32.to_nat(i), m), F.array__upd_slots(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m, hi, pf)), e2)
+  +hv2 = F.logic__subst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l16_ProposerSlashing(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, eo, hv)
+  %Equal.sym(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, o, l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, eo) :
+    RR.roots(VS.field_set(RT.xv_l16_ProposerSlashing(_), U32.to_nat(i), VQ.vm_l16_ProposerSlashing(RT.fz_ProposerSlashing_bx(FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_ProposerSlashing(hl, Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(_, i, v))))])
+  %vs0 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_ProposerSlashing(hl, Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, i, v))))])
+  %Equal.sym(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, i, v)), l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), n}, sq) :
+    RR.roots(RT.xv_l16_ProposerSlashing(_), s, [D.bytes(RTH.xd_l16_ProposerSlashing(hl, _))])
+  RTH.rs_l16_ProposerSlashing(hl, ehl, h, l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m)), n}, s, ((F.array__upd(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m), (d, (n, ({==}, (F.array__upd_perfect(RT.MB<RT.M_ProposerSlashing>, d, t, U32.to_nat(i), m, pf), (hd, (hn, e3))))))), hv2), dv, edv, ok, eq)
+
+def l16_ProposerSlashing_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: RT.rep_l16_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l16_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RTH.eqs_l16_ProposerSlashing(s), +i: U32, v: FuluProposerSlashing_d.ProposerSlashing, +m: RT.MB<RT.M_ProposerSlashing>, +hm: {RT.th_ProposerSlashing_bx(m) == FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, +rv: RT.rep_ProposerSlashing_bx(FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l16_ProposerSlashing(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RT.xv_l16_ProposerSlashing(o), U32.to_nat(i), VQ.vm_l16_ProposerSlashing(RT.fz_ProposerSlashing_bx(FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_ProposerSlashing(hl, Pair.fst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, Bool, l16_ProposerSlashing_c.l16_ProposerSlashing_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, w6) = w5
+  (+hn, +er) = w6
+  +hsn = F.logic__subst(l16_ProposerSlashing_c.l16_ProposerSlashing_Seq, z => {U32.is_lt(i, RT.xlen_o_l16_ProposerSlashing(z)) == True{} : Bool}, o, l16_ProposerSlashing_c.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_ProposerSlashing>, d, t, pf)), hi)
+  l16_ProposerSlashing_root_go(hl, ehl, h, o, s, rep, dv, edv, ok, eq, i, v, m, hm, rv, hs, t, d, n, eo, pf, hd, hn, er, hv, hi, hsn, nth_ex(RT.MB<RT.M_ProposerSlashing>, F.array__slots(RT.MB<RT.M_ProposerSlashing>, t), U32.to_nat(i), hil))
+
+def l1_AttesterSlashing_ereps_other(+k: Nat, +W: List<&2, RT.MB<RT.M_AttesterSlashing>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_AttesterSlashing>, +sE: S.Schema, +h: RT.ereps_l1_AttesterSlashing(k, W, i0, sE), +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> RT.ereps_l1_AttesterSlashing(k, F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0, sE):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+a, +b) = h
+      (F.logic__subst(RT.MB<RT.M_AttesterSlashing>, z => RT.rep_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(z), sE), RT.xat_l1_AttesterSlashing(W, i0), RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_AttesterSlashing>, RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), RT.xat_l1_AttesterSlashing(W, i0), VQ.l1_AttesterSlashing_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))), a),
+        l1_AttesterSlashing_ereps_other(q, W, 1n+i0, J, e, sE, b, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0))))
+
+def l1_AttesterSlashing_ereps_set(+k: Nat, +r: Nat, +W: List<&2, RT.MB<RT.M_AttesterSlashing>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_AttesterSlashing>, +sE: S.Schema, +h: RT.ereps_l1_AttesterSlashing(k, W, i0, sE), +re: RT.rep_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(e), sE), +hJ: {J == Nat.add(i0, r) : Nat}, +hl: {Nat.is_lt(J, F.spec_common__length(RT.MB<RT.M_AttesterSlashing>, W)) == True{} : Bool})
+    -> RT.ereps_l1_AttesterSlashing(k, F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0, sE):
+  match k r:
+    case 0n _: {==}
+    case 1n+ +q 0n:
+      (+a, +b) = h
+      +ji = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      (F.logic__subst(RT.MB<RT.M_AttesterSlashing>, z => RT.rep_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(z), sE), e, RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), Equal.trans(RT.MB<RT.M_AttesterSlashing>, e, RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), J), RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_AttesterSlashing>, RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), J), e, VQ.l1_AttesterSlashing_xat_same(W, J, e, hl)), Equal.cong(Nat, RT.MB<RT.M_AttesterSlashing>, z => RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), z), J, i0, ji)), re),
+        l1_AttesterSlashing_ereps_other(q, W, 1n+i0, J, e, sE, b, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, ji), F.nat__lt_succ(i0))))
+    case 1n+ +q 1n+ +r1:
+      (+a, +b) = h
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, 1n+Nat.add(i0, r1), J, Equal.sym(Nat, J, 1n+Nat.add(i0, r1), Equal.trans(Nat, J, Nat.add(i0, 1n+r1), 1n+Nat.add(i0, r1), hJ, F.nat__add_succ(i0, r1))), F.nat__succ_le_lt(i0, 1n+Nat.add(i0, r1), Order.below_sum(i0, r1)))
+      (F.logic__subst(RT.MB<RT.M_AttesterSlashing>, z => RT.rep_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(z), sE), RT.xat_l1_AttesterSlashing(W, i0), RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), Equal.sym(RT.MB<RT.M_AttesterSlashing>, RT.xat_l1_AttesterSlashing(F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, W, J, e), i0), RT.xat_l1_AttesterSlashing(W, i0), VQ.l1_AttesterSlashing_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))), a),
+        l1_AttesterSlashing_ereps_set(q, r1, W, 1n+i0, J, e, sE, b, re, F.logic__subst(Nat, z => {J == z : Nat}, Nat.add(i0, 1n+r1), Nat.add(1n+i0, r1), WW.add_shift_plain(i0, r1), hJ), hl))
+
+def l1_AttesterSlashing_root_sq(+d: Nat, +t: F.array__Tree<RT.MB<RT.M_AttesterSlashing>>, +n: U32, +i: U32, -v: FuluAttesterSlashing_d.AttesterSlashing, +m: RT.MB<RT.M_AttesterSlashing>, +x: RT.MB<RT.M_AttesterSlashing>, +hm: {RT.th_AttesterSlashing_bx(m) == FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_AttesterSlashing>>}, +pf: {F.array__perfect(RT.MB<RT.M_AttesterSlashing>, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, i, v)) == l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), n} : l1_AttesterSlashing_c.l1_AttesterSlashing_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_put_in(_, RT.am_l1_AttesterSlashing(t), n, i, v)) == l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), n} : l1_AttesterSlashing_c.l1_AttesterSlashing_Seq}
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.am_l1_AttesterSlashing(t), i, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), Equal.trans(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.am_l1_AttesterSlashing(t), i, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.am_l1_AttesterSlashing(t), i, RT.th_AttesterSlashing_bx(m)), RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), Equal.cong(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, z => Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.am_l1_AttesterSlashing(t), i, z), FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), RT.th_AttesterSlashing_bx(m), Equal.sym(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.th_AttesterSlashing_bx(m), FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), hm)), RT.amset_l1_AttesterSlashing(d, t, i, m, x, hd, hi, hx, pf))) : {l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{_, n} == l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), n} : l1_AttesterSlashing_c.l1_AttesterSlashing_Seq}
+  {==}
+
+def l1_AttesterSlashing_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, +s: S.Schema, +rep: RT.rep_l1_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l1_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RTH.eqs_l1_AttesterSlashing(s), +i: U32, v: FuluAttesterSlashing_d.AttesterSlashing, +m: RT.MB<RT.M_AttesterSlashing>, +hm: {RT.th_AttesterSlashing_bx(m) == FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, +rv: RT.rep_AttesterSlashing_bx(FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l1_AttesterSlashing(o)) == True{} : Bool}, +t: F.array__Tree<RT.MB<RT.M_AttesterSlashing>>, +d: Nat, +n: U32, +eo: {o == l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n} : l1_AttesterSlashing_c.l1_AttesterSlashing_Seq}, +pf: {F.array__perfect(RT.MB<RT.M_AttesterSlashing>, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +er: RT.ereps_l1_AttesterSlashing(U32.to_nat(n), F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), 0n, SH.ListOf_element(s)), +hv: {Nat.is_le(U32.to_nat(RT.xlen_o_l1_AttesterSlashing(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(RT.MB<RT.M_AttesterSlashing>, x => {F.spec_common__nth(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_AttesterSlashing>>}))
+    -> RR.roots(VS.field_set(RT.xv_l1_AttesterSlashing(o), U32.to_nat(i), VQ.vm_l1_AttesterSlashing(RT.fz_AttesterSlashing_bx(FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1_AttesterSlashing(hl, Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l1_AttesterSlashing_root_sq(d, t, n, i, v, m, x, hm, hd, hi, hx, pf, hsn)
+  +vs0 = CSQ.l1_AttesterSlashing_api_view_set(d, t, n, i, v, hd, hi, pf, hsn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_AttesterSlashing>, d, t, pf)), hi)
+  +rm = F.logic__subst(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, z => RT.rep_AttesterSlashing_bx(z, SH.ListOf_element(s)), FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), RT.th_AttesterSlashing_bx(m), Equal.sym(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, RT.th_AttesterSlashing_bx(m), FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), hm), rv)
+  +e2 = l1_AttesterSlashing_ereps_set(U32.to_nat(n), U32.to_nat(i), F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), 0n, U32.to_nat(i), m, SH.ListOf_element(s), er, rm, {==}, hil)
+  +e3 = F.logic__subst(List<&2, RT.MB<RT.M_AttesterSlashing>>, z => RT.ereps_l1_AttesterSlashing(U32.to_nat(n), z, 0n, SH.ListOf_element(s)), F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), U32.to_nat(i), m), F.array__slots(RT.MB<RT.M_AttesterSlashing>, F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), Equal.sym(List<&2, RT.MB<RT.M_AttesterSlashing>>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), F.spec_common__update(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), U32.to_nat(i), m), F.array__upd_slots(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m, hi, pf)), e2)
+  +hv2 = F.logic__subst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l1_AttesterSlashing(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, eo, hv)
+  %Equal.sym(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, o, l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, eo) :
+    RR.roots(VS.field_set(RT.xv_l1_AttesterSlashing(_), U32.to_nat(i), VQ.vm_l1_AttesterSlashing(RT.fz_AttesterSlashing_bx(FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1_AttesterSlashing(hl, Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(_, i, v))))])
+  %vs0 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l1_AttesterSlashing(hl, Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, i, v))))])
+  %Equal.sym(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, i, v)), l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), n}, sq) :
+    RR.roots(RT.xv_l1_AttesterSlashing(_), s, [D.bytes(RTH.xd_l1_AttesterSlashing(hl, _))])
+  RTH.rs_l1_AttesterSlashing(hl, ehl, h, l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m)), n}, s, ((F.array__upd(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m), (d, (n, ({==}, (F.array__upd_perfect(RT.MB<RT.M_AttesterSlashing>, d, t, U32.to_nat(i), m, pf), (hd, (hn, e3))))))), hv2), dv, edv, ok, eq)
+
+def l1_AttesterSlashing_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, +s: S.Schema, +rep: RT.rep_l1_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l1_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RTH.eqs_l1_AttesterSlashing(s), +i: U32, v: FuluAttesterSlashing_d.AttesterSlashing, +m: RT.MB<RT.M_AttesterSlashing>, +hm: {RT.th_AttesterSlashing_bx(m) == FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, +rv: RT.rep_AttesterSlashing_bx(FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l1_AttesterSlashing(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RT.xv_l1_AttesterSlashing(o), U32.to_nat(i), VQ.vm_l1_AttesterSlashing(RT.fz_AttesterSlashing_bx(FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)))), s, [D.bytes(RTH.xd_l1_AttesterSlashing(hl, Pair.fst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, Bool, l1_AttesterSlashing_c.l1_AttesterSlashing_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, w6) = w5
+  (+hn, +er) = w6
+  +hsn = F.logic__subst(l1_AttesterSlashing_c.l1_AttesterSlashing_Seq, z => {U32.is_lt(i, RT.xlen_o_l1_AttesterSlashing(z)) == True{} : Bool}, o, l1_AttesterSlashing_c.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_AttesterSlashing>, d, t, pf)), hi)
+  l1_AttesterSlashing_root_go(hl, ehl, h, o, s, rep, dv, edv, ok, eq, i, v, m, hm, rv, hs, t, d, n, eo, pf, hd, hn, er, hv, hi, hsn, nth_ex(RT.MB<RT.M_AttesterSlashing>, F.array__slots(RT.MB<RT.M_AttesterSlashing>, t), U32.to_nat(i), hil))
+
+def l8_Attestation_ereps_other(+k: Nat, +W: List<&2, RT.MB<RT.M_Attestation>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_Attestation>, +sE: S.Schema, +h: RT.ereps_l8_Attestation(k, W, i0, sE), +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> RT.ereps_l8_Attestation(k, F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0, sE):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+a, +b) = h
+      (F.logic__subst(RT.MB<RT.M_Attestation>, z => RT.rep_Attestation_bx(RT.th_Attestation_bx(z), sE), RT.xat_l8_Attestation(W, i0), RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Attestation>, RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), RT.xat_l8_Attestation(W, i0), VQ.l8_Attestation_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))), a),
+        l8_Attestation_ereps_other(q, W, 1n+i0, J, e, sE, b, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0))))
+
+def l8_Attestation_ereps_set(+k: Nat, +r: Nat, +W: List<&2, RT.MB<RT.M_Attestation>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_Attestation>, +sE: S.Schema, +h: RT.ereps_l8_Attestation(k, W, i0, sE), +re: RT.rep_Attestation_bx(RT.th_Attestation_bx(e), sE), +hJ: {J == Nat.add(i0, r) : Nat}, +hl: {Nat.is_lt(J, F.spec_common__length(RT.MB<RT.M_Attestation>, W)) == True{} : Bool})
+    -> RT.ereps_l8_Attestation(k, F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0, sE):
+  match k r:
+    case 0n _: {==}
+    case 1n+ +q 0n:
+      (+a, +b) = h
+      +ji = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      (F.logic__subst(RT.MB<RT.M_Attestation>, z => RT.rep_Attestation_bx(RT.th_Attestation_bx(z), sE), e, RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), Equal.trans(RT.MB<RT.M_Attestation>, e, RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), J), RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Attestation>, RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), J), e, VQ.l8_Attestation_xat_same(W, J, e, hl)), Equal.cong(Nat, RT.MB<RT.M_Attestation>, z => RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), z), J, i0, ji)), re),
+        l8_Attestation_ereps_other(q, W, 1n+i0, J, e, sE, b, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, ji), F.nat__lt_succ(i0))))
+    case 1n+ +q 1n+ +r1:
+      (+a, +b) = h
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, 1n+Nat.add(i0, r1), J, Equal.sym(Nat, J, 1n+Nat.add(i0, r1), Equal.trans(Nat, J, Nat.add(i0, 1n+r1), 1n+Nat.add(i0, r1), hJ, F.nat__add_succ(i0, r1))), F.nat__succ_le_lt(i0, 1n+Nat.add(i0, r1), Order.below_sum(i0, r1)))
+      (F.logic__subst(RT.MB<RT.M_Attestation>, z => RT.rep_Attestation_bx(RT.th_Attestation_bx(z), sE), RT.xat_l8_Attestation(W, i0), RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Attestation>, RT.xat_l8_Attestation(F.spec_common__update(RT.MB<RT.M_Attestation>, W, J, e), i0), RT.xat_l8_Attestation(W, i0), VQ.l8_Attestation_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))), a),
+        l8_Attestation_ereps_set(q, r1, W, 1n+i0, J, e, sE, b, re, F.logic__subst(Nat, z => {J == z : Nat}, Nat.add(i0, 1n+r1), Nat.add(1n+i0, r1), WW.add_shift_plain(i0, r1), hJ), hl))
+
+def l8_Attestation_root_sq(+d: Nat, +t: F.array__Tree<RT.MB<RT.M_Attestation>>, +n: U32, +i: U32, -v: FuluAttestation_d.Attestation, +m: RT.MB<RT.M_Attestation>, +x: RT.MB<RT.M_Attestation>, +hm: {RT.th_Attestation_bx(m) == FuluAttestation_d.Attestation_bx_wrap(v) : O.Boxed<FuluAttestation_d.Attestation>}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_Attestation>>}, +pf: {F.array__perfect(RT.MB<RT.M_Attestation>, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, i, v)) == l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), n} : l8_Attestation_c.l8_Attestation_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_put_in(_, RT.am_l8_Attestation(t), n, i, v)) == l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), n} : l8_Attestation_c.l8_Attestation_Seq}
+  %Equal.sym(Array<O.Boxed<FuluAttestation_d.Attestation>>, Array.set(O.Boxed<FuluAttestation_d.Attestation>, RT.am_l8_Attestation(t), i, FuluAttestation_d.Attestation_bx_wrap(v)), RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), Equal.trans(Array<O.Boxed<FuluAttestation_d.Attestation>>, Array.set(O.Boxed<FuluAttestation_d.Attestation>, RT.am_l8_Attestation(t), i, FuluAttestation_d.Attestation_bx_wrap(v)), Array.set(O.Boxed<FuluAttestation_d.Attestation>, RT.am_l8_Attestation(t), i, RT.th_Attestation_bx(m)), RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), Equal.cong(O.Boxed<FuluAttestation_d.Attestation>, Array<O.Boxed<FuluAttestation_d.Attestation>>, z => Array.set(O.Boxed<FuluAttestation_d.Attestation>, RT.am_l8_Attestation(t), i, z), FuluAttestation_d.Attestation_bx_wrap(v), RT.th_Attestation_bx(m), Equal.sym(O.Boxed<FuluAttestation_d.Attestation>, RT.th_Attestation_bx(m), FuluAttestation_d.Attestation_bx_wrap(v), hm)), RT.amset_l8_Attestation(d, t, i, m, x, hd, hi, hx, pf))) : {l8_Attestation_c.l8_Attestation_Seq{_, n} == l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), n} : l8_Attestation_c.l8_Attestation_Seq}
+  {==}
+
+def l8_Attestation_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l8_Attestation_c.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l8_Attestation(s, dv) == True{} : Bool}, +eq: RTH.eqs_l8_Attestation(s), +i: U32, v: FuluAttestation_d.Attestation, +m: RT.MB<RT.M_Attestation>, +hm: {RT.th_Attestation_bx(m) == FuluAttestation_d.Attestation_bx_wrap(v) : O.Boxed<FuluAttestation_d.Attestation>}, +rv: RT.rep_Attestation_bx(FuluAttestation_d.Attestation_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l8_Attestation(o)) == True{} : Bool}, +t: F.array__Tree<RT.MB<RT.M_Attestation>>, +d: Nat, +n: U32, +eo: {o == l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n} : l8_Attestation_c.l8_Attestation_Seq}, +pf: {F.array__perfect(RT.MB<RT.M_Attestation>, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +er: RT.ereps_l8_Attestation(U32.to_nat(n), F.array__slots(RT.MB<RT.M_Attestation>, t), 0n, SH.ListOf_element(s)), +hv: {Nat.is_le(U32.to_nat(RT.xlen_o_l8_Attestation(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(RT.MB<RT.M_Attestation>, x => {F.spec_common__nth(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_Attestation>>}))
+    -> RR.roots(VS.field_set(RT.xv_l8_Attestation(o), U32.to_nat(i), VQ.vm_l8_Attestation(RT.fz_Attestation_bx(FuluAttestation_d.Attestation_bx_wrap(v)))), s, [D.bytes(RTH.xd_l8_Attestation(hl, Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l8_Attestation_root_sq(d, t, n, i, v, m, x, hm, hd, hi, hx, pf, hsn)
+  +vs0 = CSQ.l8_Attestation_api_view_set(d, t, n, i, v, hd, hi, pf, hsn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_Attestation>, d, t, pf)), hi)
+  +rm = F.logic__subst(O.Boxed<FuluAttestation_d.Attestation>, z => RT.rep_Attestation_bx(z, SH.ListOf_element(s)), FuluAttestation_d.Attestation_bx_wrap(v), RT.th_Attestation_bx(m), Equal.sym(O.Boxed<FuluAttestation_d.Attestation>, RT.th_Attestation_bx(m), FuluAttestation_d.Attestation_bx_wrap(v), hm), rv)
+  +e2 = l8_Attestation_ereps_set(U32.to_nat(n), U32.to_nat(i), F.array__slots(RT.MB<RT.M_Attestation>, t), 0n, U32.to_nat(i), m, SH.ListOf_element(s), er, rm, {==}, hil)
+  +e3 = F.logic__subst(List<&2, RT.MB<RT.M_Attestation>>, z => RT.ereps_l8_Attestation(U32.to_nat(n), z, 0n, SH.ListOf_element(s)), F.spec_common__update(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t), U32.to_nat(i), m), F.array__slots(RT.MB<RT.M_Attestation>, F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), Equal.sym(List<&2, RT.MB<RT.M_Attestation>>, F.array__slots(RT.MB<RT.M_Attestation>, F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), F.spec_common__update(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t), U32.to_nat(i), m), F.array__upd_slots(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m, hi, pf)), e2)
+  +hv2 = F.logic__subst(l8_Attestation_c.l8_Attestation_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l8_Attestation(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, eo, hv)
+  %Equal.sym(l8_Attestation_c.l8_Attestation_Seq, o, l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, eo) :
+    RR.roots(VS.field_set(RT.xv_l8_Attestation(_), U32.to_nat(i), VQ.vm_l8_Attestation(RT.fz_Attestation_bx(FuluAttestation_d.Attestation_bx_wrap(v)))), s, [D.bytes(RTH.xd_l8_Attestation(hl, Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(_, i, v))))])
+  %vs0 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l8_Attestation(hl, Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, i, v))))])
+  %Equal.sym(l8_Attestation_c.l8_Attestation_Seq, Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, i, v)), l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), n}, sq) :
+    RR.roots(RT.xv_l8_Attestation(_), s, [D.bytes(RTH.xd_l8_Attestation(hl, _))])
+  RTH.rs_l8_Attestation(hl, ehl, h, l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m)), n}, s, ((F.array__upd(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m), (d, (n, ({==}, (F.array__upd_perfect(RT.MB<RT.M_Attestation>, d, t, U32.to_nat(i), m, pf), (hd, (hn, e3))))))), hv2), dv, edv, ok, eq)
+
+def l8_Attestation_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l8_Attestation_c.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l8_Attestation(s, dv) == True{} : Bool}, +eq: RTH.eqs_l8_Attestation(s), +i: U32, v: FuluAttestation_d.Attestation, +m: RT.MB<RT.M_Attestation>, +hm: {RT.th_Attestation_bx(m) == FuluAttestation_d.Attestation_bx_wrap(v) : O.Boxed<FuluAttestation_d.Attestation>}, +rv: RT.rep_Attestation_bx(FuluAttestation_d.Attestation_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l8_Attestation(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RT.xv_l8_Attestation(o), U32.to_nat(i), VQ.vm_l8_Attestation(RT.fz_Attestation_bx(FuluAttestation_d.Attestation_bx_wrap(v)))), s, [D.bytes(RTH.xd_l8_Attestation(hl, Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, w6) = w5
+  (+hn, +er) = w6
+  +hsn = F.logic__subst(l8_Attestation_c.l8_Attestation_Seq, z => {U32.is_lt(i, RT.xlen_o_l8_Attestation(z)) == True{} : Bool}, o, l8_Attestation_c.l8_Attestation_Seq{RT.am_l8_Attestation(t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_Attestation>, d, t, pf)), hi)
+  l8_Attestation_root_go(hl, ehl, h, o, s, rep, dv, edv, ok, eq, i, v, m, hm, rv, hs, t, d, n, eo, pf, hd, hn, er, hv, hi, hsn, nth_ex(RT.MB<RT.M_Attestation>, F.array__slots(RT.MB<RT.M_Attestation>, t), U32.to_nat(i), hil))
+
+def l16_Deposit_ereps_other(+k: Nat, +W: List<&2, RT.MB<RT.M_Deposit>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_Deposit>, +sE: S.Schema, +h: RT.ereps_l16_Deposit(k, W, i0, sE), +hlt: {Nat.is_lt(J, i0) == True{} : Bool})
+    -> RT.ereps_l16_Deposit(k, F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0, sE):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      (+a, +b) = h
+      (F.logic__subst(RT.MB<RT.M_Deposit>, z => RT.rep_Deposit_bx(RT.th_Deposit_bx(z), sE), RT.xat_l16_Deposit(W, i0), RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Deposit>, RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), RT.xat_l16_Deposit(W, i0), VQ.l16_Deposit_xat_other(W, J, i0, e, F.nat__is_eq_lt(J, i0, hlt))), a),
+        l16_Deposit_ereps_other(q, W, 1n+i0, J, e, sE, b, F.nat__lt_trans(J, i0, 1n+i0, hlt, F.nat__lt_succ(i0))))
+
+def l16_Deposit_ereps_set(+k: Nat, +r: Nat, +W: List<&2, RT.MB<RT.M_Deposit>>, +i0: Nat, +J: Nat, +e: RT.MB<RT.M_Deposit>, +sE: S.Schema, +h: RT.ereps_l16_Deposit(k, W, i0, sE), +re: RT.rep_Deposit_bx(RT.th_Deposit_bx(e), sE), +hJ: {J == Nat.add(i0, r) : Nat}, +hl: {Nat.is_lt(J, F.spec_common__length(RT.MB<RT.M_Deposit>, W)) == True{} : Bool})
+    -> RT.ereps_l16_Deposit(k, F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0, sE):
+  match k r:
+    case 0n _: {==}
+    case 1n+ +q 0n:
+      (+a, +b) = h
+      +ji = Equal.trans(Nat, J, Nat.add(i0, 0n), i0, hJ, F.nat__add_zero(i0))
+      (F.logic__subst(RT.MB<RT.M_Deposit>, z => RT.rep_Deposit_bx(RT.th_Deposit_bx(z), sE), e, RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), Equal.trans(RT.MB<RT.M_Deposit>, e, RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), J), RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Deposit>, RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), J), e, VQ.l16_Deposit_xat_same(W, J, e, hl)), Equal.cong(Nat, RT.MB<RT.M_Deposit>, z => RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), z), J, i0, ji)), re),
+        l16_Deposit_ereps_other(q, W, 1n+i0, J, e, sE, b, F.logic__subst(Nat, z => {Nat.is_lt(z, 1n+i0) == True{} : Bool}, i0, J, Equal.sym(Nat, J, i0, ji), F.nat__lt_succ(i0))))
+    case 1n+ +q 1n+ +r1:
+      (+a, +b) = h
+      +hlt = F.logic__subst(Nat, z => {Nat.is_lt(i0, z) == True{} : Bool}, 1n+Nat.add(i0, r1), J, Equal.sym(Nat, J, 1n+Nat.add(i0, r1), Equal.trans(Nat, J, Nat.add(i0, 1n+r1), 1n+Nat.add(i0, r1), hJ, F.nat__add_succ(i0, r1))), F.nat__succ_le_lt(i0, 1n+Nat.add(i0, r1), Order.below_sum(i0, r1)))
+      (F.logic__subst(RT.MB<RT.M_Deposit>, z => RT.rep_Deposit_bx(RT.th_Deposit_bx(z), sE), RT.xat_l16_Deposit(W, i0), RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), Equal.sym(RT.MB<RT.M_Deposit>, RT.xat_l16_Deposit(F.spec_common__update(RT.MB<RT.M_Deposit>, W, J, e), i0), RT.xat_l16_Deposit(W, i0), VQ.l16_Deposit_xat_other(W, J, i0, e, WR.neq_sym(i0, J, F.nat__is_eq_lt(i0, J, hlt)))), a),
+        l16_Deposit_ereps_set(q, r1, W, 1n+i0, J, e, sE, b, re, F.logic__subst(Nat, z => {J == z : Nat}, Nat.add(i0, 1n+r1), Nat.add(1n+i0, r1), WW.add_shift_plain(i0, r1), hJ), hl))
+
+def l16_Deposit_root_sq(+d: Nat, +t: F.array__Tree<RT.MB<RT.M_Deposit>>, +n: U32, +i: U32, -v: FuluDeposit_d.Deposit, +m: RT.MB<RT.M_Deposit>, +x: RT.MB<RT.M_Deposit>, +hm: {RT.th_Deposit_bx(m) == FuluDeposit_d.Deposit_bx_wrap(v) : O.Boxed<FuluDeposit_d.Deposit>}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_Deposit>>}, +pf: {F.array__perfect(RT.MB<RT.M_Deposit>, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, i, v)) == l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), n} : l16_Deposit_c.l16_Deposit_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_put_in(_, RT.am_l16_Deposit(t), n, i, v)) == l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), n} : l16_Deposit_c.l16_Deposit_Seq}
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>>, Array.set(O.Boxed<FuluDeposit_d.Deposit>, RT.am_l16_Deposit(t), i, FuluDeposit_d.Deposit_bx_wrap(v)), RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), Equal.trans(Array<O.Boxed<FuluDeposit_d.Deposit>>, Array.set(O.Boxed<FuluDeposit_d.Deposit>, RT.am_l16_Deposit(t), i, FuluDeposit_d.Deposit_bx_wrap(v)), Array.set(O.Boxed<FuluDeposit_d.Deposit>, RT.am_l16_Deposit(t), i, RT.th_Deposit_bx(m)), RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), Equal.cong(O.Boxed<FuluDeposit_d.Deposit>, Array<O.Boxed<FuluDeposit_d.Deposit>>, z => Array.set(O.Boxed<FuluDeposit_d.Deposit>, RT.am_l16_Deposit(t), i, z), FuluDeposit_d.Deposit_bx_wrap(v), RT.th_Deposit_bx(m), Equal.sym(O.Boxed<FuluDeposit_d.Deposit>, RT.th_Deposit_bx(m), FuluDeposit_d.Deposit_bx_wrap(v), hm)), RT.amset_l16_Deposit(d, t, i, m, x, hd, hi, hx, pf))) : {l16_Deposit_c.l16_Deposit_Seq{_, n} == l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), n} : l16_Deposit_c.l16_Deposit_Seq}
+  {==}
+
+def l16_Deposit_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_Deposit_c.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l16_Deposit(s, dv) == True{} : Bool}, +eq: RTH.eqs_l16_Deposit(s), +i: U32, v: FuluDeposit_d.Deposit, +m: RT.MB<RT.M_Deposit>, +hm: {RT.th_Deposit_bx(m) == FuluDeposit_d.Deposit_bx_wrap(v) : O.Boxed<FuluDeposit_d.Deposit>}, +rv: RT.rep_Deposit_bx(FuluDeposit_d.Deposit_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l16_Deposit(o)) == True{} : Bool}, +t: F.array__Tree<RT.MB<RT.M_Deposit>>, +d: Nat, +n: U32, +eo: {o == l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n} : l16_Deposit_c.l16_Deposit_Seq}, +pf: {F.array__perfect(RT.MB<RT.M_Deposit>, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +er: RT.ereps_l16_Deposit(U32.to_nat(n), F.array__slots(RT.MB<RT.M_Deposit>, t), 0n, SH.ListOf_element(s)), +hv: {Nat.is_le(U32.to_nat(RT.xlen_o_l16_Deposit(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(RT.MB<RT.M_Deposit>, x => {F.spec_common__nth(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, RT.MB<RT.M_Deposit>>}))
+    -> RR.roots(VS.field_set(RT.xv_l16_Deposit(o), U32.to_nat(i), VQ.vm_l16_Deposit(RT.fz_Deposit_bx(FuluDeposit_d.Deposit_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_Deposit(hl, Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_Deposit_root_sq(d, t, n, i, v, m, x, hm, hd, hi, hx, pf, hsn)
+  +vs0 = CSQ.l16_Deposit_api_view_set(d, t, n, i, v, hd, hi, pf, hsn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_Deposit>, d, t, pf)), hi)
+  +rm = F.logic__subst(O.Boxed<FuluDeposit_d.Deposit>, z => RT.rep_Deposit_bx(z, SH.ListOf_element(s)), FuluDeposit_d.Deposit_bx_wrap(v), RT.th_Deposit_bx(m), Equal.sym(O.Boxed<FuluDeposit_d.Deposit>, RT.th_Deposit_bx(m), FuluDeposit_d.Deposit_bx_wrap(v), hm), rv)
+  +e2 = l16_Deposit_ereps_set(U32.to_nat(n), U32.to_nat(i), F.array__slots(RT.MB<RT.M_Deposit>, t), 0n, U32.to_nat(i), m, SH.ListOf_element(s), er, rm, {==}, hil)
+  +e3 = F.logic__subst(List<&2, RT.MB<RT.M_Deposit>>, z => RT.ereps_l16_Deposit(U32.to_nat(n), z, 0n, SH.ListOf_element(s)), F.spec_common__update(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t), U32.to_nat(i), m), F.array__slots(RT.MB<RT.M_Deposit>, F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), Equal.sym(List<&2, RT.MB<RT.M_Deposit>>, F.array__slots(RT.MB<RT.M_Deposit>, F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), F.spec_common__update(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t), U32.to_nat(i), m), F.array__upd_slots(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m, hi, pf)), e2)
+  +hv2 = F.logic__subst(l16_Deposit_c.l16_Deposit_Seq, z => {Nat.is_le(U32.to_nat(RT.xlen_o_l16_Deposit(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, eo, hv)
+  %Equal.sym(l16_Deposit_c.l16_Deposit_Seq, o, l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, eo) :
+    RR.roots(VS.field_set(RT.xv_l16_Deposit(_), U32.to_nat(i), VQ.vm_l16_Deposit(RT.fz_Deposit_bx(FuluDeposit_d.Deposit_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_Deposit(hl, Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(_, i, v))))])
+  %vs0 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_Deposit(hl, Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, i, v))))])
+  %Equal.sym(l16_Deposit_c.l16_Deposit_Seq, Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, i, v)), l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), n}, sq) :
+    RR.roots(RT.xv_l16_Deposit(_), s, [D.bytes(RTH.xd_l16_Deposit(hl, _))])
+  RTH.rs_l16_Deposit(hl, ehl, h, l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m)), n}, s, ((F.array__upd(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m), (d, (n, ({==}, (F.array__upd_perfect(RT.MB<RT.M_Deposit>, d, t, U32.to_nat(i), m, pf), (hd, (hn, e3))))))), hv2), dv, edv, ok, eq)
+
+def l16_Deposit_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_Deposit_c.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RTH.ok_l16_Deposit(s, dv) == True{} : Bool}, +eq: RTH.eqs_l16_Deposit(s), +i: U32, v: FuluDeposit_d.Deposit, +m: RT.MB<RT.M_Deposit>, +hm: {RT.th_Deposit_bx(m) == FuluDeposit_d.Deposit_bx_wrap(v) : O.Boxed<FuluDeposit_d.Deposit>}, +rv: RT.rep_Deposit_bx(FuluDeposit_d.Deposit_bx_wrap(v), SH.ListOf_element(s)), +hs: {U32.is_lt(i, RT.xlen_o_l16_Deposit(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RT.xv_l16_Deposit(o), U32.to_nat(i), VQ.vm_l16_Deposit(RT.fz_Deposit_bx(FuluDeposit_d.Deposit_bx_wrap(v)))), s, [D.bytes(RTH.xd_l16_Deposit(hl, Pair.fst(l16_Deposit_c.l16_Deposit_Seq, Bool, l16_Deposit_c.l16_Deposit_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, w6) = w5
+  (+hn, +er) = w6
+  +hsn = F.logic__subst(l16_Deposit_c.l16_Deposit_Seq, z => {U32.is_lt(i, RT.xlen_o_l16_Deposit(z)) == True{} : Bool}, o, l16_Deposit_c.l16_Deposit_Seq{RT.am_l16_Deposit(t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t)), Equal.sym(Nat, F.spec_common__length(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t)), F.spec_common__pow2(d), F.array__slots_length(RT.MB<RT.M_Deposit>, d, t, pf)), hi)
+  l16_Deposit_root_go(hl, ehl, h, o, s, rep, dv, edv, ok, eq, i, v, m, hm, rv, hs, t, d, n, eo, pf, hd, hn, er, hv, hi, hsn, nth_ex(RT.MB<RT.M_Deposit>, F.array__slots(RT.MB<RT.M_Deposit>, t), U32.to_nat(i), hil))
+
 def v7_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v7_b32_c.v7_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
   %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {Pair.fst(O.Words, Bool, v7_b32_c.v7_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
@@ -120,6 +495,73 @@ def v8192_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.W
   %vs2 :
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
+
+def l131072_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def l131072_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {UL_L.uview(Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {UL_L.uview(Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {UL_L.uview(_) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_uitems(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def l131072_u64_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +ks: DK.P2({U32.to_nat(WO.len(o)) == O.e8(UL_L.ucnt(o)) : Nat}, {Nat.is_le(UL_L.ucnt(o), SH.ListOf_limit(s)) == True{} : Bool}), +wf: LO.wfl(o), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+eN, +hv) = ks
+  match wf:
+    case Inl{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+eo, w4) = w3
+      (+pf, w5) = w4
+      (+hd, +h0) = w5
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +c0 = UL.e8_zero(U32.to_nat(U32.shrn(n, 3n)), Equal.trans(Nat, 0n, U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), 0n, h0), eNN))
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      Empty.absurd(RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(o, i, O.U64{x0, x1})), depth))]), F.nat__lt_zero_absurd(U32.to_nat(i), F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, U32.to_nat(U32.shrn(n, 3n)), 0n, c0, hlt0)))
+    case Inr{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+qc, w4) = w3
+      (+r, w5) = w4
+      (+eo, w6) = w5
+      (+pf, w7) = w6
+      (+hd, w8) = w7
+      (+enq, w9) = w8
+      (+h1, w10) = w9
+      (+h32, w11) = w10
+      (+room, +slack) = w11
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+      +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+      +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+      +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+      +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+      +se = l131072_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+      +vs = l131072_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+      +vs2 = F.logic__subst(O.Words, z => {UL_L.uview(z) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+      +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+      +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+      +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == O.e8(UL_L.ucnt(z)) : Nat}, {Nat.is_le(UL_L.ucnt(z), SH.ListOf_limit(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+        RR.roots(VS.field_set(UL_L.uview(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(_, i, O.U64{x0, x1})), depth))])
+      %Equal.sym(O.Words, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+        RR.roots(VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, _, depth))])
+      %vs2 :
+        RR.roots(_, s, [D.bytes(UL.udig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+      UL.ul_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, dU, seg, (Inr{(WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2))))))))))))}, ks2), ok, edu, hdep)
+
+def l131072_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: UL_L.rep_ul(o, s), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l131072_u64_c.l131072_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  l131072_u64_root_go(hl, ehl, h, o, s, depth, dU, seg, i, q, x0, x1, ks, wf, ok, edu, hdep, hlt, hs, hq, hqe)
 
 def v512_b48_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 48))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 48 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 12n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v512_b48_c.v512_b48_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7), Nat.add(q, 8n), x8), Nat.add(q, 9n), x9), Nat.add(q, 10n), x10), Nat.add(q, 11n), x11)), n} : O.Words}:
@@ -235,6 +677,150 @@ def v6_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Word
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
 
+def l8192_DepositRequest_root_sq(+d: Nat, +t: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +n: U32, +i: U32, +v: FuluDepositRequest_d.DepositRequest, +x: FuluDepositRequest_d.DepositRequest, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}, +pf: {F.array__perfect(FuluDepositRequest_d.DepositRequest, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_set(l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}, i, v)) == l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n} : l8192_DepositRequest_c.l8192_DepositRequest_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_put_in(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n, i, v)) == l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n} : l8192_DepositRequest_c.l8192_DepositRequest_Seq}
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, t), i, v), F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), F.array__set(FuluDepositRequest_d.DepositRequest, d, t, i, v, x, hd, hi, hx, pf)) : {l8192_DepositRequest_c.l8192_DepositRequest_Seq{_, n} == l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n} : l8192_DepositRequest_c.l8192_DepositRequest_Seq}
+  {==}
+
+def l8192_DepositRequest_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l8192_DepositRequest_c.l8192_DepositRequest_Seq, +s: S.Schema, +rep: RTL.rep_l8192_DepositRequest(o, s), +ok: {RTH.ok_l8192_DepositRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}} : S.Schema}, +i: U32, +v: FuluDepositRequest_d.DepositRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l8192_DepositRequest(o)) == True{} : Bool}, +t: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +d: Nat, +n: U32, +eo: {o == l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n} : l8192_DepositRequest_c.l8192_DepositRequest_Seq}, +pf: {F.array__perfect(FuluDepositRequest_d.DepositRequest, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l8192_DepositRequest(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluDepositRequest_d.DepositRequest, x => {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}))
+    -> RR.roots(VS.field_set(RTL.xv_l8192_DepositRequest(o), U32.to_nat(i), RN.v_DepositRequest(v)), s, [D.bytes(RTH.xd_l8192_DepositRequest(hl, Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l8192_DepositRequest_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l8192_DepositRequest_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, z => {RTL.xv_l8192_DepositRequest(z) == VS.field_set(RTL.xv_l8192_DepositRequest(l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}), U32.to_nat(i), RN.v_DepositRequest(v)) : S.Value}, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n}, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l8192_DepositRequest(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}, eo, hv)
+  %Equal.sym(l8192_DepositRequest_c.l8192_DepositRequest_Seq, o, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l8192_DepositRequest(_), U32.to_nat(i), RN.v_DepositRequest(v)), s, [D.bytes(RTH.xd_l8192_DepositRequest(hl, Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_set(_, i, v))))])
+  %Equal.sym(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_set(l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}, i, v)), l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l8192_DepositRequest(l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}), U32.to_nat(i), RN.v_DepositRequest(v)), s, [D.bytes(RTH.xd_l8192_DepositRequest(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l8192_DepositRequest(hl, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l8192_DepositRequest(hl, ehl, h, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l8192_DepositRequest_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l8192_DepositRequest_c.l8192_DepositRequest_Seq, +s: S.Schema, +rep: RTL.rep_l8192_DepositRequest(o, s), +ok: {RTH.ok_l8192_DepositRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}} : S.Schema}, +i: U32, +v: FuluDepositRequest_d.DepositRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l8192_DepositRequest(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l8192_DepositRequest(o), U32.to_nat(i), RN.v_DepositRequest(v)), s, [D.bytes(RTH.xd_l8192_DepositRequest(hl, Pair.fst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, Bool, l8192_DepositRequest_c.l8192_DepositRequest_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l8192_DepositRequest_c.l8192_DepositRequest_Seq, z => {U32.is_lt(i, RTL.xlen_o_l8192_DepositRequest(z)) == True{} : Bool}, o, l8192_DepositRequest_c.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t)), Equal.sym(Nat, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t)), F.spec_common__pow2(d), F.array__slots_length(FuluDepositRequest_d.DepositRequest, d, t, pf)), hi)
+  l8192_DepositRequest_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i), hil))
+
+def l16_WithdrawalRequest_root_sq(+d: Nat, +t: F.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +n: U32, +i: U32, +v: FuluWithdrawalRequest_d.WithdrawalRequest, +x: FuluWithdrawalRequest_d.WithdrawalRequest, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>}, +pf: {F.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_set(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}, i, v)) == l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n} : l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_put_in(_, F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n, i, v)) == l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n} : l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq}
+  %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), i, v), F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), F.array__set(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, i, v, x, hd, hi, hx, pf)) : {l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{_, n} == l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n} : l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq}
+  {==}
+
+def l16_WithdrawalRequest_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep: RTL.rep_l16_WithdrawalRequest(o, s), +ok: {RTH.ok_l16_WithdrawalRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}} : S.Schema}, +i: U32, +v: FuluWithdrawalRequest_d.WithdrawalRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l16_WithdrawalRequest(o)) == True{} : Bool}, +t: F.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +d: Nat, +n: U32, +eo: {o == l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n} : l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq}, +pf: {F.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_WithdrawalRequest(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluWithdrawalRequest_d.WithdrawalRequest, x => {F.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>}))
+    -> RR.roots(VS.field_set(RTL.xv_l16_WithdrawalRequest(o), U32.to_nat(i), RN.v_WithdrawalRequest(v)), s, [D.bytes(RTH.xd_l16_WithdrawalRequest(hl, Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_WithdrawalRequest_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l16_WithdrawalRequest_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, z => {RTL.xv_l16_WithdrawalRequest(z) == VS.field_set(RTL.xv_l16_WithdrawalRequest(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}), U32.to_nat(i), RN.v_WithdrawalRequest(v)) : S.Value}, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n}, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_WithdrawalRequest(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}, eo, hv)
+  %Equal.sym(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, o, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l16_WithdrawalRequest(_), U32.to_nat(i), RN.v_WithdrawalRequest(v)), s, [D.bytes(RTH.xd_l16_WithdrawalRequest(hl, Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_set(_, i, v))))])
+  %Equal.sym(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_set(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}, i, v)), l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l16_WithdrawalRequest(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}), U32.to_nat(i), RN.v_WithdrawalRequest(v)), s, [D.bytes(RTH.xd_l16_WithdrawalRequest(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_WithdrawalRequest(hl, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l16_WithdrawalRequest(hl, ehl, h, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l16_WithdrawalRequest_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep: RTL.rep_l16_WithdrawalRequest(o, s), +ok: {RTH.ok_l16_WithdrawalRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}} : S.Schema}, +i: U32, +v: FuluWithdrawalRequest_d.WithdrawalRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l16_WithdrawalRequest(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l16_WithdrawalRequest(o), U32.to_nat(i), RN.v_WithdrawalRequest(v)), s, [D.bytes(RTH.xd_l16_WithdrawalRequest(hl, Pair.fst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, Bool, l16_WithdrawalRequest_c.l16_WithdrawalRequest_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq, z => {U32.is_lt(i, RTL.xlen_o_l16_WithdrawalRequest(z)) == True{} : Bool}, o, l16_WithdrawalRequest_c.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t)), Equal.sym(Nat, F.spec_common__length(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t)), F.spec_common__pow2(d), F.array__slots_length(FuluWithdrawalRequest_d.WithdrawalRequest, d, t, pf)), hi)
+  l16_WithdrawalRequest_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), U32.to_nat(i), hil))
+
+def l2_ConsolidationRequest_root_sq(+d: Nat, +t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +n: U32, +i: U32, +v: FuluConsolidationRequest_d.ConsolidationRequest, +x: FuluConsolidationRequest_d.ConsolidationRequest, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}, +pf: {F.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_set(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, i, v)) == l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n} : l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_put_in(_, F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n, i, v)) == l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n} : l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq}
+  %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest>, Array.set(FuluConsolidationRequest_d.ConsolidationRequest, F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), i, v), F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), F.array__set(FuluConsolidationRequest_d.ConsolidationRequest, d, t, i, v, x, hd, hi, hx, pf)) : {l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{_, n} == l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n} : l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq}
+  {==}
+
+def l2_ConsolidationRequest_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, +s: S.Schema, +rep: RTL.rep_l2_ConsolidationRequest(o, s), +ok: {RTH.ok_l2_ConsolidationRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}} : S.Schema}, +i: U32, +v: FuluConsolidationRequest_d.ConsolidationRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l2_ConsolidationRequest(o)) == True{} : Bool}, +t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +d: Nat, +n: U32, +eo: {o == l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n} : l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq}, +pf: {F.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l2_ConsolidationRequest(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluConsolidationRequest_d.ConsolidationRequest, x => {F.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}))
+    -> RR.roots(VS.field_set(RTL.xv_l2_ConsolidationRequest(o), U32.to_nat(i), RN.v_ConsolidationRequest(v)), s, [D.bytes(RTH.xd_l2_ConsolidationRequest(hl, Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l2_ConsolidationRequest_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l2_ConsolidationRequest_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, z => {RTL.xv_l2_ConsolidationRequest(z) == VS.field_set(RTL.xv_l2_ConsolidationRequest(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}), U32.to_nat(i), RN.v_ConsolidationRequest(v)) : S.Value}, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n}, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l2_ConsolidationRequest(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, eo, hv)
+  %Equal.sym(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, o, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l2_ConsolidationRequest(_), U32.to_nat(i), RN.v_ConsolidationRequest(v)), s, [D.bytes(RTH.xd_l2_ConsolidationRequest(hl, Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_set(_, i, v))))])
+  %Equal.sym(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_set(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, i, v)), l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l2_ConsolidationRequest(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}), U32.to_nat(i), RN.v_ConsolidationRequest(v)), s, [D.bytes(RTH.xd_l2_ConsolidationRequest(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l2_ConsolidationRequest(hl, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l2_ConsolidationRequest(hl, ehl, h, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluConsolidationRequest_d.ConsolidationRequest, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l2_ConsolidationRequest_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, +s: S.Schema, +rep: RTL.rep_l2_ConsolidationRequest(o, s), +ok: {RTH.ok_l2_ConsolidationRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}} : S.Schema}, +i: U32, +v: FuluConsolidationRequest_d.ConsolidationRequest, +hs: {U32.is_lt(i, RTL.xlen_o_l2_ConsolidationRequest(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l2_ConsolidationRequest(o), U32.to_nat(i), RN.v_ConsolidationRequest(v)), s, [D.bytes(RTH.xd_l2_ConsolidationRequest(hl, Pair.fst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, Bool, l2_ConsolidationRequest_c.l2_ConsolidationRequest_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq, z => {U32.is_lt(i, RTL.xlen_o_l2_ConsolidationRequest(z)) == True{} : Bool}, o, l2_ConsolidationRequest_c.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t)), Equal.sym(Nat, F.spec_common__length(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t)), F.spec_common__pow2(d), F.array__slots_length(FuluConsolidationRequest_d.ConsolidationRequest, d, t, pf)), hi)
+  l2_ConsolidationRequest_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluConsolidationRequest_d.ConsolidationRequest, F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), U32.to_nat(i), hil))
+
+def l16_Withdrawal_root_sq(+d: Nat, +t: F.array__Tree<FuluWithdrawal_d.Withdrawal>, +n: U32, +i: U32, +v: FuluWithdrawal_d.Withdrawal, +x: FuluWithdrawal_d.Withdrawal, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluWithdrawal_d.Withdrawal>}, +pf: {F.array__perfect(FuluWithdrawal_d.Withdrawal, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_set(l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}, i, v)) == l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n} : l16_Withdrawal_c.l16_Withdrawal_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_put_in(_, F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n, i, v)) == l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n} : l16_Withdrawal_c.l16_Withdrawal_Seq}
+  %Equal.sym(Array<FuluWithdrawal_d.Withdrawal>, Array.set(FuluWithdrawal_d.Withdrawal, F.array__thaw(FuluWithdrawal_d.Withdrawal, t), i, v), F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), F.array__set(FuluWithdrawal_d.Withdrawal, d, t, i, v, x, hd, hi, hx, pf)) : {l16_Withdrawal_c.l16_Withdrawal_Seq{_, n} == l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n} : l16_Withdrawal_c.l16_Withdrawal_Seq}
+  {==}
+
+def l16_Withdrawal_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_Withdrawal_c.l16_Withdrawal_Seq, +s: S.Schema, +rep: RTL.rep_l16_Withdrawal(o, s), +ok: {RTH.ok_l16_Withdrawal(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}} : S.Schema}, +i: U32, +v: FuluWithdrawal_d.Withdrawal, +hs: {U32.is_lt(i, RTL.xlen_o_l16_Withdrawal(o)) == True{} : Bool}, +t: F.array__Tree<FuluWithdrawal_d.Withdrawal>, +d: Nat, +n: U32, +eo: {o == l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n} : l16_Withdrawal_c.l16_Withdrawal_Seq}, +pf: {F.array__perfect(FuluWithdrawal_d.Withdrawal, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_Withdrawal(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluWithdrawal_d.Withdrawal, x => {F.spec_common__nth(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluWithdrawal_d.Withdrawal>}))
+    -> RR.roots(VS.field_set(RTL.xv_l16_Withdrawal(o), U32.to_nat(i), RN.v_Withdrawal(v)), s, [D.bytes(RTH.xd_l16_Withdrawal(hl, Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_Withdrawal_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l16_Withdrawal_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l16_Withdrawal_c.l16_Withdrawal_Seq, z => {RTL.xv_l16_Withdrawal(z) == VS.field_set(RTL.xv_l16_Withdrawal(l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}), U32.to_nat(i), RN.v_Withdrawal(v)) : S.Value}, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n}, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l16_Withdrawal_c.l16_Withdrawal_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_Withdrawal(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}, eo, hv)
+  %Equal.sym(l16_Withdrawal_c.l16_Withdrawal_Seq, o, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l16_Withdrawal(_), U32.to_nat(i), RN.v_Withdrawal(v)), s, [D.bytes(RTH.xd_l16_Withdrawal(hl, Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_set(_, i, v))))])
+  %Equal.sym(l16_Withdrawal_c.l16_Withdrawal_Seq, Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_set(l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}, i, v)), l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l16_Withdrawal(l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}), U32.to_nat(i), RN.v_Withdrawal(v)), s, [D.bytes(RTH.xd_l16_Withdrawal(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_Withdrawal(hl, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l16_Withdrawal(hl, ehl, h, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluWithdrawal_d.Withdrawal, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l16_Withdrawal_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_Withdrawal_c.l16_Withdrawal_Seq, +s: S.Schema, +rep: RTL.rep_l16_Withdrawal(o, s), +ok: {RTH.ok_l16_Withdrawal(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}} : S.Schema}, +i: U32, +v: FuluWithdrawal_d.Withdrawal, +hs: {U32.is_lt(i, RTL.xlen_o_l16_Withdrawal(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l16_Withdrawal(o), U32.to_nat(i), RN.v_Withdrawal(v)), s, [D.bytes(RTH.xd_l16_Withdrawal(hl, Pair.fst(l16_Withdrawal_c.l16_Withdrawal_Seq, Bool, l16_Withdrawal_c.l16_Withdrawal_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l16_Withdrawal_c.l16_Withdrawal_Seq, z => {U32.is_lt(i, RTL.xlen_o_l16_Withdrawal(z)) == True{} : Bool}, o, l16_Withdrawal_c.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t)), Equal.sym(Nat, F.spec_common__length(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t)), F.spec_common__pow2(d), F.array__slots_length(FuluWithdrawal_d.Withdrawal, d, t, pf)), hi)
+  l16_Withdrawal_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluWithdrawal_d.Withdrawal, F.array__slots(FuluWithdrawal_d.Withdrawal, t), U32.to_nat(i), hil))
+
 def l16777216_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
   %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {Pair.fst(O.Words, Bool, l16777216_b32_c.l16777216_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
@@ -317,6 +903,73 @@ def l16777216_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +
   (+eN, +hv) = ks
   l16777216_b32_root_go(hl, ehl, o, s, depth, i, q, x0, x1, x2, x3, x4, x5, x6, x7, eN, hv, wfl_core(o, wf), ok, hdep, hlt, hs, hq, hqe)
 
+def l1099511627776_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def l1099511627776_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {UL_L.uview(Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {UL_L.uview(Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {UL_L.uview(_) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_uitems(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def l1099511627776_u64_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +ks: DK.P2({U32.to_nat(WO.len(o)) == O.e8(UL_L.ucnt(o)) : Nat}, {Nat.is_le(UL_L.ucnt(o), SH.ListOf_limit(s)) == True{} : Bool}), +wf: LO.wfl(o), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+eN, +hv) = ks
+  match wf:
+    case Inl{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+eo, w4) = w3
+      (+pf, w5) = w4
+      (+hd, +h0) = w5
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +c0 = UL.e8_zero(U32.to_nat(U32.shrn(n, 3n)), Equal.trans(Nat, 0n, U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), 0n, h0), eNN))
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      Empty.absurd(RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(o, i, O.U64{x0, x1})), depth))]), F.nat__lt_zero_absurd(U32.to_nat(i), F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, U32.to_nat(U32.shrn(n, 3n)), 0n, c0, hlt0)))
+    case Inr{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+qc, w4) = w3
+      (+r, w5) = w4
+      (+eo, w6) = w5
+      (+pf, w7) = w6
+      (+hd, w8) = w7
+      (+enq, w9) = w8
+      (+h1, w10) = w9
+      (+h32, w11) = w10
+      (+room, +slack) = w11
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+      +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+      +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+      +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+      +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+      +se = l1099511627776_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+      +vs = l1099511627776_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+      +vs2 = F.logic__subst(O.Words, z => {UL_L.uview(z) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+      +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+      +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+      +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == O.e8(UL_L.ucnt(z)) : Nat}, {Nat.is_le(UL_L.ucnt(z), SH.ListOf_limit(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+        RR.roots(VS.field_set(UL_L.uview(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(_, i, O.U64{x0, x1})), depth))])
+      %Equal.sym(O.Words, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+        RR.roots(VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, _, depth))])
+      %vs2 :
+        RR.roots(_, s, [D.bytes(UL.udig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+      UL.ul_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, dU, seg, (Inr{(WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2))))))))))))}, ks2), ok, edu, hdep)
+
+def l1099511627776_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: UL_L.rep_ul(o, s), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l1099511627776_u64_c.l1099511627776_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  l1099511627776_u64_root_go(hl, ehl, h, o, s, depth, dU, seg, i, q, x0, x1, ks, wf, ok, edu, hdep, hlt, hs, hq, hqe)
+
 def v65536_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v65536_b32_c.v65536_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
   %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {Pair.fst(O.Words, Bool, v65536_b32_c.v65536_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
@@ -356,6 +1009,106 @@ def v65536_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
 
+def v8192_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def v8192_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {PK_L.vview8(Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {PK_L.vview8(Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {PK_L.vview8(_) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_it8(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def v8192_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: PK_L.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(PK_L.vview8(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+qc, w4) = w3
+  (+r, w5) = w4
+  (+eo, w6) = w5
+  (+pf, w7) = w6
+  (+hd, w8) = w7
+  (+enq, w9) = w8
+  (+h1, w10) = w9
+  (+h32, w11) = w10
+  (+room, +slack) = w11
+  (+eN, +hv) = ks
+  +eNN = UL.eq_n(o, t, n, eo, eN)
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+  +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+  +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+  +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+  +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+  +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+  +se = v8192_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+  +vs = v8192_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+  +vs2 = F.logic__subst(O.Words, z => {PK_L.vview8(z) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+  +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+  +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+  +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == PK_L.e8(PK_L.cnt8(z)) : Nat}, {Nat.is_eq(PK_L.cnt8(z), SH.Vector_length(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+    RR.roots(VS.field_set(PK_L.vview8(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(_, i, O.U64{x0, x1})), depth))])
+  %Equal.sym(O.Words, Pair.fst(O.Words, Bool, v8192_u64_c.v8192_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+    RR.roots(VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, _, depth))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+  PK.v8_rs(hl, ehl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, ((WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2)))))))))))), ks2), ok, hdep)
+
+def v64_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def v64_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {PK_L.vview8(Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {PK_L.vview8(Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {PK_L.vview8(_) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_it8(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def v64_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: Nat, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: PK_L.rep_v8(o, s), +ok: {PK.ok_v8(s, depth) == True{} : Bool}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(PK_L.vview8(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+qc, w4) = w3
+  (+r, w5) = w4
+  (+eo, w6) = w5
+  (+pf, w7) = w6
+  (+hd, w8) = w7
+  (+enq, w9) = w8
+  (+h1, w10) = w9
+  (+h32, w11) = w10
+  (+room, +slack) = w11
+  (+eN, +hv) = ks
+  +eNN = UL.eq_n(o, t, n, eo, eN)
+  +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+  +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+  +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+  +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+  +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), PK_L.cnt8(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+  +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+  +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+  +se = v64_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+  +vs = v64_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+  +vs2 = F.logic__subst(O.Words, z => {PK_L.vview8(z) == VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+  +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+  +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+  +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == PK_L.e8(PK_L.cnt8(z)) : Nat}, {Nat.is_eq(PK_L.cnt8(z), SH.Vector_length(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+    RR.roots(VS.field_set(PK_L.vview8(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(_, i, O.U64{x0, x1})), depth))])
+  %Equal.sym(O.Words, Pair.fst(O.Words, Bool, v64_u64_c.v64_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+    RR.roots(VS.field_set(PK_L.vview8(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(WO.wdig(hl, _, depth))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+  PK.v8_rs(hl, ehl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, ((WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2)))))))))))), ks2), ok, hdep)
+
 def v4_b32_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 32))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 32 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 8n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, v4_b32_c.v4_b32_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}:
   %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 32))), True{}, hs) : {Pair.fst(O.Words, Bool, v4_b32_c.v4_b32_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7)), n} : O.Words}
@@ -394,6 +1147,78 @@ def v4_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Word
   %vs2 :
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
+
+def l16_SignedVoluntaryExit_root_sq(+d: Nat, +t: F.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +n: U32, +i: U32, +v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +x: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}, +pf: {F.array__perfect(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_set(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}, i, v)) == l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n} : l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_put_in(_, F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n, i, v)) == l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n} : l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq}
+  %Equal.sym(Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, Array.set(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), i, v), F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), F.array__set(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, i, v, x, hd, hi, hx, pf)) : {l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{_, n} == l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n} : l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq}
+  {==}
+
+def l16_SignedVoluntaryExit_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, +s: S.Schema, +rep: RTL.rep_l16_SignedVoluntaryExit(o, s), +ok: {RTH.ok_l16_SignedVoluntaryExit(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}, +i: U32, +v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +hs: {U32.is_lt(i, RTL.xlen_o_l16_SignedVoluntaryExit(o)) == True{} : Bool}, +t: F.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +d: Nat, +n: U32, +eo: {o == l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n} : l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq}, +pf: {F.array__perfect(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_SignedVoluntaryExit(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, x => {F.spec_common__nth(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}))
+    -> RR.roots(VS.field_set(RTL.xv_l16_SignedVoluntaryExit(o), U32.to_nat(i), RN.v_SignedVoluntaryExit(v)), s, [D.bytes(RTH.xd_l16_SignedVoluntaryExit(hl, Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_SignedVoluntaryExit_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l16_SignedVoluntaryExit_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, z => {RTL.xv_l16_SignedVoluntaryExit(z) == VS.field_set(RTL.xv_l16_SignedVoluntaryExit(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}), U32.to_nat(i), RN.v_SignedVoluntaryExit(v)) : S.Value}, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n}, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_SignedVoluntaryExit(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}, eo, hv)
+  %Equal.sym(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, o, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l16_SignedVoluntaryExit(_), U32.to_nat(i), RN.v_SignedVoluntaryExit(v)), s, [D.bytes(RTH.xd_l16_SignedVoluntaryExit(hl, Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_set(_, i, v))))])
+  %Equal.sym(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_set(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}, i, v)), l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l16_SignedVoluntaryExit(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}), U32.to_nat(i), RN.v_SignedVoluntaryExit(v)), s, [D.bytes(RTH.xd_l16_SignedVoluntaryExit(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_SignedVoluntaryExit(hl, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l16_SignedVoluntaryExit(hl, ehl, h, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l16_SignedVoluntaryExit_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, +s: S.Schema, +rep: RTL.rep_l16_SignedVoluntaryExit(o, s), +ok: {RTH.ok_l16_SignedVoluntaryExit(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}, +i: U32, +v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +hs: {U32.is_lt(i, RTL.xlen_o_l16_SignedVoluntaryExit(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l16_SignedVoluntaryExit(o), U32.to_nat(i), RN.v_SignedVoluntaryExit(v)), s, [D.bytes(RTH.xd_l16_SignedVoluntaryExit(hl, Pair.fst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, Bool, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq, z => {U32.is_lt(i, RTL.xlen_o_l16_SignedVoluntaryExit(z)) == True{} : Bool}, o, l16_SignedVoluntaryExit_c.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t)), Equal.sym(Nat, F.spec_common__length(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t)), F.spec_common__pow2(d), F.array__slots_length(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, d, t, pf)), hi)
+  l16_SignedVoluntaryExit_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), U32.to_nat(i), hil))
+
+def l16_SignedBLSToExecutionChange_root_sq(+d: Nat, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +n: U32, +i: U32, +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +x: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}, +pf: {F.array__perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool})
+    -> {Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_set(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}, i, v)) == l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n} : l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hsn) : {Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_put_in(_, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n, i, v)) == l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n} : l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq}
+  %Equal.sym(Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, Array.set(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), i, v), F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), F.array__set(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, i, v, x, hd, hi, hx, pf)) : {l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{_, n} == l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n} : l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq}
+  {==}
+
+def l16_SignedBLSToExecutionChange_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, +s: S.Schema, +rep: RTL.rep_l16_SignedBLSToExecutionChange(o, s), +ok: {RTH.ok_l16_SignedBLSToExecutionChange(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}, +i: U32, +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +hs: {U32.is_lt(i, RTL.xlen_o_l16_SignedBLSToExecutionChange(o)) == True{} : Bool}, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +d: Nat, +n: U32, +eo: {o == l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n} : l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq}, +pf: {F.array__perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(d)) == True{} : Bool}, +hv: {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_SignedBLSToExecutionChange(o)), SH.ListOf_limit(s)) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hsn: {U32.is_lt(i, n) == True{} : Bool}, +ex: DK.Ex(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, x => {F.spec_common__nth(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}))
+    -> RR.roots(VS.field_set(RTL.xv_l16_SignedBLSToExecutionChange(o), U32.to_nat(i), RN.v_SignedBLSToExecutionChange(v)), s, [D.bytes(RTH.xd_l16_SignedBLSToExecutionChange(hl, Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_set(o, i, v))))]):
+  (+x, +hx) = ex
+  +sq = l16_SignedBLSToExecutionChange_root_sq(d, t, n, i, v, x, hd, hi, hx, pf, hsn)
+  +vs = VQ.l16_SignedBLSToExecutionChange_view_set(U32.to_nat(n), d, t, U32.to_nat(i), v, hi, pf)
+  +vs2 = F.logic__subst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, z => {RTL.xv_l16_SignedBLSToExecutionChange(z) == VS.field_set(RTL.xv_l16_SignedBLSToExecutionChange(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}), U32.to_nat(i), RN.v_SignedBLSToExecutionChange(v)) : S.Value}, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n}, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n}, {==}, vs)
+  +hv2 = F.logic__subst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, z => {Nat.is_le(U32.to_nat(RTL.xlen_o_l16_SignedBLSToExecutionChange(z)), SH.ListOf_limit(s)) == True{} : Bool}, o, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}, eo, hv)
+  %Equal.sym(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, o, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}, eo) :
+    RR.roots(VS.field_set(RTL.xv_l16_SignedBLSToExecutionChange(_), U32.to_nat(i), RN.v_SignedBLSToExecutionChange(v)), s, [D.bytes(RTH.xd_l16_SignedBLSToExecutionChange(hl, Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_set(_, i, v))))])
+  %Equal.sym(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_set(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}, i, v)), l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n}, sq) :
+    RR.roots(VS.field_set(RTL.xv_l16_SignedBLSToExecutionChange(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}), U32.to_nat(i), RN.v_SignedBLSToExecutionChange(v)), s, [D.bytes(RTH.xd_l16_SignedBLSToExecutionChange(hl, _))])
+  %vs2 :
+    RR.roots(_, s, [D.bytes(RTH.xd_l16_SignedBLSToExecutionChange(hl, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n}))])
+  RTH.rs_l16_SignedBLSToExecutionChange(hl, ehl, h, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v)), n}, s, ((F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v), (d, (n, ({==}, (F.array__upd_perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, U32.to_nat(i), v, pf), (hd, hn)))))), hv2), ok, eq)
+
+def l16_SignedBLSToExecutionChange_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, +s: S.Schema, +rep: RTL.rep_l16_SignedBLSToExecutionChange(o, s), +ok: {RTH.ok_l16_SignedBLSToExecutionChange(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}, +i: U32, +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, +hs: {U32.is_lt(i, RTL.xlen_o_l16_SignedBLSToExecutionChange(o)) == True{} : Bool})
+    -> RR.roots(VS.field_set(RTL.xv_l16_SignedBLSToExecutionChange(o), U32.to_nat(i), RN.v_SignedBLSToExecutionChange(v)), s, [D.bytes(RTH.xd_l16_SignedBLSToExecutionChange(hl, Pair.fst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, Bool, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_set(o, i, v))))]):
+  (+wf, +hv) = rep
+  (+t, w1) = wf
+  (+d, w2) = w1
+  (+n, w3) = w2
+  (+eo, w4) = w3
+  (+pf, w5) = w4
+  (+hd, +hn) = w5
+  +hsn = F.logic__subst(l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq, z => {U32.is_lt(i, RTL.xlen_o_l16_SignedBLSToExecutionChange(z)) == True{} : Bool}, o, l16_SignedBLSToExecutionChange_c.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), n}, eo, hs)
+  +hlt = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), F.u32__is_lt_nat(i, n), hsn)
+  +hi = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), F.spec_common__pow2(d), hlt, hn)
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t)), Equal.sym(Nat, F.spec_common__length(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t)), F.spec_common__pow2(d), F.array__slots_length(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, t, pf)), hi)
+  l16_SignedBLSToExecutionChange_root_go(hl, ehl, h, o, s, rep, ok, eq, i, v, hs, t, d, n, eo, pf, hd, hn, hv, hi, hsn, nth_ex(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), U32.to_nat(i), hil))
 
 def l4096_b48_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 48))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 48 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 12n), F.spec_common__pow2(d)) == True{} : Bool})
     -> {Pair.fst(O.Words, Bool, l4096_b48_c.l4096_b48_set(O.Words{F.array__thaw(U32, t), n}, i, FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1), Nat.add(q, 2n), x2), Nat.add(q, 3n), x3), Nat.add(q, 4n), x4), Nat.add(q, 5n), x5), Nat.add(q, 6n), x6), Nat.add(q, 7n), x7), Nat.add(q, 8n), x8), Nat.add(q, 9n), x9), Nat.add(q, 10n), x10), Nat.add(q, 11n), x11)), n} : O.Words}:
@@ -469,3 +1294,70 @@ def v17_b32_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Wor
   %vs2 :
     RR.roots(_, s, [D.bytes(WO.wdig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, depth))])
   PVR.pv_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n)), n}, s, depth, dU, seg, ((WW.tk([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n), (d, (n, (qv, ({==}, (WW.tk_perfect([x0, x1, x2, x3, x4, x5, x6, x7], d, t, q, 0n, pf), (hd, (en, room)))))))), ks2), ok, edu, hdep)
+
+def l128_u64_seteq(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})) == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {_ == O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n} : O.Words}
+  {==}
+
+def l128_u64_viewset(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(n, 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hr: {Nat.is_le(Nat.add(q, 2n), F.spec_common__pow2(d)) == True{} : Bool}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat}, +hcap: {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), F.spec_common__pow2(d)) == True{} : Bool})
+    -> {UL_L.uview(Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}:
+  %Equal.sym(Bool, U32.is_lt(i, (U32.div(n, 8))), True{}, hs) : {UL_L.uview(Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_put_at(_, O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1}))) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  %Equal.sym(O.Words, O.words_write_u64(O.Words{F.array__thaw(U32, t), n}, (i * 8 : U32), O.U64{x0, x1}), O.Words{F.array__thaw(U32, F.array__upd(U32, d, F.array__upd(U32, d, t, Nat.add(q, 0n), x0), Nat.add(q, 1n), x1)), n}, CW_u64.u64_write(d, t, n, (i * 8 : U32), q, hd, pf, hq, hr, x0, x1)) : {UL_L.uview(_) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}
+  VI_u64.view_set_uitems(U32.to_nat(U32.shrn(n, 3n)), d, t, x0, x1, U32.to_nat(i), q, hqe, hr, pf, hcap)
+
+def l128_u64_root_go(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +ks: DK.P2({U32.to_nat(WO.len(o)) == O.e8(UL_L.ucnt(o)) : Nat}, {Nat.is_le(UL_L.ucnt(o), SH.ListOf_limit(s)) == True{} : Bool}), +wf: LO.wfl(o), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+eN, +hv) = ks
+  match wf:
+    case Inl{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+eo, w4) = w3
+      (+pf, w5) = w4
+      (+hd, +h0) = w5
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +c0 = UL.e8_zero(U32.to_nat(U32.shrn(n, 3n)), Equal.trans(Nat, 0n, U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), 0n, h0), eNN))
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      Empty.absurd(RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(o, i, O.U64{x0, x1})), depth))]), F.nat__lt_zero_absurd(U32.to_nat(i), F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, U32.to_nat(U32.shrn(n, 3n)), 0n, c0, hlt0)))
+    case Inr{w}:
+      (+t, w1) = w
+      (+d, w2) = w1
+      (+n, w3) = w2
+      (+qc, w4) = w3
+      (+r, w5) = w4
+      (+eo, w6) = w5
+      (+pf, w7) = w6
+      (+hd, w8) = w7
+      (+enq, w9) = w8
+      (+h1, w10) = w9
+      (+h32, w11) = w10
+      (+room, +slack) = w11
+      +eNN = UL.eq_n(o, t, n, eo, eN)
+      +ec = Equal.trans(Nat, Nat.add(WS.e32(qc), r), U32.to_nat(n), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.sym(Nat, U32.to_nat(n), Nat.add(WS.e32(qc), r), enq), eNN)
+      +fit = UL.words_fit(U32.to_nat(U32.shrn(n, 3n)), qc, r, d, t, ec, h32, pf, room)
+      +hcap = F.logic__subst(Nat, z => {Nat.is_le(Nat.double(U32.to_nat(U32.shrn(n, 3n))), z) == True{} : Bool}, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(d), F.array__slots_length(U32, d, t, pf), fit)
+      +hsn = F.logic__subst(O.Words, z => {U32.is_lt(i, (U32.div(WO.len(z), 8))) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hs)
+      +hlt0 = F.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(z)) == True{} : Bool}, o, O.Words{F.array__thaw(U32, t), n}, eo, hlt)
+      +hlt1 = F.nat__lt_succ_le_succ(U32.to_nat(i), U32.to_nat(U32.shrn(n, 3n)), hlt0)
+      +hr = UT.hr_of(U32.to_nat(i), q, U32.to_nat(U32.shrn(n, 3n)), F.spec_common__pow2(d), hqe, hlt1, hcap)
+      +se = l128_u64_seteq(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr)
+      +vs = l128_u64_viewset(d, t, n, i, q, x0, x1, hd, pf, hsn, hq, hr, hqe, hcap)
+      +vs2 = F.logic__subst(O.Words, z => {UL_L.uview(z) == VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}) : S.Value}, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se, vs)
+      +ecq = Equal.trans(Nat, Nat.add(O.e8(Nat.double(Nat.double(qc))), r), Nat.add(WS.e32(qc), r), O.e8(U32.to_nat(U32.shrn(n, 3n))), Equal.cong(Nat, Nat, z => Nat.add(z, r), O.e8(Nat.double(Nat.double(qc))), WS.e32(qc), Equal.sym(Nat, WS.e32(qc), O.e8(Nat.double(Nat.double(qc))), UT.e32_quad(qc))), ec)
+      +slack2 = UT.tail_w(d, t, q, x0, x1, Nat.add(qc, 0n), U32.to_nat(i), qc, U32.to_nat(U32.shrn(n, 3n)), r, F.nat__add_zero(qc), hqe, hlt1, h1, h32, hr, pf, slack, UT.split8(Nat.double(Nat.double(qc)), U32.to_nat(U32.shrn(n, 3n)), r, ecq))
+      +ks2 = F.logic__subst(O.Words, z => DK.P2({U32.to_nat(WO.len(z)) == O.e8(UL_L.ucnt(z)) : Nat}, {Nat.is_le(UL_L.ucnt(z), SH.ListOf_limit(s)) == True{} : Bool}), o, O.Words{F.array__thaw(U32, t), n}, eo, ks)
+      %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), n}, eo) :
+        RR.roots(VS.field_set(UL_L.uview(_), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(_, i, O.U64{x0, x1})), depth))])
+      %Equal.sym(O.Words, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(O.Words{F.array__thaw(U32, t), n}, i, O.U64{x0, x1})), O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, se) :
+        RR.roots(VS.field_set(UL_L.uview(O.Words{F.array__thaw(U32, t), n}), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, _, depth))])
+      %vs2 :
+        RR.roots(_, s, [D.bytes(UL.udig(hl, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, depth))])
+      UL.ul_rs(hl, ehl, h, O.Words{F.array__thaw(U32, WW.tk([x0, x1], d, t, q, 0n)), n}, s, depth, dU, seg, (Inr{(WW.tk([x0, x1], d, t, q, 0n), (d, (n, (qc, (r, ({==}, (WW.tk_perfect([x0, x1], d, t, q, 0n, pf), (hd, (enq, (h1, (h32, (room, slack2))))))))))))}, ks2), ok, edu, hdep)
+
+def l128_u64_api_root_set(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32, +i: U32, +q: Nat, +x0: U32, +x1: U32, +rep: UL_L.rep_ul(o, s), +ok: {UL_L.ok_ul(s, depth) == True{} : Bool}, +edu: {U32.to_nat(dU) == depth : Nat}, +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(i), UL_L.ucnt(o)) == True{} : Bool}, +hs: {U32.is_lt(i, (U32.div(WO.len(o), 8))) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn((i * 8 : U32), 2n)) == q : Nat}, +hqe: {q == Nat.double(U32.to_nat(i)) : Nat})
+    -> RR.roots(VS.field_set(UL_L.uview(o), U32.to_nat(i), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}), s, [D.bytes(UL.udig(hl, Pair.fst(O.Words, Bool, l128_u64_c.l128_u64_set(o, i, O.U64{x0, x1})), depth))]):
+  (+wf, +ks) = rep
+  l128_u64_root_go(hl, ehl, h, o, s, depth, dU, seg, i, q, x0, x1, ks, wf, ok, edu, hdep, hlt, hs, hq, hqe)

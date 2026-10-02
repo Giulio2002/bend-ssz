@@ -82,7 +82,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 - setter-keeps-rep laws, `proofs/obj/prep_setters.bend` (`codegen/proofs/collections/rep_laws.py`):
   <!-- fig:obj_setter_laws -->211<!-- /fig --> laws over <!-- fig:obj_setter_containers -->36<!-- /fig --> containers;
 - collection laws of the public API, `proofs/obj/coll_api_*.bend`, `proofs/obj/coll_bits.bend`, `proofs/obj/coll_bytes.bend` (`codegen/proofs/collections/coll_laws.py`):
-  <!-- fig:obj_coll_statements -->482<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
+  <!-- fig:obj_coll_statements -->498<!-- /fig --> statements over <!-- fig:obj_coll_count -->41<!-- /fig -->
   collections: the flag is exactly the runtime's own guard (computed from the object, read from the generated code; it is not compared
   with the spec's length limit), rejection leaving the object unchanged, None outside the length, the length after an accepted set or
   append; read-back after set (and append, growth included) for <!-- fig:obj_coll_readback -->41<!-- /fig --> collections: the packed collections of whole-word
@@ -95,16 +95,29 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
   a Sequence; `bytes_set` for a byte sequence). The view is the one the root bridges use (`hview`, `pview`, `eview`, `uview`, `vview8`, `xv_<list>`,
   `BytesValue{wview}`, `vview1`), so a reader can compose it with the root and encode bridges; `proofs/obj/view_b32.bend`, `view_b48.bend`, `view_u64.bend`,
   `view_seq.bend` (which also covers the boxed lists, over the frozen mirror trees of `root_types_light.bend`), `view_bytes.bend` and, for the list of 2048-byte cells, `view_cells.bend` (`codegen/proofs/collections/view_laws.py`, `codegen/proofs/collections/viewcells.py`: the same induction, with a cell's bytes the limbs of its 512-word window, `proofs/obj/words_list.bend`; it needs `hcap`, the blocks below the count inside the storage) prove it by one induction over the items and `proofs/obj/words_win.bend`'s word-level facts
-  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant; for the list of Bytes32, `blist_obj.bend`'s `lh_core` on the written tree, with the size facts of the object and the room of its chunks from its `wfl` invariant): `..._api_root_set`, for <!-- fig:obj_coll_root -->10<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
+  `proofs/obj/coll_root.bend` composes it with the collections' root laws (`ev_rs`, `el_rs`, `pv_rs`: the digest of an object is a specification root of its view under its representation invariant; for the list of Bytes32, `blist_obj.bend`'s `lh_core` on the written tree, with the size facts of the object and the room of its chunks from its `wfl` invariant; for the lists and vectors of uint64, `ul_rs` and `v8_rs` on the written object, whose `wfl` / `wf1` invariant is rebuilt: the zero tail of its last chunk is the old one, `proofs/obj/u64_tail.bend`): `..._api_root_set`, for <!-- fig:obj_coll_root -->26<!-- /fig --> collections, says the digest after an accepted set is a specification root of the view with that item replaced. The representation invariant is rebuilt for the written storage (the same tree shape, `words_win.bend`'s `tk_perfect`, the same length).
   The spec-value append law of the bit lists (`..._api_view_append` with room, `..._api_view_append_grow` when the storage is reallocated, `proofs/obj/bits_view.bend`: `view_snoc`, `view_snoc_grow`; the grow law takes `hcov`, that the new bit's word index is within the words copied) and of the boxed lists (`..._api_view_append`, `proofs/obj/tfz_boxed.bend`) is in `coll_bits.bend` and `coll_seq.bend`. An accepted append with room in the storage gives `seq_append`: the view before with the new element's view at the end (`..._api_view_append`; the word lists, the record lists and the byte lists), and `..._api_view_append_grow` when the append reallocates (the word lists: `proofs/obj/words_win.bend`'s `at_cpy_in` says the copy keeps the old words).
   (the byte collections: through the limbs of the written word, `proofs/obj/byte_bits.bend`, and the split of the index into word and offset, `proofs/obj/u32split.bend`).
 
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed root statement of a mutated list for the boxed lists, the u64 collections and the record lists, and the composed encode statement of a mutated list; and
+composed root statement of a mutated list for the lists without a list-root law (Eth1Data, Validator, HistoricalSummary, Pending*), and the composed encode statement of a mutated list; and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
+
+Design note, the composed root of a mutated list of records or of boxed containers. The 11 lists with a root view (`xv_<c>`: `l8192_DepositRequest`,
+`l16_WithdrawalRequest`, `l2_ConsolidationRequest`, `l1048576_bl1073741824`, `l16_Withdrawal`, `l16_ProposerSlashing`, `l1_AttesterSlashing`, `l8_Attestation`,
+`l16_Deposit`, `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`) already have the list-root law `rs_<c>` (`proofs/obj/root_types.bend`: the digest `xd_<c>` of an object
+is a specification root of its view under `rep_<c>`, the element schema's `ok` and `eqs`) and the view-after-set law `..._api_view_set`. What is missing is the invariant
+of the written list: `rep_<c>(set(o, i, v), s)` from `rep_<c>(o, s)`, which needs (a) an `ereps_set` lemma, generated per list from `view_seq.bend`'s
+`<c>_xat_same` / `<c>_xat_other` (the element representations over the slots of the updated tree: the new element's, the old ones elsewhere; one induction on the count, deciding
+`J == i0`), (b) the written array as the array of the updated tree (`amset_<c>` for the boxed lists; the record lists store the elements directly) and the new element's
+representation as a premise (`rep_X(v, sE)`; for a boxed list `th_bx(fz_bx(wrap v))` is `wrap v` only given the element's own freeze/thaw law, which the container setters of
+`proofs/obj/prep_setters.bend` already assume as `rv`), and (c) the composition of `rs_<c>` with the view law, as `coll_root.bend` does for the word families. The other record
+lists (`Eth1Data`, `Validator`, `HistoricalSummary`, the `Pending*` lists) have no `xv_` view or `rs_` law, so the root statement of a mutated one first needs that list-root law
+(the generated digest of those lists is not covered by an `rs_` law at all). The encode of a mutated list is the same gap as the container setters': the encode bridge's storage premises
+of the written object, stated per element.
 
 ## Mutation testing (do the proofs notice wrong generated code?)
 
@@ -199,7 +212,7 @@ each with the same sha256.
 
 All against the independent oracle `codegen/core/oracle.py` (written from the specification, sharing
 no code with the generated runtime) unless noted; last run <!-- fig:evidence_date -->2026-10-01<!-- /fig --> on the ssz server at
-<!-- fig:evidence_commit -->5bdc9afa<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
+<!-- fig:evidence_commit -->3278d74b<!-- /fig -->, all passing. The runtime is stock Bend 2.0.34; each file records the compiler, the sources,
 the harness and the hash of every native program it ran (`benchmarks/checks/provenance.py`).
 
 | File | Harness | What |
