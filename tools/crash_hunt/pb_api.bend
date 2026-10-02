@@ -42,9 +42,14 @@ def size_line(label: String, b: B.Buf) -> IO(Unit):
 
 def case5() -> IO(Unit): size_line("encode_uint16_70000_size", StE.SmallTestStruct_encode(StD.SmallTestStruct{70000, 5}))
 
+def cap_root_line(label: String, pair: B.Buf & (CapD.ContributionAndProof & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (o, d) = r
+  IO.print(label ++ "=" ++ IOx.words(d))
+
 def zero96() -> Bytes96D.Bytes96: Bytes96D.Bytes96{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-def case6() -> IO(Unit): root_line("root_boxed_none", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, O.BNone{}, zero96()}))
-def case7() -> IO(Unit): root_line("root_boxed_default", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, ScD.SyncCommitteeContribution_bx_default(), zero96()}))
+def case6() -> IO(Unit): cap_root_line("root_boxed_none", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, O.BNone{}, zero96()}))
+def case7() -> IO(Unit): cap_root_line("root_boxed_default", CapH.ContributionAndProof_hash_tree_root(O.hasher(), CapD.ContributionAndProof{O.U64{1, 0}, ScD.SyncCommitteeContribution_bx_default(), zero96()}))
 
 def dispatch(+c: U32) -> IO(Unit):
   match c:
