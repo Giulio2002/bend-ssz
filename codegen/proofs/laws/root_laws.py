@@ -30,6 +30,7 @@ from codegen.proofs.laws import spec_laws as SL  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import sync_pairs  # noqa: E402
 LEAF = ROOT / 'proofs/obj/root_leaf.bend'
 PER_FILE = 24
 
@@ -1089,17 +1090,8 @@ def main():
         for n, st in status.items():
             print(f'{n}: {st}')
         return
-    outs = RR.rewire_out(outs)
-    if '--check' in sys.argv:
-        for path, text in outs:
-            if path.read_text() != text:
-                sys.exit('stale generated root laws: ' + str(path.relative_to(ROOT)))
-        print('generated root laws are current')
-        return
-    for path, text in outs:
-        path.write_text(text)
-        print(path.relative_to(ROOT))
+    return sync_pairs(RR.rewire_out(outs), 'root_laws', 'generated root laws are current')
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
