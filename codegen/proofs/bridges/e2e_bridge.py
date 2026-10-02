@@ -764,7 +764,7 @@ def seg_pf(+d: Nat, +sl: List<&2, U32>) -> {FD.array__perfect(U32, d, AC.segt(d,
 def blocks_of(f, cache):
     if f not in cache:
         # the runtime's symbols read as T.<sym> (a proving module imports the split files: RR.unwire)
-        cache[f] = AG.blocks(RR.unwire(_unlight((OBJ / f).read_text())))
+        cache[f] = AG.blocks(RR.unwire(_unlight(AG.proof_path(f).read_text())))
     return cache[f]
 
 
@@ -974,7 +974,7 @@ def requal(s, amap):
 def file_aliases(f):
     """a proving file's import aliases, mapped to this file's (T/O/B/S/P/Spec/D/F/SP)."""
     out = {}
-    for m in re.finditer(r'^import (\S+) as (\w+)$', _unlight((OBJ / f).read_text()), re.M):
+    for m in re.finditer(r'^import (\S+) as (\w+)$', _unlight(AG.proof_path(f).read_text()), re.M):
         path, a = m.group(1), m.group(2)
         base = path.split('/')[-1]
         known = {'fulu_obj.bend': 'T', 'generic_obj.bend': 'T', 'obj.bend': 'O', 'buffer.bend': 'B',
@@ -1144,7 +1144,7 @@ def family_w(X, m, cache):
     if not re.match(r'RR\.roots\(PK\.vview' + K + r'\(o\), s, ', b_rt[3]):
         return None
     return {'X': X, 'ename': ename, 'sname': sname, 'N': N, 'NW': NW, 'd': d, 'leaves': leaves, 'xs': xs, 'K': K, 'value': ms.group(4),
-            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': RR.runtime_of(_unlight((OBJ / ee[0]['file']).read_text())) == 'generic'}
+            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': RR.runtime_of(_unlight(AG.proof_path(ee[0]['file']).read_text())) == 'generic'}
 
 
 def leafterm(i, d):
@@ -2861,7 +2861,7 @@ def _collect_families():
             continue
         r['R'] = R
         r['ee_alias'] = file_aliases(r['ee']['file'])
-        r['generic'] = RR.runtime_of(_unlight((OBJ / r['ee']['file']).read_text())) == 'generic'
+        r['generic'] = RR.runtime_of(_unlight(AG.proof_path(r['ee']['file']).read_text())) == 'generic'
         fam.append(r)
     # a readable name shared by a Fulu name and a generic form (the basic types): the generic
     # form's laws carry its generated name
@@ -2953,14 +2953,14 @@ def _emit_any_rows(amap, cache, uncovered, out, wrows, man, row):
         a['alias'] = file_aliases(a['file'])
         b_rt = law(cache, m0['root'][0])
         rp = [q.strip() for q in b_rt[2]]
-        gen = RR.runtime_of(_unlight((OBJ / a['file']).read_text())) == 'generic'
+        gen = RR.runtime_of(_unlight(AG.proof_path(a['file']).read_text())) == 'generic'
         ms_ = re.search(r'\{s == Spec\.(\w+)\(\) : S\.Schema\}', ' '.join(rp))
         mk = re.match(r'\+rep: PK\.rep_v(\d+)\(o, s\)$', rp[-1]) if len(rp) == 5 else None
         if mk and ms_ and rp[1] == '-o: O.Words' and re.match(r'RR\.roots\(PK\.vview' + mk.group(1) + r'\(o\), s, ', b_rt[3]):
             row = {'X': X0, 'R': R0, 'sname': ms_.group(1), 'K': mk.group(1), 'ename': X0, 'rt': m0['root'][0], 'generic': gen, 'a': a, 'kind': 'rep'}
         elif rp[:1] == ['-h: B.Buf'] and [q.split(':')[0] for q in rp[1:]] == ['+t', '+dw', '+hd', '+pf', '+cap']:
             mv = re.match(r'(Spec\.\w+\(\)|\w+), (.*)$', a['dec'])
-            wv = re.search(r'== \(O\.Words\{.*?\}, (.*)\) : O\.Words & \+List<U32>\}', _unlight((OBJ / a['file']).read_text()).split('def ' + X0 + '_encode_any(')[1].split('\n')[1])
+            wv = re.search(r'== \(O\.Words\{.*?\}, (.*)\) : O\.Words & \+List<U32>\}', _unlight(AG.proof_path(a['file']).read_text()).split('def ' + X0 + '_encode_any(')[1].split('\n')[1])
             dv = call_args('D(' + a['dec'] + ')', 'D')
             row = {'X': X0, 'R': R0, 'sname': X0, 'rt': m0['root'][0], 'generic': gen, 'a': dict(a, dec_value=dv[1], wv=wv.group(1)), 'kind': 'words'}
         else:
