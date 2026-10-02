@@ -26,7 +26,7 @@ import sys
 from codegen.core import writer  # noqa: E402
 
 from codegen.proofs.var import var_laws as VL  # noqa: E402
-from codegen.proofs.support import zeros_dispatch as ZD  # noqa: E402
+from codegen.proofs.support import zeros_dispatch as ZD  # noqa: E402,F401  (named by the templates)
 from codegen.impl import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 from codegen.core.paths import ROOT  # noqa: E402
@@ -70,10 +70,6 @@ def src():
 
 def bl_fname(p):
     return ROOT / f'proofs/obj/vvlb_{p}.bend'
-
-
-def zeros_at(K):
-    return ZD.zeros_at_text(K).rstrip()
 
 
 def bl_text(p, N, sch):

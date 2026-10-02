@@ -135,8 +135,7 @@ def _bg_offsets(w, RS, W, LIM, NP, NA, QXV, QW, QXS, QXT):
     """the offsets of the three lists in the output and the per-list size facts"""
     w(TEMPLATES.render('_bg_offsets', W=W, LIM=LIM, RS=RS, QXT=QXT, QXV=QXV, QXS=QXS, QW=QW, NP=NP, NA=NA))
     for k in range(3):
-        w(TEMPLATES.render('_bg_offsets_2', k=k, NP=NP, RS=RS, W=W, NA=NA).replace('{{{{', '{{').replace('}}}}', '}}').replace('{{', '{').replace('}}', '}') if False else
-          TEMPLATES.render('_bg_offsets_3', k=k, NP=NP, RS=RS, W=W, NA=NA))
+        w(TEMPLATES.render('_bg_offsets_3', k=k, NP=NP, RS=RS, W=W, NA=NA))
 
 
 def _bg_models(X, w, p, W, NP, NA, DP, DA, ALLP, DOe, SEQ, QXT):

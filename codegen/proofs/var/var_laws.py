@@ -358,7 +358,7 @@ def main():
     xs = []
     for n in FAMILY + BITC:
         t = names[n]
-        for fname_, ft in t.fields:
+        for _, ft in t.fields:
             if ft.fixed():
                 for d in FT(g, ft).deps():
                     if d.p not in [x.p for x in fts]:

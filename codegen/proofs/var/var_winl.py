@@ -296,7 +296,7 @@ def PL_(m):
     return '[' + ', '.join(f'S.Variable{{{Y_(m, i)}}}' for i in range(m)) + ']'
 
 
-def PAY(m, hole_last=False):
+def PAY(m):
     """The payloads, right nested (as after the splits)."""
     s = Y_(m, m - 1)
     for i in range(m - 2, -1, -1):
@@ -470,7 +470,6 @@ def spec_m(LP, N, C, m, ESCH, LSCH, LIMN):
     w(f'    {{U32.to_nat(len) == Nat.add({F}n, {lens(m - 1, "List.length(&2, U32, _)", LY)}) : Nat}}')
     for i in range(m):
         tl = lambda k: l_(m, k) if k < i else LY(k)
-        hole_expr = lens(i, '_', tl) if i == m - 1 else lens(i, f'Nat.add(_, {lens(m - 1 - i - 1, LY(m - 1), lambda k: LY(k + i + 1))})', tl) if False else None
         # build the Nat nest with a hole at position i
         parts = [l_(m, k) if k < i else ('_' if k == i else LY(k)) for k in range(m)]
         sx = parts[-1]
@@ -536,7 +535,6 @@ def spec_top(LP, N, C, ESCH, LSCH, LIMN):
         for i in range(m - 1, -1, -1):
             rest = '[' + ', '.join(f'S.Variable{{{Y_(m, k)}}}' for k in range(i + 1, m)) + ']'
             v = (f'CH.VALw(t, {F}n+x, U32.sub({B_(m, 0)}, {F}))' if i == 0 else f'CH.VALw(t, Nat.add({nat_o(i)}, x), U32.sub({B_(m, i)}, {O(i)}))')
-            tail_items = items_(m, True)
             # the items after i
             sub = 'S.EmptyItems{}'
             for k in range(m - 1, i, -1):
@@ -643,7 +641,6 @@ def inv_all(LP, N, C, ESCH, LSCH, LIMN):
         # lengths
         w(f'def lout{k}({", ".join(f"+y{i}: +List<U32>" for i in range(k))}) -> {{List.length(&2, U32, {OUTk(k)}) == Nat.add({F}n, {SUMy(k, 0)}) : Nat}}:')
         for i in range(k - 1):
-            hole = LY(0) if False else None
             pre = [LY(q) for q in range(i)]
             sx = '_'
             for q in reversed(pre):
@@ -703,7 +700,7 @@ def inv_all(LP, N, C, ESCH, LSCH, LIMN):
             # bdr(OFF_i, OUT) == PAY_i
             chain = f'{{==}}'
             # build: bdr(OFF_i, OUT) -> bdr(|y_(i-1)|, bdr(OFF_(i-1), OUT)) ... -> PAY_i
-            w(f'  +dp{i}_0 = Equal.refl(+List<U32>, {PAYk(k, 0)})' if False else '')
+            w('')
             steps = []
             cur = f'VS.bdr({OFFy(k, 0)}, {OUTk(k)})'
             # bdr(F, OUT) computes to PAY_0
@@ -763,7 +760,6 @@ def inv_fin(LP, N, C, ESCH, LSCH, LIMN, L):
             args.append(f'+hy{i}: {{Nat.is_le(Nat.add({OFFy(k, i)}, {LY(i)}), U32.to_nat(len)) == True{{}} : Bool}}')
         # enl: Nat.add(F, SUM_0) == Nat.add(OFF_(k-1), |y_(k-1)|)
         w(f'def enl{k}({", ".join(f"+y{i}: +List<U32>" for i in range(k))}) -> {{Nat.add({F}n, {SUMy(k, 0)}) == Nat.add({OFFy(k, k - 1)}, {LY(k - 1)}) : Nat}}:')
-        cur_l = f'Nat.add({F}n, {SUMy(k, 0)})'
         steps = []
         # Nat.add(OFF_j, SUM_j) == Nat.add(OFF_(j+1), SUM_(j+1)) by assoc
         s_ = []
@@ -787,10 +783,8 @@ def inv_fin(LP, N, C, ESCH, LSCH, LIMN, L):
             oi = f'U32.to_nat({O(i)})'
             if i + 1 < k:
                 bi = f'U32.to_nat({O(i + 1)})'
-                bval = OFFy(k, i + 1)
             else:
                 bi = 'U32.to_nat(len)'
-                bval = None
             # o_i == OFF_i
             w(f'  +hlo{i} = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add({OFFy(k, i)}, {LY(i)})) == True{{}} : Bool}}, {OFFy(k, i)}, {oi}, Equal.sym(Nat, {oi}, {OFFy(k, i)}, eo{i}), Order.below_sum({OFFy(k, i)}, {LY(i)}))')
             if i + 1 < k:
@@ -819,7 +813,7 @@ def inv_fin(LP, N, C, ESCH, LSCH, LIMN, L):
             w(f'    hwj({CWA}, {O(i)}, {B}, hab{i}, hbl{i}), pf, h{i},')
             w(f'    FD.logic__subst(+List<U32>, z => {{Codec.parts(h{i}, {ESCH}) == Some{{[S.Variable{{z}}]}} : {MP}}}, y{i}, UW.WX(t, {J}, U32.to_nat(U32.sub({B}, {O(i)}))), ew{i}, eh{i}))')
         # the accumulated checks
-        w(f'  +ac0 = Equal.refl(Bool, True{{}})' if False else '')
+        w('')
         for i in range(k):
             AC = f'AC{k}_{i}(t, x, off, len)'
             B = O(i + 1) if i + 1 < k else 'len'
@@ -856,7 +850,7 @@ def inv_stages(LP, N, C, ESCH, LSCH, LIMN, L):
     def absurd():
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
 
-    def match_value(var, keep, body, other=None):
+    def match_value(var, keep, body):
         out = [f'  match {var}:']
         for c, args in W.VALUE_CTORS:
             if c in keep:

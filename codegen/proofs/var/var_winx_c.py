@@ -227,7 +227,7 @@ def read_plan(x):
     for k in range(0, len(Fs), G.GROUP):
         groups.append((k // G.GROUP, names[k:k + G.GROUP], hoff[k:k + G.GROUP], [fs for _, fs in Fs[k:k + G.GROUP]]))
     firstvar = {}
-    for gk, gn, gh, gfs in groups:
+    for gk, _, gh, gfs in groups:
         for h, fs in zip(gh, gfs):
             if not fs.fixed:
                 firstvar[gk] = h
@@ -662,9 +662,6 @@ def VALw(+t: {TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{ITEMS}}}
                       f'      {{{app(RWS, tailY(j, "_"))} == {RHSW} : +List<U32>}}')
         wsteps.append(f'%VRC.pnext(U32.to_nat({O(j)}), U32.to_nat({O(j + 1)}), {a[j]}, x, eOn{j + 1}) :\n'
                       f'      {{{app(RWS, tailY(j + 1, f"UW.WX(t, _, {restA})"))} == {RHSW} : +List<U32>}}')
-    out_lines = lines + ['    ' + s.replace('\n', '\n  ') for s in []]
-    lines.append('    ' + 'wx_go(' + ')')  # placeholder removed below
-    lines.pop()
     # wx is proved in its own def (the % rewrites need a goal)
     out.append('\n'.join([]))
     wx = [f'def wxw({CW}, +hchk: {GOAL}, +hwR: {{Nat.is_le(Nat.add(x, {right}), {P}) == {TRUE}}}, +eO0: {{U32.to_nat({O(0)}) == {FS}n : Nat}}'

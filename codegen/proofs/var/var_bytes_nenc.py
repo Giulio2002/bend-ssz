@@ -62,7 +62,6 @@ class NEnc:
         self.hargs = own_ha + C.hargs
         self.P = ', '.join(self.params)
         self.A = ', '.join(self.args)
-        self.PH = ', '.join(self.params + self.hyps)
         self.AH = ', '.join(self.args + self.hargs)
         # the largest encoding: the header and the child's largest encoding
         self.MAX = x.FS + C.MAX

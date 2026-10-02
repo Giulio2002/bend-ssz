@@ -8,9 +8,9 @@ one file per generator, divided into named sections:
     ... the Bend text, with ${expression} where the generator inserts a value ...
     @@ next_section @@
 
-    TEMPLATES = Templates('var_vlist', globals())   # at the top of the generator
-    TEMPLATES.text('VL_VALID')                      # a section as it is written (a static text; its own @-placeholders stay)
-    TEMPLATES.render('window_1', p=p, N=N)          # a section with every ${expression} evaluated
+    TPL = Templates('var_vlist', globals())     # at the top of the generator
+    TPL.text('VL_VALID')                        # a section as it is written (a static text; its own @-placeholders stay)
+    TPL.render('window_1', p=p, N=N)            # a section with every ${expression} evaluated
 
 An expression is plain Python (`${', '.join(ws)}`; it cannot contain braces). It is evaluated in the namespace of the
 generator module plus the keyword arguments, so a name that is local to the generator function is passed by keyword

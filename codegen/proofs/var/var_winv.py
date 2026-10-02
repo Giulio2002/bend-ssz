@@ -197,8 +197,6 @@ def list_spec_text():
     TR = 'FD.array__Tree<U32>'
     MP = 'Maybe<&2, +List<S.Part>>'
     HC = f'+hchk: {{CHKw(t, x, off, len) == {TRUE}}}'
-    HBJ = lambda c, j: f'+hb: {{Nat.is_le({POS(f"Nat.add({c}, {j})")}, {PW}) == {TRUE}}}'
-    DTX = f'+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}}'
     V = lambda j: f'VCK(t, {POS(j)})'
     return TEMPLATES.render('list_spec_text', TR=TR, V=V, HC=HC, MP=MP)
 
@@ -517,8 +515,6 @@ def v_deep(text):
 
 def main():
     out = {ROOT / 'proofs/obj' / OUT: module_text()}
-    if False:
-        out = {}
     from codegen.impl import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

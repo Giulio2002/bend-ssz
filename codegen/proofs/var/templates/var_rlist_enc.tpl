@@ -230,13 +230,6 @@ def qle(${NP}, +x: Nat, +h: {Nat.is_le(x, QN(n0, n1, n2)) == ${TRUE}})
     -> {Nat.is_le(A.quad(x), U32.to_nat(16777216)) == ${TRUE}}:
   FD.nat__le_trans(A.quad(x), A.quad(${QXT}), U32.to_nat(16777216), VME.quad_mono(x, ${QXT}, FD.nat__le_trans(x, QN(n0, n1, n2), ${QXT}, h, lQX(${NA}))), cS())
 
-@@ _bg_offsets_2 @@
-def eN${k}(${NP}) -> {{U32.to_nat(N${k}(n${k})) == A.quad(M${k}(n${k})) : Nat}}:
-  Equal.trans(Nat, U32.to_nat(N${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})), A.quad(M${k}(n${k})),
-    VU.mul_le(n${k}, ${RS[k]}, 16777216, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(16777216)) == ${TRUE}}}, A.quad(M${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})),
-      Equal.sym(Nat, Nat.mul(U32.to_nat(n${k}), A.quad(${W[k]}n)), A.quad(M${k}(n${k})), VRL.mul_quad(U32.to_nat(n${k}), ${W[k]}n)), qle(${NA}, M${k}(n${k}), lM${k}N(n0, n1, n2)))),
-    VRL.mul_quad(U32.to_nat(n${k}), ${W[k]}n))
-
 @@ _bg_offsets_3 @@
 def eN${k}(${NP}) -> {U32.to_nat(N${k}(n${k})) == A.quad(M${k}(n${k})) : Nat}:
   Equal.trans(Nat, U32.to_nat(N${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})), A.quad(M${k}(n${k})),

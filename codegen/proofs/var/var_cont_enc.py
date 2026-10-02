@@ -254,9 +254,6 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
             return f'V_SyncCommittee.SyncCommittee_valid_ok(dB_{f}, TB_{f}, {", ".join(self.oargs[2:])}, {", ".join(hargs)})'
         return f'V_{fs.p}.{fs.p}_valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
 
-    def valid_stmt(self):
-        return f'{{T.{self.p}_valid({self.obj}) == ({self.obj}, True{{}}) : {self.vt} & Bool}}'
-
 
 def rvec_names():
     """The record vectors of codegen/proofs/var/var_rec_enc.py (RVECS), fixed fields in the FixW form."""
@@ -923,7 +920,6 @@ def generate_cont(g, names, C):
             HP.append(f'+hpz_g{gk_}: {{{K.gpz[gk_]} == {TRUE}}}')
             HA.append(f'hpz_g{gk_}')
     OPS, OAS = ', '.join(OP), ', '.join(OA)
-    HPS, HAS = ', '.join(HP), ', '.join(HA)
     if K.wide:
         groups = [(k // GROUP, list(range(k, min(k + GROUP, len(F))))) for k in range(0, len(F), GROUP)]
     else:
@@ -957,13 +953,11 @@ def generate_cont(g, names, C):
     ks_all = [K.children[f].len for f in var]
     KS = lambda ks: '[' + ', '.join(ks) + ']'
     FS = '[' + ', '.join(sz for k, f, sz in pieces if k in ('fix', 'off')) + ']'
-    state = [f'UW.ZB({sz})' for _, _, sz in pieces]
     # ---- the runtime's writes, in order ----
     events = []    # dict(kind, field, ...)
     cur_terms = {}
 
     def group_events(gk, idx, cur0):
-        Fg = [(names_[i], F[i][1]) for i in idx]
         varg = [i for i in idx if not F[i][1].fixed]
         ling = [i for i in idx if not F[i][1].data]
         psteps = [('putv', i) for i in varg] + [('put', i) for i in ling if i not in varg]
@@ -1011,8 +1005,6 @@ def szpz({OPS}, +hpz: {{{K.pz} == {TRUE}}}) -> {{SZC({OAS}) == {core} : U32}}:
 ''')
     # models M0..Mn
     w(f'def M0({MP}) -> {TR}: D')
-    trees = ['D']
-    ev_q = {}
     for k, ev in enumerate(events):
         prev = f'M{k}({MA})'
         f = ev['field']
@@ -1047,7 +1039,6 @@ def module_text(g, names, C):
     names_ = [f for f, _ in F]
     fsd = dict(F)
     OPS, OAS = ', '.join(OP), ', '.join(OA)
-    HPS, HAS = ', '.join(HP), ', '.join(HA)
     MA = f'{OAS}, dd, D, X, q, r'
     MP = f'{OPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat'
     X0 = 'Nat.add(A.quad(q), r)'
@@ -1100,7 +1091,7 @@ def module_text(g, names, C):
         evk[(ev['kind'], ev['field'])] = k
     GRT = []
     k0 = 0
-    for gi, (gk, idx, psteps, cur0) in enumerate(GI):
+    for gk, idx, psteps, cur0 in GI:
         gp = p if gk is None else f'{p}_g{gk}'
         gobj = f'T.{gp}{{' + ', '.join(OBJF[names_[i]] for i in idx) + '}'
         data_only = not psteps
@@ -1111,7 +1102,6 @@ def module_text(g, names, C):
         if data_only:
             RTg = 'Array<U32>'
             start = f'T.{gp}_put({TH(kA)}, X, {cur0}, {gobj})' if K.wide else None
-            curterm = None
         else:
             RTg = f'Array<U32> & (T.{gp} & U32)'
             start = f'T.{gp}_put({TH(kA)}, X, {cur0}, {gobj})' if K.wide else f'T.{gp}_putn({TH(kA)}, X, {gobj})'
@@ -1615,14 +1605,13 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         SA_ = f'Nat.add(VCN.SUM(VCN.APPN({KS(ksl)}, [{ks_all[-1]}])), {FIXT})'
         SKF_ = f'Nat.add(VCN.SUM({KS(ks_all)}), {FIXT})'
         a(f'+szf = Equal.trans(Nat, U32.to_nat(O.padd({curs[fl]}, {K.children[fl].sz})), {SA_}, {LLv}, szf, Equal.trans(Nat, {SA_}, {SKF_}, {LLv}, {{==}}, {eLF}))')
-    if True:
-        # the checked fixed writers' flags (0) OR-ed into the size (narrow containers): peel them with or0r
-        t_, layers = (SZC if K.pz is None else SZC[1:SZC.index(' .|. O.pz(')]), []
-        while t_.startswith('(') and t_.endswith(' .|. 0 : U32)'):
-            layers.append((t_[1:-len(' .|. 0 : U32)')], t_))
-            t_ = layers[-1][0]
-        for inner, outer in reversed(layers):
-            a(f'+szf = FD.logic__subst(U32, zz => {{U32.to_nat(zz) == LLC({MA}) : Nat}}, {inner}, {outer}, Equal.sym(U32, U32.or({inner}, 0), {inner}, UWB.or0r({inner})), szf)')
+    # the checked fixed writers' flags (0) OR-ed into the size (narrow containers): peel them with or0r
+    t_, layers = (SZC if K.pz is None else SZC[1:SZC.index(' .|. O.pz(')]), []
+    while t_.startswith('(') and t_.endswith(' .|. 0 : U32)'):
+        layers.append((t_[1:-len(' .|. 0 : U32)')], t_))
+        t_ = layers[-1][0]
+    for inner, outer in reversed(layers):
+        a(f'+szf = FD.logic__subst(U32, zz => {{U32.to_nat(zz) == LLC({MA}) : Nat}}, {inner}, {outer}, Equal.sym(U32, U32.or({inner}, 0), {inner}, UWB.or0r({inner})), szf)')
     if K.pz is not None:
         a(f'+szf = FD.logic__subst(U32, zz => {{U32.to_nat(zz) == LLC({MA}) : Nat}}, {SZC[1:SZC.index(" .|. O.pz(")]}, SZC({OAS}), Equal.sym(U32, SZC({OAS}), {SZC[1:SZC.index(" .|. O.pz(")]}, szpz({OAS}, hpz)), szf)')
     body = '\n  '.join(ls)
@@ -1772,14 +1761,12 @@ def _iface_spec_and_hyps(C, generic, OP, OA, HP, HA, F):
     names_txt, kids, kind = spec_schema(C, generic)
     assert len(kids) == len(F)
     OPS, OAS = ', '.join(OP), ', '.join(OA)
-    HPS, HAS = ', '.join(HP), ', '.join(HA)
     TRUE_ = TRUE
     # the writer's hypotheses as Bools
     conj = []
     for h in HP:
         m = re.fullmatch(r'\+(\w+): \{(.*) == True\{\} : Bool\}', h)
         conj.append((m.group(1), re.sub(r'(?<![\w.])OK_(\w+)\(', r'K.OK_\1(', m.group(2))))
-    Kq = lambda s: re.sub(r'(?<![\w.])(OBJC|ENCC|SZC|PUTC|LLC|RW_\w+|PXo_\w+|pfo_\w+|lenb_\w+|putx)\(', r'K.\1(', s)
     # ---- the fields: value, schema, part, parts proof, bytes proof ----
     return names_txt, kids, kind, OPS, OAS, TRUE_, conj
 
@@ -1940,9 +1927,6 @@ def _iface_chain(C, FIX, names_txt, kids, kind, OPS, OAS, TRUE_, conj, fields):
         os_.append(f'Nat.add({os_[-1]}, LY.LN({x["enc"]}))')
     END = os_[-1]
     SCH = f'Spec.{C}()'
-    NAMESCH = f'S.{kind}{{{names_txt}, ' + ''.join(f'S.Chain{{{k}, ' for k in kids) + 'S.End{}' + '}' * len(kids)
-    if kind == 'ProgressiveContainer':
-        NAMESCH = None   # (not yet)
 
     def items(i):
         return 'S.EmptyItems{}' if i == n else f'S.Items{{{fields[i]["val"]}, {items(i + 1)}}}'
@@ -2611,7 +2595,6 @@ def putx_hyps(text):
     KE = LNK[7:-1]
     A = KE[len('K.ENCC('):-1]
     M = 'MW{' + A + '}'
-    EM, LLE, LLK = f'ENC({M})', f'List.length(&2, U32, ENC({M}))', f'List.length(&2, U32, {KE})'
     sub = lambda T, mot, x, y, e, p: f'FD.logic__subst({T}, {mot}, {x}, {y}, {e}, {p})'
     Gl, Gz = G['hl'], G['hz']
     PZ = f'WD.PADB(r, {LNK})'
@@ -3418,7 +3401,6 @@ def len_symbolic_F(text):
     ci = find_call(body, 'FD.logic__subst', body.rfind('FD.logic__subst(Nat, zz => LY.OKO(', 0, body.index('@OKO@')))
     mot = ci[2][1][len('zz => '):]
     ps_ = find_call(mot, 'LY.OKO')[2]
-    lit_ps = ps_[0].replace('zz', '24624n') if 'zz' in ps_[0] else ps_[0]
     okT = (f'FD.logic__subst(Nat, zf => LY.OKO({ps_[0].replace("zz", "24624n")}, zf, {ps_[2]}), {FIX}n, SZF, '
            f'Equal.sym(Nat, SZF, {FIX}n, eSZF), {oko})')
     body = body.replace('@OKO@', okT, 1)
@@ -3441,7 +3423,7 @@ def len_symbolic_F(text):
     # the end: lenP / lenS at SZF (as encE_core's fit), not lay_end (END against ENDCs)
     c = find_call(body, 'LY.lay_end')
     if c is not None:
-        ps1, o1 = c[2]
+        ps1, _ = c[2]
         me = re.search(r'\ndef ENDCs\((.*?)\) -> Nat: (.*)\n', text)
         encs = re.findall(r'LY\.LN\(([^()]*\([^()]*\))\)', me.group(2))
         P_ = '[]'
@@ -3482,7 +3464,7 @@ def spec_one_step(text):
     MB = 'Maybe<&2, +List<S.Part>>'
     ins = (f'  %vwcU({VALC[len("VALC("):-1]}) : {{Codec.parts(_, {SP_}) == {RHS} : {MB}}}\n'
            f'  %lctU({items}) : {{_ == {RHS} : {MB}}}\n')
-    blk = blk[:c[0]] + ins.lstrip(' ') if False else blk[:c[0] - 2] + ins + blk[c[0] - 2:]
+    blk = blk[:c[0] - 2] + ins + blk[c[0] - 2:]
     pp = re.search(r'\ndef VALC\((.*?)\) -> ', text).group(1)
     defs = (TEMPLATES.render('spec_one_step', pp=pp, items=items, VALC=VALC, chain=chain, SP_=SP_, MB=MB))
     return text[:a] + defs + blk + text[b:]
@@ -3771,7 +3753,7 @@ def chunk_putx(text):
             g = consumer(n, after)
             if g is not None:
                 if g[7] == n:
-                    return (f'{{U32.to_nat({g[0]}) == Nat.add(VCN.SUM({g[3]}), {g[2]}) : Nat}}' if 'cnext_r' in t or True else None)
+                    return (f'{{U32.to_nat({g[0]}) == Nat.add(VCN.SUM({g[3]}), {g[2]}) : Nat}}')
                 if g[8] == n:
                     return f'{{U32.to_nat({g[1]}) == {g[4]} : Nat}}'
         raise ValueError(f'chunk_putx: no type for {n}')
@@ -4219,7 +4201,6 @@ def cont_strict(q, t, res):
 _OKT_MODS = set()
 _COMP = {}
 OKW_SKIP = {'encx_BeaconState_iface', 'encx_BeaconState'}   # (their OKW twins live in the companions only)
-PROBE_POST = cont_strict
 
 
 SKIPPED = []
@@ -4245,21 +4226,20 @@ def build_all():
 
 def main():
     out = {}
-    if True:
-        out = build_all()
-        # to the fixed point, in this run: a module's text may read its children's (GEN)
-        global _STD
-        for _ in range(8):
-            GEN.clear()
-            GEN.update(out)
-            _STD = None
-            SKIPPED.clear()
-            nxt = build_all()
-            if nxt == out:
-                break
-            out = nxt
-        else:
-            raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
+    out = build_all()
+    # to the fixed point, in this run: a module's text may read its children's (GEN)
+    global _STD
+    for _ in range(8):
+        GEN.clear()
+        GEN.update(out)
+        _STD = None
+        SKIPPED.clear()
+        nxt = build_all()
+        if nxt == out:
+            break
+        out = nxt
+    else:
+        raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     out = RR.rewire_out(out)
     global _OKT_MODS
     _OKT_MODS = {pathlib.Path(q).stem for q, t in out.items() if 'def OKT(' in t}

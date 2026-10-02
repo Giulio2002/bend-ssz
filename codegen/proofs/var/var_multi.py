@@ -174,7 +174,6 @@ def acc_text(g, names):
     RT = f'B.Buf & T.{X}'
     HY = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},\n'
           '    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}')
-    HYA = 'd, t, n, pf, hd, hn'
     FACTS = ('+hb: {CB(t) == True{} : Bool}, +hc: {CC(t, n) == True{} : Bool}, +hdd: {CD(t, n) == True{} : Bool},\n'
              '    +he: {CE(t) == True{} : Bool}, +hf: {CF(t) == True{} : Bool}, +hg: {CG(t, n) == True{} : Bool}')
     FA = 'hb, hc, hdd, he, hf, hg'

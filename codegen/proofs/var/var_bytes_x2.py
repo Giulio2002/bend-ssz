@@ -453,7 +453,6 @@ def spec_part(x, mp):
     hdr = []
     for f in x.fields:
         hdr += (x.words(f) if f['kind'] != 'var' else [])
-    RWSL = '[' + ', '.join([VX.rwn(0), VX.rwn(4)] + hdr) + ']'
     RWSh = '[' + ', '.join(['_', VX.rwn(4)] + hdr) + ']'
     R2u = (lambda Z: f'List.append(&2, U32, List.append(&2, U32, N.digits(4n, VX2.F2({POSTb})), List.append(&2, U32, N.digits(4n, {Z}), VR.bcat({POSTb}))), List.append(&2, U32, {Y0x}, {Y1x}))')
     QH = f'A.quad({H}n)'

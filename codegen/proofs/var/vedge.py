@@ -59,7 +59,6 @@ def bits_text():
             L.append('    case True{}: {==}')
             L.append('    case False{}: {==}')
         # the whole word
-        hsf = [f'h{i}' for i in range(32)]
         L.append(f'def kz{j}{k}(+lo: U32, +hi: U32) -> {{{keepj(j, k, "lo", "hi")} == {keepj(j, k, "lo", "0")} : U32}}:')
         L.append('  match lo hi:')
         L.append('    case U32{' + ''.join(f'WCon{{+{x}, ' for x in ls) + 'WNil{}' + '}' * 32 + '} U32{' + ''.join(f'WCon{{+h{i}, ' for i in range(32)) + 'WNil{}' + '}' * 32 + '}:')
