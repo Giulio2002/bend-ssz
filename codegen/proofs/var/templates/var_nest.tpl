@@ -815,3 +815,22 @@ law decode_reject:
   Decoding.outside_image(Spec.${parent}(), ${VWt})
 def decode_reject(d, t, n, pf, hd, hn, hchk):
   v => e => inv_v(${CA}, v, e)
+
+@@ win_module_text_lines @@
+# The reader on the window, when the checks hold (list storage: depth dz).
+def rd_okw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +dz: Nat, ${WH}, ${PF},
+    ${HA}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +epo: {SPOw(t, i) == ${FS} : U32},
+    +ez: {B.zeros(B.words_depth_u(VC.WZ(DC.LL(len)))) == Array.new(U32, dz, 0) : Array<U32>},
+    +hL3: {U32.and(DC.LL(len), 3) == 0 : U32}, +hr0: {Nat.is_le(Nat.add(VC.NW(DC.LL(len)), 0n), VB.pw(dz)) == True{} : Bool},
+    +hs: {Nat.is_le(Nat.add(${NW}, Nat.add(${H}n, i)), VB.pw(d)) == True{} : Bool})
+    -> {${Tn}_read(DC.BF(t, n), off, len) == ${RHS} : ${TY}}:
+  +hd31 = hd
+  +hHi = FD.nat__le_trans(Nat.add(${H}n, i), Nat.add(${NW}, Nat.add(${H}n, i)), VB.pw(d), Order.left_below_sum(${NW}, Nat.add(${H}n, i)), hs)
+  %Equal.sym(B.Buf & U32, B.read32(DC.BF(t, n), U32.add(off, ${cvar})), (DC.BF(t, n), SPOw(t, i)),
+      VF.rd32a(d, t, n, U32.add(off, ${cvar}), Nat.add(${po}n, i), eoc(d, i, off, len, ${po}n, ${cvar}, {==}, {==}, eo, hd, hw, hw32, ha),
+        VB.lt32(d, hd31), hiw(d, i, len, ${po}n, {==}, hw, ha), pf)) :
+    {${Tn}_rd0(off, len, _) == ${RHS} : ${TY}}
+@@ win_module_text_lines_2 @@
+  %Equal.sym(B.Buf & O.Words, O.copy_in(DC.BF(t, n), U32.add(off, ${FS}), DC.LL(len)), (DC.BF(t, n), ${objs[j]}),
+      VC.copy_in_ok(d, t, n, U32.add(off, ${FS}), Nat.add(${H}n, i), DC.LL(len), dz, pf, hd31, hdz, ez,
+        VF.al_3(U32.add(off, ${FS}), Nat.add(${H}n, i), ${eF}), VF.al_q(U32.add(off, ${FS}), Nat.add(${H}n, i), ${eF}), hL3, hs, hr0)) :

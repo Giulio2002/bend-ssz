@@ -49,19 +49,8 @@ def win_module_text(g, x):
     OBJz = f'{Tn}{{' + ', '.join(objs) + '}'
     RHS = f'(DC.BF(t, n), {OBJz})'
     TY = f'B.Buf & {Tn}'
-    w('# The reader on the window, when the checks hold (list storage: depth dz).')
-    w(f'def rd_okw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +dz: Nat, {WH}, {PF},')
-    w(f'    {HA}, +hdz: {{Nat.is_lt(dz, 31n) == True{{}} : Bool}}, +epo: {{SPOw(t, i) == {FS} : U32}},')
-    w('    +ez: {B.zeros(B.words_depth_u(VC.WZ(DC.LL(len)))) == Array.new(U32, dz, 0) : Array<U32>},')
-    w('    +hL3: {U32.and(DC.LL(len), 3) == 0 : U32}, +hr0: {Nat.is_le(Nat.add(VC.NW(DC.LL(len)), 0n), VB.pw(dz)) == True{} : Bool},')
-    w(f'    +hs: {{Nat.is_le(Nat.add({NW}, Nat.add({H}n, i)), VB.pw(d)) == True{{}} : Bool}})')
-    w(f'    -> {{{Tn}_read(DC.BF(t, n), off, len) == {RHS} : {TY}}}:')
-    w('  +hd31 = hd')
-    w(f'  +hHi = FD.nat__le_trans(Nat.add({H}n, i), Nat.add({NW}, Nat.add({H}n, i)), VB.pw(d), Order.left_below_sum({NW}, Nat.add({H}n, i)), hs)')
-    w(f'  %Equal.sym(B.Buf & U32, B.read32(DC.BF(t, n), U32.add(off, {cvar})), (DC.BF(t, n), SPOw(t, i)),')
-    w(f'      VF.rd32a(d, t, n, U32.add(off, {cvar}), Nat.add({po}n, i), eoc(d, i, off, len, {po}n, {cvar}, {{==}}, {{==}}, eo, hd, hw, hw32, ha),')
-    w(f'        VB.lt32(d, hd31), hiw(d, i, len, {po}n, {{==}}, hw, ha), pf)) :')
-    w(f'    {{{Tn}_rd0(off, len, _) == {RHS} : {TY}}}')
+    for line in TPL.render('win_module_text_lines', FS=FS, H=H, HA=HA, NW=NW, PF=PF, RHS=RHS, TY=TY, Tn=Tn, WH=WH, cvar=cvar, po=po).split('\n'):
+        w(line)
 
     def read_term(f, o):
         if f['kind'] == 'fix':
@@ -81,9 +70,8 @@ def win_module_text(g, x):
             w(f'      VT.rdd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({k}n, i), eoc(d, i, off, len, {k}n, {f["c"]}, {{==}}, {{==}}, eo, hd, hw, hw32, ha), hd, pf, {hb})) :')
         else:
             eF = f'eoc(d, i, off, len, {H}n, {FS}, {{==}}, {{==}}, eo, hd, hw, hw32, ha)'
-            w(f'  %Equal.sym(B.Buf & O.Words, O.copy_in(DC.BF(t, n), U32.add(off, {FS}), DC.LL(len)), (DC.BF(t, n), {objs[j]}),')
-            w(f'      VC.copy_in_ok(d, t, n, U32.add(off, {FS}), Nat.add({H}n, i), DC.LL(len), dz, pf, hd31, hdz, ez,')
-            w(f'        VF.al_3(U32.add(off, {FS}), Nat.add({H}n, i), {eF}), VF.al_q(U32.add(off, {FS}), Nat.add({H}n, i), {eF}), hL3, hs, hr0)) :')
+            for line in TPL.render('win_module_text_lines_2', FS=FS, H=H, eF=eF, j=j, objs=objs).split('\n'):
+                w(line)
         w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
     w('  {==}')
     w('')
