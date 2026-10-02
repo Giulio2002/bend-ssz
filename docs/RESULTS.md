@@ -102,7 +102,7 @@ Public statements, listed in `e2e/STATEMENTS.txt` and locked in `frozen.lock.jso
 The range-checked generic setters (<!-- fig:set_checked_count -->11<!-- /fig -->, `uint8` / `uint16` fields) have their
 flag, rejection and accepted-value laws in the same files. Not stated: the spec-value
 append law of a byte list whose append reallocates the storage; the root view of the record lists that have none; the
-composed root statement of a mutated list for the lists without a list-root law (Eth1Data, Validator, HistoricalSummary, Pending*), and the composed encode statement of a mutated list; and
+composed root statement of a mutated list for the lists without a list-root law (Eth1Data, Validator, HistoricalSummary, Pending*), and the composed encode statement of a mutated list of the other lists (the word, byte and bit lists, the lists without an encode bridge); and
 setter-then-encode where a storage premise is not about one projection of the object or the setter is range-checked.
 [PREMISES.md](PREMISES.md) section 9.
 
@@ -116,8 +116,11 @@ of the written list: `rep_<c>(set(o, i, v), s)` from `rep_<c>(o, s)`, which need
 representation as a premise (`rep_X(v, sE)`; for a boxed list `th_bx(fz_bx(wrap v))` is `wrap v` only given the element's own freeze/thaw law, which the container setters of
 `proofs/obj/prep_setters.bend` already assume as `rv`), and (c) the composition of `rs_<c>` with the view law, as `coll_root.bend` does for the word families. The other record
 lists (`Eth1Data`, `Validator`, `HistoricalSummary`, the `Pending*` lists) have no `xv_` view or `rs_` law, so the root statement of a mutated one first needs that list-root law
-(the generated digest of those lists is not covered by an `rs_` law at all). The encode of a mutated list is the same gap as the container setters': the encode bridge's storage premises
-of the written object, stated per element.
+(the generated digest of those lists is not covered by an `rs_` law at all). The encode of a mutated list is stated in `proofs/obj/encset_<c>.bend` for these 11 lists (`codegen/proofs/collections/encset.py`): over the encode module's own mirror
+types (`encx_<c>.bend`), `<c>_okl_set` says the written tree satisfies the encode bridge's premises `OKL` (for the boxed lists per element: `eoks_set`, from `xat_same` / `xat_other`,
+the new element's `EOK` at the index and the old ones elsewhere; the depth of the perfect tree is unchanged, `tdm`), `<c>_vall_set` that the value of the written list is the old value with item i
+replaced (`field_set`, by `xi_set` over the updated slots), `<c>_written` that the written object is the old array with the new element (its box) at i, and `<c>_api_encode_set` composes them
+with `encx_specB`: the spec encode of the set value is the bytes `ENCL` of the written tree, under a bound on the byte count. The new element's `EOK` (boxed lists) and the byte-count bound are premises.
 
 ## Mutation testing (do the proofs notice wrong generated code?)
 

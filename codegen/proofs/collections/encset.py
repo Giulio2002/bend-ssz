@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""proofs/obj/encset_<list>.bend: the encode of a list after one element is written, stated per element (the boxed lists).
+"""proofs/obj/encset_<list>.bend: the encode of a list after one element is written, stated per element (the boxed lists and the record lists).
 
 The encode bridge of a list of boxed containers (proofs/obj/encx_<list>.bend) says: for a mirror tree t holding N elements that satisfies
 OKL(t, N) (a perfect tree of depth TDM(t) below 31, N within the depth and the limit, and EOKS(N, slots t, 0): every element satisfies
@@ -15,6 +15,7 @@ any closed comparison, that the written object satisfies the same premises and t
     <c>_okl_set                         OKL(t, N) and EOK(m), i < N: OKL(t', N)
     <c>_vall_set                        VALL(t', N) == field_set(VALL(t, N), i, item(m))
     <c>_written                         the written object: its array is the old array with the box of m at i (the mirror's amset)
+    (record lists: the elements are stored in the tree; ela / itw read them from the slots, no EOKS; <c>_written uses array__set)
     <c>_api_encode_set                  the composed statement: the spec encode of the set value is the bytes ENCL(t', N) of the written object (encx_specB on t')
 
     python3 codegen/proofs/collections/encset.py            # write
@@ -225,14 +226,134 @@ def %(c)s_api_encode_set(+t: F.array__Tree<%(EL)s>, +N: U32, +i: U32, +m: %(EL)s
 '''
 
 
+REC_LISTS = ('l8192_DepositRequest', 'l16_WithdrawalRequest', 'l2_ConsolidationRequest', 'l16_Withdrawal', 'l16_SignedVoluntaryExit', 'l16_SignedBLSToExecutionChange')
+
+
+def rec_facts(c):
+    """the names and types of the encode module of the record list c (the elements are stored in the tree itself, no element invariant)"""
+    txt = (OBJ / ('encx_%s.bend' % c)).read_text()
+    imps = {a: p for p, a in re.findall(r'^import (\S+) as (\w+)', txt, re.M)}
+    me = re.search(r'^def EL_%s\(\+A: \w+\.array__Tree<(.+?)>, \+j: Nat\) -> (.+?): VRL\.mget\(.+, (\S+_default\(\))\)$' % re.escape(c), txt, re.M)
+    R, dflt = me.group(1), me.group(3)
+    mi = re.search(r'^def ITW_%s\(c: Nat.*\n  match c:\n    case 0n: S.EmptyItems\{\}\n    case 1n\+q: S.Items\{(\w+)\(EL_%s\(A, j\)\), ITW_%s\(q, A, 1n\+j\)\}' % ((re.escape(c),) * 3), txt, re.M)
+    mseq = re.search(r'^def THL_%s\(.*?\) -> (\S+_Seq):' % re.escape(c), txt, re.M)
+    mlim = re.search(r'^def okl_lim_%s\(.*?\{(U32\.is_le\(N, \d+\)) == True' % re.escape(c), txt, re.M)
+    ms = re.search(r'^def encx_spec_%sB\(.*?\n.*?\n    -> \{Codec.parts\(VALL_%s\(A, N\), (.+?)\) == Some\{\[S\.Variable\{ENCL_' % (re.escape(c), re.escape(c)), txt, re.M)
+    return dict(c=c, R=R, dflt=dflt, rvw=mi.group(1), seq=mseq.group(1), lim=mlim.group(1), schema=ms.group(1), imps=imps)
+
+
+REC_LEMMAS = """# ---- the elements of the slots: the written one at the index, the old ones elsewhere ----
+def ela_%(c)s(W: List<&2, %(R)s>, +i: Nat) -> %(R)s: VRL.mget(%(R)s, F.spec_common__nth(%(R)s, W, i), %(dflt)s)
+
+def itw_%(c)s(k: Nat, +W: List<&2, %(R)s>, +i: Nat) -> S.Value:
+  match k:
+    case 0n: S.EmptyItems{}
+    case 1n+q: S.Items{E.%(rvw)s(ela_%(c)s(W, i)), itw_%(c)s(q, W, 1n+i)}
+
+def %(c)s_itw_eq(+k: Nat, +A: F.array__Tree<%(R)s>, +j: Nat) -> {E.ITW_%(c)s(k, A, j) == itw_%(c)s(k, F.array__slots(%(R)s, A), j) : S.Value}:
+  match k:
+    case 0n: {==}
+    case 1n+ +q: Equal.cong(S.Value, S.Value, z => S.Items{E.%(rvw)s(ela_%(c)s(F.array__slots(%(R)s, A), j)), z}, E.ITW_%(c)s(q, A, 1n+j), itw_%(c)s(q, F.array__slots(%(R)s, A), 1n+j), %(c)s_itw_eq(q, A, 1n+j))
+
+"""
+
+REC_OKL = """# ---- the premises of the encode bridge for the written tree ----
+def %(c)s_tdm(+d: Nat, +t: F.array__Tree<%(R)s>, +pf: {F.array__perfect(%(R)s, d, t) == True{} : Bool}) -> {E.TDM_%(c)s(t) == d : Nat}:
+  match d t:
+    case 0n F.TLeaf{x}: {==}
+    case 0n F.TNode{l, r}: Empty.absurd({E.TDM_%(c)s(F.TNode{l, r}) == 0n : Nat}, F.logic__false_true(pf))
+    case 1n+ +p F.TLeaf{x}: Empty.absurd({E.TDM_%(c)s(F.TLeaf{x}) == 1n+p : Nat}, F.logic__false_true(pf))
+    case 1n+ +p F.TNode{l, r}: Equal.cong(Nat, Nat, z => 1n+z, E.TDM_%(c)s(l), p, %(c)s_tdm(p, l, and_l(F.array__perfect(%(R)s, p, l), F.array__perfect(%(R)s, p, r), pf)))
+
+def %(c)s_okl_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool})
+    -> {E.OKL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N) == True{} : Bool}:
+  +d = E.TDM_%(c)s(A)
+  +pf = E.okl_pf_%(c)s(A, N, h)
+  +T2 = F.array__upd(%(R)s, d, A, U32.to_nat(i), v)
+  +pf2 = F.array__upd_perfect(%(R)s, d, A, U32.to_nat(i), v, pf)
+  +td = %(c)s_tdm(d, T2, pf2)
+  +c1 = F.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), E.okl_d_%(c)s(A, N, h))
+  +c2 = F.logic__subst(Nat, z => {F.array__perfect(%(R)s, z, T2) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), pf2)
+  +c3 = F.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), VB.pw(z)) == True{} : Bool}, d, E.TDM_%(c)s(T2), Equal.sym(Nat, E.TDM_%(c)s(T2), d, td), E.okl_n_%(c)s(A, N, h))
+  and_i(Nat.is_lt(E.TDM_%(c)s(T2), 31n), Bool.and(F.array__perfect(%(R)s, E.TDM_%(c)s(T2), T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s)), c1,
+    and_i(F.array__perfect(%(R)s, E.TDM_%(c)s(T2), T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s), c2,
+      and_i(Nat.is_le(U32.to_nat(N), VB.pw(E.TDM_%(c)s(T2))), %(lim)s, c3, E.okl_lim_%(c)s(A, N, h))))
+
+# ---- the value of the written list: the old value with item i replaced ----
+def %(c)s_vall_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool})
+    -> {E.VALL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N) == VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)) : S.Value}:
+  +d = E.TDM_%(c)s(A)
+  +pf = E.okl_pf_%(c)s(A, N, h)
+  +T2 = F.array__upd(%(R)s, d, A, U32.to_nat(i), v)
+  +hj = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(N), F.spec_common__pow2(d), hs, E.okl_n_%(c)s(A, N, h))
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), Equal.sym(Nat, F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), F.spec_common__pow2(d), F.array__slots_length(%(R)s, d, A, pf)), hj)
+  +hsl = F.array__upd_slots(%(R)s, d, A, U32.to_nat(i), v, hj, pf)
+  %%Equal.sym(S.Value, E.ITW_%(c)s(U32.to_nat(N), T2, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, T2), 0n), %(c)s_itw_eq(U32.to_nat(N), T2, 0n)) :
+    {S.Sequence{_} == VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
+  %%Equal.sym(List<&2, %(R)s>, F.array__slots(%(R)s, T2), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), hsl) :
+    {S.Sequence{itw_%(c)s(U32.to_nat(N), _, 0n)} == VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
+  %%Equal.sym(S.Value, E.ITW_%(c)s(U32.to_nat(N), A, 0n), itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, A), 0n), %(c)s_itw_eq(U32.to_nat(N), A, 0n)) :
+    {S.Sequence{itw_%(c)s(U32.to_nat(N), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), 0n)} == VS.field_set(S.Sequence{_}, U32.to_nat(i), E.%(rvw)s(v)) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, itw_%(c)s(U32.to_nat(N), F.spec_common__update(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), v), 0n),
+    VS.items_set(itw_%(c)s(U32.to_nat(N), F.array__slots(%(R)s, A), 0n), U32.to_nat(i), E.%(rvw)s(v)),
+    %(c)s_xi_set(U32.to_nat(N), U32.to_nat(i), F.array__slots(%(R)s, A), 0n, U32.to_nat(i), v, {==}, hil))
+
+# ---- the written object: the thawed storage of the updated tree is the old storage with the element written ----
+def %(c)s_written(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool})
+    -> {E.THL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N) == %(seq)s{Array.set(%(R)s, F.array__thaw(%(R)s, A), i, v), N} : %(seq)s}:
+  +d = E.TDM_%(c)s(A)
+  +pf = E.okl_pf_%(c)s(A, N, h)
+  +hj = F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(N), F.spec_common__pow2(d), hs, E.okl_n_%(c)s(A, N, h))
+  +hil = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(i), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), Equal.sym(Nat, F.spec_common__length(%(R)s, F.array__slots(%(R)s, A)), F.spec_common__pow2(d), F.array__slots_length(%(R)s, d, A, pf)), hj)
+  +x = ela_%(c)s(F.array__slots(%(R)s, A), U32.to_nat(i))
+  +hx = VRL.ng(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i), %(dflt)s, hil, F.spec_common__nth(%(R)s, F.array__slots(%(R)s, A), U32.to_nat(i)), {==})
+  Equal.cong(Array<%(R)s>, %(seq)s, z => %(seq)s{z, N}, F.array__thaw(%(R)s, F.array__upd(%(R)s, d, A, U32.to_nat(i), v)), Array.set(%(R)s, F.array__thaw(%(R)s, A), i, v),
+    Equal.sym(Array<%(R)s>, Array.set(%(R)s, F.array__thaw(%(R)s, A), i, v), F.array__thaw(%(R)s, F.array__upd(%(R)s, d, A, U32.to_nat(i), v)), F.array__set(%(R)s, d, A, i, v, x, F.nat__lt_trans(d, 31n, 32n, E.okl_d_%(c)s(A, N, h), {==}), hj, hx, pf)))
+
+# ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
+def %(c)s_api_encode_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool},
+    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
+    -> {Codec.parts(VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)), %(schema)s) == Some{[S.Variable{E.ENCL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}:
+  %%%(c)s_vall_set(A, N, i, v, h, hs) :
+    {Codec.parts(_, %(schema)s) == Some{[S.Variable{E.ENCL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}
+  E.encx_spec_%(c)sB(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N, %(c)s_okl_set(A, N, i, v, h, hs), B, hB, hL)
+"""
+
+
+def rec_text(c):
+    f = rec_facts(c)
+    R = f['R']
+    XAT = lambda W, i: 'ela_%s(%s, %s)' % (c, W, i)
+    UPDW = lambda W, J='J', e='e': 'F.spec_common__update(%s, %s, %s, %s)' % (R, W, J, e)
+    XI = lambda k, W, i: 'itw_%s(%s, %s, %s)' % (c, k, W, i)
+    V = 'E.' + f['rvw']
+    body = [REC_LEMMAS % f]
+    body.append(VQS.XAT_LEMMAS % dict(c=c, E=R, xs=XAT(UPDW('W'), 'J'), xn=XAT(UPDW('Nil{}'), 'J'), xu=XAT(UPDW('W'), 'i'), xw=XAT('W', 'i'),
+                                      xu0=XAT(UPDW('Con{x, t}', '0n', 'e'), '0n'), xw0=XAT('Con{x, t}', '0n')))
+    body.append(VQS.XI_LEMMAS % dict(c=c, E=R, V=V, a=XI('k', UPDW('W'), 'i0'), b=XI('k', 'W', 'i0'), xu=XAT(UPDW('W'), 'i0'), xw=XAT('W', 'i0'), xz=XAT(UPDW('W'), 'z'),
+                                     tu=XI('q', UPDW('W'), '1n+i0'), tw=XI('q', 'W', '1n+i0')))
+    body.append(REC_OKL % f)
+    text_ = '\n'.join(body)
+    fixed = {'S': '../../types/schema.bend', 'F': '../compact/found.bend', 'VS': './value_set.bend', 'WR': './words_rw.bend', 'WW': './words_win.bend', 'Order': '../nat_order.bend',
+             'VB': './vbuf.bend', 'Codec': '../../spec/codec.bend', 'O': '../../src/obj.bend', 'E': './encx_%s.bend' % c, 'VRL': f['imps']['VRL']}
+    imps = dict(fixed)
+    for a, p in f['imps'].items():
+        if a not in imps and re.search(r'(?<![\w.])%s\.' % re.escape(a), text_):
+            imps[a] = p
+    head = ['import Base'] + ['import %s as %s' % (p, a) for a, p in imps.items()]
+    head += ['', '# GENERATED by encset (codegen). Do not edit.',
+             '# The encode of the list %s after one element is written, stated per element: see codegen/proofs/collections/encset.py.' % c, '', VQS.HELPER, HELP]
+    return '\n'.join(head) + text_ + '\n'
+
+
 def out_path(c):
     return OBJ / ('encset_%s.bend' % c)
 
 
 def main():
     stale = False
-    for c in LISTS:
-        t = text(c)
+    for c in LISTS + REC_LISTS:
+        t = text(c) if c in LISTS else rec_text(c)
         o = out_path(c)
         if '--check' in sys.argv:
             if not o.exists() or o.read_text() != t:
