@@ -32,6 +32,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import sys
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_laws import sync_pairs  # noqa: E402
 OUT = ROOT / 'proofs/obj/sha_node.bend'
 ZOUT = ROOT / 'proofs/obj/zero_roots.bend'
 FOUT = ROOT / 'proofs/obj/sha_fast.bend'
@@ -1437,17 +1438,8 @@ def main():
     ztext = emit_zero_hex()
     ftext = emit_fast()
     htext = emit_hex_file()
-    outs = ((OUT, text), (ZOUT, ztext), (FOUT, ftext), (HOUT, htext))
-    if '--check' in sys.argv:
-        for path, t in outs:
-            if not path.exists() or path.read_text() != t:
-                sys.exit('stale generated SHA laws: ' + str(path.relative_to(ROOT)))
-        print('generated SHA laws are current')
-        return
-    for path, t in outs:
-        path.write_text(t)
-    print(*(path.relative_to(ROOT) for path, _ in outs))
+    return sync_pairs(((OUT, text), (ZOUT, ztext), (FOUT, ftext), (HOUT, htext)), 'sha_laws', 'generated SHA laws are current')
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
