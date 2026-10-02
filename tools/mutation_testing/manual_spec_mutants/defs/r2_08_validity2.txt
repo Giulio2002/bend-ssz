@@ -57,8 +57,8 @@ sym: ExecutionPayload_g1_va0,ExecutionPayload_g1_valid
 spec: a container is valid iff every field is valid; a list of composites is valid iff its count is within its limit and storage and every element is valid
 fault: the validity of extra_data is not consulted
 why: field forgotten
--  ExecutionPayload_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, True{}, Fulu_bytelist_32_e.bl32_valid(extra_data))
-+  ExecutionPayload_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, True{}, (extra_data, True{}))
+-True{}, Fulu_bytelist_32_e.bl32_valid(extra_data))
++True{}, (extra_data, True{}))
 === r2-v04-group-validity
 type: FuluExecutionPayload
 ops: encode
