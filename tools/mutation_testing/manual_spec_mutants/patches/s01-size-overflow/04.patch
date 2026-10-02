@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT s01-size-overflow/04
+# type: VarTestStruct,progbitlist
+# ops: encode
+# spec: a collection whose storage cannot hold its length is invalid (no out-of-range access, no wrapped size)
+# fault: the size pass of a packed collection does not check that the storage holds the length
+# why: trusting the length field
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1583,3 +1583,3 @@
+   (ws, +c) = pair
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
++  (Words{ws, n}, n)
+ 

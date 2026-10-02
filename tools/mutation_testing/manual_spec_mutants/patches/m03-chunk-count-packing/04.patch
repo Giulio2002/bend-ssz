@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/04
+# type: vec_uint64_8
+# ops: root
+# spec: mtree combines the left subtree (chunks 0..) with the right subtree (the next chunks)
+# fault: the right subtree starts at the same chunk as the left one (start not advanced by half the width)
+# why: forgetting to add the half width
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -878,3 +878,3 @@
+             case True{}:
+-              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), s, n,
+                 mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))

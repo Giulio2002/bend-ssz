@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/10
+# type: ComplexTestStruct
+# ops: decode
+# spec: the second offset is stored right after the first one at fixed position 7
+# fault: the second offset is read from position 6
+# why: offset slot miscounted
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -131,3 +131,3 @@
+   match ok:
+-    case True{}: ComplexTestStruct_v1(off, len, o0, B.read32(buf, (off + 7 : U32)))
++    case True{}: ComplexTestStruct_v1(off, len, o0, B.read32(buf, (off + 6 : U32)))
+     case False{}: (buf, False{})

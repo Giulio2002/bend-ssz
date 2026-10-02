@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f03-attestation-bitlist/07
+# type: FuluAttestation
+# ops: root
+# spec: aggregation_bits root mixes in the number of bits, not bytes
+# fault: the length mixed in is the byte count (bits_nbytes)
+# why: byte count used as the length
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1013,3 +1013,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, bits_nbytes(k), words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
+ 

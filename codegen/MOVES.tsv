@@ -449,3 +449,7 @@ codegen/proofs/mutation_coverage/word_positions.py	codegen/proofs/slop/word_posi
 codegen/proofs/mutation_coverage/write_start_and_sizes.py	codegen/proofs/slop/write_start_and_sizes.py
 codegen/core/mutation_layout.py	codegen/core/slop_layout.py
 docs/mutation_testing/MUTATION_COVERAGE_LAYOUT.md	docs/mutation_testing/SLOP_LAYOUT.md
+codegen/container_field_validity.py	codegen/proofs/slop/container_field_validity.py
+codegen/packed_boolean_validity.py	codegen/proofs/slop/packed_boolean_validity.py
+codegen/bit_padding_validity.py	codegen/proofs/slop/bit_padding_validity.py
+codegen/first_offset_check.py	codegen/proofs/slop/first_offset_check.py

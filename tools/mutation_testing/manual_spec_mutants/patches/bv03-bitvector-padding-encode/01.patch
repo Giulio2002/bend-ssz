@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv03-bitvector-padding-encode/01
+# type: bitvector_5
+# ops: encode
+# spec: serializing a Bitvector[5] whose value has bits above 5 is invalid (padding must be zero)
+# fault: the validity bound is 64 (bit 5 allowed)
+# why: off by one in the bit count
+# file: types/bitvector_5_encode_ssz_generated.bend
+--- a/types/bitvector_5_encode_ssz_generated.bend
++++ b/types/bitvector_5_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_5_d.Bitvector5{+w0}: U32.is_lt(w0, 32)
++    case bitvector_5_d.Bitvector5{+w0}: U32.is_lt(w0, 64)
+ 

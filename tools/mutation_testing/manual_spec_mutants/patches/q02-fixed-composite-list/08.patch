@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q02-fixed-composite-list/08
+# type: FuluExecutionRequests
+# ops: decode
+# spec: the first offset of ExecutionRequests equals its fixed part (12)
+# fault: the first offset test is is_le(12, o0)
+# why: weak first-offset test
+# file: types/FuluExecutionRequests_decode_ssz_generated.bend
+--- a/types/FuluExecutionRequests_decode_ssz_generated.bend
++++ b/types/FuluExecutionRequests_decode_ssz_generated.bend
+@@ -94,3 +94,3 @@
+   (buf, +o0) = pair
+-  ExecutionRequests_c0(U32.is_eq(o0, 12), buf, off, len, o0)
++  ExecutionRequests_c0(U32.is_le(12, o0), buf, off, len, o0)
+ 

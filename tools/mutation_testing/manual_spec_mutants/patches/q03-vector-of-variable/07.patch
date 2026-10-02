@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q03-vector-of-variable/07
+# type: ComplexTestStruct
+# ops: decode
+# spec: offsets must be in order and within the buffer
+# fault: the order test between consecutive offsets is dropped
+# why: forgetting monotonicity
+# file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+--- a/types/vec_VarTestStruct_2_decode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_decode_ssz_generated.bend
+@@ -62,3 +62,3 @@
+   (buf, +b) = pair
+-  v2_VarTestStruct_eb(b, O.and_pair(acc, v2_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  v2_VarTestStruct_eb(b, O.and_pair(acc, v2_VarTestStruct_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)))
+ 

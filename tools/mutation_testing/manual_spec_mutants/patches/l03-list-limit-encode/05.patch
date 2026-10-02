@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l03-list-limit-encode/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: list limit is an upper bound on the length
+# fault: any packed collection is valid regardless of the upper bound (big = True)
+# why: the limit check treated as the caller's job
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1496,3 +1496,3 @@
+     case Words{ws, +n}:
+-      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
++      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), True{}), unit_ok(unit, n)), n, Array.size(U32, ws))
+ 

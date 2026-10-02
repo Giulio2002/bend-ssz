@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n04-union-root/05
+# type: CompatibleUnionBC
+# ops: root
+# spec: mix_in_selector(root, selector) = hash(root || selector as a 32-byte chunk)
+# fault: root and selector chunk are hashed in the wrong order
+# why: operands swapped
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -707,3 +707,3 @@
+ 
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)
+ 

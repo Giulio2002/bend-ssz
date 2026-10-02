@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f01-bytevector-root/04
+# type: FuluBytes96
+# ops: root
+# spec: 3 chunks pad to 4 leaves: the tree is ((c0,c1),(c2,zero))
+# fault: no padding: (c0,c1) hashed with c2 directly
+# why: merkleizing the three chunks without padding to a power of two
+# file: types/FuluBytes96_hashtreeroot_generated.bend
+--- a/types/FuluBytes96_hashtreeroot_generated.bend
++++ b/types/FuluBytes96_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (h, D.node(hl, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), D.node(hl, D.D{B.swap32(w16), B.swap32(w17), B.swap32(w18), B.swap32(w19), B.swap32(w20), B.swap32(w21), B.swap32(w22), B.swap32(w23)}, D.zero())))
++    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (h, D.node(hl, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), D.D{B.swap32(w16), B.swap32(w17), B.swap32(w18), B.swap32(w19), B.swap32(w20), B.swap32(w21), B.swap32(w22), B.swap32(w23)}))
+ 

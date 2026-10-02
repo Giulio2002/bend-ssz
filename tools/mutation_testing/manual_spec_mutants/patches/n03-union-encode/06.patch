@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n03-union-encode/06
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: option 2 is serialized with selector 2
+# fault: option 2 is written with selector 3
+# why: copy-paste of the selector constant
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -39,3 +39,3 @@
+ def CompatibleUnionABCA_pt1(+pos: U32, v: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, out: Array<U32>) -> Array<U32> & CompatibleUnionABCA_d.CompatibleUnionABCA:
+-  CompatibleUnionABCA_pb1(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
++  CompatibleUnionABCA_pb1(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v))
+ 

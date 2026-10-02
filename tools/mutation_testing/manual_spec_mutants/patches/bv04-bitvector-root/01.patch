@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv04-bitvector-root/01
+# type: bitvector_5
+# ops: root
+# spec: hash_tree_root(Bitvector[N]) merkleizes the packed bits (little-endian bytes padded to 32)
+# fault: the packed word is not byte-swapped into the chunk
+# why: SHA-256 word order confusion
+# file: types/bitvector_5_hashtreeroot_generated.bend
+--- a/types/bitvector_5_hashtreeroot_generated.bend
++++ b/types/bitvector_5_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_5_d.Bitvector5{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++    case bitvector_5_d.Bitvector5{+w0}: (h, D.D{w0, 0, 0, 0, 0, 0, 0, 0})
+ 

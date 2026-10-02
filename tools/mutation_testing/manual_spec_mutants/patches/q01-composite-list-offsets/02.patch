@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/02
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the first offset must not exceed the buffer
+# fault: the first-offset range test is dropped
+# why: forgetting the range check on the first offset
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
++  pl_VarTestStruct_first(Bool.and(U32.is_eq((first .&. 3 : U32), 0), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
+ 

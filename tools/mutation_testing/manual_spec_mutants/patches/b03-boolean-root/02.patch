@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b03-boolean-root/02
+# type: boolean
+# ops: root
+# spec: hash_tree_root(false) = 32 zero bytes
+# fault: the false chunk is the true chunk (the arms are swapped)
+# why: inverted match arms
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1052,3 +1052,3 @@
+     case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
+-    case False{}: D.zero()
++    case False{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
+ 

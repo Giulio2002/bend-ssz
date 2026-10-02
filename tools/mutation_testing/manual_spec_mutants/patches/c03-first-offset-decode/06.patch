@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c03-first-offset-decode/06
+# type: ComplexTestStruct
+# ops: decode
+# spec: the container is at least as long as its fixed part (71)
+# fault: the minimum length is 70
+# why: fixed size off by one
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -143,3 +143,3 @@
+ 
+-def ComplexTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ComplexTestStruct_ok_len(U32.is_le(71, len), buf, off, len)
++def ComplexTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ComplexTestStruct_ok_len(U32.is_le(70, len), buf, off, len)
+ 

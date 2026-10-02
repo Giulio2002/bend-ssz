@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m04-mix-in-length/04
+# type: VarTestStruct
+# ops: root
+# spec: the mixed length of a List[uint16] is the element count
+# fault: the count is divided by 4 (shift by the 32-bit word size)
+# why: shift copied from a uint32 list
+# file: types/list_uint16_1024_hashtreeroot_generated.bend
+--- a/types/list_uint16_1024_hashtreeroot_generated.bend
++++ b/types/list_uint16_1024_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l1024_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 6, seg))
++def l1024_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 2n, O.words_root(hl, h, o, 6, seg))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/05
+# type: SingleFieldTestStruct
+# ops: root
+# spec: a 1-field container has chunk_count 1: its root is the field root itself (no hashing)
+# fault: the single field root is hashed with a zero chunk
+# why: padding to two leaves
+# file: types/SingleFieldTestStruct_hashtreeroot_generated.bend
+--- a/types/SingleFieldTestStruct_hashtreeroot_generated.bend
++++ b/types/SingleFieldTestStruct_hashtreeroot_generated.bend
+@@ -13,3 +13,3 @@
+   (h, d_f_A) = pair
+-  (h, d_f_A)
++  (h, D.node(hl, d_f_A, D.zero()))
+ 

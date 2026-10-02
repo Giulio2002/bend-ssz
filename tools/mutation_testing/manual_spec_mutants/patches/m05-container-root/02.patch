@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/02
+# type: FixedTestStruct
+# ops: root
+# spec: field roots are merkleized in declaration order
+# fault: leaves A and B are swapped
+# why: reordered field hashes
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_f_C) = pair
+-  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero())))
++  (h, D.node(hl, D.node(hl, d_f_B, d_f_A), D.node(hl, d_f_C, D.zero())))
+ 

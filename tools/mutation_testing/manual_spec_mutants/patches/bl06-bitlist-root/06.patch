@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl06-bitlist-root/06
+# type: bitlist_513
+# ops: root
+# spec: the Bitlist root mixes the length with a 32-byte little-endian chunk
+# fault: the length chunk is built without byte swap (big-endian)
+# why: SHA word order confusion in the length chunk
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -705,3 +705,3 @@
+ 
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}
+ 

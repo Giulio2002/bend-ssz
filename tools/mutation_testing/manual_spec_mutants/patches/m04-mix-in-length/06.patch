@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m04-mix-in-length/06
+# type: ComplexTestStruct
+# ops: root
+# spec: mix_in_length is applied once for the list
+# fault: mix_count mixes the byte length unshifted whatever the element size
+# why: the element size shift is forgotten
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1065,3 +1065,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, n)))
+ 

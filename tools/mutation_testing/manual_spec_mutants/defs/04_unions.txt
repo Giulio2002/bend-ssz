@@ -1,0 +1,209 @@
+## unions (CompatibleUnion: selector byte then payload; 4.4, mix_in_selector)
+=== n01-union-selector-decode
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: only the declared selectors are valid; selector 0 is not an option of a CompatibleUnion
+fault: selectors up to 1 accepted (selector 0 with a payload reads as option 1)
+why: <= instead of == in the selector test
+-CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++CompatibleUnionA_ok0(U32.is_le(s, 1), s, buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: selectors outside the declared options are invalid (including 128..255)
+fault: any selector at least 1 is accepted (out-of-bounds selectors read as option 1)
+why: >= instead of == in the selector test
+-CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++CompatibleUnionA_ok0(U32.is_le(1, s), s, buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: selectors above 127 must not be accepted
+fault: the selector check keeps only the low 7 bits (selector 129 reads as 1)
+why: masking the selector to the legal range instead of rejecting
+-CompatibleUnionA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++CompatibleUnionA_ok0(U32.is_eq((s .&. 127 : U32), 1), s, buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: an empty input is not a union value (no selector byte)
+fault: the empty input is accepted (selector read as 0 past the end)
+why: forgetting the selector byte needs one byte
+-CompatibleUnionA_ok_nz(U32.is_le(1, len), buf, off, len)
++CompatibleUnionA_ok_nz(U32.is_le(0, len), buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+spec: selector 3 selects the third option (ProgressiveVarTestStruct)
+fault: selector 4 is validated against the third option too (the test is <= 4 at option 3)
+why: off by one in the selector chain
+-CompatibleUnionABCA_ok2(U32.is_eq(s, 3), s, buf, off, len)
++CompatibleUnionABCA_ok2(U32.is_le(s, 3), s, buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+spec: the last selector (4) selects the fourth option; selector 5 is invalid
+fault: the last selector test is dropped (anything not 1..3 is option 4)
+why: else-branch instead of an explicit selector test
+-CompatibleUnionABCA_ok3(U32.is_eq(s, 4), s, buf, off, len)
++CompatibleUnionABCA_ok3(True{}, s, buf, off, len)
+=== n01-union-selector-decode
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+spec: selector 2 selects the second option
+fault: selector 2 and 3 are swapped in the validator chain
+why: copy-paste of the selector constants
+-CompatibleUnionABCA_ok1(U32.is_eq(s, 2), s, buf, off, len)
++CompatibleUnionABCA_ok1(U32.is_eq(s, 3), s, buf, off, len)
+=== n02-union-payload-window
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: the payload is the bytes after the selector byte
+fault: the payload window length is len (the selector byte counted)
+why: forgetting to subtract the selector
+-ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), len)
+=== n02-union-payload-window
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: the payload starts right after the selector byte
+fault: the payload is read from the selector offset
+why: forgetting to skip the selector
+-ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 0 : U32), (len - 1 : U32))
+=== n02-union-payload-window
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+spec: the decoded union value holds the payload read after the selector
+fault: the reader reads the payload at offset +2
+why: miscounted skip
+-CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
++CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 2 : U32), (len - 1 : U32)))
+count: 2
+=== n02-union-payload-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+spec: selector 3 payload is a ProgressiveVarTestStruct with its own offsets measured from the payload start
+fault: the third option's payload is validated with the selector byte inside the window
+why: forgetting to subtract the selector byte
+-ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), len)
+=== n03-union-encode
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+spec: the serialization starts with the selector byte of the option (1)
+fault: the selector byte written is 0
+why: zero-based selector
+-O.w8(out, pos, 1)
++O.w8(out, pos, 0)
+=== n03-union-encode
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+spec: the serialization starts with the selector byte of the option (1)
+fault: the selector byte written is 129 (high bit set)
+why: flag bit mistaken for part of the selector
+-O.w8(out, pos, 1)
++O.w8(out, pos, 129)
+=== n03-union-encode
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+spec: the payload follows the selector byte
+fault: the payload is written at pos+2
+why: miscounted selector width
+-ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v)
++ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 2 : U32), v)
+=== n03-union-encode
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+spec: the serialization length is 1 + payload length
+fault: the size pass reports payload length only
+why: selector byte forgotten in the size
+-(CompatibleUnionA_d.CompatibleUnionA_c0{v}, 2)
++(CompatibleUnionA_d.CompatibleUnionA_c0{v}, 1)
+=== n03-union-encode
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+spec: a union value is valid only if its payload is valid
+fault: validity does not check the payload
+why: assuming the payload type invariant
+-ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(v)
++True{}
+=== n03-union-encode
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+spec: option 2 is serialized with selector 2
+fault: option 2 is written with selector 3
+why: copy-paste of the selector constant
+-O.w8(out, pos, 2)
++O.w8(out, pos, 3)
+=== n03-union-encode
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+spec: option 4 is serialized with selector 4
+fault: option 4 is written with selector 1
+why: copy-paste of the first option's constant
+-O.w8(out, pos, 4)
++O.w8(out, pos, 1)
+=== n04-union-root
+type: CompatibleUnionA
+ops: root
+file: types/CompatibleUnionA_hashtreeroot_generated.bend
+spec: root = mix_in_selector(root(value), selector) with selector 1
+fault: selector 0 is mixed in
+why: zero-based selector
+-O.mix_len(hl, d, 1)
++O.mix_len(hl, d, 0)
+=== n04-union-root
+type: CompatibleUnionA
+ops: root
+file: types/CompatibleUnionA_hashtreeroot_generated.bend
+spec: the root of a union mixes in the selector
+fault: no selector is mixed in (the payload root is returned)
+why: treating the union like its payload
+-(CompatibleUnionA_d.CompatibleUnionA_c0{v}, O.mix_len(hl, d, 1))
++(CompatibleUnionA_d.CompatibleUnionA_c0{v}, d)
+=== n04-union-root
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+spec: option 2 mixes in selector 2
+fault: option 2 mixes in selector 1
+why: copy-paste of the first option's constant
+-O.mix_len(hl, d, 2)
++O.mix_len(hl, d, 1)
+=== n04-union-root
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+spec: option 4 mixes in selector 4
+fault: option 4 mixes in selector 3
+why: off by one in the last constant
+-O.mix_len(hl, d, 4)
++O.mix_len(hl, d, 3)
+=== n04-union-root
+type: CompatibleUnionBC
+ops: root
+file: src/obj.bend
+spec: mix_in_selector(root, selector) = hash(root || selector as a 32-byte chunk)
+fault: root and selector chunk are hashed in the wrong order
+why: operands swapped
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)

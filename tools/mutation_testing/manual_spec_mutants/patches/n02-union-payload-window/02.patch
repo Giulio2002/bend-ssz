@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n02-union-payload-window/02
+# type: CompatibleUnionA
+# ops: decode
+# spec: the payload starts right after the selector byte
+# fault: the payload is read from the selector offset
+# why: forgetting to skip the selector
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   match c:
+-    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 0 : U32), (len - 1 : U32))
+     case False{}: (buf, False{})

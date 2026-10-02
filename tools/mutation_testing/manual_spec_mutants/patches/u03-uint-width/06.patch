@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/06
+# type: uint128
+# ops: decode
+# spec: deserialize requires exactly 16 bytes for uint128
+# fault: the uint128 length check accepts at least 16 (a uint256 value prefix)
+# why: confusing exact and lower bound
+# file: types/uint128_decode_ssz_generated.bend
+--- a/types/uint128_decode_ssz_generated.bend
++++ b/types/uint128_decode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+ 
+-def u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u128_ok_len(U32.is_eq(len, 16), buf, off)
++def u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u128_ok_len(U32.is_le(16, len), buf, off)
+ 

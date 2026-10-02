@@ -1,0 +1,22 @@
+# MANUAL SPEC MUTANT p01-progressive-growth/04
+# type: proglist_uint16
+# ops: root
+# spec: merkleize_progressive(chunks) = hash(merkleize_progressive(rest), merkleize(first)): the rest is the LEFT child
+# fault: the two children are swapped (subtree left, rest right)
+# why: operand order of the single hash
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -908,2 +908,7 @@
+ # the number of chunks plus one is enough.
++def mt_join_sw(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
++  (h, r) = pair
++  (ws, dr) = r
++  (h, (ws, D.node(hl, dr, dl)))
++
+ def pt_right(+hl: Nat, +lf: Leaf, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+@@ -911,3 +916,3 @@
+   (ws, dl) = r
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  mt_join_sw(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
+ 

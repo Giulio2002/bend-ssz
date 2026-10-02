@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv03-bitvector-padding-encode/02
+# type: bitlist_5,BitsStruct,FuluAttestation
+# ops: encode
+# spec: serializing a Bitlist[5] (or a bit vector) whose last storage word has a set bit between the length and the delimiter position is invalid
+# fault: the above-N table entry for r=5 masks from bit 6 (a stray bit 5 is accepted)
+# why: constant typo in a 32-entry table
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1445,3 +1445,3 @@
+     case 4: U32.is_eq((x .&. 4294967280 : U32), 0)
+-    case 5: U32.is_eq((x .&. 4294967264 : U32), 0)
++    case 5: U32.is_eq((x .&. 4294967232 : U32), 0)
+     case 6: U32.is_eq((x .&. 4294967232 : U32), 0)

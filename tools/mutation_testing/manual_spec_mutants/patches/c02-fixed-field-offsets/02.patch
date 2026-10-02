@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c02-fixed-field-offsets/02
+# type: FixedTestStruct
+# ops: encode
+# spec: fields of a fixed container are written back to back (field C at offset 9)
+# fault: field C is written at offset 8
+# why: offset sum miscounted
+# file: types/FixedTestStruct_encode_ssz_generated.bend
+--- a/types/FixedTestStruct_encode_ssz_generated.bend
++++ b/types/FixedTestStruct_encode_ssz_generated.bend
+@@ -15,3 +15,3 @@
+   match o:
+-    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 9 : U32), f_C)
++    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: uint32_e.u32_put(uint64_e.u64_put(uint8_e.u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 8 : U32), f_C)
+ 

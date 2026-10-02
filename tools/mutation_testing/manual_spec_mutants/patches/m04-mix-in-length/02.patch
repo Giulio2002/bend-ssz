@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m04-mix-in-length/02
+# type: VarTestStruct
+# ops: root
+# spec: mix_in_length(root, length) = hash(root || length chunk): root first
+# fault: operands swapped
+# why: argument order
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -707,3 +707,3 @@
+ 
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)
+ 

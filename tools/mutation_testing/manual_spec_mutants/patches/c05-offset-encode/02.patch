@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/02
+# type: VarTestStruct
+# ops: encode
+# spec: the offset is written into the fixed part at its slot
+# fault: the offset is written 4 bytes further (at the slot after the real one)
+# why: slot index miscounted
+# file: types/list_uint16_1024_encode_ssz_generated.bend
+--- a/types/list_uint16_1024_encode_ssz_generated.bend
++++ b/types/list_uint16_1024_encode_ssz_generated.bend
+@@ -31,3 +31,3 @@
+ def l1024_u16_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+-  l1024_u16_pvb(cur, l1024_u16_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
++  l1024_u16_pvb(cur, l1024_u16_putk(O.w32(out, (pos + hoff + 1 : U32), cur), (pos + cur : U32), v))
+ 

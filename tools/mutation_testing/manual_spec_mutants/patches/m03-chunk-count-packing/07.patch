@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/07
+# type: VarTestStruct,ComplexTestStruct
+# ops: decode
+# spec: a list at an unaligned byte offset is copied byte-exact
+# fault: a copy from a source offset of 3 mod 4 uses the shift for 2 mod 4
+# why: shift table typo in the unaligned copy dispatch
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -339,3 +339,3 @@
+     case 2: scopy2(nw, a, 0, dst, src)
+-    case _: scopy3(nw, a, 0, dst, src)
++    case _: scopy2(nw, a, 0, dst, src)
+ 

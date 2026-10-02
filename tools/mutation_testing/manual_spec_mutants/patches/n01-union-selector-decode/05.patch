@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/05
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 3 selects the third option (ProgressiveVarTestStruct)
+# fault: selector 4 is validated against the third option too (the test is <= 4 at option 3)
+# why: off by one in the selector chain
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -29,3 +29,3 @@
+     case True{}: ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
+-    case False{}: CompatibleUnionABCA_ok2(U32.is_eq(s, 3), s, buf, off, len)
++    case False{}: CompatibleUnionABCA_ok2(U32.is_le(s, 3), s, buf, off, len)
+ 

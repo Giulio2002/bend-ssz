@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n02-union-payload-window/01
+# type: CompatibleUnionA
+# ops: decode
+# spec: the payload is the bytes after the selector byte
+# fault: the payload window length is len (the selector byte counted)
+# why: forgetting to subtract the selector
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   match c:
+-    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), len)
+     case False{}: (buf, False{})

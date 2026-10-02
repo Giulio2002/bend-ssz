@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u01-uint-encode-byte-order/04
+# type: uint32
+# ops: encode
+# spec: uint32 little-endian, aligned write
+# fault: the aligned 32-bit write stores the byte-swapped word
+# why: htonl() applied on a little-endian target
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -417,3 +417,3 @@
+   match aligned:
+-    case True{}: Array.set(U32, out, U32.shrn(p, 2n), x)
++    case True{}: Array.set(U32, out, U32.shrn(p, 2n), B.swap32(x))
+     case False{}: w32_split(out, p, x, (p .&. 3 : U32))

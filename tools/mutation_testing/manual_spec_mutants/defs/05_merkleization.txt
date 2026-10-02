@@ -1,0 +1,355 @@
+## Merkleization (SSZ 4.6): packing, padding, depth from the limit, zero hashes, mix_in_length, container roots
+=== m01-zero-subtree-levels
+type: bitlist_513,VarTestStruct
+ops: root
+file: src/obj.bend
+spec: padding chunks beyond the data are zero subtrees: the virtual node at height d+1 is zero_hash(d+1)
+fault: an empty right subtree of height d+1 uses the zero hash of height d (one level too low)
+why: zero-hash table indexed by depth minus one
+-              (h, (ws, D.zconst(1n+p)))
++              (h, (ws, D.zconst(p)))
+count: 2
+=== m01-zero-subtree-levels
+type: bitlist_513,VarTestStruct
+ops: root
+file: src/digest.bend
+spec: zero_hash(1) = SHA-256(32 zero bytes || 32 zero bytes)
+fault: one word of the constant Z(1) is off by one
+why: typo in a precomputed table
+-    case 0n: D{4121296194,
++    case 0n: D{4121296195,
+=== m01-zero-subtree-levels
+type: bitlist_513,VarTestStruct
+ops: root
+file: src/digest.bend
+spec: zero_hash(2) = SHA-256(zero_hash(1) || zero_hash(1))
+fault: one word of the constant Z(2) is off by one
+why: typo in a precomputed table
+-        case 0n: D{3679850830,
++        case 0n: D{3679850831,
+=== m01-zero-subtree-levels
+type: bitlist_513
+ops: root
+file: src/digest.bend
+spec: zero_hash(0) is 32 zero bytes
+fault: Z(0) is not zero (first word 1)
+why: sentinel value
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
+-    case 1n+k1:
++    case 0n: D{1, 0, 0, 0, 0, 0, 0, 0}
++    case 1n+k1:
+=== m01-zero-subtree-levels
+type: bitlist_513
+ops: root
+file: src/obj.bend
+spec: a missing leaf is the zero chunk
+fault: an out-of-range leaf at the bottom level is Z(1) instead of Z(0)
+why: zero-hash table indexed from one
+-              (h, (ws, D.zconst(0n)))
++              (h, (ws, D.zconst(1n)))
+count: 2
+=== m02-depth-from-limit
+type: vec_uint64_5
+ops: root
+file: types/vec_uint64_5_hashtreeroot_generated.bend
+spec: a Vector[uint64,5] has 2 chunks: depth 1
+fault: depth 0 (a single chunk: the second chunk is dropped)
+why: depth computed from the byte length of a packed value in words
+-O.words_root(hl, h, o, 1, seg)
++O.words_root(hl, h, o, 0, seg)
+=== m02-depth-from-limit
+type: vec_uint64_5
+ops: root
+file: types/vec_uint64_5_hashtreeroot_generated.bend
+spec: a Vector[uint64,5] has 2 chunks: depth 1
+fault: depth 2 (padded to 4 chunks)
+why: next power of two applied twice
+-O.words_root(hl, h, o, 1, seg)
++O.words_root(hl, h, o, 2, seg)
+=== m02-depth-from-limit
+type: vec_uint16_5
+ops: root
+file: types/vec_uint16_5_hashtreeroot_generated.bend
+spec: a Vector[uint16,5] is 10 bytes: one chunk, depth 0
+fault: depth 1 (a spurious zero sibling)
+why: depth from the element count 5 instead of the chunk count
+-O.words_root(hl, h, o, 0, seg)
++O.words_root(hl, h, o, 1, seg)
+=== m02-depth-from-limit
+type: VarTestStruct
+ops: root
+file: types/list_uint16_1024_hashtreeroot_generated.bend
+spec: List[uint16,1024] has chunk limit 1024*2/32 = 64: depth 6 regardless of the length
+fault: depth 5
+why: limit in bytes divided by 64
+-O.words_root(hl, h, o, 6, seg)
++O.words_root(hl, h, o, 5, seg)
+=== m02-depth-from-limit
+type: VarTestStruct
+ops: root
+file: types/list_uint16_1024_hashtreeroot_generated.bend
+spec: List[uint16,1024] has chunk limit 64: depth 6
+fault: depth 7
+why: limit rounded up to the next power of two twice
+-O.words_root(hl, h, o, 6, seg)
++O.words_root(hl, h, o, 7, seg)
+=== m02-depth-from-limit
+type: ComplexTestStruct
+ops: root
+file: types/bytelist_256_hashtreeroot_generated.bend
+spec: ByteList[256] has chunk limit 8: depth 3
+fault: depth 8 (the byte limit is used as the depth)
+why: byte limit mistaken for the depth
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 4, seg)
+=== m02-depth-from-limit
+type: ComplexTestStruct
+ops: root
+file: types/list_uint16_128_hashtreeroot_generated.bend
+spec: List[uint16,128] has chunk limit 8: depth 3
+fault: depth 2
+why: limit in elements divided by 64
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== m02-depth-from-limit
+type: FuluAttestation
+ops: root
+file: types/Fulu_bitlist_131072_hashtreeroot_generated.bend
+spec: Bitlist[131072] has chunk limit 512: depth 9
+fault: depth 8
+why: limit divided by 512 instead of 256
+-O.bits_root(hl, h, o, 9, seg)
++O.bits_root(hl, h, o, 8, seg)
+=== m02-depth-from-limit
+type: FuluAttestation
+ops: root
+file: types/Fulu_bitlist_131072_hashtreeroot_generated.bend
+spec: Bitlist[131072] has chunk limit 512: depth 9
+fault: depth 10
+why: next power of two of the bit limit in bytes
+-O.bits_root(hl, h, o, 9, seg)
++O.bits_root(hl, h, o, 10, seg)
+=== m03-chunk-count-packing
+type: VarTestStruct,ComplexTestStruct
+ops: root
+file: src/obj.bend
+spec: pack: the chunk count is ceil(bytes/32)
+fault: chunk count computed as floor(bytes/32) + 1 style: adds 32 (an extra chunk when bytes is a multiple of 32)
+why: ceil written as (n + 32) / 32
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
+=== m03-chunk-count-packing
+type: VarTestStruct,ComplexTestStruct
+ops: root
+file: src/obj.bend
+spec: pack: the chunk count is ceil(bytes/32)
+fault: chunk count computed as (n + 30) / 32 (drops the partial last chunk when bytes = 32k+1)
+why: off-by-one rounding constant
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 30n), 32n)
+=== m03-chunk-count-packing
+type: vec_uint64_8
+ops: root
+file: src/obj.bend
+spec: pack: chunk i holds bytes 32i..32i+31 (eight 32-bit words)
+fault: the chunk stride is four words (the leaf i starts at word 4i)
+why: chunk size taken as 16 bytes
+-def leaf_at(+hl: Nat, lf: Leaf, h: B.Buf, ws: Array<U32>, +i: Nat) -> B.Buf & (Array<U32> & D.Digest):
+-  match lf:
+-    case LWords{}: mt_leaf(h, chunkn(ws, e8(i)))
++def leaf_at(+hl: Nat, lf: Leaf, h: B.Buf, ws: Array<U32>, +i: Nat) -> B.Buf & (Array<U32> & D.Digest):
++  match lf:
++    case LWords{}: mt_leaf(h, chunkn(ws, Nat.double(Nat.double(i))))
+=== m03-chunk-count-packing
+type: vec_uint64_8
+ops: root
+file: src/obj.bend
+spec: mtree combines the left subtree (chunks 0..) with the right subtree (the next chunks)
+fault: the right subtree starts at the same chunk as the left one (start not advanced by half the width)
+why: forgetting to add the half width
+-hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
++hl, lf, Nat.div(w, 2n), s, n,
+=== m03-chunk-count-packing
+type: VarTestStruct,ComplexTestStruct
+ops: decode
+file: src/obj.bend
+spec: the last (partial) chunk is padded with zero bytes: bytes after the data in the last word are zero
+fault: the decoder's copy does not mask the last word (the bytes of the next field remain)
+why: copying whole words
+-  (B.Buf{src, len}, Words{mask_last(n, dst), n})
++  (B.Buf{src, len}, Words{dst, n})
+=== m03-chunk-count-packing
+type: VarTestStruct,ComplexTestStruct
+ops: decode
+file: src/obj.bend
+spec: the last partial word keeps only its n mod 4 low bytes
+fault: the mask keeps one byte too many (rem+1)
+why: off by one in the mask width
+-  Array.set(U32, a, i, keep(rem, w))
++  Array.set(U32, a, i, keep((rem + 1 : U32), w))
+=== m03-chunk-count-packing
+type: VarTestStruct,ComplexTestStruct
+ops: decode
+file: src/obj.bend
+spec: a list at an unaligned byte offset is copied byte-exact
+fault: a copy from a source offset of 3 mod 4 uses the shift for 2 mod 4
+why: shift table typo in the unaligned copy dispatch
+-    case 2: scopy2(nw, a, 0, dst, src)
+-    case _: scopy3(nw, a, 0, dst, src)
++    case 2: scopy2(nw, a, 0, dst, src)
++    case _: scopy2(nw, a, 0, dst, src)
+=== m03-chunk-count-packing
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+spec: a list at an unaligned byte offset is written byte-exact
+fault: the writer treats every destination as aligned
+why: alignment test replaced by the aligned fast path
+-      put_fin(n, pw_empty(U32.is_eq(n, 0), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
++      put_fin(n, pw_empty(U32.is_eq(n, 0), 0, n, U32.shrn((n + 3 : U32), 2n),
+=== m04-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+spec: mix_in_length(root, length) = hash(root || length as 32-byte little-endian)
+fault: the length chunk is built without the byte swap
+why: big-endian word order confusion
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}
+=== m04-mix-in-length
+type: VarTestStruct
+ops: root
+file: src/obj.bend
+spec: mix_in_length(root, length) = hash(root || length chunk): root first
+fault: operands swapped
+why: argument order
+-def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
++def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, len_chunk(n), r)
+=== m04-mix-in-length
+type: VarTestStruct
+ops: root
+file: types/list_uint16_1024_hashtreeroot_generated.bend
+spec: the mixed length of a List[uint16] is the element count
+fault: the byte length is mixed in
+why: forgetting to divide by the element size
+-O.mix_count(hl, 1n,
++O.mix_count(hl, 0n,
+=== m04-mix-in-length
+type: VarTestStruct
+ops: root
+file: types/list_uint16_1024_hashtreeroot_generated.bend
+spec: the mixed length of a List[uint16] is the element count
+fault: the count is divided by 4 (shift by the 32-bit word size)
+why: shift copied from a uint32 list
+-O.mix_count(hl, 1n,
++O.mix_count(hl, 2n,
+=== m04-mix-in-length
+type: ComplexTestStruct
+ops: root
+file: types/bytelist_256_hashtreeroot_generated.bend
+spec: the mixed length of a ByteList is the byte count
+fault: the byte count is halved
+why: shift copied from a uint16 list
+-O.mix_count(hl, 0n,
++O.mix_count(hl, 1n,
+=== m04-mix-in-length
+type: ComplexTestStruct
+ops: root
+file: src/obj.bend
+spec: mix_in_length is applied once for the list
+fault: mix_count mixes the byte length unshifted whatever the element size
+why: the element size shift is forgotten
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, n)))
+=== m05-container-root
+type: FixedTestStruct
+ops: root
+file: types/FixedTestStruct_hashtreeroot_generated.bend
+spec: a 3-field container pads to 4 leaves with a zero chunk
+fault: the fourth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk
+why: zero-hash table indexed from the wrong level
+-D.node(hl, d_f_C, D.zero())
++D.node(hl, d_f_C, D.zconst(1n))
+=== m05-container-root
+type: FixedTestStruct
+ops: root
+file: types/FixedTestStruct_hashtreeroot_generated.bend
+spec: field roots are merkleized in declaration order
+fault: leaves A and B are swapped
+why: reordered field hashes
+-D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero()))
++D.node(hl, D.node(hl, d_f_B, d_f_A), D.node(hl, d_f_C, D.zero()))
+=== m05-container-root
+type: FixedTestStruct
+ops: root
+file: types/FixedTestStruct_hashtreeroot_generated.bend
+spec: a 3-field container pads to 4 leaves: the tree is ((A,B),(C,0))
+fault: unbalanced tree (A, (B, C)) without padding
+why: merkleizing without padding to a power of two
+-D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero()))
++D.node(hl, d_f_A, D.node(hl, d_f_B, d_f_C))
+=== m05-container-root
+type: FuluCheckpoint
+ops: root
+file: types/FuluCheckpoint_hashtreeroot_generated.bend
+spec: a 2-field container root is hash(root(epoch), root(root))
+fault: the two field roots are swapped
+why: reordered field hashes
+-D.node(hl, d_epoch, d_root)
++D.node(hl, d_root, d_epoch)
+=== m05-container-root
+type: SingleFieldTestStruct
+ops: root
+file: types/SingleFieldTestStruct_hashtreeroot_generated.bend
+spec: a 1-field container has chunk_count 1: its root is the field root itself (no hashing)
+fault: the single field root is hashed with a zero chunk
+why: padding to two leaves
+-  (h, d_f_A) = pair
+-  (h, d_f_A)
++  (h, d_f_A) = pair
++  (h, D.node(hl, d_f_A, D.zero()))
+=== m05-container-root
+type: ComplexTestStruct
+ops: root
+file: types/ComplexTestStruct_hashtreeroot_generated.bend
+spec: a 7-field container pads to 8 leaves with a zero chunk
+fault: the eighth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk
+why: zero-hash table indexed from the wrong level
+-D.node(hl, d_f_G, D.zero())
++D.node(hl, d_f_G, D.zconst(1n))
+=== m05-container-root
+type: ComplexTestStruct
+ops: root
+file: types/ComplexTestStruct_hashtreeroot_generated.bend
+spec: field roots are merkleized in declaration order
+fault: leaves E and F are swapped
+why: reordered field hashes
+-D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, D.zero()))
++D.node(hl, D.node(hl, d_f_F, d_f_E), D.node(hl, d_f_G, D.zero()))
+=== m05-container-root
+type: ComplexTestStruct
+ops: root
+file: types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
+spec: Vector[FixedTestStruct,4] has 4 leaves: depth 2
+fault: depth 1 (only the first two elements are hashed)
+why: depth = log2(N) - 1
+-v4_FixedTestStruct_mt0(2n,
++v4_FixedTestStruct_mt0(1n,
+=== m05-container-root
+type: ComplexTestStruct
+ops: root
+file: types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
+spec: Vector[FixedTestStruct,4] has 4 leaves: depth 2
+fault: depth 3 (padded to 8 leaves)
+why: depth = log2(N) + 1
+-v4_FixedTestStruct_mt0(2n,
++v4_FixedTestStruct_mt0(3n,
+=== m06-vector-composite
+type: ComplexTestStruct
+ops: root
+file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+spec: Vector[VarTestStruct,2] has 2 leaves: depth 1
+fault: depth 2
+why: depth = N
+-v2_VarTestStruct_mt0(1n,
++v2_VarTestStruct_mt0(2n,

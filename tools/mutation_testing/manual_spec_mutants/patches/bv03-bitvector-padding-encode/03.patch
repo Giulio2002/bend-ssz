@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv03-bitvector-padding-encode/03
+# type: bitvector_9
+# ops: encode
+# spec: a Bitvector[9] value has bits 9..15 clear
+# fault: the validity bound is 1024 (bit 9 allowed)
+# why: off by one in the bit count
+# file: types/bitvector_9_encode_ssz_generated.bend
+--- a/types/bitvector_9_encode_ssz_generated.bend
++++ b/types/bitvector_9_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_9_d.Bitvector9{+w0}: U32.is_lt(w0, 512)
++    case bitvector_9_d.Bitvector9{+w0}: U32.is_lt(w0, 1024)
+ 

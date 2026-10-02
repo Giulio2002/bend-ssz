@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c02-fixed-field-offsets/04
+# type: FixedTestStruct
+# ops: encode
+# spec: a fixed container serializes to exactly its size
+# fault: the reported length is 12
+# why: size constant off by one
+# file: types/FixedTestStruct_encode_ssz_generated.bend
+--- a/types/FixedTestStruct_encode_ssz_generated.bend
++++ b/types/FixedTestStruct_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def FixedTestStruct_encode(+o: FixedTestStruct_d.FixedTestStruct) -> B.Buf: O.out_done(13, FixedTestStruct_put(O.out_at(2n), 0, o))
++def FixedTestStruct_encode(+o: FixedTestStruct_d.FixedTestStruct) -> B.Buf: O.out_done(12, FixedTestStruct_put(O.out_at(2n), 0, o))
+ 

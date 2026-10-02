@@ -271,7 +271,8 @@
   "decode_tree",
   "decode_input",
   "serialize_valid",
-  "decode_offsets"
+  "decode_offsets",
+  "decode_first_offset"
  ],
  "map": {
   "boolean": {
@@ -468,7 +469,8 @@
      "file": "slop/offsets/boolean_generated.bend",
      "law": "boolean_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint8": {
    "root": [
@@ -568,7 +570,8 @@
      "file": "slop/offsets/uint8_generated.bend",
      "law": "uint8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint32": {
    "root": [
@@ -688,7 +691,8 @@
      "file": "slop/offsets/uint32_generated.bend",
      "law": "uint32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint64": {
    "root": [
@@ -808,7 +812,8 @@
      "file": "slop/offsets/uint64_generated.bend",
      "law": "uint64_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint256": {
    "root": [
@@ -948,7 +953,8 @@
      "file": "slop/offsets/uint256_generated.bend",
      "law": "uint256_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes1": {
    "root": [
@@ -1068,7 +1074,8 @@
      "file": "slop/offsets/Bytes1_generated.bend",
      "law": "Bytes1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes4": {
    "root": [
@@ -1208,7 +1215,8 @@
      "file": "slop/offsets/Bytes4_generated.bend",
      "law": "Bytes4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes32": {
    "root": [
@@ -1352,7 +1360,8 @@
      "file": "slop/offsets/Bytes32_generated.bend",
      "law": "Bytes32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes48": {
    "root": [
@@ -1496,7 +1505,8 @@
      "file": "slop/offsets/Bytes48_generated.bend",
      "law": "Bytes48_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes96": {
    "root": [
@@ -1636,7 +1646,8 @@
      "file": "slop/offsets/Bytes96_generated.bend",
      "law": "Bytes96_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes8": {
    "root": [
@@ -1780,7 +1791,8 @@
      "file": "slop/offsets/Bytes8_generated.bend",
      "law": "Bytes8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Bytes20": {
    "root": [
@@ -1924,7 +1936,8 @@
      "file": "slop/offsets/Bytes20_generated.bend",
      "law": "Bytes20_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Slot": {
    "root": [
@@ -2044,7 +2057,8 @@
      "file": "slop/offsets/Slot_generated.bend",
      "law": "Slot_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Epoch": {
    "root": [
@@ -2164,7 +2178,8 @@
      "file": "slop/offsets/Epoch_generated.bend",
      "law": "Epoch_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Gwei": {
    "root": [
@@ -2284,7 +2299,8 @@
      "file": "slop/offsets/Gwei_generated.bend",
      "law": "Gwei_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Hash32": {
    "root": [
@@ -2424,7 +2440,8 @@
      "file": "slop/offsets/Hash32_generated.bend",
      "law": "Hash32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Version": {
    "root": [
@@ -2564,7 +2581,8 @@
      "file": "slop/offsets/Version_generated.bend",
      "law": "Version_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DomainType": {
    "root": [
@@ -2704,7 +2722,8 @@
      "file": "slop/offsets/DomainType_generated.bend",
      "law": "DomainType_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BLSSignature": {
    "root": [
@@ -2844,7 +2863,8 @@
      "file": "slop/offsets/BLSSignature_generated.bend",
      "law": "BLSSignature_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "FinalityBranch": {
    "root": [
@@ -2988,7 +3008,8 @@
      "file": "slop/offsets/FinalityBranch_generated.bend",
      "law": "FinalityBranch_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "VersionedHash": {
    "root": [
@@ -3128,7 +3149,8 @@
      "file": "slop/offsets/VersionedHash_generated.bend",
      "law": "VersionedHash_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "G1Point": {
    "root": [
@@ -3268,7 +3290,8 @@
      "file": "slop/offsets/G1Point_generated.bend",
      "law": "G1Point_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "G2Point": {
    "root": [
@@ -3408,7 +3431,8 @@
      "file": "slop/offsets/G2Point_generated.bend",
      "law": "G2Point_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Fork": {
    "root": [
@@ -3536,7 +3560,8 @@
      "file": "slop/offsets/Fork_generated.bend",
      "law": "Fork_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SyncAggregate": {
    "root": [
@@ -3672,7 +3697,8 @@
      "file": "slop/offsets/SyncAggregate_generated.bend",
      "law": "SyncAggregate_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SyncAggregatorSelectionData": {
    "root": [
@@ -3800,7 +3826,8 @@
      "file": "slop/offsets/SyncAggregatorSelectionData_generated.bend",
      "law": "SyncAggregatorSelectionData_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "PowBlock": {
    "root": [
@@ -3928,7 +3955,8 @@
      "file": "slop/offsets/PowBlock_generated.bend",
      "law": "PowBlock_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CommitteeIndex": {
    "root": [
@@ -4048,7 +4076,8 @@
      "file": "slop/offsets/CommitteeIndex_generated.bend",
      "law": "CommitteeIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ValidatorIndex": {
    "root": [
@@ -4168,7 +4197,8 @@
      "file": "slop/offsets/ValidatorIndex_generated.bend",
      "law": "ValidatorIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "PendingConsolidation": {
    "root": [
@@ -4296,7 +4326,8 @@
      "file": "slop/offsets/PendingConsolidation_generated.bend",
      "law": "PendingConsolidation_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "PendingPartialWithdrawal": {
    "root": [
@@ -4424,7 +4455,8 @@
      "file": "slop/offsets/PendingPartialWithdrawal_generated.bend",
      "law": "PendingPartialWithdrawal_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "VoluntaryExit": {
    "root": [
@@ -4552,7 +4584,8 @@
      "file": "slop/offsets/VoluntaryExit_generated.bend",
      "law": "VoluntaryExit_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedVoluntaryExit": {
    "root": [
@@ -4680,7 +4713,8 @@
      "file": "slop/offsets/SignedVoluntaryExit_generated.bend",
      "law": "SignedVoluntaryExit_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Root": {
    "root": [
@@ -4820,7 +4854,8 @@
      "file": "slop/offsets/Root_generated.bend",
      "law": "Root_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "HistoricalSummary": {
    "root": [
@@ -4948,7 +4983,8 @@
      "file": "slop/offsets/HistoricalSummary_generated.bend",
      "law": "HistoricalSummary_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SyncCommitteeContribution": {
    "root": [
@@ -5084,7 +5120,8 @@
      "file": "slop/offsets/SyncCommitteeContribution_generated.bend",
      "law": "SyncCommitteeContribution_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ContributionAndProof": {
    "root": [
@@ -5212,7 +5249,8 @@
      "file": "slop/offsets/ContributionAndProof_generated.bend",
      "law": "ContributionAndProof_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedContributionAndProof": {
    "root": [
@@ -5340,7 +5378,8 @@
      "file": "slop/offsets/SignedContributionAndProof_generated.bend",
      "law": "SignedContributionAndProof_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SyncCommitteeMessage": {
    "root": [
@@ -5468,7 +5507,8 @@
      "file": "slop/offsets/SyncCommitteeMessage_generated.bend",
      "law": "SyncCommitteeMessage_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Eth1Block": {
    "root": [
@@ -5596,7 +5636,8 @@
      "file": "slop/offsets/Eth1Block_generated.bend",
      "law": "Eth1Block_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BeaconBlockHeader": {
    "root": [
@@ -5724,7 +5765,8 @@
      "file": "slop/offsets/BeaconBlockHeader_generated.bend",
      "law": "BeaconBlockHeader_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedBeaconBlockHeader": {
    "root": [
@@ -5860,7 +5902,8 @@
      "file": "slop/offsets/SignedBeaconBlockHeader_generated.bend",
      "law": "SignedBeaconBlockHeader_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProposerSlashing": {
    "root": [
@@ -5997,7 +6040,8 @@
      "file": "slop/offsets/ProposerSlashing_generated.bend",
      "law": "ProposerSlashing_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "HistoricalBatch": {
    "root": [
@@ -6104,7 +6148,8 @@
      "file": "slop/offsets/HistoricalBatch_generated.bend",
      "law": "HistoricalBatch_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Eth1Data": {
    "root": [
@@ -6232,7 +6277,8 @@
      "file": "slop/offsets/Eth1Data_generated.bend",
      "law": "Eth1Data_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Checkpoint": {
    "root": [
@@ -6360,7 +6406,8 @@
      "file": "slop/offsets/Checkpoint_generated.bend",
      "law": "Checkpoint_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "AttestationData": {
    "root": [
@@ -6488,7 +6535,8 @@
      "file": "slop/offsets/AttestationData_generated.bend",
      "law": "AttestationData_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SingleAttestation": {
    "root": [
@@ -6616,7 +6664,8 @@
      "file": "slop/offsets/SingleAttestation_generated.bend",
      "law": "SingleAttestation_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Attestation": {
    "root": [
@@ -6706,6 +6755,12 @@
      "file": "slop/offsets/Attestation_generated.bend",
      "law": "Attestation_decode_build"
     }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_Attestation_first_offset_generated.bend",
+     "law": "Attestation_decode_first_offset"
+    }
    ]
   },
   "AggregateAndProof": {
@@ -6784,7 +6839,8 @@
      "file": "slop/offsets/AggregateAndProof_generated.bend",
      "law": "AggregateAndProof_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedAggregateAndProof": {
    "root": [
@@ -6861,6 +6917,12 @@
     {
      "file": "slop/offsets/SignedAggregateAndProof_generated.bend",
      "law": "SignedAggregateAndProof_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_SignedAggregateAndProof_first_offset_generated.bend",
+     "law": "SignedAggregateAndProof_decode_first_offset"
     }
    ]
   },
@@ -6939,6 +7001,12 @@
     {
      "file": "slop/offsets/PendingAttestation_generated.bend",
      "law": "PendingAttestation_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_PendingAttestation_first_offset_generated.bend",
+     "law": "PendingAttestation_decode_first_offset"
     }
    ]
   },
@@ -7030,6 +7098,12 @@
      "file": "slop/offsets/IndexedAttestation_generated.bend",
      "law": "IndexedAttestation_decode_build"
     }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_IndexedAttestation_first_offset_generated.bend",
+     "law": "IndexedAttestation_decode_first_offset"
+    }
    ]
   },
   "AttesterSlashing": {
@@ -7120,7 +7194,8 @@
      "file": "slop/offsets/AttesterSlashing_generated.bend",
      "law": "AttesterSlashing_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ForkData": {
    "root": [
@@ -7248,7 +7323,8 @@
      "file": "slop/offsets/ForkData_generated.bend",
      "law": "ForkData_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ForkDigest": {
    "root": [
@@ -7388,7 +7464,8 @@
      "file": "slop/offsets/ForkDigest_generated.bend",
      "law": "ForkDigest_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Domain": {
    "root": [
@@ -7528,7 +7605,8 @@
      "file": "slop/offsets/Domain_generated.bend",
      "law": "Domain_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SigningData": {
    "root": [
@@ -7656,7 +7734,8 @@
      "file": "slop/offsets/SigningData_generated.bend",
      "law": "SigningData_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BLSPubkey": {
    "root": [
@@ -7796,7 +7875,8 @@
      "file": "slop/offsets/BLSPubkey_generated.bend",
      "law": "BLSPubkey_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DepositRequest": {
    "root": [
@@ -7924,7 +8004,8 @@
      "file": "slop/offsets/DepositRequest_generated.bend",
      "law": "DepositRequest_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "PendingDeposit": {
    "root": [
@@ -8052,7 +8133,8 @@
      "file": "slop/offsets/PendingDeposit_generated.bend",
      "law": "PendingDeposit_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SyncCommittee": {
    "root": [
@@ -8159,7 +8241,8 @@
      "file": "slop/offsets/SyncCommittee_generated.bend",
      "law": "SyncCommittee_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DepositData": {
    "root": [
@@ -8295,7 +8378,8 @@
      "file": "slop/offsets/DepositData_generated.bend",
      "law": "DepositData_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Deposit": {
    "root": [
@@ -8432,7 +8516,8 @@
      "file": "slop/offsets/Deposit_generated.bend",
      "law": "Deposit_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DepositMessage": {
    "root": [
@@ -8560,7 +8645,8 @@
      "file": "slop/offsets/DepositMessage_generated.bend",
      "law": "DepositMessage_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Validator": {
    "root": [
@@ -8663,7 +8749,8 @@
      "file": "slop/offsets/Validator_generated.bend",
      "law": "Validator_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "NodeID": {
    "root": [
@@ -8803,7 +8890,8 @@
      "file": "slop/offsets/NodeID_generated.bend",
      "law": "NodeID_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SubnetID": {
    "root": [
@@ -8923,7 +9011,8 @@
      "file": "slop/offsets/SubnetID_generated.bend",
      "law": "SubnetID_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Ether": {
    "root": [
@@ -9043,7 +9132,8 @@
      "file": "slop/offsets/Ether_generated.bend",
      "law": "Ether_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ParticipationFlags": {
    "root": [
@@ -9143,7 +9233,8 @@
      "file": "slop/offsets/ParticipationFlags_generated.bend",
      "law": "ParticipationFlags_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CurrentSyncCommitteeBranch": {
    "root": [
@@ -9287,7 +9378,8 @@
      "file": "slop/offsets/CurrentSyncCommitteeBranch_generated.bend",
      "law": "CurrentSyncCommitteeBranch_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "NextSyncCommitteeBranch": {
    "root": [
@@ -9427,7 +9519,8 @@
      "file": "slop/offsets/NextSyncCommitteeBranch_generated.bend",
      "law": "NextSyncCommitteeBranch_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Transaction": {
    "root": [
@@ -9529,7 +9622,8 @@
      "file": "slop/offsets/Transaction_generated.bend",
      "law": "Transaction_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ExecutionAddress": {
    "root": [
@@ -9669,7 +9763,8 @@
      "file": "slop/offsets/ExecutionAddress_generated.bend",
      "law": "ExecutionAddress_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ConsolidationRequest": {
    "root": [
@@ -9797,7 +9892,8 @@
      "file": "slop/offsets/ConsolidationRequest_generated.bend",
      "law": "ConsolidationRequest_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "WithdrawalRequest": {
    "root": [
@@ -9925,7 +10021,8 @@
      "file": "slop/offsets/WithdrawalRequest_generated.bend",
      "law": "WithdrawalRequest_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ExecutionRequests": {
    "root": [
@@ -10003,7 +10100,8 @@
      "file": "slop/offsets/ExecutionRequests_generated.bend",
      "law": "ExecutionRequests_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BLSToExecutionChange": {
    "root": [
@@ -10131,7 +10229,8 @@
      "file": "slop/offsets/BLSToExecutionChange_generated.bend",
      "law": "BLSToExecutionChange_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedBLSToExecutionChange": {
    "root": [
@@ -10259,7 +10358,8 @@
      "file": "slop/offsets/SignedBLSToExecutionChange_generated.bend",
      "law": "SignedBLSToExecutionChange_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ExecutionPayloadHeader": {
    "root": [
@@ -10365,7 +10465,8 @@
      "file": "slop/offsets/ExecutionPayloadHeader_generated.bend",
      "law": "ExecutionPayloadHeader_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "PayloadId": {
    "root": [
@@ -10505,7 +10606,8 @@
      "file": "slop/offsets/PayloadId_generated.bend",
      "law": "PayloadId_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "WithdrawalIndex": {
    "root": [
@@ -10625,7 +10727,8 @@
      "file": "slop/offsets/WithdrawalIndex_generated.bend",
      "law": "WithdrawalIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Withdrawal": {
    "root": [
@@ -10753,7 +10856,8 @@
      "file": "slop/offsets/Withdrawal_generated.bend",
      "law": "Withdrawal_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ExecutionPayload": {
    "root": [
@@ -10843,6 +10947,12 @@
      "file": "slop/offsets/ExecutionPayload_generated.bend",
      "law": "ExecutionPayload_decode_build"
     }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_ExecutionPayload_first_offset_generated.bend",
+     "law": "ExecutionPayload_decode_first_offset"
+    }
    ]
   },
   "BeaconState": {
@@ -10911,6 +11021,12 @@
     {
      "file": "slop/offsets/BeaconState_generated.bend",
      "law": "BeaconState_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_BeaconState_first_offset_generated.bend",
+     "law": "BeaconState_decode_first_offset"
     }
    ]
   },
@@ -11056,7 +11172,8 @@
      "file": "slop/offsets/ExecutionBranch_generated.bend",
      "law": "ExecutionBranch_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "LightClientHeader": {
    "root": [
@@ -11149,6 +11266,12 @@
     {
      "file": "slop/offsets/LightClientHeader_generated.bend",
      "law": "LightClientHeader_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_LightClientHeader_first_offset_generated.bend",
+     "law": "LightClientHeader_decode_first_offset"
     }
    ]
   },
@@ -11244,7 +11367,8 @@
      "file": "slop/offsets/LightClientOptimisticUpdate_generated.bend",
      "law": "LightClientOptimisticUpdate_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "LightClientFinalityUpdate": {
    "root": [
@@ -11338,7 +11462,8 @@
      "file": "slop/offsets/LightClientFinalityUpdate_generated.bend",
      "law": "LightClientFinalityUpdate_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "LightClientUpdate": {
    "root": [
@@ -11424,7 +11549,8 @@
      "file": "slop/offsets/LightClientUpdate_generated.bend",
      "law": "LightClientUpdate_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "LightClientBootstrap": {
    "root": [
@@ -11510,7 +11636,8 @@
      "file": "slop/offsets/LightClientBootstrap_generated.bend",
      "law": "LightClientBootstrap_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BlobIndex": {
    "root": [
@@ -11630,7 +11757,8 @@
      "file": "slop/offsets/BlobIndex_generated.bend",
      "law": "BlobIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BlobIdentifier": {
    "root": [
@@ -11758,7 +11886,8 @@
      "file": "slop/offsets/BlobIdentifier_generated.bend",
      "law": "BlobIdentifier_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "KZGCommitment": {
    "root": [
@@ -11898,7 +12027,8 @@
      "file": "slop/offsets/KZGCommitment_generated.bend",
      "law": "KZGCommitment_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BeaconBlockBody": {
    "root": [
@@ -11988,6 +12118,12 @@
      "file": "slop/offsets/BeaconBlockBody_generated.bend",
      "law": "BeaconBlockBody_decode_build"
     }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_BeaconBlockBody_first_offset_generated.bend",
+     "law": "BeaconBlockBody_decode_first_offset"
+    }
    ]
   },
   "BeaconBlock": {
@@ -12066,7 +12202,8 @@
      "file": "slop/offsets/BeaconBlock_generated.bend",
      "law": "BeaconBlock_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SignedBeaconBlock": {
    "root": [
@@ -12143,6 +12280,12 @@
     {
      "file": "slop/offsets/SignedBeaconBlock_generated.bend",
      "law": "SignedBeaconBlock_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_SignedBeaconBlock_first_offset_generated.bend",
+     "law": "SignedBeaconBlock_decode_first_offset"
     }
    ]
   },
@@ -12284,7 +12427,8 @@
      "file": "slop/offsets/KZGProof_generated.bend",
      "law": "KZGProof_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Blob": {
    "root": [
@@ -12399,7 +12543,8 @@
      "file": "slop/offsets/Blob_generated.bend",
      "law": "Blob_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "BlobSidecar": {
    "root": [
@@ -12506,7 +12651,8 @@
      "file": "slop/offsets/BlobSidecar_generated.bend",
      "law": "BlobSidecar_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "Cell": {
    "root": [
@@ -12638,7 +12784,8 @@
      "file": "slop/offsets/Cell_generated.bend",
      "law": "Cell_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CellIndex": {
    "root": [
@@ -12758,7 +12905,8 @@
      "file": "slop/offsets/CellIndex_generated.bend",
      "law": "CellIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CommitmentIndex": {
    "root": [
@@ -12878,7 +13026,8 @@
      "file": "slop/offsets/CommitmentIndex_generated.bend",
      "law": "CommitmentIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "RowIndex": {
    "root": [
@@ -12998,7 +13147,8 @@
      "file": "slop/offsets/RowIndex_generated.bend",
      "law": "RowIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ColumnIndex": {
    "root": [
@@ -13118,7 +13268,8 @@
      "file": "slop/offsets/ColumnIndex_generated.bend",
      "law": "ColumnIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DataColumnsByRootIdentifier": {
    "root": [
@@ -13196,7 +13347,8 @@
      "file": "slop/offsets/DataColumnsByRootIdentifier_generated.bend",
      "law": "DataColumnsByRootIdentifier_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "MatrixEntry": {
    "root": [
@@ -13324,7 +13476,8 @@
      "file": "slop/offsets/MatrixEntry_generated.bend",
      "law": "MatrixEntry_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "DataColumnSidecar": {
    "root": [
@@ -13401,6 +13554,12 @@
     {
      "file": "slop/offsets/DataColumnSidecar_generated.bend",
      "law": "DataColumnSidecar_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/fulu_DataColumnSidecar_first_offset_generated.bend",
+     "law": "DataColumnSidecar_decode_first_offset"
     }
    ]
   },
@@ -13522,7 +13681,8 @@
      "file": "slop/offsets/CustodyIndex_generated.bend",
      "law": "CustodyIndex_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProgressiveSingleListContainerTestStruct": {
    "root": [
@@ -13596,7 +13756,8 @@
      "file": "slop/offsets/ProgressiveSingleListContainerTestStruct_generated.bend",
      "law": "ProgressiveSingleListContainerTestStruct_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProgressiveComplexTestStruct": {
    "root": [
@@ -13661,6 +13822,10 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_A"
+    },
+    {
      "file": "slop/constants/ProgressiveComplexTestStruct_generated.bend",
      "law": "ProgressiveComplexTestStruct_mc_ser"
     }
@@ -13670,7 +13835,8 @@
      "file": "slop/offsets/ProgressiveComplexTestStruct_generated.bend",
      "law": "ProgressiveComplexTestStruct_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProgressiveVarTestStruct": {
    "root": [
@@ -13735,6 +13901,10 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_f_A"
+    },
+    {
      "file": "slop/size/ProgressiveVarTestStruct_generated.bend",
      "law": "ProgressiveVarTestStruct_ms_bxsize_ProgressiveVarTestStruct"
     },
@@ -13756,7 +13926,8 @@
      "file": "slop/offsets/ProgressiveVarTestStruct_generated.bend",
      "law": "ProgressiveVarTestStruct_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProgressiveSingleFieldContainerTestStruct": {
    "root": [
@@ -13832,13 +14003,23 @@
      "law": "ProgressiveSingleFieldContainerTestStruct_ms_dec"
     }
    ],
-   "serialize_valid": [],
+   "serialize_valid": [
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vfields"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A"
+    }
+   ],
    "decode_offsets": [
     {
      "file": "slop/offsets/ProgressiveSingleFieldContainerTestStruct_generated.bend",
      "law": "ProgressiveSingleFieldContainerTestStruct_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_bool": {
    "root": [
@@ -13919,6 +14100,70 @@
      "law": "proglist_bool_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_booleans_generated.bend",
+     "law": "proglist_bool_serialize_vbool_128_at_4"
+    },
+    {
      "file": "slop/constants/proglist_bool_generated.bend",
      "law": "proglist_bool_mc_poison_pl_bool"
     },
@@ -13932,7 +14177,8 @@
      "file": "slop/offsets/proglist_bool_generated.bend",
      "law": "proglist_bool_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_16": {
    "root": [
@@ -14033,6 +14279,82 @@
      "law": "vec_bool_16_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_2_at_15"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_4_at_15"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_booleans_generated.bend",
+     "law": "vec_bool_16_serialize_vbool_128_at_15"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_16_poison_flag_generated.bend",
      "law": "vec_bool_16_serialize_vflag"
     },
@@ -14074,7 +14396,8 @@
      "file": "slop/offsets/vec_bool_16_generated.bend",
      "law": "vec_bool_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_1": {
    "root": [
@@ -14163,6 +14486,22 @@
      "law": "vec_bool_1_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_booleans_generated.bend",
+     "law": "vec_bool_1_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_booleans_generated.bend",
+     "law": "vec_bool_1_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_booleans_generated.bend",
+     "law": "vec_bool_1_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_booleans_generated.bend",
+     "law": "vec_bool_1_serialize_vbool_128_at_0"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_1_poison_flag_generated.bend",
      "law": "vec_bool_1_serialize_vflag"
     },
@@ -14200,7 +14539,8 @@
      "file": "slop/offsets/vec_bool_1_generated.bend",
      "law": "vec_bool_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_2": {
    "root": [
@@ -14289,6 +14629,34 @@
      "law": "vec_bool_2_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_booleans_generated.bend",
+     "law": "vec_bool_2_serialize_vbool_128_at_1"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_2_poison_flag_generated.bend",
      "law": "vec_bool_2_serialize_vflag"
     },
@@ -14326,7 +14694,8 @@
      "file": "slop/offsets/vec_bool_2_generated.bend",
      "law": "vec_bool_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_31": {
    "root": [
@@ -14415,6 +14784,82 @@
      "law": "vec_bool_31_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_2_at_30"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_4_at_30"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_booleans_generated.bend",
+     "law": "vec_bool_31_serialize_vbool_128_at_30"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_31_poison_flag_generated.bend",
      "law": "vec_bool_31_serialize_vflag"
     },
@@ -14452,7 +14897,8 @@
      "file": "slop/offsets/vec_bool_31_generated.bend",
      "law": "vec_bool_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_3": {
    "root": [
@@ -14541,6 +14987,46 @@
      "law": "vec_bool_3_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_booleans_generated.bend",
+     "law": "vec_bool_3_serialize_vbool_128_at_2"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_3_poison_flag_generated.bend",
      "law": "vec_bool_3_serialize_vflag"
     },
@@ -14578,7 +15064,8 @@
      "file": "slop/offsets/vec_bool_3_generated.bend",
      "law": "vec_bool_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_4": {
    "root": [
@@ -14679,6 +15166,58 @@
      "law": "vec_bool_4_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_booleans_generated.bend",
+     "law": "vec_bool_4_serialize_vbool_128_at_3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_4_poison_flag_generated.bend",
      "law": "vec_bool_4_serialize_vflag"
     },
@@ -14720,7 +15259,8 @@
      "file": "slop/offsets/vec_bool_4_generated.bend",
      "law": "vec_bool_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_512": {
    "root": [
@@ -14809,6 +15349,82 @@
      "law": "vec_bool_512_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_2_at_511"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_4_at_511"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_booleans_generated.bend",
+     "law": "vec_bool_512_serialize_vbool_128_at_511"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_512_poison_flag_generated.bend",
      "law": "vec_bool_512_serialize_vflag"
     },
@@ -14846,7 +15462,8 @@
      "file": "slop/offsets/vec_bool_512_generated.bend",
      "law": "vec_bool_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_513": {
    "root": [
@@ -14935,6 +15552,82 @@
      "law": "vec_bool_513_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_2_at_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_4_at_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_booleans_generated.bend",
+     "law": "vec_bool_513_serialize_vbool_128_at_512"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_513_poison_flag_generated.bend",
      "law": "vec_bool_513_serialize_vflag"
     },
@@ -14972,7 +15665,8 @@
      "file": "slop/offsets/vec_bool_513_generated.bend",
      "law": "vec_bool_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_5": {
    "root": [
@@ -15061,6 +15755,70 @@
      "law": "vec_bool_5_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_booleans_generated.bend",
+     "law": "vec_bool_5_serialize_vbool_128_at_4"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_5_poison_flag_generated.bend",
      "law": "vec_bool_5_serialize_vflag"
     },
@@ -15098,7 +15856,8 @@
      "file": "slop/offsets/vec_bool_5_generated.bend",
      "law": "vec_bool_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_bool_8": {
    "root": [
@@ -15199,6 +15958,82 @@
      "law": "vec_bool_8_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_ok"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_2_at_7"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_4_at_7"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_booleans_generated.bend",
+     "law": "vec_bool_8_serialize_vbool_128_at_7"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_8_poison_flag_generated.bend",
      "law": "vec_bool_8_serialize_vflag"
     },
@@ -15240,7 +16075,8 @@
      "file": "slop/offsets/vec_bool_8_generated.bend",
      "law": "vec_bool_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint128": {
    "root": [
@@ -15330,7 +16166,8 @@
      "file": "slop/offsets/proglist_uint128_generated.bend",
      "law": "proglist_uint128_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_16": {
    "root": [
@@ -15474,7 +16311,8 @@
      "file": "slop/offsets/vec_uint128_16_generated.bend",
      "law": "vec_uint128_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_1": {
    "root": [
@@ -15618,7 +16456,8 @@
      "file": "slop/offsets/vec_uint128_1_generated.bend",
      "law": "vec_uint128_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_2": {
    "root": [
@@ -15762,7 +16601,8 @@
      "file": "slop/offsets/vec_uint128_2_generated.bend",
      "law": "vec_uint128_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_31": {
    "root": [
@@ -15890,7 +16730,8 @@
      "file": "slop/offsets/vec_uint128_31_generated.bend",
      "law": "vec_uint128_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_3": {
    "root": [
@@ -16034,7 +16875,8 @@
      "file": "slop/offsets/vec_uint128_3_generated.bend",
      "law": "vec_uint128_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_4": {
    "root": [
@@ -16178,7 +17020,8 @@
      "file": "slop/offsets/vec_uint128_4_generated.bend",
      "law": "vec_uint128_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_512": {
    "root": [
@@ -16293,7 +17136,8 @@
      "file": "slop/offsets/vec_uint128_512_generated.bend",
      "law": "vec_uint128_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_513": {
    "root": [
@@ -16404,7 +17248,8 @@
      "file": "slop/offsets/vec_uint128_513_generated.bend",
      "law": "vec_uint128_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_5": {
    "root": [
@@ -16548,7 +17393,8 @@
      "file": "slop/offsets/vec_uint128_5_generated.bend",
      "law": "vec_uint128_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint128_8": {
    "root": [
@@ -16692,7 +17538,8 @@
      "file": "slop/offsets/vec_uint128_8_generated.bend",
      "law": "vec_uint128_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint8": {
    "root": [
@@ -16782,7 +17629,8 @@
      "file": "slop/offsets/proglist_uint8_generated.bend",
      "law": "proglist_uint8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_16": {
    "root": [
@@ -16916,7 +17764,8 @@
      "file": "slop/offsets/vec_uint8_16_generated.bend",
      "law": "vec_uint8_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_1": {
    "root": [
@@ -17034,7 +17883,8 @@
      "file": "slop/offsets/vec_uint8_1_generated.bend",
      "law": "vec_uint8_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_2": {
    "root": [
@@ -17152,7 +18002,8 @@
      "file": "slop/offsets/vec_uint8_2_generated.bend",
      "law": "vec_uint8_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_31": {
    "root": [
@@ -17270,7 +18121,8 @@
      "file": "slop/offsets/vec_uint8_31_generated.bend",
      "law": "vec_uint8_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_3": {
    "root": [
@@ -17388,7 +18240,8 @@
      "file": "slop/offsets/vec_uint8_3_generated.bend",
      "law": "vec_uint8_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_4": {
    "root": [
@@ -17522,7 +18375,8 @@
      "file": "slop/offsets/vec_uint8_4_generated.bend",
      "law": "vec_uint8_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_512": {
    "root": [
@@ -17640,7 +18494,8 @@
      "file": "slop/offsets/vec_uint8_512_generated.bend",
      "law": "vec_uint8_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_513": {
    "root": [
@@ -17758,7 +18613,8 @@
      "file": "slop/offsets/vec_uint8_513_generated.bend",
      "law": "vec_uint8_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_5": {
    "root": [
@@ -17876,7 +18732,8 @@
      "file": "slop/offsets/vec_uint8_5_generated.bend",
      "law": "vec_uint8_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint8_8": {
    "root": [
@@ -18010,7 +18867,8 @@
      "file": "slop/offsets/vec_uint8_8_generated.bend",
      "law": "vec_uint8_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint16": {
    "root": [
@@ -18100,7 +18958,8 @@
      "file": "slop/offsets/proglist_uint16_generated.bend",
      "law": "proglist_uint16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_16": {
    "root": [
@@ -18234,7 +19093,8 @@
      "file": "slop/offsets/vec_uint16_16_generated.bend",
      "law": "vec_uint16_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_1": {
    "root": [
@@ -18352,7 +19212,8 @@
      "file": "slop/offsets/vec_uint16_1_generated.bend",
      "law": "vec_uint16_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_2": {
    "root": [
@@ -18486,7 +19347,8 @@
      "file": "slop/offsets/vec_uint16_2_generated.bend",
      "law": "vec_uint16_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_31": {
    "root": [
@@ -18604,7 +19466,8 @@
      "file": "slop/offsets/vec_uint16_31_generated.bend",
      "law": "vec_uint16_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_3": {
    "root": [
@@ -18722,7 +19585,8 @@
      "file": "slop/offsets/vec_uint16_3_generated.bend",
      "law": "vec_uint16_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_4": {
    "root": [
@@ -18856,7 +19720,8 @@
      "file": "slop/offsets/vec_uint16_4_generated.bend",
      "law": "vec_uint16_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_512": {
    "root": [
@@ -18974,7 +19839,8 @@
      "file": "slop/offsets/vec_uint16_512_generated.bend",
      "law": "vec_uint16_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_513": {
    "root": [
@@ -19092,7 +19958,8 @@
      "file": "slop/offsets/vec_uint16_513_generated.bend",
      "law": "vec_uint16_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_5": {
    "root": [
@@ -19210,7 +20077,8 @@
      "file": "slop/offsets/vec_uint16_5_generated.bend",
      "law": "vec_uint16_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint16_8": {
    "root": [
@@ -19344,7 +20212,8 @@
      "file": "slop/offsets/vec_uint16_8_generated.bend",
      "law": "vec_uint16_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint256": {
    "root": [
@@ -19434,7 +20303,8 @@
      "file": "slop/offsets/proglist_uint256_generated.bend",
      "law": "proglist_uint256_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_16": {
    "root": [
@@ -19562,7 +20432,8 @@
      "file": "slop/offsets/vec_uint256_16_generated.bend",
      "law": "vec_uint256_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_1": {
    "root": [
@@ -19706,7 +20577,8 @@
      "file": "slop/offsets/vec_uint256_1_generated.bend",
      "law": "vec_uint256_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_2": {
    "root": [
@@ -19850,7 +20722,8 @@
      "file": "slop/offsets/vec_uint256_2_generated.bend",
      "law": "vec_uint256_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_31": {
    "root": [
@@ -19978,7 +20851,8 @@
      "file": "slop/offsets/vec_uint256_31_generated.bend",
      "law": "vec_uint256_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_3": {
    "root": [
@@ -20122,7 +20996,8 @@
      "file": "slop/offsets/vec_uint256_3_generated.bend",
      "law": "vec_uint256_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_4": {
    "root": [
@@ -20266,7 +21141,8 @@
      "file": "slop/offsets/vec_uint256_4_generated.bend",
      "law": "vec_uint256_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_512": {
    "root": [
@@ -20377,7 +21253,8 @@
      "file": "slop/offsets/vec_uint256_512_generated.bend",
      "law": "vec_uint256_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_513": {
    "root": [
@@ -20488,7 +21365,8 @@
      "file": "slop/offsets/vec_uint256_513_generated.bend",
      "law": "vec_uint256_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_5": {
    "root": [
@@ -20632,7 +21510,8 @@
      "file": "slop/offsets/vec_uint256_5_generated.bend",
      "law": "vec_uint256_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint256_8": {
    "root": [
@@ -20776,7 +21655,8 @@
      "file": "slop/offsets/vec_uint256_8_generated.bend",
      "law": "vec_uint256_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint32": {
    "root": [
@@ -20866,7 +21746,8 @@
      "file": "slop/offsets/proglist_uint32_generated.bend",
      "law": "proglist_uint32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_16": {
    "root": [
@@ -21010,7 +21891,8 @@
      "file": "slop/offsets/vec_uint32_16_generated.bend",
      "law": "vec_uint32_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_1": {
    "root": [
@@ -21154,7 +22036,8 @@
      "file": "slop/offsets/vec_uint32_1_generated.bend",
      "law": "vec_uint32_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_2": {
    "root": [
@@ -21298,7 +22181,8 @@
      "file": "slop/offsets/vec_uint32_2_generated.bend",
      "law": "vec_uint32_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_31": {
    "root": [
@@ -21442,7 +22326,8 @@
      "file": "slop/offsets/vec_uint32_31_generated.bend",
      "law": "vec_uint32_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_3": {
    "root": [
@@ -21586,7 +22471,8 @@
      "file": "slop/offsets/vec_uint32_3_generated.bend",
      "law": "vec_uint32_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_4": {
    "root": [
@@ -21730,7 +22616,8 @@
      "file": "slop/offsets/vec_uint32_4_generated.bend",
      "law": "vec_uint32_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_512": {
    "root": [
@@ -21853,7 +22740,8 @@
      "file": "slop/offsets/vec_uint32_512_generated.bend",
      "law": "vec_uint32_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_513": {
    "root": [
@@ -21976,7 +22864,8 @@
      "file": "slop/offsets/vec_uint32_513_generated.bend",
      "law": "vec_uint32_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_5": {
    "root": [
@@ -22120,7 +23009,8 @@
      "file": "slop/offsets/vec_uint32_5_generated.bend",
      "law": "vec_uint32_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint32_8": {
    "root": [
@@ -22264,7 +23154,8 @@
      "file": "slop/offsets/vec_uint32_8_generated.bend",
      "law": "vec_uint32_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "proglist_uint64": {
    "root": [
@@ -22354,7 +23245,8 @@
      "file": "slop/offsets/proglist_uint64_generated.bend",
      "law": "proglist_uint64_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_16": {
    "root": [
@@ -22498,7 +23390,8 @@
      "file": "slop/offsets/vec_uint64_16_generated.bend",
      "law": "vec_uint64_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_1": {
    "root": [
@@ -22642,7 +23535,8 @@
      "file": "slop/offsets/vec_uint64_1_generated.bend",
      "law": "vec_uint64_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_2": {
    "root": [
@@ -22786,7 +23680,8 @@
      "file": "slop/offsets/vec_uint64_2_generated.bend",
      "law": "vec_uint64_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_31": {
    "root": [
@@ -22930,7 +23825,8 @@
      "file": "slop/offsets/vec_uint64_31_generated.bend",
      "law": "vec_uint64_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_3": {
    "root": [
@@ -23074,7 +23970,8 @@
      "file": "slop/offsets/vec_uint64_3_generated.bend",
      "law": "vec_uint64_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_4": {
    "root": [
@@ -23218,7 +24115,8 @@
      "file": "slop/offsets/vec_uint64_4_generated.bend",
      "law": "vec_uint64_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_512": {
    "root": [
@@ -23341,7 +24239,8 @@
      "file": "slop/offsets/vec_uint64_512_generated.bend",
      "law": "vec_uint64_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_513": {
    "root": [
@@ -23456,7 +24355,8 @@
      "file": "slop/offsets/vec_uint64_513_generated.bend",
      "law": "vec_uint64_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_5": {
    "root": [
@@ -23600,7 +24500,8 @@
      "file": "slop/offsets/vec_uint64_5_generated.bend",
      "law": "vec_uint64_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "vec_uint64_8": {
    "root": [
@@ -23744,7 +24645,8 @@
      "file": "slop/offsets/vec_uint64_8_generated.bend",
      "law": "vec_uint64_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "ProgressiveTestStruct": {
    "root": [
@@ -23817,6 +24719,12 @@
     {
      "file": "slop/offsets/ProgressiveTestStruct_generated.bend",
      "law": "ProgressiveTestStruct_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/generic_ProgressiveTestStruct_first_offset_generated.bend",
+     "law": "ProgressiveTestStruct_decode_first_offset"
     }
    ]
   },
@@ -23904,6 +24812,12 @@
      "file": "slop/offsets/BitsStruct_generated.bend",
      "law": "BitsStruct_decode_build"
     }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/generic_BitsStruct_first_offset_generated.bend",
+     "law": "BitsStruct_decode_first_offset"
+    }
    ]
   },
   "ProgressiveBitsStruct": {
@@ -23977,6 +24891,12 @@
     {
      "file": "slop/offsets/ProgressiveBitsStruct_generated.bend",
      "law": "ProgressiveBitsStruct_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_first_offset"
     }
    ]
   },
@@ -24058,7 +24978,16 @@
      "law": "FixedTestStruct_ms_dec"
     }
    ],
-   "serialize_valid": [],
+   "serialize_valid": [
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vfields"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vreject_f_A"
+    }
+   ],
    "decode_offsets": [
     {
      "file": "slop/offsets/FixedTestStruct_generated.bend",
@@ -24068,7 +24997,8 @@
      "file": "slop/offsets/FixedTestStruct_generated.bend",
      "law": "FixedTestStruct_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "SingleFieldTestStruct": {
    "root": [
@@ -24144,7 +25074,16 @@
      "law": "SingleFieldTestStruct_ms_dec"
     }
    ],
-   "serialize_valid": [],
+   "serialize_valid": [
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vfields"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vreject_f_A"
+    }
+   ],
    "decode_offsets": [
     {
      "file": "slop/offsets/SingleFieldTestStruct_generated.bend",
@@ -24154,7 +25093,8 @@
      "file": "slop/offsets/SingleFieldTestStruct_generated.bend",
      "law": "SingleFieldTestStruct_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "VarTestStruct": {
    "root": [
@@ -24219,6 +25159,14 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_f_C"
+    },
+    {
      "file": "slop/size/VarTestStruct_generated.bend",
      "law": "VarTestStruct_ms_bxsize_VarTestStruct"
     },
@@ -24239,6 +25187,12 @@
     {
      "file": "slop/offsets/VarTestStruct_generated.bend",
      "law": "VarTestStruct_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/generic_VarTestStruct_first_offset_generated.bend",
+     "law": "VarTestStruct_decode_first_offset"
     }
    ]
   },
@@ -24305,6 +25259,14 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_C"
+    },
+    {
      "file": "slop/constants/ComplexTestStruct_generated.bend",
      "law": "ComplexTestStruct_mc_ser"
     }
@@ -24313,6 +25275,12 @@
     {
      "file": "slop/offsets/ComplexTestStruct_generated.bend",
      "law": "ComplexTestStruct_decode_build"
+    }
+   ],
+   "decode_first_offset": [
+    {
+     "file": "slop/offsets/generic_ComplexTestStruct_first_offset_generated.bend",
+     "law": "ComplexTestStruct_decode_first_offset"
     }
    ]
   },
@@ -24394,7 +25362,20 @@
      "law": "SmallTestStruct_ms_dec"
     }
    ],
-   "serialize_valid": [],
+   "serialize_valid": [
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vfields"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vreject_f_B"
+    }
+   ],
    "decode_offsets": [
     {
      "file": "slop/offsets/SmallTestStruct_generated.bend",
@@ -24404,13 +25385,18 @@
      "file": "slop/offsets/SmallTestStruct_generated.bend",
      "law": "SmallTestStruct_decode_fields"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_15": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_15_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_15_generated.bend",
@@ -24489,6 +25475,138 @@
      "law": "bitlist_15_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
+     "law": "bitlist_15_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_15_generated.bend",
      "law": "bitlist_15_serialize_cap"
     },
@@ -24510,13 +25628,18 @@
      "file": "slop/offsets/bitlist_15_generated.bend",
      "law": "bitlist_15_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_16": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_16_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_16_generated.bend",
@@ -24595,6 +25718,138 @@
      "law": "bitlist_16_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
+     "law": "bitlist_16_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_16_generated.bend",
      "law": "bitlist_16_serialize_cap"
     },
@@ -24616,13 +25871,18 @@
      "file": "slop/offsets/bitlist_16_generated.bend",
      "law": "bitlist_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_17": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_17_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_17_generated.bend",
@@ -24701,6 +25961,138 @@
      "law": "bitlist_17_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
+     "law": "bitlist_17_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_17_generated.bend",
      "law": "bitlist_17_serialize_cap"
     },
@@ -24722,13 +26114,18 @@
      "file": "slop/offsets/bitlist_17_generated.bend",
      "law": "bitlist_17_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_1": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_1_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_1_generated.bend",
@@ -24807,6 +26204,138 @@
      "law": "bitlist_1_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
+     "law": "bitlist_1_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_1_generated.bend",
      "law": "bitlist_1_serialize_cap"
     },
@@ -24828,13 +26357,18 @@
      "file": "slop/offsets/bitlist_1_generated.bend",
      "law": "bitlist_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_2": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_2_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_2_generated.bend",
@@ -24913,6 +26447,138 @@
      "law": "bitlist_2_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
+     "law": "bitlist_2_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_2_generated.bend",
      "law": "bitlist_2_serialize_cap"
     },
@@ -24934,13 +26600,18 @@
      "file": "slop/offsets/bitlist_2_generated.bend",
      "law": "bitlist_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_31": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_31_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_31_generated.bend",
@@ -25019,6 +26690,138 @@
      "law": "bitlist_31_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
+     "law": "bitlist_31_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_31_generated.bend",
      "law": "bitlist_31_serialize_cap"
     },
@@ -25040,13 +26843,18 @@
      "file": "slop/offsets/bitlist_31_generated.bend",
      "law": "bitlist_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_32": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_32_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_32_generated.bend",
@@ -25121,6 +26929,138 @@
      "law": "bitlist_32_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
+     "law": "bitlist_32_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/bitlist_32_generated.bend",
      "law": "bitlist_32_mc_poison_bits32"
     },
@@ -25134,13 +27074,18 @@
      "file": "slop/offsets/bitlist_32_generated.bend",
      "law": "bitlist_32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_33": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_33_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_33_generated.bend",
@@ -25215,6 +27160,138 @@
      "law": "bitlist_33_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
+     "law": "bitlist_33_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/bitlist_33_generated.bend",
      "law": "bitlist_33_mc_poison_bits33"
     },
@@ -25228,13 +27305,18 @@
      "file": "slop/offsets/bitlist_33_generated.bend",
      "law": "bitlist_33_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_3": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_3_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_3_generated.bend",
@@ -25313,6 +27395,138 @@
      "law": "bitlist_3_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
+     "law": "bitlist_3_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_3_generated.bend",
      "law": "bitlist_3_serialize_cap"
     },
@@ -25334,13 +27548,18 @@
      "file": "slop/offsets/bitlist_3_generated.bend",
      "law": "bitlist_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_4": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_4_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_4_generated.bend",
@@ -25419,6 +27638,138 @@
      "law": "bitlist_4_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
+     "law": "bitlist_4_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_4_generated.bend",
      "law": "bitlist_4_serialize_cap"
     },
@@ -25440,13 +27791,18 @@
      "file": "slop/offsets/bitlist_4_generated.bend",
      "law": "bitlist_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_511": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_511_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_511_generated.bend",
@@ -25521,6 +27877,138 @@
      "law": "bitlist_511_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
+     "law": "bitlist_511_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/bitlist_511_generated.bend",
      "law": "bitlist_511_mc_poison_bits511"
     },
@@ -25534,13 +28022,18 @@
      "file": "slop/offsets/bitlist_511_generated.bend",
      "law": "bitlist_511_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_512": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_512_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_512_generated.bend",
@@ -25615,6 +28108,138 @@
      "law": "bitlist_512_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
+     "law": "bitlist_512_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/bitlist_512_generated.bend",
      "law": "bitlist_512_mc_poison_bits512"
     },
@@ -25628,13 +28253,18 @@
      "file": "slop/offsets/bitlist_512_generated.bend",
      "law": "bitlist_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_513": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_513_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_513_generated.bend",
@@ -25709,6 +28339,138 @@
      "law": "bitlist_513_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
+     "law": "bitlist_513_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/bitlist_513_generated.bend",
      "law": "bitlist_513_mc_poison_bits513"
     },
@@ -25722,13 +28484,18 @@
      "file": "slop/offsets/bitlist_513_generated.bend",
      "law": "bitlist_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_5": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_5_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_5_generated.bend",
@@ -25807,6 +28574,138 @@
      "law": "bitlist_5_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
+     "law": "bitlist_5_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_5_generated.bend",
      "law": "bitlist_5_serialize_cap"
     },
@@ -25828,13 +28727,18 @@
      "file": "slop/offsets/bitlist_5_generated.bend",
      "law": "bitlist_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_6": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_6_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_6_generated.bend",
@@ -25913,6 +28817,138 @@
      "law": "bitlist_6_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
+     "law": "bitlist_6_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_6_generated.bend",
      "law": "bitlist_6_serialize_cap"
     },
@@ -25934,13 +28970,18 @@
      "file": "slop/offsets/bitlist_6_generated.bend",
      "law": "bitlist_6_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_7": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_7_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_7_generated.bend",
@@ -26019,6 +29060,138 @@
      "law": "bitlist_7_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
+     "law": "bitlist_7_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_7_generated.bend",
      "law": "bitlist_7_serialize_cap"
     },
@@ -26040,13 +29213,18 @@
      "file": "slop/offsets/bitlist_7_generated.bend",
      "law": "bitlist_7_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_8": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_8_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_8_generated.bend",
@@ -26125,6 +29303,138 @@
      "law": "bitlist_8_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
+     "law": "bitlist_8_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_8_generated.bend",
      "law": "bitlist_8_serialize_cap"
     },
@@ -26146,13 +29456,18 @@
      "file": "slop/offsets/bitlist_8_generated.bend",
      "law": "bitlist_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitlist_9": {
    "root": [
     {
      "file": "root_gtypes.bend",
      "law": "bitlist_9_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_vbits_nbytes"
     },
     {
      "file": "slop/constants/bitlist_9_generated.bend",
@@ -26231,6 +29546,138 @@
      "law": "bitlist_9_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
+     "law": "bitlist_9_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/capacity/bitlist_9_generated.bend",
      "law": "bitlist_9_serialize_cap"
     },
@@ -26252,7 +29699,8 @@
      "file": "slop/offsets/bitlist_9_generated.bend",
      "law": "bitlist_9_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_15": {
    "root": [
@@ -26363,7 +29811,8 @@
      "file": "slop/offsets/bitvector_15_generated.bend",
      "law": "bitvector_15_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_16": {
    "root": [
@@ -26470,7 +29919,8 @@
      "file": "slop/offsets/bitvector_16_generated.bend",
      "law": "bitvector_16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_17": {
    "root": [
@@ -26581,7 +30031,8 @@
      "file": "slop/offsets/bitvector_17_generated.bend",
      "law": "bitvector_17_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_1": {
    "root": [
@@ -26692,7 +30143,8 @@
      "file": "slop/offsets/bitvector_1_generated.bend",
      "law": "bitvector_1_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_2": {
    "root": [
@@ -26803,7 +30255,8 @@
      "file": "slop/offsets/bitvector_2_generated.bend",
      "law": "bitvector_2_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_31": {
    "root": [
@@ -26914,7 +30367,8 @@
      "file": "slop/offsets/bitvector_31_generated.bend",
      "law": "bitvector_31_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_32": {
    "root": [
@@ -27050,7 +30504,8 @@
      "file": "slop/offsets/bitvector_32_generated.bend",
      "law": "bitvector_32_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_33": {
    "root": [
@@ -27161,7 +30616,8 @@
      "file": "slop/offsets/bitvector_33_generated.bend",
      "law": "bitvector_33_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_3": {
    "root": [
@@ -27272,7 +30728,8 @@
      "file": "slop/offsets/bitvector_3_generated.bend",
      "law": "bitvector_3_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_4": {
    "root": [
@@ -27383,7 +30840,8 @@
      "file": "slop/offsets/bitvector_4_generated.bend",
      "law": "bitvector_4_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_511": {
    "root": [
@@ -27494,7 +30952,8 @@
      "file": "slop/offsets/bitvector_511_generated.bend",
      "law": "bitvector_511_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_512": {
    "root": [
@@ -27630,7 +31089,8 @@
      "file": "slop/offsets/bitvector_512_generated.bend",
      "law": "bitvector_512_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_513": {
    "root": [
@@ -27741,7 +31201,8 @@
      "file": "slop/offsets/bitvector_513_generated.bend",
      "law": "bitvector_513_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_5": {
    "root": [
@@ -27852,7 +31313,8 @@
      "file": "slop/offsets/bitvector_5_generated.bend",
      "law": "bitvector_5_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_6": {
    "root": [
@@ -27963,7 +31425,8 @@
      "file": "slop/offsets/bitvector_6_generated.bend",
      "law": "bitvector_6_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_7": {
    "root": [
@@ -28074,7 +31537,8 @@
      "file": "slop/offsets/bitvector_7_generated.bend",
      "law": "bitvector_7_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_8": {
    "root": [
@@ -28181,7 +31645,8 @@
      "file": "slop/offsets/bitvector_8_generated.bend",
      "law": "bitvector_8_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "bitvector_9": {
    "root": [
@@ -28292,7 +31757,8 @@
      "file": "slop/offsets/bitvector_9_generated.bend",
      "law": "bitvector_9_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CompatibleUnionBC": {
    "root": [
@@ -28402,7 +31868,8 @@
      "file": "slop/offsets/CompatibleUnionBC_generated.bend",
      "law": "CompatibleUnionBC_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CompatibleUnionABCA": {
    "root": [
@@ -28557,7 +32024,8 @@
      "file": "slop/offsets/CompatibleUnionABCA_generated.bend",
      "law": "CompatibleUnionABCA_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "CompatibleUnionA": {
    "root": [
@@ -28672,13 +32140,18 @@
      "file": "slop/offsets/CompatibleUnionA_generated.bend",
      "law": "CompatibleUnionA_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "progbitlist": {
    "root": [
     {
      "file": "root_gtypes2.bend",
      "law": "progbitlist_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_vbits_nbytes"
     }
    ],
    "ok_eval": [
@@ -28745,6 +32218,138 @@
      "law": "progbitlist_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_0"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_1"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_2"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_3"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_4"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_5"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_6"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_7"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_8"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_9"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_10"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_11"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_12"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_13"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_14"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_15"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_16"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_17"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_18"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_19"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_20"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_21"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_22"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_23"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_24"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_25"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_26"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_27"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_28"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_29"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_30"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_table_31"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bits_generated.bend",
+     "law": "progbitlist_serialize_vbits_nbytes"
+    },
+    {
      "file": "slop/constants/progbitlist_generated.bend",
      "law": "progbitlist_mc_poison_pbits"
     },
@@ -28758,7 +32363,8 @@
      "file": "slop/offsets/progbitlist_generated.bend",
      "law": "progbitlist_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint128": {
    "root": [
@@ -28894,7 +32500,8 @@
      "file": "slop/offsets/uint128_generated.bend",
      "law": "uint128_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   },
   "uint16": {
    "root": [
@@ -28985,7 +32592,8 @@
      "file": "slop/offsets/uint16_generated.bend",
      "law": "uint16_decode_build"
     }
-   ]
+   ],
+   "decode_first_offset": []
   }
  }
 }

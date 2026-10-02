@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/04
+# type: VarTestStruct
+# ops: root
+# spec: List[uint16,1024] has chunk limit 1024*2/32 = 64: depth 6 regardless of the length
+# fault: depth 5
+# why: limit in bytes divided by 64
+# file: types/list_uint16_1024_hashtreeroot_generated.bend
+--- a/types/list_uint16_1024_hashtreeroot_generated.bend
++++ b/types/list_uint16_1024_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l1024_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 6, seg))
++def l1024_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 5, seg))
+ 

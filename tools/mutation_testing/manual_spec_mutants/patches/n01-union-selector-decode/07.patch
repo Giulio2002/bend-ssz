@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/07
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 2 selects the second option
+# fault: selector 2 and 3 are swapped in the validator chain
+# why: copy-paste of the selector constants
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -34,3 +34,3 @@
+     case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
+-    case False{}: CompatibleUnionABCA_ok1(U32.is_eq(s, 2), s, buf, off, len)
++    case False{}: CompatibleUnionABCA_ok1(U32.is_eq(s, 3), s, buf, off, len)
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m01-zero-subtree-levels/02
+# type: bitlist_513,VarTestStruct
+# ops: root
+# spec: zero_hash(1) = SHA-256(32 zero bytes || 32 zero bytes)
+# fault: one word of the constant Z(1) is off by one
+# why: typo in a precomputed table
+# file: src/digest.bend
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -109,3 +109,3 @@
+     match k1:
+-      case 0n: D{4121296194, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
++      case 0n: D{4121296195, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
+       case 1n+k2:

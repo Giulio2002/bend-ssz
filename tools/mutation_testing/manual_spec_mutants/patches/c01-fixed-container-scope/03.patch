@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c01-fixed-container-scope/03
+# type: FuluCheckpoint
+# ops: decode
+# spec: Checkpoint is exactly 40 bytes
+# fault: the scope check demands 32 (the root size only)
+# why: size of the last field used as the container size
+# file: types/FuluCheckpoint_decode_ssz_generated.bend
+--- a/types/FuluCheckpoint_decode_ssz_generated.bend
++++ b/types/FuluCheckpoint_decode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+ 
+-def Checkpoint_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Checkpoint_ok_len(U32.is_eq(len, 40), buf, off)
++def Checkpoint_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Checkpoint_ok_len(U32.is_eq(len, 32), buf, off)
+ 

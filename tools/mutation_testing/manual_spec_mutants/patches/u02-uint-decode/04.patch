@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u02-uint-decode/04
+# type: uint128
+# ops: decode
+# spec: uint128 little-endian decode: the byte at offset 4 starts limb 1
+# fault: the 128-bit reader reads limb 1 from offset 8 (skips a limb)
+# why: stride of 8 copied from the uint64 reader
+# file: types/uint128_decode_ssz_generated.bend
+--- a/types/uint128_decode_ssz_generated.bend
++++ b/types/uint128_decode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+   (buf, +x) = pair
+-  u128_r1(off, x, B.read32(buf, (off + 4 : U32)))
++  u128_r1(off, x, B.read32(buf, (off + 8 : U32)))
+ 

@@ -1,0 +1,157 @@
+[
+ {
+  "id": "b04-boolean-packed-validity/01",
+  "file": "src/obj.bend",
+  "patch": [
+   {
+    "line": 1505,
+    "before": [
+     "      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4278124286 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))"
+    ],
+    "after": [
+     "      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4244438268 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))"
+    ]
+   }
+  ],
+  "spec_rule": "every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)",
+  "fault": "the packed-boolean scan lets bit 1 of each byte through (mask 0xFCFCFCFC)",
+  "types_checked": "vec_bool_5,vec_bool_16,proglist_bool",
+  "A": "SURVIVED",
+  "B": "SURVIVED",
+  "B3": "-",
+  "targeted": "KILLED",
+  "targeted_flipped": [
+   "proglistbool_two",
+   "vecbool16_two",
+   "vecbool5_two"
+  ],
+  "api_entry": "vec_bool_5_serialize / vec_bool_16_serialize / proglist_bool_serialize (types/*_encode_ssz_generated.bend): vec_bool_5_serialize -> vec_bool_5_senc_out(v5_bool_putk(O.out_at(1n), 0, o)) -> v5_bool_pk(out, pos, v5_bool_valid(o)) -> v5_bool_valid = O.bools_ok(O.words_ok(o, 5, 5, False{}, 1)) -> O.bools_ok -> O.bo_go: U32.is_eq((x .&. 4278124286 : U32), 0) in src/obj.bend (mutated: 4244438268 = 0xFCFCFCFC)",
+  "counterexample_calls": "vec_bool_5_e.vec_bool_5_serialize(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 0, 513), 5}) (the five bytes 01 02 00 00 00); likewise vec_bool_16 and proglist_bool (targeted/oinvalid2.bend lines vecbool5_two, vecbool16_two, proglistbool_two)",
+  "observable_result": "baseline: Encoded{ok = False} (refused); mutant: Encoded{ok = True, bytes = 01 02 00 00 00}, a boolean byte 0x02 on the wire",
+  "reachability": "a boolean byte above 1 is written by no public setter (they store Bool as 0/1) and rejected by every decoder (O.ok_bool); it needs the raw O.Words constructor, which src/obj.bend:1421 documents as available to callers and which tests_generated/invalid_objects.py uses for tx_slack",
+  "proofs_mentioning_the_mutated_code": "no proof file mentions the mask constant 4278124286 (only src/obj.bend and the generator template codegen/proofs/var/templates/var_plist_sub.tpl); the validity laws proofs/mutation_coverage/validity/generic_vec_bool_*.bend (vec_bool_5_serialize_vsym) state the check as O.bools_ok(O.wk_cap(...)) and leave O.bools_ok abstract",
+  "verdict": "critical"
+ },
+ {
+  "id": "c02-fixed-field-offsets/05",
+  "file": "types/FixedTestStruct_encode_ssz_generated.bend",
+  "patch": [
+   {
+    "line": 19,
+    "before": [
+     "    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: uint8_e.u8_valid(f_A)"
+    ],
+    "after": [
+     "    case FixedTestStruct_d.FixedTestStruct{+f_A, +f_B, +f_C}: True{}"
+    ]
+   }
+  ],
+  "spec_rule": "a container value is valid only if all its fields are valid",
+  "fault": "the container validity checks no field (field A is not range-checked)",
+  "types_checked": "FixedTestStruct,ComplexTestStruct",
+  "A": "SURVIVED",
+  "B": "SURVIVED",
+  "B3": "-",
+  "targeted": "KILLED",
+  "targeted_flipped": [
+   "fixed_300"
+  ],
+  "api_entry": "FixedTestStruct_serialize (types/FixedTestStruct_encode_ssz_generated.bend) -> FixedTestStruct_ser_pick(FixedTestStruct_valid(o), o); the mutated line is FixedTestStruct_valid",
+  "counterexample_calls": "FixedTestStruct_e.FixedTestStruct_serialize(FixedTestStruct_d.FixedTestStruct{300, O.U64{0, 0}, 0}) (targeted/oinvalid2.bend line fixed_300); the checked setter FixedTestStruct_set_f_A(o, 300) refuses and cannot build it",
+  "observable_result": "baseline refuses; mutant returns ok = True with the 13 bytes 2c 00 00 ... (300 truncated to 0x2c)",
+  "reachability": "raw record constructor only (documented, src/obj.bend:1421)",
+  "proofs_mentioning_the_mutated_code": "no facade law; e2e/FixedTestStruct_e2e_ser_generated.bend (ltp8)",
+  "verdict": "critical"
+ },
+ {
+  "id": "c03-first-offset-decode/05",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend",
+  "patch": [
+   {
+    "line": 136,
+    "before": [
+     "  ComplexTestStruct_c0(U32.is_eq(o0, 71), buf, off, len, o0)"
+    ],
+    "after": [
+     "  ComplexTestStruct_c0(U32.is_le(71, o0), buf, off, len, o0)"
+    ]
+   }
+  ],
+  "spec_rule": "the first offset of ComplexTestStruct must be 71",
+  "fault": "the first offset check accepts any offset at least 71",
+  "types_checked": "ComplexTestStruct",
+  "A": "UNJUDGED",
+  "B": "SURVIVED",
+  "B3": "DISTINGUISHED",
+  "targeted": "-",
+  "targeted_flipped": null,
+  "api_entry": "ComplexTestStruct_decode(buf, size) (types/ComplexTestStruct_decode_ssz_generated.bend: ComplexTestStruct_decode -> ComplexTestStruct_built(size, ComplexTestStruct_ok(buf, 0, size)) -> ComplexTestStruct_ok_len -> ComplexTestStruct_v0 -> ComplexTestStruct_c0(<mutated first-offset test>))",
+  "counterexample_calls": "ComplexTestStruct_decode on the 104 bytes of the valid case 'B.len1_rand' with the 4 bytes at offset 2 set to 73 (out/c03_05_counterexamples.json holds 76 byte strings, e.g. the 'max' case with first offset 73: ffff49000000ff4b0000004e000000ff...)",
+  "observable_result": "the baseline rejects (first offset 73 != fixed part 71, spec rule: first offset must equal the fixed-part size); the mutant returns Some(object) whose re-encoding differs from the input and whose root differs",
+  "reachability": "public decode on a byte string: reachable",
+  "proofs_mentioning_the_mutated_code": "the checker exhausts its stack on this mutant (UNJUDGED); the constant 71 appears in the generated validator and in no hand-written law",
+  "verdict": "critical"
+ },
+ {
+  "id": "c06-container-validity-composition/03",
+  "file": "types/SmallTestStruct_encode_ssz_generated.bend",
+  "patch": [
+   {
+    "line": 17,
+    "before": [
+     "    case SmallTestStruct_d.SmallTestStruct{+f_A, +f_B}: Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B))"
+    ],
+    "after": [
+     "    case SmallTestStruct_d.SmallTestStruct{+f_A, +f_B}: uint16_e.u16_valid(f_A)"
+    ]
+   }
+  ],
+  "spec_rule": "a container value is valid only if every field is valid (SmallTestStruct has two uint16 fields)",
+  "fault": "the validity of field B is not checked",
+  "types_checked": "SmallTestStruct,ProgressiveTestStruct,ProgressiveComplexTestStruct",
+  "A": "SURVIVED",
+  "B": "SURVIVED",
+  "B3": "-",
+  "targeted": "KILLED",
+  "targeted_flipped": [
+   "small_b70000"
+  ],
+  "api_entry": "SmallTestStruct_serialize -> SmallTestStruct_ser_pick(SmallTestStruct_valid(o), o)",
+  "counterexample_calls": "SmallTestStruct_e.SmallTestStruct_serialize(SmallTestStruct_d.SmallTestStruct{1, 70000}) (small_b70000)",
+  "observable_result": "baseline refuses; mutant accepts and truncates field B to 0x1170",
+  "reachability": "raw record constructor only (the checked setter SmallTestStruct_set_f_B refuses 70000)",
+  "proofs_mentioning_the_mutated_code": "no facade law; e2e/SmallTestStruct_e2e_ser_generated.bend",
+  "verdict": "critical"
+ },
+ {
+  "id": "c06-container-validity-composition/04",
+  "file": "types/SingleFieldTestStruct_encode_ssz_generated.bend",
+  "patch": [
+   {
+    "line": 19,
+    "before": [
+     "    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: uint8_e.u8_valid(f_A)"
+    ],
+    "after": [
+     "    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: True{}"
+    ]
+   }
+  ],
+  "spec_rule": "a container value is valid only if its field is valid (uint8 range)",
+  "fault": "the field validity is not checked",
+  "types_checked": "SingleFieldTestStruct",
+  "A": "SURVIVED",
+  "B": "SURVIVED",
+  "B3": "-",
+  "targeted": "KILLED",
+  "targeted_flipped": [
+   "single_300"
+  ],
+  "api_entry": "SingleFieldTestStruct_serialize -> SingleFieldTestStruct_ser_pick(SingleFieldTestStruct_valid(o), o)",
+  "counterexample_calls": "SingleFieldTestStruct_e.SingleFieldTestStruct_serialize(SingleFieldTestStruct_d.SingleFieldTestStruct{300}) (single_300)",
+  "observable_result": "baseline refuses; mutant accepts and returns the byte 2c",
+  "reachability": "raw record constructor only",
+  "proofs_mentioning_the_mutated_code": "no facade law; e2e/SingleFieldTestStruct_e2e_ser_generated.bend",
+  "verdict": "critical"
+ }
+]

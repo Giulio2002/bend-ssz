@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT n02-union-payload-window/03
+# type: CompatibleUnionA
+# ops: decode
+# spec: the decoded union value holds the payload read after the selector
+# fault: the reader reads the payload at offset +2
+# why: miscounted skip
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -34,4 +34,4 @@
+   match c:
+-    case True{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
+-    case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
++    case True{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 2 : U32), (len - 1 : U32)))
++    case False{}: CompatibleUnionA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 2 : U32), (len - 1 : U32)))
+ 

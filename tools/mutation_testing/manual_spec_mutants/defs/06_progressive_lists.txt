@@ -1,0 +1,356 @@
+## progressive types (4.5) and lists of composite elements (4.2, 4.8)
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: merkleize_progressive: subtree sizes grow by a factor 4 (1, 4, 16, ...)
+fault: the subtree depth grows by 1 per level (sizes 1, 2, 4, ...: binary growth)
+why: depth increment 1 instead of 2
+-hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++hl, lf, Nat.add(dep, 1n), Nat.add(s, pow2n(dep)), n, st))
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: merkleize_progressive: subtree sizes grow by a factor 4
+fault: the depth grows by 3 per level (factor 8)
+why: depth increment 3
+-hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++hl, lf, Nat.add(dep, 3n), Nat.add(s, pow2n(dep)), n, st))
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: merkleize_progressive starts with num_leaves = 1 (the first subtree has one chunk)
+fault: the first subtree has two chunks (start depth 1)
+why: num_leaves starts at 2
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 1n, 0n, n, (h, (ws, D.zero())))
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: merkleize_progressive(chunks) = hash(merkleize_progressive(rest), merkleize(first)): the rest is the LEFT child
+fault: the two children are swapped (subtree left, rest right)
+why: operand order of the single hash
+-def pt_right(+hl: Nat, +lf: Leaf, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+-  (h, r) = pair
+-  (ws, dl) = r
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++def mt_join_sw(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
++  (h, r) = pair
++  (ws, dr) = r
++  (h, (ws, D.node(hl, dr, dl)))
++
++def pt_right(+hl: Nat, +lf: Leaf, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
++  (h, r) = pair
++  (ws, dl) = r
++  mt_join_sw(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: merkleize_progressive of no chunks is the zero chunk
+fault: the empty progressive tree is not special-cased (treated as one zero leaf, hashed)
+why: starting the recursion without the emptiness test
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+n, True{}, hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+=== p01-progressive-growth
+type: proglist_uint16
+ops: root
+file: src/obj.bend
+spec: the recursion on the rest continues while chunks remain
+fault: fuel bound is too small: only n/2 + 1 steps
+why: wrong termination bound
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+Nat.div(n, 2n), Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+=== p02-progressive-length-mix
+type: proglist_uint16
+ops: root
+file: types/proglist_uint16_hashtreeroot_generated.bend
+spec: progressive list root = mix_in_length(merkleize_progressive(chunks), element count)
+fault: the byte length is mixed in
+why: shift omitted
+-O.mix_count(hl, 1n,
++O.mix_count(hl, 0n,
+=== p02-progressive-length-mix
+type: proglist_uint64
+ops: root
+file: types/proglist_uint64_hashtreeroot_generated.bend
+spec: progressive list of uint64 mixes in the element count (bytes / 8)
+fault: shift 2 (bytes / 4)
+why: shift copied from uint32
+-O.mix_count(hl, 3n,
++O.mix_count(hl, 2n,
+=== p02-progressive-length-mix
+type: progbitlist
+ops: root
+file: src/obj.bend
+spec: progressive bitlist: chunks exclude the delimiter
+fault: the delimiter byte is chunked
+why: chunking the serialization
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes((k + 8 : U32))}, seg))
+=== p02-progressive-length-mix
+type: progbitlist,ProgressiveBitsStruct,ProgressiveVarTestStruct
+ops: decode
+file: src/obj.bend
+spec: a ProgressiveBitlist value is non-empty (it has at least the delimiter byte)
+fault: the empty input is accepted (the length test is <= instead of <)
+why: bound error in the emptiness test
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+=== p03-progressive-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+spec: mix_in_active_fields: the active_fields [1,0,1,0,1] pack little-endian-bit-first into 0b10101 = 21
+fault: the bits are packed most-significant first (168)
+why: bit order of the packed Bitvector
+-, d_f_A), 21)))
++, d_f_A), 168)))
+=== p03-progressive-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+spec: active_fields marks slots 0, 2 and 4 as present
+fault: the active_fields chunk has the three fields densely packed (0b111 = 7)
+why: ignoring the inactive slots when building the bitvector
+-, d_f_A), 21)))
++, d_f_A), 7)))
+=== p03-progressive-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+spec: inactive slots contribute a zero chunk (EIP-7495): field B is at slot 2, C at slot 4
+fault: inactive slots are omitted: the field roots are packed densely (B right after A)
+why: following the prose that lists only the field roots
+-D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C)))
++D.node(hl, D.zero(), D.node(hl, D.node(hl, d_f_B, d_f_C), D.zero()))
+=== p03-progressive-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+spec: merkleize_progressive(field roots): hash(rest, first chunk), the first chunk on the right
+fault: the first field root is on the left
+why: operand order of the single hash
+-D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A)
++D.node(hl, d_f_A, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))))
+=== p03-progressive-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+spec: the mixed-in active_fields is a 32-byte chunk
+fault: the active_fields is not mixed in (the progressive root is returned)
+why: forgetting mix_in_active_fields
+-O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)
++D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A)
+=== p03-progressive-container
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+spec: active_fields [1] = 0b1: mix_in_active_fields(root, 1)
+fault: active_fields chunk is 0
+why: off-by-one in the bit packing
+-O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1)
++O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 0)
+=== p03-progressive-container
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+spec: merkleize_progressive([A]) = hash(zero, A)
+fault: the one-field progressive tree is the field root itself (merkleize, not merkleize_progressive)
+why: ProgressiveContainer treated like a Container
+-O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1)
++O.mix_len(hl, d_f_A, 1)
+=== p03-progressive-container
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+spec: merkleize_progressive([A]) = hash(rest=zero, first=A)
+fault: children swapped: hash(A, zero)
+why: operand order
+-O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1)
++O.mix_len(hl, D.node(hl, d_f_A, D.zero()), 1)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: a list of variable-size elements: the first offset must be a multiple of 4 (offset area is whole 4-byte slots)
+fault: the first-offset alignment test is dropped
+why: n = first/4 truncates, so a misaligned first offset looks fine
+-Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len))
++U32.is_le(first, len)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: the first offset must not exceed the buffer
+fault: the first-offset range test is dropped
+why: forgetting the range check on the first offset
+-Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len))
++U32.is_eq((first .&. 3 : U32), 0)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: a non-empty list's first offset is at least 4 (at least one offset slot)
+fault: the lower bound on the first offset is dropped (first offset 0 gives count 0 with non-empty input)
+why: count = first/4 can be 0
+-Bool.and(U32.is_le(4, first), True{})
++True{}
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: every element offset is validated (the last pair too)
+fault: the validation loop runs one iteration too few (the last element is not validated)
+why: off-by-one in the loop bound
+-pl_VarTestStruct_ev(U32.to_nat((U32.shrn(first, 2n) - 1 : U32)), 0, U32.shrn(first, 2n), off, len,
++pl_VarTestStruct_ev(U32.to_nat((U32.shrn(first, 2n) - 2 : U32)), 0, U32.shrn(first, 2n), off, len,
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: offsets must be non-decreasing
+fault: the non-decreasing test is dropped
+why: forgetting the order check
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(b, len)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: offsets must lie within the buffer
+fault: the upper-bound test is dropped
+why: forgetting the range check
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++U32.is_le(a, b)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: equal consecutive offsets give an empty element, which is legal
+fault: offsets must strictly increase
+why: < instead of <=
+-Bool.and(U32.is_le(a, b), U32.is_le(b, len))
++Bool.and(U32.is_lt(a, b), U32.is_le(b, len))
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: each element's window ends at the next offset
+fault: the element window length is the end offset b instead of b - a
+why: forgetting the next offset
+-VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++VarTestStruct_r.VarTestStruct_bx_ok(buf, (off + a : U32), b)
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: the last element ends at the end of the buffer
+fault: the last element's end is len-1 in the validation walk
+why: end index off by one
+-    case True{}: (buf, len)
+-    case False{}: B.read32(buf, (off + 4 * (i + 1 : U32) : U32))
++    case True{}: (buf, (len - 1 : U32))
++    case False{}: B.read32(buf, (off + 4 * (i + 1 : U32) : U32))
+=== q01-composite-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+spec: the element count is first_offset / 4
+fault: the reader's count is first/4 + 1 (storage and count)
+why: off by one in the count derived from the first offset
+-pl_VarTestStruct_rv_fin(U32.shrn(first, 2n),
++pl_VarTestStruct_rv_fin((U32.shrn(first, 2n) + 1 : U32),
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+spec: a List[ConsolidationRequest, 2] has at most 2 elements
+fault: the count limit is 3
+why: limit+1
+-U32.is_le(U32.div(len, 116), 2)
++U32.is_le(U32.div(len, 116), 3)
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+spec: a List[ConsolidationRequest, 2] may have exactly 2 elements
+fault: the count limit is strict
+why: < instead of <=
+-U32.is_le(U32.div(len, 116), 2)
++U32.is_lt(U32.div(len, 116), 2)
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+spec: the scope of a list of 116-byte elements is a multiple of 116
+fault: the divisibility test is dropped
+why: the count is len/116 so the remainder looks harmless
+-U32.is_eq(len, (U32.div(len, 116) * 116 : U32))
++True{}
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+spec: ConsolidationRequest is 116 bytes
+fault: the element size constant is 115
+why: size constant off by one (20+48+48 = 116)
+-U32.is_eq(len, (U32.div(len, 116) * 116 : U32))
++U32.is_eq(len, (U32.div(len, 115) * 115 : U32))
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_ConsolidationRequest_2_encode_ssz_generated.bend
+spec: serializing a List[ConsolidationRequest,2] with 3 elements is invalid
+fault: the validity bound is 3
+why: limit+1
+-U32.is_le(n, 2)
++U32.is_le(n, 3)
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend
+spec: List[ConsolidationRequest,2] has chunk limit 2: depth 1
+fault: depth 0
+why: depth = log2(limit) - 1
+-l2_ConsolidationRequest_mt0(1n,
++l2_ConsolidationRequest_mt0(0n,
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend
+spec: the list root mixes in the element count
+fault: the count mixed in is n+1
+why: length counted with a sentinel
+-O.mix_len(hl, d, n)))
++O.mix_len(hl, d, (n + 1 : U32))))
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/FuluExecutionRequests_decode_ssz_generated.bend
+spec: the first offset of ExecutionRequests equals its fixed part (12)
+fault: the first offset test is is_le(12, o0)
+why: weak first-offset test
+-ExecutionRequests_c0(U32.is_eq(o0, 12), buf, off, len, o0)
++ExecutionRequests_c0(U32.is_le(12, o0), buf, off, len, o0)
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/FuluExecutionRequests_decode_ssz_generated.bend
+spec: offsets must be non-decreasing
+fault: the order check of the second offset is dropped
+why: forgetting monotonicity
+-ExecutionRequests_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++ExecutionRequests_c2(U32.is_le(o2, len), buf, off, len, o0, o1, o2)
+=== q02-fixed-composite-list
+type: FuluExecutionRequests
+ops: decode
+file: types/FuluExecutionRequests_decode_ssz_generated.bend
+spec: offsets must lie within the buffer
+fault: the bound of the last offset is dropped
+why: forgetting range check
+-ExecutionRequests_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++ExecutionRequests_c2(U32.is_le(o1, o2), buf, off, len, o0, o1, o2)

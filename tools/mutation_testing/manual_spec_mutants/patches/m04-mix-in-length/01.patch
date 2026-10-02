@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m04-mix-in-length/01
+# type: VarTestStruct
+# ops: root
+# spec: mix_in_length(root, length) = hash(root || length as 32-byte little-endian)
+# fault: the length chunk is built without the byte swap
+# why: big-endian word order confusion
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -705,3 +705,3 @@
+ 
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{n, 0, 0, 0, 0, 0, 0, 0}
+ 

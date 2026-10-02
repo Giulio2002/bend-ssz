@@ -1,96 +1,101 @@
 import Base
 import ../../src/buffer.bend as P0_B
-import ../../src/obj.bend as P0_O
 import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
-import ../../types/schema.bend as P0_S
-import ../../types/primitive.bend as P0_P
-import ../compact/found.bend as P0_FD
-import ../compact/arith.bend as P0_A
-import ../../proofs/nat_order.bend as P0_Order
-import ../../spec/primitives.bend as P0_SP
-import ../../spec/layout.bend as P0_Layout
-import ../../spec/codec.bend as P0_Codec
-import ../../spec/decoding_relation.bend as P0_Decoding
-import ../../spec/nat_bytes.bend as P0_N
-import ../../spec/fulu_schemas.bend as P0_Spec
-import ../obj/spec_fixed.bend as P0_F
-import ../obj/vspec.bend as P0_VS
-import ../obj/vbuf.bend as P0_VB
-import ../obj/vu32.bend as P0_VU
-import ../obj/vcopy.bend as P0_VC
-import ../obj/vdepth.bend as P0_VD
-import ../obj/vfix.bend as P0_VF
-import ../obj/vbytes.bend as P0_VY
-import ../obj/vbspec.bend as P0_VZ
-import ../obj/var_bytes_fix.bend as P0_VT
-import ../obj/var_bytes_LightClientHeader_win.bend as P0_W
-import ../obj/var_bytes_LightClientHeader.bend as P0_PRV
+import ../slop/offsets/fulu_LightClientHeader_first_offset_generated.bend as P0_PRV
+import ../../src/buffer.bend as P1_B
+import ../../src/obj.bend as P1_O
 import ../../types/schema.bend as P1_S
-import ../../spec/decoding_relation.bend as P1_Decoding
-import ../../spec/fulu_schemas.bend as P1_Spec
-import ../compact/found.bend as P1_F
+import ../../types/primitive.bend as P1_P
+import ../compact/found.bend as P1_FD
 import ../compact/arith.bend as P1_A
+import ../../proofs/nat_order.bend as P1_Order
+import ../../spec/primitives.bend as P1_SP
+import ../../spec/layout.bend as P1_Layout
+import ../../spec/codec.bend as P1_Codec
+import ../../spec/decoding_relation.bend as P1_Decoding
+import ../../spec/nat_bytes.bend as P1_N
+import ../../spec/fulu_schemas.bend as P1_Spec
+import ../obj/spec_fixed.bend as P1_F
+import ../obj/vspec.bend as P1_VS
 import ../obj/vbuf.bend as P1_VB
-import ../obj/var_bytes_LightClientHeader.bend as P1_DC
-import ../../proofs/decode_unique.bend as P1_DCO
-import ../obj/var_bytes_LightClientHeader_unique.bend as P1_PRV
-import ../../src/buffer.bend as P2_B
-import ../../src/obj.bend as P2_O
+import ../obj/vu32.bend as P1_VU
+import ../obj/vcopy.bend as P1_VC
+import ../obj/vdepth.bend as P1_VD
+import ../obj/vfix.bend as P1_VF
+import ../obj/vbytes.bend as P1_VY
+import ../obj/vbspec.bend as P1_VZ
+import ../obj/var_bytes_fix.bend as P1_VT
+import ../obj/var_bytes_LightClientHeader_win.bend as P1_W
+import ../obj/var_bytes_LightClientHeader.bend as P1_PRV
 import ../../types/schema.bend as P2_S
-import ../../types/primitive.bend as P2_P
+import ../../spec/decoding_relation.bend as P2_Decoding
+import ../../spec/fulu_schemas.bend as P2_Spec
 import ../compact/found.bend as P2_F
 import ../compact/arith.bend as P2_A
-import ../compact/bits.bend as P2_BT
-import ../../proofs/nat_order.bend as P2_Order
-import ../../proofs/primitive_invariants.bend as P2_V
-import ../../spec/primitives.bend as P2_SP
-import ../../spec/layout.bend as P2_Layout
-import ../../spec/codec.bend as P2_Codec
-import ../../spec/decoding_relation.bend as P2_Decoding
-import ../../spec/nat_bytes.bend as P2_N
-import ../../spec/fulu_schemas.bend as P2_Spec
-import ../../proofs/decode_shape.bend as P2_DS
-import ../../proofs/decode_facts.bend as P2_DF
-import ../obj/spec_fixed.bend as P2_FX
-import ../obj/dk.bend as P2_DK
-import ../obj/vspec.bend as P2_VS
 import ../obj/vbuf.bend as P2_VB
-import ../obj/vu32.bend as P2_VU
-import ../obj/vcopy.bend as P2_VC
-import ../obj/vrej.bend as P2_VR
-import ../obj/vfix.bend as P2_VF
-import ../obj/vbspec.bend as P2_VZ
-import ../obj/var_bytes_LightClientHeader_win.bend as P2_W
 import ../obj/var_bytes_LightClientHeader.bend as P2_DC
-import ../obj/var_bytes_ExecutionPayloadHeader_win.bend as P2_YW
-import ../obj/var_bytes_ExecutionPayloadHeader_rej.bend as P2_YR
-import ../obj/var_bytes_LightClientHeader_rej.bend as P2_PRV
+import ../../proofs/decode_unique.bend as P2_DCO
+import ../obj/var_bytes_LightClientHeader_unique.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
-import ../slop/offsets/LightClientHeader_generated.bend as P3_PRV
+import ../../types/schema.bend as P3_S
+import ../../types/primitive.bend as P3_P
+import ../compact/found.bend as P3_F
+import ../compact/arith.bend as P3_A
+import ../compact/bits.bend as P3_BT
+import ../../proofs/nat_order.bend as P3_Order
+import ../../proofs/primitive_invariants.bend as P3_V
+import ../../spec/primitives.bend as P3_SP
+import ../../spec/layout.bend as P3_Layout
+import ../../spec/codec.bend as P3_Codec
+import ../../spec/decoding_relation.bend as P3_Decoding
+import ../../spec/nat_bytes.bend as P3_N
+import ../../spec/fulu_schemas.bend as P3_Spec
+import ../../proofs/decode_shape.bend as P3_DS
+import ../../proofs/decode_facts.bend as P3_DF
+import ../obj/spec_fixed.bend as P3_FX
+import ../obj/dk.bend as P3_DK
+import ../obj/vspec.bend as P3_VS
+import ../obj/vbuf.bend as P3_VB
+import ../obj/vu32.bend as P3_VU
+import ../obj/vcopy.bend as P3_VC
+import ../obj/vrej.bend as P3_VR
+import ../obj/vfix.bend as P3_VF
+import ../obj/vbspec.bend as P3_VZ
+import ../obj/var_bytes_LightClientHeader_win.bend as P3_W
+import ../obj/var_bytes_LightClientHeader.bend as P3_DC
+import ../obj/var_bytes_ExecutionPayloadHeader_win.bend as P3_YW
+import ../obj/var_bytes_ExecutionPayloadHeader_rej.bend as P3_YR
+import ../obj/var_bytes_LightClientHeader_rej.bend as P3_PRV
+import ../../src/buffer.bend as P4_B
+import ../../src/obj.bend as P4_O
+import ../slop/offsets/LightClientHeader_generated.bend as P4_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # FuluLightClientHeader (LightClientHeader): its decode_ssz laws in the object API's terms, each discharged by its proving law.
 
-def FuluLightClientHeader__ok_eval__ok_eval(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_ok(P0_PRV.BF(t, n), 0, n) == (P0_PRV.BF(t, n), P0_PRV.CHK(t, n)) : P0_B.Buf & Bool}:
-  P0_PRV.ok_eval(d, t, n, pf, hd, hn)
+def FuluLightClientHeader__decode_first_offset__LightClientHeader_decode_first_offset(buf: P0_B.Buf, +off: U32, +len: U32, b2: P0_B.Buf, +o0: U32, hlen: {U32.is_le(244, len) == True{} : Bool}, e: {P0_B.read32(buf, (off + 112 : U32)) == (b2, o0) : P0_B.Buf & U32}, hne: {U32.is_eq(o0, 244) == False{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_ok(buf, off, len) == (b2, False{}) : P0_B.Buf & Bool}:
+  P0_PRV.LightClientHeader_decode_first_offset(buf, off, len, b2, o0, hlen, e, hne)
 
-def FuluLightClientHeader__decode_accept__decode_accept(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(P0_PRV.BF(t, n), n) == (P0_PRV.BF(t, n), Some{P0_PRV.OBJ(t, n)}) : P0_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
-  P0_PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
+def FuluLightClientHeader__ok_eval__ok_eval(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_ok(P1_PRV.BF(t, n), 0, n) == (P1_PRV.BF(t, n), P1_PRV.CHK(t, n)) : P1_B.Buf & Bool}:
+  P1_PRV.ok_eval(d, t, n, pf, hd, hn)
 
-def FuluLightClientHeader__decode_spec__decode_spec(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.LightClientHeader(), P0_PRV.VW(t, n), P0_PRV.VAL(t, n)):
-  P0_PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
+def FuluLightClientHeader__decode_accept__decode_accept(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(P1_PRV.BF(t, n), n) == (P1_PRV.BF(t, n), Some{P1_PRV.OBJ(t, n)}) : P1_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P1_PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
 
-def FuluLightClientHeader__decode_unique__decode_unique(+d: Nat, +t: P1_F.array__Tree<U32>, +n: U32, +pf: {P1_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_DC.CHK(t, n) == True{} : Bool}, +v: P1_S.Value, spec: P1_Decoding.decodes(P1_Spec.LightClientHeader(), P1_DC.VW(t, n), v)) -> {v == P1_DC.VAL(t, n) : P1_S.Value}:
-  P1_PRV.decode_unique(d, t, n, pf, hd, hn, hchk, v, spec)
+def FuluLightClientHeader__decode_spec__decode_spec(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == True{} : Bool}) -> P1_Decoding.decodes(P1_Spec.LightClientHeader(), P1_PRV.VW(t, n), P1_PRV.VAL(t, n)):
+  P1_PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
 
-def FuluLightClientHeader__decode_reject__decode_reject(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == False{} : Bool}) -> P2_Decoding.outside_image(P2_Spec.LightClientHeader(), P2_DC.VW(t, n)):
-  P2_PRV.decode_reject(d, t, n, pf, hn, hchk)
+def FuluLightClientHeader__decode_unique__decode_unique(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == True{} : Bool}, +v: P2_S.Value, spec: P2_Decoding.decodes(P2_Spec.LightClientHeader(), P2_DC.VW(t, n), v)) -> {v == P2_DC.VAL(t, n) : P2_S.Value}:
+  P2_PRV.decode_unique(d, t, n, pf, hd, hn, hchk, v, spec)
 
-def FuluLightClientHeader__decode_none__decode_none(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == False{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(P2_DC.BF(t, n), n) == (P2_DC.BF(t, n), None{}) : P2_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
-  P2_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
+def FuluLightClientHeader__decode_reject__decode_reject(+d: Nat, +t: P3_F.array__Tree<U32>, +n: U32, +pf: {P3_F.array__perfect(U32, d, t) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> P3_Decoding.outside_image(P3_Spec.LightClientHeader(), P3_DC.VW(t, n)):
+  P3_PRV.decode_reject(d, t, n, pf, hn, hchk)
 
-def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_build(buf: P3_B.Buf, +size: U32, b2: P3_B.Buf, e: {FuluLightClientHeader_r.LightClientHeader_ok(buf, 0, size) == (b2, True{}) : P3_B.Buf & Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(buf, size) == FuluLightClientHeader_r.LightClientHeader_some(FuluLightClientHeader_r.LightClientHeader_build(b2, size)) : P3_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
-  P3_PRV.LightClientHeader_decode_build(buf, size, b2, e)
+def FuluLightClientHeader__decode_none__decode_none(+d: Nat, +t: P3_F.array__Tree<U32>, +n: U32, +pf: {P3_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(P3_DC.BF(t, n), n) == (P3_DC.BF(t, n), None{}) : P3_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P3_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
+
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_build(buf: P4_B.Buf, +size: U32, b2: P4_B.Buf, e: {FuluLightClientHeader_r.LightClientHeader_ok(buf, 0, size) == (b2, True{}) : P4_B.Buf & Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode(buf, size) == FuluLightClientHeader_r.LightClientHeader_some(FuluLightClientHeader_r.LightClientHeader_build(b2, size)) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_build(buf, size, b2, e)
 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c03-first-offset-decode/01
+# type: VarTestStruct
+# ops: decode
+# spec: the first offset must equal the size of the fixed part (7)
+# fault: the first offset may be any value at least 7 (gap bytes accepted)
+# why: only checking that the offset does not point into the fixed part
+# file: types/VarTestStruct_decode_ssz_generated.bend
+--- a/types/VarTestStruct_decode_ssz_generated.bend
++++ b/types/VarTestStruct_decode_ssz_generated.bend
+@@ -47,3 +47,3 @@
+   (buf, +o0) = pair
+-  VarTestStruct_c0(U32.is_eq(o0, 7), buf, off, len, o0)
++  VarTestStruct_c0(U32.is_le(7, o0), buf, off, len, o0)
+ 

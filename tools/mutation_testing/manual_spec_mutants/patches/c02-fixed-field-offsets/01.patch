@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c02-fixed-field-offsets/01
+# type: FixedTestStruct
+# ops: decode
+# spec: fields of a fixed container are laid out back to back (field C at offset 1+8)
+# fault: field C is read from offset 8 (overlapping field B)
+# why: offset sum miscounted
+# file: types/FixedTestStruct_decode_ssz_generated.bend
+--- a/types/FixedTestStruct_decode_ssz_generated.bend
++++ b/types/FixedTestStruct_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +f_B) = pair
+-  FixedTestStruct_rd2(off, len, f_A, f_B, uint32_r.u32_read(buf, (off + 9 : U32), 4))
++  FixedTestStruct_rd2(off, len, f_A, f_B, uint32_r.u32_read(buf, (off + 8 : U32), 4))
+ 

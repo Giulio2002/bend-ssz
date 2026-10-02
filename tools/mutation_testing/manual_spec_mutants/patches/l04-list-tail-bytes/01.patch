@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l04-list-tail-bytes/01
+# type: VarTestStruct
+# ops: encode
+# spec: serialization of a 2-byte-aligned list writes exactly its bytes (nothing past the length)
+# fault: the tail check of the last storage word tests the wrong shift for a half word
+# why: shift table typo (case _ is 3-byte tail, the 2-byte tail uses 16)
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1435,3 +1435,3 @@
+     case 2: U32.is_eq(U32.shrn(x, 16n), 0)
+-    case _: U32.is_eq(U32.shrn(x, 24n), 0)
++    case _: U32.is_eq(U32.shrn(x, 31n), 0)
+ 

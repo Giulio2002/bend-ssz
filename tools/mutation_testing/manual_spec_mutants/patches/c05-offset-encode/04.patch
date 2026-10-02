@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/04
+# type: VarTestStruct
+# ops: encode
+# spec: the serialization length is fixed part + variable parts
+# fault: the size pass starts at 6
+# why: fixed size miscounted
+# file: types/VarTestStruct_encode_ssz_generated.bend
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   match o:
+-    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_sz0(f_A, f_C, 7, list_uint16_1024_e.l1024_u16_size(f_B))
++    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_sz0(f_A, f_C, 6, list_uint16_1024_e.l1024_u16_size(f_B))
+ 

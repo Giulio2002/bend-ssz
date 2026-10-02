@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/04
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: every element offset is validated (the last pair too)
+# fault: the validation loop runs one iteration too few (the last element is not validated)
+# why: off-by-one in the loop bound
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+   match ok:
+-    case True{}: pl_VarTestStruct_ev(U32.to_nat((U32.shrn(first, 2n) - 1 : U32)), 0, U32.shrn(first, 2n), off, len, pl_VarTestStruct_ee(True{}, off, len, first, pl_VarTestStruct_next(U32.is_eq(1, U32.shrn(first, 2n)), buf, off, len, 0)))
++    case True{}: pl_VarTestStruct_ev(U32.to_nat((U32.shrn(first, 2n) - 2 : U32)), 0, U32.shrn(first, 2n), off, len, pl_VarTestStruct_ee(True{}, off, len, first, pl_VarTestStruct_next(U32.is_eq(1, U32.shrn(first, 2n)), buf, off, len, 0)))
+     case False{}: (buf, False{})

@@ -1,108 +1,113 @@
 import Base
 import ../../src/buffer.bend as P0_B
-import ../../src/obj.bend as P0_O
 import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
-import ../../types/schema.bend as P0_S
-import ../../types/primitive.bend as P0_P
-import ../compact/found.bend as P0_FD
-import ../compact/arith.bend as P0_A
-import ../../proofs/nat_order.bend as P0_Order
-import ../../spec/primitives.bend as P0_SP
-import ../../spec/layout.bend as P0_Layout
-import ../../spec/codec.bend as P0_Codec
-import ../../spec/decoding_relation.bend as P0_Decoding
-import ../../spec/nat_bytes.bend as P0_N
-import ../../spec/fulu_schemas.bend as P0_Spec
-import ../obj/spec_fixed.bend as P0_F
-import ../obj/vspec.bend as P0_VS
-import ../obj/vbuf.bend as P0_VB
-import ../obj/vu32.bend as P0_VU
-import ../obj/vcopy.bend as P0_VC
-import ../obj/vdepth.bend as P0_VD
-import ../obj/vfix.bend as P0_VF
-import ../obj/var_fix_types.bend as P0_VT
-import ../obj/spec_bits.bend as P0_FB
-import ../obj/vfits.bend as P0_VFT
-import ../obj/vlist.bend as P0_VLS
-import ../obj/vbitl.bend as P0_VBL
-import ../obj/vbyte.bend as P0_VY
-import ../obj/vbrt.bend as P0_VR
-import ../obj/vbitc.bend as P0_VBC
-import ../../spec/bitfields.bend as P0_Bits
-import ../../spec/bit_packing.bend as P0_Bp
-import ../obj/var_bitc_Attestation.bend as P0_PRV
+import ../slop/offsets/fulu_Attestation_first_offset_generated.bend as P0_PRV
+import ../../src/buffer.bend as P1_B
+import ../../src/obj.bend as P1_O
 import ../../types/schema.bend as P1_S
-import ../../spec/decoding_relation.bend as P1_Decoding
-import ../../spec/fulu_schemas.bend as P1_Spec
-import ../compact/found.bend as P1_F
+import ../../types/primitive.bend as P1_P
+import ../compact/found.bend as P1_FD
 import ../compact/arith.bend as P1_A
+import ../../proofs/nat_order.bend as P1_Order
+import ../../spec/primitives.bend as P1_SP
+import ../../spec/layout.bend as P1_Layout
+import ../../spec/codec.bend as P1_Codec
+import ../../spec/decoding_relation.bend as P1_Decoding
+import ../../spec/nat_bytes.bend as P1_N
+import ../../spec/fulu_schemas.bend as P1_Spec
+import ../obj/spec_fixed.bend as P1_F
+import ../obj/vspec.bend as P1_VS
 import ../obj/vbuf.bend as P1_VB
-import ../obj/var_bitc_Attestation.bend as P1_DC
-import ../../proofs/decode_unique.bend as P1_DCO
-import ../obj/var_bitc_Attestation_unique.bend as P1_PRV
-import ../../src/buffer.bend as P2_B
-import ../../src/obj.bend as P2_O
+import ../obj/vu32.bend as P1_VU
+import ../obj/vcopy.bend as P1_VC
+import ../obj/vdepth.bend as P1_VD
+import ../obj/vfix.bend as P1_VF
+import ../obj/var_fix_types.bend as P1_VT
+import ../obj/spec_bits.bend as P1_FB
+import ../obj/vfits.bend as P1_VFT
+import ../obj/vlist.bend as P1_VLS
+import ../obj/vbitl.bend as P1_VBL
+import ../obj/vbyte.bend as P1_VY
+import ../obj/vbrt.bend as P1_VR
+import ../obj/vbitc.bend as P1_VBC
+import ../../spec/bitfields.bend as P1_Bits
+import ../../spec/bit_packing.bend as P1_Bp
+import ../obj/var_bitc_Attestation.bend as P1_PRV
 import ../../types/schema.bend as P2_S
-import ../../types/primitive.bend as P2_P
-import ../compact/found.bend as P2_FD
-import ../compact/arith.bend as P2_A
-import ../../proofs/nat_order.bend as P2_Order
-import ../../spec/primitives.bend as P2_SP
-import ../../spec/layout.bend as P2_Layout
-import ../../spec/codec.bend as P2_Codec
 import ../../spec/decoding_relation.bend as P2_Decoding
-import ../../spec/nat_bytes.bend as P2_N
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../obj/spec_fixed.bend as P2_F
-import ../obj/vspec.bend as P2_VS
+import ../compact/found.bend as P2_F
+import ../compact/arith.bend as P2_A
 import ../obj/vbuf.bend as P2_VB
-import ../obj/vu32.bend as P2_VU
-import ../obj/vcopy.bend as P2_VC
-import ../obj/vdepth.bend as P2_VD
-import ../obj/vfix.bend as P2_VF
-import ../obj/var_fix_types.bend as P2_VT
-import ../obj/spec_bits.bend as P2_FB
-import ../obj/vfits.bend as P2_VFT
-import ../obj/vlist.bend as P2_VLS
-import ../obj/vbitl.bend as P2_VBL
-import ../obj/vbyte.bend as P2_VY
-import ../obj/vbrt.bend as P2_VR
-import ../obj/vbitc.bend as P2_VBC
-import ../../spec/bitfields.bend as P2_Bits
-import ../../spec/bit_packing.bend as P2_Bp
-import ../obj/vrej.bend as P2_VRJ
-import ../obj/vnest.bend as P2_VN
-import ../obj/dk.bend as P2_DK
-import ../../proofs/decode_shape.bend as P2_DS
-import ../../proofs/decode_facts.bend as P2_DF
 import ../obj/var_bitc_Attestation.bend as P2_DC
-import ../obj/var_bitc_Attestation_rej.bend as P2_PRV
+import ../../proofs/decode_unique.bend as P2_DCO
+import ../obj/var_bitc_Attestation_unique.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
-import ../slop/offsets/Attestation_generated.bend as P3_PRV
+import ../../types/schema.bend as P3_S
+import ../../types/primitive.bend as P3_P
+import ../compact/found.bend as P3_FD
+import ../compact/arith.bend as P3_A
+import ../../proofs/nat_order.bend as P3_Order
+import ../../spec/primitives.bend as P3_SP
+import ../../spec/layout.bend as P3_Layout
+import ../../spec/codec.bend as P3_Codec
+import ../../spec/decoding_relation.bend as P3_Decoding
+import ../../spec/nat_bytes.bend as P3_N
+import ../../spec/fulu_schemas.bend as P3_Spec
+import ../obj/spec_fixed.bend as P3_F
+import ../obj/vspec.bend as P3_VS
+import ../obj/vbuf.bend as P3_VB
+import ../obj/vu32.bend as P3_VU
+import ../obj/vcopy.bend as P3_VC
+import ../obj/vdepth.bend as P3_VD
+import ../obj/vfix.bend as P3_VF
+import ../obj/var_fix_types.bend as P3_VT
+import ../obj/spec_bits.bend as P3_FB
+import ../obj/vfits.bend as P3_VFT
+import ../obj/vlist.bend as P3_VLS
+import ../obj/vbitl.bend as P3_VBL
+import ../obj/vbyte.bend as P3_VY
+import ../obj/vbrt.bend as P3_VR
+import ../obj/vbitc.bend as P3_VBC
+import ../../spec/bitfields.bend as P3_Bits
+import ../../spec/bit_packing.bend as P3_Bp
+import ../obj/vrej.bend as P3_VRJ
+import ../obj/vnest.bend as P3_VN
+import ../obj/dk.bend as P3_DK
+import ../../proofs/decode_shape.bend as P3_DS
+import ../../proofs/decode_facts.bend as P3_DF
+import ../obj/var_bitc_Attestation.bend as P3_DC
+import ../obj/var_bitc_Attestation_rej.bend as P3_PRV
+import ../../src/buffer.bend as P4_B
+import ../../src/obj.bend as P4_O
+import ../slop/offsets/Attestation_generated.bend as P4_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # FuluAttestation (Attestation): its decode_ssz laws in the object API's terms, each discharged by its proving law.
 
-def FuluAttestation__ok_eval__ok_eval(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}) -> {FuluAttestation_r.Attestation_ok(P0_PRV.BF(t, n), 0, n) == (P0_PRV.BF(t, n), P0_PRV.CHK(t, n)) : P0_B.Buf & Bool}:
-  P0_PRV.ok_eval(d, t, n, pf, hd, hn)
+def FuluAttestation__decode_first_offset__Attestation_decode_first_offset(buf: P0_B.Buf, +off: U32, +len: U32, b2: P0_B.Buf, +o0: U32, hlen: {U32.is_le(236, len) == True{} : Bool}, e: {P0_B.read32(buf, (off + 0 : U32)) == (b2, o0) : P0_B.Buf & U32}, hne: {U32.is_eq(o0, 236) == False{} : Bool}) -> {FuluAttestation_r.Attestation_ok(buf, off, len) == (b2, False{}) : P0_B.Buf & Bool}:
+  P0_PRV.Attestation_decode_first_offset(buf, off, len, b2, o0, hlen, e, hne)
 
-def FuluAttestation__decode_accept__decode_accept(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> {FuluAttestation_r.Attestation_decode(P0_PRV.BF(t, n), n) == (P0_PRV.BF(t, n), Some{P0_PRV.OBJ(t, n)}) : P0_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
-  P0_PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
+def FuluAttestation__ok_eval__ok_eval(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}) -> {FuluAttestation_r.Attestation_ok(P1_PRV.BF(t, n), 0, n) == (P1_PRV.BF(t, n), P1_PRV.CHK(t, n)) : P1_B.Buf & Bool}:
+  P1_PRV.ok_eval(d, t, n, pf, hd, hn)
 
-def FuluAttestation__decode_spec__decode_spec(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.Attestation(), P0_PRV.VW(t, n), P0_PRV.VAL(t, n)):
-  P0_PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
+def FuluAttestation__decode_accept__decode_accept(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == True{} : Bool}) -> {FuluAttestation_r.Attestation_decode(P1_PRV.BF(t, n), n) == (P1_PRV.BF(t, n), Some{P1_PRV.OBJ(t, n)}) : P1_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  P1_PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
 
-def FuluAttestation__decode_unique__decode_unique(+d: Nat, +t: P1_F.array__Tree<U32>, +n: U32, +pf: {P1_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_DC.CHK(t, n) == True{} : Bool}, +v: P1_S.Value, spec: P1_Decoding.decodes(P1_Spec.Attestation(), P1_DC.VW(t, n), v)) -> {v == P1_DC.VAL(t, n) : P1_S.Value}:
-  P1_PRV.decode_unique(d, t, n, pf, hd, hn, hchk, v, spec)
+def FuluAttestation__decode_spec__decode_spec(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == True{} : Bool}) -> P1_Decoding.decodes(P1_Spec.Attestation(), P1_PRV.VW(t, n), P1_PRV.VAL(t, n)):
+  P1_PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
 
-def FuluAttestation__decode_reject__decode_reject(+d: Nat, +t: P2_FD.array__Tree<U32>, +n: U32, +pf: {P2_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == False{} : Bool}) -> P2_Decoding.outside_image(P2_Spec.Attestation(), P2_DC.VW(t, n)):
-  P2_PRV.decode_reject(d, t, n, pf, hd, hn, hchk)
+def FuluAttestation__decode_unique__decode_unique(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == True{} : Bool}, +v: P2_S.Value, spec: P2_Decoding.decodes(P2_Spec.Attestation(), P2_DC.VW(t, n), v)) -> {v == P2_DC.VAL(t, n) : P2_S.Value}:
+  P2_PRV.decode_unique(d, t, n, pf, hd, hn, hchk, v, spec)
 
-def FuluAttestation__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == False{} : Bool}) -> {FuluAttestation_r.Attestation_decode(P0_PRV.BF(t, n), n) == (P0_PRV.BF(t, n), None{}) : P0_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
-  P0_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
+def FuluAttestation__decode_reject__decode_reject(+d: Nat, +t: P3_FD.array__Tree<U32>, +n: U32, +pf: {P3_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P3_A.quad(P3_VB.pw(d))) == True{} : Bool}, +hchk: {P3_DC.CHK(t, n) == False{} : Bool}) -> P3_Decoding.outside_image(P3_Spec.Attestation(), P3_DC.VW(t, n)):
+  P3_PRV.decode_reject(d, t, n, pf, hd, hn, hchk)
 
-def FuluAttestation__decode_offsets__Attestation_decode_build(buf: P3_B.Buf, +size: U32, b2: P3_B.Buf, e: {FuluAttestation_r.Attestation_ok(buf, 0, size) == (b2, True{}) : P3_B.Buf & Bool}) -> {FuluAttestation_r.Attestation_decode(buf, size) == FuluAttestation_r.Attestation_some(FuluAttestation_r.Attestation_build(b2, size)) : P3_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
-  P3_PRV.Attestation_decode_build(buf, size, b2, e)
+def FuluAttestation__decode_none__decode_none(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == False{} : Bool}) -> {FuluAttestation_r.Attestation_decode(P1_PRV.BF(t, n), n) == (P1_PRV.BF(t, n), None{}) : P1_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  P1_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
+
+def FuluAttestation__decode_offsets__Attestation_decode_build(buf: P4_B.Buf, +size: U32, b2: P4_B.Buf, e: {FuluAttestation_r.Attestation_ok(buf, 0, size) == (b2, True{}) : P4_B.Buf & Bool}) -> {FuluAttestation_r.Attestation_decode(buf, size) == FuluAttestation_r.Attestation_some(FuluAttestation_r.Attestation_build(b2, size)) : P4_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  P4_PRV.Attestation_decode_build(buf, size, b2, e)
 

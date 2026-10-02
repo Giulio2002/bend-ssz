@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q03-vector-of-variable/03
+# type: ComplexTestStruct
+# ops: decode
+# spec: an empty scope is not a Vector[T,2] (a vector has no empty value)
+# fault: the empty scope is accepted as an empty list would be
+# why: list handling reused for a vector
+# file: types/vec_VarTestStruct_2_decode_ssz_generated.bend
+--- a/types/vec_VarTestStruct_2_decode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_decode_ssz_generated.bend
+@@ -91,3 +91,3 @@
+   match empty:
+-    case True{}: (buf, False{})
++    case True{}: (buf, True{})
+     case False{}: v2_VarTestStruct_head(len, off, B.read32(buf, off))

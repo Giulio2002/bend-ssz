@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/08
+# type: FuluAttestation
+# ops: root
+# spec: Bitlist[131072] has chunk limit 512: depth 9
+# fault: depth 8
+# why: limit divided by 512 instead of 256
+# file: types/Fulu_bitlist_131072_hashtreeroot_generated.bend
+--- a/types/Fulu_bitlist_131072_hashtreeroot_generated.bend
++++ b/types/Fulu_bitlist_131072_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits131072_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 9, seg)
++def bits131072_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 8, seg)
+ 

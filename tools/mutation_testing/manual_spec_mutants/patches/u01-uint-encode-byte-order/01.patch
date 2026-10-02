@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u01-uint-encode-byte-order/01
+# type: uint16
+# ops: encode
+# spec: uintN serializes little-endian (byte 0 is the least significant)
+# fault: uint16 writer emits the high byte first (big-endian, the network-byte-order habit)
+# why: an implementer used to htons() writes the 16-bit value most significant byte first
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1047,3 +1047,3 @@
+ def w16(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
+-  w8(w8(out, p, x), (p + 1 : U32), U32.shrn(x, 8n))
++  w8(w8(out, p, U32.shrn(x, 8n)), (p + 1 : U32), x)
+ 

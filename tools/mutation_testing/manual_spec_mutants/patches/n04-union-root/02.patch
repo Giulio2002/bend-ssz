@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n04-union-root/02
+# type: CompatibleUnionA
+# ops: root
+# spec: the root of a union mixes in the selector
+# fault: no selector is mixed in (the payload root is returned)
+# why: treating the union like its payload
+# file: types/CompatibleUnionA_hashtreeroot_generated.bend
+--- a/types/CompatibleUnionA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionA_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionA_d.CompatibleUnionA_c0{v}, O.mix_len(hl, d, 1)))
++  (h, (CompatibleUnionA_d.CompatibleUnionA_c0{v}, d))
+ 

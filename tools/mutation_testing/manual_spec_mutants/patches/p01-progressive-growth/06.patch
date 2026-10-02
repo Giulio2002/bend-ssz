@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p01-progressive-growth/06
+# type: proglist_uint16
+# ops: root
+# spec: the recursion on the rest continues while chunks remain
+# fault: fuel bound is too small: only n/2 + 1 steps
+# why: wrong termination bound
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -930,3 +930,3 @@
+ def prog_root(+hl: Nat, +lf: Leaf, +n: Nat, h: B.Buf, ws: Array<U32>) -> B.Buf & (Array<U32> & D.Digest):
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+Nat.div(n, 2n), Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+ 

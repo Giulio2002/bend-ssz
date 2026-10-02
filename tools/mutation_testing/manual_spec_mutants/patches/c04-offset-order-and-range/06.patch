@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/06
+# type: ComplexTestStruct
+# ops: decode
+# spec: the last offset must be within the buffer
+# fault: the last offset is not compared with the buffer length
+# why: forgetting the upper bound on the last offset
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -109,3 +109,3 @@
+   (buf, +o3) = pair
+-  ComplexTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++  ComplexTestStruct_c3(U32.is_le(o2, o3), buf, off, len, o0, o1, o2, o3)
+ 

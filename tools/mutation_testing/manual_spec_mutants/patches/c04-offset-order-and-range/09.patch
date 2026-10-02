@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/09
+# type: ComplexTestStruct
+# ops: decode
+# spec: the last variable part ends at the end of the buffer
+# fault: the last variable part (Vector[VarTestStruct,2]) is validated without the last byte
+# why: end index off by one
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -77,3 +77,3 @@
+   match ok:
+-    case True{}: ComplexTestStruct_v7(off, len, o0, o1, o2, o3, vec_VarTestStruct_2_r.v2_VarTestStruct_ok(buf, (off + o3 : U32), (len - o3 : U32)))
++    case True{}: ComplexTestStruct_v7(off, len, o0, o1, o2, o3, vec_VarTestStruct_2_r.v2_VarTestStruct_ok(buf, (off + o3 : U32), ((len - o3 : U32) - 1 : U32)))
+     case False{}: (buf, False{})

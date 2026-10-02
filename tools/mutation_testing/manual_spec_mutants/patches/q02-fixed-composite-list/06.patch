@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q02-fixed-composite-list/06
+# type: FuluExecutionRequests
+# ops: root
+# spec: List[ConsolidationRequest,2] has chunk limit 2: depth 1
+# fault: depth 0
+# why: depth = log2(limit) - 1
+# file: types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend
+--- a/types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend
++++ b/types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend
+@@ -79,3 +79,3 @@
+   match o:
+-    case Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
++    case Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt0(0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+ 

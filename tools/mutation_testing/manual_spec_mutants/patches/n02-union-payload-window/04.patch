@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n02-union-payload-window/04
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 3 payload is a ProgressiveVarTestStruct with its own offsets measured from the payload start
+# fault: the third option's payload is validated with the selector byte inside the window
+# why: forgetting to subtract the selector byte
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   match c:
+-    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), len)
+     case False{}: CompatibleUnionABCA_ok3(U32.is_eq(s, 4), s, buf, off, len)

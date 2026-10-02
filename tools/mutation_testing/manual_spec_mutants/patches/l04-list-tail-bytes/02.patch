@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l04-list-tail-bytes/02
+# type: VarTestStruct
+# ops: encode
+# spec: serialization contains exactly the bytes of the list
+# fault: the 2-byte-tail check is weakened (shift 24 instead of 16)
+# why: shift table typo
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1434,3 +1434,3 @@
+     case 1: U32.is_eq(U32.shrn(x, 8n), 0)
+-    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
++    case 2: U32.is_eq(U32.shrn(x, 24n), 0)
+     case _: U32.is_eq(U32.shrn(x, 24n), 0)

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT l01-list-limit-decode/06
+# type: ComplexTestStruct
+# ops: decode
+# spec: ByteList[256] may have exactly 256 bytes
+# fault: the limit check is strict
+# why: < instead of <=
+# file: types/bytelist_256_decode_ssz_generated.bend
+--- a/types/bytelist_256_decode_ssz_generated.bend
++++ b/types/bytelist_256_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def bl256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, U32.is_le(len, 256))
++def bl256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, U32.is_lt(len, 256))
+ 

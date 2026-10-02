@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b01-boolean-decode/01
+# type: boolean
+# ops: decode
+# spec: boolean decodes only 0x00 and 0x01
+# fault: the boolean validator accepts 2 as well (bound 2 instead of 1)
+# why: off by one on the maximum
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1104,3 +1104,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_le(v, 1))
++  (buf, U32.is_le(v, 2))
+ 

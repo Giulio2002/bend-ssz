@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/06
+# type: VarTestStruct,ComplexTestStruct
+# ops: decode
+# spec: the last partial word keeps only its n mod 4 low bytes
+# fault: the mask keeps one byte too many (rem+1)
+# why: off by one in the mask width
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -324,3 +324,3 @@
+   (a, +w) = pair
+-  Array.set(U32, a, i, keep(rem, w))
++  Array.set(U32, a, i, keep((rem + 1 : U32), w))
+ 

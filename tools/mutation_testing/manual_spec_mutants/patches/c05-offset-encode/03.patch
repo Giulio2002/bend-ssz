@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/03
+# type: VarTestStruct
+# ops: encode
+# spec: the offset of the first variable part equals the fixed-part size (7)
+# fault: the running offset starts at 8
+# why: fixed size miscounted
+# file: types/VarTestStruct_encode_ssz_generated.bend
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   match o:
+-    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_pw0(pos, f_A, f_C, list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 7, f_B))
++    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_pw0(pos, f_A, f_C, list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 8, f_B))
+ 

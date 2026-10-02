@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/02
+# type: ComplexTestStruct
+# ops: decode
+# spec: every offset must lie within the buffer
+# fault: the second offset is not checked against the buffer length
+# why: forgetting the range check
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -127,3 +127,3 @@
+   (buf, +o1) = pair
+-  ComplexTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ComplexTestStruct_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+ 

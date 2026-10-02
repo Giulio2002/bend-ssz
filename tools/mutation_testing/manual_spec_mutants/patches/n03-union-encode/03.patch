@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n03-union-encode/03
+# type: CompatibleUnionA
+# ops: encode
+# spec: the payload follows the selector byte
+# fault: the payload is written at pos+2
+# why: miscounted selector width
+# file: types/CompatibleUnionA_encode_ssz_generated.bend
+--- a/types/CompatibleUnionA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionA_encode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+ def CompatibleUnionA_pt0(+pos: U32, +v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, out: Array<U32>) -> Array<U32> & CompatibleUnionA_d.CompatibleUnionA:
+-  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v), CompatibleUnionA_d.CompatibleUnionA_c0{v})
++  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 2 : U32), v), CompatibleUnionA_d.CompatibleUnionA_c0{v})
+ 

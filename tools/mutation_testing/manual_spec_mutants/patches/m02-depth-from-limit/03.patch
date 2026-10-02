@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/03
+# type: vec_uint16_5
+# ops: root
+# spec: a Vector[uint16,5] is 10 bytes: one chunk, depth 0
+# fault: depth 1 (a spurious zero sibling)
+# why: depth from the element count 5 instead of the chunk count
+# file: types/vec_uint16_5_hashtreeroot_generated.bend
+--- a/types/vec_uint16_5_hashtreeroot_generated.bend
++++ b/types/vec_uint16_5_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v5_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
++def v5_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
+ 

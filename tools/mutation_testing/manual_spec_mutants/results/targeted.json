@@ -1,0 +1,258 @@
+[
+ {
+  "id": "baseline",
+  "T": "SURVIVED",
+  "flipped": [],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "b04-boolean-packed-validity/01",
+  "T": "KILLED",
+  "flipped": [
+   "proglistbool_two",
+   "vecbool16_two",
+   "vecbool5_two"
+  ],
+  "got": {
+   "vecbool5_two": 1,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 1,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 1,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/02",
+  "T": "KILLED",
+  "flipped": [
+   "bitlist5_stray"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 1,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "c02-fixed-field-offsets/05",
+  "T": "KILLED",
+  "flipped": [
+   "fixed_300"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 1,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "c06-container-validity-composition/03",
+  "T": "KILLED",
+  "flipped": [
+   "small_b70000"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 1,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "c06-container-validity-composition/04",
+  "T": "KILLED",
+  "flipped": [
+   "single_300"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 1,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "c06-container-validity-composition/05",
+  "T": "KILLED",
+  "flipped": [
+   "psingle_300"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 1,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "s01-size-overflow/01",
+  "T": "KILLED",
+  "flipped": [
+   "nbytes_top"
+  ],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 0
+  }
+ },
+ {
+  "id": "f03-attestation-bitlist/06",
+  "T": "SURVIVED",
+  "flipped": [],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ },
+ {
+  "id": "z01-designed-equivalent/02",
+  "T": "SURVIVED",
+  "flipped": [],
+  "got": {
+   "vecbool5_two": 0,
+   "vecbool5_ok": 1,
+   "vecbool16_two": 0,
+   "vecbool16_ok": 1,
+   "proglistbool_two": 0,
+   "proglistbool_ok": 1,
+   "fixed_300": 0,
+   "fixed_200": 1,
+   "small_b70000": 0,
+   "small_ok": 1,
+   "single_300": 0,
+   "single_200": 1,
+   "psingle_300": 0,
+   "psingle_200": 1,
+   "bitlist5_stray": 0,
+   "bitlist5_ok": 1,
+   "nbytes_top": 1
+  }
+ }
+]

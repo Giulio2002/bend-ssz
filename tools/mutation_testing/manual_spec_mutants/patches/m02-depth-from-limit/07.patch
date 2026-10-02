@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m02-depth-from-limit/07
+# type: ComplexTestStruct
+# ops: root
+# spec: List[uint16,128] has chunk limit 8: depth 3
+# fault: depth 2
+# why: limit in elements divided by 64
+# file: types/list_uint16_128_hashtreeroot_generated.bend
+--- a/types/list_uint16_128_hashtreeroot_generated.bend
++++ b/types/list_uint16_128_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l128_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 3, seg))
++def l128_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 2, seg))
+ 

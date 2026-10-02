@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n01-union-selector-decode/06
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: the last selector (4) selects the fourth option; selector 5 is invalid
+# fault: the last selector test is dropped (anything not 1..3 is option 4)
+# why: else-branch instead of an explicit selector test
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+     case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
+-    case False{}: CompatibleUnionABCA_ok3(U32.is_eq(s, 4), s, buf, off, len)
++    case False{}: CompatibleUnionABCA_ok3(True{}, s, buf, off, len)
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u02-uint-decode/01
+# type: uint16,VarTestStruct
+# ops: decode
+# spec: uint16 decodes exactly its two bytes (the bytes after them belong to the next field)
+# fault: the 16-bit reader keeps three bytes (mask 0xFFFFFF instead of 0xFFFF)
+# why: reading a word with a mask for the wrong width
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1033,3 +1033,3 @@
+   (buf, +v) = pair
+-  (buf, (v .&. 65535 : U32))
++  (buf, (v .&. 16777215 : U32))
+ 

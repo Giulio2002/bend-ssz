@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/05
+# type: VarTestStruct,ComplexTestStruct
+# ops: decode
+# spec: the last (partial) chunk is padded with zero bytes: bytes after the data in the last word are zero
+# fault: the decoder's copy does not mask the last word (the bytes of the next field remain)
+# why: copying whole words
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -348,3 +348,3 @@
+   (dst, src) = pair
+-  (B.Buf{src, len}, Words{mask_last(n, dst), n})
++  (B.Buf{src, len}, Words{dst, n})
+ 

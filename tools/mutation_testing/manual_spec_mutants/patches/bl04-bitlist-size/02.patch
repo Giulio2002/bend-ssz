@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl04-bitlist-size/02
+# type: bitlist_8,progbitlist,FuluAttestation
+# ops: encode
+# spec: a Bitlist of len bits serializes to len/8 + 1 bytes
+# fault: the size pass of the checked serializer reports ceil(len/8)
+# why: same slip in the second size function
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1591,3 +1591,3 @@
+   (ws, +c) = pair
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), U32.shrn((k + 7 : U32), 3n), 2147483648))
+ 

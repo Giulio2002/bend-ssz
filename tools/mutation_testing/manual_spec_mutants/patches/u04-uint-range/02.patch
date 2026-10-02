@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u04-uint-range/02
+# type: uint16
+# ops: encode
+# spec: a uint16 value is below 2^16
+# fault: the uint16 validity bound is dropped (any 32-bit word is accepted and truncated on write)
+# why: the value is already stored in a 32-bit word, so the range check looks redundant
+# file: types/uint16_encode_ssz_generated.bend
+--- a/types/uint16_encode_ssz_generated.bend
++++ b/types/uint16_encode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def u16_valid(+o: U32) -> Bool: U32.is_le(o, 65535)
++def u16_valid(+o: U32) -> Bool: True{}
+ 

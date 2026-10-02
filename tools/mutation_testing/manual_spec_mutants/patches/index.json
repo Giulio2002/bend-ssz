@@ -1,0 +1,2432 @@
+[
+ {
+  "id": "u01-uint-encode-byte-order/01",
+  "type": "uint16",
+  "ops": "encode",
+  "spec": "uintN serializes little-endian (byte 0 is the least significant)",
+  "fault": "uint16 writer emits the high byte first (big-endian, the network-byte-order habit)",
+  "why": "an implementer used to htons() writes the 16-bit value most significant byte first",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/02",
+  "type": "uint64,FixedTestStruct",
+  "ops": "encode",
+  "spec": "uint64 little-endian: low 32-bit limb at the lower address",
+  "fault": "aligned 64-bit write stores the high limb first (limb order swapped, bytes inside limbs right)",
+  "why": "treating the pair (lo, hi) as (hi, lo) when storing a 64-bit integer into two words",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/03",
+  "type": "uint64,FixedTestStruct",
+  "ops": "encode",
+  "spec": "uint64 little-endian, also when the value is at an unaligned offset",
+  "fault": "the unaligned 64-bit path writes the limbs in swapped order",
+  "why": "copy-paste of the aligned path with the arguments reversed",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/04",
+  "type": "uint32",
+  "ops": "encode",
+  "spec": "uint32 little-endian, aligned write",
+  "fault": "the aligned 32-bit write stores the byte-swapped word",
+  "why": "htonl() applied on a little-endian target",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/05",
+  "type": "uint128",
+  "ops": "encode",
+  "spec": "uint128 little-endian: limb 0 is the least significant",
+  "fault": "the aligned 128-bit writer swaps limbs 0 and 1",
+  "why": "an off-by-one in limb indexing when expanding a multi-limb integer",
+  "file": "types/uint128_encode_ssz_generated.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/06",
+  "type": "uint256",
+  "ops": "encode",
+  "spec": "uint256 little-endian: limb 7 is the most significant and is written last",
+  "fault": "the aligned 256-bit writer stores the top two limbs swapped",
+  "why": "wrong limb order in the last two stores",
+  "file": "types/uint256_encode_ssz_generated.bend"
+ },
+ {
+  "id": "u01-uint-encode-byte-order/07",
+  "type": "uint256",
+  "ops": "encode",
+  "spec": "uint256 little-endian; width 32 bytes",
+  "fault": "the writer reports an encoded length of 31 bytes (one byte short)",
+  "why": "length constant computed as bits/8 - 1 (off by one)",
+  "file": "types/uint256_encode_ssz_generated.bend"
+ },
+ {
+  "id": "u02-uint-decode/01",
+  "type": "uint16,VarTestStruct",
+  "ops": "decode",
+  "spec": "uint16 decodes exactly its two bytes (the bytes after them belong to the next field)",
+  "fault": "the 16-bit reader keeps three bytes (mask 0xFFFFFF instead of 0xFFFF)",
+  "why": "reading a word with a mask for the wrong width",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u02-uint-decode/02",
+  "type": "FixedTestStruct,uint64",
+  "ops": "decode",
+  "spec": "uint64 little-endian decode: the first limb read is the low one",
+  "fault": "the 64-bit reader returns (hi, lo)",
+  "why": "building the pair in the wrong order",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u02-uint-decode/03",
+  "type": "uint256",
+  "ops": "decode",
+  "spec": "uint256 little-endian decode",
+  "fault": "the 256-bit reader swaps limbs 6 and 7",
+  "why": "wrong limb order in the last record fields",
+  "file": "types/uint256_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u02-uint-decode/04",
+  "type": "uint128",
+  "ops": "decode",
+  "spec": "uint128 little-endian decode: the byte at offset 4 starts limb 1",
+  "fault": "the 128-bit reader reads limb 1 from offset 8 (skips a limb)",
+  "why": "stride of 8 copied from the uint64 reader",
+  "file": "types/uint128_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u02-uint-decode/05",
+  "type": "uint32,VarTestStruct",
+  "ops": "decode",
+  "spec": "uint32 little-endian decode of an SSZ offset or scalar at an unaligned position",
+  "fault": "the unaligned 4-byte read joins the two words with the wrong shift (8 instead of 16 for a 2-byte misalignment)",
+  "why": "shift table typo in the three-way unaligned join",
+  "file": "src/buffer.bend"
+ },
+ {
+  "id": "u03-uint-width/01",
+  "type": "uint16",
+  "ops": "decode",
+  "spec": "deserialize requires exactly N/8 bytes (short input rejected)",
+  "fault": "the uint16 length check accepts any length at most 2",
+  "why": "using <= for a size bound that is an equality",
+  "file": "types/uint16_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u03-uint-width/02",
+  "type": "uint64",
+  "ops": "decode",
+  "spec": "deserialize requires exactly N/8 bytes (trailing bytes rejected)",
+  "fault": "the uint64 length check accepts any length at least 8",
+  "why": "forgetting that scope must be exact and treating the buffer as a prefix",
+  "file": "types/uint64_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u03-uint-width/03",
+  "type": "uint256",
+  "ops": "decode",
+  "spec": "deserialize requires exactly 32 bytes for uint256",
+  "fault": "the uint256 length check is removed",
+  "why": "the fixed-size path trusts the caller's scope",
+  "file": "types/uint256_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u03-uint-width/04",
+  "type": "uint32",
+  "ops": "decode",
+  "spec": "deserialize requires exactly 4 bytes for uint32",
+  "fault": "the uint32 length check demands 3 bytes",
+  "why": "constant typo (bits/8 - 1)",
+  "file": "types/uint32_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u03-uint-width/05",
+  "type": "uint8",
+  "ops": "decode",
+  "spec": "deserialize requires exactly one byte for uint8",
+  "fault": "the uint8 length check accepts two bytes (a uint16 slip)",
+  "why": "wrong width constant",
+  "file": "types/uint8_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u03-uint-width/06",
+  "type": "uint128",
+  "ops": "decode",
+  "spec": "deserialize requires exactly 16 bytes for uint128",
+  "fault": "the uint128 length check accepts at least 16 (a uint256 value prefix)",
+  "why": "confusing exact and lower bound",
+  "file": "types/uint128_decode_ssz_generated.bend"
+ },
+ {
+  "id": "u04-uint-range/01",
+  "type": "uint8",
+  "ops": "encode",
+  "spec": "a uint8 value is below 2^8; the serializer must not truncate a larger one",
+  "fault": "the uint8 validity bound is 256 instead of 255 (accepts 256 and truncates it)",
+  "why": "off by one in the maximum value",
+  "file": "types/uint8_encode_ssz_generated.bend"
+ },
+ {
+  "id": "u04-uint-range/02",
+  "type": "uint16",
+  "ops": "encode",
+  "spec": "a uint16 value is below 2^16",
+  "fault": "the uint16 validity bound is dropped (any 32-bit word is accepted and truncated on write)",
+  "why": "the value is already stored in a 32-bit word, so the range check looks redundant",
+  "file": "types/uint16_encode_ssz_generated.bend"
+ },
+ {
+  "id": "u04-uint-range/03",
+  "type": "uint8,FixedTestStruct",
+  "ops": "encode",
+  "spec": "single-byte write must keep only the low byte",
+  "fault": "the byte writer does not mask its argument to 8 bits",
+  "why": "assuming callers already checked the range",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u05-uint-root-chunk/01",
+  "type": "uint16",
+  "ops": "root",
+  "spec": "hash_tree_root of a uintN is its little-endian serialization right-padded to 32 bytes",
+  "fault": "the 32-bit scalar chunk is built without the byte swap (big-endian value in the first word)",
+  "why": "confusing the SHA-256 big-endian word order with SSZ little-endian bytes",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u05-uint-root-chunk/02",
+  "type": "uint64",
+  "ops": "root",
+  "spec": "hash_tree_root(uint64) = 8 little-endian bytes then 24 zero bytes",
+  "fault": "the 64-bit chunk puts the high limb first",
+  "why": "limb order slip in the chunk constructor",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u05-uint-root-chunk/03",
+  "type": "uint64",
+  "ops": "root",
+  "spec": "hash_tree_root(uint64): the chunk has 24 zero padding bytes",
+  "fault": "the 64-bit chunk duplicates the low limb into the padding",
+  "why": "copy-paste of a limb into the next slot",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "u05-uint-root-chunk/04",
+  "type": "uint256",
+  "ops": "root",
+  "spec": "hash_tree_root(uint256) is its 32 little-endian bytes (no hashing of a single chunk)",
+  "fault": "the top limb of the 256-bit chunk is not byte-swapped",
+  "why": "the last of eight identical expressions was edited by hand",
+  "file": "types/uint256_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "u05-uint-root-chunk/05",
+  "type": "uint128",
+  "ops": "root",
+  "spec": "hash_tree_root(uint128) is 16 little-endian bytes padded with 16 zero bytes",
+  "fault": "the padding is not zero: limb 3 is repeated into limb 4",
+  "why": "filling the chunk by repetition",
+  "file": "types/uint128_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "b01-boolean-decode/01",
+  "type": "boolean",
+  "ops": "decode",
+  "spec": "boolean decodes only 0x00 and 0x01",
+  "fault": "the boolean validator accepts 2 as well (bound 2 instead of 1)",
+  "why": "off by one on the maximum",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b01-boolean-decode/02",
+  "type": "boolean",
+  "ops": "decode",
+  "spec": "boolean decodes only 0x00 and 0x01 (every other byte value is invalid)",
+  "fault": "the boolean validator accepts every byte value (non-zero is true)",
+  "why": "C-style truthiness",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b01-boolean-decode/03",
+  "type": "boolean",
+  "ops": "decode",
+  "spec": "boolean 0x01 decodes to true",
+  "fault": "the boolean reader treats every non-zero byte as true (the validator already rejects >1, so this should be dead in behavior)",
+  "why": "truthiness instead of the equality test",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b01-boolean-decode/04",
+  "type": "boolean",
+  "ops": "decode",
+  "spec": "boolean is exactly one byte",
+  "fault": "the boolean length check accepts any length at least 1 (trailing bytes ignored)",
+  "why": "scope treated as a lower bound",
+  "file": "types/boolean_decode_ssz_generated.bend"
+ },
+ {
+  "id": "b01-boolean-decode/05",
+  "type": "boolean",
+  "ops": "decode",
+  "spec": "boolean is exactly one byte (empty input is invalid)",
+  "fault": "the boolean length check accepts the empty input (reads a missing byte as 0 = false)",
+  "why": "<= instead of ==",
+  "file": "types/boolean_decode_ssz_generated.bend"
+ },
+ {
+  "id": "b02-boolean-encode/01",
+  "type": "boolean",
+  "ops": "encode",
+  "spec": "true serializes as 0x01",
+  "fault": "true is written as 0xFF",
+  "why": "C-style true = all bits set",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b02-boolean-encode/02",
+  "type": "boolean",
+  "ops": "encode",
+  "spec": "false serializes as 0x00, true as 0x01",
+  "fault": "the boolean writer writes the byte 1 for false and nothing for true (the arms are swapped)",
+  "why": "inverted match arms",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b03-boolean-root/01",
+  "type": "boolean",
+  "ops": "root",
+  "spec": "hash_tree_root(true) = 0x01 followed by 31 zero bytes",
+  "fault": "the true chunk has its 1 in the last byte of the first word instead of the first byte",
+  "why": "big-endian word confusion",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b03-boolean-root/02",
+  "type": "boolean",
+  "ops": "root",
+  "spec": "hash_tree_root(false) = 32 zero bytes",
+  "fault": "the false chunk is the true chunk (the arms are swapped)",
+  "why": "inverted match arms",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b04-boolean-packed-validity/01",
+  "type": "vec_bool_5,vec_bool_16,proglist_bool",
+  "ops": "encode",
+  "spec": "every boolean byte is 0 or 1 (a packed boolean vector must not hold 2)",
+  "fault": "the packed-boolean scan lets bit 1 of each byte through (mask 0xFCFCFCFC)",
+  "why": "mask built for \"bits above 1\" but shifted by one",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "b04-boolean-packed-validity/02",
+  "type": "vec_bool_5",
+  "ops": "decode",
+  "spec": "every element of a Vector[boolean, 5] must be 0x00 or 0x01",
+  "fault": "the vector validator checks only the first four elements (loop bound n-2 instead of n-1)",
+  "why": "off by one in the element loop",
+  "file": "types/vec_bool_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "b04-boolean-packed-validity/03",
+  "type": "vec_bool_5",
+  "ops": "decode",
+  "spec": "Vector[boolean, N] has exactly N bytes",
+  "fault": "the Vector[boolean,5] length check accepts any length at most 5",
+  "why": "bound instead of equality",
+  "file": "types/vec_bool_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v01-vector-length-decode/01",
+  "type": "vec_uint16_5",
+  "ops": "decode",
+  "spec": "a Vector[T,N] value has exactly N elements (N*size bytes)",
+  "fault": "vector validator accepts any length at most 10 bytes",
+  "why": "bound instead of equality",
+  "file": "types/vec_uint16_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v01-vector-length-decode/02",
+  "type": "vec_uint16_5",
+  "ops": "decode",
+  "spec": "a Vector[T,N] value has exactly N elements; extra bytes are invalid",
+  "fault": "vector validator accepts any length at least 10 bytes",
+  "why": "scope treated as a prefix",
+  "file": "types/vec_uint16_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v01-vector-length-decode/03",
+  "type": "vec_uint16_5",
+  "ops": "decode",
+  "spec": "Vector[uint16, 5] is 10 bytes",
+  "fault": "the reader copies only 8 bytes (a 4-element vector), the fifth element is lost",
+  "why": "element count computed as N-1",
+  "file": "types/vec_uint16_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v01-vector-length-decode/04",
+  "type": "vec_uint64_5",
+  "ops": "decode",
+  "spec": "Vector[uint64, 5] is exactly 40 bytes",
+  "fault": "the length check compares against 5 (the element count) instead of 40 bytes",
+  "why": "element count used where a byte length is needed",
+  "file": "types/vec_uint64_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v01-vector-length-decode/05",
+  "type": "vec_uint8_3",
+  "ops": "decode",
+  "spec": "Vector[byte, 3] is exactly three bytes",
+  "fault": "the byte-vector length check accepts 4 bytes (rounded up to the word size)",
+  "why": "length rounded to a 4-byte word",
+  "file": "types/vec_uint8_3_decode_ssz_generated.bend"
+ },
+ {
+  "id": "v02-vector-length-encode/01",
+  "type": "vec_uint16_5",
+  "ops": "encode",
+  "spec": "serializing a Vector[uint16,5] requires exactly five elements",
+  "fault": "validity accepts a vector of up to 11 bytes (hi bound 11)",
+  "why": "off by one on the upper bound",
+  "file": "types/vec_uint16_5_encode_ssz_generated.bend"
+ },
+ {
+  "id": "v02-vector-length-encode/02",
+  "type": "vec_uint16_5",
+  "ops": "encode",
+  "spec": "serializing a Vector[uint16,5] requires exactly five elements",
+  "fault": "validity accepts a vector of 9 bytes or more (lower bound 9)",
+  "why": "off by one on the lower bound",
+  "file": "types/vec_uint16_5_encode_ssz_generated.bend"
+ },
+ {
+  "id": "v02-vector-length-encode/03",
+  "type": "vec_uint16_5",
+  "ops": "encode",
+  "spec": "vector elements are whole uint16s",
+  "fault": "validity ignores the element size (unit 1 instead of 2)",
+  "why": "bytes treated as the element",
+  "file": "types/vec_uint16_5_encode_ssz_generated.bend"
+ },
+ {
+  "id": "v02-vector-length-encode/04",
+  "type": "vec_uint16_5",
+  "ops": "encode",
+  "spec": "the serialization of Vector[uint16,5] has 10 bytes",
+  "fault": "the encoder reports 12 bytes (rounded up to a word multiple)",
+  "why": "padding the length to the word size",
+  "file": "types/vec_uint16_5_encode_ssz_generated.bend"
+ },
+ {
+  "id": "v02-vector-length-encode/05",
+  "type": "vec_uint8_3",
+  "ops": "encode",
+  "spec": "Vector[byte, 3] has no padding in its serialization",
+  "fault": "validity accepts any length at most 4 (hi bound 4)",
+  "why": "word-size rounding of the bound",
+  "file": "types/vec_uint8_3_encode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/01",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "a List[uint16,1024] has at most 1024 elements",
+  "fault": "the limit check allows 1025 elements",
+  "why": "off by one (limit+1)",
+  "file": "types/list_uint16_1024_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/02",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "a List[uint16,1024] may have exactly 1024 elements",
+  "fault": "the limit check is strict (rejects 1024 elements)",
+  "why": "< instead of <=",
+  "file": "types/list_uint16_1024_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/03",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the list limit counts elements, not bytes",
+  "fault": "the limit is compared with the byte length",
+  "why": "byte length used for element count",
+  "file": "types/list_uint16_1024_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/04",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the limit of a List[uint16,1024] is enforced",
+  "fault": "no limit check at all",
+  "why": "relying on the caller's size cap",
+  "file": "types/list_uint16_1024_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/05",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "ByteList[256] has at most 256 bytes",
+  "fault": "the limit check allows 257 bytes",
+  "why": "off by one (limit+1)",
+  "file": "types/bytelist_256_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l01-list-limit-decode/06",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "ByteList[256] may have exactly 256 bytes",
+  "fault": "the limit check is strict",
+  "why": "< instead of <=",
+  "file": "types/bytelist_256_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l02-list-element-alignment/01",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the scope of a List[uint16] is a multiple of 2 bytes",
+  "fault": "no alignment check (odd byte lengths accepted)",
+  "why": "the element count is len/2 so the remainder looks harmless",
+  "file": "types/list_uint16_1024_decode_ssz_generated.bend"
+ },
+ {
+  "id": "l02-list-element-alignment/02",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "list elements are whole; the byte length of a List[uint16] is even",
+  "fault": "the unit check of a packed collection tests bit 1 instead of bit 0",
+  "why": "mask typo",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "l02-list-element-alignment/03",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "list elements are whole",
+  "fault": "the unit check is dropped from the packed-collection validity",
+  "why": "assuming whole elements by construction",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "l03-list-limit-encode/01",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "serializing a List[uint16,1024] with 1025 elements is invalid",
+  "fault": "the encoder's validity bound is 2050 bytes (1025 elements)",
+  "why": "limit+1",
+  "file": "types/list_uint16_1024_encode_ssz_generated.bend"
+ },
+ {
+  "id": "l03-list-limit-encode/02",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "serializing a List[uint16,1024] with 1024 elements is valid",
+  "fault": "the encoder's validity bound is 2046 bytes (limit-1)",
+  "why": "strict bound",
+  "file": "types/list_uint16_1024_encode_ssz_generated.bend"
+ },
+ {
+  "id": "l03-list-limit-encode/03",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "serializing a ByteList[256] of 257 bytes is invalid",
+  "fault": "the encoder's validity bound is 257",
+  "why": "limit+1",
+  "file": "types/bytelist_256_encode_ssz_generated.bend"
+ },
+ {
+  "id": "l03-list-limit-encode/04",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "list limit is an upper bound on the length",
+  "fault": "a packed collection is valid at hi (the strict form n < hi) so the limit itself is refused",
+  "why": "< instead of <=",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "l03-list-limit-encode/05",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "list limit is an upper bound on the length",
+  "fault": "any packed collection is valid regardless of the upper bound (big = True)",
+  "why": "the limit check treated as the caller's job",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "l04-list-tail-bytes/01",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "serialization of a 2-byte-aligned list writes exactly its bytes (nothing past the length)",
+  "fault": "the tail check of the last storage word tests the wrong shift for a half word",
+  "why": "shift table typo (case _ is 3-byte tail, the 2-byte tail uses 16)",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "l04-list-tail-bytes/02",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "serialization contains exactly the bytes of the list",
+  "fault": "the 2-byte-tail check is weakened (shift 24 instead of 16)",
+  "why": "shift table typo",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv01-bitvector-length/01",
+  "type": "bitvector_5",
+  "ops": "decode",
+  "spec": "Bitvector[5] is exactly 1 byte",
+  "fault": "length check accepts at most 1 byte (empty accepted)",
+  "why": "bound instead of equality",
+  "file": "types/bitvector_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bv01-bitvector-length/02",
+  "type": "bitvector_9",
+  "ops": "decode",
+  "spec": "Bitvector[9] is exactly 2 bytes",
+  "fault": "length check accepts 2 or more bytes (trailing bytes ignored)",
+  "why": "scope treated as a prefix",
+  "file": "types/bitvector_9_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bv01-bitvector-length/03",
+  "type": "bitvector_512",
+  "ops": "decode",
+  "spec": "Bitvector[512] is exactly 64 bytes",
+  "fault": "length check demands 65 bytes (N/8+1 as for a bitlist)",
+  "why": "bitlist size rule applied to a bitvector",
+  "file": "types/Fulu_bitvector_512_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/01",
+  "type": "bitvector_5",
+  "ops": "decode",
+  "spec": "the unused high bits of the last byte of a Bitvector must be zero (deserialization)",
+  "fault": "no padding check",
+  "why": "ignoring bits the application cannot see",
+  "file": "types/bitvector_5_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/02",
+  "type": "bitvector_5",
+  "ops": "decode",
+  "spec": "bits 5..7 of the last byte of Bitvector[5] must be zero",
+  "fault": "the padding mask for 5 used bits is 63 (bit 5 may be set)",
+  "why": "mask table typo (2^6-1 instead of 2^5-1)",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/03",
+  "type": "bitvector_9",
+  "ops": "decode",
+  "spec": "bits 1..7 of the second byte of Bitvector[9] must be zero",
+  "fault": "the padding mask for one used bit is 3",
+  "why": "mask table typo",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/04",
+  "type": "bitvector_9",
+  "ops": "decode",
+  "spec": "padding bits are in the last byte",
+  "fault": "the padding check inspects byte 0 instead of byte 1",
+  "why": "byte index off by one",
+  "file": "types/bitvector_9_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/05",
+  "type": "bitvector_7",
+  "ops": "decode",
+  "spec": "bit 7 of the last byte of Bitvector[7] must be zero",
+  "fault": "the padding mask for 7 used bits accepts bit 7 (mask 255)",
+  "why": "mask table typo",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv02-bitvector-padding-decode/06",
+  "type": "bitvector_5",
+  "ops": "decode",
+  "spec": "the padding bits are those above the used bits (bits r..7)",
+  "fault": "the padding test is inverted: it requires the padding to be non-zero",
+  "why": "~mask vs mask confusion",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/01",
+  "type": "bitvector_5",
+  "ops": "encode",
+  "spec": "serializing a Bitvector[5] whose value has bits above 5 is invalid (padding must be zero)",
+  "fault": "the validity bound is 64 (bit 5 allowed)",
+  "why": "off by one in the bit count",
+  "file": "types/bitvector_5_encode_ssz_generated.bend"
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/02",
+  "type": "bitlist_5,BitsStruct,FuluAttestation",
+  "ops": "encode",
+  "spec": "serializing a Bitlist[5] (or a bit vector) whose last storage word has a set bit between the length and the delimiter position is invalid",
+  "fault": "the above-N table entry for r=5 masks from bit 6 (a stray bit 5 is accepted)",
+  "why": "constant typo in a 32-entry table",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bv03-bitvector-padding-encode/03",
+  "type": "bitvector_9",
+  "ops": "encode",
+  "spec": "a Bitvector[9] value has bits 9..15 clear",
+  "fault": "the validity bound is 1024 (bit 9 allowed)",
+  "why": "off by one in the bit count",
+  "file": "types/bitvector_9_encode_ssz_generated.bend"
+ },
+ {
+  "id": "bv04-bitvector-root/01",
+  "type": "bitvector_5",
+  "ops": "root",
+  "spec": "hash_tree_root(Bitvector[N]) merkleizes the packed bits (little-endian bytes padded to 32)",
+  "fault": "the packed word is not byte-swapped into the chunk",
+  "why": "SHA-256 word order confusion",
+  "file": "types/bitvector_5_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bv04-bitvector-root/02",
+  "type": "bitvector_512",
+  "ops": "root",
+  "spec": "Bitvector[512] has two chunks; root = hash(chunk0, chunk1)",
+  "fault": "the two chunks are hashed in the wrong order",
+  "why": "swapped operands of the single hash",
+  "file": "types/Fulu_bitvector_512_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bv04-bitvector-root/03",
+  "type": "bitvector_512",
+  "ops": "root",
+  "spec": "Bitvector[512] root has no length mixing",
+  "fault": "the root mixes in the bit count 512 like a Bitlist",
+  "why": "bitlist rule applied to a bitvector",
+  "file": "types/Fulu_bitvector_512_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/01",
+  "type": "bitlist_5",
+  "ops": "decode",
+  "spec": "a Bitlist value's last byte must be non-zero (it holds the delimiter bit)",
+  "fault": "a zero last byte is accepted (no delimiter required)",
+  "why": "treating the delimiter as optional",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/02",
+  "type": "bitlist_5,BitsStruct",
+  "ops": "decode",
+  "spec": "an empty byte string is not a Bitlist value",
+  "fault": "the empty input is accepted",
+  "why": "< instead of <= on the length",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/03",
+  "type": "bitlist_8",
+  "ops": "decode",
+  "spec": "the delimiter is the highest set bit of the last byte (bit 7 counts)",
+  "fault": "a last byte of exactly 128 is treated as delimiter at bit 6",
+  "why": "threshold typo in the high-bit table",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/04",
+  "type": "bitlist_8",
+  "ops": "decode",
+  "spec": "a bit list of length n has its delimiter at bit n",
+  "fault": "the decoder never clears the delimiter, it stays in the value",
+  "why": "forgetting that the delimiter is not data",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/05",
+  "type": "bitlist_8",
+  "ops": "decode",
+  "spec": "the number of bits is 8*(len-1) + index of the delimiter",
+  "fault": "the bit count is taken as 8*(len-1) (the delimiter index is ignored)",
+  "why": "counting whole bytes only",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/01",
+  "type": "bitlist_5",
+  "ops": "decode",
+  "spec": "a Bitlist[N] has at most N bits",
+  "fault": "the limit check accepts N+1 bits",
+  "why": "off by one (limit+1)",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/02",
+  "type": "bitlist_5",
+  "ops": "decode",
+  "spec": "a Bitlist[N] may have exactly N bits",
+  "fault": "the limit check is strict (N bits rejected)",
+  "why": "< instead of <=",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/03",
+  "type": "bitlist_513",
+  "ops": "decode",
+  "spec": "the Bitlist limit is in bits",
+  "fault": "the limit is compared with the byte count",
+  "why": "bytes used for bits",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl02-bitlist-limit-decode/04",
+  "type": "bitlist_5",
+  "ops": "decode",
+  "spec": "the Bitlist limit is enforced",
+  "fault": "the limit check is ignored (always true)",
+  "why": "relying on the caller's size cap",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/01",
+  "type": "bitlist_5",
+  "ops": "encode",
+  "spec": "serialization appends one 1 bit at index len (the delimiter)",
+  "fault": "no delimiter is written",
+  "why": "forgetting the delimiter",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/02",
+  "type": "bitlist_8",
+  "ops": "encode",
+  "spec": "the delimiter is at bit len%8 of byte len/8 (a new byte when len%8==0)",
+  "fault": "the delimiter is placed at the byte of ceil(len/8)",
+  "why": "ceil vs floor",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl03-bitlist-encode-delimiter/03",
+  "type": "bitlist_5",
+  "ops": "encode",
+  "spec": "the delimiter is bit number len",
+  "fault": "the delimiter is bit len+1",
+  "why": "off by one in the shift",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl04-bitlist-size/01",
+  "type": "bitlist_8",
+  "ops": "encode",
+  "spec": "a Bitlist of len bits serializes to len/8 + 1 bytes",
+  "fault": "the size pass reports ceil(len/8) bytes",
+  "why": "bitvector size rule applied to a bitlist (no room for the delimiter when len%8==0)",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl04-bitlist-size/02",
+  "type": "bitlist_8,progbitlist,FuluAttestation",
+  "ops": "encode",
+  "spec": "a Bitlist of len bits serializes to len/8 + 1 bytes",
+  "fault": "the size pass of the checked serializer reports ceil(len/8)",
+  "why": "same slip in the second size function",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/01",
+  "type": "bitlist_5",
+  "ops": "encode",
+  "spec": "serializing a Bitlist[5] with 6 bits is invalid",
+  "fault": "the validity bound is limit+1",
+  "why": "off by one",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/02",
+  "type": "bitlist_5",
+  "ops": "encode",
+  "spec": "a Bitlist[5] may have 5 bits",
+  "fault": "the validity bound is strict (limit-1)",
+  "why": "strict inequality",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl05-bitlist-encode-validity/03",
+  "type": "bitlist_5,progbitlist,FuluAttestation",
+  "ops": "encode",
+  "spec": "bits past the length (before the delimiter) must be zero in the value",
+  "fault": "the stray-bit check on the last word is dropped",
+  "why": "assuming the value is canonical",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/01",
+  "type": "bitlist_5",
+  "ops": "root",
+  "spec": "hash_tree_root(Bitlist) = mix_in_length(merkleize(pack_bits(bits)), len): the delimiter is not chunked",
+  "fault": "the delimiter byte is included in the chunked data (bits_nbytes(k+1))",
+  "why": "chunking the serialization instead of the bits",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/02",
+  "type": "bitlist_5",
+  "ops": "root",
+  "spec": "the mixed-in length of a Bitlist is its number of bits",
+  "fault": "the mixed length counts the delimiter (k+1)",
+  "why": "length of the serialization used",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/03",
+  "type": "bitlist_5",
+  "ops": "root",
+  "spec": "the Bitlist[5] limit is one chunk (depth 0)",
+  "fault": "the tree depth is 1 (one level too deep)",
+  "why": "limit in bits used as chunk count",
+  "file": "types/bitlist_5_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/04",
+  "type": "bitlist_513",
+  "ops": "root",
+  "spec": "Bitlist[513] has chunk limit (513+255)//256 = 3, depth 2",
+  "fault": "the depth is 1 (floor(513/256))",
+  "why": "chunk count rounded down",
+  "file": "types/bitlist_513_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/05",
+  "type": "bitlist_513",
+  "ops": "root",
+  "spec": "Bitlist[513] has chunk limit 3, depth 2",
+  "fault": "the depth is 3 (next power of two of the bit limit rounded up twice)",
+  "why": "depth from the wrong limit",
+  "file": "types/bitlist_513_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "bl06-bitlist-root/06",
+  "type": "bitlist_513",
+  "ops": "root",
+  "spec": "the Bitlist root mixes the length with a 32-byte little-endian chunk",
+  "fault": "the length chunk is built without byte swap (big-endian)",
+  "why": "SHA word order confusion in the length chunk",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "c01-fixed-container-scope/01",
+  "type": "FixedTestStruct",
+  "ops": "decode",
+  "spec": "a fixed-size container is deserialized from exactly its size (trailing bytes are invalid)",
+  "fault": "the scope check accepts any length at least 13 (trailing bytes ignored)",
+  "why": "scope treated as a prefix",
+  "file": "types/FixedTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c01-fixed-container-scope/02",
+  "type": "FixedTestStruct",
+  "ops": "decode",
+  "spec": "a fixed-size container is deserialized from exactly its size (short input invalid)",
+  "fault": "the scope check accepts any length at most 13",
+  "why": "bound instead of equality",
+  "file": "types/FixedTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c01-fixed-container-scope/03",
+  "type": "FuluCheckpoint",
+  "ops": "decode",
+  "spec": "Checkpoint is exactly 40 bytes",
+  "fault": "the scope check demands 32 (the root size only)",
+  "why": "size of the last field used as the container size",
+  "file": "types/FuluCheckpoint_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c01-fixed-container-scope/04",
+  "type": "FuluCheckpoint",
+  "ops": "decode",
+  "spec": "Checkpoint is exactly 40 bytes",
+  "fault": "the scope check accepts 40 or more",
+  "why": "scope treated as a prefix",
+  "file": "types/FuluCheckpoint_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c02-fixed-field-offsets/01",
+  "type": "FixedTestStruct",
+  "ops": "decode",
+  "spec": "fields of a fixed container are laid out back to back (field C at offset 1+8)",
+  "fault": "field C is read from offset 8 (overlapping field B)",
+  "why": "offset sum miscounted",
+  "file": "types/FixedTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c02-fixed-field-offsets/02",
+  "type": "FixedTestStruct",
+  "ops": "encode",
+  "spec": "fields of a fixed container are written back to back (field C at offset 9)",
+  "fault": "field C is written at offset 8",
+  "why": "offset sum miscounted",
+  "file": "types/FixedTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c02-fixed-field-offsets/03",
+  "type": "FixedTestStruct",
+  "ops": "encode",
+  "spec": "fields are serialized in declaration order",
+  "fault": "fields A and C are swapped on the wire",
+  "why": "reordered field writes",
+  "file": "types/FixedTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c02-fixed-field-offsets/04",
+  "type": "FixedTestStruct",
+  "ops": "encode",
+  "spec": "a fixed container serializes to exactly its size",
+  "fault": "the reported length is 12",
+  "why": "size constant off by one",
+  "file": "types/FixedTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c02-fixed-field-offsets/05",
+  "type": "FixedTestStruct,ComplexTestStruct",
+  "ops": "encode",
+  "spec": "a container value is valid only if all its fields are valid",
+  "fault": "the container validity checks no field (field A is not range-checked)",
+  "why": "assuming the fixed-size fields are valid by construction",
+  "file": "types/FixedTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/01",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the first offset must equal the size of the fixed part (7)",
+  "fault": "the first offset may be any value at least 7 (gap bytes accepted)",
+  "why": "only checking that the offset does not point into the fixed part",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/02",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the first offset must equal the size of the fixed part (7)",
+  "fault": "the first offset may be any value at most 7 (overlap with the fixed part accepted)",
+  "why": "only checking that the offset is within the buffer",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/03",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "the first offset must equal the size of the fixed part (7)",
+  "fault": "the first offset is not checked",
+  "why": "trusting the offset",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/04",
+  "type": "VarTestStruct",
+  "ops": "decode",
+  "spec": "a container shorter than its fixed part is invalid",
+  "fault": "the minimum length check is 6 instead of 7",
+  "why": "off by one in the fixed size",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/05",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the first offset of ComplexTestStruct must be 71",
+  "fault": "the first offset check accepts any offset at least 71",
+  "why": "weak first-offset test",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c03-first-offset-decode/06",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the container is at least as long as its fixed part (71)",
+  "fault": "the minimum length is 70",
+  "why": "fixed size off by one",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/01",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "offsets must be non-decreasing",
+  "fault": "the second offset is only checked against the buffer length (out-of-order accepted)",
+  "why": "forgetting the monotonicity check",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/02",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "every offset must lie within the buffer",
+  "fault": "the second offset is not checked against the buffer length",
+  "why": "forgetting the range check",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/03",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "equal consecutive offsets are legal (an empty variable part)",
+  "fault": "offsets must strictly increase (empty variable parts rejected)",
+  "why": "<  instead of <=",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/04",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the third offset must not be below the second, nor beyond the buffer",
+  "fault": "the third offset is not checked at all",
+  "why": "copy-paste error leaving one check out",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/05",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the last offset must not be beyond the buffer",
+  "fault": "the last offset may equal len+1 would be allowed (bound is len + 1 via is_le(o3, len+1))",
+  "why": "off by one on the buffer bound",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/06",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the last offset must be within the buffer",
+  "fault": "the last offset is not compared with the buffer length",
+  "why": "forgetting the upper bound on the last offset",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/07",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "a variable part ends where the next offset starts",
+  "fault": "the first variable part (a List[uint16]) is given the rest of the buffer instead of the bytes up to the next offset",
+  "why": "forgetting to subtract the next offset",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/08",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "a variable part ends where the next offset starts",
+  "fault": "the ByteList part is validated with the window up to the end of the buffer",
+  "why": "forgetting to subtract the next offset",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/09",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the last variable part ends at the end of the buffer",
+  "fault": "the last variable part (Vector[VarTestStruct,2]) is validated without the last byte",
+  "why": "end index off by one",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/10",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the second offset is stored right after the first one at fixed position 7",
+  "fault": "the second offset is read from position 6",
+  "why": "offset slot miscounted",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c04-offset-order-and-range/11",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "decode",
+  "spec": "variable-size progressive container: first offset equals the fixed part size (9)",
+  "fault": "the first offset may be any value at least 9",
+  "why": "weak first-offset test",
+  "file": "types/ProgressiveVarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/01",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "the offset of the first variable part is the fixed size (7)",
+  "fault": "the offset written is the fixed size plus 4",
+  "why": "counting a second offset slot",
+  "file": "types/list_uint16_1024_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/02",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "the offset is written into the fixed part at its slot",
+  "fault": "the offset is written 4 bytes further (at the slot after the real one)",
+  "why": "slot index miscounted",
+  "file": "types/list_uint16_1024_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/03",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "the offset of the first variable part equals the fixed-part size (7)",
+  "fault": "the running offset starts at 8",
+  "why": "fixed size miscounted",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/04",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "the serialization length is fixed part + variable parts",
+  "fault": "the size pass starts at 6",
+  "why": "fixed size miscounted",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/05",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "field C (uint8) is at fixed offset 6, the offset slot at 2",
+  "fault": "field C is written at offset 5",
+  "why": "offset sum miscounted",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/06",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "the offset is a little-endian uint32",
+  "fault": "the aligned 32-bit store (offsets are stored with it) writes big-endian",
+  "why": "network byte order for offsets",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "c05-offset-encode/07",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "offset i = fixed part + lengths of the variable parts before i",
+  "fault": "the running offset does not advance past the first variable part",
+  "why": "the length of the previous part is forgotten",
+  "file": "types/list_uint16_128_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/08",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "offset i = fixed part + lengths of the variable parts before i",
+  "fault": "the running offset advances by the part length plus one",
+  "why": "off by one when accumulating",
+  "file": "types/bytelist_256_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c05-offset-encode/09",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "sizes add up exactly",
+  "fault": "the checked size accumulator adds one extra byte",
+  "why": "accumulator initialised or bumped by one",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "c05-offset-encode/10",
+  "type": "ComplexTestStruct",
+  "ops": "encode",
+  "spec": "variable parts follow the fixed part in field order",
+  "fault": "not a single-character change: the first fixed-size field is written at the wrong position (pos+1)",
+  "why": "miscount of the first slot",
+  "file": "types/ComplexTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c06-container-validity-composition/01",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "a container is valid only if every field is valid (the uint8 field C is range-checked)",
+  "fault": "validity forgets field C",
+  "why": "checking only the variable field and the first scalar",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c06-container-validity-composition/02",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "serialize refuses an invalid value (the poison flag of field validity reaches the result)",
+  "fault": "the poison of the scalar fields is not merged into the final flag",
+  "why": "dropping the carry",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c06-container-validity-composition/03",
+  "type": "SmallTestStruct,ProgressiveTestStruct,ProgressiveComplexTestStruct",
+  "ops": "encode",
+  "spec": "a container value is valid only if every field is valid (SmallTestStruct has two uint16 fields)",
+  "fault": "the validity of field B is not checked",
+  "why": "checking only the first field",
+  "file": "types/SmallTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c06-container-validity-composition/04",
+  "type": "SingleFieldTestStruct",
+  "ops": "encode",
+  "spec": "a container value is valid only if its field is valid (uint8 range)",
+  "fault": "the field validity is not checked",
+  "why": "assuming the single field is in range",
+  "file": "types/SingleFieldTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "c06-container-validity-composition/05",
+  "type": "ProgressiveSingleFieldContainerTestStruct,CompatibleUnionA,CompatibleUnionABCA",
+  "ops": "encode",
+  "spec": "a progressive container value is valid only if its field is valid (uint8 range)",
+  "fault": "the field validity is not checked",
+  "why": "assuming the single field is in range",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/01",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "only the declared selectors are valid; selector 0 is not an option of a CompatibleUnion",
+  "fault": "selectors up to 1 accepted (selector 0 with a payload reads as option 1)",
+  "why": "<= instead of == in the selector test",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/02",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "selectors outside the declared options are invalid (including 128..255)",
+  "fault": "any selector at least 1 is accepted (out-of-bounds selectors read as option 1)",
+  "why": ">= instead of == in the selector test",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/03",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "selectors above 127 must not be accepted",
+  "fault": "the selector check keeps only the low 7 bits (selector 129 reads as 1)",
+  "why": "masking the selector to the legal range instead of rejecting",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/04",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "an empty input is not a union value (no selector byte)",
+  "fault": "the empty input is accepted (selector read as 0 past the end)",
+  "why": "forgetting the selector byte needs one byte",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/05",
+  "type": "CompatibleUnionABCA",
+  "ops": "decode",
+  "spec": "selector 3 selects the third option (ProgressiveVarTestStruct)",
+  "fault": "selector 4 is validated against the third option too (the test is <= 4 at option 3)",
+  "why": "off by one in the selector chain",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/06",
+  "type": "CompatibleUnionABCA",
+  "ops": "decode",
+  "spec": "the last selector (4) selects the fourth option; selector 5 is invalid",
+  "fault": "the last selector test is dropped (anything not 1..3 is option 4)",
+  "why": "else-branch instead of an explicit selector test",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n01-union-selector-decode/07",
+  "type": "CompatibleUnionABCA",
+  "ops": "decode",
+  "spec": "selector 2 selects the second option",
+  "fault": "selector 2 and 3 are swapped in the validator chain",
+  "why": "copy-paste of the selector constants",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n02-union-payload-window/01",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "the payload is the bytes after the selector byte",
+  "fault": "the payload window length is len (the selector byte counted)",
+  "why": "forgetting to subtract the selector",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n02-union-payload-window/02",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "the payload starts right after the selector byte",
+  "fault": "the payload is read from the selector offset",
+  "why": "forgetting to skip the selector",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n02-union-payload-window/03",
+  "type": "CompatibleUnionA",
+  "ops": "decode",
+  "spec": "the decoded union value holds the payload read after the selector",
+  "fault": "the reader reads the payload at offset +2",
+  "why": "miscounted skip",
+  "file": "types/CompatibleUnionA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n02-union-payload-window/04",
+  "type": "CompatibleUnionABCA",
+  "ops": "decode",
+  "spec": "selector 3 payload is a ProgressiveVarTestStruct with its own offsets measured from the payload start",
+  "fault": "the third option's payload is validated with the selector byte inside the window",
+  "why": "forgetting to subtract the selector byte",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/01",
+  "type": "CompatibleUnionA",
+  "ops": "encode",
+  "spec": "the serialization starts with the selector byte of the option (1)",
+  "fault": "the selector byte written is 0",
+  "why": "zero-based selector",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/02",
+  "type": "CompatibleUnionA",
+  "ops": "encode",
+  "spec": "the serialization starts with the selector byte of the option (1)",
+  "fault": "the selector byte written is 129 (high bit set)",
+  "why": "flag bit mistaken for part of the selector",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/03",
+  "type": "CompatibleUnionA",
+  "ops": "encode",
+  "spec": "the payload follows the selector byte",
+  "fault": "the payload is written at pos+2",
+  "why": "miscounted selector width",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/04",
+  "type": "CompatibleUnionA",
+  "ops": "encode",
+  "spec": "the serialization length is 1 + payload length",
+  "fault": "the size pass reports payload length only",
+  "why": "selector byte forgotten in the size",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/05",
+  "type": "CompatibleUnionA",
+  "ops": "encode",
+  "spec": "a union value is valid only if its payload is valid",
+  "fault": "validity does not check the payload",
+  "why": "assuming the payload type invariant",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/06",
+  "type": "CompatibleUnionABCA",
+  "ops": "encode",
+  "spec": "option 2 is serialized with selector 2",
+  "fault": "option 2 is written with selector 3",
+  "why": "copy-paste of the selector constant",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n03-union-encode/07",
+  "type": "CompatibleUnionABCA",
+  "ops": "encode",
+  "spec": "option 4 is serialized with selector 4",
+  "fault": "option 4 is written with selector 1",
+  "why": "copy-paste of the first option's constant",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend"
+ },
+ {
+  "id": "n04-union-root/01",
+  "type": "CompatibleUnionA",
+  "ops": "root",
+  "spec": "root = mix_in_selector(root(value), selector) with selector 1",
+  "fault": "selector 0 is mixed in",
+  "why": "zero-based selector",
+  "file": "types/CompatibleUnionA_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "n04-union-root/02",
+  "type": "CompatibleUnionA",
+  "ops": "root",
+  "spec": "the root of a union mixes in the selector",
+  "fault": "no selector is mixed in (the payload root is returned)",
+  "why": "treating the union like its payload",
+  "file": "types/CompatibleUnionA_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "n04-union-root/03",
+  "type": "CompatibleUnionABCA",
+  "ops": "root",
+  "spec": "option 2 mixes in selector 2",
+  "fault": "option 2 mixes in selector 1",
+  "why": "copy-paste of the first option's constant",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "n04-union-root/04",
+  "type": "CompatibleUnionABCA",
+  "ops": "root",
+  "spec": "option 4 mixes in selector 4",
+  "fault": "option 4 mixes in selector 3",
+  "why": "off by one in the last constant",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "n04-union-root/05",
+  "type": "CompatibleUnionBC",
+  "ops": "root",
+  "spec": "mix_in_selector(root, selector) = hash(root || selector as a 32-byte chunk)",
+  "fault": "root and selector chunk are hashed in the wrong order",
+  "why": "operands swapped",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m01-zero-subtree-levels/01",
+  "type": "bitlist_513,VarTestStruct",
+  "ops": "root",
+  "spec": "padding chunks beyond the data are zero subtrees: the virtual node at height d+1 is zero_hash(d+1)",
+  "fault": "an empty right subtree of height d+1 uses the zero hash of height d (one level too low)",
+  "why": "zero-hash table indexed by depth minus one",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m01-zero-subtree-levels/02",
+  "type": "bitlist_513,VarTestStruct",
+  "ops": "root",
+  "spec": "zero_hash(1) = SHA-256(32 zero bytes || 32 zero bytes)",
+  "fault": "one word of the constant Z(1) is off by one",
+  "why": "typo in a precomputed table",
+  "file": "src/digest.bend"
+ },
+ {
+  "id": "m01-zero-subtree-levels/03",
+  "type": "bitlist_513,VarTestStruct",
+  "ops": "root",
+  "spec": "zero_hash(2) = SHA-256(zero_hash(1) || zero_hash(1))",
+  "fault": "one word of the constant Z(2) is off by one",
+  "why": "typo in a precomputed table",
+  "file": "src/digest.bend"
+ },
+ {
+  "id": "m01-zero-subtree-levels/04",
+  "type": "bitlist_513",
+  "ops": "root",
+  "spec": "zero_hash(0) is 32 zero bytes",
+  "fault": "Z(0) is not zero (first word 1)",
+  "why": "sentinel value",
+  "file": "src/digest.bend"
+ },
+ {
+  "id": "m01-zero-subtree-levels/05",
+  "type": "bitlist_513",
+  "ops": "root",
+  "spec": "a missing leaf is the zero chunk",
+  "fault": "an out-of-range leaf at the bottom level is Z(1) instead of Z(0)",
+  "why": "zero-hash table indexed from one",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/01",
+  "type": "vec_uint64_5",
+  "ops": "root",
+  "spec": "a Vector[uint64,5] has 2 chunks: depth 1",
+  "fault": "depth 0 (a single chunk: the second chunk is dropped)",
+  "why": "depth computed from the byte length of a packed value in words",
+  "file": "types/vec_uint64_5_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/02",
+  "type": "vec_uint64_5",
+  "ops": "root",
+  "spec": "a Vector[uint64,5] has 2 chunks: depth 1",
+  "fault": "depth 2 (padded to 4 chunks)",
+  "why": "next power of two applied twice",
+  "file": "types/vec_uint64_5_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/03",
+  "type": "vec_uint16_5",
+  "ops": "root",
+  "spec": "a Vector[uint16,5] is 10 bytes: one chunk, depth 0",
+  "fault": "depth 1 (a spurious zero sibling)",
+  "why": "depth from the element count 5 instead of the chunk count",
+  "file": "types/vec_uint16_5_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/04",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "List[uint16,1024] has chunk limit 1024*2/32 = 64: depth 6 regardless of the length",
+  "fault": "depth 5",
+  "why": "limit in bytes divided by 64",
+  "file": "types/list_uint16_1024_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/05",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "List[uint16,1024] has chunk limit 64: depth 6",
+  "fault": "depth 7",
+  "why": "limit rounded up to the next power of two twice",
+  "file": "types/list_uint16_1024_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/06",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "ByteList[256] has chunk limit 8: depth 3",
+  "fault": "depth 8 (the byte limit is used as the depth)",
+  "why": "byte limit mistaken for the depth",
+  "file": "types/bytelist_256_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/07",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "List[uint16,128] has chunk limit 8: depth 3",
+  "fault": "depth 2",
+  "why": "limit in elements divided by 64",
+  "file": "types/list_uint16_128_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/08",
+  "type": "FuluAttestation",
+  "ops": "root",
+  "spec": "Bitlist[131072] has chunk limit 512: depth 9",
+  "fault": "depth 8",
+  "why": "limit divided by 512 instead of 256",
+  "file": "types/Fulu_bitlist_131072_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m02-depth-from-limit/09",
+  "type": "FuluAttestation",
+  "ops": "root",
+  "spec": "Bitlist[131072] has chunk limit 512: depth 9",
+  "fault": "depth 10",
+  "why": "next power of two of the bit limit in bytes",
+  "file": "types/Fulu_bitlist_131072_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/01",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "ops": "root",
+  "spec": "pack: the chunk count is ceil(bytes/32)",
+  "fault": "chunk count computed as floor(bytes/32) + 1 style: adds 32 (an extra chunk when bytes is a multiple of 32)",
+  "why": "ceil written as (n + 32) / 32",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/02",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "ops": "root",
+  "spec": "pack: the chunk count is ceil(bytes/32)",
+  "fault": "chunk count computed as (n + 30) / 32 (drops the partial last chunk when bytes = 32k+1)",
+  "why": "off-by-one rounding constant",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/03",
+  "type": "vec_uint64_8",
+  "ops": "root",
+  "spec": "pack: chunk i holds bytes 32i..32i+31 (eight 32-bit words)",
+  "fault": "the chunk stride is four words (the leaf i starts at word 4i)",
+  "why": "chunk size taken as 16 bytes",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/04",
+  "type": "vec_uint64_8",
+  "ops": "root",
+  "spec": "mtree combines the left subtree (chunks 0..) with the right subtree (the next chunks)",
+  "fault": "the right subtree starts at the same chunk as the left one (start not advanced by half the width)",
+  "why": "forgetting to add the half width",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/05",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the last (partial) chunk is padded with zero bytes: bytes after the data in the last word are zero",
+  "fault": "the decoder's copy does not mask the last word (the bytes of the next field remain)",
+  "why": "copying whole words",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/06",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "ops": "decode",
+  "spec": "the last partial word keeps only its n mod 4 low bytes",
+  "fault": "the mask keeps one byte too many (rem+1)",
+  "why": "off by one in the mask width",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/07",
+  "type": "VarTestStruct,ComplexTestStruct",
+  "ops": "decode",
+  "spec": "a list at an unaligned byte offset is copied byte-exact",
+  "fault": "a copy from a source offset of 3 mod 4 uses the shift for 2 mod 4",
+  "why": "shift table typo in the unaligned copy dispatch",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m03-chunk-count-packing/08",
+  "type": "VarTestStruct",
+  "ops": "encode",
+  "spec": "a list at an unaligned byte offset is written byte-exact",
+  "fault": "the writer treats every destination as aligned",
+  "why": "alignment test replaced by the aligned fast path",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m04-mix-in-length/01",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "mix_in_length(root, length) = hash(root || length as 32-byte little-endian)",
+  "fault": "the length chunk is built without the byte swap",
+  "why": "big-endian word order confusion",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m04-mix-in-length/02",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "mix_in_length(root, length) = hash(root || length chunk): root first",
+  "fault": "operands swapped",
+  "why": "argument order",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m04-mix-in-length/03",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "the mixed length of a List[uint16] is the element count",
+  "fault": "the byte length is mixed in",
+  "why": "forgetting to divide by the element size",
+  "file": "types/list_uint16_1024_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m04-mix-in-length/04",
+  "type": "VarTestStruct",
+  "ops": "root",
+  "spec": "the mixed length of a List[uint16] is the element count",
+  "fault": "the count is divided by 4 (shift by the 32-bit word size)",
+  "why": "shift copied from a uint32 list",
+  "file": "types/list_uint16_1024_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m04-mix-in-length/05",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "the mixed length of a ByteList is the byte count",
+  "fault": "the byte count is halved",
+  "why": "shift copied from a uint16 list",
+  "file": "types/bytelist_256_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m04-mix-in-length/06",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "mix_in_length is applied once for the list",
+  "fault": "mix_count mixes the byte length unshifted whatever the element size",
+  "why": "the element size shift is forgotten",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "m05-container-root/01",
+  "type": "FixedTestStruct",
+  "ops": "root",
+  "spec": "a 3-field container pads to 4 leaves with a zero chunk",
+  "fault": "the fourth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk",
+  "why": "zero-hash table indexed from the wrong level",
+  "file": "types/FixedTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/02",
+  "type": "FixedTestStruct",
+  "ops": "root",
+  "spec": "field roots are merkleized in declaration order",
+  "fault": "leaves A and B are swapped",
+  "why": "reordered field hashes",
+  "file": "types/FixedTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/03",
+  "type": "FixedTestStruct",
+  "ops": "root",
+  "spec": "a 3-field container pads to 4 leaves: the tree is ((A,B),(C,0))",
+  "fault": "unbalanced tree (A, (B, C)) without padding",
+  "why": "merkleizing without padding to a power of two",
+  "file": "types/FixedTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/04",
+  "type": "FuluCheckpoint",
+  "ops": "root",
+  "spec": "a 2-field container root is hash(root(epoch), root(root))",
+  "fault": "the two field roots are swapped",
+  "why": "reordered field hashes",
+  "file": "types/FuluCheckpoint_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/05",
+  "type": "SingleFieldTestStruct",
+  "ops": "root",
+  "spec": "a 1-field container has chunk_count 1: its root is the field root itself (no hashing)",
+  "fault": "the single field root is hashed with a zero chunk",
+  "why": "padding to two leaves",
+  "file": "types/SingleFieldTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/06",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "a 7-field container pads to 8 leaves with a zero chunk",
+  "fault": "the eighth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk",
+  "why": "zero-hash table indexed from the wrong level",
+  "file": "types/ComplexTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/07",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "field roots are merkleized in declaration order",
+  "fault": "leaves E and F are swapped",
+  "why": "reordered field hashes",
+  "file": "types/ComplexTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/08",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "Vector[FixedTestStruct,4] has 4 leaves: depth 2",
+  "fault": "depth 1 (only the first two elements are hashed)",
+  "why": "depth = log2(N) - 1",
+  "file": "types/vec_FixedTestStruct_4_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m05-container-root/09",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "Vector[FixedTestStruct,4] has 4 leaves: depth 2",
+  "fault": "depth 3 (padded to 8 leaves)",
+  "why": "depth = log2(N) + 1",
+  "file": "types/vec_FixedTestStruct_4_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "m06-vector-composite/01",
+  "type": "ComplexTestStruct",
+  "ops": "root",
+  "spec": "Vector[VarTestStruct,2] has 2 leaves: depth 1",
+  "fault": "depth 2",
+  "why": "depth = N",
+  "file": "types/vec_VarTestStruct_2_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p01-progressive-growth/01",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "merkleize_progressive: subtree sizes grow by a factor 4 (1, 4, 16, ...)",
+  "fault": "the subtree depth grows by 1 per level (sizes 1, 2, 4, ...: binary growth)",
+  "why": "depth increment 1 instead of 2",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p01-progressive-growth/02",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "merkleize_progressive: subtree sizes grow by a factor 4",
+  "fault": "the depth grows by 3 per level (factor 8)",
+  "why": "depth increment 3",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p01-progressive-growth/03",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "merkleize_progressive starts with num_leaves = 1 (the first subtree has one chunk)",
+  "fault": "the first subtree has two chunks (start depth 1)",
+  "why": "num_leaves starts at 2",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p01-progressive-growth/04",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "merkleize_progressive(chunks) = hash(merkleize_progressive(rest), merkleize(first)): the rest is the LEFT child",
+  "fault": "the two children are swapped (subtree left, rest right)",
+  "why": "operand order of the single hash",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p01-progressive-growth/05",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "merkleize_progressive of no chunks is the zero chunk",
+  "fault": "the empty progressive tree is not special-cased (treated as one zero leaf, hashed)",
+  "why": "starting the recursion without the emptiness test",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p01-progressive-growth/06",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "the recursion on the rest continues while chunks remain",
+  "fault": "fuel bound is too small: only n/2 + 1 steps",
+  "why": "wrong termination bound",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p02-progressive-length-mix/01",
+  "type": "proglist_uint16",
+  "ops": "root",
+  "spec": "progressive list root = mix_in_length(merkleize_progressive(chunks), element count)",
+  "fault": "the byte length is mixed in",
+  "why": "shift omitted",
+  "file": "types/proglist_uint16_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p02-progressive-length-mix/02",
+  "type": "proglist_uint64",
+  "ops": "root",
+  "spec": "progressive list of uint64 mixes in the element count (bytes / 8)",
+  "fault": "shift 2 (bytes / 4)",
+  "why": "shift copied from uint32",
+  "file": "types/proglist_uint64_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p02-progressive-length-mix/03",
+  "type": "progbitlist",
+  "ops": "root",
+  "spec": "progressive bitlist: chunks exclude the delimiter",
+  "fault": "the delimiter byte is chunked",
+  "why": "chunking the serialization",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p02-progressive-length-mix/04",
+  "type": "progbitlist,ProgressiveBitsStruct,ProgressiveVarTestStruct",
+  "ops": "decode",
+  "spec": "a ProgressiveBitlist value is non-empty (it has at least the delimiter byte)",
+  "fault": "the empty input is accepted (the length test is <= instead of <)",
+  "why": "bound error in the emptiness test",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "p03-progressive-container/01",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "root",
+  "spec": "mix_in_active_fields: the active_fields [1,0,1,0,1] pack little-endian-bit-first into 0b10101 = 21",
+  "fault": "the bits are packed most-significant first (168)",
+  "why": "bit order of the packed Bitvector",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/02",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "root",
+  "spec": "active_fields marks slots 0, 2 and 4 as present",
+  "fault": "the active_fields chunk has the three fields densely packed (0b111 = 7)",
+  "why": "ignoring the inactive slots when building the bitvector",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/03",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "root",
+  "spec": "inactive slots contribute a zero chunk (EIP-7495): field B is at slot 2, C at slot 4",
+  "fault": "inactive slots are omitted: the field roots are packed densely (B right after A)",
+  "why": "following the prose that lists only the field roots",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/04",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "root",
+  "spec": "merkleize_progressive(field roots): hash(rest, first chunk), the first chunk on the right",
+  "fault": "the first field root is on the left",
+  "why": "operand order of the single hash",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/05",
+  "type": "ProgressiveVarTestStruct",
+  "ops": "root",
+  "spec": "the mixed-in active_fields is a 32-byte chunk",
+  "fault": "the active_fields is not mixed in (the progressive root is returned)",
+  "why": "forgetting mix_in_active_fields",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/06",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "ops": "root",
+  "spec": "active_fields [1] = 0b1: mix_in_active_fields(root, 1)",
+  "fault": "active_fields chunk is 0",
+  "why": "off-by-one in the bit packing",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/07",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "ops": "root",
+  "spec": "merkleize_progressive([A]) = hash(zero, A)",
+  "fault": "the one-field progressive tree is the field root itself (merkleize, not merkleize_progressive)",
+  "why": "ProgressiveContainer treated like a Container",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "p03-progressive-container/08",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "ops": "root",
+  "spec": "merkleize_progressive([A]) = hash(rest=zero, first=A)",
+  "fault": "children swapped: hash(A, zero)",
+  "why": "operand order",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/01",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "a list of variable-size elements: the first offset must be a multiple of 4 (offset area is whole 4-byte slots)",
+  "fault": "the first-offset alignment test is dropped",
+  "why": "n = first/4 truncates, so a misaligned first offset looks fine",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/02",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "the first offset must not exceed the buffer",
+  "fault": "the first-offset range test is dropped",
+  "why": "forgetting the range check on the first offset",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/03",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "a non-empty list's first offset is at least 4 (at least one offset slot)",
+  "fault": "the lower bound on the first offset is dropped (first offset 0 gives count 0 with non-empty input)",
+  "why": "count = first/4 can be 0",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/04",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "every element offset is validated (the last pair too)",
+  "fault": "the validation loop runs one iteration too few (the last element is not validated)",
+  "why": "off-by-one in the loop bound",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/05",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "offsets must be non-decreasing",
+  "fault": "the non-decreasing test is dropped",
+  "why": "forgetting the order check",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/06",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "offsets must lie within the buffer",
+  "fault": "the upper-bound test is dropped",
+  "why": "forgetting the range check",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/07",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "equal consecutive offsets give an empty element, which is legal",
+  "fault": "offsets must strictly increase",
+  "why": "< instead of <=",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/08",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "each element's window ends at the next offset",
+  "fault": "the element window length is the end offset b instead of b - a",
+  "why": "forgetting the next offset",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/09",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "the last element ends at the end of the buffer",
+  "fault": "the last element's end is len-1 in the validation walk",
+  "why": "end index off by one",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q01-composite-list-offsets/10",
+  "type": "ProgressiveTestStruct",
+  "ops": "decode",
+  "spec": "the element count is first_offset / 4",
+  "fault": "the reader's count is first/4 + 1 (storage and count)",
+  "why": "off by one in the count derived from the first offset",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/01",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "a List[ConsolidationRequest, 2] has at most 2 elements",
+  "fault": "the count limit is 3",
+  "why": "limit+1",
+  "file": "types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/02",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "a List[ConsolidationRequest, 2] may have exactly 2 elements",
+  "fault": "the count limit is strict",
+  "why": "< instead of <=",
+  "file": "types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/03",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "the scope of a list of 116-byte elements is a multiple of 116",
+  "fault": "the divisibility test is dropped",
+  "why": "the count is len/116 so the remainder looks harmless",
+  "file": "types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/04",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "ConsolidationRequest is 116 bytes",
+  "fault": "the element size constant is 115",
+  "why": "size constant off by one (20+48+48 = 116)",
+  "file": "types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/05",
+  "type": "FuluExecutionRequests",
+  "ops": "encode",
+  "spec": "serializing a List[ConsolidationRequest,2] with 3 elements is invalid",
+  "fault": "the validity bound is 3",
+  "why": "limit+1",
+  "file": "types/Fulu_list_ConsolidationRequest_2_encode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/06",
+  "type": "FuluExecutionRequests",
+  "ops": "root",
+  "spec": "List[ConsolidationRequest,2] has chunk limit 2: depth 1",
+  "fault": "depth 0",
+  "why": "depth = log2(limit) - 1",
+  "file": "types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/07",
+  "type": "FuluExecutionRequests",
+  "ops": "root",
+  "spec": "the list root mixes in the element count",
+  "fault": "the count mixed in is n+1",
+  "why": "length counted with a sentinel",
+  "file": "types/Fulu_list_ConsolidationRequest_2_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/08",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "the first offset of ExecutionRequests equals its fixed part (12)",
+  "fault": "the first offset test is is_le(12, o0)",
+  "why": "weak first-offset test",
+  "file": "types/FuluExecutionRequests_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/09",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "offsets must be non-decreasing",
+  "fault": "the order check of the second offset is dropped",
+  "why": "forgetting monotonicity",
+  "file": "types/FuluExecutionRequests_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q02-fixed-composite-list/10",
+  "type": "FuluExecutionRequests",
+  "ops": "decode",
+  "spec": "offsets must lie within the buffer",
+  "fault": "the bound of the last offset is dropped",
+  "why": "forgetting range check",
+  "file": "types/FuluExecutionRequests_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f01-bytevector-root/01",
+  "type": "FuluBytes48",
+  "ops": "root",
+  "spec": "pack: the last chunk is right-padded with zero bytes (Bytes48 = 1.5 chunks)",
+  "fault": "the padding of the partial chunk starts with a 1 byte (PKCS-style padding)",
+  "why": "padding scheme confusion",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f01-bytevector-root/02",
+  "type": "FuluBytes48",
+  "ops": "root",
+  "spec": "Bytes48 root = hash(chunk0, chunk1) in order",
+  "fault": "the two chunks are hashed in swapped order",
+  "why": "operand order",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f01-bytevector-root/03",
+  "type": "FuluBytes96",
+  "ops": "root",
+  "spec": "3 chunks pad to 4 leaves with the zero chunk (Z(0))",
+  "fault": "the padding leaf is the hash of two zero chunks (Z(1))",
+  "why": "zero-hash table indexed from the wrong level",
+  "file": "types/FuluBytes96_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f01-bytevector-root/04",
+  "type": "FuluBytes96",
+  "ops": "root",
+  "spec": "3 chunks pad to 4 leaves: the tree is ((c0,c1),(c2,zero))",
+  "fault": "no padding: (c0,c1) hashed with c2 directly",
+  "why": "merkleizing the three chunks without padding to a power of two",
+  "file": "types/FuluBytes96_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f02-hash-message-length/01",
+  "type": "FuluBytes48",
+  "ops": "root",
+  "spec": "every Merkle node hashes the 64-byte concatenation of its two children",
+  "fault": "the node message length parameter is 32 (only the left child hashed)",
+  "why": "confusing chunk size and message size",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f02-hash-message-length/02",
+  "type": "FixedTestStruct",
+  "ops": "root",
+  "spec": "every Merkle node hashes the 64-byte concatenation of its two children",
+  "fault": "the node message length parameter is 63",
+  "why": "off-by-one in the message size",
+  "file": "types/FixedTestStruct_hashtreeroot_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/01",
+  "type": "FuluAttestation",
+  "ops": "decode",
+  "spec": "aggregation_bits is a Bitlist[131072]",
+  "fault": "the limit is 131073",
+  "why": "limit+1",
+  "file": "types/Fulu_bitlist_131072_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/02",
+  "type": "FuluAttestation",
+  "ops": "decode",
+  "spec": "aggregation_bits may have exactly 131072 bits",
+  "fault": "the limit is 131071",
+  "why": "strict bound",
+  "file": "types/Fulu_bitlist_131072_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/03",
+  "type": "FuluAttestation",
+  "ops": "decode",
+  "spec": "aggregation_bits has a limit",
+  "fault": "the bitlist is treated as unbounded (big)",
+  "why": "the limit looks like a 17-bit field the data can never exceed",
+  "file": "types/Fulu_bitlist_131072_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/04",
+  "type": "FuluAttestation",
+  "ops": "encode",
+  "spec": "serializing a Bitlist[131072] with more bits is invalid",
+  "fault": "the validity limit is 131073",
+  "why": "limit+1",
+  "file": "types/Fulu_bitlist_131072_encode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/05",
+  "type": "FuluAttestation",
+  "ops": "decode",
+  "spec": "Attestation's first offset equals the fixed part size (236)",
+  "fault": "any first offset at least 236 is accepted",
+  "why": "weak first-offset test",
+  "file": "types/FuluAttestation_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/06",
+  "type": "FuluAttestation",
+  "ops": "decode",
+  "spec": "committee_bits is a Bitvector[64]: exactly 8 bytes",
+  "fault": "any length at least 8 is accepted",
+  "why": "scope treated as a prefix",
+  "file": "types/Fulu_bitvector_64_decode_ssz_generated.bend"
+ },
+ {
+  "id": "f03-attestation-bitlist/07",
+  "type": "FuluAttestation",
+  "ops": "root",
+  "spec": "aggregation_bits root mixes in the number of bits, not bytes",
+  "fault": "the length mixed in is the byte count (bits_nbytes)",
+  "why": "byte count used as the length",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/01",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "a Vector[T,2] of variable-size elements has exactly 2 offsets: the first offset is 8",
+  "fault": "the first offset may be any value at least 8 (more elements than N)",
+  "why": "treating the vector like a list whose count comes from the first offset",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/02",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "a Vector[T,2] of variable-size elements has exactly 2 offsets: the first offset is 8",
+  "fault": "the first offset may be any value at most 8 (fewer elements than N)",
+  "why": "treating the vector like a list whose count comes from the first offset",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/03",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "an empty scope is not a Vector[T,2] (a vector has no empty value)",
+  "fault": "the empty scope is accepted as an empty list would be",
+  "why": "list handling reused for a vector",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/04",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "designed control: with first == 8 required, the alignment test of the first offset is implied",
+  "fault": "the alignment test (first mod 4 == 0) is dropped (expected equivalent: first == 8 already implies it)",
+  "why": "redundant check removed by a refactoring",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/05",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "designed control: with first == 8 required, the bound first <= len is NOT implied (len may be < 8)",
+  "fault": "the bound first <= len is dropped",
+  "why": "redundant-looking check removed",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/06",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "each element's window ends at the next offset",
+  "fault": "the element window length is the end offset b instead of b - a",
+  "why": "forgetting the next offset",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "q03-vector-of-variable/07",
+  "type": "ComplexTestStruct",
+  "ops": "decode",
+  "spec": "offsets must be in order and within the buffer",
+  "fault": "the order test between consecutive offsets is dropped",
+  "why": "forgetting monotonicity",
+  "file": "types/vec_VarTestStruct_2_decode_ssz_generated.bend"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/06",
+  "type": "bitlist_5",
+  "ops": "decode",
+  "spec": "the delimiter is the highest set bit of the last byte (last byte 0b10 puts it at bit 1)",
+  "fault": "the lowest threshold of the high-bit table is 3: a last byte of 2 puts the delimiter at bit 0",
+  "why": "threshold typo in the high-bit table",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "z01-designed-equivalent/01",
+  "type": "uint16",
+  "ops": "encode",
+  "spec": "designed control: encoder buffer capacity is not part of the contract (out_at(0n) holds 1 word, 2 bytes need 1 word)",
+  "fault": "the output buffer is allocated with depth 1 instead of 0 (capacity only)",
+  "why": "over-allocation",
+  "file": "types/uint16_encode_ssz_generated.bend"
+ },
+ {
+  "id": "z01-designed-equivalent/02",
+  "type": "bitlist_5",
+  "ops": "root",
+  "spec": "designed control: the seg parameter is only a scratch-segment index",
+  "fault": "unused parameter replaced",
+  "why": "dead parameter change",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "s01-size-overflow/01",
+  "type": "bitlist_513,progbitlist,FuluAttestation,FuluPendingAttestation",
+  "ops": "root,encode",
+  "spec": "the byte count of a Bitlist of n bits is ceil(n/8) for every n (no 32-bit wrap)",
+  "fault": "ceil(n/8) is computed as (n + 7) >> 3 in 32-bit arithmetic (wraps above 2^32 - 8)",
+  "why": "the textbook formula, overflowing for huge bit counts",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "s01-size-overflow/02",
+  "type": "progbitlist",
+  "ops": "decode",
+  "spec": "a Bitlist without limit still has a bit count that fits 32 bits (8 * (len - 1) + position < 2^32)",
+  "fault": "the unbounded Bitlist decoder drops the 2^29-byte guard (bit count may wrap)",
+  "why": "no limit means no check",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "s01-size-overflow/03",
+  "type": "VarTestStruct,bitlist_513",
+  "ops": "root",
+  "spec": "pack: the chunk count is ceil(bytes/32) for every byte count below 2^32",
+  "fault": "the chunk count is computed in 32-bit arithmetic ((n + 31) wraps above 2^32 - 32)",
+  "why": "the formula without the widening to Nat",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "s01-size-overflow/04",
+  "type": "VarTestStruct,progbitlist",
+  "ops": "encode",
+  "spec": "a collection whose storage cannot hold its length is invalid (no out-of-range access, no wrapped size)",
+  "fault": "the size pass of a packed collection does not check that the storage holds the length",
+  "why": "trusting the length field",
+  "file": "src/obj.bend"
+ },
+ {
+  "id": "s01-size-overflow/05",
+  "type": "progbitlist,FuluAttestation",
+  "ops": "encode",
+  "spec": "a Bitlist whose storage cannot hold its bits is invalid",
+  "fault": "the bit-list size pass does not check that the storage holds the bits",
+  "why": "trusting the length field",
+  "file": "src/obj.bend"
+ }
+]

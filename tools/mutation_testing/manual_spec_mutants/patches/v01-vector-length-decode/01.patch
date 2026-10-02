@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v01-vector-length-decode/01
+# type: vec_uint16_5
+# ops: decode
+# spec: a Vector[T,N] value has exactly N elements (N*size bytes)
+# fault: vector validator accepts any length at most 10 bytes
+# why: bound instead of equality
+# file: types/vec_uint16_5_decode_ssz_generated.bend
+--- a/types/vec_uint16_5_decode_ssz_generated.bend
++++ b/types/vec_uint16_5_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def v5_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_u16_ok_len(U32.is_eq(len, 10), buf, off)
++def v5_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v5_u16_ok_len(U32.is_le(len, 10), buf, off)
+ 

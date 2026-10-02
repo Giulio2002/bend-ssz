@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m01-zero-subtree-levels/04
+# type: bitlist_513
+# ops: root
+# spec: zero_hash(0) is 32 zero bytes
+# fault: Z(0) is not zero (first word 1)
+# why: sentinel value
+# file: src/digest.bend
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -106,3 +106,3 @@
+   match k:
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++    case 0n: D{1, 0, 0, 0, 0, 0, 0, 0}
+     case 1n+k1:

@@ -37,7 +37,7 @@ from codegen.proofs.facades import object_api_coverage_gate as AG  # noqa: E402
 
 OPS = {
     'encode_ssz': ['encode_eval', 'encode_spec', 'encoded_size', 'roundtrip', 'serialize_valid'],
-    'decode_ssz': ['ok_eval', 'decode_accept', 'decode_spec', 'decode_unique', 'decode_reject', 'decode_none',
+    'decode_ssz': ['decode_first_offset', 'ok_eval', 'decode_accept', 'decode_spec', 'decode_unique', 'decode_reject', 'decode_none',
                    'reject_short', 'reject_long', 'decode_tree', 'decode_input', 'decode_offsets'],
     'hashtreeroot': ['root'],
 }

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv02-bitvector-padding-decode/06
+# type: bitvector_5
+# ops: decode
+# spec: the padding bits are those above the used bits (bits r..7)
+# fault: the padding test is inverted: it requires the padding to be non-zero
+# why: ~mask vs mask confusion
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1121,3 +1121,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0))
++  (buf, Bool.not(U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0)))
+ 

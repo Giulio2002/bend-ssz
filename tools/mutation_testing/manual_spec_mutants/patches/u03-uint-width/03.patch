@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/03
+# type: uint256
+# ops: decode
+# spec: deserialize requires exactly 32 bytes for uint256
+# fault: the uint256 length check is removed
+# why: the fixed-size path trusts the caller's scope
+# file: types/uint256_decode_ssz_generated.bend
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -51,3 +51,3 @@
+ 
+-def u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u256_ok_len(U32.is_eq(len, 32), buf, off)
++def u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u256_ok_len(U32.is_le(0, len), buf, off)
+ 

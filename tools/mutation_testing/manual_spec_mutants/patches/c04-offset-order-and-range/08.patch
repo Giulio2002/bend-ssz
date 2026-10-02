@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/08
+# type: ComplexTestStruct
+# ops: decode
+# spec: a variable part ends where the next offset starts
+# fault: the ByteList part is validated with the window up to the end of the buffer
+# why: forgetting to subtract the next offset
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -95,3 +95,3 @@
+   match ok:
+-    case True{}: ComplexTestStruct_v5(off, len, o0, o1, o2, o3, bytelist_256_r.bl256_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: ComplexTestStruct_v5(off, len, o0, o1, o2, o3, bytelist_256_r.bl256_ok(buf, (off + o1 : U32), (len - o1 : U32)))
+     case False{}: (buf, False{})

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl03-bitlist-encode-delimiter/02
+# type: bitlist_8
+# ops: encode
+# spec: the delimiter is at bit len%8 of byte len/8 (a new byte when len%8==0)
+# fault: the delimiter is placed at the byte of ceil(len/8)
+# why: ceil vs floor
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -981,3 +981,3 @@
+   (out, w) = pair
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (w8(out, (p + U32.shrn((k + 7 : U32), 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
+ 

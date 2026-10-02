@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m05-container-root/01
+# type: FixedTestStruct
+# ops: root
+# spec: a 3-field container pads to 4 leaves with a zero chunk
+# fault: the fourth leaf is the hash of two zero chunks (Z(1)) instead of the zero chunk
+# why: zero-hash table indexed from the wrong level
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_f_C) = pair
+-  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero())))
++  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zconst(1n))))
+ 

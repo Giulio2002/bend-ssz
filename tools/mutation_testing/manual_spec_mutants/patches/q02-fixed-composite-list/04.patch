@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q02-fixed-composite-list/04
+# type: FuluExecutionRequests
+# ops: decode
+# spec: ConsolidationRequest is 116 bytes
+# fault: the element size constant is 115
+# why: size constant off by one (20+48+48 = 116)
+# file: types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+--- a/types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
++++ b/types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+ 
+-def l2_ConsolidationRequest_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 116) * 116 : U32)), U32.is_le(U32.div(len, 116), 2)))
++def l2_ConsolidationRequest_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 115) * 115 : U32)), U32.is_le(U32.div(len, 116), 2)))
+ 

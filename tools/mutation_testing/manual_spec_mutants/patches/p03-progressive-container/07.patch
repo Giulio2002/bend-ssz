@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p03-progressive-container/07
+# type: ProgressiveSingleFieldContainerTestStruct
+# ops: root
+# spec: merkleize_progressive([A]) = hash(zero, A)
+# fault: the one-field progressive tree is the field root itself (merkleize, not merkleize_progressive)
+# why: ProgressiveContainer treated like a Container
+# file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+--- a/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleFieldContainerTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, d_f_A, 1))
+ 

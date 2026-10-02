@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u05-uint-root-chunk/04
+# type: uint256
+# ops: root
+# spec: hash_tree_root(uint256) is its 32 little-endian bytes (no hashing of a single chunk)
+# fault: the top limb of the 256-bit chunk is not byte-swapped
+# why: the last of eight identical expressions was edited by hand
+# file: types/uint256_hashtreeroot_generated.bend
+--- a/types/uint256_hashtreeroot_generated.bend
++++ b/types/uint256_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
++    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), w7})
+ 

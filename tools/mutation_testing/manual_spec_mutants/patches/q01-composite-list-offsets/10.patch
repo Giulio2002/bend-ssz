@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/10
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the element count is first_offset / 4
+# fault: the reader's count is first/4 + 1 (storage and count)
+# why: off by one in the count derived from the first offset
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -47,3 +47,3 @@
+   (buf, +first) = pair
+-  pl_VarTestStruct_rv_fin(U32.shrn(first, 2n), pl_VarTestStruct_rv(U32.to_nat((U32.shrn(first, 2n) - 1 : U32)), 0, off, len, U32.shrn(first, 2n), proglist_VarTestStruct_d.pl_VarTestStruct_fill(proglist_VarTestStruct_d.pl_VarTestStruct_cap(U32.shrn(first, 2n))), pl_VarTestStruct_elem(off, pl_VarTestStruct_win_start(off, len, 0, U32.shrn(first, 2n), B.read32(buf, off)))))
++  pl_VarTestStruct_rv_fin((U32.shrn(first, 2n) + 1 : U32), pl_VarTestStruct_rv(U32.to_nat((U32.shrn(first, 2n) - 1 : U32)), 0, off, len, U32.shrn(first, 2n), proglist_VarTestStruct_d.pl_VarTestStruct_fill(proglist_VarTestStruct_d.pl_VarTestStruct_cap(U32.shrn(first, 2n))), pl_VarTestStruct_elem(off, pl_VarTestStruct_win_start(off, len, 0, U32.shrn(first, 2n), B.read32(buf, off)))))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl02-bitlist-limit-decode/04
+# type: bitlist_5
+# ops: decode
+# spec: the Bitlist limit is enforced
+# fault: the limit check is ignored (always true)
+# why: relying on the caller's size cap
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1134,3 +1134,3 @@
+   (buf, bsel(U32.is_eq(v, 0), False{},
+-    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
++    bsel(big, U32.is_lt((len - 1 : U32), 536870912), True{})))
+ 

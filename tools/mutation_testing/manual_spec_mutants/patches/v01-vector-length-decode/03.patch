@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v01-vector-length-decode/03
+# type: vec_uint16_5
+# ops: decode
+# spec: Vector[uint16, 5] is 10 bytes
+# fault: the reader copies only 8 bytes (a 4-element vector), the fifth element is lost
+# why: element count computed as N-1
+# file: types/vec_uint16_5_decode_ssz_generated.bend
+--- a/types/vec_uint16_5_decode_ssz_generated.bend
++++ b/types/vec_uint16_5_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v5_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 10, Array.new(U32, 4n, 0))
++def v5_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
+ 

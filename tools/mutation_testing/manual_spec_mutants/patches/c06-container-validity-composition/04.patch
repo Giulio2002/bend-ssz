@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c06-container-validity-composition/04
+# type: SingleFieldTestStruct
+# ops: encode
+# spec: a container value is valid only if its field is valid (uint8 range)
+# fault: the field validity is not checked
+# why: assuming the single field is in range
+# file: types/SingleFieldTestStruct_encode_ssz_generated.bend
+--- a/types/SingleFieldTestStruct_encode_ssz_generated.bend
++++ b/types/SingleFieldTestStruct_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   match o:
+-    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: uint8_e.u8_valid(f_A)
++    case SingleFieldTestStruct_d.SingleFieldTestStruct{+f_A}: True{}
+ 

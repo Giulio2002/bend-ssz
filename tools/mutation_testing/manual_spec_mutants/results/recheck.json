@@ -1,0 +1,490 @@
+[
+ {
+  "id": "bl04-bitlist-size/01",
+  "facade": "proofs/api/bitlist_8_encode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 4.9,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/01",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.1,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/02",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.5,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/03",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.7,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/04",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.9,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/05",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.9,
+  "msg": ""
+ },
+ {
+  "id": "c03-first-offset-decode/06",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 12.1,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/01",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.4,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/02",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.9,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/03",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 12.4,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/04",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 13.9,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/05",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 13.4,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/06",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 12.0,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/07",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.9,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/08",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.9,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/09",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.2,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/10",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.7,
+  "msg": ""
+ },
+ {
+  "id": "c04-offset-order-and-range/11",
+  "facade": "proofs/api/ProgressiveVarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.9,
+  "msg": ""
+ },
+ {
+  "id": "c05-offset-encode/04",
+  "facade": "proofs/api/VarTestStruct_encode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.7,
+  "msg": ""
+ },
+ {
+  "id": "c06-container-validity-composition/01",
+  "facade": "proofs/api/VarTestStruct_encode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 11.1,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/01",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.7,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/02",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.5,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/03",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.3,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/04",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.7,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/05",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.5,
+  "msg": ""
+ },
+ {
+  "id": "l01-list-limit-decode/06",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.4,
+  "msg": ""
+ },
+ {
+  "id": "l02-list-element-alignment/01",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.8,
+  "msg": ""
+ },
+ {
+  "id": "l04-list-tail-bytes/01",
+  "facade": "proofs/api/VarTestStruct_encode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.3,
+  "msg": ""
+ },
+ {
+  "id": "l04-list-tail-bytes/02",
+  "facade": "proofs/api/VarTestStruct_encode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.3,
+  "msg": ""
+ },
+ {
+  "id": "m03-chunk-count-packing/06",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.3,
+  "msg": ""
+ },
+ {
+  "id": "m03-chunk-count-packing/07",
+  "facade": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.3,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/01",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.5,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/02",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.7,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/03",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.2,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/04",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.8,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/05",
+  "facade": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.8,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/06",
+  "facade": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.4,
+  "msg": ""
+ },
+ {
+  "id": "n01-union-selector-decode/07",
+  "facade": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.1,
+  "msg": ""
+ },
+ {
+  "id": "n02-union-payload-window/01",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.6,
+  "msg": ""
+ },
+ {
+  "id": "n02-union-payload-window/02",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.1,
+  "msg": ""
+ },
+ {
+  "id": "n02-union-payload-window/03",
+  "facade": "proofs/api/CompatibleUnionA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.1,
+  "msg": ""
+ },
+ {
+  "id": "n02-union-payload-window/04",
+  "facade": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.2,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/01",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.2,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/02",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 8.9,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/03",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.0,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/04",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.4,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/07",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.1,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/09",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.1,
+  "msg": ""
+ },
+ {
+  "id": "q01-composite-list-offsets/10",
+  "facade": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.4,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/01",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.6,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/02",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.6,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/03",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.9,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/04",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.4,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/08",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.8,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/09",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 7.4,
+  "msg": ""
+ },
+ {
+  "id": "q02-fixed-composite-list/10",
+  "facade": "proofs/api/FuluExecutionRequests_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 6.4,
+  "msg": ""
+ },
+ {
+  "id": "q03-vector-of-variable/01",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.4,
+  "msg": ""
+ },
+ {
+  "id": "q03-vector-of-variable/02",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.6,
+  "msg": ""
+ },
+ {
+  "id": "q03-vector-of-variable/03",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.8,
+  "msg": ""
+ },
+ {
+  "id": "q03-vector-of-variable/04",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 10.3,
+  "msg": ""
+ },
+ {
+  "id": "q03-vector-of-variable/05",
+  "facade": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+  "pinned_verdict": "STACK",
+  "laws": [],
+  "secs": 9.8,
+  "msg": ""
+ }
+]

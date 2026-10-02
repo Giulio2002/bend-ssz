@@ -1,0 +1,330 @@
+[
+ {
+  "id": "c03-first-offset-decode/04",
+  "inputs": 3308,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c03-first-offset-decode/05",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 36,
+  "examples": [
+   "B.len1_rand | u32@2=73 | base False mutant True",
+   "B.len2_rand | u32@2=73 | base False mutant True",
+   "B.len2_rand | u32@2=75 | base False mutant True"
+  ],
+  "B3": "DISTINGUISHED"
+ },
+ {
+  "id": "b01-boolean-decode/03",
+  "inputs": 15,
+  "bases": 2,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "bl06-bitlist-root/01",
+  "inputs": 134,
+  "bases": 17,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c03-first-offset-decode/06",
+  "inputs": 17617,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c04-offset-order-and-range/02",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c04-offset-order-and-range/05",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "f03-attestation-bitlist/06",
+  "inputs": 8331,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "m03-chunk-count-packing/02",
+  "inputs": 2303,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "n01-union-selector-decode/05",
+  "inputs": 592,
+  "bases": 18,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "p01-progressive-growth/06",
+  "inputs": 1295,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/01",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/03",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/06",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q02-fixed-composite-list/09",
+  "inputs": 9672,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q03-vector-of-variable/01",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q03-vector-of-variable/03",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 39,
+  "examples": [
+   "zero | u32@67=100 | base False mutant timeout",
+   "rand0 | u32@67=109 | base False mutant timeout",
+   "rand2 | u32@67=112 | base False mutant timeout"
+  ],
+  "B3": "DISTINGUISHED"
+ },
+ {
+  "id": "q03-vector-of-variable/05",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "s01-size-overflow/01",
+  "inputs": 7113,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "s01-size-overflow/03",
+  "inputs": 1964,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "u02-uint-decode/05",
+  "inputs": 2012,
+  "bases": 40,
+  "diffs": 532,
+  "examples": [
+   "zero | byte@6=01 | base True mutant False",
+   "zero | byte@6=80 | base True mutant False",
+   "zero | byte@6=ff | base True mutant False"
+  ],
+  "B3": "DISTINGUISHED"
+ },
+ {
+  "id": "c04-offset-order-and-range/01",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c04-offset-order-and-range/04",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "c04-offset-order-and-range/06",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "m03-chunk-count-packing/01",
+  "inputs": 2303,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "n01-union-selector-decode/04",
+  "inputs": 69,
+  "bases": 6,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "n02-union-payload-window/02",
+  "inputs": 69,
+  "bases": 6,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/02",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/05",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q01-composite-list-offsets/07",
+  "inputs": 12783,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q02-fixed-composite-list/10",
+  "inputs": 9672,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q03-vector-of-variable/02",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q03-vector-of-variable/04",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "q03-vector-of-variable/07",
+  "inputs": 12043,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "s01-size-overflow/02",
+  "inputs": 1479,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "u02-uint-decode/01",
+  "inputs": 1966,
+  "bases": 40,
+  "diffs": 816,
+  "examples": [
+   "zero | orig | base True mutant True",
+   "zero | app4 | base True mutant True",
+   "zero | byte@0=01 | base True mutant True"
+  ],
+  "B3": "DISTINGUISHED"
+ },
+ {
+  "id": "z01-designed-equivalent/02",
+  "inputs": 134,
+  "bases": 17,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "p02-progressive-length-mix/04",
+  "inputs": 11106,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ },
+ {
+  "id": "bl01-bitlist-delimiter-decode/02",
+  "inputs": 4544,
+  "bases": 40,
+  "diffs": 0,
+  "examples": [],
+  "B3": "NO-DIFFERENCE"
+ }
+]

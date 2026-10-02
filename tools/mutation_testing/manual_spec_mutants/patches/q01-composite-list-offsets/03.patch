@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT q01-composite-list-offsets/03
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: a non-empty list's first offset is at least 4 (at least one offset slot)
+# fault: the lower bound on the first offset is dropped (first offset 0 gives count 0 with non-empty input)
+# why: count = first/4 can be 0
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
++  pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), True{}), buf, off, len, first)
+ 

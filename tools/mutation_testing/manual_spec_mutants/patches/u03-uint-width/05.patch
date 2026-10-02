@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u03-uint-width/05
+# type: uint8
+# ops: decode
+# spec: deserialize requires exactly one byte for uint8
+# fault: the uint8 length check accepts two bytes (a uint16 slip)
+# why: wrong width constant
+# file: types/uint8_decode_ssz_generated.bend
+--- a/types/uint8_decode_ssz_generated.bend
++++ b/types/uint8_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u8_ok_len(U32.is_eq(len, 1), buf, off)
++def u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u8_ok_len(U32.is_le(len, 2), buf, off)
+ 

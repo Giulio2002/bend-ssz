@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f02-hash-message-length/02
+# type: FixedTestStruct
+# ops: root
+# spec: every Merkle node hashes the 64-byte concatenation of its two children
+# fault: the node message length parameter is 63
+# why: off-by-one in the message size
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -29,3 +29,3 @@
+ 
+-def FixedTestStruct_hash_tree_root(h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct) -> B.Buf & D.Digest: FixedTestStruct_root(64n, h, o, 0)
++def FixedTestStruct_hash_tree_root(h: B.Buf, +o: FixedTestStruct_d.FixedTestStruct) -> B.Buf & D.Digest: FixedTestStruct_root(63n, h, o, 0)
+ 

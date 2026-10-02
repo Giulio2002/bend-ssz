@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u04-uint-range/01
+# type: uint8
+# ops: encode
+# spec: a uint8 value is below 2^8; the serializer must not truncate a larger one
+# fault: the uint8 validity bound is 256 instead of 255 (accepts 256 and truncates it)
+# why: off by one in the maximum value
+# file: types/uint8_encode_ssz_generated.bend
+--- a/types/uint8_encode_ssz_generated.bend
++++ b/types/uint8_encode_ssz_generated.bend
+@@ -13,3 +13,3 @@
+ 
+-def u8_valid(+o: U32) -> Bool: U32.is_le(o, 255)
++def u8_valid(+o: U32) -> Bool: U32.is_le(o, 256)
+ 

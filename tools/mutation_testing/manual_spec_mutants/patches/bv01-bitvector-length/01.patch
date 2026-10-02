@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv01-bitvector-length/01
+# type: bitvector_5
+# ops: decode
+# spec: Bitvector[5] is exactly 1 byte
+# fault: length check accepts at most 1 byte (empty accepted)
+# why: bound instead of equality
+# file: types/bitvector_5_decode_ssz_generated.bend
+--- a/types/bitvector_5_decode_ssz_generated.bend
++++ b/types/bitvector_5_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def bv5_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv5_ok_len(U32.is_eq(len, 1), buf, off)
++def bv5_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv5_ok_len(U32.is_le(len, 1), buf, off)
+ 

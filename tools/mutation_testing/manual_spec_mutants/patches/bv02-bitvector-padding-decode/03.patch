@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bv02-bitvector-padding-decode/03
+# type: bitvector_9
+# ops: decode
+# spec: bits 1..7 of the second byte of Bitvector[9] must be zero
+# fault: the padding mask for one used bit is 3
+# why: mask table typo
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1111,3 +1111,3 @@
+     case 0: 255
+-    case 1: 1
++    case 1: 3
+     case 2: 3

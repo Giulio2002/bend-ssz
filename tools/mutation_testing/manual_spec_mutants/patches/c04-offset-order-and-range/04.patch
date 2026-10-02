@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c04-offset-order-and-range/04
+# type: ComplexTestStruct
+# ops: decode
+# spec: the third offset must not be below the second, nor beyond the buffer
+# fault: the third offset is not checked at all
+# why: copy-paste error leaving one check out
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -118,3 +118,3 @@
+   (buf, +o2) = pair
+-  ComplexTestStruct_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++  ComplexTestStruct_c2(True{}, buf, off, len, o0, o1, o2)
+ 

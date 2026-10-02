@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT bl01-bitlist-delimiter-decode/05
+# type: bitlist_8
+# ops: decode
+# spec: the number of bits is 8*(len-1) + index of the delimiter
+# fault: the bit count is taken as 8*(len-1) (the delimiter index is ignored)
+# why: counting whole bytes only
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -969,3 +969,3 @@
+   (buf, +last) = pair
+-  bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++  bits_clear((8 * (len - 1 : U32) + 0 : U32), copy_in(buf, off, len))
+ 

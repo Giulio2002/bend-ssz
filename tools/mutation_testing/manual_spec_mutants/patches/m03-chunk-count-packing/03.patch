@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT m03-chunk-count-packing/03
+# type: vec_uint64_8
+# ops: root
+# spec: pack: chunk i holds bytes 32i..32i+31 (eight 32-bit words)
+# fault: the chunk stride is four words (the leaf i starts at word 4i)
+# why: chunk size taken as 16 bytes
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -847,3 +847,3 @@
+   match lf:
+-    case LWords{}: mt_leaf(h, chunkn(ws, e8(i)))
++    case LWords{}: mt_leaf(h, chunkn(ws, Nat.double(Nat.double(i))))
+     case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))

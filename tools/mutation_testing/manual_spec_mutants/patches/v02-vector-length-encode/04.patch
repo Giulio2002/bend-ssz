@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT v02-vector-length-encode/04
+# type: vec_uint16_5
+# ops: encode
+# spec: the serialization of Vector[uint16,5] has 10 bytes
+# fault: the encoder reports 12 bytes (rounded up to a word multiple)
+# why: padding the length to the word size
+# file: types/vec_uint16_5_encode_ssz_generated.bend
+--- a/types/vec_uint16_5_encode_ssz_generated.bend
++++ b/types/vec_uint16_5_encode_ssz_generated.bend
+@@ -29,3 +29,3 @@
+   (out, o) = pair
+-  (o, O.out_done(10, out))
++  (o, O.out_done(12, out))
+ 

@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT u01-uint-encode-byte-order/02
+# type: uint64,FixedTestStruct
+# ops: encode
+# spec: uint64 little-endian: low 32-bit limb at the lower address
+# fault: aligned 64-bit write stores the high limb first (limb order swapped, bytes inside limbs right)
+# why: treating the pair (lo, hi) as (hi, lo) when storing a 64-bit integer into two words
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -428,3 +428,3 @@
+   match aligned:
+-    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), lo), (U32.shrn(p, 2n) + 1 : U32), hi)
++    case True{}: Array.set(U32, Array.set(U32, out, U32.shrn(p, 2n), hi), (U32.shrn(p, 2n) + 1 : U32), lo)
+     case False{}: w32(w32(out, p, lo), (p + 4 : U32), hi)

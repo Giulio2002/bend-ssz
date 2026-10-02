@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT f03-attestation-bitlist/05
+# type: FuluAttestation
+# ops: decode
+# spec: Attestation's first offset equals the fixed part size (236)
+# fault: any first offset at least 236 is accepted
+# why: weak first-offset test
+# file: types/FuluAttestation_decode_ssz_generated.bend
+--- a/types/FuluAttestation_decode_ssz_generated.bend
++++ b/types/FuluAttestation_decode_ssz_generated.bend
+@@ -55,3 +55,3 @@
+   (buf, +o0) = pair
+-  Attestation_c0(U32.is_eq(o0, 236), buf, off, len, o0)
++  Attestation_c0(U32.is_le(236, o0), buf, off, len, o0)
+ 

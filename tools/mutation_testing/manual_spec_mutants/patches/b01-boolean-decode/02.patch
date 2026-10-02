@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT b01-boolean-decode/02
+# type: boolean
+# ops: decode
+# spec: boolean decodes only 0x00 and 0x01 (every other byte value is invalid)
+# fault: the boolean validator accepts every byte value (non-zero is true)
+# why: C-style truthiness
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1104,3 +1104,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_le(v, 1))
++  (buf, True{})
+ 

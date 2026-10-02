@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p01-progressive-growth/02
+# type: proglist_uint16
+# ops: root
+# spec: merkleize_progressive: subtree sizes grow by a factor 4
+# fault: the depth grows by 3 per level (factor 8)
+# why: depth increment 3
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -927,3 +927,3 @@
+           pt_right(hl, lf, dep, s, n,
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 3n), Nat.add(s, pow2n(dep)), n, st))
+ 

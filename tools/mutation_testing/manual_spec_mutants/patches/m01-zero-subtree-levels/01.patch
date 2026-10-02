@@ -1,0 +1,19 @@
+# MANUAL SPEC MUTANT m01-zero-subtree-levels/01
+# type: bitlist_513,VarTestStruct
+# ops: root
+# spec: padding chunks beyond the data are zero subtrees: the virtual node at height d+1 is zero_hash(d+1)
+# fault: an empty right subtree of height d+1 uses the zero hash of height d (one level too low)
+# why: zero-hash table indexed by depth minus one
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -836,3 +836,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(1n+p)))
++              (h, (ws, D.zconst(p)))
+             case True{}:
+@@ -876,3 +876,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(1n+p)))
++              (h, (ws, D.zconst(p)))
+             case True{}:

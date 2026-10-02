@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT p02-progressive-length-mix/04
+# type: progbitlist,ProgressiveBitsStruct,ProgressiveVarTestStruct
+# ops: decode
+# spec: a ProgressiveBitlist value is non-empty (it has at least the delimiter byte)
+# fault: the empty input is accepted (the length test is <= instead of <)
+# why: bound error in the emptiness test
+# file: src/obj.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1145,3 +1145,3 @@
+ def ok_bitlist(buf: B.Buf, +off: U32, +len: U32, +lim: U32, big: Bool) -> B.Buf & Bool:
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+ 

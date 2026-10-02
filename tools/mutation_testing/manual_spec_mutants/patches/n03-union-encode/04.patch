@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT n03-union-encode/04
+# type: CompatibleUnionA
+# ops: encode
+# spec: the serialization length is 1 + payload length
+# fault: the size pass reports payload length only
+# why: selector byte forgotten in the size
+# file: types/CompatibleUnionA_encode_ssz_generated.bend
+--- a/types/CompatibleUnionA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionA_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   match o:
+-    case CompatibleUnionA_d.CompatibleUnionA_c0{+v}: (CompatibleUnionA_d.CompatibleUnionA_c0{v}, 2)
++    case CompatibleUnionA_d.CompatibleUnionA_c0{+v}: (CompatibleUnionA_d.CompatibleUnionA_c0{v}, 1)
+ 

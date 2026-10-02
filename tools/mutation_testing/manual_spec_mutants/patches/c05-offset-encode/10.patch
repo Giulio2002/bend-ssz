@@ -1,0 +1,14 @@
+# MANUAL SPEC MUTANT c05-offset-encode/10
+# type: ComplexTestStruct
+# ops: encode
+# spec: variable parts follow the fixed part in field order
+# fault: not a single-character change: the first fixed-size field is written at the wrong position (pos+1)
+# why: miscount of the first slot
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -43,3 +43,3 @@
+   (f_F, fl) = r
+-  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, ((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)))
++  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 1 : U32), f_A), (pos + 6 : U32), f_C), (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, ((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)))
+ 
