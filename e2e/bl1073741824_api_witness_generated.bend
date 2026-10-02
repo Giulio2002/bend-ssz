@@ -16,7 +16,7 @@ def bl1073741824_api_set_rejected_witness() -> {FuluTransaction_d.bl1073741824_s
 def bl1073741824_api_get_outside_witness() -> {FuluTransaction_d.bl1073741824_get(W_src_obj.Words{Array.new(U32, 6n, 0), 4}, 4) == (W_src_obj.Words{Array.new(U32, 6n, 0), 4}, None{}) : W_src_obj.Words & Maybe<&1, U32>}:
   W_proofs_obj_coll_api_1.bl1073741824_api_get_outside(Array.new(U32, 6n, 0), 4, 4, {==})
 
-def bl1073741824_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, FuluTransaction_d.bl1073741824_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(U32.is_le(((U32.div(0, 1)) + 1 : U32), 1073741824), U32.is_le(1, 255)) : Bool}:
+def bl1073741824_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, FuluTransaction_d.bl1073741824_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(U32.is_lt((U32.div(0, 1)), 1073741824), U32.is_le(1, 255)) : Bool}:
   W_proofs_obj_coll_api_1.bl1073741824_api_append_flag(Array.new(U32, 6n, 0), 0, 1)
 
 def bl1073741824_api_append_rejected_witness() -> {FuluTransaction_d.bl1073741824_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 256) == (W_src_obj.Words{Array.new(U32, 6n, 0), 0}, False{}) : W_src_obj.Words & Bool}:

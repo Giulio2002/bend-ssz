@@ -16,7 +16,7 @@ def bits2048_api_set_rejected_witness() -> {Fulu_bitlist_2048_d.bits2048_set(W_s
 def bits2048_api_get_outside_witness() -> {Fulu_bitlist_2048_d.bits2048_get(W_src_obj.Bits{Array.new(U32, 6n, 0), 4}, 4) == (W_src_obj.Bits{Array.new(U32, 6n, 0), 4}, None{}) : W_src_obj.Bits & Maybe<&1, Bool>}:
   W_proofs_obj_coll_api_0.bits2048_api_get_outside(Array.new(U32, 6n, 0), 4, 4, {==})
 
-def bits2048_api_append_flag_witness() -> {Pair.snd(W_src_obj.Bits, Bool, Fulu_bitlist_2048_d.bits2048_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 0}, True{})) == U32.is_le((0 + 1 : U32), 2048) : Bool}:
+def bits2048_api_append_flag_witness() -> {Pair.snd(W_src_obj.Bits, Bool, Fulu_bitlist_2048_d.bits2048_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 0}, True{})) == U32.is_lt(0, 2048) : Bool}:
   W_proofs_obj_coll_api_0.bits2048_api_append_flag(Array.new(U32, 6n, 0), 0, True{})
 
 def bits2048_api_append_rejected_witness() -> {Fulu_bitlist_2048_d.bits2048_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 2048}, True{}) == (W_src_obj.Bits{Array.new(U32, 6n, 0), 2048}, False{}) : W_src_obj.Bits & Bool}:

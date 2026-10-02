@@ -49,3 +49,14 @@ def PowBlock_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.
   PowBlock_built(size, PowBlock_ok(buf, 0, size))
 
 def PowBlock_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPowBlock_d.PowBlock: PowBlock_read(buf, 0, size)
+
+def PowBlock_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+  match ok:
+    case True{}: PowBlock_decode(buf, size)
+    case False{}: (buf, None{})
+
+def PowBlock_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+  (buf, +n) = pair
+  PowBlock_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def PowBlock_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>: PowBlock_dchk(size, B.size(buf))

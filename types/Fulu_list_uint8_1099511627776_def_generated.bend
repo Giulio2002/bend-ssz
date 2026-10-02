@@ -54,6 +54,6 @@ def l1099511627776_u8_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & 
 
 def l1099511627776_u8_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l1099511627776_u8_grow(Bool.and(True{}, U32.is_le(v, 255)), o, n, v)
+  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(v, 255)), o, n, v)
 
 def l1099511627776_u8_append(o: O.Words, +v: U32) -> O.Words & Bool: l1099511627776_u8_app_n(v, l1099511627776_u8_len(o))

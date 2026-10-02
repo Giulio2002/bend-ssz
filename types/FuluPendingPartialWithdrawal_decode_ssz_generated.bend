@@ -46,3 +46,14 @@ def PendingPartialWithdrawal_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
   PendingPartialWithdrawal_built(size, PendingPartialWithdrawal_ok(buf, 0, size))
 
 def PendingPartialWithdrawal_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal: PendingPartialWithdrawal_read(buf, 0, size)
+
+def PendingPartialWithdrawal_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>:
+  match ok:
+    case True{}: PendingPartialWithdrawal_decode(buf, size)
+    case False{}: (buf, None{})
+
+def PendingPartialWithdrawal_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>:
+  (buf, +n) = pair
+  PendingPartialWithdrawal_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def PendingPartialWithdrawal_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>: PendingPartialWithdrawal_dchk(size, B.size(buf))

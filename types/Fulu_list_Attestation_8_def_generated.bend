@@ -126,7 +126,7 @@ def l8_Attestation_app_in(ok: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attesta
 
 def l8_Attestation_append(o: l8_Attestation_Seq, v: FuluAttestation_d.Attestation) -> l8_Attestation_Seq & Bool:
   match o:
-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_app_in(U32.is_le((n + 1 : U32), 8), arr, n, v)
+    case l8_Attestation_Seq{arr, +n}: l8_Attestation_app_in(U32.is_lt(n, 8), arr, n, v)
 
 type l8_Attestation_Cached is Type:
   l8_Attestation_Cached{items: Array<O.Boxed<FuluAttestation_d.Attestation>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -185,7 +185,7 @@ def l8_Attestation_capp_in(ok: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attest
 
 def l8_Attestation_capp(c: l8_Attestation_Cached, v: FuluAttestation_d.Attestation) -> l8_Attestation_Cached & Bool:
   match c:
-    case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: l8_Attestation_capp_in(U32.is_le((n + 1 : U32), 8), arr, n, d, nodes, lo, hi, v)
+    case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: l8_Attestation_capp_in(U32.is_lt(n, 8), arr, n, d, nodes, lo, hi, v)
 
 def l8_Attestation_ts_store(ts: l8_Attestation_TS, +k: U32, +dg: D.Digest) -> l8_Attestation_TS:
   match ts:

@@ -45,9 +45,13 @@ def l4096_b2048_put_at(ok: Bool, o: O.Words, +i: U32, v: O.Words) -> O.Words & B
     case True{}: (l4096_b2048_blit(O.words_blit(o, (i * 2048 : U32), v)), True{})
     case False{}: (o, False{})
 
+def l4096_b2048_set_v(+i: U32, o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:
+  match v:
+    case O.Words{vws, +vn}: l4096_b2048_put_at(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), o, i, O.Words{vws, vn})
+
 def l4096_b2048_set_n(+i: U32, v: O.Words, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l4096_b2048_put_at(U32.is_lt(i, n), o, i, v)
+  l4096_b2048_set_v(i, o, n, v)
 
 def l4096_b2048_set(o: O.Words, +i: U32, v: O.Words) -> O.Words & Bool: l4096_b2048_set_n(i, v, l4096_b2048_len(o))
 
@@ -56,8 +60,12 @@ def l4096_b2048_grow(ok: Bool, o: O.Words, +n: U32, v: O.Words) -> O.Words & Boo
     case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
     case False{}: (o, False{})
 
+def l4096_b2048_app_v(o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:
+  match v:
+    case O.Words{vws, +vn}: l4096_b2048_grow(Bool.and(U32.is_le((n + 1 : U32), 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
+
 def l4096_b2048_app_n(v: O.Words, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l4096_b2048_grow(U32.is_le((n + 1 : U32), 4096), o, n, v)
+  l4096_b2048_app_v(o, n, v)
 
 def l4096_b2048_append(o: O.Words, v: O.Words) -> O.Words & Bool: l4096_b2048_app_n(v, l4096_b2048_len(o))

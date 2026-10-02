@@ -51,3 +51,14 @@ def SignedBeaconBlockHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, 
   SignedBeaconBlockHeader_built(size, SignedBeaconBlockHeader_ok(buf, 0, size))
 
 def SignedBeaconBlockHeader_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader: SignedBeaconBlockHeader_read(buf, 0, size)
+
+def SignedBeaconBlockHeader_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>:
+  match ok:
+    case True{}: SignedBeaconBlockHeader_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SignedBeaconBlockHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>:
+  (buf, +n) = pair
+  SignedBeaconBlockHeader_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SignedBeaconBlockHeader_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>: SignedBeaconBlockHeader_dchk(size, B.size(buf))

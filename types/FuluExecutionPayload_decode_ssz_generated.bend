@@ -208,3 +208,14 @@ def ExecutionPayload_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExe
   ExecutionPayload_built(size, ExecutionPayload_ok(buf, 0, size))
 
 def ExecutionPayload_build(buf: B.Buf, +size: U32) -> B.Buf & FuluExecutionPayload_d.ExecutionPayload: ExecutionPayload_read(buf, 0, size)
+
+def ExecutionPayload_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
+  match ok:
+    case True{}: ExecutionPayload_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionPayload_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
+  (buf, +n) = pair
+  ExecutionPayload_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ExecutionPayload_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dchk(size, B.size(buf))

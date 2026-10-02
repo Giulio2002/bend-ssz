@@ -78,3 +78,14 @@ def BeaconBlock_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBl
   BeaconBlock_built(size, BeaconBlock_ok(buf, 0, size))
 
 def BeaconBlock_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBeaconBlock_d.BeaconBlock: BeaconBlock_read(buf, 0, size)
+
+def BeaconBlock_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>:
+  match ok:
+    case True{}: BeaconBlock_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BeaconBlock_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>:
+  (buf, +n) = pair
+  BeaconBlock_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BeaconBlock_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dchk(size, B.size(buf))

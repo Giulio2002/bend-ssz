@@ -32,3 +32,14 @@ def Blob_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   Blob_built(size, b131072_ok(buf, 0, size))
 
 def Blob_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: b131072_read(buf, 0, size)
+
+def Blob_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: Blob_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Blob_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  Blob_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Blob_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Blob_dchk(size, B.size(buf))

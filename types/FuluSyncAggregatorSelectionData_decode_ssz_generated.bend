@@ -42,3 +42,14 @@ def SyncAggregatorSelectionData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<
   SyncAggregatorSelectionData_built(size, SyncAggregatorSelectionData_ok(buf, 0, size))
 
 def SyncAggregatorSelectionData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData: SyncAggregatorSelectionData_read(buf, 0, size)
+
+def SyncAggregatorSelectionData_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+  match ok:
+    case True{}: SyncAggregatorSelectionData_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SyncAggregatorSelectionData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+  (buf, +n) = pair
+  SyncAggregatorSelectionData_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SyncAggregatorSelectionData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dchk(size, B.size(buf))

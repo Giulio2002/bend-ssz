@@ -489,6 +489,14 @@ def kbound(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +pf: {F.array__per
   F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(n), z) == True{} : Bool}, WS.e32(F.spec_common__length(U32, W)), len_(BK.bitsof(W)), Equal.sym(Nat, len_(BK.bitsof(W)), WS.e32(F.spec_common__length(U32, W)), lenb(W)),
     F.nat__lt_le_trans(U32.to_nat(n), WS.e32(1n+q), WS.e32(F.spec_common__length(U32, W)), F.logic__subst(Nat, z => {Nat.is_lt(z, WS.e32(1n+q)) == True{} : Bool}, Nat.add(k, WS.e32(q)), U32.to_nat(n), ha, F.nat__succ_le_lt(Nat.add(k, WS.e32(q)), WS.e32(1n+q), h3)), h2))
 
+# a count below the limit c plus one is within it: the guard `n < c` of the appends (docs/CRASH_HUNT.md CH-04) as `n + 1 <= c`
+def lt_le1(+n: U32, +c: U32, +ha: {U32.is_lt(n, c) == True{} : Bool}) -> {U32.is_le(U32.add(n, 1), c) == True{} : Bool}:
+  +hl = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(n, c), Nat.is_lt(U32.to_nat(n), U32.to_nat(c)), F.u32__is_lt_nat(n, c), ha)
+  +hs = F.nat__lt_succ_le_succ(U32.to_nat(n), U32.to_nat(c), hl)
+  +e = VVU.addk(n, 1, c, hs)
+  +hc = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(c)) == True{} : Bool}, 1n+U32.to_nat(n), U32.to_nat(U32.add(n, 1)), Equal.sym(Nat, U32.to_nat(U32.add(n, 1)), 1n+U32.to_nat(n), e), hs)
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(U32.add(n, 1)), U32.to_nat(c)), U32.is_le(U32.add(n, 1), c), Equal.sym(Bool, U32.is_le(U32.add(n, 1), c), Nat.is_le(U32.to_nat(U32.add(n, 1)), U32.to_nat(c)), VU.le_u32(U32.add(n, 1), c)), hc)
+
 # the new length is the old one and one more (no wrap: n < n + 1, and the sum is within the bound c)
 def n1(+n: U32, +c: U32, +hg: {U32.is_lt(n, U32.add(n, 1)) == True{} : Bool}, +ha: {U32.is_le(U32.add(n, 1), c) == True{} : Bool})
     -> {U32.to_nat(U32.add(n, 1)) == 1n+U32.to_nat(n) : Nat}:

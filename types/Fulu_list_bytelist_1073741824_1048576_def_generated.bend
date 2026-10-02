@@ -126,7 +126,7 @@ def l1048576_bl1073741824_app_in(ok: Bool, arr: Array<O.Boxed<O.Words>>, +n: U32
 
 def l1048576_bl1073741824_append(o: l1048576_bl1073741824_Seq, v: O.Words) -> l1048576_bl1073741824_Seq & Bool:
   match o:
-    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_app_in(U32.is_le((n + 1 : U32), 1048576), arr, n, v)
+    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_app_in(U32.is_lt(n, 1048576), arr, n, v)
 
 type l1048576_bl1073741824_Cached is Type:
   l1048576_bl1073741824_Cached{items: Array<O.Boxed<O.Words>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -185,7 +185,7 @@ def l1048576_bl1073741824_capp_in(ok: Bool, arr: Array<O.Boxed<O.Words>>, +n: U3
 
 def l1048576_bl1073741824_capp(c: l1048576_bl1073741824_Cached, v: O.Words) -> l1048576_bl1073741824_Cached & Bool:
   match c:
-    case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: l1048576_bl1073741824_capp_in(U32.is_le((n + 1 : U32), 1048576), arr, n, d, nodes, lo, hi, v)
+    case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: l1048576_bl1073741824_capp_in(U32.is_lt(n, 1048576), arr, n, d, nodes, lo, hi, v)
 
 def l1048576_bl1073741824_ts_store(ts: l1048576_bl1073741824_TS, +k: U32, +dg: D.Digest) -> l1048576_bl1073741824_TS:
   match ts:

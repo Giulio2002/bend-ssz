@@ -17,7 +17,7 @@ def l16_Deposit_api_set_rejected_witness() -> {Fulu_list_Deposit_16_d.l16_Deposi
 def l16_Deposit_api_get_outside_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_get(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, 4) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, None{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Maybe<&1, FuluDeposit_d.Deposit>}:
   W_proofs_obj_coll_api_5.l16_Deposit_api_get_outside(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4, 4, {==})
 
-def l16_Deposit_api_append_flag_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0}, FuluDeposit_d.Deposit_default())) == U32.is_le((0 + 1 : U32), 16) : Bool}:
+def l16_Deposit_api_append_flag_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0}, FuluDeposit_d.Deposit_default())) == U32.is_lt(0, 16) : Bool}:
   W_proofs_obj_coll_api_5.l16_Deposit_api_append_flag(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0, FuluDeposit_d.Deposit_default())
 
 def l16_Deposit_api_append_rejected_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16}, FuluDeposit_d.Deposit_default()) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16}, False{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}:

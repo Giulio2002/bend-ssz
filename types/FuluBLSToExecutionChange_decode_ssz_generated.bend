@@ -50,3 +50,14 @@ def BLSToExecutionChange_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Ful
   BLSToExecutionChange_built(size, BLSToExecutionChange_ok(buf, 0, size))
 
 def BLSToExecutionChange_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBLSToExecutionChange_d.BLSToExecutionChange: BLSToExecutionChange_read(buf, 0, size)
+
+def BLSToExecutionChange_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>:
+  match ok:
+    case True{}: BLSToExecutionChange_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BLSToExecutionChange_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>:
+  (buf, +n) = pair
+  BLSToExecutionChange_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BLSToExecutionChange_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>: BLSToExecutionChange_dchk(size, B.size(buf))

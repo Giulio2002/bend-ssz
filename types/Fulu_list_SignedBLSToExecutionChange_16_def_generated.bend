@@ -119,7 +119,7 @@ def l16_SignedBLSToExecutionChange_app_in(ok: Bool, arr: Array<FuluSignedBLSToEx
 
 def l16_SignedBLSToExecutionChange_append(o: l16_SignedBLSToExecutionChange_Seq, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> l16_SignedBLSToExecutionChange_Seq & Bool:
   match o:
-    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_app_in(U32.is_le((n + 1 : U32), 16), arr, n, v)
+    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_app_in(U32.is_lt(n, 16), arr, n, v)
 
 type l16_SignedBLSToExecutionChange_Cached is Type:
   l16_SignedBLSToExecutionChange_Cached{items: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l16_SignedBLSToExecutionChange_capp_in(ok: Bool, arr: Array<FuluSignedBLSToE
 
 def l16_SignedBLSToExecutionChange_capp(c: l16_SignedBLSToExecutionChange_Cached, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> l16_SignedBLSToExecutionChange_Cached & Bool:
   match c:
-    case l16_SignedBLSToExecutionChange_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedBLSToExecutionChange_capp_in(U32.is_le((n + 1 : U32), 16), arr, n, d, nodes, lo, hi, v)
+    case l16_SignedBLSToExecutionChange_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedBLSToExecutionChange_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
 
 def l16_SignedBLSToExecutionChange_ts_store(ts: l16_SignedBLSToExecutionChange_TS, +k: U32, +dg: D.Digest) -> l16_SignedBLSToExecutionChange_TS:
   match ts:

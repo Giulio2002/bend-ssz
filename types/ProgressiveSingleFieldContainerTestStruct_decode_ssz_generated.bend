@@ -38,3 +38,14 @@ def ProgressiveSingleFieldContainerTestStruct_decode(buf: B.Buf, +size: U32) -> 
   ProgressiveSingleFieldContainerTestStruct_built(size, ProgressiveSingleFieldContainerTestStruct_ok(buf, 0, size))
 
 def ProgressiveSingleFieldContainerTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct: ProgressiveSingleFieldContainerTestStruct_read(buf, 0, size)
+
+def ProgressiveSingleFieldContainerTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
+  match ok:
+    case True{}: ProgressiveSingleFieldContainerTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveSingleFieldContainerTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
+  (buf, +n) = pair
+  ProgressiveSingleFieldContainerTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ProgressiveSingleFieldContainerTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>: ProgressiveSingleFieldContainerTestStruct_dchk(size, B.size(buf))

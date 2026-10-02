@@ -542,3 +542,14 @@ def BeaconState_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconSt
   BeaconState_built(size, BeaconState_ok(buf, 0, size))
 
 def BeaconState_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBeaconState_d.BeaconState: BeaconState_read(buf, 0, size)
+
+def BeaconState_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>:
+  match ok:
+    case True{}: BeaconState_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BeaconState_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>:
+  (buf, +n) = pair
+  BeaconState_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BeaconState_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dchk(size, B.size(buf))

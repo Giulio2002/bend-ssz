@@ -22,3 +22,14 @@ def NextSyncCommitteeBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, 
   NextSyncCommitteeBranch_built(size, FuluCurrentSyncCommitteeBranch_r.v6_b32_ok(buf, 0, size))
 
 def NextSyncCommitteeBranch_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, 0, size)
+
+def NextSyncCommitteeBranch_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: NextSyncCommitteeBranch_decode(buf, size)
+    case False{}: (buf, None{})
+
+def NextSyncCommitteeBranch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  NextSyncCommitteeBranch_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def NextSyncCommitteeBranch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: NextSyncCommitteeBranch_dchk(size, B.size(buf))

@@ -119,7 +119,7 @@ def l2048_Eth1Data_app_in(ok: Bool, arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32
 
 def l2048_Eth1Data_append(o: l2048_Eth1Data_Seq, v: FuluEth1Data_d.Eth1Data) -> l2048_Eth1Data_Seq & Bool:
   match o:
-    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_app_in(U32.is_le((n + 1 : U32), 2048), arr, n, v)
+    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_app_in(U32.is_lt(n, 2048), arr, n, v)
 
 type l2048_Eth1Data_Cached is Type:
   l2048_Eth1Data_Cached{items: Array<FuluEth1Data_d.Eth1Data>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l2048_Eth1Data_capp_in(ok: Bool, arr: Array<FuluEth1Data_d.Eth1Data>, +n: U3
 
 def l2048_Eth1Data_capp(c: l2048_Eth1Data_Cached, v: FuluEth1Data_d.Eth1Data) -> l2048_Eth1Data_Cached & Bool:
   match c:
-    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_capp_in(U32.is_le((n + 1 : U32), 2048), arr, n, d, nodes, lo, hi, v)
+    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_capp_in(U32.is_lt(n, 2048), arr, n, d, nodes, lo, hi, v)
 
 def l2048_Eth1Data_ts_store(ts: l2048_Eth1Data_TS, +k: U32, +dg: D.Digest) -> l2048_Eth1Data_TS:
   match ts:

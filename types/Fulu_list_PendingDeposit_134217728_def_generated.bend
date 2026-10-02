@@ -119,7 +119,7 @@ def l134217728_PendingDeposit_app_in(ok: Bool, arr: Array<FuluPendingDeposit_d.P
 
 def l134217728_PendingDeposit_append(o: l134217728_PendingDeposit_Seq, v: FuluPendingDeposit_d.PendingDeposit) -> l134217728_PendingDeposit_Seq & Bool:
   match o:
-    case l134217728_PendingDeposit_Seq{arr, +n}: l134217728_PendingDeposit_app_in(U32.is_le((n + 1 : U32), 134217728), arr, n, v)
+    case l134217728_PendingDeposit_Seq{arr, +n}: l134217728_PendingDeposit_app_in(U32.is_lt(n, 134217728), arr, n, v)
 
 type l134217728_PendingDeposit_Cached is Type:
   l134217728_PendingDeposit_Cached{items: Array<FuluPendingDeposit_d.PendingDeposit>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l134217728_PendingDeposit_capp_in(ok: Bool, arr: Array<FuluPendingDeposit_d.
 
 def l134217728_PendingDeposit_capp(c: l134217728_PendingDeposit_Cached, v: FuluPendingDeposit_d.PendingDeposit) -> l134217728_PendingDeposit_Cached & Bool:
   match c:
-    case l134217728_PendingDeposit_Cached{arr, +n, +d, nodes, +lo, +hi}: l134217728_PendingDeposit_capp_in(U32.is_le((n + 1 : U32), 134217728), arr, n, d, nodes, lo, hi, v)
+    case l134217728_PendingDeposit_Cached{arr, +n, +d, nodes, +lo, +hi}: l134217728_PendingDeposit_capp_in(U32.is_lt(n, 134217728), arr, n, d, nodes, lo, hi, v)
 
 def l134217728_PendingDeposit_ts_store(ts: l134217728_PendingDeposit_TS, +k: U32, +dg: D.Digest) -> l134217728_PendingDeposit_TS:
   match ts:

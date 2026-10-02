@@ -125,4 +125,4 @@ def pl_ProgressiveVarTestStruct_app_in(ok: Bool, arr: Array<O.Boxed<ProgressiveV
 
 def pl_ProgressiveVarTestStruct_append(o: pl_ProgressiveVarTestStruct_Seq, v: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> pl_ProgressiveVarTestStruct_Seq & Bool:
   match o:
-    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_in(True{}, arr, n, v)
+    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)

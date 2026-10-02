@@ -126,7 +126,7 @@ def l16_ProposerSlashing_app_in(ok: Bool, arr: Array<O.Boxed<FuluProposerSlashin
 
 def l16_ProposerSlashing_append(o: l16_ProposerSlashing_Seq, v: FuluProposerSlashing_d.ProposerSlashing) -> l16_ProposerSlashing_Seq & Bool:
   match o:
-    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_in(U32.is_le((n + 1 : U32), 16), arr, n, v)
+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_in(U32.is_lt(n, 16), arr, n, v)
 
 type l16_ProposerSlashing_Cached is Type:
   l16_ProposerSlashing_Cached{items: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -185,7 +185,7 @@ def l16_ProposerSlashing_capp_in(ok: Bool, arr: Array<O.Boxed<FuluProposerSlashi
 
 def l16_ProposerSlashing_capp(c: l16_ProposerSlashing_Cached, v: FuluProposerSlashing_d.ProposerSlashing) -> l16_ProposerSlashing_Cached & Bool:
   match c:
-    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_le((n + 1 : U32), 16), arr, n, d, nodes, lo, hi, v)
+    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
 
 def l16_ProposerSlashing_ts_store(ts: l16_ProposerSlashing_TS, +k: U32, +dg: D.Digest) -> l16_ProposerSlashing_TS:
   match ts:

@@ -49,3 +49,14 @@ def ProposerSlashing_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPro
   ProposerSlashing_built(size, ProposerSlashing_ok(buf, 0, size))
 
 def ProposerSlashing_build(buf: B.Buf, +size: U32) -> B.Buf & FuluProposerSlashing_d.ProposerSlashing: ProposerSlashing_read(buf, 0, size)
+
+def ProposerSlashing_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
+  match ok:
+    case True{}: ProposerSlashing_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ProposerSlashing_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
+  (buf, +n) = pair
+  ProposerSlashing_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ProposerSlashing_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>: ProposerSlashing_dchk(size, B.size(buf))

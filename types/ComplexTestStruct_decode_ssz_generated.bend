@@ -157,3 +157,14 @@ def ComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Comple
   ComplexTestStruct_built(size, ComplexTestStruct_ok(buf, 0, size))
 
 def ComplexTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ComplexTestStruct_d.ComplexTestStruct: ComplexTestStruct_read(buf, 0, size)
+
+def ComplexTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>:
+  match ok:
+    case True{}: ComplexTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ComplexTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>:
+  (buf, +n) = pair
+  ComplexTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ComplexTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dchk(size, B.size(buf))

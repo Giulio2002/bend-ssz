@@ -48,3 +48,14 @@ def Eth1Block_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Block_
   Eth1Block_built(size, Eth1Block_ok(buf, 0, size))
 
 def Eth1Block_build(buf: B.Buf, +size: U32) -> B.Buf & FuluEth1Block_d.Eth1Block: Eth1Block_read(buf, 0, size)
+
+def Eth1Block_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>:
+  match ok:
+    case True{}: Eth1Block_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Eth1Block_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>:
+  (buf, +n) = pair
+  Eth1Block_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Eth1Block_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dchk(size, B.size(buf))

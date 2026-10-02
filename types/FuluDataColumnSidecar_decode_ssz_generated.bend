@@ -127,3 +127,14 @@ def DataColumnSidecar_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDa
   DataColumnSidecar_built(size, DataColumnSidecar_ok(buf, 0, size))
 
 def DataColumnSidecar_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar: DataColumnSidecar_read(buf, 0, size)
+
+def DataColumnSidecar_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
+  match ok:
+    case True{}: DataColumnSidecar_decode(buf, size)
+    case False{}: (buf, None{})
+
+def DataColumnSidecar_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
+  (buf, +n) = pair
+  DataColumnSidecar_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def DataColumnSidecar_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>: DataColumnSidecar_dchk(size, B.size(buf))

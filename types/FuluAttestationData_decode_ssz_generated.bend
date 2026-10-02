@@ -58,3 +58,14 @@ def AttestationData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAtte
   AttestationData_built(size, AttestationData_ok(buf, 0, size))
 
 def AttestationData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluAttestationData_d.AttestationData: AttestationData_read(buf, 0, size)
+
+def AttestationData_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>:
+  match ok:
+    case True{}: AttestationData_decode(buf, size)
+    case False{}: (buf, None{})
+
+def AttestationData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>:
+  (buf, +n) = pair
+  AttestationData_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def AttestationData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>: AttestationData_dchk(size, B.size(buf))

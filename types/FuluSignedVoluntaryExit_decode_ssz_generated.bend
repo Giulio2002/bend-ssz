@@ -45,3 +45,14 @@ def SignedVoluntaryExit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu
   SignedVoluntaryExit_built(size, SignedVoluntaryExit_ok(buf, 0, size))
 
 def SignedVoluntaryExit_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSignedVoluntaryExit_d.SignedVoluntaryExit: SignedVoluntaryExit_read(buf, 0, size)
+
+def SignedVoluntaryExit_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>:
+  match ok:
+    case True{}: SignedVoluntaryExit_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SignedVoluntaryExit_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>:
+  (buf, +n) = pair
+  SignedVoluntaryExit_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SignedVoluntaryExit_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>: SignedVoluntaryExit_dchk(size, B.size(buf))

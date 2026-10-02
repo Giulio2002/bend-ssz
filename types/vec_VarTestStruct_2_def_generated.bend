@@ -18,7 +18,12 @@ def v2_VarTestStruct_fill(+d: Nat) -> Array<O.Boxed<VarTestStruct_d.VarTestStruc
 
 def v2_VarTestStruct_cap(+n: U32) -> Nat: B.words_depth(n)
 
-def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_fill(v2_VarTestStruct_cap(2)), 2}
+def v2_VarTestStruct_dfill(+k: Nat, +i: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> Array<O.Boxed<VarTestStruct_d.VarTestStruct>>:
+  match k:
+    case 0n: arr
+    case 1n+q: v2_VarTestStruct_dfill(q, (i + 1 : U32), Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_default()))
+
+def v2_VarTestStruct_default() -> v2_VarTestStruct_Seq: v2_VarTestStruct_Seq{v2_VarTestStruct_dfill(2n, 0, v2_VarTestStruct_fill(v2_VarTestStruct_cap(2))), 2}
 
 def v2_VarTestStruct_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, pair: O.Boxed<VarTestStruct_d.VarTestStruct> & U32) -> Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32:
   (v, +x) = pair

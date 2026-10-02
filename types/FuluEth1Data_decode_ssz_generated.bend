@@ -48,3 +48,14 @@ def Eth1Data_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.
   Eth1Data_built(size, Eth1Data_ok(buf, 0, size))
 
 def Eth1Data_build(buf: B.Buf, +size: U32) -> B.Buf & FuluEth1Data_d.Eth1Data: Eth1Data_read(buf, 0, size)
+
+def Eth1Data_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+  match ok:
+    case True{}: Eth1Data_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Eth1Data_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+  (buf, +n) = pair
+  Eth1Data_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Eth1Data_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dchk(size, B.size(buf))

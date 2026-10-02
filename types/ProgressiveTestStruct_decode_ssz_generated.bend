@@ -141,3 +141,14 @@ def ProgressiveTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Pr
   ProgressiveTestStruct_built(size, ProgressiveTestStruct_ok(buf, 0, size))
 
 def ProgressiveTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveTestStruct_d.ProgressiveTestStruct: ProgressiveTestStruct_read(buf, 0, size)
+
+def ProgressiveTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>:
+  match ok:
+    case True{}: ProgressiveTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>:
+  (buf, +n) = pair
+  ProgressiveTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ProgressiveTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: ProgressiveTestStruct_dchk(size, B.size(buf))

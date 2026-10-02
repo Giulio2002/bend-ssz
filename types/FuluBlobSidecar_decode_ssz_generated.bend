@@ -64,3 +64,14 @@ def BlobSidecar_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobSide
   BlobSidecar_built(size, BlobSidecar_ok(buf, 0, size))
 
 def BlobSidecar_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBlobSidecar_d.BlobSidecar: BlobSidecar_read(buf, 0, size)
+
+def BlobSidecar_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>:
+  match ok:
+    case True{}: BlobSidecar_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BlobSidecar_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>:
+  (buf, +n) = pair
+  BlobSidecar_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BlobSidecar_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>: BlobSidecar_dchk(size, B.size(buf))

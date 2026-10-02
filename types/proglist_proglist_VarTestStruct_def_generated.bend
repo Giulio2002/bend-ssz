@@ -125,4 +125,4 @@ def pl_pl_VarTestStruct_app_in(ok: Bool, arr: Array<O.Boxed<proglist_VarTestStru
 
 def pl_pl_VarTestStruct_append(o: pl_pl_VarTestStruct_Seq, v: proglist_VarTestStruct_d.pl_VarTestStruct_Seq) -> pl_pl_VarTestStruct_Seq & Bool:
   match o:
-    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_app_in(True{}, arr, n, v)
+    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)

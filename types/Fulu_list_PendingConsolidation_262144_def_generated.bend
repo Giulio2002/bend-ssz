@@ -119,7 +119,7 @@ def l262144_PendingConsolidation_app_in(ok: Bool, arr: Array<FuluPendingConsolid
 
 def l262144_PendingConsolidation_append(o: l262144_PendingConsolidation_Seq, v: FuluPendingConsolidation_d.PendingConsolidation) -> l262144_PendingConsolidation_Seq & Bool:
   match o:
-    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_app_in(U32.is_le((n + 1 : U32), 262144), arr, n, v)
+    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_app_in(U32.is_lt(n, 262144), arr, n, v)
 
 type l262144_PendingConsolidation_Cached is Type:
   l262144_PendingConsolidation_Cached{items: Array<FuluPendingConsolidation_d.PendingConsolidation>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l262144_PendingConsolidation_capp_in(ok: Bool, arr: Array<FuluPendingConsoli
 
 def l262144_PendingConsolidation_capp(c: l262144_PendingConsolidation_Cached, v: FuluPendingConsolidation_d.PendingConsolidation) -> l262144_PendingConsolidation_Cached & Bool:
   match c:
-    case l262144_PendingConsolidation_Cached{arr, +n, +d, nodes, +lo, +hi}: l262144_PendingConsolidation_capp_in(U32.is_le((n + 1 : U32), 262144), arr, n, d, nodes, lo, hi, v)
+    case l262144_PendingConsolidation_Cached{arr, +n, +d, nodes, +lo, +hi}: l262144_PendingConsolidation_capp_in(U32.is_lt(n, 262144), arr, n, d, nodes, lo, hi, v)
 
 def l262144_PendingConsolidation_ts_store(ts: l262144_PendingConsolidation_TS, +k: U32, +dg: D.Digest) -> l262144_PendingConsolidation_TS:
   match ts:

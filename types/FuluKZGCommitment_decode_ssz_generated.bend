@@ -23,3 +23,14 @@ def KZGCommitment_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4
   KZGCommitment_built(size, FuluBytes48_r.b48_ok(buf, 0, size))
 
 def KZGCommitment_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: FuluBytes48_r.b48_read(buf, 0, size)
+
+def KZGCommitment_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: KZGCommitment_decode(buf, size)
+    case False{}: (buf, None{})
+
+def KZGCommitment_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  KZGCommitment_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def KZGCommitment_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGCommitment_dchk(size, B.size(buf))

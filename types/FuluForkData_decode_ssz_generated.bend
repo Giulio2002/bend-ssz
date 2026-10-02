@@ -45,3 +45,14 @@ def ForkData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.
   ForkData_built(size, ForkData_ok(buf, 0, size))
 
 def ForkData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluForkData_d.ForkData: ForkData_read(buf, 0, size)
+
+def ForkData_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
+  match ok:
+    case True{}: ForkData_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ForkData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
+  (buf, +n) = pair
+  ForkData_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ForkData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>: ForkData_dchk(size, B.size(buf))

@@ -52,3 +52,14 @@ def Withdrawal_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawa
   Withdrawal_built(size, Withdrawal_ok(buf, 0, size))
 
 def Withdrawal_build(buf: B.Buf, +size: U32) -> B.Buf & FuluWithdrawal_d.Withdrawal: Withdrawal_read(buf, 0, size)
+
+def Withdrawal_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>:
+  match ok:
+    case True{}: Withdrawal_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Withdrawal_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>:
+  (buf, +n) = pair
+  Withdrawal_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Withdrawal_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>: Withdrawal_dchk(size, B.size(buf))

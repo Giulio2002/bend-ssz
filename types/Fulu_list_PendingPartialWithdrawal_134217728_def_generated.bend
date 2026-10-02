@@ -119,7 +119,7 @@ def l134217728_PendingPartialWithdrawal_app_in(ok: Bool, arr: Array<FuluPendingP
 
 def l134217728_PendingPartialWithdrawal_append(o: l134217728_PendingPartialWithdrawal_Seq, v: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> l134217728_PendingPartialWithdrawal_Seq & Bool:
   match o:
-    case l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_app_in(U32.is_le((n + 1 : U32), 134217728), arr, n, v)
+    case l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_app_in(U32.is_lt(n, 134217728), arr, n, v)
 
 type l134217728_PendingPartialWithdrawal_Cached is Type:
   l134217728_PendingPartialWithdrawal_Cached{items: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l134217728_PendingPartialWithdrawal_capp_in(ok: Bool, arr: Array<FuluPending
 
 def l134217728_PendingPartialWithdrawal_capp(c: l134217728_PendingPartialWithdrawal_Cached, v: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> l134217728_PendingPartialWithdrawal_Cached & Bool:
   match c:
-    case l134217728_PendingPartialWithdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l134217728_PendingPartialWithdrawal_capp_in(U32.is_le((n + 1 : U32), 134217728), arr, n, d, nodes, lo, hi, v)
+    case l134217728_PendingPartialWithdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l134217728_PendingPartialWithdrawal_capp_in(U32.is_lt(n, 134217728), arr, n, d, nodes, lo, hi, v)
 
 def l134217728_PendingPartialWithdrawal_ts_store(ts: l134217728_PendingPartialWithdrawal_TS, +k: U32, +dg: D.Digest) -> l134217728_PendingPartialWithdrawal_TS:
   match ts:

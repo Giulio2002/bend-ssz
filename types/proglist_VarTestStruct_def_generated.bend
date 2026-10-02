@@ -125,7 +125,7 @@ def pl_VarTestStruct_app_in(ok: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTest
 
 def pl_VarTestStruct_append(o: pl_VarTestStruct_Seq, v: VarTestStruct_d.VarTestStruct) -> pl_VarTestStruct_Seq & Bool:
   match o:
-    case pl_VarTestStruct_Seq{arr, +n}: pl_VarTestStruct_app_in(True{}, arr, n, v)
+    case pl_VarTestStruct_Seq{arr, +n}: pl_VarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
 
 def pl_VarTestStruct_bx_wrap(v: pl_VarTestStruct_Seq) -> O.Boxed<pl_VarTestStruct_Seq>: O.BSome{v, O.BNone{}}
 

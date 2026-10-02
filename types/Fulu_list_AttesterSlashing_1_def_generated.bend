@@ -126,7 +126,7 @@ def l1_AttesterSlashing_app_in(ok: Bool, arr: Array<O.Boxed<FuluAttesterSlashing
 
 def l1_AttesterSlashing_append(o: l1_AttesterSlashing_Seq, v: FuluAttesterSlashing_d.AttesterSlashing) -> l1_AttesterSlashing_Seq & Bool:
   match o:
-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_app_in(U32.is_le((n + 1 : U32), 1), arr, n, v)
+    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_app_in(U32.is_lt(n, 1), arr, n, v)
 
 type l1_AttesterSlashing_Cached is Type:
   l1_AttesterSlashing_Cached{items: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -185,7 +185,7 @@ def l1_AttesterSlashing_capp_in(ok: Bool, arr: Array<O.Boxed<FuluAttesterSlashin
 
 def l1_AttesterSlashing_capp(c: l1_AttesterSlashing_Cached, v: FuluAttesterSlashing_d.AttesterSlashing) -> l1_AttesterSlashing_Cached & Bool:
   match c:
-    case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l1_AttesterSlashing_capp_in(U32.is_le((n + 1 : U32), 1), arr, n, d, nodes, lo, hi, v)
+    case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l1_AttesterSlashing_capp_in(U32.is_lt(n, 1), arr, n, d, nodes, lo, hi, v)
 
 def l1_AttesterSlashing_ts_store(ts: l1_AttesterSlashing_TS, +k: U32, +dg: D.Digest) -> l1_AttesterSlashing_TS:
   match ts:

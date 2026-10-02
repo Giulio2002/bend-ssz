@@ -38,3 +38,14 @@ def SingleFieldTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Si
   SingleFieldTestStruct_built(size, SingleFieldTestStruct_ok(buf, 0, size))
 
 def SingleFieldTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & SingleFieldTestStruct_d.SingleFieldTestStruct: SingleFieldTestStruct_read(buf, 0, size)
+
+def SingleFieldTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+  match ok:
+    case True{}: SingleFieldTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SingleFieldTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+  (buf, +n) = pair
+  SingleFieldTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SingleFieldTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>: SingleFieldTestStruct_dchk(size, B.size(buf))

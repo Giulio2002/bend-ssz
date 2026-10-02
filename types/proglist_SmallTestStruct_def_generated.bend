@@ -118,4 +118,4 @@ def pl_SmallTestStruct_app_in(ok: Bool, arr: Array<SmallTestStruct_d.SmallTestSt
 
 def pl_SmallTestStruct_append(o: pl_SmallTestStruct_Seq, v: SmallTestStruct_d.SmallTestStruct) -> pl_SmallTestStruct_Seq & Bool:
   match o:
-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_app_in(True{}, arr, n, v)
+    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)

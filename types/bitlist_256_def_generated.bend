@@ -48,6 +48,6 @@ def bits256_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
 
 def bits256_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits256_push(U32.is_le((n + 1 : U32), 256), o, v)
+  bits256_push(U32.is_lt(n, 256), o, v)
 
 def bits256_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits256_app_n(v, O.bits_len(o))

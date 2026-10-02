@@ -23,3 +23,14 @@ def bitvector_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvect
   bitvector_4_built(size, Fulu_bitvector_4_r.bv4_ok(buf, 0, size))
 
 def bitvector_4_build(buf: B.Buf, +size: U32) -> B.Buf & Fulu_bitvector_4_d.Bitvector4: Fulu_bitvector_4_r.bv4_read(buf, 0, size)
+
+def bitvector_4_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
+  match ok:
+    case True{}: bitvector_4_decode(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_4_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
+  (buf, +n) = pair
+  bitvector_4_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def bitvector_4_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>: bitvector_4_dchk(size, B.size(buf))

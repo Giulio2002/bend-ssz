@@ -23,3 +23,14 @@ def bitvector_512_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitve
   bitvector_512_built(size, Fulu_bitvector_512_r.bv512_ok(buf, 0, size))
 
 def bitvector_512_build(buf: B.Buf, +size: U32) -> B.Buf & Fulu_bitvector_512_d.Bitvector512: Fulu_bitvector_512_r.bv512_read(buf, 0, size)
+
+def bitvector_512_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>:
+  match ok:
+    case True{}: bitvector_512_decode(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_512_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>:
+  (buf, +n) = pair
+  bitvector_512_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def bitvector_512_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>: bitvector_512_dchk(size, B.size(buf))

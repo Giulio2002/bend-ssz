@@ -119,7 +119,7 @@ def l1099511627776_Validator_app_in(ok: Bool, arr: Array<FuluValidator_d.Validat
 
 def l1099511627776_Validator_append(o: l1099511627776_Validator_Seq, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Seq & Bool:
   match o:
-    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_in(True{}, arr, n, v)
+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_in(U32.is_lt(n, 4294967295), arr, n, v)
 
 type l1099511627776_Validator_Cached is Type:
   l1099511627776_Validator_Cached{items: Array<FuluValidator_d.Validator>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l1099511627776_Validator_capp_in(ok: Bool, arr: Array<FuluValidator_d.Valida
 
 def l1099511627776_Validator_capp(c: l1099511627776_Validator_Cached, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Cached & Bool:
   match c:
-    case l1099511627776_Validator_Cached{arr, +n, +d, nodes, +lo, +hi}: l1099511627776_Validator_capp_in(True{}, arr, n, d, nodes, lo, hi, v)
+    case l1099511627776_Validator_Cached{arr, +n, +d, nodes, +lo, +hi}: l1099511627776_Validator_capp_in(U32.is_lt(n, 4294967295), arr, n, d, nodes, lo, hi, v)
 
 def l1099511627776_Validator_ts_store(ts: l1099511627776_Validator_TS, +k: U32, +dg: D.Digest) -> l1099511627776_Validator_TS:
   match ts:

@@ -37,3 +37,14 @@ def bitvector_1_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_1_
   bitvector_1_built(size, bv1_ok(buf, 0, size))
 
 def bitvector_1_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_1_d.Bitvector1: bv1_read(buf, 0, size)
+
+def bitvector_1_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
+  match ok:
+    case True{}: bitvector_1_decode(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_1_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>:
+  (buf, +n) = pair
+  bitvector_1_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def bitvector_1_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_1_d.Bitvector1>: bitvector_1_dchk(size, B.size(buf))

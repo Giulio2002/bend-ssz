@@ -160,3 +160,14 @@ def ExecutionPayloadHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, F
   ExecutionPayloadHeader_built(size, ExecutionPayloadHeader_ok(buf, 0, size))
 
 def ExecutionPayloadHeader_build(buf: B.Buf, +size: U32) -> B.Buf & FuluExecutionPayloadHeader_d.ExecutionPayloadHeader: ExecutionPayloadHeader_read(buf, 0, size)
+
+def ExecutionPayloadHeader_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
+  match ok:
+    case True{}: ExecutionPayloadHeader_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionPayloadHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
+  (buf, +n) = pair
+  ExecutionPayloadHeader_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ExecutionPayloadHeader_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>: ExecutionPayloadHeader_dchk(size, B.size(buf))

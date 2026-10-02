@@ -44,3 +44,14 @@ def Checkpoint_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoin
   Checkpoint_built(size, Checkpoint_ok(buf, 0, size))
 
 def Checkpoint_build(buf: B.Buf, +size: U32) -> B.Buf & FuluCheckpoint_d.Checkpoint: Checkpoint_read(buf, 0, size)
+
+def Checkpoint_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+  match ok:
+    case True{}: Checkpoint_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Checkpoint_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+  (buf, +n) = pair
+  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, B.size(buf))

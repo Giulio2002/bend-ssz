@@ -119,7 +119,7 @@ def l16_WithdrawalRequest_app_in(ok: Bool, arr: Array<FuluWithdrawalRequest_d.Wi
 
 def l16_WithdrawalRequest_append(o: l16_WithdrawalRequest_Seq, v: FuluWithdrawalRequest_d.WithdrawalRequest) -> l16_WithdrawalRequest_Seq & Bool:
   match o:
-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_in(U32.is_le((n + 1 : U32), 16), arr, n, v)
+    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
 
 type l16_WithdrawalRequest_Cached is Type:
   l16_WithdrawalRequest_Cached{items: Array<FuluWithdrawalRequest_d.WithdrawalRequest>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l16_WithdrawalRequest_capp_in(ok: Bool, arr: Array<FuluWithdrawalRequest_d.W
 
 def l16_WithdrawalRequest_capp(c: l16_WithdrawalRequest_Cached, v: FuluWithdrawalRequest_d.WithdrawalRequest) -> l16_WithdrawalRequest_Cached & Bool:
   match c:
-    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_le((n + 1 : U32), 16), arr, n, d, nodes, lo, hi, v)
+    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
 
 def l16_WithdrawalRequest_ts_store(ts: l16_WithdrawalRequest_TS, +k: U32, +dg: D.Digest) -> l16_WithdrawalRequest_TS:
   match ts:

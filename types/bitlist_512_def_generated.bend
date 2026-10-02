@@ -48,6 +48,6 @@ def bits512_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
 
 def bits512_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits512_push(U32.is_le((n + 1 : U32), 512), o, v)
+  bits512_push(U32.is_lt(n, 512), o, v)
 
 def bits512_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits512_app_n(v, O.bits_len(o))

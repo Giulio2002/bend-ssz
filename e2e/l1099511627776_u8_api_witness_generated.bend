@@ -16,7 +16,7 @@ def l1099511627776_u8_api_set_rejected_witness() -> {Fulu_list_uint8_10995116277
 def l1099511627776_u8_api_get_outside_witness() -> {Fulu_list_uint8_1099511627776_d.l1099511627776_u8_get(W_src_obj.Words{Array.new(U32, 6n, 0), 4}, 4) == (W_src_obj.Words{Array.new(U32, 6n, 0), 4}, None{}) : W_src_obj.Words & Maybe<&1, U32>}:
   W_proofs_obj_coll_api_3.l1099511627776_u8_api_get_outside(Array.new(U32, 6n, 0), 4, 4, {==})
 
-def l1099511627776_u8_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint8_1099511627776_d.l1099511627776_u8_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(True{}, U32.is_le(1, 255)) : Bool}:
+def l1099511627776_u8_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint8_1099511627776_d.l1099511627776_u8_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(U32.is_lt((U32.div(0, 1)), 4294967295), U32.is_le(1, 255)) : Bool}:
   W_proofs_obj_coll_api_3.l1099511627776_u8_api_append_flag(Array.new(U32, 6n, 0), 0, 1)
 
 def l1099511627776_u8_api_append_rejected_witness() -> {Fulu_list_uint8_1099511627776_d.l1099511627776_u8_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 256) == (W_src_obj.Words{Array.new(U32, 6n, 0), 0}, False{}) : W_src_obj.Words & Bool}:

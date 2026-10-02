@@ -48,6 +48,6 @@ def bits2_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
 
 def bits2_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits2_push(U32.is_le((n + 1 : U32), 2), o, v)
+  bits2_push(U32.is_lt(n, 2), o, v)
 
 def bits2_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits2_app_n(v, O.bits_len(o))

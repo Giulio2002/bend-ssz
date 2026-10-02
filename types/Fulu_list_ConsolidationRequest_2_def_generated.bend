@@ -119,7 +119,7 @@ def l2_ConsolidationRequest_app_in(ok: Bool, arr: Array<FuluConsolidationRequest
 
 def l2_ConsolidationRequest_append(o: l2_ConsolidationRequest_Seq, v: FuluConsolidationRequest_d.ConsolidationRequest) -> l2_ConsolidationRequest_Seq & Bool:
   match o:
-    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_app_in(U32.is_le((n + 1 : U32), 2), arr, n, v)
+    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_app_in(U32.is_lt(n, 2), arr, n, v)
 
 type l2_ConsolidationRequest_Cached is Type:
   l2_ConsolidationRequest_Cached{items: Array<FuluConsolidationRequest_d.ConsolidationRequest>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l2_ConsolidationRequest_capp_in(ok: Bool, arr: Array<FuluConsolidationReques
 
 def l2_ConsolidationRequest_capp(c: l2_ConsolidationRequest_Cached, v: FuluConsolidationRequest_d.ConsolidationRequest) -> l2_ConsolidationRequest_Cached & Bool:
   match c:
-    case l2_ConsolidationRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l2_ConsolidationRequest_capp_in(U32.is_le((n + 1 : U32), 2), arr, n, d, nodes, lo, hi, v)
+    case l2_ConsolidationRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l2_ConsolidationRequest_capp_in(U32.is_lt(n, 2), arr, n, d, nodes, lo, hi, v)
 
 def l2_ConsolidationRequest_ts_store(ts: l2_ConsolidationRequest_TS, +k: U32, +dg: D.Digest) -> l2_ConsolidationRequest_TS:
   match ts:

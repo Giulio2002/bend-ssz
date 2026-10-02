@@ -147,10 +147,10 @@ def bits131072_flag_append(b: Bool, -ws: Array<U32>, +n: U32, -v: Bool) -> {Pair
   match b:
     case True{}: {==}
     case False{}: {==}
-def bits131072_api_append_flag(-ws: Array<U32>, +n: U32, -v: Bool) -> {Pair.snd(O.Bits, Bool, bits131072_c.bits131072_append(O.Bits{ws, n}, v)) == U32.is_le((n + 1 : U32), 131072) : Bool}:
-  bits131072_flag_append(U32.is_le((n + 1 : U32), 131072), ws, n, v)
-def bits131072_api_append_rejected(-ws: Array<U32>, +n: U32, -v: Bool, +e: {U32.is_le((n + 1 : U32), 131072) == False{} : Bool}) -> {bits131072_c.bits131072_append(O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}:
-  %Equal.sym(Bool, U32.is_le((n + 1 : U32), 131072), False{}, e) : {bits131072_c.bits131072_push(_, O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}
+def bits131072_api_append_flag(-ws: Array<U32>, +n: U32, -v: Bool) -> {Pair.snd(O.Bits, Bool, bits131072_c.bits131072_append(O.Bits{ws, n}, v)) == U32.is_lt(n, 131072) : Bool}:
+  bits131072_flag_append(U32.is_lt(n, 131072), ws, n, v)
+def bits131072_api_append_rejected(-ws: Array<U32>, +n: U32, -v: Bool, +e: {U32.is_lt(n, 131072) == False{} : Bool}) -> {bits131072_c.bits131072_append(O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}:
+  %Equal.sym(Bool, U32.is_lt(n, 131072), False{}, e) : {bits131072_c.bits131072_push(_, O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}
   {==}
 
 # ---- bits2048 ----
@@ -170,10 +170,10 @@ def bits2048_flag_append(b: Bool, -ws: Array<U32>, +n: U32, -v: Bool) -> {Pair.s
   match b:
     case True{}: {==}
     case False{}: {==}
-def bits2048_api_append_flag(-ws: Array<U32>, +n: U32, -v: Bool) -> {Pair.snd(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{ws, n}, v)) == U32.is_le((n + 1 : U32), 2048) : Bool}:
-  bits2048_flag_append(U32.is_le((n + 1 : U32), 2048), ws, n, v)
-def bits2048_api_append_rejected(-ws: Array<U32>, +n: U32, -v: Bool, +e: {U32.is_le((n + 1 : U32), 2048) == False{} : Bool}) -> {bits2048_c.bits2048_append(O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}:
-  %Equal.sym(Bool, U32.is_le((n + 1 : U32), 2048), False{}, e) : {bits2048_c.bits2048_push(_, O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}
+def bits2048_api_append_flag(-ws: Array<U32>, +n: U32, -v: Bool) -> {Pair.snd(O.Bits, Bool, bits2048_c.bits2048_append(O.Bits{ws, n}, v)) == U32.is_lt(n, 2048) : Bool}:
+  bits2048_flag_append(U32.is_lt(n, 2048), ws, n, v)
+def bits2048_api_append_rejected(-ws: Array<U32>, +n: U32, -v: Bool, +e: {U32.is_lt(n, 2048) == False{} : Bool}) -> {bits2048_c.bits2048_append(O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}:
+  %Equal.sym(Bool, U32.is_lt(n, 2048), False{}, e) : {bits2048_c.bits2048_push(_, O.Bits{ws, n}, v) == (O.Bits{ws, n}, False{}) : O.Bits & Bool}
   {==}
 
 # ---- l131072_u64 ----

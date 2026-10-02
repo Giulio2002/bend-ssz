@@ -108,7 +108,7 @@ def cached_spec(h, ta, dw, t, n, d, lo, hi, seg, s, iv, ok, eq, hv):
 # The public producers of l2_ConsolidationRequest values establish its representation invariant
 # RT.rep_l2_ConsolidationRequest(o, s), the hypothesis of the root law RT.rs_l2_ConsolidationRequest: `default()`,
 # `uncache(c)` of a valid cache (CA.inv), `set(o, i, v)` for i < n, and
-# `append(o, v)` when the runtime accepts it (its guard n + 1 <= 2 holds) and
+# `append(o, v)` when the runtime accepts it (its guard n < 2 holds) and
 # n < 2^k with k <= 30, and `read` (the list decoder) for a nonempty or empty
 # field. Each mutation law also says the producer reports success.
 
@@ -161,8 +161,8 @@ def tr_pw(-o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +t
   h
 
 def tr_g(-o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +eo: {o == Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N} : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq},
-    +h: {U32.is_le(U32.add(RT_L.xlen_o_l2_ConsolidationRequest(o), 1), 2) == True{} : Bool}) -> {U32.is_le(U32.add(N, 1), 2) == True{} : Bool}:
-  %Equal.cong(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, U32, RT_L.xlen_o_l2_ConsolidationRequest, o, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N}, eo) : {U32.is_le(U32.add(_, 1), 2) == True{} : Bool}
+    +h: {U32.is_lt(RT_L.xlen_o_l2_ConsolidationRequest(o), 2) == True{} : Bool}) -> {U32.is_lt(N, 2) == True{} : Bool}:
+  %Equal.cong(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, U32, RT_L.xlen_o_l2_ConsolidationRequest, o, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N}, eo) : {U32.is_lt(_, 2) == True{} : Bool}
   h
 
 def tr_fit(-o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +P: Nat, +eo: {o == Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N} : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq},
@@ -225,7 +225,7 @@ def app_eq(+t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +
     +pf: {F.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, dw, t) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool},
     +hlt: {Nat.is_lt(U32.to_nat(N), O.pow2n(k)) == True{} : Bool},
-    +hg: {U32.is_le(U32.add(N, 1), 2) == True{} : Bool})
+    +hg: {U32.is_lt(N, 2) == True{} : Bool})
     -> {Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_append(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N}, v) == (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}:
   +c = CA.fits(dw, N)
   +D2 = CA.rdepth(c, dw, N)
@@ -234,7 +234,7 @@ def app_eq(+t: F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +
   +hn1 = n1_le(N, O.pow2n(k), en1, hlt)
   +hr = CA.rt_room(c, dw, N, k, hk, hn1, en1, {==})
   +pr = CA.rt_perfect(c, dw, N, t, pf)
-  %Equal.sym(Bool, U32.is_le(U32.add(N, 1), 2), True{}, hg) :
+  %Equal.sym(Bool, U32.is_lt(N, 2), True{}, hg) :
     {Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_app_in(_, F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N, v) == (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}
   %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t)), (F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), F.u32__pow2u(dw)), F.array__size_thaw(FuluConsolidationRequest_d.ConsolidationRequest, dw, t, pf)) :
     {(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{Array.set(FuluConsolidationRequest_d.ConsolidationRequest, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_room_sized(N, _), N, v), (N + 1 : U32)}, True{}) == (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}
@@ -255,7 +255,7 @@ law append_rep:
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}
   for +rep: RT_L.rep_l2_ConsolidationRequest(o, s)
   for +hlt: {Nat.is_lt(U32.to_nat(RT_L.xlen_o_l2_ConsolidationRequest(o)), O.pow2n(k)) == True{} : Bool}
-  for +hg: {U32.is_le(U32.add(RT_L.xlen_o_l2_ConsolidationRequest(o), 1), 2) == True{} : Bool}
+  for +hg: {U32.is_lt(RT_L.xlen_o_l2_ConsolidationRequest(o), 2) == True{} : Bool}
   for +hfit: {Nat.is_le(U32.to_nat(U32.add(RT_L.xlen_o_l2_ConsolidationRequest(o), 1)), SH.ListOf_limit(s)) == True{} : Bool}
   DK.P2({okb(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_append(o, v)) == True{} : Bool}, RT_L.rep_l2_ConsolidationRequest(sq(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_append(o, v)), s))
 def append_rep(o, s, v, k, hk, rep, hlt, hg, hfit):

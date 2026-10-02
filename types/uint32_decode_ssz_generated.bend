@@ -32,3 +32,14 @@ def uint32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   uint32_built(size, u32_ok(buf, 0, size))
 
 def uint32_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u32_read(buf, 0, size)
+
+def uint32_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  match ok:
+    case True{}: uint32_decode(buf, size)
+    case False{}: (buf, None{})
+
+def uint32_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +n) = pair
+  uint32_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def uint32_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint32_dchk(size, B.size(buf))

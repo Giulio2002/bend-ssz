@@ -42,3 +42,14 @@ def SmallTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTes
   SmallTestStruct_built(size, SmallTestStruct_ok(buf, 0, size))
 
 def SmallTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & SmallTestStruct_d.SmallTestStruct: SmallTestStruct_read(buf, 0, size)
+
+def SmallTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+  match ok:
+    case True{}: SmallTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SmallTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+  (buf, +n) = pair
+  SmallTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SmallTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dchk(size, B.size(buf))

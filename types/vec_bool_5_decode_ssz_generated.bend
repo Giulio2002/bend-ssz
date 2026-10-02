@@ -47,3 +47,14 @@ def vec_bool_5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   vec_bool_5_built(size, v5_bool_ok(buf, 0, size))
 
 def vec_bool_5_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_bool_read(buf, 0, size)
+
+def vec_bool_5_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_bool_5_decode(buf, size)
+    case False{}: (buf, None{})
+
+def vec_bool_5_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  vec_bool_5_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def vec_bool_5_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dchk(size, B.size(buf))

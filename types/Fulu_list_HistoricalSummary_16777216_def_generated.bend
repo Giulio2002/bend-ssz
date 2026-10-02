@@ -119,7 +119,7 @@ def l16777216_HistoricalSummary_app_in(ok: Bool, arr: Array<FuluHistoricalSummar
 
 def l16777216_HistoricalSummary_append(o: l16777216_HistoricalSummary_Seq, v: FuluHistoricalSummary_d.HistoricalSummary) -> l16777216_HistoricalSummary_Seq & Bool:
   match o:
-    case l16777216_HistoricalSummary_Seq{arr, +n}: l16777216_HistoricalSummary_app_in(U32.is_le((n + 1 : U32), 16777216), arr, n, v)
+    case l16777216_HistoricalSummary_Seq{arr, +n}: l16777216_HistoricalSummary_app_in(U32.is_lt(n, 16777216), arr, n, v)
 
 type l16777216_HistoricalSummary_Cached is Type:
   l16777216_HistoricalSummary_Cached{items: Array<FuluHistoricalSummary_d.HistoricalSummary>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l16777216_HistoricalSummary_capp_in(ok: Bool, arr: Array<FuluHistoricalSumma
 
 def l16777216_HistoricalSummary_capp(c: l16777216_HistoricalSummary_Cached, v: FuluHistoricalSummary_d.HistoricalSummary) -> l16777216_HistoricalSummary_Cached & Bool:
   match c:
-    case l16777216_HistoricalSummary_Cached{arr, +n, +d, nodes, +lo, +hi}: l16777216_HistoricalSummary_capp_in(U32.is_le((n + 1 : U32), 16777216), arr, n, d, nodes, lo, hi, v)
+    case l16777216_HistoricalSummary_Cached{arr, +n, +d, nodes, +lo, +hi}: l16777216_HistoricalSummary_capp_in(U32.is_lt(n, 16777216), arr, n, d, nodes, lo, hi, v)
 
 def l16777216_HistoricalSummary_ts_store(ts: l16777216_HistoricalSummary_TS, +k: U32, +dg: D.Digest) -> l16777216_HistoricalSummary_TS:
   match ts:

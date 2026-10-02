@@ -119,7 +119,7 @@ def l16_SignedVoluntaryExit_app_in(ok: Bool, arr: Array<FuluSignedVoluntaryExit_
 
 def l16_SignedVoluntaryExit_append(o: l16_SignedVoluntaryExit_Seq, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> l16_SignedVoluntaryExit_Seq & Bool:
   match o:
-    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_app_in(U32.is_le((n + 1 : U32), 16), arr, n, v)
+    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_app_in(U32.is_lt(n, 16), arr, n, v)
 
 type l16_SignedVoluntaryExit_Cached is Type:
   l16_SignedVoluntaryExit_Cached{items: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l16_SignedVoluntaryExit_capp_in(ok: Bool, arr: Array<FuluSignedVoluntaryExit
 
 def l16_SignedVoluntaryExit_capp(c: l16_SignedVoluntaryExit_Cached, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> l16_SignedVoluntaryExit_Cached & Bool:
   match c:
-    case l16_SignedVoluntaryExit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedVoluntaryExit_capp_in(U32.is_le((n + 1 : U32), 16), arr, n, d, nodes, lo, hi, v)
+    case l16_SignedVoluntaryExit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedVoluntaryExit_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
 
 def l16_SignedVoluntaryExit_ts_store(ts: l16_SignedVoluntaryExit_TS, +k: U32, +dg: D.Digest) -> l16_SignedVoluntaryExit_TS:
   match ts:

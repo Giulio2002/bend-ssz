@@ -44,3 +44,14 @@ def BlobIdentifier_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobI
   BlobIdentifier_built(size, BlobIdentifier_ok(buf, 0, size))
 
 def BlobIdentifier_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBlobIdentifier_d.BlobIdentifier: BlobIdentifier_read(buf, 0, size)
+
+def BlobIdentifier_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
+  match ok:
+    case True{}: BlobIdentifier_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BlobIdentifier_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
+  (buf, +n) = pair
+  BlobIdentifier_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BlobIdentifier_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>: BlobIdentifier_dchk(size, B.size(buf))

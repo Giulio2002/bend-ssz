@@ -229,3 +229,14 @@ def ProgressiveComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe
   ProgressiveComplexTestStruct_built(size, ProgressiveComplexTestStruct_ok(buf, 0, size))
 
 def ProgressiveComplexTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct: ProgressiveComplexTestStruct_read(buf, 0, size)
+
+def ProgressiveComplexTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+  match ok:
+    case True{}: ProgressiveComplexTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveComplexTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+  (buf, +n) = pair
+  ProgressiveComplexTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ProgressiveComplexTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dchk(size, B.size(buf))

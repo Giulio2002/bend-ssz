@@ -71,3 +71,14 @@ def CompatibleUnionBC_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Compat
   CompatibleUnionBC_built(size, CompatibleUnionBC_ok(buf, 0, size))
 
 def CompatibleUnionBC_build(buf: B.Buf, +size: U32) -> B.Buf & CompatibleUnionBC_d.CompatibleUnionBC: CompatibleUnionBC_read(buf, 0, size)
+
+def CompatibleUnionBC_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>:
+  match ok:
+    case True{}: CompatibleUnionBC_decode(buf, size)
+    case False{}: (buf, None{})
+
+def CompatibleUnionBC_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>:
+  (buf, +n) = pair
+  CompatibleUnionBC_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def CompatibleUnionBC_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dchk(size, B.size(buf))

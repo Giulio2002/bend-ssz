@@ -51,3 +51,14 @@ def SyncAggregate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAg
   SyncAggregate_built(size, SyncAggregate_ok(buf, 0, size))
 
 def SyncAggregate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncAggregate_d.SyncAggregate: SyncAggregate_read(buf, 0, size)
+
+def SyncAggregate_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+  match ok:
+    case True{}: SyncAggregate_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SyncAggregate_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+  (buf, +n) = pair
+  SyncAggregate_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SyncAggregate_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>: SyncAggregate_dchk(size, B.size(buf))

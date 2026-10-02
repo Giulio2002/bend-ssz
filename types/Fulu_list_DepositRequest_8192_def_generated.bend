@@ -119,7 +119,7 @@ def l8192_DepositRequest_app_in(ok: Bool, arr: Array<FuluDepositRequest_d.Deposi
 
 def l8192_DepositRequest_append(o: l8192_DepositRequest_Seq, v: FuluDepositRequest_d.DepositRequest) -> l8192_DepositRequest_Seq & Bool:
   match o:
-    case l8192_DepositRequest_Seq{arr, +n}: l8192_DepositRequest_app_in(U32.is_le((n + 1 : U32), 8192), arr, n, v)
+    case l8192_DepositRequest_Seq{arr, +n}: l8192_DepositRequest_app_in(U32.is_lt(n, 8192), arr, n, v)
 
 type l8192_DepositRequest_Cached is Type:
   l8192_DepositRequest_Cached{items: Array<FuluDepositRequest_d.DepositRequest>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l8192_DepositRequest_capp_in(ok: Bool, arr: Array<FuluDepositRequest_d.Depos
 
 def l8192_DepositRequest_capp(c: l8192_DepositRequest_Cached, v: FuluDepositRequest_d.DepositRequest) -> l8192_DepositRequest_Cached & Bool:
   match c:
-    case l8192_DepositRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l8192_DepositRequest_capp_in(U32.is_le((n + 1 : U32), 8192), arr, n, d, nodes, lo, hi, v)
+    case l8192_DepositRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l8192_DepositRequest_capp_in(U32.is_lt(n, 8192), arr, n, d, nodes, lo, hi, v)
 
 def l8192_DepositRequest_ts_store(ts: l8192_DepositRequest_TS, +k: U32, +dg: D.Digest) -> l8192_DepositRequest_TS:
   match ts:

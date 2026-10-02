@@ -54,6 +54,6 @@ def bl256_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
 
 def bl256_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  bl256_grow(Bool.and(U32.is_le((n + 1 : U32), 256), U32.is_le(v, 255)), o, n, v)
+  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
 
 def bl256_append(o: O.Words, +v: U32) -> O.Words & Bool: bl256_app_n(v, bl256_len(o))

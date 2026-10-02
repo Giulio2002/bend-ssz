@@ -70,3 +70,14 @@ def LightClientOptimisticUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<
   LightClientOptimisticUpdate_built(size, LightClientOptimisticUpdate_ok(buf, 0, size))
 
 def LightClientOptimisticUpdate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate: LightClientOptimisticUpdate_read(buf, 0, size)
+
+def LightClientOptimisticUpdate_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
+  match ok:
+    case True{}: LightClientOptimisticUpdate_decode(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientOptimisticUpdate_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
+  (buf, +n) = pair
+  LightClientOptimisticUpdate_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def LightClientOptimisticUpdate_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>: LightClientOptimisticUpdate_dchk(size, B.size(buf))

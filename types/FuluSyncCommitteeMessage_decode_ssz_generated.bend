@@ -54,3 +54,14 @@ def SyncCommitteeMessage_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Ful
   SyncCommitteeMessage_built(size, SyncCommitteeMessage_ok(buf, 0, size))
 
 def SyncCommitteeMessage_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncCommitteeMessage_d.SyncCommitteeMessage: SyncCommitteeMessage_read(buf, 0, size)
+
+def SyncCommitteeMessage_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>:
+  match ok:
+    case True{}: SyncCommitteeMessage_decode(buf, size)
+    case False{}: (buf, None{})
+
+def SyncCommitteeMessage_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>:
+  (buf, +n) = pair
+  SyncCommitteeMessage_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def SyncCommitteeMessage_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>: SyncCommitteeMessage_dchk(size, B.size(buf))

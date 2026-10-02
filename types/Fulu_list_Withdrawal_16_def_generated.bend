@@ -119,7 +119,7 @@ def l16_Withdrawal_app_in(ok: Bool, arr: Array<FuluWithdrawal_d.Withdrawal>, +n:
 
 def l16_Withdrawal_append(o: l16_Withdrawal_Seq, v: FuluWithdrawal_d.Withdrawal) -> l16_Withdrawal_Seq & Bool:
   match o:
-    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_app_in(U32.is_le((n + 1 : U32), 16), arr, n, v)
+    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_app_in(U32.is_lt(n, 16), arr, n, v)
 
 type l16_Withdrawal_Cached is Type:
   l16_Withdrawal_Cached{items: Array<FuluWithdrawal_d.Withdrawal>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -178,7 +178,7 @@ def l16_Withdrawal_capp_in(ok: Bool, arr: Array<FuluWithdrawal_d.Withdrawal>, +n
 
 def l16_Withdrawal_capp(c: l16_Withdrawal_Cached, v: FuluWithdrawal_d.Withdrawal) -> l16_Withdrawal_Cached & Bool:
   match c:
-    case l16_Withdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Withdrawal_capp_in(U32.is_le((n + 1 : U32), 16), arr, n, d, nodes, lo, hi, v)
+    case l16_Withdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Withdrawal_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
 
 def l16_Withdrawal_ts_store(ts: l16_Withdrawal_TS, +k: U32, +dg: D.Digest) -> l16_Withdrawal_TS:
   match ts:

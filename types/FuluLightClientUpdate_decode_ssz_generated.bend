@@ -112,3 +112,14 @@ def LightClientUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLi
   LightClientUpdate_built(size, LightClientUpdate_ok(buf, 0, size))
 
 def LightClientUpdate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientUpdate_d.LightClientUpdate: LightClientUpdate_read(buf, 0, size)
+
+def LightClientUpdate_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
+  match ok:
+    case True{}: LightClientUpdate_decode(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientUpdate_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
+  (buf, +n) = pair
+  LightClientUpdate_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def LightClientUpdate_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>: LightClientUpdate_dchk(size, B.size(buf))

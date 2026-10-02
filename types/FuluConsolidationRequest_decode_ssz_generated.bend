@@ -49,3 +49,14 @@ def ConsolidationRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Ful
   ConsolidationRequest_built(size, ConsolidationRequest_ok(buf, 0, size))
 
 def ConsolidationRequest_build(buf: B.Buf, +size: U32) -> B.Buf & FuluConsolidationRequest_d.ConsolidationRequest: ConsolidationRequest_read(buf, 0, size)
+
+def ConsolidationRequest_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+  match ok:
+    case True{}: ConsolidationRequest_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ConsolidationRequest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+  (buf, +n) = pair
+  ConsolidationRequest_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ConsolidationRequest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>: ConsolidationRequest_dchk(size, B.size(buf))

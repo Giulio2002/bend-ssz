@@ -48,6 +48,6 @@ def pbits_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
 
 def pbits_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  pbits_push(True{}, o, v)
+  pbits_push(U32.is_lt(n, 4294967295), o, v)
 
 def pbits_append(o: O.Bits, v: Bool) -> O.Bits & Bool: pbits_app_n(v, O.bits_len(o))

@@ -80,3 +80,14 @@ def Validator_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_
   Validator_built(size, Validator_ok(buf, 0, size))
 
 def Validator_build(buf: B.Buf, +size: U32) -> B.Buf & FuluValidator_d.Validator: Validator_read(buf, 0, size)
+
+def Validator_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+  match ok:
+    case True{}: Validator_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Validator_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+  (buf, +n) = pair
+  Validator_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Validator_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dchk(size, B.size(buf))

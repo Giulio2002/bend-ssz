@@ -60,3 +60,14 @@ def PendingDeposit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendi
   PendingDeposit_built(size, PendingDeposit_ok(buf, 0, size))
 
 def PendingDeposit_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPendingDeposit_d.PendingDeposit: PendingDeposit_read(buf, 0, size)
+
+def PendingDeposit_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>:
+  match ok:
+    case True{}: PendingDeposit_decode(buf, size)
+    case False{}: (buf, None{})
+
+def PendingDeposit_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>:
+  (buf, +n) = pair
+  PendingDeposit_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def PendingDeposit_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>: PendingDeposit_dchk(size, B.size(buf))

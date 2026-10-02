@@ -23,3 +23,14 @@ def Version_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Byt
   Version_built(size, FuluBytes4_r.b4_ok(buf, 0, size))
 
 def Version_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes4_d.Bytes4: FuluBytes4_r.b4_read(buf, 0, size)
+
+def Version_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  match ok:
+    case True{}: Version_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Version_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  (buf, +n) = pair
+  Version_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Version_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dchk(size, B.size(buf))

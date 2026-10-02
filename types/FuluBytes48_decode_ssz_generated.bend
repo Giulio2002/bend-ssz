@@ -81,3 +81,14 @@ def Bytes48_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.By
   Bytes48_built(size, b48_ok(buf, 0, size))
 
 def Bytes48_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: b48_read(buf, 0, size)
+
+def Bytes48_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: Bytes48_decode(buf, size)
+    case False{}: (buf, None{})
+
+def Bytes48_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  Bytes48_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def Bytes48_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: Bytes48_dchk(size, B.size(buf))

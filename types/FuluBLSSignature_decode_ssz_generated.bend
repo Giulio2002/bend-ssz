@@ -23,3 +23,14 @@ def BLSSignature_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96
   BLSSignature_built(size, FuluBytes96_r.b96_ok(buf, 0, size))
 
 def BLSSignature_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes96_d.Bytes96: FuluBytes96_r.b96_read(buf, 0, size)
+
+def BLSSignature_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  match ok:
+    case True{}: BLSSignature_decode(buf, size)
+    case False{}: (buf, None{})
+
+def BLSSignature_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  (buf, +n) = pair
+  BLSSignature_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def BLSSignature_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dchk(size, B.size(buf))

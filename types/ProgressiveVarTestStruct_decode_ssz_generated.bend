@@ -98,3 +98,14 @@ def ProgressiveVarTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
   ProgressiveVarTestStruct_built(size, ProgressiveVarTestStruct_ok(buf, 0, size))
 
 def ProgressiveVarTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveVarTestStruct_d.ProgressiveVarTestStruct: ProgressiveVarTestStruct_read(buf, 0, size)
+
+def ProgressiveVarTestStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+  match ok:
+    case True{}: ProgressiveVarTestStruct_decode(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveVarTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+  (buf, +n) = pair
+  ProgressiveVarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+
+def ProgressiveVarTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>: ProgressiveVarTestStruct_dchk(size, B.size(buf))
