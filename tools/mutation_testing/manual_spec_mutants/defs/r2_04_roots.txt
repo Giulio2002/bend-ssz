@@ -681,8 +681,8 @@ sym: tree
 spec: the empty progressive tree is the zero chunk
 fault: the fuel is one less than the chunk count
 why: fuel off by one
--    case Some{tree(Lists.length(+List<U32>, chunks), 0n, chunks)}
-+    case Some{tree(Nat.sub(Lists.length(+List<U32>, chunks), 1n), 0n, chunks)}
+-Some{tree(Lists.length(+List<U32>, chunks), 0n, chunks)}
++Some{tree(Nat.sub(Lists.length(+List<U32>, chunks), 1n), 0n, chunks)}
 === r2-h10-reference-library
 type: bytelist_256
 ops: root
