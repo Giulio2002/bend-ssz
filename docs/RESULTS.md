@@ -249,6 +249,39 @@ mutants were hidden (4 offsets, 35 `words_ok` siblings, 1 flag, 1 bound) and 5 i
 entry per site), the flag and bound entries are removed, and the rule "a flag is equivalent" requires that the consumers of the flag
 across ALL facades were checked. The 41 are closed with proof laws (`agent/mutfix-hidden`).
 
+**Final passes (budgeted; the loop stops here).** Corrected-key replay: 926 distinct survivors of all earlier rounds (one entry per
+site, the column in the key): 676 now fail the checker, 250 survive, 248 of them proof-equivalent by the rules above and 2 (`is_lt`
+of the `_pwd` alignment guard of `bitvector_16` and `bitvector_33`) survive only on a tree older than the final main: re-checked on the
+final main they are killed (`zpwdcmp_*` laws). Library targets: **e2e** 822 mutants over 215 files, 783 killed, 30 survived (28 inside
+the proof term of a lemma, statement unchanged; 2 statement survivors, `e2e_mw` p1028 `pw(10n)` -> `pw(11n)`, no caller needs the exact
+bound, and `e2e_gvt` v2dD `shrn(8, 2n)` -> `shrn(9, 2n)`, the same value, both shown equivalent by fixer D), 9 too slow. **sha256**
+(sample of 10 files): 36 mutants, 34 killed, 2 survived, both out of scope (a test-vector statement `stream_correct` and the hex
+rendering `hex_digit`). **collections** (167 files): 616 mutants, 604 killed, 11 survived (all inside lemma proof terms), 1 too slow.
+**spec** (33 files, 8 per file, seed 20261016, final main): 232 mutants, 224 killed, **8 survived and I cannot show any of them
+equivalent**: `bit_root.bend:11:35` and `:11:28` (`chunk_limit`, `256n` -> `255n`, `255n` -> `256n`), `bit_root.bend:16:29`
+(`Pack.scan(.., 31n, ..)` -> `30n`), `fulu_schemas.bend:216:42` (Schema110, `2048n` -> `2049n`), `fulu_schemas.bend:26:41`
+(Schema10, `8n` -> `7n`), `root_relation.bend:163:128` (`ProgressiveList` `0n` -> `1n`), `tree.bend:29:35` (`zero_subtree(1n+p)` `1n` -> `2n`),
+`type_legality.bend:63:157` (`127n` -> `128n`). They are **CRITICAL** by the stated rule (not provably equivalent, in code the proofs must
+pin) and are open; the spec pass keeps finding new sites because each draw takes 8 sites per file of a transcription that has
+several hundred constants.
+
+| pass | mutants | killed | survived | critical |
+| --- | --- | --- | --- | --- |
+| codec scope, proof side, rounds 1-8 | about 24,000 (see the table above) | | 0 gaps at round 8 | 0 |
+| codec replay, column key (926) | 926 | 676 | 250 (248 equivalent, 2 killed on the final main) | 0 |
+| collections | 616 | 604 | 11 (proof terms) + 1 too slow | 0 |
+| e2e | 822 | 783 | 30 (28 proof terms, 2 equivalent) + 9 too slow | 0 |
+| sha256 (sample) | 36 | 34 | 2 (out of scope) | 0 |
+| spec (final main) | 232 | 224 | 8 | **8** |
+
+**Final limitations.** (1) 9 e2e mutants exceeded the 120 s budget and are unjudged: `e2e_bbsl.bend:395:50`, `e2e_dbb.bend:153:1175`,
+`e2e_dbk.bend:72:3384` and `:64:210`, `e2e_dpx_tot.bend:60:3293`, `e2e_ml_l16_Deposit.bend:178:273`, `e2e_support.bend:18:87`,
+`e2e_ulist.bend:76:24` and `:78:96`. (2) The exclusion rules were audited independently by sampling and by Bend laws
+(docs/EXCLUSION_AUDIT.md), not for every site. (3) Every equivalence relies on the pinned checker. (4) The hex rendering of the vendored
+SHA-256 and its test-vector statements are out of scope. (5) For the library targets each mutant is checked by the file itself, the two
+smallest direct importers and up to three files that mention the mutated definition: a survivor may be caught by a file outside that
+sample. (6) The passes are samples (4 mutants per file for the libraries, 8 for the spec, 10 files for sha256), not exhaustive.
+
 **Known out-of-scope item: the hex rendering of the vendored SHA-256.** `hex_digit` (`U32.is_lt(x, 10)`) and `hex_word_go`
 (the shift `4n`) in `proofs/crypto/sha/packed/core_model.bend` of bend-collections 1.0.0.0 render a digest as a hex string. No
 law of this repository reaches them (our laws use the byte API and the FIPS 180-4 model, never the hex strings), and the package

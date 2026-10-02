@@ -552,5 +552,105 @@
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",
    "tools/test_schemas.py": "62aed5dc8f832da8afac39c39ded7d66c4d20064cd2aacff6f4cf173c1512bb7"
   }
+ },
+ "final_passes": {
+  "replay_column_key": {
+   "mutants": 926,
+   "killed": 676,
+   "survived": 250,
+   "proof_equivalent": 248,
+   "killed_on_final_main": 2
+  },
+  "e2e": {
+   "mutants": 822,
+   "killed": 783,
+   "survived": 30,
+   "too_slow": 9
+  },
+  "sha256_sample": {
+   "mutants": 36,
+   "killed": 34,
+   "survived": 2,
+   "out_of_scope": 2
+  },
+  "spec": {
+   "mutants": 232,
+   "killed": 224,
+   "survived": 8,
+   "critical": [
+    {
+     "file": "spec/bit_root.bend",
+     "line": 11,
+     "col": 35,
+     "operator": "const-1",
+     "before": "256n",
+     "after": "255n",
+     "def": "chunk_limit"
+    },
+    {
+     "file": "spec/bit_root.bend",
+     "line": 16,
+     "col": 29,
+     "operator": "const-1",
+     "before": "31n",
+     "after": "30n",
+     "def": "chunks"
+    },
+    {
+     "file": "spec/bit_root.bend",
+     "line": 11,
+     "col": 28,
+     "operator": "const+1",
+     "before": "255n",
+     "after": "256n",
+     "def": "chunk_limit"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 216,
+     "col": 42,
+     "operator": "const+1",
+     "before": "2048n",
+     "after": "2049n",
+     "def": "Schema110"
+    },
+    {
+     "file": "spec/fulu_schemas.bend",
+     "line": 26,
+     "col": 41,
+     "operator": "const-1",
+     "before": "8n",
+     "after": "7n",
+     "def": "Schema10"
+    },
+    {
+     "file": "spec/root_relation.bend",
+     "line": 163,
+     "col": 128,
+     "operator": "const+1",
+     "before": "0n",
+     "after": "1n",
+     "def": "roots"
+    },
+    {
+     "file": "spec/tree.bend",
+     "line": 29,
+     "col": 35,
+     "operator": "const+1",
+     "before": "1n",
+     "after": "2n",
+     "def": "tree"
+    },
+    {
+     "file": "spec/type_legality.bend",
+     "line": 63,
+     "col": 157,
+     "operator": "const+1",
+     "before": "127n",
+     "after": "128n",
+     "def": "legal"
+    }
+   ]
+  }
  }
 }
