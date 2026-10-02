@@ -676,7 +676,7 @@
   "before": "1073741824",
   "after": "1073741825",
   "verdict": "KILLABLE",
-  "status": "not equivalent and NOT beyond proof: a Bend law (docs/EXCLUSION_AUDIT.md, tx_valid_refuses_2p30_plus_1) holds for the original and fails for the mutant",
+  "status": "not equivalent and NOT beyond proof: a Bend law (docs/mutation_testing/EXCLUSION_AUDIT.md, tx_valid_refuses_2p30_plus_1) holds for the original and fails for the mutant",
   "witness": "Words{ws, 1073741825} for any ws",
   "closed": "killed by the existing <X>_serialize_vsym on the Transaction facade (statement mismatch); the exclusion is removed"
  }

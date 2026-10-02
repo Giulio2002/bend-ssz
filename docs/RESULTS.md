@@ -213,11 +213,11 @@ was found by both the replay and the fresh draw: 9 distinct gaps): reported size
 arms, one encoder field offset, and a proglist_bool case. Fixer C and fixer D closed them with proof laws (small2, cmp2, cmp3).
 
 **Round 8, the first with no gap.** Replay of the 8 `is_lt` survivors of round 6 and the 9 survivors of round 7: 9 killed (the
-`is_lt` guards now fail the checker: their facades import the `zpwdcmp_*` laws; on the tree where they survived, the facades
+`is_lt` guards now fail the checker: their facades import the `proofs/mutation_coverage/alignment/*_writer_guard` laws; on the tree where they survived, the facades
 imported no comparison law, which is why a replay on the tree of record is the rule), 8 survive, all `is_le`. Fresh round: 2777
 mutants, 2745 killed, 32 survived: 29 proof-equivalent by the rules below and 3 more `is_le` guards. The `is_le` guards
 (`is_eq(pos .&. 3, 0)` -> `is_le(pos .&. 3, 0)`) are **proof-equivalent**: for an unsigned U32, `x <= 0` holds exactly when
-`x == 0`, and the law `le_eq` of `proofs/obj/zpwdcmp_lib.bend` states it; the facade imports that library.
+`x == 0`, and the law `le_eq` of `proofs/mutation_coverage/alignment/writer_guard_library.bend` states it; the facade imports that library.
 
 **Library targets (first pilot, seed 20261009, 10 files per group, 4 mutants per file, 120 s per check, none too slow).** The
 loop also mutates the code the proofs rely on, not only the generated codec files (`--lib collections|e2e|sha256|spec`): each
@@ -243,7 +243,7 @@ leaf wrappers, the len argument of the fixed-size field readers, the proglist de
 `O.is_poisoned` (`(o, 0)` -> `(o, 1)`), `words_ok` / `bits_ok` changes that leave the accepted set unchanged, and the
 vec_bool decoders (one caller passing the literal N). One bound is uncoverable (Transaction 2^30 -> 2^30+1 needs a 2^30+1-byte object). Nothing else is excluded.
 The aligned-or-slow path test `pos .&. 3 == 0` was listed here as open (agreement only at sampled positions: the checker does
-not fold symbolic index terms); it is now **closed by proof** (the cmp_all, cmp_unal and zcmpeq_guard laws: every aligned
+not fold symbolic index terms); it is now **closed by proof** (the cmp_all, cmp_unal and aligned_path_guard laws: every aligned
 position, symbolic, and the unaligned path) and its three variants (`is_lt`, `is_le`, `is_ge` of the `is_eq`) are drawn
 again as a regression guard, as is `out_at(d) -> out_at(d+1)` (killed by the capacity laws).
 

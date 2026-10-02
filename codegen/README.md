@@ -25,7 +25,7 @@ Never run a generator, `--check` or `regen_all` on a laptop: they read the whole
 | `proofs/laws/` | spec-connected codec laws and root laws of the fixed-size and generic names (`spec_laws`, `sub_laws`, `root_laws*`, `valid_laws`, `sha_laws`, `packed_laws`, `fix_reject*`, ...) |
 | `proofs/var/` | codec laws, byte-offset windows and encoder windows of the variable-size names (`var_*`, `encx_*`, `vedge`) |
 | `proofs/collections/` | collection, setter, view and mutation laws (`coll_laws`, `laws`, `rep_laws`, `view_laws`, `e2e_setters`) and the validating serializer (`serialize_e2e`) |
-| `proofs/facades/` | the per-name facades and the coverage gates (`api_facade`, `api_gate`) |
+| `proofs/mutation_coverage/` | the laws that close mutation-testing survivors (`validity_checks`, `buffer_capacity`, `decoder_offsets`, `encoder_constants`, `spec_constants`, ...; layout in `docs/mutation_testing/MUTATION_COVERAGE_LAYOUT.md`) || `proofs/facades/` | the per-name facades and the coverage gates (`api_facade`, `api_gate`) |
 | `proofs/bridges/` | the end-to-end bridges to END_TO_END's model (`e2e_bridge` and the shares it imports: `e2e_var_b`, `e2e_var_c`, `e2e_fix_d`, ...) |
 | `proofs/witnesses/` | non-vacuity witnesses of the bridges and of the collection statements (`e2e_witness`, `coll_witness`) |
 | `proofs/composed/` | the composed object-level theorems and their decoded-object premise providers (`e2e_compose`, `e2e_compose_fixed`, `e2e_decrep`) |

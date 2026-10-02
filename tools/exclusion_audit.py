@@ -8,7 +8,7 @@
     python3 tools/exclusion_audit.py poison                       which serialize defs reach each pk_ok flag, fixed or computed length
     python3 tools/exclusion_audit.py diff-poison DIR              cases.json for the differential run
     python3 tools/exclusion_audit.py run-diff DIR/cases.json      serialize(default) original vs flag 0 -> 1 (runs bend, server only)
-(the words_ok rule's runtime differential is described in docs/EXCLUSION_AUDIT.md)
+(the words_ok rule's runtime differential is described in docs/mutation_testing/EXCLUSION_AUDIT.md)
 
 Run from the repository root (a private tree; never the Mac). Nothing here shares code with
 tests_generated/mutation_equivalence.py: the call parser, the callee resolution (through the file's import

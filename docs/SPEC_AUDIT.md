@@ -253,7 +253,7 @@ file is produced because there is nothing to patch (`spec/` is frozen; a patch w
    computation can reach a 4 GiB value (Bend `Nat` is unary and the programs cannot build one). Only the proofs about
    `N.fits(4n, ...)` fix its behaviour.
 2. **Plain `Union` types.** No Fulu or generic type is a plain `Union`, so no official vector and no object program exercises
-   `T.Union`; the only evidence is the `uni_*` spec-level computations (serialization only) added here; the union legality bounds are pinned by `proofs/obj/specpin_type_legality.bend`.
+   `T.Union`; the only evidence is the `uni_*` spec-level computations (serialization only) added here; the union legality bounds are pinned by `proofs/mutation_coverage/spec/type_legality.bend`.
    The union decoding rejections (bad selector, `None` with payload) are only characterized by the image relation.
 3. **Union selector 127/128 and more than 128 options** (the "should not" rule): exercised by `uni_*` only for serialization.
 4. **Progressive container limits** (256 active fields, `active_fields` ending in 0, count mismatch): legality is a `Type`
@@ -261,7 +261,7 @@ file is produced because there is nothing to patch (`spec/` is frozen; a patch w
    have at most 22 active fields.
 5. **Type legality in general** (`type_legality.legal` is relational): the constants (0 < N, 127, 128, 256, 1..127) are
    checked (table E), the judgement is not evaluated on examples here. The repository's own mutation program
-   (`docs/MUTATION_PROOFS.md` section 8, `codegen/proofs/laws/spec_pins*.py`, `proofs/obj/specpin_*.bend`, present from 14046e6e)
+   (`docs/mutation_testing/MUTATION_PROOFS.md` section 8, `codegen/proofs/mutation_coverage/spec_constants*.py`, `proofs/mutation_coverage/spec/*.bend`, present from 14046e6e)
    closes the other side: it shows which spec literals a proof would notice moving (the 2^32 divisions, `255n`, the pack room
    `31n`, `capacity`, the union bounds 0/127, the sync-committee size, the erase placeholders). This audit did not re-run those
    mutants; it adds the missing half, that each literal equals the reference. Between the two, a spec constant is covered when it
