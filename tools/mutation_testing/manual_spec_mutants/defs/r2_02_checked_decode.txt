@@ -1,0 +1,141 @@
+## ROUND 2, area 2: X_decode_checked (the checked decoder entry added by the crash fixes: the window must lie inside the buffer and below 2^31 bytes)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the window test is size < n (a window that is exactly the buffer is refused)
+why: strict comparison where the window may equal the buffer
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_lt(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the window-inside-buffer test is dropped (a size past the buffer is decoded: out-of-bounds reads)
+why: only the 2^31 bound kept
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(U32.is_lt(size, 2147483648), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is dropped (any size up to the buffer length is decoded)
+why: only the buffer test kept
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(U32.is_le(size, n), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is size <= 2^31 (the 2 GiB window is accepted)
+why: off-by-one in the bound
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_le(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is size < 2^32 - 1 (everything below the U32 maximum is accepted)
+why: bound taken as the U32 range
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 4294967295)), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is size < 2^31 - 1 (the window 2^31 - 1 is refused)
+why: off-by-one in the bound
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483647)), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the two conditions are or-ed (either one accepts)
+why: Bool.and written as Bool.or
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.or(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the buffer test is n <= size (reversed comparison: only windows at least the buffer length pass)
+why: operands swapped
+-  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(n, size), U32.is_lt(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+sym: VarTestStruct_decode_checked,VarTestStruct_dchk,VarTestStruct_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the window-inside-buffer test is dropped
+why: only the 2^31 bound kept
+-  VarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  VarTestStruct_dgo(U32.is_lt(size, 2147483648), buf, size)
+=== r2-d01-decode-checked
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+sym: VarTestStruct_decode_checked,VarTestStruct_dchk,VarTestStruct_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is size <= 2^31
+why: off-by-one in the bound
+-  VarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  VarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_le(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+sym: VarTestStruct_decode_checked,VarTestStruct_dchk,VarTestStruct_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the two conditions are or-ed
+why: Bool.and written as Bool.or
+-  VarTestStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  VarTestStruct_dgo(Bool.or(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r2-d01-decode-checked
+type: bitlist_9
+ops: decode
+file: types/bitlist_9_decode_ssz_generated.bend
+sym: bitlist_9_decode_checked,bitlist_9_dchk,bitlist_9_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the 2^31 bound is dropped
+why: only the buffer test kept
+-  bitlist_9_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  bitlist_9_dgo(U32.is_le(size, n), buf, size)
+=== r2-d01-decode-checked
+type: bitlist_9
+ops: decode
+file: types/bitlist_9_decode_ssz_generated.bend
+sym: bitlist_9_decode_checked,bitlist_9_dchk,bitlist_9_dgo
+spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
+fault: the window-inside-buffer test is dropped
+why: only the 2^31 bound kept
+-  bitlist_9_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
++  bitlist_9_dgo(U32.is_lt(size, 2147483648), buf, size)
+=== r2-d01-decode-checked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_decode_checked,Checkpoint_dchk
+spec: the checked decoder compares the window with the buffer's own size
+fault: the checked entry passes the window size as the buffer size (the comparison is vacuous)
+why: the wrong value is handed to the checker
+-def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, B.size(buf))
++def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, (buf, size))
