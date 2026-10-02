@@ -156,7 +156,6 @@ def facts(c):
     imps = {a: p for p, a in re.findall(r'^import (\S+) as (\w+)', txt, re.M)}
     mo = re.search(r'^def OKT\(\+dw: Nat, \+T: FD\.array__Tree<U32>, \+N: U32\) -> Bool:\n(.*?)\ndef OK\(', txt, re.M | re.S)
     cj = conjuncts(mo.group(1))
-    sch = re.search(r'^def encx_spec\(m, hok\):', txt, re.M)
     ms = re.search(r'^  \{Codec\.parts\(VAL\(m\), (.+?)\) == Some\{\[S\.Variable\{ENC\(m\)\}\]\}', txt, re.M)
     return dict(c=c, imps=imps, cj=cj, schema=ms.group(1), W=imps['W'])
 
@@ -271,7 +270,6 @@ FAM = {
 def base_block(fam):
     f = FAM[fam]
     m = f['m']
-    X = ['x%d' % j for j in range(m)]
     ys = ', '.join('UR.RWN(t, %dn+%s)' % (4 * j, f['Kq']) for j in range(m))
     hj = []
     for j in range(m):
