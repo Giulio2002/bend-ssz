@@ -145,3 +145,42 @@ byte; the 8 MiB list is never formed). Checks in 18 s.
 * **Assembly** (stage 4): `accepts` and the two composed theorems for BeaconState, `o0 := DC.OBJ(...)`. Memory is the open risk: the probe file alone peaks
   at 9.4 GB (the module `var_winx_BeaconState` is 7 GB of it); the file that imports it together with `FuluBeaconState_e2e_comp_generated.bend` and its
   `decrep` must stay under the 12 GB cap of `tools/check.sh`.
+
+## 6. Stages 2 to 4 (done): the premises of the composed theorems at the offsets-only input
+
+`codegen/proofs/witnesses/sym_bs.py` writes five modules for FuluBeaconState (the stage 1 probe of section 5 is dropped: the check module reads the same offsets).
+Each checks on its own; measured on the server **while it was loaded** (load average 30 to 36, 38 `bend` processes of other full checks; the recorded
+quiet costs in `tools/check_costs.tsv` run about 1.3 times lower than the same files measured here: `FuluBeaconState_e2e_dec_generated.bend` 67.5 s recorded, 91 s here).
+
+| module | what it proves | loaded time, peak memory |
+|---|---|---|
+| `e2e_symdec_sk_lib_generated.bend` | zero words, `limbs`/`wlp` round trip, sparse writes `ups(kv, l)` with `ups_nth`, `neq`, `lt_nat`, `lt_pw`, `lt_pw_s`, `succ_nat` | 21 to 25 s, 2.9 GB |
+| `FuluBeaconState_e2e_symdec_sk_generated.bend` | the skeleton input `limbs(ups(kv, ZW(M)))`: its length `hn` (as `A.quad(M) == to_nat(n0)`, no unary number), byte domain `hd`, `wlp(limbs) = sl`, and every word the check reads (13 aligned and unaligned reads, the header's offset, the justification bits) | 71 s, 5.0 GB |
+| `FuluBeaconState_e2e_symdec_chk_generated.bend` | `chk_from_bs`: the window check of FuluBeaconState (the closure of `CHKw`, copied over 12 offset words and 2 child results) holds of the tree of ANY word list holding those words | 80 s, 6.0 GB |
+| `FuluBeaconState_e2e_symdec_hdr_generated.bend` | the two children that read the tree: the justification bits (`FX_bv4.CHK`) and the 584-byte payload header window (`CH7.CHKw`, its offset word) | 78 s, 6.0 GB |
+| `FuluBeaconState_e2e_symdec_asm_generated.bend` | `hchk`, `hS`, `h31`, and `accepts`: the decoder returns `Some{DC.OBJ(...)}` on the skeleton; `hn` and `hd` from the skeleton module | 158 s, 8.3 GB (87 s of it is the imports) |
+
+**The input.** Every list is empty; the payload header has its 584-byte fixed part (its extra_data offset 584) and 3 bytes of extra data, so the length is
+2737812 = 4 * 684453; the 15 words that hold the twelve offsets (the first is the fixed-part size 2737225, the last four the end of the header, 2737812),
+the header's own offset and the justification bits' byte are written over 684453 zero words (`ups(kv, ZW(M))`). The byte list is `F.limbs` of that list.
+No gap length is ever added: `ups_nth` (the word k of a sparse list is its last write, else the base word) is proved once by induction, and each read is
+a lookup on U32 literals (binary).
+
+**What the composed theorem still needs, and what it costs.** `FuluBeaconState_e2e_decode_encode(bs0, n0, o0, hn, hd, hS, h31, dec)` takes exactly the
+facts of the assembly module (`sk_len`, `sk_dom`, `hS`, `h31`, `accepts` with `o0 := DC.OBJ(...)`). Applying it needs `e2e/FuluBeaconState_e2e_comp_generated.bend`,
+which costs 154.6 s on its own (`tools/check_costs.tsv`: comp 154.6, decrep 115, dec 67.5), so a file that applies it cannot be under 120 s whatever it proves;
+the assembly module therefore stops at the premises and restates the three bridge lemmas of the decode module (`ld`, `pfe`, `d_acc`) over the loader and capacity
+modules instead of importing it (that import alone added 80 s). The application is one definition: `COMP.FuluBeaconState_e2e_decode_encode(bs0, 2737812, o0, SK.sk_len(),
+SK.sk_dom(), hS(), h31(), accepts())`, to be added when comp is split.
+
+**The budget.** The assembly's cost is the union of its imports (an import is re-evaluated by every file that has it): the import set alone is 87 s loaded
+(about 65 s quiet), its own proofs (the 15 facts handed to `chk_from_bs` and the bridges) 71 s loaded (about 53 s quiet): about 118 s quiet, at the limit.
+What is already cut: the bound facts (`Nat.is_lt(1n+Q, pow2(20n))`, 4 to 5 s each by `{==}`) are binary (`lt_pw`, `lt_pw_s`); the decode module is not imported (-80 s);
+`h31` is `lt_pw` (22 s by `{==}`).
+
+**Hazards found in these stages (the generator keeps all of them out).**
+4. A closed application such as `EW.O4(t, 0n)` is unfolded by the checker (heads differ, so the rigid comparison fails and both sides are evaluated: 150 s at 2.7M): every
+   lemma about a window module's reads is stated for a variable `x` and applied at `x := 0n` (the instance's type is the substitution).
+5. A Bool function of two unary numbers of 680,000 successors costs 4 to 5 s each; the bounds go through `U32.is_lt` and `lt_nat` (`VB.lt_u32n`).
+6. A sparse write list needs distinctness of indices: `Nat.is_eq` on two such numbers costs 2.3 s; `neq` derives it from the U32 inequality (`u32__injective`).
+7. Termination of a recursion over my own type wants the shrinking argument first (`ups(kv, l)`, not `ups(l, kv)`); a parameter used twice is `+`.

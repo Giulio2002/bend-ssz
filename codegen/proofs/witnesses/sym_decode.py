@@ -383,7 +383,7 @@ def module(name, words):
 # the names whose window module is probed at scale: the copied check and one read per offset over a run-structured word list
 # `ZW(QX(c_k)) ++ [v]` of depth DEPTH (no unary number of the position is ever formed). The reads of all offsets in ONE list need the
 # positions' differences as Nat terms (stage 2).
-PROBES = {'FuluBeaconState': 20}
+PROBES = {}
 
 
 def probe_module(name, depth):
