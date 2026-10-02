@@ -441,7 +441,7 @@ def fix_types():
         if t.fixed():
             add(t)
         else:
-            for fname_, ft in t.fields:
+            for _, ft in t.fields:
                 if ft.fixed():
                     add(ft)
     return fts
