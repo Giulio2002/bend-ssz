@@ -54,7 +54,7 @@ def family_split(u, clo, w):
     """Split an oversized umbrella u = (cost, roots, modules) by root family and size: proofs/gate (and its slop/ folders),
     proofs/slop, proofs/api, proofs/obj, e2e and the rest are checked in separate umbrellas, and a family is cut into
     contiguous slices of its sorted names: about 200 roots per slice (gate, slop, api, obj), e2e in three, the rest
-    (benchmarks) in halves from 10 roots. The cost model (stale standalone times) cannot see which roots are heavy;
+    (benchmarks, mixed leftovers) in halves from 4 roots. The cost model (stale standalone times) cannot see which roots are heavy;
     measured on the ssz server, the 2573-root umbrella (790 s) became parts of 35 to 375 s run side by side, and the
     largest parts (proofs/api 404 s, proofs/gate 397 s, benchmarks 394 s) were halved again to stay under 360 s.
     Roots only move between umbrellas, each stays in exactly one: coverage is unchanged."""
@@ -69,7 +69,7 @@ def family_split(u, clo, w):
     parts = []
     for k, v in sorted(fam.items()):
         v = sorted(v)
-        n = 3 if k == 'e2e' and len(v) > 100 else 2 if k == 'rest' and len(v) >= 10 else max(1, -(-len(v) // 200)) if k != 'rest' else 1
+        n = 3 if k == 'e2e' and len(v) > 100 else 2 if k == 'rest' and len(v) >= 4 else max(1, -(-len(v) // 200)) if k != 'rest' else 1
         parts += [v[i * len(v) // n:(i + 1) * len(v) // n] for i in range(n)]
     if len(parts) < 2:
         return [u]
@@ -88,7 +88,7 @@ def main():
     ap.add_argument('--costs', default='tools/check_costs.tsv')
     ap.add_argument('--out', default='build/umbrellas')
     ap.add_argument('--max-umb', type=float, default=0.0,
-                    help='split an umbrella of 20 or more roots whose estimated seconds exceed this by root family (0: never); a split '
+                    help='split an umbrella of 4 or more roots whose estimated seconds exceed this by root family (0: never); a split '
                          'repeats the imports its parts share, so it pays only for umbrellas that dominate the wall time')
     ap.add_argument('--hist', default='tools/umb_hist.tsv',
                     help='measured wall seconds of earlier umbrellas (first root, seconds); an umbrella whose first root is listed gets '
@@ -181,7 +181,10 @@ def main():
                      # checking them again in an umbrella of their own (an expensive import, e.g. coll_words at ~400 s) would repeat it
         umbs.append((cost, sorted(members), len(have)))
     if a.max_umb > 0:
-        split = [(family_split(u, clo, w) if u[0] > a.max_umb and len(u[1]) >= 20 else [u]) for u in umbs]
+        def again(u, depth=0):
+            g = family_split(u, clo, w) if u[0] > a.max_umb and len(u[1]) >= 4 and depth < 3 else [u]
+            return [x for q in g for x in (again(q, depth + 1) if len(g) > 1 else [q])]
+        split = [again(u) for u in umbs]
         # the parts of a split umbrella first (their estimate is far too low: they ran 200 to 375 s, the largest of the run),
         # the rest by estimate: umb_pool starts umbrellas in file order, longest first
         umbs = [p for g in split if len(g) > 1 for p in sorted(g, key=lambda u: -u[0])] + sorted((g[0] for g in split if len(g) == 1), key=lambda u: -u[0])
