@@ -82,6 +82,29 @@ def law_module(gen, comments, laws, tmod, extra_imports=()):
     return '\n'.join(head + [piece for law in laws for piece in (law, '')])
 
 
+def light_pair(out, text, gen, ok_msg):
+    """--check / write for a generator whose output `out` has a light companion `<stem>_light.bend` that holds the representation defs
+    importers state against (rep_*, wf_*, hview, cnt1, cnt2; codegen/proofs/support/light_split.py). Returns the exit code."""
+    import re
+    from codegen.proofs.support import light_split as LS
+    lout = out.with_name(f'{out.stem}_light.bend')
+    keep = lambda n: re.match(r'(rep|wf)_', n) is not None or n in {'hview', 'cnt1', 'cnt2'}
+    text, ltext = LS.split(text, keep, f'./{lout.name}', f'{gen} (codegen)')
+    text = LS.light(text)
+    ltext = LS.light(ltext) if ltext is not None else None
+    if checking():
+        for path, want in ((lout, ltext), (out, text)):
+            if want is not None and (not path.exists() or path.read_text() != want):
+                print(f'{path} is stale; run codegen/proofs/laws/{gen}.py')
+                return 1
+        print(ok_msg)
+        return 0
+    out.write_text(text)
+    if ltext is not None:
+        lout.write_text(ltext)
+    return 0
+
+
 def finish(out, globs, stale_msg, ok_msg):
     """--check (exit 1 on a stale file or an orphan: a proofs/obj file matching one of `globs` that `out` does not hold) or write
     `out` through the runtime split and delete the orphans. Returns True when it wrote."""
