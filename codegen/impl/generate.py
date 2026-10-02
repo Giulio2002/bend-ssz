@@ -2598,6 +2598,38 @@ def prog_segments(nchunks):
         k += 1
 
 
+def emit_root_chain(w, p, R, F, names, steps, rtype, bname, call, last):
+    """The chain of <p>_rt<k> helpers that fold the field roots one at a time (each takes the fields not yet hashed and the digests so
+    far), and <p>_root, which starts it. `last()` writes the body of the final helper; `bname(step)` names a step's digest and
+    `call(step)` hashes the field (or zero level) the step stands for."""
+    for k in range(len(steps) - 1, -1, -1):
+        st = steps[k]
+        params = []
+        for i2, (f, fs) in enumerate(F):
+            if st[0] == 'f' and i2 == st[1] and not fs.data:
+                continue
+            params.append(f'{plus(fs)}{f}: {fs.rep}')
+        params += [f'{bname(x)}: D.Digest' for x in steps[:k]]
+        if st[0] == 'f' and not F[st[1]][1].data:
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
+            w('  (h, r) = pair')
+            w(f'  ({names[st[1]]}, {bname(st)}) = r')
+        else:
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
+            w(f'  (h, {bname(st)}) = pair')
+        if k == len(steps) - 1:
+            last()
+            continue
+        nst = steps[k + 1]
+        held = [f for i2, (f, fs) in enumerate(F) if not (nst[0] == 'f' and i2 == nst[1] and not fs.data)]
+        done = [bname(x) for x in steps[:k + 1]]
+        w(f'  {p}_rt{k + 1}(' + ', '.join(['hl', 'seg'] + held + done + [call(nst)]) + ')')
+    pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
+    held0 = [f for i2, (f, fs) in enumerate(F) if not (i2 == 0 and not fs.data)]
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
+    w('  match o:')
+    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
+
 def emit_pcontainer_root(s, w, p, R, F, data):
     """Root of a progressive container: its fields sit at their active
     positions of a progressive chunk tree, every inactive position is a zero
@@ -2669,35 +2701,12 @@ def emit_pcontainer_root(s, w, p, R, F, data):
         w(f'  (h, O.mix_len(hl, {body}, {mask}))')
     else:
         w(f'  (h, ({R}{{' + ', '.join(names) + f'}}, O.mix_len(hl, {body}, {mask})))')
-    for k in range(len(steps) - 1, -1, -1):
-        st = steps[k]
-        params = []
-        for i2, (f, fs) in enumerate(F):
-            if st[0] == 'f' and i2 == st[1] and not fs.data:
-                continue
-            params.append(f'{plus(fs)}{f}: {fs.rep}')
-        params += [f'{bname(x)}: D.Digest' for x in steps[:k]]
-        if st[0] == 'f' and not F[st[1]][1].data:
-            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
-            w('  (h, r) = pair')
-            w(f'  ({names[st[1]]}, {bname(st)}) = r')
-        else:
-            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
-            w(f'  (h, {bname(st)}) = pair')
-        if k == len(steps) - 1:
-            # The final combination uses each zero digest several times, so it
-            # lives in one helper whose digest parameters are duplicable.
-            w(f'  {p}_fin(' + ', '.join(['hl'] + [bname(x) for x in steps] + ['h'] + names) + ')')
-            continue
-        nst = steps[k + 1]
-        held = [f for i2, (f, fs) in enumerate(F) if not (nst[0] == 'f' and i2 == nst[1] and not fs.data)]
-        done = [bname(x) for x in steps[:k + 1]]
-        w(f'  {p}_rt{k + 1}(' + ', '.join(['hl', 'seg'] + held + done + [call(nst)]) + ')')
-    pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
-    held0 = [f for i2, (f, fs) in enumerate(F) if not (i2 == 0 and not fs.data)]
-    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
-    w('  match o:')
-    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
+    def last():
+        # The final combination uses each zero digest several times, so it
+        # lives in one helper whose digest parameters are duplicable.
+        w(f'  {p}_fin(' + ', '.join(['hl'] + [bname(x) for x in steps] + ['h'] + names) + ')')
+
+    emit_root_chain(w, p, R, F, names, steps, rtype, bname, call, last)
 
 
 def emit_fieldset_root(s, w, p, R, F, mode, data):
@@ -2743,36 +2752,13 @@ def emit_fieldset_root(s, w, p, R, F, mode, data):
             lv += 1
         return level[0]
 
-    for k in range(len(steps) - 1, -1, -1):
-        st = steps[k]
-        params = []
-        for i2, (f, fs) in enumerate(F):
-            if st[0] == 'f' and i2 == st[1] and not fs.data:
-                continue
-            params.append(f'{plus(fs)}{f}: {fs.rep}')
-        params += [f'{bname(x)}: D.Digest' for x in steps[:k]]
-        if st[0] == 'f' and not F[st[1]][1].data:
-            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
-            w('  (h, r) = pair')
-            w(f'  ({names[st[1]]}, {bname(st)}) = r')
+    def last():
+        if data:
+            w(f'  (h, {combine()})')
         else:
-            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
-            w(f'  (h, {bname(st)}) = pair')
-        if k == len(steps) - 1:
-            if data:
-                w(f'  (h, {combine()})')
-            else:
-                w(f'  (h, ({R}{{' + ', '.join(names) + f'}}, {combine()}))')
-            continue
-        nst = steps[k + 1]
-        held = [f for i2, (f, fs) in enumerate(F) if not (nst[0] == 'f' and i2 == nst[1] and not fs.data)]
-        done = [bname(x) for x in steps[:k + 1]]
-        w(f'  {p}_rt{k + 1}(' + ', '.join(['hl', 'seg'] + held + done + [call(nst)]) + ')')
-    pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
-    held0 = [f for i2, (f, fs) in enumerate(F) if not (i2 == 0 and not fs.data)]
-    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
-    w('  match o:')
-    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
+            w(f'  (h, ({R}{{' + ', '.join(names) + f'}}, {combine()}))')
+
+    emit_root_chain(w, p, R, F, names, steps, rtype, bname, call, last)
 
 
 def emit_group_force(g, w):
