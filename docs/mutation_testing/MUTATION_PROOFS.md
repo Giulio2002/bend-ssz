@@ -240,3 +240,20 @@ The auditor mutated every numeric site of the 32 spec files, +1 and -1 (1049 mut
 * Equivalent, with the proof: the progressive aggregate limit at `root_relation` 143:52, 163:128 and `root_relation_serializable` 44:54, 64:181. `roots` at ProgressiveBits / ProgressiveList equals `aggregate` / `sequence` at any limit `a` (modules `root_relation`, `root_relation_serializable`); the lemmas still check with the mutant applied.
 
 Re-run on private copies against the modules in their place: 27 fail with a statement mismatch (or a type error for the inhabitant laws), 4 are the equivalent sites above.
+
+## Manual spec-mutation audit, round 1 (container validity, packed booleans, bit padding, first offset)
+
+Fixers: `codegen/proofs/slop/container_field_validity.py`, `packed_boolean_validity.py`, `bit_padding_validity.py`, `first_offset_check.py`
+(modules `proofs/slop/validity/*_fields|_booleans|_bits_generated.bend`, `proofs/slop/offsets/*_first_offset_generated.bend`). Public counterexample first.
+
+| fault | public counterexample | law | result |
+|---|---|---|---|
+| c02/05, c06/03, c06/04, c06/05 (a container's validity drops a field's check) | `T.SmallTestStruct_serialize(T.SmallTestStruct{70000, 1})` (the constructor; the checked setter refuses, its `_go` body and the constructor do not) | `<X>_serialize_vfields` (symbolic, built from the schema) and `<X>_serialize_vreject_<field>` for the 8 containers with a uint8/uint16 field | killed (statement mismatch) |
+| b04/01 (packed boolean mask 0xFCFCFCFC) | `T.vec_bool_5_serialize(O.Words{ws, 5})` with a byte 2 in a storage word (the representation's own constructor; the setters take Bool) | `<X>_serialize_vbool_ok` and `_vbool_<v>_at_<j>` for v in 2, 4, 128 on every byte position, the last byte and byte 4 | killed on vec_bool_5, vec_bool_16, proglist_bool |
+| bv03/02 (`bits_above_zero` entry 5) | `T.bitlist_5_serialize(O.Bits{[32], 5})` | `<X>_serialize_vbits_table_<r>`, r = 0..31, each the 32-term conjunction over every bit | killed on bitlist_5; equivalent on bitvector_5 (its validity is `is_lt(w0, 32)`, the table is not in its call graph) |
+| s01/01 (`(n + 7) >> 3` wraps) | `T.progbitlist_hash_tree_root(h, O.Bits{ws, 4294967295})` (bounded lists: outside the type) | `<X>_vbits_nbytes` (root facade) and `<X>_serialize_vbits_nbytes` at the edges of the U32 range | killed on bitlist_513 and progbitlist roots |
+| c03/05 (first offset `>= 71`) | `T.ComplexTestStruct_decode` of bytes whose first offset is 73 or 75 | `<X>_decode_first_offset`, symbolic in buffer, position, length and offset (H and the position from the schema), its own decode facade kind checked first (a mutant that changes other decode laws overflowed the checker before reaching it) | killed |
+| f03/06 (`bv64_ok` accepts len >= 8) | none: `bv64_ok` is referenced only by its own definition and `types/runtime_index.json`; `Fulu_bitvector_64` is not an API name and the Attestation decoder reads committee_bits by `bv64_read(.., 8)` | none | dead code, equivalent |
+
+Limitation: the bit-list names without a `_serialize` entry (bitlist_256, 257, 1280, 1281, the Fulu bit lists, bitvector_1281) have no table law on their own facades.
+The audit's own killer of bv03/02 is `proofs/obj/bitz.bend` `bz_5`, which no facade imports; the table laws on the 19 bit-list facades with a `_serialize` entry are the facade-level pin.
