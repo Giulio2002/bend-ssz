@@ -201,6 +201,24 @@ def big(name, cm, cp, pe, ceonc, croncl, objr, decr, encr, tmod, dflt, de, dr):
             pr = f'{OLa}.okb_b({exprs[j]}, {conj(j + 1)}, {pr})'
         pf = pr if i == len(exprs) - 1 else f'{OLa}.okb_a({exprs[i]}, {conj(i + 1)}, {pr})'
         defs.append(f'def {name}_dwh_{["hc", "hs", "hd", "hk"][i]}({BN}, +h: {{{ok}(bs, n) == True{{}} : Bool}}) -> {{{e} == True{{}} : Bool}}:\n  {pf}')
+    # the four statements, once, symbolic in (bs, n): the witness files apply these lemmas at the input, so the heavy input term is only
+    # an argument, never inside a statement the checker has to build and compare more than once
+    CPa, DBa = c.alias(cp), c.alias(DBp)
+    OBJT = c.lift(cm, objr)
+    ov = sub_bn(c.lift(dm, OBJ_TXT), 'bs', 'n')
+    dec_v = f'Pair.snd({BA}.Buf, Maybe<&1, {OBJT}>, ' + c.lift(cm, decr) + ')'
+    HNT = '{List.length(&2, U32, bs) == U32.to_nat(n) : Nat}'
+    hx = {k: f'{name}_dwh_{k}(bs, n, h)' for k in ('hc', 'hs', 'hd', 'hk')}
+    sig = f'({BN}, +h: {{{ok}(bs, n) == True{{}} : Bool}}, +hn: {HNT})'
+    ACCV = f'{name}_dwh_acc(bs, n, h, hn)'
+    defs.append(f'def {name}_dwh_acc{sig} -> {{{dec_v} == Some{{{ov}}} : Maybe<&1, {OBJT}>}}:\n  {DBa}.d_acc(bs, n, hn, {hx["hd"]}, {hx["hs"]}, {hx["hk"]})')
+    defs.append(f'def {name}_dwh_wit{sig} -> {{{CPa}.isS({dec_v}) == True{{}} : Bool}}:\n'
+                f'  %Equal.sym(Maybe<&1, {OBJT}>, {dec_v}, Some{{{ov}}}, {ACCV}) : {{{CPa}.isS(_) == True{{}} : Bool}}\n  {{==}}')
+    for tag, law, concl in (('enc', de, ceonc), ('root', dr, croncl)):
+        c2 = inst(c, concl, {'bs': 'bs', 'n': 'n', 'o': ov})
+        c2 = re.sub(r'(?<![\w.])h(?=[),])', f'{BA}.alloc(0)', c2)
+        args = ([f'{BA}.alloc(0)'] if tag == 'root' else []) + ['bs', 'n', ov, 'hn', hx['hd'], hx['hs'], ACCV]
+        defs.append(f'def {name}_dwh_{tag}{sig} -> {c2}:\n  {CPa}.{law}({", ".join(args)})')
     defs.append(f'def {name}_dwh_all() -> {{{ok}({bs}, {nn}) == True{{}} : Bool}}:\n  {{==}}')
     out[P['all']] = fin(c, '\n\n'.join(defs), f'{name}: the four costly hypotheses of the witness (size side conditions, size bound, bytes below 256, window check), proved together by one evaluation of the input.')
     # the witness file
@@ -213,17 +231,15 @@ def big(name, cm, cp, pe, ceonc, croncl, objr, decr, encr, tmod, dflt, de, dr):
     OBJT = c.lift(cm, objr)
     dec0 = f'Pair.snd({BA}.Buf, Maybe<&1, {OBJT}>, ' + re.sub(r'(?<![\w.])(bs|n)(?![\w.])', lambda m: sub[m.group(1)], c.lift(cm, decr)) + ')'
     HN = f'{OLa}.obl_buf({buf}, {HC})'
-    ACC = f'{name}_e2e_decode_witness_acc()'
+    ARGS = f'{bs}, {nn}, {ALL}.{name}_dwh_all(), {HN}'
     defs = [
-        f'def {name}_e2e_decode_witness_acc() -> {{{dec0} == Some{{{o}}} : Maybe<&1, {OBJT}>}}:\n  {DBa}.d_acc({bs}, {nn}, {HN}, {HD}, {HS}, {HK})',
-        f'def {name}_e2e_decode_witness() -> {{{CPa}.isS({dec0}) == True{{}} : Bool}}:\n'
-        f'  %Equal.sym(Maybe<&1, {OBJT}>, {dec0}, Some{{{o}}}, {ACC}) : {{{CPa}.isS(_) == True{{}} : Bool}}\n  {{==}}',
+        f'def {name}_e2e_decode_witness_acc() -> {{{dec0} == Some{{{o}}} : Maybe<&1, {OBJT}>}}:\n  {ALL}.{name}_dwh_acc({ARGS})',
+        f'def {name}_e2e_decode_witness() -> {{{CPa}.isS({dec0}) == True{{}} : Bool}}:\n  {ALL}.{name}_dwh_wit({ARGS})',
     ]
     for tag, law, concl in (('encode', de, ceonc), ('root', dr, croncl)):
         c2 = inst(c, concl, sub)
         c2 = re.sub(r'(?<![\w.])h(?=[),])', f'{BA}.alloc(0)', c2)
-        args = ([f'{BA}.alloc(0)'] if tag == 'root' else []) + [bs, nn, o, HN, HD, HS, ACC]
-        defs.append(f'def {name}_e2e_decode_witness_{tag}() -> {c2}:\n  {CPa}.{law}({", ".join(args)})')
+        defs.append(f'def {name}_e2e_decode_witness_{tag}() -> {c2}:\n  {ALL}.{name}_dwh_{"enc" if tag == "encode" else "root"}({ARGS})')
     what = f'{name}: the decoder accepts the encoding of the default object (the window check, by evaluation in the hypothesis modules; hn by the length lemma), and the composed theorems apply at that input.'
     if name in SPLIT:
         out[E2E / f'{name}_e2e_decode_witness_generated.bend'] = fin(c, '\n\n'.join(defs[:2]), what)
