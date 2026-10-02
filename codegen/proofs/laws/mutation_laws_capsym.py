@@ -31,11 +31,10 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 
 from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import finish, per_name  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_senc_(?:out|put))\((\w+)_putk\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
@@ -105,23 +104,9 @@ def module(tmod, X, laws):
 
 
 def main():
-    out, cnt, seen = {}, [], set()
-    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
-        laws = name_laws(runtime)
-        n = 0
-        for X, ls in laws.items():
-            if X in seen:
-                continue
-            seen.add(X)
-            out[ROOT / f'proofs/obj/zcapsym_{X}.bend'] = module(tmod, X, ls)
-            n += len(ls)
-        cnt.append(n)
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('zcapsym_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale capsym laws: ', 'capsym laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{cnt} laws; depth differs from the size-derived one: {MISMATCH}')
+    out, cnt = per_name(name_laws, module, 'zcapsym')
+    if finish(out, ('zcapsym_*.bend',), 'stale capsym laws: ', 'capsym laws are current'):
+        print(f'{cnt} laws; depth differs from the size-derived one: {MISMATCH}')
 
 
 if __name__ == '__main__':
