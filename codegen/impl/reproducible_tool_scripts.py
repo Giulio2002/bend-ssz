@@ -34,6 +34,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from codegen.core import generated_names  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 SKIP_DIRS = {'.git', 'build', 'node_modules', '__pycache__'}
 ONE_SHOT = {
@@ -84,7 +85,8 @@ def check(verbose):
     tmp = tempfile.mkdtemp(prefix='toolgen-')
     try:
         work = os.path.join(tmp, 'tree')
-        shutil.copytree(ROOT, work, symlinks=True, ignore=lambda d, fs: [f for f in fs if f in SKIP_DIRS])
+        with generated_names.raw():     # the tools read and write the real names on disk
+            shutil.copytree(ROOT, work, symlinks=True, ignore=lambda d, fs: [f for f in fs if f in SKIP_DIRS])
         for g in reproducible():
             before = snapshot(work)
             r = run(g, work)

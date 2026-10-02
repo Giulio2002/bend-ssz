@@ -49,6 +49,14 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCK = os.path.join(ROOT, 'frozen.lock.json')
+
+# The statement files are found by the stem names the generators use (codegen/docs/end_to_end_statement_list.py), and the lock names them
+# so: this tool reads the tree through the view of codegen/core/generated_names.py (generated files without the `_generated` suffix of
+# their names on disk, import lines of renamed files in their stem form). The hashes are of the statements, which the suffix does not touch.
+sys.path.insert(0, ROOT)
+from codegen.core import generated_names  # noqa: E402
+
+generated_names.install()
 ROOTS = ['END_TO_END.bend', 'ROOT_DOMAIN.bend', 'PROOF.bend', 'HASH_PROOF.bend']
 
 
