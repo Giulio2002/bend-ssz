@@ -4,7 +4,7 @@ mutation groups `offset` and `reported-size` that no earlier statement noticed (
 
     python3 codegen/proofs/mutation_coverage/decoder_offsets.py [--check]
 
-Per name X, proofs/mutation_coverage/offsets/<X>.bend holds (kind `decode_offsets` of api_gate, filed in the
+Per name X, proofs/mutation_coverage/offsets/<X>.bend holds (kind `decode_offsets` of object_api_coverage_gate, filed in the
 name's decode facade):
 
   <X>_decode_build(buf, size, b2, e: {P_ok(buf, 0, size) == (b2, True{})})
@@ -29,7 +29,7 @@ match form (Deposit, ProposerSlashing, ...; the literal boxed form is reported_s
       absent element counts 0 (the encoder's size of such a container is not a literal, so it cannot be the
       right-hand side; the literal-boxed form of reported_size_and_vector_bound.py compares with the encoder).
 
-By computation / one rewrite per field; named so that api_gate files them under `decode_offsets` and `encoded_size`.
+By computation / one rewrite per field; named so that object_api_coverage_gate files them under `decode_offsets` and `encoded_size`.
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -37,14 +37,14 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core import schema  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core import fulu_schema_loader as schema  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import generate as G  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
-from codegen.proofs.laws import root_laws_generic as RG  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
+from codegen.impl import typed_object_runtime as G  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
+from codegen.proofs.laws import generic_form_root_laws as RG  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
 
 DEC = re.compile(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\) -> [^\n]*\n  \1_built\(size, (\w+)_ok\(buf, 0, size\)\)$', re.M)
 BUILD = re.compile(r'^def (\w+)_build\(buf: B\.Buf, \+size: U32\) -> B\.Buf & ([^\n]+?): (\w+)_read\(buf, 0, size\)$', re.M)

@@ -12,7 +12,7 @@ proofs/mutation_coverage/<group>/<name>.bend, one group directory per kind of ga
     spec         the constants of the frozen specification that no other law reaches
 
 Several generators may write into one group directory: an orphan is a file of the directory whose header names the generator
-that is checking (core/writer.py `owner`), so one generator never deletes another's file.
+that is checking (core/generated_file_writer.py `owner`), so one generator never deletes another's file.
 
 A generator writes the text of a module as if it lived in proofs/obj (`import ../../src/obj.bend`, `import ./arr_copy.bend`);
 `rebase` moves the imports to the module's real place, one directory deeper. A `./` import of a file the generator writes
@@ -21,8 +21,8 @@ into the same directory stays `./`.
 import re
 from pathlib import Path
 
-from codegen.core import writer
-from codegen.core.paths import ROOT
+from codegen.core import generated_file_writer as writer
+from codegen.core.repository_paths import ROOT
 
 PROOFS = ROOT / 'proofs'
 MUTATION_COVERAGE = PROOFS / 'mutation_coverage'

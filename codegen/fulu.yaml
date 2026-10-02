@@ -1,12 +1,12 @@
-# Mainnet Fulu SSZ schema: generator input for codegen/generate.py.
+# Mainnet Fulu SSZ schema: generator input for codegen/typed_object_runtime.py.
 # Notation follows the consensus specs. Derived from the pinned pyspec
 # vendor/consensus-specs/fulu_mainnet.py (a one-time bootstrap) and
-# checked against the frozen schemas/fulu_mainnet.json by codegen/check_schema.py.
+# checked against the frozen schemas/fulu_mainnet.json by codegen/fulu_schema_inventory_check.py.
 # Type expressions: boolean, uintN, BytesN, ByteVector[N], ByteList[N],
 # Bitvector[N], Bitlist[N], Vector[T, N], List[T, N], or a type name; N is
 # an integer, a constant, or +, -, *, exact //, parentheses and floorlog2(...).
 # prefix: the hardfork's name, prepended to its type names in the readable API names
-# (codegen/names.py; the fork-independent basic types boolean, uintN stay unprefixed).
+# (codegen/readable_type_names.py; the fork-independent basic types boolean, uintN stay unprefixed).
 prefix: Fulu
 constants:
   BYTES_PER_FIELD_ELEMENT: 32

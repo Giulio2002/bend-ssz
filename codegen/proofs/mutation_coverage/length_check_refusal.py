@@ -10,11 +10,11 @@ test is always true, so the refusing branch of `P_ok_len` is never reached throu
 `U32.div(x, 1) == x`, which the checker does not fold for a symbolic x). It is a definition of its own, so its refusal
 is pinned directly:
 
-proofs/mutation_coverage/validity/<X>_length_refusal.bend (one module per name whose decoder has that check; api_gate reads it after the name's own proving files):
+proofs/mutation_coverage/validity/<X>_length_refusal.bend (one module per name whose decoder has that check; object_api_coverage_gate reads it after the name's own proving files):
 
   <X>_okf_len(buf, off, len) : {T.P_ok_len(False{}, buf, off, len) == (buf, False{}) : B.Buf & Bool}
 
-by computation. A check that accepts what it was told is false fails this statement. Named so that api_gate files it
+by computation. A check that accepts what it was told is false fails this statement. Named so that object_api_coverage_gate files it
 under ok_eval (the decode facade).
 """
 import sys as _sys
@@ -23,9 +23,9 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 
 def name_laws(runtime):

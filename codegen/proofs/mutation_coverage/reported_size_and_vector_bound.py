@@ -21,7 +21,7 @@ proofs/mutation_coverage/size/size_and_bound_<fulu|generic>.bend holds
       bound: a check that refuses N bytes would pass `_over` and fail here). The statements
       that existed pinned the accepted length (`hvo`, `valid_default`) but not the first refused one.
 
-Both are by computation. They are named so that api_gate files them under encoded_size and serialize_valid, so
+Both are by computation. They are named so that object_api_coverage_gate files them under encoded_size and serialize_valid, so
 they reach each name's proofs/api/<X>_encode_ssz_proof_generated.bend (which tools/check.sh and the mutation
 harness check).
 """
@@ -31,11 +31,11 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import RUNTIMES  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
 IN_MAX = 4096  # bytes: `_in` computes the whole encoding (Blob's 131072 bytes did not check in 600 s)
 BX = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+)>\) -> [^\n]*: \(o, (\d+)\)$', re.M)

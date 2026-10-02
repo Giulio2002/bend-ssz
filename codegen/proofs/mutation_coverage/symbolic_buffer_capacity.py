@@ -22,9 +22,9 @@ encoded size (ceil(N / 4) words, N the literal size the definition itself report
 array in the stuck term and so the statement's value; no write loop is evaluated, so the cost is independent of the
 size of the name (1 s for Blob).
 
-Named so that api_gate files them under serialize_valid and encode_eval: they land in the name's encode facade. The
-api_gate scans proofs/mutation_coverage after proofs/obj, so these modules come after every other proving file of encode_eval: a facade's first proving import stays
-the name's own spec/encx file (e2e_var_b/e2e_var_c read it as P0). Consequence: a facade that holds a heavy statement
+Named so that object_api_coverage_gate files them under serialize_valid and encode_eval: they land in the name's encode facade. The
+object_api_coverage_gate scans proofs/mutation_coverage after proofs/obj, so these modules come after every other proving file of encode_eval: a facade's first proving import stays
+the name's own spec/encx file (block_and_light_client_bridges/test_struct_and_union_bridges read it as P0). Consequence: a facade that holds a heavy statement
 before this law (LightClientBootstrap_encode) still evaluates it first on a mutant.
 """
 import sys as _sys
@@ -33,10 +33,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_senc_(?:out|put))\((\w+)_putk\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)
 ENC = re.compile(r'^def (\w+)_encode\(o: ([\w.]+)\) -> ([^\n:]*): (\w+_enc_(?:out|put))\((\w+_putn?)\(O\.out_at\((\d+)n\), 0, o\)\)$', re.M)

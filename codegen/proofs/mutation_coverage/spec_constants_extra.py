@@ -22,9 +22,9 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
 
 H = writer.header("spec_constants_extra")
 

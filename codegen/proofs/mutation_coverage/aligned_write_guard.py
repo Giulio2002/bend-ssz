@@ -28,7 +28,7 @@ always. Together: a guard `is_le` is the original guard on every position; a gua
 writer, which by `<X>_cmp_all` agrees with the chain on every aligned position and is what the original does on the
 others; neither changes the result of `X_put`.
 
-Named so that api_gate files them under encode_eval; api_gate reads the mutation-coverage modules after the name's own
+Named so that object_api_coverage_gate files them under encode_eval; object_api_coverage_gate reads the mutation-coverage modules after the name's own
 proving files (a facade's first proving import must stay the spec/encx file).
 """
 import sys as _sys
@@ -37,10 +37,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 
 def log2ceil(w):

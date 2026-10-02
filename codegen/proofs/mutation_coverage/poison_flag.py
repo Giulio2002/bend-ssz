@@ -12,7 +12,7 @@ proofs/mutation_coverage/validity/<runtime>_<X>_poison_flag.bend (one file per n
 
   <X>_serialize_vflag(out, o) : {T.P_pk_ok((out, o)) == (out, (o, 0))}
 
-for every storage `out` and object `o`: a valid object reports the flag 0. By computation. Named so that api_gate files it
+for every storage `out` and object `o`: a valid object reports the flag 0. By computation. Named so that object_api_coverage_gate files it
 under serialize_valid, in the name's own encode facade, which is where a mutant of that file is re-checked.
 """
 import sys as _sys
@@ -21,10 +21,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core.shared_laws import RUNTIMES  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 SER = re.compile(r'^def (\w+)_serialize\(o: O\.Words\) -> [^\n]*: ([^\n]*)$', re.M)
 

@@ -19,7 +19,7 @@ proofs/mutation_coverage/capacity/<X>.bend (one module per name) holds, for ever
       or larger capacity than the encoder's changes the array and so the statement's value. The words written are
       zero, so this pins the capacity, not the contents (those are the encoder's statements).
 
-Named so that api_gate files it under serialize_valid: it lands in the name's encode facade.
+Named so that object_api_coverage_gate files it under serialize_valid: it lands in the name's encode facade.
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -27,10 +27,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
 MAX_DEPTH = 10  # a default whose encoder buffer has more than 2^10 words costs 75 s (SyncCommittee, 2^13) to 160+ s (LightClientUpdate) to check, Blob (2^15) over 600 s
 

@@ -3,7 +3,7 @@ import ast
 import re
 import unittest
 
-from codegen.core.paths import CODEGEN, ROOT
+from codegen.core.repository_paths import CODEGEN, ROOT
 
 
 def modules():
@@ -92,7 +92,7 @@ class ImportTest(unittest.TestCase):
     def test_roots_come_from_core_paths_or_are_depth_correct(self):
         bad = []
         for p in modules():
-            if p.name in ('paths.py', 'test_imports.py'):
+            if p.name in ('repository_paths.py', 'test_imports.py'):
                 continue
             depth = len(p.relative_to(CODEGEN).parts)
             for i, line in enumerate(p.read_text().splitlines(), 1):

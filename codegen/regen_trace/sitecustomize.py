@@ -1,4 +1,4 @@
-"""Read/write tracer for codegen/regen_touched.py (loaded as sitecustomize through PYTHONPATH, only when
+"""Read/write tracer for codegen/regenerate_touched.py (loaded as sitecustomize through PYTHONPATH, only when
 REGEN_TRACE names a directory). Every python process of a traced generator run (the generator and any python
 child it starts) appends a JSON file <REGEN_TRACE>/<pid>.json at exit:
   {"files": {relpath: sha256 or null}, "dirs": {relpath: sha256 of the sorted listing}, "changed": [written files

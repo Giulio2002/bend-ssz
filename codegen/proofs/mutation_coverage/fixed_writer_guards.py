@@ -23,7 +23,7 @@
        {T.X_rd1(False{}, s, buf, off, len) == T.X_rw0(T.P_read(buf, (off + 1 : U32), (len - 1 : U32))) : ..}
    (the payload of the fall-through arm has no seed: write_start_and_sizes.py's witnesses skip it).
 
-Named so that api_gate files them (encode_eval for 1 and 2, ok_eval for 3); the modules are z-prefixed so that they sort
+Named so that object_api_coverage_gate files them (encode_eval for 1 and 2, ok_eval for 3); the modules are z-prefixed so that they sort
 after the name's own proving files.
 """
 import sys as _sys
@@ -32,11 +32,11 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
 MAX_DEPTH = 10
 

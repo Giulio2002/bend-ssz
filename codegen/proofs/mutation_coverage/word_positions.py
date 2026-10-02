@@ -27,7 +27,7 @@ names that have the form:
   <X>_arith_dec     the decoder of a multi-word byte vector reading a buffer four times as large as the value
                     returns the value (the read of word k is `off + 4k`).
 
-All are by computation. The names start with `<X>_arith_` so that api_gate files them (encode_eval for the
+All are by computation. The names start with `<X>_arith_` so that object_api_coverage_gate files them (encode_eval for the
 writers, decode_accept for the decoder) and they land in the name's own facade.
 """
 import sys as _sys
@@ -36,10 +36,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import law_module, per_name  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
+from codegen.core.law_module_helpers import law_module, per_name  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
 
 M32 = (1 << 32) - 1
 Q0 = 3  # the word of the zero buffer the unaligned writers start at (odd: 2q is not a multiple of any capacity)

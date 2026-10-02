@@ -4,7 +4,7 @@ read offset of the record decoders (docs/mutation_testing/MUTATION_PROOFS.md, se
 
     python3 codegen/proofs/mutation_coverage/write_start_and_sizes.py [--check]
 
-proofs/mutation_coverage/size/<X>.bend, one module per name; api_gate files `<X>_ms_<tag>` in the name's encode facade.
+proofs/mutation_coverage/size/<X>.bend, one module per name; object_api_coverage_gate files `<X>_ms_<tag>` in the name's encode facade.
 
   <X>_ms_serdepth   {T.X_serialize(o) == T.X_senc_out(T.P_putk(O.out_at(Kn), 0, o))}      (symbolic in o)
       the checked serializer of a fixed-size name writes at byte 0 of an output of exactly the depth K that holds
@@ -29,10 +29,10 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 from codegen.proofs.mutation_coverage import encoder_constants as MC  # noqa: E402
 
 SIZE_MAX = 4096   # bytes: the default object of a `_ms_size` law is computed

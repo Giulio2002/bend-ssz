@@ -30,7 +30,7 @@ The storage of the objects is a concrete zero array with room (the check reads t
 would leave it stuck); that bounds the edges that can be stated: nothing above IN_MAX bytes or bits is (Blob's
 131072-byte encoding did not check in 600 s; a list limit of 2^30 would need 2^28 words). Byte vectors that
 codegen/proofs/mutation_coverage/reported_size_and_vector_bound.py already covers are skipped. Every statement is by computation.
-They are named so that api_gate files them under serialize_valid, so they reach each name's
+They are named so that object_api_coverage_gate files them under serialize_valid, so they reach each name's
 proofs/api/<X>_encode_ssz_proof_generated.bend.
 """
 import sys as _sys
@@ -39,13 +39,13 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 import sys
 
-from codegen.core import writer  # noqa: E402
-from codegen.core import schema, generic  # noqa: E402
-from codegen.core.paths import ROOT  # noqa: E402
-from codegen.core.shared_laws import RUNTIMES  # noqa: E402
+from codegen.core import generated_file_writer as writer  # noqa: E402
+from codegen.core import fulu_schema_loader as schema, generic_form_schemas as generic  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
+from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
 from codegen.core import mutation_layout as LAYOUT  # noqa: E402
-from codegen.impl import runtime_refs as RR  # noqa: E402
-from codegen.proofs.collections.laws import qual  # noqa: E402
+from codegen.impl import runtime_file_split as RR  # noqa: E402
+from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E402
 
 IN_MAX = 4096  # bytes or bits an edge law computes whole (the symbolic `vsym` law covers the larger constants)
 DATA = re.compile(r'^def (\w+)_serialize\(\+o: ([\w.]+)\) -> O\.Encoded: \1_ser_pick\((\w+)_valid\(o\), o\)$', re.M)
