@@ -425,7 +425,6 @@ def view_set_%s(+c: Nat, +d: Nat, +t: F.array__Tree<U32>, @XP@, +J: Nat, +q: Nat
        SL(TQ),
        BASE('J'), BASE('J'))))
 
-        TQ1 = TQ
         LEN2 = lambda T, pfT, cc, hc: 'F.logic__subst(Nat, z => {Nat.is_le(Nat.double(%s), z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, %s), Equal.sym(Nat, F.spec_common__length(U32, %s), F.spec_common__pow2(d), F.array__slots_length(U32, d, %s, %s)), %s)' % (cc, SL(T), SL(T), T, pfT, hc)
         eq2 = 'Equal.trans(Nat, Nat.add(q, 2n), Nat.add(Nat.double(c), 2n), Nat.double(1n+c), Equal.cong(Nat, Nat, z => Nat.add(z, 2n), q, Nat.double(c), hq), Equal.trans(Nat, Nat.add(Nat.double(c), 2n), Nat.add(2n, Nat.double(c)), Nat.double(1n+c), F.nat__add_comm(Nat.double(c), 2n), {==}))'
         hcap1 = 'F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(d)) == True{} : Bool}, Nat.add(q, 2n), Nat.double(1n+c), %s, hb)' % eq2
