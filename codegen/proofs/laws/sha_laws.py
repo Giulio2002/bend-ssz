@@ -278,9 +278,8 @@ def emit_node(w):
     w('')
 
 
-def emit_fast():
-    """proofs/obj/sha_fast.bend: FIPS 180-4 SHA-256 with one-pattern shifts, proved
-    equal to the specification for every input (sha256_bytes_eq)."""
+def _sha_bit_patterns():
+    """the module header, and each shift and rotation by a constant written as one pattern over the 32 bits, with the sigma functions"""
     L = []
     w = L.append
     PKG = '0xd9a2fae439ac7ff9e21e0853948f94fe'
@@ -363,6 +362,11 @@ def emit_fast():
         w(f'  %Equal.sym(U32, {fast(c)}, {spec(c)}, {c[0]}{c[1]}_eq(x)) : {{U32.xor(U32.xor({spec(a)}, {spec(b)}), _) == VF.{nm}(x) : U32}}')
         w('  {==}')
         w('')
+    return L, w, cons
+
+
+def _sha_schedule(w, cons):
+    """the message schedule: the recurrence, its extension, the schedule and the schedules of all blocks"""
     P = lambda h, l: f'VF.previous({h}, {l}n)'
     w('def recurrencef(+history: List<&2, U32>) -> U32:')
     w(f'  (sigma1f({P("history", 2)}) + {P("history", 7)} + sigma0f({P("history", 15)}) + {P("history", 16)} : U32)')
@@ -432,6 +436,10 @@ def emit_fast():
     w(f'      Equal.cong(List<&2, List<&2, U32>>, List<&2, List<&2, U32>>, zl_ => Con{{VF.schedule(extra, {blk}), zl_}},')
     w('        schedulesf(rest, extra), VF.schedules(rest, extra), schedules_eq(rest, extra))')
     w('')
+
+
+def _sha_words_and_prepare(w, cons):
+    """the words of the bytes (decode, words) and the prepared blocks"""
     w('def decodef(a: U32, b: U32, c: U32, d: U32) -> U32:')
     w('  U32.or(U32.or(U32.or(shl24(U32.and(a, 255)), shl16(U32.and(b, 255))), shl8(U32.and(c, 255))), U32.and(d, 255))')
     w('law decode_eq:')
@@ -481,6 +489,10 @@ def emit_fast():
     w('    {schedulesf(_, extra) == VF.prepare(bytes, extra) : List<&2, List<&2, U32>>}')
     w('  schedules_eq(VF.words(VF.pad(bytes)), extra)')
     w('')
+
+
+def _sha_step_rounds_blocks(w):
+    """the round step, the rounds, the compression and the blocks"""
     w('def stepf(s: Types.State, k: U32, w: U32) -> Types.State:')
     w('  Types.H{+a, +b, +c, d, +e, +f, +g, h} = s')
     w('  +t1 = (h + sum1f(e) + VF.ch(e, f, g) + k + w : U32)')
@@ -553,6 +565,10 @@ def emit_fast():
     w('        {blocksf(rest, ks)(VF.feedforward(s, _)) == VF.blocks(Con{block, rest}, ks)(s) : Types.State}')
     w('      blocks_eq(rest, ks, VF.compress(block, ks, s))')
     w('')
+
+
+def _sha_digest_and_bytes(w):
+    """the digest's octets and sha256 of the bytes"""
     w('def word_octetsf(+w: U32) -> List<&2, U32>:')
     w('  [U32.and(shr24(w), 255), U32.and(shr16(w), 255), U32.and(shr8(w), 255), U32.and(w, 255)]')
     w('')
@@ -590,6 +606,16 @@ def emit_fast():
     w('      blocks_eq(VF.prepare(bytes, 48n), VF.constants(), VF.initial())) :')
     w('    {digest_octetsf(VF.digest(_)) == VF.sha256_bytes(bytes) : List<&2, U32>}')
     w('  digest_octets_eq(VF.digest(VF.blocks(VF.prepare(bytes, 48n), VF.constants())(VF.initial())))')
+
+
+def emit_fast():
+    """proofs/obj/sha_fast.bend: FIPS 180-4 SHA-256 with one-pattern shifts, proved
+    equal to the specification for every input (sha256_bytes_eq)."""
+    L, w, cons = _sha_bit_patterns()
+    _sha_schedule(w, cons)
+    _sha_words_and_prepare(w, cons)
+    _sha_step_rounds_blocks(w)
+    _sha_digest_and_bytes(w)
     return '\n'.join(L) + '\n'
 
 
