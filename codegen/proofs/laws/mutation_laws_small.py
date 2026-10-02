@@ -27,9 +27,9 @@ import sys as _sys
 import pathlib as _pathlib
 _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the repository root: `codegen` is importable when this file runs as a script
 import re
-import sys
 
 from codegen.core import writer  # noqa: E402
+from codegen.core.shared_laws import finish  # noqa: E402
 from codegen.impl import runtime_refs as RR  # noqa: E402
 from codegen.proofs.collections.laws import qual  # noqa: E402
 from codegen.proofs.laws import mutation_laws_const as MC  # noqa: E402
@@ -276,12 +276,8 @@ def outputs():
 
 def main():
     out = outputs()
-    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('mutsmall_*.bend') if q not in out)
-    out = RR.rewire_out(out)
-    if '--check' in sys.argv:
-        return writer.check(out, 'stale mutation small laws: ', 'mutation small laws are current', orphans)
-    writer.write(out, orphans)
-    print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
+    if finish(out, ('mutsmall_*.bend',), 'stale mutation small laws: ', 'mutation small laws are current'):
+        print(f'{len(out)} modules, {sum(t.count(chr(10) + "def ") for t in out.values())} laws')
 
 
 if __name__ == '__main__':
