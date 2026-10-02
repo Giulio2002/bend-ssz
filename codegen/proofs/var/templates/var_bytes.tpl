@@ -321,3 +321,74 @@ def eocW(+k: Nat, +c: U32, +P: Nat, +pos: U32, +dd: Nat, +eP: {U32.to_nat(pos) =
     -> {U32.to_nat(U32.add(pos, c)) == A.quad(Nat.add(k, P)) : Nat}:
   VF.off_add_lt(pos, c, P, k, eP, ec, hq)
 
+
+@@ win_text_lines @@
+def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> ${Tn}: ${OBJ}
+
+# The reader on the window, when the checks hold.
+def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, ${WH}, ${PF},
+    ${HA}, +epo: {SPOw(t, i) == ${FS} : U32}, ${HX})
+    -> {${Tn}_read(VF.BF(t, n), off, len) == ${RHS} : ${TY}}:
+  +hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})
+  +hs = hsw(d, i, len, hw, ha, hx)
+  +hH = hHi(d, i, len, hs)
+@@ win_text_lines_2 @@
+  %Equal.sym(B.Buf & O.Words, ${call}, (VF.BF(t, n), ${val}),
+      VY.copy_into_any(d, t, n, U32.add(off, ${f['c']}), Nat.add(${f['k']}n, i), ${f['size']}, ${f['dz']}n, ${kw}n, pf, hd31, {==},
+        VF.al_3(U32.add(off, ${f['c']}), Nat.add(${f['k']}n, i), ${e}), VF.al_q(U32.add(off, ${f['c']}), Nat.add(${f['k']}n, i), ${e}),
+        ${hb(f['W'], f['k'])}, {==}, {==}, {==})) :
+@@ win_text_lines_3 @@
+  %Equal.sym(B.Buf & O.Words, ${call}, (VF.BF(t, n), ${val}),
+      VY.copy_in_any(d, t, n, U32.add(off, ${FS}), Nat.add(${H}n, i), LL(len), DZ(len), ${KY}n, pf, hd31, hdz31(len, hx), ez(len, hx),
+        VF.al_3(U32.add(off, ${FS}), Nat.add(${H}n, i), ${e}), VF.al_q(U32.add(off, ${FS}), Nat.add(${H}n, i), ${e}),
+        hs, hr(len, hx), {==}, hyL(len, hx))) :
+@@ rej_text_lines @@
+def FACTS(bs: +List<U32>) -> Type:
+  {VS.bt(4n, VS.bdr(${P}n, bs)) == ${FSL} : +List<U32>} & DK.Ex(Nat, k => DK.P2({List.length(&2, U32, bs) == Nat.add(${FS}n, k) : Nat}, {Nat.is_le(k, ${LIM}n) == True{} : Bool}))
+
+@@ rej_text_lines_2 @@
+  %eP(${ALL}) : {VS.bt(4n, VS.bdr(_, ${OUT})) == N.digits(4n, Nat.add(_, 4n+${Qz}n)) : +List<U32>}
+  %eQ(${ALL}) : {VS.bt(4n, VS.bdr(VR.lens(${PRE}), ${OUT})) == N.digits(4n, Nat.add(VR.lens(${PRE}), 4n+_)) : +List<U32>}
+  VR.out_off(${PRE}, ys, ${POST})
+
+@@ rej_text_lines_3 @@
+  %eP(${ALL}) : {List.length(&2, U32, ${OUT}) == Nat.add(Nat.add(_, 4n+${Qz}n), List.length(&2, U32, ys)) : Nat}
+  %eQ(${ALL}) : {List.length(&2, U32, ${OUT}) == Nat.add(Nat.add(VR.lens(${PRE}), 4n+_), List.length(&2, U32, ys)) : Nat}
+  VR.out_len(${PRE}, ys, ${POST})
+
+@@ rej_text_lines_4 @@
+  match b5:
+    case False{}: ${absurd()}
+    case True{}:
+      %F.logic__some_inj(+List<U32>, ${OUT}, bs, e) : FACTS(_)
+      (f_off(${ALL}), (List.length(&2, U32, ys), (f_len(${ALL}), hk)))
+
+@@ rej_text_lines_6 @@
+  match ps:
+    case Nil{}: Empty.absurd(FACTS(bs), hf)
+    case Con{S.Fixed{+xs}, Nil{}}: st${i + 1}(${A}xs, Equal.sym(Nat, ${z}n, List.length(&2, U32, xs), F.logic__some_inj(Nat, ${z}n, List.length(&2, U32, xs), hf)), t, bs, e)
+    case Con{S.Variable{+xs}, Nil{}}: Empty.absurd(FACTS(bs), F.logic__none_some(Nat, ${z}n, Equal.sym(Maybe<&2, Nat>, Some{${z}n}, None{}, hf)))
+    case Con{S.Fixed{+xs}, Con{+h2, +t2}}: Empty.absurd(FACTS(bs), hf)
+    case Con{S.Variable{+xs}, Con{+h2, +t2}}: Empty.absurd(FACTS(bs), hf)
+
+@@ rej_text_lines_7 @@
+  match mm:
+    case None{}: ${absurd()}
+    case Some{+ps}: fp${i}(${A}ps, hf, t, bs, e)
+
+@@ rej_text_lines_8 @@
+  match b:
+    case False{}: ${absurd()}
+    case True{}:
+      +hk = V.and_right(SP.bytes_domain(ys), Nat.is_le(List.length(&2, U32, ys), ${LIM}n),
+        V.and_left(Bool.and(SP.bytes_domain(ys), Nat.is_le(List.length(&2, U32, ys), ${LIM}n)), N.fits(4n, List.length(&2, U32, ys)), eb))
+      st${i + 1}(${A}ys, hk, t, bs, e)
+
+@@ rej_text_lines_5 @@
+# Every byte string the spec relates to a value has the checked shape.
+law inv_v:
+  for +v: S.Value
+  for +bs: +List<U32>
+  for +e: {Codec.encoding_for_legal_type(Spec.${n}(), v) == Some{bs} : ${MB}}
+  FACTS(bs)
+def inv_v(v, bs, e):

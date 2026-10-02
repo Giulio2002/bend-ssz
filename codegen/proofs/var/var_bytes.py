@@ -311,15 +311,8 @@ def win_text(x):
     leaves, OBJ = read_plan(x)
     RHS = '(VF.BF(t, n), OBJw(t, i, len))'
     TY = f'B.Buf & {Tn}'
-    w(f'def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> {Tn}: {OBJ}')
-    w('')
-    w('# The reader on the window, when the checks hold.')
-    w(f'def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, {WH}, {PF},')
-    w(f'    {HA}, +epo: {{SPOw(t, i) == {FS} : U32}}, {HX})')
-    w(f'    -> {{{Tn}_read(VF.BF(t, n), off, len) == {RHS} : {TY}}}:')
-    w('  +hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})')
-    w('  +hs = hsw(d, i, len, hw, ha, hx)')
-    w('  +hH = hHi(d, i, len, hs)')
+    for line in TPL.render('win_text_lines', FS=FS, HA=HA, HX=HX, OBJ=OBJ, RHS=RHS, TY=TY, Tn=Tn).split('\n'):
+        w(line)
 
     def ecf(k, c):
         return f'eoc(d, i, off, len, {k}n, {c}, {{==}}, {{==}}, eo, hd, hw, ha)'
@@ -338,16 +331,12 @@ def win_text(x):
         elif kind == 'words':
             e = ecf(f['k'], f['c'])
             kw = kfit(31 + f['size'])
-            w(f'  %Equal.sym(B.Buf & O.Words, {call}, (VF.BF(t, n), {val}),')
-            w(f'      VY.copy_into_any(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {f["size"]}, {f["dz"]}n, {kw}n, pf, hd31, {{==}},')
-            w(f'        VF.al_3(U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {e}), VF.al_q(U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {e}),')
-            w(f'        {hb(f["W"], f["k"])}, {{==}}, {{==}}, {{==}})) :')
+            for line in TPL.render('win_text_lines_2', call=call, e=e, f=f, hb=hb, kw=kw, val=val).split('\n'):
+                w(line)
         else:
             e = ecf(H, FS)
-            w(f'  %Equal.sym(B.Buf & O.Words, {call}, (VF.BF(t, n), {val}),')
-            w(f'      VY.copy_in_any(d, t, n, U32.add(off, {FS}), Nat.add({H}n, i), LL(len), DZ(len), {KY}n, pf, hd31, hdz31(len, hx), ez(len, hx),')
-            w(f'        VF.al_3(U32.add(off, {FS}), Nat.add({H}n, i), {e}), VF.al_q(U32.add(off, {FS}), Nat.add({H}n, i), {e}),')
-            w(f'        hs, hr(len, hx), {{==}}, hyL(len, hx))) :')
+            for line in TPL.render('win_text_lines_3', FS=FS, H=H, KY=KY, call=call, e=e, val=val).split('\n'):
+                w(line)
         w(f'    {{{pat} == {RHS} : {TY}}}')
     w('  {==}')
     w(TPL.render('win_text_readw', FS=FS, TY=TY, Tn=Tn))
@@ -511,9 +500,8 @@ def rej_text(x, pure=False):
          '# bytes (decode_reject), and the decoder returns None (decode_none).', '']
     w = L.append
     MB = 'Maybe<&2, +List<U32>>'
-    w('def FACTS(bs: +List<U32>) -> Type:')
-    w(f'  {{VS.bt(4n, VS.bdr({P}n, bs)) == {FSL} : +List<U32>}} & DK.Ex(Nat, k => DK.P2({{List.length(&2, U32, bs) == Nat.add({FS}n, k) : Nat}}, {{Nat.is_le(k, {LIM}n) == True{{}} : Bool}}))')
-    w('')
+    for line in TPL.render('rej_text_lines', FS=FS, FSL=FSL, LIM=LIM, P=P).split('\n'):
+        w(line)
 
     def absurd(e='e'):
         return f'Empty.absurd(FACTS(bs), F.logic__none_some(+List<U32>, bs, {e}))'
@@ -586,24 +574,16 @@ def rej_text(x, pure=False):
     ALL = ', '.join(args_m)
     OUT = f'VR.OUT({PRE}, ys, {POST})'
     w('def f_off(' + ', '.join(decl_m) + f') -> {{VS.bt(4n, VS.bdr({P}n, {OUT})) == {FSL} : +List<U32>}}:')
-    w(f'  %eP({ALL}) : {{VS.bt(4n, VS.bdr(_, {OUT})) == N.digits(4n, Nat.add(_, 4n+{Qz}n)) : +List<U32>}}')
-    w(f'  %eQ({ALL}) : {{VS.bt(4n, VS.bdr(VR.lens({PRE}), {OUT})) == N.digits(4n, Nat.add(VR.lens({PRE}), 4n+_)) : +List<U32>}}')
-    w(f'  VR.out_off({PRE}, ys, {POST})')
-    w('')
+    for line in TPL.render('rej_text_lines_2', ALL=ALL, OUT=OUT, POST=POST, PRE=PRE, Qz=Qz).split('\n'):
+        w(line)
     w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}}:')
-    w(f'  %eP({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(_, 4n+{Qz}n), List.length(&2, U32, ys)) : Nat}}')
-    w(f'  %eQ({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(VR.lens({PRE}), 4n+_), List.length(&2, U32, ys)) : Nat}}')
-    w(f'  VR.out_len({PRE}, ys, {POST})')
-    w('')
+    for line in TPL.render('rej_text_lines_3', ALL=ALL, OUT=OUT, POST=POST, PRE=PRE, Qz=Qz).split('\n'):
+        w(line)
     PLIST = '[' + ', '.join(parts_m) + ']'
     w(sig('inv_fin', decl_m, ['+bs: +List<U32>', '+b5: Bool',
           f'+e: {{Codec.bytes(Codec.one(SP.optional(b5, {OUT}), None{{}})) == Some{{bs}} : {MB}}}']))
-    w('  match b5:')
-    w(f'    case False{{}}: {absurd()}')
-    w('    case True{}:')
-    w(f'      %F.logic__some_inj(+List<U32>, {OUT}, bs, e) : FACTS(_)')
-    w(f'      (f_off({ALL}), (List.length(&2, U32, ys), (f_len({ALL}), hk)))')
-    w('')
+    for line in TPL.render('rej_text_lines_4', ALL=ALL, OUT=OUT, absurd=absurd).split('\n'):
+        w(line)
     b5 = f'Bool.and(Layout.bytes_valid({PLIST}), N.fits(4n, Nat.add(Layout.fixed_size({PLIST}), List.length(&2, U32, Layout.payloads({PLIST})))))'
     w(sig(f'st{m}', decl_m, ['+items: S.Value', '+bs: +List<U32>', '+e: ' + E(parts_m, 'Codec.parts(items, S.End{})')]))
     L.extend(match_value('items', ('EmptyItems', []), f'inv_fin({ALL}, bs, {b5}, e)'))
@@ -618,19 +598,12 @@ def rej_text(x, pure=False):
             z = f['size']
             w(sig(f'fp{i}', decl, ['+ps: +List<S.Part>', f'hf: DF.single(Some{{{z}n}}, ps)', '+t: S.Value', '+bs: +List<U32>',
                                    '+e: ' + E(parts, f'Codec.concatenate(Some{{ps}}, {nxt})')]))
-            w('  match ps:')
-            w('    case Nil{}: Empty.absurd(FACTS(bs), hf)')
-            w(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: st{i + 1}({A}xs, Equal.sym(Nat, {z}n, List.length(&2, U32, xs), F.logic__some_inj(Nat, {z}n, List.length(&2, U32, xs), hf)), t, bs, e)')
-            w(f'    case Con{{S.Variable{{+xs}}, Nil{{}}}}: Empty.absurd(FACTS(bs), F.logic__none_some(Nat, {z}n, Equal.sym(Maybe<&2, Nat>, Some{{{z}n}}, None{{}}, hf)))')
-            w('    case Con{S.Fixed{+xs}, Con{+h2, +t2}}: Empty.absurd(FACTS(bs), hf)')
-            w('    case Con{S.Variable{+xs}, Con{+h2, +t2}}: Empty.absurd(FACTS(bs), hf)')
-            w('')
+            for line in TPL.render('rej_text_lines_6', A=A, i=i, z=z).split('\n'):
+                w(line)
             w(sig(f'fm{i}', decl, ['+mm: Maybe<&2, +List<S.Part>>', f'hf: DF.single_result(Some{{{z}n}}, mm)', '+t: S.Value', '+bs: +List<U32>',
                                    '+e: ' + E(parts, f'Codec.concatenate(mm, {nxt})')]))
-            w('  match mm:')
-            w(f'    case None{{}}: {absurd()}')
-            w(f'    case Some{{+ps}}: fp{i}({A}ps, hf, t, bs, e)')
-            w('')
+            for line in TPL.render('rej_text_lines_7', A=A, absurd=absurd, i=i).split('\n'):
+                w(line)
             w(sig(f'fd{i}', decl, ['+h: S.Value', '+t: S.Value', '+bs: +List<U32>',
                                    '+e: ' + E(parts, f'Codec.concatenate(Codec.parts(h, {sch}), {nxt})')]))
             w(f'  fm{i}({A}Codec.parts(h, {sch}), DS.facts(h, {sch}, {{==}}), t, bs, e)')
@@ -639,13 +612,8 @@ def rej_text(x, pure=False):
             w(sig('vbl', decl, ['+ys: +List<U32>', '+t: S.Value', '+bs: +List<U32>', '+b: Bool',
                                 f'+eb: {{ByteList.domain({LIM}n, ys) == b : Bool}}',
                                 '+e: ' + E(parts, f'Codec.concatenate(Codec.one(SP.optional(b, ys), None{{}}), {nxt})')]))
-            w('  match b:')
-            w(f'    case False{{}}: {absurd()}')
-            w('    case True{}:')
-            w(f'      +hk = V.and_right(SP.bytes_domain(ys), Nat.is_le(List.length(&2, U32, ys), {LIM}n),')
-            w(f'        V.and_left(Bool.and(SP.bytes_domain(ys), Nat.is_le(List.length(&2, U32, ys), {LIM}n)), N.fits(4n, List.length(&2, U32, ys)), eb))')
-            w(f'      st{i + 1}({A}ys, hk, t, bs, e)')
-            w('')
+            for line in TPL.render('rej_text_lines_8', A=A, LIM=LIM, absurd=absurd, i=i).split('\n'):
+                w(line)
             w(sig(f'fd{i}', decl, ['+h: S.Value', '+t: S.Value', '+bs: +List<U32>',
                                    '+e: ' + E(parts, f'Codec.concatenate(Codec.parts(h, {sch}), {nxt})')]))
             L.extend(match_value('h', ('BytesValue', ['ys']), f'vbl({A}ys, t, bs, ByteList.domain({LIM}n, ys), {{==}}, e)'))
@@ -653,13 +621,8 @@ def rej_text(x, pure=False):
         w(sig(f'st{i}', decl, ['+items: S.Value', '+bs: +List<U32>', '+e: ' + E(parts, f'Codec.parts(items, {chain(i)})')]))
         L.extend(match_value('items', ('Items', ['h', 't']), f'fd{i}({A}h, t, bs, e)'))
         w('')
-    w('# Every byte string the spec relates to a value has the checked shape.')
-    w('law inv_v:')
-    w('  for +v: S.Value')
-    w('  for +bs: +List<U32>')
-    w(f'  for +e: {{Codec.encoding_for_legal_type(Spec.{n}(), v) == Some{{bs}} : {MB}}}')
-    w('  FACTS(bs)')
-    w('def inv_v(v, bs, e):')
+    for line in TPL.render('rej_text_lines_5', MB=MB, n=n).split('\n'):
+        w(line)
     L.extend(match_value('v', ('Sequence', ['items']), 'st0(items, bs, e)'))
     w('')
     if pure:
