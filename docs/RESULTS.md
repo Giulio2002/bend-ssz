@@ -220,6 +220,12 @@ sha256 `stream_correct` `&2 -> &1` twice (an erased label: equivalent) and `hex_
 `spec/bytes.bend:13:37` (`vector_domain`, `1n -> 2n` in the pattern `1n+p`): constants of the specification transcription that no
 law catches. The spec is frozen: only copies in private trees were mutated.
 
+**Known out-of-scope item: the hex rendering of the vendored SHA-256.** `hex_digit` (`U32.is_lt(x, 10)`) and `hex_word_go`
+(the shift `4n`) in `proofs/crypto/sha/packed/core_model.bend` of bend-collections 1.0.0.0 render a digest as a hex string. No
+law of this repository reaches them (our laws use the byte API and the FIPS 180-4 model, never the hex strings), and the package
+is pinned and vendored (`toolchain.lock.json`), so it is not changed here. Mutants in that rendering survive by design and are
+listed as out of scope, not as gaps and not as equivalent; they would be reported to the package owner.
+
 **Excluded** (`tests_generated/mutation_exclusions.json`; rules and reasons in `tests_generated/mutation_equivalence.py`): only
 what has a proof-level reason, never "the tests pass": an argument the callee never reads (hl and seg of the hash_tree_root
 leaf wrappers, the len argument of the fixed-size field readers, the proglist decode offsets), a flag read only by
