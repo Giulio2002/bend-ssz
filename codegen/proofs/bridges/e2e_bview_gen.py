@@ -1,5 +1,6 @@
 """The shared bit-list view module (e2e/e2e_bview.bend) and the generic bit lists' view lemmas, for e2e_bridge."""
 import itertools
+from codegen.core.shared_bridges import unpack_pairs  # noqa: E402
 
 
 def _src(p):
@@ -1616,13 +1617,7 @@ def venc_bitc(obj_dir, R, X, pmod):
 def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({P0})) -> {G("o")}:
 {reps}
   (+eo, +rb) = q{len(xs)}
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+ew, s4) = s3
-  (+pf, s5) = s4
-  (+hdw, s6) = s5
-  (+hcap, +hv) = s6
+{unpack_pairs('hs', ['T', 'dw', 'K', 'ew', 'pf', 'hdw', 'hcap', 'hv'], '  ')}
   +eo1 = Equal.trans({Dt}, o, {CT(P0)}, {CT(OB)}, eo, Equal.cong(O.Bits, {Dt}, z => {CT("z")}, {P0}, {OB}, ew))
   +rb1 = FD.logic__subst(O.Bits, z => BO.rep_bits(z, SH.Chain_head(SH.Container_fields(Spec.{X}()))), {P0}, {OB}, ew, rb)
   e0(o, {", ".join(xs)}, dw, T, K, pf, hdw, rb1, hcap, hv, eo1)
@@ -1879,13 +1874,7 @@ def encw({WP}, {STO}, {HYP}) -> {G(OBJX)}:
 # (i): for every object the root law represents (rep) whose bit list's storage meets the encode laws' premises (hs)
 def {R}_e2e_encode(-o: {Dt}, +rep: RT.rep_{X}(o, Spec.{X}()), +hs: BTV.sdbv({PBITS})) -> {G("o")}:
 {rlets}
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+ew, s4) = s3
-  (+pf, s5) = s4
-  (+hdw, s6) = s5
-  (+hcap, +hv) = s6
+{unpack_pairs('hs', ['T', 'dw', 'K', 'ew', 'pf', 'hdw', 'hcap', 'hv'], '  ')}
   +rb1 = FD.logic__subst(O.Bits, z => BO.rep_bits(z, {SCH}), {PBITS}, O.Bits{{FD.array__thaw(U32, T), K}}, ew, {PB[0]})
   e0(o, {", ".join(v for v, _, _ in slots)}, dw, T, K, pf, hdw, rb1, hcap, hv,
     {EQ})
@@ -3020,10 +3009,7 @@ def rt3(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {WS}, +eo: {{o == {m
 
 # (iv)
 def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}:
-  (+x1, q1) = rep
-  (+x2, q2) = q1
-  (+x4, q3) = q2
-  (+eo, +r0) = q3
+{unpack_pairs('rep', ['x1', 'x2', 'x4', 'eo', 'r0'], '  ', tmp='q', start=1)}
   (+rb0, +r1) = r0
   (+wf0, +rr0) = rb0
   match wf0:

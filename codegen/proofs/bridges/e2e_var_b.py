@@ -63,18 +63,10 @@ def {R}_e2e_root(h: B.Buf, -o: O.Words, +rep: LO.rep_bl(o, Spec.{X}())) -> {G('o
   (+wf, +hl) = rep
   match wf:
     case Inl{{w}}:
-      (+t, w1) = w
-      (+dw, w2) = w1
-      (+N, w3) = w2
-      (+eo, w4) = w3
+{unpack_pairs('w', ['t', 'dw', 'N', 'eo'], '      ', tmp='w', start=1, closed=False)}
       rt2(h, o, rep, t, N, eo)
     case Inr{{w}}:
-      (+t, w1) = w
-      (+dw, w2) = w1
-      (+N, w3) = w2
-      (+q, w4) = w3
-      (+r, w5) = w4
-      (+eo, w6) = w5
+{unpack_pairs('w', ['t', 'dw', 'N', 'q', 'r', 'eo'], '      ', tmp='w', start=1, closed=False)}
       rt2(h, o, rep, t, N, eo)
 """
 
@@ -186,27 +178,11 @@ def {R}_e2e_encode(-o: O.Words, +rep: LO.rep_bl(o, Spec.{X}()), +hs: BL.sdk(o, {
   (+wf, +hl) = rep
   match hs:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+eo, s4) = s3
-      (+pf, s5) = s4
-      (+hdw, +en0) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'eo', 'pf', 'hdw', 'en0'], '      ')}
       +hn = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dw))) == True{{}} : Bool}}, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, en0), Order.zero_le(A.quad(VB.pw(dw))))
       e2(o, t, dw, N, eo, pf, hdw, hn, hl)
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+eo, s6) = s5
-      (+pf, s7) = s6
-      (+hdw, s8) = s7
-      (+eN, s9) = s8
-      (+hr0, s10) = s9
-      (+hr32, s11) = s10
-      (+hcap, +bz) = s11
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'eo', 'pf', 'hdw', 'eN', 'hr0', 'hr32', 'hcap', 'bz'], '      ')}
       +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(O.e8(1n+q))) == True{{}} : Bool}}, Nat.add(r, WS.e32(q)), U32.to_nat(N),
         Equal.sym(Nat, U32.to_nat(N), Nat.add(r, WS.e32(q)), Equal.trans(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), Nat.add(r, WS.e32(q)), eN, FD.nat__add_comm(WS.e32(q), r))),
         Order.add_right(r, 32n, WS.e32(q), hr32))
@@ -225,6 +201,7 @@ def {R}_e2e_encode(-o: O.Words, +rep: LO.rep_bl(o, Spec.{X}()), +hs: BL.sdk(o, {
 # then evaluate the fixed fields); vw fills the holes.
 import re as _re
 from codegen.proofs.support.light_split import unlight as _unlight   # parse modules as before their light split (codegen/proofs/support/light_split.py)
+from codegen.core.shared_bridges import unpack_pairs  # noqa: E402
 import json
 from pathlib import Path as _Path
 _OBJ = _Path(__file__).resolve().parents[3] / 'proofs/obj'
@@ -2370,17 +2347,8 @@ def fsd_{kf}(-w: O.Words, +k: Nat, +t1: FD.array__Tree<U32>, +dw1: Nat, +N1: U32
 
 def mk_sdm_{kf}(-w: O.Words, +s: S.Schema, +k: Nat, +rep: {C_}.rep_el(w, s), +hs: sdd(w, k), +hv: {{O.unit_ok({B_}, WO.len(w)) == True{{}} : Bool}}) -> sdm(w, {E}n, k):
   (+wf, +hl) = rep
-  (+t1, a1) = wf
-  (+dw1, a2) = a1
-  (+N1, a3) = a2
-  (+eo1, a4) = a3
-  (+pf1, a5) = a4
-  (+hd1, +hk1) = a5
-  (+t, b1) = hs
-  (+dw, b2) = b1
-  (+N, b3) = b2
-  (+eo, b4) = b3
-  (+pf, +hd) = b4
+{unpack_pairs('wf', ['t1', 'dw1', 'N1', 'eo1', 'pf1', 'hd1', 'hk1'], '  ', tmp='a', start=1)}
+{unpack_pairs('hs', ['t', 'dw', 'N', 'eo', 'pf', 'hd'], '  ', tmp='b', start=1)}
   fsd_{kf}(w, k, t1, dw1, N1, eo1, pf1, hk1, t, dw, N, eo, pf, hd, hv)
 ''')
     body = f'''# a list of c blocks of E words (N = 4 E c bytes), its words at depth below k covering them
@@ -3428,14 +3396,7 @@ def mk_L(-po: {OL}, +rep: RT.rep_LightClientHeader(po, {SL}), +hs: SHS_L(po)) ->
   (+eb, +ri) = rX
   (+wfB, +nbB) = rB
   (+hX, +hB) = hs
-  (+T, s0) = hB
-  (+dw, s1) = s0
-  (+N, s2) = s1
-  (+q, s3) = s2
-  (+eoB, s4) = s3
-  (+pf, s5) = s4
-  (+hd, s6) = s5
-  (+eN, +hc) = s6
+{unpack_pairs('hB', ['T', 'dw', 'N', 'q', 'eoB', 'pf', 'hd', 'eN', 'hc'], '  ', tmp='s', start=0)}
   +nn = FD.logic__subst(O.Words, z => {{Nat.is_eq(O.chunks_of(WO.len(z)), SH.Vector_length({sch(2, SL)})) == True{{}} : Bool}}, {pjL(2)}, O.Words{{FD.array__thaw(U32, T), N}}, eoB, nbB)
   +cc = FD.logic__subst(Nat, z => {{Nat.div(Nat.add(z, 31n), 32n) == 1n+q : Nat}}, Nat.add(WS.e32(q), 32n), U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), Nat.add(WS.e32(q), 32n), eN), WS.chunks_count(q, 32n, {{==}}, {{==}}))
   +ec = Equal.trans(Nat, 1n+q, O.chunks_of(N), 4n, Equal.sym(Nat, O.chunks_of(N), 1n+q, cc), FD.nat__eq_from_is_eq(O.chunks_of(N), 4n, nn))
@@ -3600,21 +3561,10 @@ def k1({kp}, +v: FuluSyncAggregate_d.SyncAggregate, {kw.replace('+ew', '+es: {' 
 
 # (i): for every object the root law represents, its headers' storage (MW.SHS_L) and its finality branch at depth below 31
 def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, {SC}), +hA: MW.SHS_L({pj(0)}), +hF: MW.SHS_L({pj(1)}), +hB: BL.sdpv({pj(2)}, 31n)) -> {G("o")}:
-  (+a4, q0) = rep
-  (+eo, q1) = q0
-  (+rA, q2) = q1
-  (+rF, q3) = q2
-  (+rB, +rS) = q3
+{unpack_pairs('rep', ['a4', 'eo', 'rA', 'rF', 'rB', 'rS'], '  ', tmp='q', start=0)}
   (+wfB, +nbB) = rB
   (+v, +es) = rS
-  (+T, s0) = hB
-  (+dw, s1) = s0
-  (+N, s2) = s1
-  (+q, s3) = s2
-  (+eoB, s4) = s3
-  (+pf, s5) = s4
-  (+hd, s6) = s5
-  (+eN, +hc) = s6
+{unpack_pairs('hB', ['T', 'dw', 'N', 'q', 'eoB', 'pf', 'hd', 'eN', 'hc'], '  ', tmp='s', start=0)}
 ''' + '\n'.join(_pv_lets(pj(2), sch(2), 'T', 'N', 'q', 'eoB', 'eN', 'hc', 'nbB', 7, 224)) + f'''
   k1({ka}, v, eo, es, ew, MW.mk_L({pj(0)}, rA, hA), MW.mk_L({pj(1)}, rF, hF))
 '''
@@ -3755,10 +3705,7 @@ def k1({kp}, +b48: FuluBytes48_d.Bytes48, +v: FuluSyncAggregate_d.SyncAggregate,
 # (e2e_e48w.sdsc) and its two branches at depth below 31
 def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, {SC}), +hA: MW.SHS_L({pj(0)}), +h1: EW.sdsc({pjs0}, 31n), +h2: BL.sdpv({pj(2)}, 31n),
     +hF: MW.SHS_L({pj(3)}), +h4: BL.sdpv({pj(4)}, 31n)) -> {G("o")}:
-  (+sl, q0) = rep
-  (+eo, q1) = q0
-  (+rA, q2) = q1
-  (+rS, q3) = q2
+{unpack_pairs('rep', ['sl', 'eo', 'rA', 'rS'], '  ', tmp='q', start=0, closed=False)}
   (+b48, s1_) = rS
   (+esc0, +rev) = s1_
   (+r2, q4) = q3
@@ -3767,27 +3714,9 @@ def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, {SC}), +hA: MW.SHS_L({pj(0)}), 
   (+r4, +rG) = q5
   (+wf4, +nb4) = r4
   (+v, +es) = rG
-  (+T1, t0) = h1
-  (+dw1, t1) = t0
-  (+eo1, t2) = t1
-  (+pf1, t3) = t2
-  (+hd1, +hr1) = t3
-  (+T2, u0) = h2
-  (+dw2, u1) = u0
-  (+N2, u2) = u1
-  (+q2_, u3) = u2
-  (+eoB2, u4) = u3
-  (+pf2, u5) = u4
-  (+hd2, u6) = u5
-  (+eN2, +hc2) = u6
-  (+T4, v0) = h4
-  (+dw4, v1) = v0
-  (+N4, v2) = v1
-  (+q4_, v3) = v2
-  (+eoB4, v4) = v3
-  (+pf4, v5) = v4
-  (+hd4, v6) = v5
-  (+eN4, +hc4) = v6
+{unpack_pairs('h1', ['T1', 'dw1', 'eo1', 'pf1', 'hd1', 'hr1'], '  ', tmp='t', start=0)}
+{unpack_pairs('h2', ['T2', 'dw2', 'N2', 'q2_', 'eoB2', 'pf2', 'hd2', 'eN2', 'hc2'], '  ', tmp='u', start=0)}
+{unpack_pairs('h4', ['T4', 'dw4', 'N4', 'q4_', 'eoB4', 'pf4', 'hd4', 'eN4', 'hc4'], '  ', tmp='v', start=0)}
 ''' + '\n'.join(_pv_lets(pj(2), sch(2), 'T2', 'N2', 'q2_', 'eoB2', 'eN2', 'hc2', 'nb2', 6, 192, 'ew2', 'hr2', '2', 'dw2')) + '\n' + '\n'.join(_pv_lets(pj(4), sch(4), 'T4', 'N4', 'q4_', 'eoB4', 'eN4', 'hc4', 'nb4', 7, 224, 'ew4', 'hr4', '4', 'dw4')) + f'''
   +esc = Equal.trans({OS}, {pj(1)}, {OS}{{{pjs0}, b48}}, {OS}{{{W1T}, b48}}, esc0, Equal.cong(O.Words, {OS}, z => {OS}{{z, b48}}, {pjs0}, {W1T}, eo1))
   k1({ka}, b48, v, esc, es, eo, ew2, ew4, MW.mk_L({pj(0)}, rA, hA), MW.mk_L({pj(3)}, rF, hF))
@@ -3916,12 +3845,7 @@ def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {{FD.array__perfect(U32,
 # (i): for every object the root law represents whose bit count leaves the encoder's room (hK: 32 + K <= 2^30), its
 # words in a perfect tree of depth below 31 with room for its chunk words (hs)
 def {R}_e2e_encode(-o: O.Bits, +rep: PBO.rep_pbits(o, Spec.{X}()), +hK: {HK('U32.to_nat(BO.blen(o))')}, +hs: BL.sdbc(o)) -> {G('o')}:
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+eo, s4) = s3
-  (+pf, s5) = s4
-  (+hdw, +hcap) = s5
+{unpack_pairs('hs', ['T', 'dw', 'K', 'eo', 'pf', 'hdw', 'hcap'], '  ')}
   %Equal.sym(O.Bits, o, {OB}, eo) : {G('_')}
   a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => PBO.rep_pbits(z, Spec.{X}()), o, {OB}, eo, rep),
     FD.logic__subst(O.Bits, z => {HK('U32.to_nat(BO.blen(z))')}, o, {OB}, eo, hK), hcap)
@@ -5722,12 +5646,7 @@ def kW(-po: {SEQ}, +s: S.Schema, +el: {{SH.ListOf_limit(s) == U32.to_nat({LNW}) 
 
 def mk_W(-po: {SEQ}, +s: S.Schema, +el: {{SH.ListOf_limit(s) == U32.to_nat({LNW}) : Nat}}, +rep: RT.rep_{L}(po, s), +hs: RLV.sda_{L}(po, {KW}n)) -> R_W(po):
   (+w1, +hl) = rep
-  (+a, b1) = hs
-  (+dw, b2) = b1
-  (+N, b3) = b2
-  (+eo, b4) = b3
-  (+pf, b5) = b4
-  (+hd, +hn) = b5
+{unpack_pairs('hs', ['a', 'dw', 'N', 'eo', 'pf', 'hd', 'hn'], '  ', tmp='b', start=1)}
   kW(po, s, el, hl, a, dw, N, eo, pf, hd, hn)
 """
     return t
@@ -6150,14 +6069,7 @@ def elx(+m: {RMB}, +sE: S.Schema, +es: {{SH.Vector_length({SC0}) == {C}n : Nat}}
               (+eo2, rd1) = rd
               (+rpv, +rdd) = rd1
               (+wfv, +nb) = rpv
-              (+T, s1) = h0
-              (+dw, s2) = s1
-              (+N, s3) = s2
-              (+q, s4) = s3
-              (+eoP, s5) = s4
-              (+pf, s6) = s5
-              (+hd, s7) = s6
-              (+eN, +hc) = s7
+{unpack_pairs('h0', ['T', 'dw', 'N', 'q', 'eoP', 'pf', 'hd', 'eN', 'hc'], '              ')}
               +nb2 = FD.logic__subst(Nat, z => {{Nat.is_eq(O.chunks_of(WO.len({pjt})), z) == True{{}} : Bool}}, SH.Vector_length({SC0}), {C}n, es, nb)
 """ + '\n'.join('          ' + l for l in pv) + f"""
               +et = Equal.trans(FD.array__Tree<U32>, t, FZW({pjt}), T, Equal.sym(FD.array__Tree<U32>, FZW({pjt}), t, FD.array__freeze_thaw(U32, t)),

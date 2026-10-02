@@ -13,6 +13,7 @@ import re
 from pathlib import Path
 
 from codegen.core.paths import ROOT  # noqa: E402
+from codegen.core.shared_bridges import unpack_pairs  # noqa: E402
 OBJ = ROOT / 'proofs' / 'obj'
 
 
@@ -905,12 +906,7 @@ def kW_{L}(-po: {SEQ}{kw_lim}, +a: FD.array__Tree<{ET}>, +dw: Nat, +N: U32, +eo:
 
 def mk_W_{L}(-po: {SEQ}, +s: S.Schema{mk_lim}, +rep: ST.rep_{L}(po, s), +hs: sda_{L}(po, {KW}n)) -> R_W_{L}(po):
   (+w1, +hl) = rep
-  (+a, b1) = hs
-  (+dw, b2) = b1
-  (+N, b3) = b2
-  (+eo, b4) = b3
-  (+pf, b5) = b4
-  (+hd, +hn) = b5
+{unpack_pairs('hs', ['a', 'dw', 'N', 'eo', 'pf', 'hd', 'hn'], '  ', tmp='b', start=1)}
   {mk_call}
 ''')
     bt = '\n'.join(body)

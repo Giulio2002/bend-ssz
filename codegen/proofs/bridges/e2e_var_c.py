@@ -28,6 +28,7 @@ VENC_PREMISE = {}
 
 import re
 from codegen.proofs.support.light_split import unlight as _unlight   # parse modules as before their light split (codegen/proofs/support/light_split.py)
+from codegen.core.shared_bridges import unpack_pairs  # noqa: E402
 
 from codegen.core.paths import ROOT  # noqa: E402
 
@@ -472,30 +473,14 @@ def hcl(+c: Nat, +h: {{Nat.is_le(c, SH.ListOf_limit({LIMS})) == True{{}} : Bool}
     {ELEN}, {HLIM}, {HS}) -> {GOAL("o")}:
   match hs:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
-      (+pf, s5) = s4
-      (+hdw, +en0) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew', 'pf', 'hdw', 'en0'], '      ')}
 {common}
       +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dw)) == True{{}} : Bool}}, 0n, Nat.add(VC.NW(N), 0n),
         Equal.sym(Nat, Nat.add(VC.NW(N), 0n), 0n, Equal.trans(Nat, Nat.add(VC.NW(N), 0n), C.nwn(U32.to_nat(N)), 0n, enw, Equal.cong(Nat, Nat, z => C.nwn(z), U32.to_nat(N), 0n, en0))),
         Order.zero_le(FD.spec_common__pow2(dw)))
 {eo_step}
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
-      (+pf, s7) = s6
-      (+hdw, s8) = s7
-      (+eN, s9) = s8
-      (+hr0, s10) = s9
-      (+hr32, s11) = s10
-      (+hcap, +bz) = s11
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew', 'pf', 'hdw', 'eN', 'hr0', 'hr32', 'hcap', 'bz'], '      ')}
 {common}
       +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(O.e8(1n+q))) == True{{}} : Bool}}, Nat.add(r, WS.e32(q)), U32.to_nat(N),
         Equal.sym(Nat, U32.to_nat(N), Nat.add(r, WS.e32(q)), Equal.trans(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), Nat.add(r, WS.e32(q)), eN, FD.nat__add_comm(WS.e32(q), r))),
@@ -941,10 +926,7 @@ def _vn2_builders(CD, D, LIMN, PL, WORDS, cargs, cli, cw, LIMS, Q):
       (+ew{k}, s6) = s5
       (+pf{k}, s7) = s6
       (+hdw{k}, s8) = s7
-      (+eN, s9) = s8
-      (+hr0, s10) = s9
-      (+hr32, s11) = s10
-      (+hcap, +bz) = s11
+{unpack_pairs('s8', ['eN', 'hr0', 'hr32', 'hcap', 'bz'], '      ', tmp='s', start=9)}
 {common(k)}
       +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(O.e8(1n+q))) == True{{}} : Bool}}, Nat.add(r, WS.e32(q)), U32.to_nat(N{k}),
         Equal.sym(Nat, U32.to_nat(N{k}), Nat.add(r, WS.e32(q)), Equal.trans(Nat, U32.to_nat(N{k}), Nat.add(WS.e32(q), r), Nat.add(r, WS.e32(q)), eN, FD.nat__add_comm(WS.e32(q), r))),
@@ -1671,18 +1653,10 @@ def vroot_complex(R, X):
 def cpw(-w: O.Words, +wf: LO.wfl(w)) -> {_ex(wsig, f'{{w == {WL} : O.Words}}')}:
   match wf:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew'], '      ', closed=False)}
       (t, (N, ew))
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew'], '      ', closed=False)}
       (t, (N, ew))
 """)
     if any(kd == 'b' for kd, _ in fs):
@@ -1690,18 +1664,10 @@ def cpw(-w: O.Words, +wf: LO.wfl(w)) -> {_ex(wsig, f'{{w == {WL} : O.Words}}')}:
 def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> {_ex(wsig, '{w == O.Bits{FD.array__thaw(U32, t), N} : O.Bits}')}:
   match wf:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew'], '      ', closed=False)}
       (t, (N, ew))
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew'], '      ', closed=False)}
       (t, (N, ew))
 """)
     if any(kd == 'c' for kd, _ in fs):
@@ -2279,18 +2245,10 @@ def weN(+a: {TR}, +n: U32, +b: {TR}, +m: U32, +e: {{{WL('a', 'n')} == {WL('b', '
 def cpw(-w: O.Words, +wf: LO.wfl(w)) -> DK.Ex({TR}, t => DK.Ex(U32, n => {{w == {WL('t', 'n')} : O.Words}})):
   match wf:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew'], '      ', closed=False)}
       (t, (N, ew))
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew'], '      ', closed=False)}
       (t, (N, ew))
 
 # ---- the storage facts an encode record takes, at depth bound K ----
@@ -2316,28 +2274,12 @@ def sfx(+tt: {TR}, +n: U32, +K: Nat, +T: {TR}, +dw: Nat, +N: U32, +ew: {{{WL('tt
 def sfk(+tt: {TR}, +n: U32, +K: Nat, +hs: BL.sdk({WL('tt', 'n')}, K)) -> SFT(tt, n, K):
   match hs:
     case Inl{{s}}:
-      (+T, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
-      (+pf, s5) = s4
-      (+hdw, +en0) = s5
+{unpack_pairs('s', ['T', 'dw', 'N', 'ew', 'pf', 'hdw', 'en0'], '      ')}
       +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dw))) == True{{}} : Bool}}, 0n, U32.to_nat(N), Equal.sym(Nat, U32.to_nat(N), 0n, en0), Order.zero_le(A.quad(VB.pw(dw))))
       +htz = FD.logic__subst(U32, z => {{O.tail_zero(U32.and(z, 3), VB.slot(T, VY.QL(z))) == True{{}} : Bool}}, 0, N, Equal.sym(U32, N, 0, FD.u32__injective(N, 0, en0)), {{==}})
       sfx(tt, n, K, T, dw, N, ew, pf, hdw, hN, htz)
     case Inr{{s}}:
-      (+T, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
-      (+pf, s7) = s6
-      (+hdw, s8) = s7
-      (+eN, s9) = s8
-      (+hr0, s10) = s9
-      (+hr32, s11) = s10
-      (+hcap, +bz) = s11
+{unpack_pairs('s', ['T', 'dw', 'N', 'q', 'r', 'ew', 'pf', 'hdw', 'eN', 'hr0', 'hr32', 'hcap', 'bz'], '      ')}
       +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(O.e8(1n+q))) == True{{}} : Bool}}, Nat.add(r, WS.e32(q)), U32.to_nat(N),
         Equal.sym(Nat, U32.to_nat(N), Nat.add(r, WS.e32(q)), Equal.trans(Nat, U32.to_nat(N), Nat.add(WS.e32(q), r), Nat.add(r, WS.e32(q)), eN, FD.nat__add_comm(WS.e32(q), r))),
         Order.add_right(r, 32n, WS.e32(q), hr32))
@@ -5537,35 +5479,19 @@ def gcp_text():
     L = [f'''def cpw(-w: O.Words, +wf: LO.wfl(w)) -> {_ex(wsig, f'{{w == {WL} : O.Words}}')}:
   match wf:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew'], '      ', closed=False)}
       (t, (N, ew))
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew'], '      ', closed=False)}
       (t, (N, ew))
 
 def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> {_ex(wsig, '{w == O.Bits{FD.array__thaw(U32, t), N} : O.Bits}')}:
   match wf:
     case Inl{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+ew, s4) = s3
+{unpack_pairs('s', ['t', 'dw', 'N', 'ew'], '      ', closed=False)}
       (t, (N, ew))
     case Inr{{s}}:
-      (+t, s1) = s
-      (+dw, s2) = s1
-      (+N, s3) = s2
-      (+q, s4) = s3
-      (+r, s5) = s4
-      (+ew, s6) = s5
+{unpack_pairs('s', ['t', 'dw', 'N', 'q', 'r', 'ew'], '      ', closed=False)}
       (t, (N, ew))
 ''']
     for X in GCP_NAMES:

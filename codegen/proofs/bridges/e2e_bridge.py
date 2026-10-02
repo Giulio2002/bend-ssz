@@ -52,6 +52,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import json
 import re
 from codegen.proofs.support.light_split import unlight as _unlight   # parse modules as before their light split (codegen/proofs/support/light_split.py)
+from codegen.core.shared_bridges import unpack_pairs  # noqa: E402
 import sys
 
 from codegen.core.paths import ROOT, OBJ  # noqa: E402
@@ -2855,10 +2856,7 @@ def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {{FD.array__perfect(U32,
 
 # (i)
 def {R}_e2e_encode(-o: O.Bits, +rep: BOr.rep_bits(o, GS.{X}()), +hs: BL.{SD}(o)) -> {G('o')}:
-  (+T, s1) = hs
-  (+dw, s2) = s1
-  (+K, s3) = s2
-  (+eo, s4) = s3
+{unpack_pairs('hs', ['T', 'dw', 'K', 'eo'], '  ', closed=False)}
 {UNP}
   %Equal.sym(O.Bits, o, {O1}, eo) : {G('_')}
   a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => BOr.rep_bits(z, GS.{X}()), o, {O1}, eo, rep){CAPA})
