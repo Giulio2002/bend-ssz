@@ -1,5 +1,7 @@
 import Base
 import ./FuluIndexedAttestation_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_ulist.bend as U
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types_light.bend as RT_L
@@ -17,6 +19,7 @@ import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
 import ../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
+import ../types/FuluIndexedAttestation_encode_ssz_generated.bend as FuluIndexedAttestation_e
 import ../types/FuluIndexedAttestation_hashtreeroot_generated.bend as FuluIndexedAttestation_h
 import ../types/Fulu_list_uint64_131072_def_generated.bend as Fulu_list_uint64_131072_d
 import ../types/uint64_def_generated.bend as uint64_d
@@ -38,8 +41,23 @@ def FuluIndexedAttestation_e2e_set_attesting_indices_root_rv() -> UL.rep_ul(Fulu
 def FuluIndexedAttestation_e2e_set_attesting_indices_root_witness() -> {Some{D.bytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, D.Digest, Pair.snd(B.Buf, FuluIndexedAttestation_d.IndexedAttestation & D.Digest, FuluIndexedAttestation_h.IndexedAttestation_hash_tree_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), Fulu_list_uint64_131072_d.l131072_u64_default())))))} == API.hash_tree_root(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 0n, UL.uview(Fulu_list_uint64_131072_d.l131072_u64_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluIndexedAttestation_e2e_set_attesting_indices_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_default(), Fulu_list_uint64_131072_d.l131072_u64_default(), FuluIndexedAttestation_e2e_set_attesting_indices_root_r(), FuluIndexedAttestation_e2e_set_attesting_indices_root_rv())
 
+def FuluIndexedAttestation_e2e_set_attesting_indices_encode_hs() -> U.sd(Fulu_list_uint64_131072_d.l131072_u64_default()):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluIndexedAttestation_e2e_set_attesting_indices_encode_witness() -> {Some{E.obytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), Fulu_list_uint64_131072_d.l131072_u64_default()))))} == API.serialize(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 0n, UL.uview(Fulu_list_uint64_131072_d.l131072_u64_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluIndexedAttestation_e2e_set_attesting_indices_encode(FuluIndexedAttestation_d.IndexedAttestation_default(), Fulu_list_uint64_131072_d.l131072_u64_default(), FuluIndexedAttestation_e2e_set_attesting_indices_root_r(), FuluIndexedAttestation_e2e_set_attesting_indices_root_rv(), FuluIndexedAttestation_e2e_set_attesting_indices_encode_hs())
+
 def FuluIndexedAttestation_e2e_set_data_root_witness() -> {Some{D.bytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, D.Digest, Pair.snd(B.Buf, FuluIndexedAttestation_d.IndexedAttestation & D.Digest, FuluIndexedAttestation_h.IndexedAttestation_hash_tree_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_default())))))} == API.hash_tree_root(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 1n, RN.v_AttestationData(FuluAttestationData_d.AttestationData_default()))) : Maybe<&2, +List<U32>>}:
   SET.FuluIndexedAttestation_e2e_set_data_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_default(), FuluIndexedAttestation_e2e_set_attesting_indices_root_r())
 
+def FuluIndexedAttestation_e2e_set_data_encode_hs() -> U.sd(RT_L.pj_IndexedAttestation_0(FuluIndexedAttestation_d.IndexedAttestation_default())):
+  Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
+
+def FuluIndexedAttestation_e2e_set_data_encode_witness() -> {Some{E.obytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_data(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_default()))))} == API.serialize(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 1n, RN.v_AttestationData(FuluAttestationData_d.AttestationData_default()))) : Maybe<&2, +List<U32>>}:
+  SET.FuluIndexedAttestation_e2e_set_data_encode(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluAttestationData_d.AttestationData_default(), FuluIndexedAttestation_e2e_set_attesting_indices_root_r(), FuluIndexedAttestation_e2e_set_data_encode_hs())
+
 def FuluIndexedAttestation_e2e_set_signature_root_witness() -> {Some{D.bytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, D.Digest, Pair.snd(B.Buf, FuluIndexedAttestation_d.IndexedAttestation & D.Digest, FuluIndexedAttestation_h.IndexedAttestation_hash_tree_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_set_signature(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 2n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluIndexedAttestation_e2e_set_signature_root(B.alloc(0), FuluIndexedAttestation_d.IndexedAttestation_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluIndexedAttestation_e2e_set_attesting_indices_root_r())
+
+def FuluIndexedAttestation_e2e_set_signature_encode_witness() -> {Some{E.obytes(Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, B.Buf, FuluIndexedAttestation_e.IndexedAttestation_encode(FuluIndexedAttestation_d.IndexedAttestation_set_signature(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.IndexedAttestation(), VS.field_set(RT_L.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation_default()), 2n, RN.v_b96(FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluIndexedAttestation_e2e_set_signature_encode(FuluIndexedAttestation_d.IndexedAttestation_default(), FuluBytes96_d.Bytes96{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluIndexedAttestation_e2e_set_attesting_indices_root_r(), FuluIndexedAttestation_e2e_set_data_encode_hs())

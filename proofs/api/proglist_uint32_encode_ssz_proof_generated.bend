@@ -49,6 +49,9 @@ def proglist_uint32__serialize_valid__proglist_uint32_serialize_vin_0() -> {prog
 def proglist_uint32__serialize_valid__proglist_uint32_serialize_vin_4() -> {proglist_uint32_e.proglist_uint32_serialize(P1_O.Words{P1_O.out_at(2n), 4}) == (Pair.fst(P1_O.Words, P1_B.Buf, proglist_uint32_e.proglist_uint32_encode(P1_O.Words{P1_O.out_at(2n), 4})), P1_O.encoded(Pair.snd(P1_O.Words, P1_B.Buf, proglist_uint32_e.proglist_uint32_encode(P1_O.Words{P1_O.out_at(2n), 4})))) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.proglist_uint32_serialize_vin_4()
 
+def proglist_uint32__serialize_valid__proglist_uint32_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint32_e.pl_u32_valid(P1_O.Words{ws, n}) == P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), P1_O.unit_ok(4, n)), n, Array.size(U32, ws)) : P1_O.Words & Bool}:
+  P1_PRV.proglist_uint32_serialize_vsym(ws, n)
+
 def proglist_uint32__serialize_valid__proglist_uint32_mc_poison_pl_u32(out: Array<U32>, pos: U32, o: P2_O.Words) -> {proglist_uint32_e.pl_u32_pk(out, pos, (o, False{})) == (out, (o, P2_O.poison())) : Array<U32> & (P2_O.Words & U32)}:
   P2_PRV.proglist_uint32_mc_poison_pl_u32(out, pos, o)
 

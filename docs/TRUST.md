@@ -57,6 +57,16 @@ Trusted (not proved here):
   does not depend on the shell. The gate is the full check at the pin; the 5 MB "headroom" run is informational
   (it passed on one tree and failed an umbrella on the next; at 2.5 MB 13 of 46 umbrellas fail; the failure rate is not monotone
   in the budget), and docs/BUILD.md says what was measured.
+- **Mutation testing shows what the statements do not pin, and only the proofs count.** The mutation evidence
+  (`tests_generated/mutation_testing.py`, docs/RESULTS.md) is proof-side only: a mutant of the generated runtime code must
+  make the pinned checker reject a proof; conformance and fuzz are optional triage and classify nothing. The first runtime
+  counts were invalid (a crashing harness counts as a kill) and one round ran on stale generated files, so the harness now
+  requires `regen_all --check` clean and, for any runtime stage, an unmutated baseline that passes. Four rounds of proof laws
+  took the replay from 606 survivors to 9 gaps on main 80cef74d (reported sizes of three types, the offsets of two union
+  arms, one encoder field offset, one arithmetic-lemma case). What is excluded is excluded by a proof-level reason (an argument
+  the callee never reads, a flag read only by `is_poisoned`, an accepted set that does not change, one uncoverable bound);
+  the aligned-or-slow path test is listed as OPEN (unproved), not as equivalent. A proof stack overflow is not counted as
+  detection.
 - **`--check-only`, not `--verdict`.** Every check here runs `bend <file> --check-only`, whose
   verdict line is followed by "Use --verdict for mathematical validity.": bend2's checker
   (`bend2/bend.ts`) has no proof. `--verdict` would also elaborate every checked definition to
@@ -126,6 +136,17 @@ Trusted (not proved here):
   `spec/progressive.bend` and the other root specs hash with it. Its byte API, which `src/`
   runs, is proved against that model inside the package. Every official root vector passing
   cross-checks the model.
+- **Two Bend compilers, two roles.** The proofs are checked by the pinned rigid-subterms build (aa99b746: the checker, `bend <file>
+  --check-only`). The runtime evidence (conformance, fuzzing, mutation testing, the Bun tests) runs programs compiled by stock
+  Bend 2.0.34 (to C, and to JS for the Bun tests), `benchmarks/toolchain.json`. They share one Base (c742fae9, byte-identical, both
+  pinned by sha256) and one front end, but they are different binaries doing different jobs: the checker never compiles or runs
+  anything, the stock compiler never decides a proof. That is acceptable because the two evidences answer different questions
+  and neither borrows the other's trust: a proof says what the Bend terms mean under the checker's rules; the runtime evidence
+  says that the code the stock compiler emits for those same sources agrees with an independent oracle. It does NOT mean that
+  what the compiler emits is what the proofs are about: a miscompilation in stock 2.0.34, or a difference between the checker's
+  evaluation and the compiled program's, is covered only by the differential evidence (the official vectors, the fuzzing and the
+  mutation testing, all against `codegen/oracle.py`), never by a proof. The rigid-subterms change is in the checker only; the
+  compiler used for the evidence is unmodified upstream.
 - **Compilation and the host.** Only Bend terms are verified; the Bend compiler, its runtime
   (and any native build) and the machine executing them are outside the proofs.
 

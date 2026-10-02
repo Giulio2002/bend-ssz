@@ -22,6 +22,15 @@ any checkout:
 EVIDENCE maps every evidence file to its harness; `python3 benchmarks/checks/provenance.py`
 reports, for each, whether its sources and harness match this tree (exit 1 if any does not, or
 has no stamp).
+
+The state it was made from. `git_dirty` is false only if no tracked file differs from HEAD and no untracked file
+exists under the hashed paths. `git_commit` is the commit the run started from; the tree it is checked against may
+be a later one, but ONLY by paths outside what is hashed: the evidence files themselves, docs, figures and other
+files no harness reads. The rule is verified, not assumed: (1) the sources and harness hashes must equal this
+tree's, (2) the sources of `git_commit`, read from the object store (`git archive`), must equal the recorded
+hashes, and (3) `git diff --name-only git_commit HEAD` must touch none of the hashed paths. A copy without .git
+(the ssz server) cannot check (2) and (3); tools/run_evidence.sh runs this file in the checkout afterwards and
+prints them.
 """
 import datetime
 import hashlib
@@ -47,6 +56,7 @@ EVIDENCE = {
     'benchmarks/evidence/invalid_objects.json': 'tests_generated/invalid_objects.py',
     'benchmarks/evidence/negative_api.json': 'tests_generated/negative_api.py',
     'benchmarks/evidence/runtime_tests.json': 'tools/run_runtime_tests.py',
+    'benchmarks/evidence/mutation_testing.json': 'tests_generated/mutation_testing.py',
 }
 # files a harness depends on beyond COMMON_HARNESS (the Bun tests and their loader)
 EXTRA_HARNESS = {'tools/run_runtime_tests.py': ('tools/bend_loader.ts', 'tests/*.test.ts', 'tests/**/*.test.ts')}
@@ -125,8 +135,13 @@ def git_state():
     EVIDENCE_DIRTY and EVIDENCE_TREE, which tools/run_evidence.sh sets from the checkout it refuses to run when dirty."""
     try:
         commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
+        # dirty: a tracked file changed anywhere, or ANY untracked (not ignored) file under what is hashed (an untracked
+        # source would be hashed into the stamp yet missing from the commit)
+        hashed = [q.split('/*')[0].rstrip('*') for q in SOURCES + COMMON_HARNESS] + ['tests', 'tools/bend_loader.ts']
         dirty = bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'],
-                                             cwd=ROOT, text=True).strip())
+                                             cwd=ROOT, text=True).strip()) or \
+            bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=all', '--'] + hashed,
+                                         cwd=ROOT, text=True).strip())
         tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], cwd=ROOT, text=True).strip()
         return commit, dirty, tree
     except (OSError, subprocess.CalledProcessError):
@@ -142,6 +157,8 @@ def runtime_bend():
 
 def stamp(script):
     """The provenance of a result produced by `script` (the harness's __file__)."""
+    if os.environ.get('EVIDENCE_NO_STAMP'):   # a run in a scratch copy (mutation testing): its result is not evidence
+        return {'skipped': 'EVIDENCE_NO_STAMP'}
     commit, dirty, tree = git_state()
     bend = Path(runtime_bend())
     base = bend.resolve().parents[1] / 'bend2/base.bend'
@@ -195,9 +212,18 @@ def main():
         if prov.get('git_dirty') is not False:
             diff.append('git_dirty is %r (the evidence must be made from a clean checkout)' % (prov.get('git_dirty'),))
         commit = prov.get('git_commit', 'unknown')
+        bound = 'not checked (no .git here)'
         try:
             at = sources_at(commit)
-            diff += ['commit %s holds other %s' % (commit[:8], k) for k in at if at[k] != prov['sources_sha256'].get(k)]
+            bad = ['commit %s holds other %s' % (commit[:8], k) for k in at if at[k] != prov['sources_sha256'].get(k)]
+            import fnmatch
+            pats = list(SOURCES) + list(COMMON_HARNESS) + list(EVIDENCE.values()) + ['tools/bend_loader.ts', 'tests/*.test.ts']
+            moved = subprocess.check_output(['git', 'diff', '--name-only', commit, 'HEAD'], cwd=ROOT, text=True,
+                                            stderr=subprocess.DEVNULL).split()
+            bad += ['HEAD differs from %s in a hashed path: %s' % (commit[:8], f) for f in moved
+                    if any(fnmatch.fnmatch(f, q) for q in pats)]
+            diff += bad
+            bound = 'recorded commit holds the recorded sources, HEAD differs from it only outside them' if not bad else 'NOT bound'
         except (OSError, subprocess.CalledProcessError):
             pass   # no .git or the commit is not here: the hashes above still bind the evidence to this tree
         # the programs it ran: built from this tree's sources by the compiler it records
@@ -211,7 +237,7 @@ def main():
             if x['cache_entry'].rsplit('-', 1)[-1] != x['expected_key'] or (want_key and want_key != x['expected_key']):
                 diff.append(f'{name}: built from other sources than this tree')
         print(f"{e}: commit {prov['git_commit']} at {prov['utc']}: "
-              + ('sources and harness match this tree' if not diff else 'differs from this tree: ' + ', '.join(diff)))
+              + ('sources and harness match this tree; ' + bound if not diff else 'differs from this tree: ' + ', '.join(diff)))
         stale += bool(diff)
     sys.exit(1 if stale else 0)
 

@@ -1,11 +1,16 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_blist.bend as BL_e
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
+import ../types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend as FuluLightClientFinalityUpdate_e
 import ../types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend as FuluLightClientFinalityUpdate_h
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ./e2e_mwd.bend as MW
+import ./FuluLightClientFinalityUpdate_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ../proofs/obj/pv_obj_light.bend as PV
@@ -33,6 +38,41 @@ def FuluLightClientFinalityUpdate_e2e_set_attested_header_root(h: B.Buf, o: Fulu
   %FuluLightClientFinalityUpdate_e2e_set_attested_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientFinalityUpdate_e2e_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w), PS.LightClientFinalityUpdate_set_attested_header_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv))
 
+def FuluLightClientFinalityUpdate_set_attested_header_hs0_hA(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(w))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_attested_header_hs1_hF(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_attested_header_hs2_hB(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w)), 31n):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(_, w)), 31n)
+  h
+
+def FuluLightClientFinalityUpdate_e2e_set_attested_header_encode(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +rv: RT_L.rep_LightClientHeader(w, SH.Chain_head(SH.Container_fields(Spec.LightClientFinalityUpdate()))), +hA: MW.SHS_L(w), +hF: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)), +hB: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 0n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientFinalityUpdate_e2e_set_attested_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientFinalityUpdate_e2e_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(o, w), PS.LightClientFinalityUpdate_set_attested_header_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv), FuluLightClientFinalityUpdate_set_attested_header_hs0_hA(o, w, r, hA), FuluLightClientFinalityUpdate_set_attested_header_hs1_hF(o, w, r, hF), FuluLightClientFinalityUpdate_set_attested_header_hs2_hB(o, w, r, hB))
+
 def FuluLightClientFinalityUpdate_e2e_set_finalized_header_view(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: FuluLightClientHeader_d.LightClientHeader)
     -> {RT_L.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w)) == VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 1n, RT_L.v_LightClientHeader(w)) : S.Value}:
   match o:
@@ -42,6 +82,41 @@ def FuluLightClientFinalityUpdate_e2e_set_finalized_header_root(h: B.Buf, o: Ful
     -> {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 1n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientFinalityUpdate_e2e_set_finalized_header_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientFinalityUpdate_e2e_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w), PS.LightClientFinalityUpdate_set_finalized_header_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv))
+
+def FuluLightClientFinalityUpdate_set_finalized_header_hs0_hA(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_finalized_header_hs1_hF(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(w))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_finalized_header_hs2_hB(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w)), 31n):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(_, w)), 31n)
+  h
+
+def FuluLightClientFinalityUpdate_e2e_set_finalized_header_encode(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: FuluLightClientHeader_d.LightClientHeader, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +rv: RT_L.rep_LightClientHeader(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.LightClientFinalityUpdate())))), +hA: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)), +hF: MW.SHS_L(w), +hB: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 1n, RT_L.v_LightClientHeader(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientFinalityUpdate_e2e_set_finalized_header_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientFinalityUpdate_e2e_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(o, w), PS.LightClientFinalityUpdate_set_finalized_header_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv), FuluLightClientFinalityUpdate_set_finalized_header_hs0_hA(o, w, r, hA), FuluLightClientFinalityUpdate_set_finalized_header_hs1_hF(o, w, r, hF), FuluLightClientFinalityUpdate_set_finalized_header_hs2_hB(o, w, r, hB))
 
 def FuluLightClientFinalityUpdate_e2e_set_finality_branch_view(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: O.Words)
     -> {RT_L.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w)) == VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 2n, PV.pview(w)) : S.Value}:
@@ -53,6 +128,41 @@ def FuluLightClientFinalityUpdate_e2e_set_finality_branch_root(h: B.Buf, o: Fulu
   %FuluLightClientFinalityUpdate_e2e_set_finality_branch_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientFinalityUpdate_e2e_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w), PS.LightClientFinalityUpdate_set_finality_branch_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv))
 
+def FuluLightClientFinalityUpdate_set_finality_branch_hs0_hA(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Words, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_finality_branch_hs1_hF(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Words, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_finality_branch_hs2_hB(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Words, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: BL_e.sdpv(w, 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w)), 31n):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(_, w)), 31n)
+  h
+
+def FuluLightClientFinalityUpdate_e2e_set_finality_branch_encode(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: O.Words, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +rv: PV.rep_pv(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientFinalityUpdate()))))), +hA: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)), +hF: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)), +hB: BL_e.sdpv(w, 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 2n, PV.pview(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientFinalityUpdate_e2e_set_finality_branch_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientFinalityUpdate_e2e_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(o, w), PS.LightClientFinalityUpdate_set_finality_branch_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv), FuluLightClientFinalityUpdate_set_finality_branch_hs0_hA(o, w, r, hA), FuluLightClientFinalityUpdate_set_finality_branch_hs1_hF(o, w, r, hF), FuluLightClientFinalityUpdate_set_finality_branch_hs2_hB(o, w, r, hB))
+
 def FuluLightClientFinalityUpdate_e2e_set_sync_aggregate_view(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)
     -> {RT_L.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w)) == VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 3n, RT_L.v_SyncAggregate_bx(w)) : S.Value}:
   match o:
@@ -63,6 +173,41 @@ def FuluLightClientFinalityUpdate_e2e_set_sync_aggregate_root(h: B.Buf, o: FuluL
   %FuluLightClientFinalityUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientFinalityUpdate_e2e_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w), PS.LightClientFinalityUpdate_set_sync_aggregate_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv))
 
+def FuluLightClientFinalityUpdate_set_sync_aggregate_hs0_hA(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_sync_aggregate_hs1_hF(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_sync_aggregate_hs2_hB(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w)), 31n):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(_, w)), 31n)
+  h
+
+def FuluLightClientFinalityUpdate_e2e_set_sync_aggregate_encode(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, w: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +rv: RT_L.rep_SyncAggregate_bx(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.LightClientFinalityUpdate())))))), +hA: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)), +hF: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)), +hB: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 3n, RT_L.v_SyncAggregate_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientFinalityUpdate_e2e_set_sync_aggregate_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientFinalityUpdate_e2e_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(o, w), PS.LightClientFinalityUpdate_set_sync_aggregate_rep(o, Spec.LightClientFinalityUpdate(), w, r, rv), FuluLightClientFinalityUpdate_set_sync_aggregate_hs0_hA(o, w, r, hA), FuluLightClientFinalityUpdate_set_sync_aggregate_hs1_hF(o, w, r, hF), FuluLightClientFinalityUpdate_set_sync_aggregate_hs2_hB(o, w, r, hB))
+
 def FuluLightClientFinalityUpdate_e2e_set_signature_slot_view(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +w: O.U64)
     -> {RT_L.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w)) == VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 4n, RN.v_u64(w)) : S.Value}:
   match o:
@@ -72,3 +217,38 @@ def FuluLightClientFinalityUpdate_e2e_set_signature_slot_root(h: B.Buf, o: FuluL
     -> {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 4n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
   %FuluLightClientFinalityUpdate_e2e_set_signature_slot_view(o, w) : {Some{D.bytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, D.Digest, Pair.snd(B.Buf, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & D.Digest, FuluLightClientFinalityUpdate_h.LightClientFinalityUpdate_hash_tree_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w)))))} == API.hash_tree_root(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
   R.FuluLightClientFinalityUpdate_e2e_root(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w), PS.LightClientFinalityUpdate_set_signature_slot_rep(o, Spec.LightClientFinalityUpdate(), w, r))
+
+def FuluLightClientFinalityUpdate_set_signature_slot_hs0_hA(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.U64, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_signature_slot_hs1_hF(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.U64, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)))
+    -> MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w))):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(_, w)))
+  h
+
+def FuluLightClientFinalityUpdate_set_signature_slot_hs2_hB(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, -w: O.U64, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +h: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w)), 31n):
+  (+x4, e0) = r
+  (+eo, c0) = e0
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, +q3) = c2
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT_L.pj_LightClientFinalityUpdate_0(o), RT_L.pj_LightClientFinalityUpdate_1(o), RT_L.pj_LightClientFinalityUpdate_2(o), RT_L.pj_LightClientFinalityUpdate_3(o), x4}, eo) : BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(_, w)), 31n)
+  h
+
+def FuluLightClientFinalityUpdate_e2e_set_signature_slot_encode(o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +w: O.U64, +r: RT_L.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()), +hA: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_0(o)), +hF: MW.SHS_L(RT_L.pj_LightClientFinalityUpdate_1(o)), +hB: BL_e.sdpv(RT_L.pj_LightClientFinalityUpdate_2(o), 31n))
+    -> {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), VS.field_set(RT_L.v_LightClientFinalityUpdate(o), 4n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluLightClientFinalityUpdate_e2e_set_signature_slot_view(o, w) : {Some{E.obytes(Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, B.Buf, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w))))} == API.serialize(Spec.LightClientFinalityUpdate(), _) : Maybe<&2, +List<U32>>}
+  N.FuluLightClientFinalityUpdate_e2e_encode(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_signature_slot(o, w), PS.LightClientFinalityUpdate_set_signature_slot_rep(o, Spec.LightClientFinalityUpdate(), w, r), FuluLightClientFinalityUpdate_set_signature_slot_hs0_hA(o, w, r, hA), FuluLightClientFinalityUpdate_set_signature_slot_hs1_hF(o, w, r, hF), FuluLightClientFinalityUpdate_set_signature_slot_hs2_hB(o, w, r, hB))

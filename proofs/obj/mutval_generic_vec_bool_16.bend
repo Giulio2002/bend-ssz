@@ -13,3 +13,6 @@ def vec_bool_16_serialize_vin() -> {vec_bool_16_e.vec_bool_16_serialize(O.Words{
 # ---- vec_bool_16: 17 bytes is refused ----
 def vec_bool_16_serialize_vover() -> {vec_bool_16_e.vec_bool_16_serialize(O.Words{O.out_at(3n), 17}) == (O.Words{O.out_at(3n), 17}, O.refused()) : O.Words & O.Encoded}:
   {==}
+# ---- vec_bool_16: the validity pass is the schema's range, unit and storage check ----
+def vec_bool_16_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_bool_16_e.v16_bool_valid(O.Words{ws, n}) == O.bools_ok(O.wk_cap(Bool.and(Bool.and(U32.is_le(16, n), Bool.or(False{}, U32.is_le(n, 16))), O.unit_ok(1, n)), n, Array.size(U32, ws))) : O.Words & Bool}:
+  {==}

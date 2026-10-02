@@ -1,11 +1,15 @@
 import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
+import ./e2e_bitv.bend as BTV
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
 import ../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
+import ../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggregateAndProof_e
 import ../types/FuluAggregateAndProof_hashtreeroot_generated.bend as FuluAggregateAndProof_h
 import ../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ./FuluAggregateAndProof_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/prep_setters.bend as PS
 import ./FuluAggregateAndProof_e2e_root_generated.bend as R
@@ -32,6 +36,19 @@ def FuluAggregateAndProof_e2e_set_aggregator_index_root(h: B.Buf, o: FuluAggrega
   %FuluAggregateAndProof_e2e_set_aggregator_index_view(o, w) : {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w)))))} == API.hash_tree_root(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
   R.FuluAggregateAndProof_e2e_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w), PS.AggregateAndProof_set_aggregator_index_rep(o, Spec.AggregateAndProof(), w, r))
 
+def FuluAggregateAndProof_set_aggregator_index_hs1_hs(-o: FuluAggregateAndProof_d.AggregateAndProof, -w: O.U64, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +h: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(o)))))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w))))):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, +q1) = e1
+  %Equal.sym(FuluAggregateAndProof_d.AggregateAndProof, o, FuluAggregateAndProof_d.AggregateAndProof{x0, RT_L.pj_AggregateAndProof_1(o), x2}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(_, w)))))
+  h
+
+def FuluAggregateAndProof_e2e_set_aggregator_index_encode(o: FuluAggregateAndProof_d.AggregateAndProof, +w: O.U64, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(o)))))
+    -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(o), 0n, RN.v_u64(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAggregateAndProof_e2e_set_aggregator_index_view(o, w) : {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w))))} == API.serialize(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAggregateAndProof_e2e_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(o, w), PS.AggregateAndProof_set_aggregator_index_rep(o, Spec.AggregateAndProof(), w, r), FuluAggregateAndProof_set_aggregator_index_hs1_hs(o, w, r, hs))
+
 def FuluAggregateAndProof_e2e_set_aggregate_view(o: FuluAggregateAndProof_d.AggregateAndProof, w: O.Boxed<FuluAttestation_d.Attestation>)
     -> {RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w)) == VS.field_set(RT_L.v_AggregateAndProof(o), 1n, RT_L.v_Attestation_bx(w)) : S.Value}:
   match o:
@@ -42,6 +59,19 @@ def FuluAggregateAndProof_e2e_set_aggregate_root(h: B.Buf, o: FuluAggregateAndPr
   %FuluAggregateAndProof_e2e_set_aggregate_view(o, w) : {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w)))))} == API.hash_tree_root(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
   R.FuluAggregateAndProof_e2e_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w), PS.AggregateAndProof_set_aggregate_rep(o, Spec.AggregateAndProof(), w, r, rv))
 
+def FuluAggregateAndProof_set_aggregate_hs1_hs(-o: FuluAggregateAndProof_d.AggregateAndProof, -w: O.Boxed<FuluAttestation_d.Attestation>, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +h: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(w))))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w))))):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, +q1) = e1
+  %Equal.sym(FuluAggregateAndProof_d.AggregateAndProof, o, FuluAggregateAndProof_d.AggregateAndProof{x0, RT_L.pj_AggregateAndProof_1(o), x2}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(_, w)))))
+  h
+
+def FuluAggregateAndProof_e2e_set_aggregate_encode(o: FuluAggregateAndProof_d.AggregateAndProof, w: O.Boxed<FuluAttestation_d.Attestation>, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +rv: RT_L.rep_Attestation_bx(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.AggregateAndProof())))), +hs: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(w))))
+    -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(o), 1n, RT_L.v_Attestation_bx(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAggregateAndProof_e2e_set_aggregate_view(o, w) : {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w))))} == API.serialize(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAggregateAndProof_e2e_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(o, w), PS.AggregateAndProof_set_aggregate_rep(o, Spec.AggregateAndProof(), w, r, rv), FuluAggregateAndProof_set_aggregate_hs1_hs(o, w, r, hs))
+
 def FuluAggregateAndProof_e2e_set_selection_proof_view(o: FuluAggregateAndProof_d.AggregateAndProof, +w: FuluBytes96_d.Bytes96)
     -> {RT_L.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w)) == VS.field_set(RT_L.v_AggregateAndProof(o), 2n, RN.v_b96(w)) : S.Value}:
   match o:
@@ -51,3 +81,16 @@ def FuluAggregateAndProof_e2e_set_selection_proof_root(h: B.Buf, o: FuluAggregat
     -> {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w)))))} == API.hash_tree_root(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(o), 2n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
   %FuluAggregateAndProof_e2e_set_selection_proof_view(o, w) : {Some{D.bytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, D.Digest, Pair.snd(B.Buf, FuluAggregateAndProof_d.AggregateAndProof & D.Digest, FuluAggregateAndProof_h.AggregateAndProof_hash_tree_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w)))))} == API.hash_tree_root(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
   R.FuluAggregateAndProof_e2e_root(h, FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w), PS.AggregateAndProof_set_selection_proof_rep(o, Spec.AggregateAndProof(), w, r))
+
+def FuluAggregateAndProof_set_selection_proof_hs1_hs(-o: FuluAggregateAndProof_d.AggregateAndProof, -w: FuluBytes96_d.Bytes96, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +h: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(o)))))
+    -> BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w))))):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, +q1) = e1
+  %Equal.sym(FuluAggregateAndProof_d.AggregateAndProof, o, FuluAggregateAndProof_d.AggregateAndProof{x0, RT_L.pj_AggregateAndProof_1(o), x2}, eo) : BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(_, w)))))
+  h
+
+def FuluAggregateAndProof_e2e_set_selection_proof_encode(o: FuluAggregateAndProof_d.AggregateAndProof, +w: FuluBytes96_d.Bytes96, +r: RT_L.rep_AggregateAndProof(o, Spec.AggregateAndProof()), +hs: BTV.sdbv(RT_L.pj_Attestation_0(RT_L.pjb_Attestation_bx(RT_L.pj_AggregateAndProof_1(o)))))
+    -> {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w))))} == API.serialize(Spec.AggregateAndProof(), VS.field_set(RT_L.v_AggregateAndProof(o), 2n, RN.v_b96(w))) : Maybe<&2, +List<U32>>}:
+  %FuluAggregateAndProof_e2e_set_selection_proof_view(o, w) : {Some{E.obytes(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w))))} == API.serialize(Spec.AggregateAndProof(), _) : Maybe<&2, +List<U32>>}
+  N.FuluAggregateAndProof_e2e_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(o, w), PS.AggregateAndProof_set_selection_proof_rep(o, Spec.AggregateAndProof(), w, r), FuluAggregateAndProof_set_selection_proof_hs1_hs(o, w, r, hs))

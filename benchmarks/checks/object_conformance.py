@@ -26,7 +26,7 @@ cases = [c for c in json.load(open('cases.json')) if '/ssz_static/' in c]
 only = None
 if '--only' in sys.argv:
     only = set(sys.argv[sys.argv.index('--only') + 1].split(','))
-tmp = pathlib.Path('build/performance/inputs')
+tmp = pathlib.Path('build/performance/inputs' + os.environ.get('SSZ_TMP_SUFFIX', ''))   # SSZ_TMP_SUFFIX: parallel runs (mutation testing)
 tmp.mkdir(parents=True, exist_ok=True)
 res = collections.Counter()
 fails = []

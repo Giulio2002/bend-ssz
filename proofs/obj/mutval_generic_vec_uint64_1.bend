@@ -10,3 +10,6 @@ import ../../types/vec_uint64_1_encode_ssz_generated.bend as vec_uint64_1_e
 # ---- vec_uint64_1: 8 bytes is accepted ----
 def vec_uint64_1_serialize_vin() -> {vec_uint64_1_e.vec_uint64_1_serialize(O.Words{O.out_at(2n), 8}) == (Pair.fst(O.Words, B.Buf, vec_uint64_1_e.vec_uint64_1_encode(O.Words{O.out_at(2n), 8})), O.encoded(Pair.snd(O.Words, B.Buf, vec_uint64_1_e.vec_uint64_1_encode(O.Words{O.out_at(2n), 8})))) : O.Words & O.Encoded}:
   {==}
+# ---- vec_uint64_1: the validity pass is the schema's range, unit and storage check ----
+def vec_uint64_1_serialize_vsym(ws: Array<U32>, +n: U32) -> {vec_uint64_1_e.v1_u64_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(8, n), Bool.or(False{}, U32.is_le(n, 8))), O.unit_ok(8, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+  {==}

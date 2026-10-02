@@ -169,8 +169,12 @@ codegen/e2e_hkp.py	codegen/proofs/decoded/e2e_hkp.py
 codegen/obytes_len.py	codegen/proofs/witnesses/obytes_len.py
 codegen/mutation_laws.py	codegen/proofs/laws/mutation_laws.py
 codegen/mutation_laws_cap.py	codegen/proofs/laws/mutation_laws_cap.py
+codegen/mutation_laws_capsym.py	codegen/proofs/laws/mutation_laws_capsym.py
+codegen/cmp_laws.py	codegen/proofs/laws/cmp_laws.py
 codegen/mutation_laws_const.py	codegen/proofs/laws/mutation_laws_const.py
+codegen/mutation_laws_small.py	codegen/proofs/laws/mutation_laws_small.py
 codegen/mutation_laws_arith.py	codegen/proofs/laws/mutation_laws_arith.py
 codegen/mutation_laws_offset.py	codegen/proofs/laws/mutation_laws_offset.py
 codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py
 codegen/mutation_laws_validity.py	codegen/proofs/laws/mutation_laws_validity.py
+codegen/u64_tail.py	codegen/proofs/collections/u64_tail.py

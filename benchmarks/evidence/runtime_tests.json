@@ -18,10 +18,10 @@
   "sha256": "a83d263767d839e4d2649ca8e35d07159c7afc99afdc96d731ced29e056dda0c"
  },
  "provenance": {
-  "git_commit": "5bdc9afa4401bcdf1b5a06f1803a4f045ff7123d",
+  "git_commit": "3278d74bc1e3826f8094b1d794a378219e5ba105",
   "git_dirty": false,
-  "git_tree": "f18f04f1cdbff370be1e58d3d868241e06661509",
-  "utc": "2026-10-01T11:42:21Z",
+  "git_tree": "64de864f7bc1ed02ff2e7686b80d02207f76009d",
+  "utc": "2026-10-01T23:38:35Z",
   "runtime": {
    "bend_sha256": "7fafb749dd33df446a0cb5839c5694df237312a8e8048d2e9420480164ff5934",
    "base_sha256": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661"
@@ -387,7 +387,7 @@
   },
   "harness_sha256": {
    "tools/run_runtime_tests.py": "91d7d3a4fe43ec183732b2379836afebeb4557f56ea3ffb0f3f14ebb30996131",
-   "benchmarks/checks/provenance.py": "3dc8f4f3fc47c0c88accabcdcb3cee4cbe2c7e1c53280b462241a0146f394fba",
+   "benchmarks/checks/provenance.py": "c1ef354044b518097f337b3ade7d816295f7456be37ab741687a8256f0869eeb",
    "codegen/core/oracle.py": "c4ab5aa1ba97c8e519775e5b2e38faaf63480d0fa1d29cb2ceef43ffa8784ff4",
    "codegen/core/schema.py": "75a94b3f52c2f4cfb7cb4c3cad30db9991d827460b5348eea23d7e2f67984618",
    "codegen/fulu.yaml": "cb9dfe7f166020aecd6f92085b01d3ef0ebbf0eb13c23e1d018352d82b29977d",

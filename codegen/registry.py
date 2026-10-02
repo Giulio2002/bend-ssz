@@ -55,7 +55,10 @@ GENERATORS = (
     Gen('fix_reject_pad', 'proofs/laws'),
     Gen('mutation_laws', 'proofs/laws'),
     Gen('mutation_laws_cap', 'proofs/laws'),
+    Gen('cmp_laws', 'proofs/laws'),
+    Gen('mutation_laws_capsym', 'proofs/laws'),
     Gen('mutation_laws_const', 'proofs/laws'),
+    Gen('mutation_laws_small', 'proofs/laws'),
     Gen('mutation_laws_arith', 'proofs/laws'),
     Gen('mutation_laws_offset', 'proofs/laws'),
     Gen('mutation_laws_validity', 'proofs/laws'),
@@ -109,6 +112,7 @@ GENERATORS = (
     Gen('vedge', 'proofs/var'),
     # codegen/proofs/collections/
     Gen('bits_view', 'proofs/collections'),
+    Gen('u64_tail', 'proofs/collections'),
     Gen('boxedview', 'proofs/collections'),
     Gen('coll_laws', 'proofs/collections'),
     Gen('e2e_setters', 'proofs/collections', stage='last', after=('e2e_bridge',)),

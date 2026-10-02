@@ -13,3 +13,6 @@ def bitlist_32_serialize_vin() -> {bitlist_32_e.bitlist_32_serialize(O.Bits{O.ou
 # ---- bitlist_32: 33 bits is refused ----
 def bitlist_32_serialize_vover() -> {bitlist_32_e.bitlist_32_serialize(O.Bits{O.out_at(2n), 33}) == (O.Bits{O.out_at(2n), 33}, O.refused()) : O.Bits & O.Encoded}:
   {==}
+# ---- bitlist_32: the validity pass is the schema's limit and storage check ----
+def bitlist_32_serialize_vsym(ws: Array<U32>, +k: U32) -> {bitlist_32_e.bits32_valid(O.Bits{ws, k}) == O.bk_cap(Bool.or(False{}, U32.is_le(k, 32)), k, Array.size(U32, ws)) : O.Bits & Bool}:
+  {==}

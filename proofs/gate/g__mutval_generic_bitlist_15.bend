@@ -13,3 +13,6 @@ def bitlist_15__serialize_valid__bitlist_15_serialize_vin() -> {bitlist_15_e.bit
 def bitlist_15__serialize_valid__bitlist_15_serialize_vover() -> {bitlist_15_e.bitlist_15_serialize(O.Bits{O.out_at(1n), 16}) == (O.Bits{O.out_at(1n), 16}, O.refused()) : O.Bits & O.Encoded}:
   PRV.bitlist_15_serialize_vover()
 
+def bitlist_15__serialize_valid__bitlist_15_serialize_vsym(ws: Array<U32>, +k: U32) -> {bitlist_15_e.bits15_valid(O.Bits{ws, k}) == O.bk_cap(Bool.or(False{}, U32.is_le(k, 15)), k, Array.size(U32, ws)) : O.Bits & Bool}:
+  PRV.bitlist_15_serialize_vsym(ws, k)
+

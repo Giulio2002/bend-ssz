@@ -1,5 +1,7 @@
 import Base
 import ./FuluMatrixEntry_e2e_set_generated.bend as SET
+import ./e2e_support.bend as E
+import ./e2e_tree.bend as E3
 import ./e2e_wit.bend as WT
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/root_names_light.bend as RN
@@ -17,6 +19,7 @@ import ../src/obj.bend as O
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluCell_def_generated.bend as FuluCell_d
 import ../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
+import ../types/FuluMatrixEntry_encode_ssz_generated.bend as FuluMatrixEntry_e
 import ../types/FuluMatrixEntry_hashtreeroot_generated.bend as FuluMatrixEntry_h
 import ../types/schema.bend as S
 import ../types/uint64_def_generated.bend as uint64_d
@@ -47,11 +50,29 @@ def FuluMatrixEntry_e2e_set_cell_root_rv() -> WO.rep_bv(FuluCell_d.b2048_default
 def FuluMatrixEntry_e2e_set_cell_root_witness() -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_set_cell(FuluMatrixEntry_d.MatrixEntry_default(), FuluCell_d.b2048_default())))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 0n, S.BytesValue{WO.wview(FuluCell_d.b2048_default())})) : Maybe<&2, +List<U32>>}:
   SET.FuluMatrixEntry_e2e_set_cell_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_default(), FuluCell_d.b2048_default(), FuluMatrixEntry_e2e_set_cell_root_r(), FuluMatrixEntry_e2e_set_cell_root_rv())
 
+def FuluMatrixEntry_e2e_set_cell_encode_hc() -> {E3.at_depth(FuluCell_d.b2048_default(), 10n) == True{} : Bool}:
+  {==}
+
+def FuluMatrixEntry_e2e_set_cell_encode_witness() -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_cell(FuluMatrixEntry_d.MatrixEntry_default(), FuluCell_d.b2048_default()))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 0n, S.BytesValue{WO.wview(FuluCell_d.b2048_default())})) : Maybe<&2, +List<U32>>}:
+  SET.FuluMatrixEntry_e2e_set_cell_encode(FuluMatrixEntry_d.MatrixEntry_default(), FuluCell_d.b2048_default(), FuluMatrixEntry_e2e_set_cell_root_r(), FuluMatrixEntry_e2e_set_cell_root_rv(), FuluMatrixEntry_e2e_set_cell_encode_hc())
+
 def FuluMatrixEntry_e2e_set_kzg_proof_root_witness() -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(FuluMatrixEntry_d.MatrixEntry_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 1n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluMatrixEntry_e2e_set_kzg_proof_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluMatrixEntry_e2e_set_cell_root_r())
+
+def FuluMatrixEntry_e2e_set_kzg_proof_encode_hc() -> {E3.at_depth(M0_L.pj_MatrixEntry_0(FuluMatrixEntry_d.MatrixEntry_default()), 10n) == True{} : Bool}:
+  {==}
+
+def FuluMatrixEntry_e2e_set_kzg_proof_encode_witness() -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_kzg_proof(FuluMatrixEntry_d.MatrixEntry_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 1n, RN.v_b48(FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluMatrixEntry_e2e_set_kzg_proof_encode(FuluMatrixEntry_d.MatrixEntry_default(), FuluBytes48_d.Bytes48{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, FuluMatrixEntry_e2e_set_cell_root_r(), FuluMatrixEntry_e2e_set_kzg_proof_encode_hc())
 
 def FuluMatrixEntry_e2e_set_column_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 2n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluMatrixEntry_e2e_set_column_index_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}, FuluMatrixEntry_e2e_set_cell_root_r())
 
+def FuluMatrixEntry_e2e_set_column_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_column_index(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 2n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluMatrixEntry_e2e_set_column_index_encode(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}, FuluMatrixEntry_e2e_set_cell_root_r(), FuluMatrixEntry_e2e_set_kzg_proof_encode_hc())
+
 def FuluMatrixEntry_e2e_set_row_index_root_witness() -> {Some{D.bytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, D.Digest, Pair.snd(B.Buf, FuluMatrixEntry_d.MatrixEntry & D.Digest, FuluMatrixEntry_h.MatrixEntry_hash_tree_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_set_row_index(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0})))))} == API.hash_tree_root(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 3n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
   SET.FuluMatrixEntry_e2e_set_row_index_root(B.alloc(0), FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}, FuluMatrixEntry_e2e_set_cell_root_r())
+
+def FuluMatrixEntry_e2e_set_row_index_encode_witness() -> {Some{E.obytes(Pair.snd(FuluMatrixEntry_d.MatrixEntry, B.Buf, FuluMatrixEntry_e.MatrixEntry_encode(FuluMatrixEntry_d.MatrixEntry_set_row_index(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}))))} == API.serialize(Spec.MatrixEntry(), VS.field_set(M0_L.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry_default()), 3n, RN.v_u64(O.U64{1, 0}))) : Maybe<&2, +List<U32>>}:
+  SET.FuluMatrixEntry_e2e_set_row_index_encode(FuluMatrixEntry_d.MatrixEntry_default(), O.U64{1, 0}, FuluMatrixEntry_e2e_set_cell_root_r(), FuluMatrixEntry_e2e_set_kzg_proof_encode_hc())

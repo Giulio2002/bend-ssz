@@ -2,10 +2,15 @@ import Base
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../proofs/obj/blist_obj_light.bend as BLI
+import ./e2e_blist.bend as BL_e
 import ../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
+import ../types/ComplexTestStruct_encode_ssz_generated.bend as ComplexTestStruct_e
 import ../types/ComplexTestStruct_hashtreeroot_generated.bend as ComplexTestStruct_h
 import ../src/digest.bend as D
+import ./e2e_support.bend as E
+import ./e2e_encvd.bend as EV
 import ../proofs/obj/list_obj_light.bend as LO
+import ./ComplexTestStruct_e2e_generated.bend as N
 import ../src/obj.bend as O
 import ../proofs/obj/packed_bytes_light.bend as PB
 import ../proofs/obj/prep_setters_g1.bend as PS
@@ -69,6 +74,81 @@ def ComplexTestStruct_e2e_set_f_B_root(h: B.Buf, o: ComplexTestStruct_d.ComplexT
   %ComplexTestStruct_e2e_set_f_B_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w), PS.ComplexTestStruct_set_f_B_rep(o, Spec.ComplexTestStruct(), w, r, rv))
 
+def ComplexTestStruct_set_f_B_hs1_hsB(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(w, 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_B(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_B_hs3_hsD(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_B(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_B_hs4_hsE(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n))
+    -> BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w))), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_B(_, w))), 31n)
+  h
+
+def ComplexTestStruct_set_f_B_hs5_hsF(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n))
+    -> EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_B(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_B_hs6_hsG(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w)), 31n, 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_B(_, w)), 31n, 31n)
+  h
+
+def ComplexTestStruct_e2e_set_f_B_encode(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: BLI.rep_l2(w, SH.Chain_head(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))), +hsB: BL_e.sdk(w, 31n), +hsD: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n), +hsE: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n), +hsF: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n), +hsG: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w))))} == API.serialize(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 1n, PB.vview2(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_B_view(o, w) : {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w))))} == API.serialize(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  N.ComplexTestStruct_e2e_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_B(o, w), PS.ComplexTestStruct_set_f_B_rep(o, Spec.ComplexTestStruct(), w, r, rv), ComplexTestStruct_set_f_B_hs1_hsB(o, w, r, hsB), ComplexTestStruct_set_f_B_hs3_hsD(o, w, r, hsD), ComplexTestStruct_set_f_B_hs4_hsE(o, w, r, hsE), ComplexTestStruct_set_f_B_hs5_hsF(o, w, r, hsF), ComplexTestStruct_set_f_B_hs6_hsG(o, w, r, hsG))
+
 def ComplexTestStruct_set_f_C_flag_case(b: Bool, -o: ComplexTestStruct_d.ComplexTestStruct, -w: U32) -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_d.ComplexTestStruct_put_f_C(b, o, w)) == b : Bool}:
   match b:
     case True{}: {==}
@@ -111,6 +191,81 @@ def ComplexTestStruct_e2e_set_f_D_root(h: B.Buf, o: ComplexTestStruct_d.ComplexT
   %ComplexTestStruct_e2e_set_f_D_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w), PS.ComplexTestStruct_set_f_D_rep(o, Spec.ComplexTestStruct(), w, r, rv))
 
+def ComplexTestStruct_set_f_D_hs1_hsB(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_D(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_D_hs3_hsD(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(w, 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_D(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_D_hs4_hsE(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n))
+    -> BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w))), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_D(_, w))), 31n)
+  h
+
+def ComplexTestStruct_set_f_D_hs5_hsF(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n))
+    -> EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_D(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_D_hs6_hsG(-o: ComplexTestStruct_d.ComplexTestStruct, -w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w)), 31n, 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_D(_, w)), 31n, 31n)
+  h
+
+def ComplexTestStruct_e2e_set_f_D_encode(o: ComplexTestStruct_d.ComplexTestStruct, w: O.Words, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: LO.rep_bl(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))), +hsB: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n), +hsD: BL_e.sdk(w, 31n), +hsE: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n), +hsF: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n), +hsG: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w))))} == API.serialize(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 3n, S.BytesValue{WO.wview(w)})) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_D_view(o, w) : {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w))))} == API.serialize(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  N.ComplexTestStruct_e2e_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_D(o, w), PS.ComplexTestStruct_set_f_D_rep(o, Spec.ComplexTestStruct(), w, r, rv), ComplexTestStruct_set_f_D_hs1_hsB(o, w, r, hsB), ComplexTestStruct_set_f_D_hs3_hsD(o, w, r, hsD), ComplexTestStruct_set_f_D_hs4_hsE(o, w, r, hsE), ComplexTestStruct_set_f_D_hs5_hsF(o, w, r, hsF), ComplexTestStruct_set_f_D_hs6_hsG(o, w, r, hsG))
+
 def ComplexTestStruct_e2e_set_f_E_view(o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w)) : S.Value}:
   match o:
@@ -120,6 +275,81 @@ def ComplexTestStruct_e2e_set_f_E_root(h: B.Buf, o: ComplexTestStruct_d.ComplexT
     -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
   %ComplexTestStruct_e2e_set_f_E_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w), PS.ComplexTestStruct_set_f_E_rep(o, Spec.ComplexTestStruct(), w, r, rv))
+
+def ComplexTestStruct_set_f_E_hs1_hsB(-o: ComplexTestStruct_d.ComplexTestStruct, -w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_E(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_E_hs3_hsD(-o: ComplexTestStruct_d.ComplexTestStruct, -w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_E(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_E_hs4_hsE(-o: ComplexTestStruct_d.ComplexTestStruct, -w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_VarTestStruct_1(w), 31n))
+    -> BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w))), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_E(_, w))), 31n)
+  h
+
+def ComplexTestStruct_set_f_E_hs5_hsF(-o: ComplexTestStruct_d.ComplexTestStruct, -w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n))
+    -> EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_E(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_E_hs6_hsG(-o: ComplexTestStruct_d.ComplexTestStruct, -w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w)), 31n, 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_E(_, w)), 31n, 31n)
+  h
+
+def ComplexTestStruct_e2e_set_f_E_encode(o: ComplexTestStruct_d.ComplexTestStruct, w: VarTestStruct_d.VarTestStruct, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))), +hsB: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n), +hsD: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n), +hsE: BL_e.sdk(RT_L.pj_VarTestStruct_1(w), 31n), +hsF: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n), +hsG: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w))))} == API.serialize(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 4n, RT_L.v_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_E_view(o, w) : {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w))))} == API.serialize(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  N.ComplexTestStruct_e2e_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_E(o, w), PS.ComplexTestStruct_set_f_E_rep(o, Spec.ComplexTestStruct(), w, r, rv), ComplexTestStruct_set_f_E_hs1_hsB(o, w, r, hsB), ComplexTestStruct_set_f_E_hs3_hsD(o, w, r, hsD), ComplexTestStruct_set_f_E_hs4_hsE(o, w, r, hsE), ComplexTestStruct_set_f_E_hs5_hsF(o, w, r, hsF), ComplexTestStruct_set_f_E_hs6_hsG(o, w, r, hsG))
 
 def ComplexTestStruct_e2e_set_f_F_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w)) : S.Value}:
@@ -131,6 +361,81 @@ def ComplexTestStruct_e2e_set_f_F_root(h: B.Buf, o: ComplexTestStruct_d.ComplexT
   %ComplexTestStruct_e2e_set_f_F_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w), PS.ComplexTestStruct_set_f_F_rep(o, Spec.ComplexTestStruct(), w, r, rv))
 
+def ComplexTestStruct_set_f_F_hs1_hsB(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_F(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_F_hs3_hsD(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_F(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_F_hs4_hsE(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n))
+    -> BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w))), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_F(_, w))), 31n)
+  h
+
+def ComplexTestStruct_set_f_F_hs5_hsF(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv4(w, 31n))
+    -> EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_F(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_F_hs6_hsG(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w)), 31n, 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_F(_, w)), 31n, 31n)
+  h
+
+def ComplexTestStruct_e2e_set_f_F_encode(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v4_FixedTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct())))))))), +hsB: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n), +hsD: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n), +hsE: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n), +hsF: EV.sv4(w, 31n), +hsG: EV.sv2(RT_L.pj_ComplexTestStruct_6(o), 31n, 31n))
+    -> {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w))))} == API.serialize(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 5n, RT_L.xv_v4_FixedTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_F_view(o, w) : {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w))))} == API.serialize(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  N.ComplexTestStruct_e2e_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_F(o, w), PS.ComplexTestStruct_set_f_F_rep(o, Spec.ComplexTestStruct(), w, r, rv), ComplexTestStruct_set_f_F_hs1_hsB(o, w, r, hsB), ComplexTestStruct_set_f_F_hs3_hsD(o, w, r, hsD), ComplexTestStruct_set_f_F_hs4_hsE(o, w, r, hsE), ComplexTestStruct_set_f_F_hs5_hsF(o, w, r, hsF), ComplexTestStruct_set_f_F_hs6_hsG(o, w, r, hsG))
+
 def ComplexTestStruct_e2e_set_f_G_view(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq)
     -> {RT_L.v_ComplexTestStruct(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)) == VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w)) : S.Value}:
   match o:
@@ -140,3 +445,78 @@ def ComplexTestStruct_e2e_set_f_G_root(h: B.Buf, o: ComplexTestStruct_d.ComplexT
     -> {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
   %ComplexTestStruct_e2e_set_f_G_view(o, w) : {Some{D.bytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, D.Digest, Pair.snd(B.Buf, ComplexTestStruct_d.ComplexTestStruct & D.Digest, ComplexTestStruct_h.ComplexTestStruct_hash_tree_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)))))} == API.hash_tree_root(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
   R.ComplexTestStruct_e2e_root(h, ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w), PS.ComplexTestStruct_set_f_G_rep(o, Spec.ComplexTestStruct(), w, r, rv))
+
+def ComplexTestStruct_set_f_G_hs1_hsB(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_1(ComplexTestStruct_d.ComplexTestStruct_set_f_G(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_G_hs3_hsD(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n))
+    -> BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_ComplexTestStruct_3(ComplexTestStruct_d.ComplexTestStruct_set_f_G(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_G_hs4_hsE(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n))
+    -> BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w))), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(ComplexTestStruct_d.ComplexTestStruct_set_f_G(_, w))), 31n)
+  h
+
+def ComplexTestStruct_set_f_G_hs5_hsF(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n))
+    -> EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)), 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv4(RT_L.pj_ComplexTestStruct_5(ComplexTestStruct_d.ComplexTestStruct_set_f_G(_, w)), 31n)
+  h
+
+def ComplexTestStruct_set_f_G_hs6_hsG(-o: ComplexTestStruct_d.ComplexTestStruct, -w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +h: EV.sv2(w, 31n, 31n))
+    -> EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w)), 31n, 31n):
+  (+x0, e0) = r
+  (+x2, e1) = e0
+  (+eo, c0) = e1
+  (+q0, c1) = c0
+  (+q1, c2) = c1
+  (+q2, c3) = c2
+  (+q3, c4) = c3
+  (+q4, c5) = c4
+  (+q5, +q6) = c5
+  %Equal.sym(ComplexTestStruct_d.ComplexTestStruct, o, ComplexTestStruct_d.ComplexTestStruct{x0, RT_L.pj_ComplexTestStruct_1(o), x2, RT_L.pj_ComplexTestStruct_3(o), RT_L.pj_ComplexTestStruct_4(o), RT_L.pj_ComplexTestStruct_5(o), RT_L.pj_ComplexTestStruct_6(o)}, eo) : EV.sv2(RT_L.pj_ComplexTestStruct_6(ComplexTestStruct_d.ComplexTestStruct_set_f_G(_, w)), 31n, 31n)
+  h
+
+def ComplexTestStruct_e2e_set_f_G_encode(o: ComplexTestStruct_d.ComplexTestStruct, w: vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, +r: RT_L.rep_ComplexTestStruct(o, Spec.ComplexTestStruct()), +rv: RT_L.rep_v2_VarTestStruct(w, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(Spec.ComplexTestStruct()))))))))), +hsB: BL_e.sdk(RT_L.pj_ComplexTestStruct_1(o), 31n), +hsD: BL_e.sdk(RT_L.pj_ComplexTestStruct_3(o), 31n), +hsE: BL_e.sdk(RT_L.pj_VarTestStruct_1(RT_L.pj_ComplexTestStruct_4(o)), 31n), +hsF: EV.sv4(RT_L.pj_ComplexTestStruct_5(o), 31n), +hsG: EV.sv2(w, 31n, 31n))
+    -> {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w))))} == API.serialize(Spec.ComplexTestStruct(), VS.field_set(RT_L.v_ComplexTestStruct(o), 6n, RT_L.xv_v2_VarTestStruct(w))) : Maybe<&2, +List<U32>>}:
+  %ComplexTestStruct_e2e_set_f_G_view(o, w) : {Some{E.obytes(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w))))} == API.serialize(Spec.ComplexTestStruct(), _) : Maybe<&2, +List<U32>>}
+  N.ComplexTestStruct_e2e_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_G(o, w), PS.ComplexTestStruct_set_f_G_rep(o, Spec.ComplexTestStruct(), w, r, rv), ComplexTestStruct_set_f_G_hs1_hsB(o, w, r, hsB), ComplexTestStruct_set_f_G_hs3_hsD(o, w, r, hsD), ComplexTestStruct_set_f_G_hs4_hsE(o, w, r, hsE), ComplexTestStruct_set_f_G_hs5_hsF(o, w, r, hsF), ComplexTestStruct_set_f_G_hs6_hsG(o, w, r, hsG))
