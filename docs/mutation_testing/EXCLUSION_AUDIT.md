@@ -2,8 +2,8 @@
 
 `tests_generated/mutation_exclusions.json` hides 219 mutants from the loop: 218 `proof-equivalent` and 1 `uncoverable`. This
 audit re-derives every rule independently (no code shared with `tests_generated/mutation_equivalence.py`), and checks each rule by
-a Bend proof or by a differential run of original against mutant. Tool: `tools/exclusion_audit.py` (and
-`tools/exclusion_audit_words.py`); all runs were on the server in a private copy of the tree, the mutant files were deleted after each batch.
+a Bend proof or by a differential run of original against mutant. Tool: `tools/mutation_testing/exclusion_audit.py` (and
+`tools/mutation_testing/exclusion_audit_words.py`); all runs were on the server in a private copy of the tree, the mutant files were deleted after each batch.
 The mutants the exclusions wrongly hide are in `docs/mutation_testing/EXCLUSION_AUDIT_HIDDEN.json`.
 
 ## Result
@@ -34,7 +34,7 @@ mutants the loop never draws:
   (`lo` 0 to 1 refuses the empty list). 35 sites, each with a witness length in the JSON.
 
 Fix for the loop: key on the column as well (file, def, operator, before, after, text, column), or make the rule's checker run for
-every matching site and drop the entry when any site fails (`tools/exclusion_audit.py structural` is that checker).
+every matching site and drop the entry when any site fails (`tools/mutation_testing/exclusion_audit.py structural` is that checker).
 
 ## Rule by rule
 
@@ -45,7 +45,7 @@ Bend is pure and total: a function that does not mention a parameter cannot depe
 definitionally equal. Independent re-check: own call parser, callee resolved through the file's import alias to its file (the
 original looks a def up by bare name across all files), comment-stripped body, the parameter token absent, def unique. 127 of 131
 sites pass; the 4 failures are the offset siblings above (the literal is not the whole argument; it sits inside `off + k`).
-Proof: `python3 tools/exclusion_audit.py laws-unread types` writes 25 files with 45 laws
+Proof: `python3 tools/mutation_testing/exclusion_audit.py laws-unread types` writes 25 files with 45 laws
 `def law(...) -> {AUD.f(.., 8, ..) == AUD.f(.., 7, ..) : T}: {==}` (one per distinct callee, parameter, literal pair); all check.
 One callee, `b1_root`, matches on its record argument, so with `o` a variable the kernel keeps the unused `+hl` threaded through
 the stuck match and `{==}` fails; the same laws with `o = Bytes1{w0}` (the only constructor) check, which is the full domain.
@@ -55,7 +55,7 @@ Verdict: sound.
 
 Rule: in `X_pk_ok`, `(out, (o, 0))` to `(o, 1)` is invisible because the flag only reaches `is_poisoned(fl) = 2^31 <= fl`.
 This is true only when the flag stays a flag. In a variable-size container the flag is OR-ed into the running length (`cur .|. fl`),
-and that length is what `ser_done` writes. Analysis (`tools/exclusion_audit.py poison`): the call graph of the encoders; for each
+and that length is what `ser_done` writes. Analysis (`tools/mutation_testing/exclusion_audit.py poison`): the call graph of the encoders; for each
 entry, every `*_serialize` that reaches the def, and whether its final length is a literal (flag reaches only `is_poisoned`) or a computed count.
 
 - 29 entries reach only fixed-length serializers. Differential run (`run-diff`: the encoders with the flag 0 to 1 against the original, copies in
@@ -75,9 +75,9 @@ Rule: the accepted length set {n : lo <= n <= hi (hi unbounded when big), unit |
 so equal sets give equal functions; `unit_ok` is a mask for 1, 2, 4, 8, 32 and `U32.mod` otherwise, each exactly "unit divides n".
 Independent check: the sets are compared exactly over all n in [0, 2^32) (first, last, step, count: no sampling; the original samples when
 the range is over 5 million) for every keyed site. 48 equivalent, 35 differ. Runtime differential
-(`tools/exclusion_audit_words.py`): a Bend program calls `O.words_ok` with the original and the mutated literals on about 100 boundary lengths
+(`tools/mutation_testing/exclusion_audit_words.py`): a Bend program calls `O.words_ok` with the original and the mutated literals on about 100 boundary lengths
 per site (`Words{zeros(n+4), n}`); the model and the runtime agree on all 83 sites (48 equal, 35 differ, 0 mismatches).
-A Bend law for the `big` case: `words_ok(o, 0, 0, True{}, 4) == words_ok(o, 0, 1, True{}, 4)` checks (`tools/exclusion_audit.py laws-misc`).
+A Bend law for the `big` case: `words_ok(o, 0, 0, True{}, 4) == words_ok(o, 0, 1, True{}, 4)` checks (`tools/mutation_testing/exclusion_audit.py laws-misc`).
 Verdict: sound for the examined site; the 35 siblings are hidden mutants (JSON).
 
 ### 4. `bits_ok` (1 entry)
@@ -96,21 +96,21 @@ only the mutated chain (`ok_nz`, `ok_n`, `ok_at`) over the original helpers is c
 ### 6. Uncoverable (1 entry)
 
 `bl1073741824_valid`, 2^30 to 2^30+1. Not equivalent: the mutant accepts a Transaction of 2^30+1 bytes. "Not constructible" holds for
-a test, not for a proof. `tools/exclusion_audit.py laws-misc` writes `tx_valid_refuses_2p30_plus_1`: for every array `ws`,
+a test, not for a proof. `tools/mutation_testing/exclusion_audit.py laws-misc` writes `tx_valid_refuses_2p30_plus_1`: for every array `ws`,
 `snd(TX.bl1073741824_valid(Words{ws, 1073741825})) == False{}` (the original refuses by evaluation, the rest by `wk_cap`/`wk_last` with a
 `False{}` first argument). It checks for the original and fails for the mutant (`expected wk_cap(True{}, ..)`, `observed wk_cap(False{}, ..)`).
 Verdict: unsound as an exclusion; a new law kills it.
 
 ## Reproduce
 
-Server only, in a private copy: `python3 tools/exclusion_audit.py structural --json OUT` (all sites, all rules),
+Server only, in a private copy: `python3 tools/mutation_testing/exclusion_audit.py structural --json OUT` (all sites, all rules),
 `laws-unread types` then `bend --check-only` on each `types/_audit_unread_*.bend`, `laws-boolvec`, `laws-misc proofs`,
-`poison`, `diff-poison DIR` and `run-diff DIR/cases.json`, `exclusion_audit_words.py cases` and `gen`. Delete `types/_audit_*` and `proofs/_audit_*` afterwards.
+`poison`, `diff-poison DIR` and `run-diff DIR/cases.json`, `tools/mutation_testing/exclusion_audit_words.py cases` and `gen`. Delete `types/_audit_*` and `proofs/_audit_*` afterwards.
 
 ## Closure (agent/mutfix-hidden)
 
 Each of the 41 hidden mutants was applied alone to a private hard-linked tree and its own facade re-checked with the pinned checker
-(`tools/mutant_facade_run.py`; the trees are deleted at once). Result:
+(`tools/mutation_testing/mutant_facade_run.py`; the trees are deleted at once). Result:
 
 * 35 hidden `words_ok` siblings and 4 hidden read offsets: all FAIL with a statement mismatch on their own facade. The existing laws
   already kill them (`X_serialize_vsym` states every constant of the validity pass symbolically; `X_decode_fields` pins the read

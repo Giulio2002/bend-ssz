@@ -429,3 +429,6 @@ codegen/proofs/var/templates/var_cont_enc.tpl	codegen/proofs/var/templates/conta
 codegen/proofs/var/templates/var_bytes_enc.tpl	codegen/proofs/var/templates/byte_list_encoder_laws.tpl
 codegen/proofs/var/templates/var_enc.tpl	codegen/proofs/var/templates/single_list_container_encoder_laws.tpl
 codegen/proofs/var/templates/var_winu.tpl	codegen/proofs/var/templates/compatible_union_window.tpl
+tools/exclusion_audit.py	tools/mutation_testing/exclusion_audit.py
+tools/exclusion_audit_words.py	tools/mutation_testing/exclusion_audit_words.py
+tools/mutant_facade_run.py	tools/mutation_testing/mutant_facade_run.py

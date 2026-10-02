@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Runtime differential for the words_ok rule of tools/exclusion_audit.py (server only).
+"""Runtime differential for the words_ok rule of tools/mutation_testing/exclusion_audit.py (server only).
 
-    python3 tools/exclusion_audit_words.py cases                 -> /tmp/words_cases.json (every words_ok site of every entry, with the model's verdict)
-    python3 tools/exclusion_audit_words.py gen BATCH SIZE        -> a Bend program on stdout: main returns a bitmask, bit i set iff
+    python3 tools/mutation_testing/exclusion_audit_words.py cases                 -> /tmp/words_cases.json (every words_ok site of every entry, with the model's verdict)
+    python3 tools/mutation_testing/exclusion_audit_words.py gen BATCH SIZE        -> a Bend program on stdout: main returns a bitmask, bit i set iff
                                                                     O.words_ok(original literals) and O.words_ok(mutated literals) disagree
                                                                     on some byte length n of a boundary set (an object Words{zeros(n+4), n})
-Run: python3 tools/exclusion_audit_words.py gen 0 25 > proofs/_audit_w0.bend; bend proofs/_audit_w0.bend; compare bit i with
+Run: python3 tools/mutation_testing/exclusion_audit_words.py gen 0 25 > proofs/_audit_w0.bend; bend proofs/_audit_w0.bend; compare bit i with
 case i's `model` (DIFFERS <-> bit set), then delete proofs/_audit_w*.bend. Result of the audit: 83 sites, model and runtime agree on all.
 """
 import json, pathlib, sys
-sys.path.insert(0, 'tools')
+sys.path.insert(0, 'tools/mutation_testing')
 import exclusion_audit as X
 
 

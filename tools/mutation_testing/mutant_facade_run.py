@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Apply ONE mutant to a private hard-linked tree and re-check one facade proof file with the pinned checker (server only).
 
-    python3 tools/mutant_facade_run.py BASE_TREE WORK_DIR JOBS.json [-j N]
+    python3 tools/mutation_testing/mutant_facade_run.py BASE_TREE WORK_DIR JOBS.json [-j N]
 
 JOBS.json: [{"id": ..., "file": "types/X_encode_ssz_generated.bend", "line": L, "col": C, "before": "8", "after": "9",
              "facade": "proofs/api/X_encode_ssz_proof_generated.bend"}, ...]  (line 1-based, col as in the mutation report)

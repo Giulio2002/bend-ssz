@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Independent audit of the proof-equivalent exclusions of tests_generated/mutation_exclusions.json.
 
-    python3 tools/exclusion_audit.py structural [--json OUT]     re-derive every rule over EVERY site the entry key matches
-    python3 tools/exclusion_audit.py laws-unread types            Bend laws original == mutant for the unread-argument rule (45 laws)
-    python3 tools/exclusion_audit.py laws-boolvec                 Bend laws for the vec_bool rule (private mutant modules in types/_audit_*)
-    python3 tools/exclusion_audit.py laws-misc proofs             the bits_ok / words_ok(big) laws and the Transaction kill law
-    python3 tools/exclusion_audit.py poison                       which serialize defs reach each pk_ok flag, fixed or computed length
-    python3 tools/exclusion_audit.py diff-poison DIR              cases.json for the differential run
-    python3 tools/exclusion_audit.py run-diff DIR/cases.json      serialize(default) original vs flag 0 -> 1 (runs bend, server only)
+    python3 tools/mutation_testing/exclusion_audit.py structural [--json OUT]     re-derive every rule over EVERY site the entry key matches
+    python3 tools/mutation_testing/exclusion_audit.py laws-unread types            Bend laws original == mutant for the unread-argument rule (45 laws)
+    python3 tools/mutation_testing/exclusion_audit.py laws-boolvec                 Bend laws for the vec_bool rule (private mutant modules in types/_audit_*)
+    python3 tools/mutation_testing/exclusion_audit.py laws-misc proofs             the bits_ok / words_ok(big) laws and the Transaction kill law
+    python3 tools/mutation_testing/exclusion_audit.py poison                       which serialize defs reach each pk_ok flag, fixed or computed length
+    python3 tools/mutation_testing/exclusion_audit.py diff-poison DIR              cases.json for the differential run
+    python3 tools/mutation_testing/exclusion_audit.py run-diff DIR/cases.json      serialize(default) original vs flag 0 -> 1 (runs bend, server only)
 (the words_ok rule's runtime differential is described in docs/mutation_testing/EXCLUSION_AUDIT.md)
 
 Run from the repository root (a private tree; never the Mac). Nothing here shares code with
@@ -19,7 +19,7 @@ line with that operator and text, not the one the rule looked at. This tool ther
 matches (the generator's own sites()) and checks each one.
 """
 import collections, json, pathlib, re, sys
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / 'tests_generated'))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / 'tests_generated'))
 import mutation_testing as MT  # sites(), def_name(): the same site enumeration the draws use
 
 ROOT = pathlib.Path('.')
