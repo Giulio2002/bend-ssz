@@ -122,6 +122,8 @@ GENERATORS = (
     Gen('encset_b', 'proofs/collections'),
     Gen('halfword', 'proofs/collections'),
     Gen('encset_h', 'proofs/collections'),
+    Gen('halfword16', 'proofs/collections'),
+    Gen('encset_r', 'proofs/collections'),
     Gen('bitz', 'proofs/collections'),
     Gen('encset_t', 'proofs/collections'),
     Gen('v16', 'proofs/collections'),
