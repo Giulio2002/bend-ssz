@@ -6,6 +6,7 @@ import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
 import ../../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
+import ../../types/FuluContributionAndProof_encode_ssz_generated.bend as FuluContributionAndProof_e
 import ../../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedContributionAndProof_d
 import ../../types/FuluSignedContributionAndProof_encode_ssz_generated.bend as FuluSignedContributionAndProof_e
 import ../../types/schema.bend as P0_S
@@ -44,6 +45,9 @@ def FuluSignedContributionAndProof__encode_eval__SignedContributionAndProof_spec
 
 def FuluSignedContributionAndProof__encode_eval__SignedContributionAndProof_encode_capsym(o: FuluSignedContributionAndProof_d.SignedContributionAndProof) -> {FuluSignedContributionAndProof_e.SignedContributionAndProof_encode(o) == FuluSignedContributionAndProof_e.SignedContributionAndProof_enc_out(FuluSignedContributionAndProof_e.SignedContributionAndProof_put(P1_O.out_at(7n), 0, o)) : FuluSignedContributionAndProof_d.SignedContributionAndProof & P1_B.Buf}:
   P1_PRV.SignedContributionAndProof_encode_capsym(o)
+
+def FuluSignedContributionAndProof__encode_eval__SignedContributionAndProof_cf_acc(out: Array<U32>, +pos: U32, message: FuluContributionAndProof_d.ContributionAndProof, signature: FuluBytes96_d.Bytes96) -> {FuluSignedContributionAndProof_e.SignedContributionAndProof_putk(out, pos, FuluSignedContributionAndProof_d.SignedContributionAndProof{message, signature}) == FuluSignedContributionAndProof_e.SignedContributionAndProof_pw0(pos, 0, signature, FuluContributionAndProof_e.ContributionAndProof_putk(out, (pos + 0 : U32), message)) : Array<U32> & (FuluSignedContributionAndProof_d.SignedContributionAndProof & U32)}:
+  P2_PRV.SignedContributionAndProof_cf_acc(out, pos, message, signature)
 
 def FuluSignedContributionAndProof__encode_eval__SignedContributionAndProof_cf_flag() -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, U32, Pair.snd(Array<U32>, FuluSignedContributionAndProof_d.SignedContributionAndProof & U32, FuluSignedContributionAndProof_e.SignedContributionAndProof_putk(P2_O.out_at(7n), 0, FuluSignedContributionAndProof_d.SignedContributionAndProof_default()))) == 0 : U32}:
   P2_PRV.SignedContributionAndProof_cf_flag()

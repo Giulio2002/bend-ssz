@@ -1580,6 +1580,7 @@
    "files": [
     "spec_arr_HistoricalBatch.bend",
     "zcapsym_HistoricalBatch.bend",
+    "zflag_HistoricalBatch.bend",
     "mutsmall_HistoricalBatch.bend"
    ]
   },
@@ -2183,6 +2184,7 @@
    "files": [
     "spec_arr_SyncCommittee.bend",
     "zcapsym_SyncCommittee.bend",
+    "zflag_SyncCommittee.bend",
     "mutsmall_SyncCommittee.bend"
    ]
   },
@@ -3440,6 +3442,7 @@
    "files": [
     "spec_arr_BlobSidecar.bend",
     "zcapsym_BlobSidecar.bend",
+    "zflag_BlobSidecar.bend",
     "mutsmall_BlobSidecar.bend"
    ]
   },

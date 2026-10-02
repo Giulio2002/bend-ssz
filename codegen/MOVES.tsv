@@ -176,6 +176,7 @@ codegen/okfalse_laws.py	codegen/proofs/laws/okfalse_laws.py
 codegen/mutation_laws_const.py	codegen/proofs/laws/mutation_laws_const.py
 codegen/mutation_laws_small.py	codegen/proofs/laws/mutation_laws_small.py
 codegen/spec_pins.py	codegen/proofs/laws/spec_pins.py
+codegen/spec_pins_more.py	codegen/proofs/laws/spec_pins_more.py
 codegen/mutation_laws_arith.py	codegen/proofs/laws/mutation_laws_arith.py
 codegen/mutation_laws_offset.py	codegen/proofs/laws/mutation_laws_offset.py
 codegen/e2e_hpl.py	codegen/proofs/decoded/e2e_hpl.py

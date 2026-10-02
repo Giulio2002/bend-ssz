@@ -61,7 +61,7 @@ LAW_FORMS = {
     'decode_unique': [r'decode_unique', r'<X>_spec_unique', r'<X>_spec_unique_[01]'],
     'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside', r'<X>_decode_reject'],
     'decode_none': [r'decode_none', r'<X>_spec_reject', r'<X>_spec_reject_(bool|pad)', r'<X>_spec_decode_reject'],
-    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym', r'<X>_cmp_(all|unal|pwd)', r'<X>_cf_flag'],
+    'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes', r'<X>_arith_(pw[123]|put|putw)', r'<X>_encode_capsym', r'<X>_cmp_(all|unal|pwd)', r'<X>_cf_(flag|acc)'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
     'roundtrip': [r'<X>(_[tf])?_roundtrip'],
     'encoded_size': [r'<X>(_[tf])?_encoded_size'],
@@ -100,7 +100,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encode_eval':
         return (concl.startswith('{' + enc) or concl.startswith('{B.emit(' + enc) or re.match(r'\{\w+\.emitted\([^,]+, ' + re.escape(enc), concl) is not None
                 or re.match(r'\{T\.\w+_(?:pw[123]|pwd|put)\(', concl) is not None
-                or re.match(rf'\{{Pair\.snd\([^\n]*T\.{re.escape(X)}_putk\(', concl) is not None)
+                or re.match(rf'\{{(?:Pair\.snd\([^\n]*)?T\.{re.escape(X)}_putk\(', concl) is not None)
     if kind == 'roundtrip':
         return concl.startswith('{' + dec + enc) and 'Some{' in concl
     if kind == 'encoded_size':

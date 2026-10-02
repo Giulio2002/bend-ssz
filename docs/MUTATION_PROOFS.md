@@ -193,3 +193,26 @@ structural and symbolic.
 signature and result type (`{U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}`) do not mention `n`, none of its
 hypotheses does, and its body (`VF.off_add_lt(...)`) does not use it: an argument the callee never reads disappears under
 conversion, so no statement can distinguish the two values.
+
+### Full spec pass (codegen/proofs/laws/spec_pins_more.py)
+
+More small modules, `proofs/obj/specpin_<file>.bend`, each the smallest direct importer of its spec file (so the harness checks
+it with the file); every mutant below fails with a statement mismatch (or a type error where the law is an inhabitant of a type):
+
+| spec site | module / law | pins |
+|---|---|---|
+| bit_root.bend chunk_limit `255n` | `chunk_limit(1n) == 1n`, `chunk_limit(257n) == 2n` | ceil(N / 256) |
+| packing.bend `scan(xs, 31n, ..)` (both) | `pack` of 33 bytes is a 32-byte chunk and a zero-padded one | the 32-byte chunk room |
+| tree.bend `capacity` `0n: 1n` | `capacity(0n) == 1n`, `capacity(3n) == 8n` | a depth-0 tree holds one leaf |
+| type_legality.bend `0n < n`, `n <= 127` | inhabitants of `type_legal` of a union of 1 option behind Null, of 127 behind Null, of 127 | the union field-count bounds (a type error when a bound moves; the 127-chain is built by a recursive `ch(k)` / `pr(k)`, 682 bytes) |
+| fulu_schemas.bend `Schema52` `512n` | `Schema52() == Vector[Schema8(), SYNC_COMMITTEE_SIZE]`, the size read from codegen/fulu.yaml | the sync committee pubkey count |
+| representation.bend `erase` (8 sites) | `erase(T) == X{.. 0n}` for each of the 8 length-bearing forms | the placeholder length |
+
+Equivalent, with the proof-level reason:
+
+* `root_relation_serializable.bend:64` `sequence(.., 0n, True{}, ..)`, `0n -> 1n`: the progressive list's limit is unread. Proved in
+  `specpin_root_relation.bend`: `aggregate(True{}, a, c, l, o) == aggregate(True{}, b, c, l, o)` for all `a`, `b` (the limit reaches only
+  `tree(progressive, limit, ..)`, whose `True` arm is `Progressive.merkleize(chunks) == Some{root}`).
+* `representation.bend` `erase` placeholders: semantically irrelevant (`shape` never reads a length, so `shape(v, s) == shape(v, erase(s))`
+  holds for any placeholder: proofs/representation_erasure.bend, and `erase(X{n}) == erase(X{m})`); they are nonetheless killed by the
+  `erase_*` pins, which fix the chosen constant.

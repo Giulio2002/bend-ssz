@@ -5,6 +5,7 @@ import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../../types/FuluSignedBeaconBlockHeader_encode_ssz_generated.bend as FuluSignedBeaconBlockHeader_e
 import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
 import ../../types/FuluProposerSlashing_encode_ssz_generated.bend as FuluProposerSlashing_e
 import ../../types/schema.bend as P0_S
@@ -46,6 +47,9 @@ def FuluProposerSlashing__encode_eval__ProposerSlashing_spec_bytes(+x0: U32, +x1
 
 def FuluProposerSlashing__encode_eval__ProposerSlashing_encode_capsym(o: FuluProposerSlashing_d.ProposerSlashing) -> {FuluProposerSlashing_e.ProposerSlashing_encode(o) == FuluProposerSlashing_e.ProposerSlashing_enc_out(FuluProposerSlashing_e.ProposerSlashing_put(P1_O.out_at(7n), 0, o)) : FuluProposerSlashing_d.ProposerSlashing & P1_B.Buf}:
   P1_PRV.ProposerSlashing_encode_capsym(o)
+
+def FuluProposerSlashing__encode_eval__ProposerSlashing_cf_acc(out: Array<U32>, +pos: U32, signed_header_1: P2_O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, signed_header_2: P2_O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>) -> {FuluProposerSlashing_e.ProposerSlashing_putk(out, pos, FuluProposerSlashing_d.ProposerSlashing{signed_header_1, signed_header_2}) == FuluProposerSlashing_e.ProposerSlashing_pw0(pos, 0, signed_header_2, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 0 : U32), signed_header_1)) : Array<U32> & (FuluProposerSlashing_d.ProposerSlashing & U32)}:
+  P2_PRV.ProposerSlashing_cf_acc(out, pos, signed_header_1, signed_header_2)
 
 def FuluProposerSlashing__encode_eval__ProposerSlashing_cf_flag() -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, U32, Pair.snd(Array<U32>, FuluProposerSlashing_d.ProposerSlashing & U32, FuluProposerSlashing_e.ProposerSlashing_putk(P2_O.out_at(7n), 0, FuluProposerSlashing_d.ProposerSlashing_default()))) == 0 : U32}:
   P2_PRV.ProposerSlashing_cf_flag()

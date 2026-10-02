@@ -325,9 +325,9 @@ def beacon_state(lf):
         al('proofs/obj/words_spec.bend')
         return [], words, None, (lambda j: f'{DBS}.it{rl_it[j]}{W_}'), xleaf
 
-    def gv(nm):
-        return lambda al: f'{al("e2e/e2e_dbs.bend")}.{nm}'
-    given = {'hZ': gv(f'hz(d, t, x, off, n, h31, hchk)'), 'hm7': gv(f'hm0(t, x, off, n, h31, hchk)'), 'hm12': gv(f'hm3(t, x, off, n, h31, hchk)'),
+    def gv(nm, f='e2e/e2e_dbs.bend'):
+        return lambda al: f'{al(f)}.{nm}'
+    given = {'hZ': gv(f'hz(d, t, x, off, n, h31, hchk)', 'e2e/e2e_dbs_sz.bend'), 'hm7': gv(f'hm0(t, x, off, n, h31, hchk)'), 'hm12': gv(f'hm3(t, x, off, n, h31, hchk)'),
              'hm15': gv(f'hm4(t, x, off, n, h31, hchk)'), 'hm16': gv(f'hm5(t, x, off, n, h31, hchk)'), 'hm21': gv(f'hm6(t, x, off, n, h31, hchk)')}
     ps = f'+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd31: {{Nat.is_lt(d, 31n) == True{{}} : Bool}}, +eo: {{U32.to_nat(off) == x : Nat}}, +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +hwN: {{Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, +h31: {H31}, +hS: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}}, +hchk: {{DC.CHKw(t, x, off, n) == True{{}} : Bool}}'
     return container_file(name, lf, 'proofs/obj/var_winx_BeaconState.bend', 'OBJw', {'d': 'd', 't': 't', 'x': 'x', 'off': 'off', 'len': 'n'}, (['d', 't', 'x', 'off', 'n'], ps),
