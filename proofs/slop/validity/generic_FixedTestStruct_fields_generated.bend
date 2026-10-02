@@ -11,6 +11,30 @@ def FixedTestStruct_serialize_vfields(+f_A: U32, f_B: O.U64, +f_C: U32)
     -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct{f_A, f_B, f_C}) == uint8_e.u8_valid(f_A) : Bool}:
   {==}
 
+def FixedTestStruct_serialize_vpoison_false_flag()
+    -> {O.is_poisoned(O.pz(False{})) == True{} : Bool}:
+  {==}
+
+def FixedTestStruct_serialize_vpoison_true_flag()
+    -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
+  {==}
+
+def FixedTestStruct_serialize_vpoison_below()
+    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+  {==}
+
+def FixedTestStruct_serialize_vpoison_carried()
+    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+  {==}
+
 def FixedTestStruct_serialize_vreject_f_A()
     -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct_set_f_A_go(FixedTestStruct_d.FixedTestStruct_default(), 256)) == False{} : Bool}:
+  {==}
+
+def FixedTestStruct_serialize_vrefuse_f_A()
+    -> {FixedTestStruct_e.FixedTestStruct_serialize(FixedTestStruct_d.FixedTestStruct_set_f_A_go(FixedTestStruct_d.FixedTestStruct_default(), 256)) == O.refused() : O.Encoded}:
+  {==}
+
+def FixedTestStruct_serialize_vreject_default_valid()
+    -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct_default()) == True{} : Bool}:
   {==}

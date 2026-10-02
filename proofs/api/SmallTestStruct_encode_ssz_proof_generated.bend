@@ -46,9 +46,30 @@ def SmallTestStruct__encode_spec__SmallTestStruct_spec_encode(+x0: U32) -> P0_De
 def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vfields(+f_A: U32, +f_B: U32) -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct{f_A, f_B}) == Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B)) : Bool}:
   P3_PRV.SmallTestStruct_serialize_vfields(f_A, f_B)
 
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_false_flag() -> {P3_O.is_poisoned(P3_O.pz(False{})) == True{} : Bool}:
+  P3_PRV.SmallTestStruct_serialize_vpoison_false_flag()
+
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_true_flag() -> {P3_O.is_poisoned(P3_O.pz(True{})) == False{} : Bool}:
+  P3_PRV.SmallTestStruct_serialize_vpoison_true_flag()
+
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(2147483647) == False{} : Bool}:
+  P3_PRV.SmallTestStruct_serialize_vpoison_below()
+
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 2147483648)) == True{} : Bool}:
+  P3_PRV.SmallTestStruct_serialize_vpoison_carried()
+
 def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vreject_f_A() -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_set_f_A_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == False{} : Bool}:
   P3_PRV.SmallTestStruct_serialize_vreject_f_A()
 
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vrefuse_f_A() -> {SmallTestStruct_e.SmallTestStruct_serialize(SmallTestStruct_d.SmallTestStruct_set_f_A_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == P3_O.refused() : P3_O.Encoded}:
+  P3_PRV.SmallTestStruct_serialize_vrefuse_f_A()
+
 def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vreject_f_B() -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_set_f_B_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == False{} : Bool}:
   P3_PRV.SmallTestStruct_serialize_vreject_f_B()
+
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vrefuse_f_B() -> {SmallTestStruct_e.SmallTestStruct_serialize(SmallTestStruct_d.SmallTestStruct_set_f_B_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == P3_O.refused() : P3_O.Encoded}:
+  P3_PRV.SmallTestStruct_serialize_vrefuse_f_B()
+
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vreject_default_valid() -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_default()) == True{} : Bool}:
+  P3_PRV.SmallTestStruct_serialize_vreject_default_valid()
 

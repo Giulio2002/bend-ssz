@@ -40,6 +40,24 @@ def ProgressiveSingleFieldContainerTestStruct__encode_spec__ProgressiveSingleFie
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vfields(+f_A: U32) -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{f_A}) == uint8_e.u8_valid(f_A) : Bool}:
   P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vfields(f_A)
 
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_false_flag() -> {P2_O.is_poisoned(P2_O.pz(False{})) == True{} : Bool}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_false_flag()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag() -> {P2_O.is_poisoned(P2_O.pz(True{})) == False{} : Bool}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(2147483647) == False{} : Bool}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 2147483648)) == True{} : Bool}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried()
+
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default(), 256)) == False{} : Bool}:
   P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vrefuse_f_A() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_serialize(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default(), 256)) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vrefuse_f_A()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vreject_default_valid() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default()) == True{} : Bool}:
+  P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vreject_default_valid()
 

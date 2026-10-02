@@ -11,6 +11,24 @@ import ../../../slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vfields(+f_A: U32) -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{f_A}) == uint8_e.u8_valid(f_A) : Bool}:
   PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vfields(f_A)
 
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below() -> {O.is_poisoned(2147483647) == False{} : Bool}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried() -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_false_flag() -> {O.is_poisoned(O.pz(False{})) == True{} : Bool}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_false_flag()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag() -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vrefuse_f_A() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_serialize(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default(), 256)) == O.refused() : O.Encoded}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vrefuse_f_A()
+
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vreject_default_valid() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default()) == True{} : Bool}:
+  PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vreject_default_valid()
+
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default(), 256)) == False{} : Bool}:
   PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A()
 

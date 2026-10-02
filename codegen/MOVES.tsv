@@ -2222,3 +2222,5 @@ types/generic_obj_g6.bend	types/generic_obj_g6_generated.bend
 types/generic_obj_g7.bend	types/generic_obj_g7_generated.bend
 types/generic_obj_g8.bend	types/generic_obj_g8_generated.bend
 types/generic_obj_g9.bend	types/generic_obj_g9_generated.bend
+codegen/collection_guards.py	codegen/proofs/slop/collection_guards.py
+codegen/word_unit_validity.py	codegen/proofs/slop/word_unit_validity.py

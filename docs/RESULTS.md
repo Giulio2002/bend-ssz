@@ -30,7 +30,7 @@
 | `reject_long` | 73 |
 | `decode_tree` | 118 |
 | `decode_input` | 154 |
-| `serialize_valid` | 239 |
+| `serialize_valid` | 240 |
 | `decode_offsets` | 240 |
 | `decode_first_offset` | 15 |
 <!-- /fig -->

@@ -3549,6 +3549,10 @@
     {
      "file": "slop/validity/fulu_Fork_generated.bend",
      "law": "Fork_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Fork_fields_generated.bend",
+     "law": "Fork_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -3684,6 +3688,10 @@
      "law": "SyncAggregate_serialize_vdom"
     },
     {
+     "file": "slop/validity/fulu_SyncAggregate_fields_generated.bend",
+     "law": "SyncAggregate_serialize_vreject_default_valid"
+    },
+    {
      "file": "slop/constants/SyncAggregate_generated.bend",
      "law": "SyncAggregate_mc_bxpoison_SyncAggregate"
     }
@@ -3815,6 +3823,10 @@
     {
      "file": "slop/validity/fulu_SyncAggregatorSelectionData_generated.bend",
      "law": "SyncAggregatorSelectionData_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregatorSelectionData_fields_generated.bend",
+     "law": "SyncAggregatorSelectionData_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -3944,6 +3956,10 @@
     {
      "file": "slop/validity/fulu_PowBlock_generated.bend",
      "law": "PowBlock_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_PowBlock_fields_generated.bend",
+     "law": "PowBlock_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -4315,6 +4331,10 @@
     {
      "file": "slop/validity/fulu_PendingConsolidation_generated.bend",
      "law": "PendingConsolidation_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_PendingConsolidation_fields_generated.bend",
+     "law": "PendingConsolidation_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -4444,6 +4464,10 @@
     {
      "file": "slop/validity/fulu_PendingPartialWithdrawal_generated.bend",
      "law": "PendingPartialWithdrawal_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_PendingPartialWithdrawal_fields_generated.bend",
+     "law": "PendingPartialWithdrawal_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -4573,6 +4597,10 @@
     {
      "file": "slop/validity/fulu_VoluntaryExit_generated.bend",
      "law": "VoluntaryExit_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_VoluntaryExit_fields_generated.bend",
+     "law": "VoluntaryExit_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -4702,6 +4730,10 @@
     {
      "file": "slop/validity/fulu_SignedVoluntaryExit_generated.bend",
      "law": "SignedVoluntaryExit_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SignedVoluntaryExit_fields_generated.bend",
+     "law": "SignedVoluntaryExit_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -4972,6 +5004,10 @@
     {
      "file": "slop/validity/fulu_HistoricalSummary_generated.bend",
      "law": "HistoricalSummary_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalSummary_fields_generated.bend",
+     "law": "HistoricalSummary_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -5107,6 +5143,10 @@
      "law": "SyncCommitteeContribution_serialize_vdom"
     },
     {
+     "file": "slop/validity/fulu_SyncCommitteeContribution_fields_generated.bend",
+     "law": "SyncCommitteeContribution_serialize_vreject_default_valid"
+    },
+    {
      "file": "slop/constants/SyncCommitteeContribution_generated.bend",
      "law": "SyncCommitteeContribution_mc_bxpoison_SyncCommitteeContribution"
     }
@@ -5207,6 +5247,14 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ContributionAndProof_fields_generated.bend",
+     "law": "ContributionAndProof_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ContributionAndProof_fields_generated.bend",
+     "law": "ContributionAndProof_serialize_vreject_contribution"
+    },
     {
      "file": "slop/capacity/ContributionAndProof_generated.bend",
      "law": "ContributionAndProof_serialize_cap"
@@ -5336,6 +5384,10 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_SignedContributionAndProof_fields_generated.bend",
+     "law": "SignedContributionAndProof_serialize_vreject_default_valid"
+    },
     {
      "file": "slop/capacity/SignedContributionAndProof_generated.bend",
      "law": "SignedContributionAndProof_serialize_cap"
@@ -5496,6 +5548,10 @@
     {
      "file": "slop/validity/fulu_SyncCommitteeMessage_generated.bend",
      "law": "SyncCommitteeMessage_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeMessage_fields_generated.bend",
+     "law": "SyncCommitteeMessage_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -5625,6 +5681,10 @@
     {
      "file": "slop/validity/fulu_Eth1Block_generated.bend",
      "law": "Eth1Block_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Block_fields_generated.bend",
+     "law": "Eth1Block_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -5754,6 +5814,10 @@
     {
      "file": "slop/validity/fulu_BeaconBlockHeader_generated.bend",
      "law": "BeaconBlockHeader_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockHeader_fields_generated.bend",
+     "law": "BeaconBlockHeader_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -5889,6 +5953,10 @@
      "law": "SignedBeaconBlockHeader_serialize_vdom"
     },
     {
+     "file": "slop/validity/fulu_SignedBeaconBlockHeader_fields_generated.bend",
+     "law": "SignedBeaconBlockHeader_serialize_vreject_default_valid"
+    },
+    {
      "file": "slop/constants/SignedBeaconBlockHeader_generated.bend",
      "law": "SignedBeaconBlockHeader_mc_bxpoison_SignedBeaconBlockHeader"
     }
@@ -5994,6 +6062,18 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
+     "law": "ProposerSlashing_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
+     "law": "ProposerSlashing_serialize_vreject_signed_header_1"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
+     "law": "ProposerSlashing_serialize_vreject_signed_header_2"
+    },
     {
      "file": "slop/capacity/ProposerSlashing_generated.bend",
      "law": "ProposerSlashing_serialize_cap"
@@ -6118,6 +6198,18 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_fields_generated.bend",
+     "law": "HistoricalBatch_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_fields_generated.bend",
+     "law": "HistoricalBatch_serialize_vreject_block_roots"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_fields_generated.bend",
+     "law": "HistoricalBatch_serialize_vreject_state_roots"
+    },
     {
      "file": "slop/capacity/HistoricalBatch_symbolic_generated.bend",
      "law": "HistoricalBatch_serialize_capsym"
@@ -6266,6 +6358,10 @@
     {
      "file": "slop/validity/fulu_Eth1Data_generated.bend",
      "law": "Eth1Data_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Data_fields_generated.bend",
+     "law": "Eth1Data_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -6395,6 +6491,10 @@
     {
      "file": "slop/validity/fulu_Checkpoint_generated.bend",
      "law": "Checkpoint_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Checkpoint_fields_generated.bend",
+     "law": "Checkpoint_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -6524,6 +6624,10 @@
     {
      "file": "slop/validity/fulu_AttestationData_generated.bend",
      "law": "AttestationData_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_AttestationData_fields_generated.bend",
+     "law": "AttestationData_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -6653,6 +6757,10 @@
     {
      "file": "slop/validity/fulu_SingleAttestation_generated.bend",
      "law": "SingleAttestation_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SingleAttestation_fields_generated.bend",
+     "law": "SingleAttestation_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -6729,6 +6837,26 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
+     "law": "Attestation_serialize_vcoll_bits131072_first"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
+     "law": "Attestation_serialize_vcoll_bits131072_order"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
+     "law": "Attestation_serialize_vcoll_bits131072_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vreject_aggregation_bits"
+    },
     {
      "file": "slop/size/Attestation_generated.bend",
      "law": "Attestation_ms_size"
@@ -6826,6 +6954,14 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+     "law": "AggregateAndProof_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+     "law": "AggregateAndProof_serialize_vreject_aggregate"
+    },
+    {
      "file": "slop/size/AggregateAndProof_generated.bend",
      "law": "AggregateAndProof_ms_size"
     },
@@ -6904,6 +7040,10 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_SignedAggregateAndProof_fields_generated.bend",
+     "law": "SignedAggregateAndProof_serialize_vreject_default_valid"
+    },
     {
      "file": "slop/size/SignedAggregateAndProof_generated.bend",
      "law": "SignedAggregateAndProof_ms_size"
@@ -6989,6 +7129,30 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vcoll_bits2048_first"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vcoll_bits2048_order"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vcoll_bits2048_full"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vcoll_bits2048_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_fields_generated.bend",
+     "law": "PendingAttestation_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_fields_generated.bend",
+     "law": "PendingAttestation_serialize_vreject_aggregation_bits"
+    },
+    {
      "file": "slop/size/PendingAttestation_generated.bend",
      "law": "PendingAttestation_ms_size"
     },
@@ -7072,6 +7236,34 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vreject_attesting_indices"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_accept_16"
+    },
     {
      "file": "slop/size/IndexedAttestation_generated.bend",
      "law": "IndexedAttestation_ms_size"
@@ -7168,6 +7360,18 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_attestation_1"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_attestation_2"
+    },
     {
      "file": "slop/size/AttesterSlashing_generated.bend",
      "law": "AttesterSlashing_ms_size"
@@ -7312,6 +7516,10 @@
     {
      "file": "slop/validity/fulu_ForkData_generated.bend",
      "law": "ForkData_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_ForkData_fields_generated.bend",
+     "law": "ForkData_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -7723,6 +7931,10 @@
     {
      "file": "slop/validity/fulu_SigningData_generated.bend",
      "law": "SigningData_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SigningData_fields_generated.bend",
+     "law": "SigningData_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -7993,6 +8205,10 @@
     {
      "file": "slop/validity/fulu_DepositRequest_generated.bend",
      "law": "DepositRequest_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_DepositRequest_fields_generated.bend",
+     "law": "DepositRequest_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -8122,6 +8338,10 @@
     {
      "file": "slop/validity/fulu_PendingDeposit_generated.bend",
      "law": "PendingDeposit_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_PendingDeposit_fields_generated.bend",
+     "law": "PendingDeposit_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -8211,6 +8431,14 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_SyncCommittee_fields_generated.bend",
+     "law": "SyncCommittee_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_fields_generated.bend",
+     "law": "SyncCommittee_serialize_vreject_pubkeys"
+    },
     {
      "file": "slop/capacity/SyncCommittee_symbolic_generated.bend",
      "law": "SyncCommittee_serialize_capsym"
@@ -8365,6 +8593,10 @@
      "law": "DepositData_serialize_vdom"
     },
     {
+     "file": "slop/validity/fulu_DepositData_fields_generated.bend",
+     "law": "DepositData_serialize_vreject_default_valid"
+    },
+    {
      "file": "slop/constants/DepositData_generated.bend",
      "law": "DepositData_mc_bxpoison_DepositData"
     }
@@ -8470,6 +8702,18 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_Deposit_fields_generated.bend",
+     "law": "Deposit_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_fields_generated.bend",
+     "law": "Deposit_serialize_vreject_proof"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_fields_generated.bend",
+     "law": "Deposit_serialize_vreject_data"
+    },
     {
      "file": "slop/capacity/Deposit_generated.bend",
      "law": "Deposit_serialize_cap"
@@ -8634,6 +8878,10 @@
     {
      "file": "slop/validity/fulu_DepositMessage_generated.bend",
      "law": "DepositMessage_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_DepositMessage_fields_generated.bend",
+     "law": "DepositMessage_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -8738,6 +8986,10 @@
     {
      "file": "slop/validity/fulu_Validator_generated.bend",
      "law": "Validator_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Validator_fields_generated.bend",
+     "law": "Validator_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -9597,6 +9849,26 @@
      "law": "Transaction_serialize_vsym"
     },
     {
+     "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vcoll_bl1073741824_len_get"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vcoll_bl1073741824_get_edge"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vcoll_bl1073741824_append_range"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vcoll_bl1073741824_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vcoll_bl1073741824_set_write"
+    },
+    {
      "file": "slop/size/Transaction_generated.bend",
      "law": "Transaction_ms_bxsize_bl1073741824"
     },
@@ -9881,6 +10153,10 @@
     {
      "file": "slop/validity/fulu_ConsolidationRequest_generated.bend",
      "law": "ConsolidationRequest_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_ConsolidationRequest_fields_generated.bend",
+     "law": "ConsolidationRequest_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -10010,6 +10286,10 @@
     {
      "file": "slop/validity/fulu_WithdrawalRequest_generated.bend",
      "law": "WithdrawalRequest_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalRequest_fields_generated.bend",
+     "law": "WithdrawalRequest_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -10086,6 +10366,22 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_deposits"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_withdrawals"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_consolidations"
+    },
     {
      "file": "slop/size/ExecutionRequests_generated.bend",
      "law": "ExecutionRequests_ms_size"
@@ -10218,6 +10514,10 @@
     {
      "file": "slop/validity/fulu_BLSToExecutionChange_generated.bend",
      "law": "BLSToExecutionChange_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_BLSToExecutionChange_fields_generated.bend",
+     "law": "BLSToExecutionChange_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -10347,6 +10647,10 @@
     {
      "file": "slop/validity/fulu_SignedBLSToExecutionChange_generated.bend",
      "law": "SignedBLSToExecutionChange_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBLSToExecutionChange_fields_generated.bend",
+     "law": "SignedBLSToExecutionChange_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -10427,6 +10731,42 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_len_get"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_get_edge"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_append_range"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_append_full"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vcoll_bl32_set_write"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_logs_bloom"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_extra_data"
+    },
     {
      "file": "slop/capacity/ExecutionPayloadHeader_generated.bend",
      "law": "ExecutionPayloadHeader_serialize_cap"
@@ -10845,6 +11185,10 @@
     {
      "file": "slop/validity/fulu_Withdrawal_generated.bend",
      "law": "Withdrawal_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_Withdrawal_fields_generated.bend",
+     "law": "Withdrawal_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -10921,6 +11265,58 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_len_get"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_get_edge"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_append_range"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_append_full"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_bl32_set_write"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_logs_bloom"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_extra_data"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_transactions"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_transactions_elem"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_transactions_earlier"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_withdrawals"
+    },
     {
      "file": "slop/size/ExecutionPayload_generated.bend",
      "law": "ExecutionPayload_ms_size"
@@ -11016,7 +11412,140 @@
    "reject_long": [],
    "decode_tree": [],
    "decode_input": [],
-   "serialize_valid": [],
+   "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_u8_len_get"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_u8_get_edge"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_u8_append_range"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_u8_set_edge"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_u8_set_write"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_block_roots"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_state_roots"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_historical_roots"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_eth1_data_votes"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_validators"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_balances"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_randao_mixes"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_slashings"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_previous_epoch_participation"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_current_epoch_participation"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_inactivity_scores"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_latest_execution_payload_header"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_historical_summaries"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_pending_deposits"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_pending_partial_withdrawals"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_pending_consolidations"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_proposer_lookahead"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_accept_16"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_refuse_16"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_refuse_33"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_accept_32"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_accept_64"
+    }
+   ],
    "decode_offsets": [
     {
      "file": "slop/offsets/BeaconState_generated.bend",
@@ -11242,6 +11771,18 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_LightClientHeader_fields_generated.bend",
+     "law": "LightClientHeader_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_fields_generated.bend",
+     "law": "LightClientHeader_serialize_vreject_execution"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_fields_generated.bend",
+     "law": "LightClientHeader_serialize_vreject_execution_branch"
+    },
+    {
      "file": "slop/capacity/LightClientHeader_generated.bend",
      "law": "LightClientHeader_serialize_cap"
     },
@@ -11342,6 +11883,14 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_fields_generated.bend",
+     "law": "LightClientOptimisticUpdate_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_fields_generated.bend",
+     "law": "LightClientOptimisticUpdate_serialize_vreject_sync_aggregate"
+    },
+    {
      "file": "slop/capacity/LightClientOptimisticUpdate_generated.bend",
      "law": "LightClientOptimisticUpdate_serialize_cap"
     },
@@ -11436,6 +11985,18 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vreject_finality_branch"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vreject_sync_aggregate"
+    },
     {
      "file": "slop/capacity/LightClientFinalityUpdate_generated.bend",
      "law": "LightClientFinalityUpdate_serialize_cap"
@@ -11532,6 +12093,22 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_LightClientUpdate_fields_generated.bend",
+     "law": "LightClientUpdate_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_fields_generated.bend",
+     "law": "LightClientUpdate_serialize_vreject_next_sync_committee_branch"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_fields_generated.bend",
+     "law": "LightClientUpdate_serialize_vreject_finality_branch"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_fields_generated.bend",
+     "law": "LightClientUpdate_serialize_vreject_sync_aggregate"
+    },
+    {
      "file": "slop/capacity/LightClientUpdate_symbolic_generated.bend",
      "law": "LightClientUpdate_serialize_capsym"
     },
@@ -11618,6 +12195,14 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_fields_generated.bend",
+     "law": "LightClientBootstrap_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_fields_generated.bend",
+     "law": "LightClientBootstrap_serialize_vreject_current_sync_committee_branch"
+    },
     {
      "file": "slop/capacity/LightClientBootstrap_symbolic_generated.bend",
      "law": "LightClientBootstrap_serialize_capsym"
@@ -11875,6 +12460,10 @@
     {
      "file": "slop/validity/fulu_BlobIdentifier_generated.bend",
      "law": "BlobIdentifier_serialize_vdom"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIdentifier_fields_generated.bend",
+     "law": "BlobIdentifier_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -12093,6 +12682,82 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_proposer_slashings"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_proposer_slashings_elem"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attester_slashings"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attester_slashings_elem"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attestations"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attestations_elem"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_deposits"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_deposits_elem"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_voluntary_exits"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_sync_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_execution_payload"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_bls_to_execution_changes"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_blob_kzg_commitments"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_refuse_24"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_refuse_49"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_accept_48"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_accept_96"
+    },
+    {
      "file": "slop/size/BeaconBlockBody_generated.bend",
      "law": "BeaconBlockBody_ms_size"
     },
@@ -12189,6 +12854,14 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_BeaconBlock_fields_generated.bend",
+     "law": "BeaconBlock_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlock_fields_generated.bend",
+     "law": "BeaconBlock_serialize_vreject_body"
+    },
+    {
      "file": "slop/size/BeaconBlock_generated.bend",
      "law": "BeaconBlock_ms_size"
     },
@@ -12267,6 +12940,10 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlock_fields_generated.bend",
+     "law": "SignedBeaconBlock_serialize_vreject_default_valid"
+    },
     {
      "file": "slop/size/SignedBeaconBlock_generated.bend",
      "law": "SignedBeaconBlock_ms_size"
@@ -12621,6 +13298,22 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_BlobSidecar_fields_generated.bend",
+     "law": "BlobSidecar_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_fields_generated.bend",
+     "law": "BlobSidecar_serialize_vreject_blob"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_fields_generated.bend",
+     "law": "BlobSidecar_serialize_vreject_signed_block_header"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_fields_generated.bend",
+     "law": "BlobSidecar_serialize_vreject_kzg_commitment_inclusion_proof"
+    },
     {
      "file": "slop/capacity/BlobSidecar_symbolic_generated.bend",
      "law": "BlobSidecar_serialize_capsym"
@@ -13334,6 +14027,34 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_fields_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_fields_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vreject_columns"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_16"
+    },
+    {
      "file": "slop/size/DataColumnsByRootIdentifier_generated.bend",
      "law": "DataColumnsByRootIdentifier_ms_size"
     },
@@ -13434,6 +14155,14 @@
     }
    ],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_MatrixEntry_fields_generated.bend",
+     "law": "MatrixEntry_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_MatrixEntry_fields_generated.bend",
+     "law": "MatrixEntry_serialize_vreject_cell"
+    },
     {
      "file": "slop/capacity/MatrixEntry_generated.bend",
      "law": "MatrixEntry_serialize_cap"
@@ -13541,6 +14270,70 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_column"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_kzg_commitments"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_kzg_proofs"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_signed_block_header"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vreject_kzg_commitments_inclusion_proof"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_1024"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_2049"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_accept_2048"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_accept_4096"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_refuse_1"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_refuse_24"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_refuse_49"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_accept_48"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_accept_96"
+    },
     {
      "file": "slop/size/DataColumnSidecar_generated.bend",
      "law": "DataColumnSidecar_ms_size"
@@ -13747,6 +14540,26 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_serialize_vcoll_pbits_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_serialize_vcoll_pbits_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_serialize_vcoll_pbits_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_serialize_vreject_f_C"
+    },
+    {
      "file": "slop/constants/ProgressiveSingleListContainerTestStruct_generated.bend",
      "law": "ProgressiveSingleListContainerTestStruct_mc_ser"
     }
@@ -13822,8 +14635,140 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_len_get"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_append_range"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_append_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_set_write"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pbits_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pbits_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pbits_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_carried"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_F_elem"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_G"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_H_elem"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_accept_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_accept_16"
     },
     {
      "file": "slop/constants/ProgressiveComplexTestStruct_generated.bend",
@@ -13901,8 +14846,92 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_len_get"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_append_range"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_append_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_l123_u16_set_write"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_pbits_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_pbits_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vcoll_pbits_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_carried"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
      "law": "ProgressiveVarTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4"
     },
     {
      "file": "slop/size/ProgressiveVarTestStruct_generated.bend",
@@ -14010,7 +15039,31 @@
     },
     {
      "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
      "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_fields_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -16153,6 +17206,26 @@
      "law": "proglist_uint128_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_refuse_8"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_refuse_17"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_accept_16"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_accept_32"
+    },
+    {
      "file": "slop/constants/proglist_uint128_generated.bend",
      "law": "proglist_uint128_mc_poison_pl_u128"
     },
@@ -16419,6 +17492,10 @@
      "law": "vec_uint128_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_1_unit_v1_u128_generated.bend",
+     "law": "vec_uint128_1_serialize_vunit_v1_u128_accept_16"
+    },
+    {
      "file": "slop/capacity/vec_uint128_1_generated.bend",
      "law": "vec_uint128_1_serialize_cap"
     },
@@ -16562,6 +17639,10 @@
     {
      "file": "slop/validity/generic_vec_uint128_2_poison_flag_generated.bend",
      "law": "vec_uint128_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_unit_v2_u128_generated.bend",
+     "law": "vec_uint128_2_serialize_vunit_v2_u128_accept_32"
     },
     {
      "file": "slop/capacity/vec_uint128_2_generated.bend",
@@ -17614,6 +18695,26 @@
     {
      "file": "slop/validity/generic_proglist_uint8_generated.bend",
      "law": "proglist_uint8_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vcoll_pl_u8_len_get"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vcoll_pl_u8_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vcoll_pl_u8_append_range"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vcoll_pl_u8_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vcoll_pl_u8_set_write"
     },
     {
      "file": "slop/constants/proglist_uint8_generated.bend",
@@ -18945,6 +20046,42 @@
      "law": "proglist_uint16_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vcoll_pl_u16_len_get"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vcoll_pl_u16_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vcoll_pl_u16_append_range"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vcoll_pl_u16_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vcoll_pl_u16_set_write"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_refuse_3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_accept_4"
+    },
+    {
      "file": "slop/constants/proglist_uint16_generated.bend",
      "law": "proglist_uint16_mc_poison_pl_u16"
     },
@@ -19179,6 +20316,10 @@
      "law": "vec_uint16_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vunit_v1_u16_accept_2"
+    },
+    {
      "file": "slop/capacity/vec_uint16_1_generated.bend",
      "law": "vec_uint16_1_serialize_cap"
     },
@@ -19308,6 +20449,10 @@
     {
      "file": "slop/validity/generic_vec_uint16_2_poison_flag_generated.bend",
      "law": "vec_uint16_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_unit_v2_u16_generated.bend",
+     "law": "vec_uint16_2_serialize_vunit_v2_u16_accept_4"
     },
     {
      "file": "slop/capacity/vec_uint16_2_generated.bend",
@@ -20290,6 +21435,26 @@
      "law": "proglist_uint256_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_refuse_16"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_refuse_33"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_accept_32"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_accept_64"
+    },
+    {
      "file": "slop/constants/proglist_uint256_generated.bend",
      "law": "proglist_uint256_mc_poison_pl_u256"
     },
@@ -20540,6 +21705,10 @@
      "law": "vec_uint256_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_1_unit_v1_u256_generated.bend",
+     "law": "vec_uint256_1_serialize_vunit_v1_u256_accept_32"
+    },
+    {
      "file": "slop/capacity/vec_uint256_1_generated.bend",
      "law": "vec_uint256_1_serialize_cap"
     },
@@ -20683,6 +21852,10 @@
     {
      "file": "slop/validity/generic_vec_uint256_2_poison_flag_generated.bend",
      "law": "vec_uint256_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_unit_v2_u256_generated.bend",
+     "law": "vec_uint256_2_serialize_vunit_v2_u256_accept_64"
     },
     {
      "file": "slop/capacity/vec_uint256_2_generated.bend",
@@ -21733,6 +22906,26 @@
      "law": "proglist_uint32_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_refuse_2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_refuse_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_accept_4"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_accept_8"
+    },
+    {
      "file": "slop/constants/proglist_uint32_generated.bend",
      "law": "proglist_uint32_mc_poison_pl_u32"
     },
@@ -21999,6 +23192,10 @@
      "law": "vec_uint32_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_1_unit_v1_u32_generated.bend",
+     "law": "vec_uint32_1_serialize_vunit_v1_u32_accept_4"
+    },
+    {
      "file": "slop/capacity/vec_uint32_1_generated.bend",
      "law": "vec_uint32_1_serialize_cap"
     },
@@ -22142,6 +23339,10 @@
     {
      "file": "slop/validity/generic_vec_uint32_2_poison_flag_generated.bend",
      "law": "vec_uint32_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_unit_v2_u32_generated.bend",
+     "law": "vec_uint32_2_serialize_vunit_v2_u32_accept_8"
     },
     {
      "file": "slop/capacity/vec_uint32_2_generated.bend",
@@ -23232,6 +24433,26 @@
      "law": "proglist_uint64_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_accept_16"
+    },
+    {
      "file": "slop/constants/proglist_uint64_generated.bend",
      "law": "proglist_uint64_mc_poison_pl_u64"
     },
@@ -23498,6 +24719,10 @@
      "law": "vec_uint64_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_1_unit_v1_u64_generated.bend",
+     "law": "vec_uint64_1_serialize_vunit_v1_u64_accept_8"
+    },
+    {
      "file": "slop/capacity/vec_uint64_1_generated.bend",
      "law": "vec_uint64_1_serialize_cap"
     },
@@ -23641,6 +24866,10 @@
     {
      "file": "slop/validity/generic_vec_uint64_2_poison_flag_generated.bend",
      "law": "vec_uint64_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_unit_v2_u64_generated.bend",
+     "law": "vec_uint64_2_serialize_vunit_v2_u64_accept_16"
     },
     {
      "file": "slop/capacity/vec_uint64_2_generated.bend",
@@ -24711,6 +25940,70 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_u8_len_get"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_u8_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_u8_append_range"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_u8_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_u8_set_write"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vreject_f_D_elem"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_accept_8"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_accept_16"
+    },
+    {
      "file": "slop/constants/ProgressiveTestStruct_generated.bend",
      "law": "ProgressiveTestStruct_mc_ser"
     }
@@ -24794,6 +26087,50 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits5_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits5_first"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits5_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits5_order"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits5_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits5_full"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits5_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits5_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits6_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits6_first"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits6_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits6_order"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits6_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits6_full"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_collection_bits6_generated.bend",
+     "law": "BitsStruct_serialize_vcoll_bits6_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_fields_generated.bend",
+     "law": "BitsStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_fields_generated.bend",
+     "law": "BitsStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_fields_generated.bend",
+     "law": "BitsStruct_serialize_vreject_f_D"
+    },
     {
      "file": "slop/capacity/BitsStruct_generated.bend",
      "law": "BitsStruct_serialize_cap"
@@ -24882,6 +26219,126 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1280_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1280_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1280_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1280_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1281_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1281_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1281_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits1281_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits256_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits256_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits256_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits256_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits257_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits257_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits257_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_bits257_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_pbits_first"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_pbits_order"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_collection_pbits_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vcoll_pbits_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_G"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_I"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_J"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_K"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vreject_f_L"
+    },
     {
      "file": "slop/constants/ProgressiveBitsStruct_generated.bend",
      "law": "ProgressiveBitsStruct_mc_ser"
@@ -24985,7 +26442,31 @@
     },
     {
      "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vpoison_carried"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
      "law": "FixedTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_fields_generated.bend",
+     "law": "FixedTestStruct_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -25081,7 +26562,31 @@
     },
     {
      "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vpoison_carried"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
      "law": "SingleFieldTestStruct_serialize_vreject_f_A"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_fields_generated.bend",
+     "law": "SingleFieldTestStruct_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -25159,12 +26664,84 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_len_get"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_append_range"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_append_full"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vcoll_l1024_u16_set_write"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_carried"
+    },
+    {
      "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
      "law": "VarTestStruct_serialize_vreject_f_A"
     },
     {
      "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
      "law": "VarTestStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vrefuse_f_C"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_refuse_3"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_accept_4"
     },
     {
      "file": "slop/size/VarTestStruct_generated.bend",
@@ -25259,12 +26836,124 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_len_get"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_append_range"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_append_full"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_bl256_set_write"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_len_get"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_get_edge"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_append_range"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_append_full"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_set_edge"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_l128_u16_set_write"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_carried"
+    },
+    {
      "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
      "law": "ComplexTestStruct_serialize_vreject_f_A"
     },
     {
      "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
      "law": "ComplexTestStruct_serialize_vreject_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_default_valid"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_G"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_f_G_elem"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_refuse_1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_refuse_3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_accept_4"
     },
     {
      "file": "slop/constants/ComplexTestStruct_generated.bend",
@@ -25369,11 +27058,39 @@
     },
     {
      "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vpoison_false_flag"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vpoison_true_flag"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vpoison_below"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vpoison_carried"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
      "law": "SmallTestStruct_serialize_vreject_f_A"
     },
     {
      "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vrefuse_f_A"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
      "law": "SmallTestStruct_serialize_vreject_f_B"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vrefuse_f_B"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_fields_generated.bend",
+     "law": "SmallTestStruct_serialize_vreject_default_valid"
     }
    ],
    "decode_offsets": [
@@ -25605,6 +27322,22 @@
     {
      "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
      "law": "bitlist_15_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vcoll_bits15_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vcoll_bits15_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vcoll_bits15_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vcoll_bits15_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_15_generated.bend",
@@ -25850,6 +27583,22 @@
      "law": "bitlist_16_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vcoll_bits16_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vcoll_bits16_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vcoll_bits16_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vcoll_bits16_set_edge"
+    },
+    {
      "file": "slop/capacity/bitlist_16_generated.bend",
      "law": "bitlist_16_serialize_cap"
     },
@@ -26091,6 +27840,22 @@
     {
      "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
      "law": "bitlist_17_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vcoll_bits17_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vcoll_bits17_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vcoll_bits17_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vcoll_bits17_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_17_generated.bend",
@@ -26336,6 +28101,14 @@
      "law": "bitlist_1_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_1_collection_bits1_generated.bend",
+     "law": "bitlist_1_serialize_vcoll_bits1_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_collection_bits1_generated.bend",
+     "law": "bitlist_1_serialize_vcoll_bits1_full"
+    },
+    {
      "file": "slop/capacity/bitlist_1_generated.bend",
      "law": "bitlist_1_serialize_cap"
     },
@@ -26577,6 +28350,18 @@
     {
      "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
      "law": "bitlist_2_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
+     "law": "bitlist_2_serialize_vcoll_bits2_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
+     "law": "bitlist_2_serialize_vcoll_bits2_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
+     "law": "bitlist_2_serialize_vcoll_bits2_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_2_generated.bend",
@@ -26822,6 +28607,22 @@
      "law": "bitlist_31_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vcoll_bits31_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vcoll_bits31_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vcoll_bits31_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vcoll_bits31_set_edge"
+    },
+    {
      "file": "slop/capacity/bitlist_31_generated.bend",
      "law": "bitlist_31_serialize_cap"
     },
@@ -27061,6 +28862,22 @@
      "law": "bitlist_32_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vcoll_bits32_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vcoll_bits32_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vcoll_bits32_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vcoll_bits32_set_edge"
+    },
+    {
      "file": "slop/constants/bitlist_32_generated.bend",
      "law": "bitlist_32_mc_poison_bits32"
     },
@@ -27290,6 +29107,22 @@
     {
      "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
      "law": "bitlist_33_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vcoll_bits33_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vcoll_bits33_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vcoll_bits33_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vcoll_bits33_set_edge"
     },
     {
      "file": "slop/constants/bitlist_33_generated.bend",
@@ -27525,6 +29358,22 @@
     {
      "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
      "law": "bitlist_3_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vcoll_bits3_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vcoll_bits3_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vcoll_bits3_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vcoll_bits3_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_3_generated.bend",
@@ -27770,6 +29619,22 @@
      "law": "bitlist_4_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vcoll_bits4_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vcoll_bits4_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vcoll_bits4_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vcoll_bits4_set_edge"
+    },
+    {
      "file": "slop/capacity/bitlist_4_generated.bend",
      "law": "bitlist_4_serialize_cap"
     },
@@ -28009,6 +29874,22 @@
      "law": "bitlist_511_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vcoll_bits511_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vcoll_bits511_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vcoll_bits511_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vcoll_bits511_set_edge"
+    },
+    {
      "file": "slop/constants/bitlist_511_generated.bend",
      "law": "bitlist_511_mc_poison_bits511"
     },
@@ -28240,6 +30121,22 @@
      "law": "bitlist_512_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vcoll_bits512_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vcoll_bits512_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vcoll_bits512_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vcoll_bits512_set_edge"
+    },
+    {
      "file": "slop/constants/bitlist_512_generated.bend",
      "law": "bitlist_512_mc_poison_bits512"
     },
@@ -28469,6 +30366,22 @@
     {
      "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
      "law": "bitlist_513_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vcoll_bits513_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vcoll_bits513_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vcoll_bits513_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vcoll_bits513_set_edge"
     },
     {
      "file": "slop/constants/bitlist_513_generated.bend",
@@ -28704,6 +30617,22 @@
     {
      "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
      "law": "bitlist_5_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vcoll_bits5_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vcoll_bits5_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vcoll_bits5_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vcoll_bits5_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_5_generated.bend",
@@ -28949,6 +30878,22 @@
      "law": "bitlist_6_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vcoll_bits6_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vcoll_bits6_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vcoll_bits6_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vcoll_bits6_set_edge"
+    },
+    {
      "file": "slop/capacity/bitlist_6_generated.bend",
      "law": "bitlist_6_serialize_cap"
     },
@@ -29190,6 +31135,22 @@
     {
      "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
      "law": "bitlist_7_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vcoll_bits7_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vcoll_bits7_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vcoll_bits7_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vcoll_bits7_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_7_generated.bend",
@@ -29435,6 +31396,22 @@
      "law": "bitlist_8_serialize_vbits_nbytes"
     },
     {
+     "file": "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vcoll_bits8_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vcoll_bits8_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vcoll_bits8_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vcoll_bits8_set_edge"
+    },
+    {
      "file": "slop/capacity/bitlist_8_generated.bend",
      "law": "bitlist_8_serialize_cap"
     },
@@ -29676,6 +31653,22 @@
     {
      "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
      "law": "bitlist_9_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vcoll_bits9_first"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vcoll_bits9_order"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vcoll_bits9_full"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vcoll_bits9_set_edge"
     },
     {
      "file": "slop/capacity/bitlist_9_generated.bend",
@@ -32348,6 +34341,18 @@
     {
      "file": "slop/validity/generic_progbitlist_bits_generated.bend",
      "law": "progbitlist_serialize_vbits_nbytes"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
+     "law": "progbitlist_serialize_vcoll_pbits_first"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
+     "law": "progbitlist_serialize_vcoll_pbits_order"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
+     "law": "progbitlist_serialize_vcoll_pbits_set_edge"
     },
     {
      "file": "slop/constants/progbitlist_generated.bend",

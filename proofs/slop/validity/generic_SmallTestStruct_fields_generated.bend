@@ -11,10 +11,38 @@ def SmallTestStruct_serialize_vfields(+f_A: U32, +f_B: U32)
     -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct{f_A, f_B}) == Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B)) : Bool}:
   {==}
 
+def SmallTestStruct_serialize_vpoison_false_flag()
+    -> {O.is_poisoned(O.pz(False{})) == True{} : Bool}:
+  {==}
+
+def SmallTestStruct_serialize_vpoison_true_flag()
+    -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
+  {==}
+
+def SmallTestStruct_serialize_vpoison_below()
+    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+  {==}
+
+def SmallTestStruct_serialize_vpoison_carried()
+    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+  {==}
+
 def SmallTestStruct_serialize_vreject_f_A()
     -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_set_f_A_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == False{} : Bool}:
   {==}
 
+def SmallTestStruct_serialize_vrefuse_f_A()
+    -> {SmallTestStruct_e.SmallTestStruct_serialize(SmallTestStruct_d.SmallTestStruct_set_f_A_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == O.refused() : O.Encoded}:
+  {==}
+
 def SmallTestStruct_serialize_vreject_f_B()
     -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_set_f_B_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == False{} : Bool}:
+  {==}
+
+def SmallTestStruct_serialize_vrefuse_f_B()
+    -> {SmallTestStruct_e.SmallTestStruct_serialize(SmallTestStruct_d.SmallTestStruct_set_f_B_go(SmallTestStruct_d.SmallTestStruct_default(), 65536)) == O.refused() : O.Encoded}:
+  {==}
+
+def SmallTestStruct_serialize_vreject_default_valid()
+    -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct_default()) == True{} : Bool}:
   {==}
