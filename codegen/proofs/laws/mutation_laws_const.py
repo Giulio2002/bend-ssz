@@ -334,7 +334,6 @@ def build_name_laws(tx, X, idx, files, syms):
     if rw:
         m = re.fullmatch(r'(\w+)\(64n, h, o, 0\)', rw[2])
         if m:
-            callee = tx.blk.get(m.group(1), '')
             cs = tx.get(m.group(1))
             if cs and re.fullmatch(r'O\.(words|bits)_root\(hl, h, o, \w+, seg\)', cs[2]):
                 ps = ', '.join(f'{pname(p)}: {ptype(p)}' for p in rw[0])
