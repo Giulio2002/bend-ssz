@@ -5145,6 +5145,10 @@
     {
      "file": "mutsmall_ContributionAndProof.bend",
      "law": "ContributionAndProof_ms_size"
+    },
+    {
+     "file": "mutsmall_ContributionAndProof.bend",
+     "law": "ContributionAndProof_ms_putk"
     }
    ],
    "decode_offsets": [
@@ -5261,6 +5265,10 @@
     {
      "file": "mutsmall_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_ms_size"
+    },
+    {
+     "file": "mutsmall_SignedContributionAndProof.bend",
+     "law": "SignedContributionAndProof_ms_putk"
     }
    ],
    "decode_offsets": [
@@ -6009,6 +6017,10 @@
     {
      "file": "mutsmall_HistoricalBatch.bend",
      "law": "HistoricalBatch_ms_encout"
+    },
+    {
+     "file": "mutsmall_HistoricalBatch.bend",
+     "law": "HistoricalBatch_ms_sizesym"
     }
    ],
    "decode_offsets": [
@@ -8044,6 +8056,10 @@
     {
      "file": "mutsmall_SyncCommittee.bend",
      "law": "SyncCommittee_ms_encout"
+    },
+    {
+     "file": "mutsmall_SyncCommittee.bend",
+     "law": "SyncCommittee_ms_sizesym"
     }
    ],
    "decode_offsets": [
@@ -11349,6 +11365,10 @@
     {
      "file": "mutsmall_LightClientUpdate.bend",
      "law": "LightClientUpdate_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_LightClientUpdate.bend",
+     "law": "LightClientUpdate_ms_sizesym"
     }
    ],
    "decode_offsets": [
@@ -11431,6 +11451,10 @@
     {
      "file": "mutsmall_LightClientBootstrap.bend",
      "law": "LightClientBootstrap_ms_serdepth"
+    },
+    {
+     "file": "mutsmall_LightClientBootstrap.bend",
+     "law": "LightClientBootstrap_ms_sizesym"
     }
    ],
    "decode_offsets": [
@@ -12403,6 +12427,10 @@
     {
      "file": "mutsmall_BlobSidecar.bend",
      "law": "BlobSidecar_ms_encout"
+    },
+    {
+     "file": "mutsmall_BlobSidecar.bend",
+     "law": "BlobSidecar_ms_sizesym"
     }
    ],
    "decode_offsets": [
@@ -13205,6 +13233,10 @@
     {
      "file": "mutsmall_MatrixEntry.bend",
      "law": "MatrixEntry_ms_size"
+    },
+    {
+     "file": "mutsmall_MatrixEntry.bend",
+     "law": "MatrixEntry_ms_putk"
     }
    ],
    "decode_offsets": [
@@ -28740,7 +28772,20 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ms_armbad"
+    },
+    {
+     "file": "mutsmall_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ms_arm0"
+    },
+    {
+     "file": "mutsmall_CompatibleUnionABCA.bend",
+     "law": "CompatibleUnionABCA_ms_arm3"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "mutconst_CompatibleUnionABCA.bend",
@@ -28822,7 +28867,16 @@
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [],
-   "decode_input": [],
+   "decode_input": [
+    {
+     "file": "mutsmall_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ms_armbad"
+    },
+    {
+     "file": "mutsmall_CompatibleUnionA.bend",
+     "law": "CompatibleUnionA_ms_arm0"
+    }
+   ],
    "serialize_valid": [
     {
      "file": "capacity_CompatibleUnionA.bend",

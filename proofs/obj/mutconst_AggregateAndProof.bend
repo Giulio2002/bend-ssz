@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../src/digest.bend as D
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../../types/uint64_def_generated.bend as uint64_d
 import ../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
 import ../../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggregateAndProof_e
@@ -11,5 +12,5 @@ import ../../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggreg
 # (mutation testing; docs/MUTATION_PROOFS.md, section 5). Each law is symbolic or by computation.
 
 def AggregateAndProof_mc_ser()
-    -> {FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271560481))) == (Pair.fst(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271560481)))), O.encoded(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271560481)))))) : FuluAggregateAndProof_d.AggregateAndProof & O.Encoded}:
+    -> {FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271561263)), FuluBytes96_d.b96_seed(2271561280))) == (Pair.fst(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271561263)), FuluBytes96_d.b96_seed(2271561280)))), O.encoded(Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, B.Buf, FuluAggregateAndProof_e.AggregateAndProof_encode(FuluAggregateAndProof_d.AggregateAndProof_set_selection_proof(FuluAggregateAndProof_d.AggregateAndProof_set_aggregator_index(FuluAggregateAndProof_d.AggregateAndProof_default(), uint64_d.u64_seed(2271561263)), FuluBytes96_d.b96_seed(2271561280)))))) : FuluAggregateAndProof_d.AggregateAndProof & O.Encoded}:
   {==}

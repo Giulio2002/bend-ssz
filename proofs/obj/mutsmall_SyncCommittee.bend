@@ -1,6 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../../types/FuluSyncCommittee_encode_ssz_generated.bend as FuluSyncCommittee_e
 
@@ -17,4 +18,8 @@ def SyncCommittee_ms_senc_out(out: Array<U32>, o: FuluSyncCommittee_d.SyncCommit
 
 def SyncCommittee_ms_encout(out: Array<U32>, o: FuluSyncCommittee_d.SyncCommittee)
     -> {FuluSyncCommittee_e.SyncCommittee_enc_out((out, o)) == (o, B.Buf{out, 24624}) : FuluSyncCommittee_d.SyncCommittee & B.Buf}:
+  {==}
+
+def SyncCommittee_ms_sizesym(pubkeys: O.Words, aggregate_pubkey: FuluBytes48_d.Bytes48)
+    -> {Pair.snd(FuluSyncCommittee_d.SyncCommittee, U32, FuluSyncCommittee_e.SyncCommittee_size(FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey})) == 24624 : U32}:
   {==}

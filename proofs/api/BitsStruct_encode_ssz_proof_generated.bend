@@ -1,7 +1,9 @@
 import Base
 import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
 import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
 import ../../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 import ../../types/schema.bend as P0_S
@@ -69,6 +71,6 @@ def BitsStruct__serialize_valid__BitsStruct_serialize_cap() -> {BitsStruct_e.Bit
 def BitsStruct__serialize_valid__BitsStruct_serialize_capsym(o: BitsStruct_d.BitsStruct) -> {BitsStruct_e.BitsStruct_serialize(o) == BitsStruct_e.BitsStruct_senc_put(BitsStruct_e.BitsStruct_putk(P1_O.out_at(2n), 0, o)) : BitsStruct_d.BitsStruct & P1_O.Encoded}:
   P1_PRV.BitsStruct_serialize_capsym(o)
 
-def BitsStruct__serialize_valid__BitsStruct_mc_ser() -> {BitsStruct_e.BitsStruct_serialize(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481))) == (Pair.fst(BitsStruct_d.BitsStruct, P3_B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481)))), P3_O.encoded(Pair.snd(BitsStruct_d.BitsStruct, P3_B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271560481)))))) : BitsStruct_d.BitsStruct & P3_O.Encoded}:
+def BitsStruct__serialize_valid__BitsStruct_mc_ser() -> {BitsStruct_e.BitsStruct_serialize(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365))) == (Pair.fst(BitsStruct_d.BitsStruct, P3_B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365)))), P3_O.encoded(Pair.snd(BitsStruct_d.BitsStruct, P3_B.Buf, BitsStruct_e.BitsStruct_encode(BitsStruct_d.BitsStruct_set_f_E(BitsStruct_d.BitsStruct_set_f_C(BitsStruct_d.BitsStruct_set_f_B(BitsStruct_d.BitsStruct_default(), bitvector_2_d.bv2_seed(2271561314)), bitvector_1_d.bv1_seed(2271561331)), bitvector_8_d.bv8_seed(2271561365)))))) : BitsStruct_d.BitsStruct & P3_O.Encoded}:
   P3_PRV.BitsStruct_mc_ser()
 
