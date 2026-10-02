@@ -31,7 +31,7 @@
 # CHECK_TARBALLS=DIR, the gate run) also against the pinned release tarballs, and the stamp then has fixtures_tarballs_verified: true.
 # Run from the repository root.
 set -u
-J=${CHECK_JOBS:-20}; T=120; OUT=build/check_fast; FILES=""; LOC=1; JSC=10485760; TARB=${CHECK_TARBALLS:-}; CACHE=${CHECK_CACHE:-1}
+J=${CHECK_JOBS:-20}; T=${CHECK_TARGET:-120}; MAXU=${CHECK_MAX_UMB:-150}; OUT=build/check_fast; FILES=""; LOC=1; JSC=10485760; TARB=${CHECK_TARBALLS:-}; CACHE=${CHECK_CACHE:-1}
 while [ $# -gt 0 ]; do
   case $1 in
     --jobs) J=$2; shift 2;;
@@ -60,7 +60,7 @@ else
   python3 tools/verify_fixtures.py || exit 3
 fi
 export CHECK_PINS_VERIFIED=1
-python3 tools/umbrellas.py --target "$T" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
+python3 tools/umbrellas.py --target "$T" --max-umb "$MAXU" --out "$OUT/umb" ${FILES:+--files "$FILES"} || exit 2
 
 # run(umbrella file, log): check one umbrella; 0 iff it exits 0 and prints exactly the line
 # "ALL PROOFS CHECK" (a def relying on unsafe or foreign code makes the checker print "SOME PROOFS

@@ -28,7 +28,7 @@ The object API's laws (docs/LAW_API_MAP.md):
 Writes
   proofs/gate/api_map.json           {name: {kind: [{file, law, big}]}} (every name, every kind)
   proofs/gate/MISSING.txt            every (name, law) with no proving law
-  proofs/gate/{big_}g__<file>.bend
+  proofs/gate/g__<file>_generated.bend (a slop file: proofs/gate/slop/<group>/<file>_generated.bend)
       one module per proving file: for each name X and each law of that file proving
       (X, kind), a def <X>__<kind>__<law> whose statement is the proving law's statement
       (the object API entry point in its conclusion), discharged by applying the proving
@@ -45,7 +45,7 @@ import re
 import sys
 from codegen.impl import runtime_file_split as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
-from codegen.core import mutation_layout as LAYOUT  # noqa: E402
+from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.core.repository_paths import ROOT, OBJ  # noqa: E402
 OUT = ROOT / 'proofs/gate'
 
@@ -223,16 +223,16 @@ def pname(p):
 
 
 # ---- the proving files -------------------------------------------------------------------------
-# A proving file is named by its key: a bare file name for proofs/obj/<name>.bend, and `mutation_coverage/<group>/<name>.bend`
+# A proving file is named by its key: a bare file name for proofs/obj/<name>.bend, and `slop/<group>/<name>_generated.bend`
 # (the path below proofs/) for the laws that exist because mutation testing found a gap. The scan reads proofs/obj first and then
-# the mutation-coverage modules, in the order of LAYOUT.GROUPS: the bridges and the facades read the first law of a kind, and the
-# first proving import of an encode facade must stay the name's own spec/encx file, so the mutation-coverage laws come last.
+# the slop modules, in the order of LAYOUT.GROUPS: the bridges and the facades read the first law of a kind, and the
+# first proving import of an encode facade must stay the name's own spec/encx file, so the slop laws come last.
 
 def proving_files():
-    """Every proving file, as a path: proofs/obj first, then proofs/mutation_coverage group by group (each sorted)."""
+    """Every proving file, as a path: proofs/obj first, then proofs/slop group by group (each sorted)."""
     files = sorted(OBJ.glob('*.bend'))
     for g in LAYOUT.GROUPS:
-        files += sorted((LAYOUT.MUTATION_COVERAGE / g).glob('*.bend'))
+        files += sorted((LAYOUT.SLOP / g).glob('*.bend'), key=lambda q: LAYOUT.stem_of(q) + '.bend')     # the order of the names as the generators gave them, without the suffix
     return files
 
 
@@ -244,14 +244,19 @@ def proof_path(key):
     return OBJ / key if '/' not in key else LAYOUT.PROOFS / key
 
 
-def gate_stem(key):
-    """the file stem of the gate module of a proving file (flat: Bend import paths take no extra dots)"""
-    return key[:-5].replace('/', '__')
+def gate_path(key):
+    """the gate module of a proving file: proofs/gate/g__<name>_generated.bend for a bare proofs/obj file, and for a slop file
+    key `slop/<group>/<name>_generated.bend` the same folders under proofs/gate/"""
+    if '/' in key:
+        return OUT / key
+    return OUT / f'g__{key[:-5]}_generated.bend'
 
 
-def prv_import(key):
-    """the import path of proving file `key` from proofs/api or proofs/gate"""
-    return f"../obj/{key}" if "/" not in key else f"../{key}"
+def prv_import(key, here=None):
+    """the import path of proving file `key` from a module in directory `here` (default: proofs/api and proofs/gate, the same depth)"""
+    if "/" not in key:
+        return f"../obj/{key}"
+    return os.path.relpath(LAYOUT.PROOFS / key, here or OUT)
 
 
 def below_proofs(key):
@@ -259,9 +264,9 @@ def below_proofs(key):
     return f"obj/{key}" if "/" not in key else key
 
 
-def proving_imports(key, src):
+def proving_imports(key, src, here=None):
     """[(path, alias or None)] of the imports of proving file `key`, as a module of proofs/api or proofs/gate writes them: a bare
-    file's `./x` is `../obj/x`; a mutation-coverage file's relative imports are re-based on this directory."""
+    file's `./x` is `../obj/x`; a slop file's relative imports are re-based on the directory `here` (default proofs/gate)."""
     out = []
     for l in src.split('\n'):
         m = re.match(r'import (\S+)( as (\w+))?$', l)
@@ -273,7 +278,7 @@ def proving_imports(key, src):
                 path = '../obj/' + path[2:]
         elif path.startswith('.'):
             there = os.path.normpath(os.path.join(os.path.dirname(proof_path(key)), path))
-            path = os.path.relpath(there, OUT)
+            path = os.path.relpath(there, here or OUT)
         out.append((path, m.group(3)))
     return out
 
@@ -299,11 +304,11 @@ def scan():
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
-            if n.endswith('_serialize_vsym'):     # codegen/proofs/mutation_coverage/validity_checks.py: the statement names the validity pass
+            if n.endswith('_serialize_vsym'):     # codegen/proofs/slop/validity_checks.py: the statement names the validity pass
                 xs.add(n[:-len('_serialize_vsym')])
-            if n.endswith('_serialize_vflag'):    # codegen/proofs/mutation_coverage/poison_flag.py: the statement names the writer's pk_ok
+            if n.endswith('_serialize_vflag'):    # codegen/proofs/slop/poison_flag.py: the statement names the writer's pk_ok
                 xs.add(n[:-len('_serialize_vflag')])
-            ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/mutation_coverage/word_positions.py: the writers' own names are not X's
+            ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/slop/word_positions.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
             if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
@@ -313,12 +318,12 @@ def scan():
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):
                         ent.setdefault((X, kind), []).append((key, n))
-            # codegen/proofs/mutation_coverage/encoder_constants.py: proofs/mutation_coverage/constants/<X>.bend holds <X>_mc_<tag> laws, one module
+            # codegen/proofs/slop/encoder_constants.py: proofs/slop/constants/<X>.bend holds <X>_mc_<tag> laws, one module
             # per name (the name is in the file name); the root wrapper's law belongs to the root facade, the others to
             # the encode facade (serialize_valid)
-            per_name_laws = f.parent.name in ('constants', 'size') and f.parent.parent == LAYOUT.MUTATION_COVERAGE   # encoder_constants.py / write_start_and_sizes.py
-            if per_name_laws and k == 'def' and f.stem in U:
-                X = f.stem
+            per_name_laws = f.parent.name in ('constants', 'size') and f.parent.parent == LAYOUT.SLOP   # encoder_constants.py / write_start_and_sizes.py
+            if per_name_laws and k == 'def' and LAYOUT.stem_of(f) in U:
+                X = LAYOUT.stem_of(f)
                 mc = re.fullmatch(re.escape(X) + r'_m[cs]_(\w+)', n)
                 if mc:
                     late.append(((X, 'root' if mc.group(1) == 'root' else 'decode_input' if mc.group(1).startswith(('dec', 'build', 'arm')) else 'serialize_valid'), (key, n)))
@@ -331,9 +336,10 @@ def scan():
 
 def gate_module(xlaws, fname, parsed_file, src):
     """One module per proving file; xlaws: [(X, [(kind, law)])]."""
-    fixed = [f'import {path}' + (f' as {alias}' if alias else '') for path, alias in proving_imports(fname, src)]
+    here = gate_path(fname).parent
+    fixed = [f'import {path}' + (f' as {alias}' if alias else '') for path, alias in proving_imports(fname, src, here)]
     local = {n for _, n, _, _ in parsed_file}
-    L = fixed + [f'import {prv_import(fname)} as PRV', '',
+    L = fixed + [f'import {prv_import(fname, here)} as PRV', '',
                  '# GENERATED by object_api_coverage_gate (codegen). Do not edit.',
                  f'# The object API laws that proofs/{below_proofs(fname)} proves ({", ".join(X for X, _ in xlaws)}), each discharged by that law.', '']
     for X, kind, law in [(X, k, n) for X, laws in xlaws for k, n in laws]:
@@ -378,9 +384,15 @@ def outputs():
             byfile.setdefault(f, {}).setdefault(X, []).append((kind, n))
     for f, xs in sorted(byfile.items()):
         xlaws = [(X, sorted(set(laws), key=lambda kn: (KINDS.index(kn[0]), kn[1]))) for X, laws in sorted(xs.items())]
-        name = f'g__{gate_stem(f)}.bend'
-        out[OUT / name] = gate_module(xlaws, f, parsed[f], proof_path(f).read_text())
+        out[gate_path(f)] = gate_module(xlaws, f, parsed[f], proof_path(f).read_text())
     return out
+
+
+def gate_files():
+    """every gate module on disk: proofs/gate/g__*.bend and everything under proofs/gate/slop/"""
+    if not OUT.exists():
+        return []
+    return list(OUT.glob('*g_*.bend')) + sorted((OUT / 'slop').rglob('*.bend'))
 
 
 def main():
@@ -388,7 +400,7 @@ def main():
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
-        mine = [q for q in OUT.glob('*g_*.bend')] if OUT.exists() else []
+        mine = gate_files()
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
         if stale or orphans:
             print('stale api gate: ' + ', '.join((stale + orphans)[:20]) + (' ...' if len(stale + orphans) > 20 else ''))
@@ -396,10 +408,11 @@ def main():
         print('api gate is current')
         return
     OUT.mkdir(exist_ok=True)
-    for q in OUT.glob('*g_*.bend'):
+    for q in gate_files():
         if q not in out:
             q.unlink()
     for p, t in out.items():
+        p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(t)
     print(f'{len(out)} files')
 

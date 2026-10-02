@@ -131,14 +131,14 @@ def boolvec_equiv(x,line):
 
 def le_eq_equiv(x, line):
     """is_eq(pos .&. 3, 0) -> is_le(...) at a `_pwd(` guard: U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x. The law
-    le_eq of proofs/mutation_coverage/alignment/writer_guard_library.bend states it, and the facade imports that library (checked here)."""
+    le_eq of proofs/slop/alignment/writer_guard_library_generated.bend states it, and the facade imports that library (checked here)."""
     if x['operator'] != 'cmp' or x['before'] != 'U32.is_eq(' or x['after'] != 'U32.is_le(' or '_pwd(' not in line or '.&. 3' not in line:
         return None
-    lib = pathlib.Path('proofs/mutation_coverage/alignment/writer_guard_library.bend')
+    lib = pathlib.Path('proofs/slop/alignment/writer_guard_library_generated.bend')
     api = pathlib.Path(x['checked'])
     if not lib.exists() or not re.search(r'^def le_eq\b', lib.read_text(), re.M) or 'writer_guard_library' not in api.read_text():
         return None
-    return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/mutation_coverage/alignment/writer_guard_library.bend, imported by the facade'
+    return 'U32.is_le(x, 0) = U32.is_eq(x, 0) for an unsigned x: law le_eq in proofs/slop/alignment/writer_guard_library_generated.bend, imported by the facade'
 
 
 def in_signature(path, line, col):

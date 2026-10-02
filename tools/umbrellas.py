@@ -50,11 +50,49 @@ def imports(f):
     return out
 
 
+def family_split(u, clo, w):
+    """Split an oversized umbrella u = (cost, roots, modules) by root family and size: proofs/gate (and its slop/ folders),
+    proofs/slop, proofs/api, proofs/obj, e2e and the rest are checked in separate umbrellas, and a family is cut into
+    contiguous slices of its sorted names: about 200 roots per slice (gate, slop, api, obj), e2e in three, the rest
+    (benchmarks) in halves from 10 roots. The cost model (stale standalone times) cannot see which roots are heavy;
+    measured on the ssz server, the 2573-root umbrella (790 s) became parts of 35 to 375 s run side by side, and the
+    largest parts (proofs/api 404 s, proofs/gate 397 s, benchmarks 394 s) were halved again to stay under 360 s.
+    Roots only move between umbrellas, each stays in exactly one: coverage is unchanged."""
+    cost, roots, _ = u
+    fam = {}
+    for r in roots:
+        k = ('gate' if r.startswith('proofs/gate/') else 'slop' if r.startswith('proofs/slop/') else 'api' if r.startswith('proofs/api/')
+             else 'obj' if r.startswith('proofs/obj/') else 'e2e' if r.startswith('e2e/') else 'rest')
+        fam.setdefault(k, []).append(r)
+    for k in [k for k, v in fam.items() if len(v) < 15 and k != 'rest']:
+        fam.setdefault('rest', []).extend(fam.pop(k))
+    parts = []
+    for k, v in sorted(fam.items()):
+        v = sorted(v)
+        n = 3 if k == 'e2e' and len(v) > 100 else 2 if k == 'rest' and len(v) >= 10 else max(1, -(-len(v) // 200)) if k != 'rest' else 1
+        parts += [v[i * len(v) // n:(i + 1) * len(v) // n] for i in range(n)]
+    if len(parts) < 2:
+        return [u]
+    out = []
+    for ps in parts:
+        have = set()
+        for r in ps:
+            have |= clo[r]
+        out.append((sum(w[m] for m in have), ps, len(have)))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--target', type=float, default=60.0, help='estimated seconds per umbrella')
     ap.add_argument('--costs', default='tools/check_costs.tsv')
     ap.add_argument('--out', default='build/umbrellas')
+    ap.add_argument('--max-umb', type=float, default=0.0,
+                    help='split an umbrella of 20 or more roots whose estimated seconds exceed this by root family (0: never); a split '
+                         'repeats the imports its parts share, so it pays only for umbrellas that dominate the wall time')
+    ap.add_argument('--hist', default='tools/umb_hist.tsv',
+                    help='measured wall seconds of earlier umbrellas (first root, seconds); an umbrella whose first root is listed gets '
+                         'that figure as its estimate (ordering and memory model), so the plan is predictive where it has been measured')
     ap.add_argument('--files', help='only cover these files (one per line) instead of all')
     a = ap.parse_args()
 
@@ -142,8 +180,22 @@ def main():
             add(r)   # roots whose closure is already inside (marginal cost ~0) ride along even in a full umbrella:
                      # checking them again in an umbrella of their own (an expensive import, e.g. coll_words at ~400 s) would repeat it
         umbs.append((cost, sorted(members), len(have)))
-    umbs.sort(key=lambda u: -u[0])
+    if a.max_umb > 0:
+        split = [(family_split(u, clo, w) if u[0] > a.max_umb and len(u[1]) >= 20 else [u]) for u in umbs]
+        # the parts of a split umbrella first (their estimate is far too low: they ran 200 to 375 s, the largest of the run),
+        # the rest by estimate: umb_pool starts umbrellas in file order, longest first
+        umbs = [p for g in split if len(g) > 1 for p in sorted(g, key=lambda u: -u[0])] + sorted((g[0] for g in split if len(g) == 1), key=lambda u: -u[0])
+    else:
+        umbs.sort(key=lambda u: -u[0])
 
+    if os.path.exists(a.hist):
+        hist = {}
+        for line in open(a.hist):
+            q = line.rstrip('\n').split('\t')
+            if len(q) >= 2 and not line.startswith('#'):
+                hist[q[0]] = float(q[1])
+        if hist:
+            umbs = sorted(((hist.get(ms[0], c), ms, nm) for c, ms, nm in umbs), key=lambda u: -u[0])
     covered = set().union(*[clo[r] for _, ms, _ in umbs for r in ms]) if umbs else set()
     miss = [f for f in want if idx[f] not in covered]
     assert not miss, 'umbrellas miss ' + ', '.join(miss[:5])
