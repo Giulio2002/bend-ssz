@@ -18,7 +18,7 @@ Texts may import ../types/fulu_obj.bend as T (or generic_obj.bend): e2e_bridge r
 
 import re  # noqa: E402
 from codegen.proofs.support.light_split import unlight as _unlight   # parse modules as before their light split (codegen/proofs/support/light_split.py)
-from codegen.core.shared_bridges import import_lines  # noqa: E402
+from codegen.core.shared_bridges import import_lines, import_list  # noqa: E402
 from codegen.core import names as NM  # noqa: E402
 
 
@@ -270,10 +270,7 @@ def sub_o(t, o):
     return re.sub(r'(?<![\w.])o(?![\w{(])', lambda m: o, t)
 
 
-RHEAD = ['import Base', 'import ./e2e_fixd.bend as X', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/words_obj.bend as WO', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
-         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
-         'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-         'import ../proofs/type_validator_soundness.bend as VS', 'import ./e2e_support.bend as E']
+RHEAD = [*import_list('Base X FD WO=words_obj E2E API B D=digest O S P VS=type_validator_soundness E=e2e_support')]
 
 
 def head(generic):
@@ -302,10 +299,9 @@ def root_file(EB, rows, title):
 # the W_i, and its spec decode law gives the value, whose bytes are bs (e2e_load.vw: the first K
 # bytes of the loaded words are bs). No case split on the bytes.
 
-DHEAD = ['import Base', 'import ./e2e_fixd.bend as X', 'import ./e2e_bits.bend as EBT', 'import ./e2e_fixdb.bend as XB', 'import ../proofs/compact/bits.bend as BT', 'import ./e2e_fixd16.bend as X16', 'import ../proofs/primitive_invariants.bend as V', 'import ../proofs/word_facts.bend as WF', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-         'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-         'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP', 'import ../proofs/type_validator_soundness.bend as VS',
-         'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F', 'import ./e2e_bytes.bend as EY', 'import ./e2e_load.bend as L', 'import ./e2e_cap.bend as C']
+DHEAD = [*import_list(
+    'Base X EBT XB BT X16 V WF E2E API B O S P Encoding SP VS=type_validator_soundness FD F EY '
+    'L C=e2e_cap')]
 
 
 def W(i):
@@ -642,11 +638,9 @@ def dec_file(EB, rows):
 # ---- (i) for the sub-word leaves: the root law's premise turns the view's words into the encode laws' ----
 
 MB = 'Maybe<&2, +List<U32>>'
-EHEAD = ['import Base', 'import ./e2e_tree.bend as E3', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/schema_shapes.bend as SH', 'import ./e2e_bits.bend as EBT', 'import ../proofs/obj/valid_lib.bend as VL', 'import ./e2e_fixdb.bend as XB', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/compact/bits.bend as BT', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
-         'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
-         'import ../proofs/type_validator_soundness.bend as VS', 'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP',
-         'import ../proofs/word_split.bend as WSp', 'import ../proofs/power_division.bend as PD', 'import ../proofs/integer_decoding.bend as ID',
-         'import ./e2e_support.bend as E', 'import ./e2e_fixd.bend as X']
+EHEAD = [*import_list(
+    'Base E3 FD WO=words_obj SH EBT VL=valid_lib XB F BT E2E API B D=digest O S P '
+    'VS=type_validator_soundness Encoding SP WSp PD ID E=e2e_support X')]
 
 
 def chain(sn, en, O, K, BY, EE, VV, ES, ind='  '):
@@ -803,8 +797,7 @@ def m16(+v: U32, +e: {U32.is_lt(v, 65536) == True{} : Bool}) -> {U32.and(v, 6553
 # storage at that depth, as e2e_bridge's word-storage family W) and rebuilds the object from rep's
 # witnesses; the view evaluates on the literal tree to the encode law's value.
 
-VHEAD = EHEAD + ['import ./e2e_fixd16.bend as X16', 'import ../proofs/primitive_invariants.bend as V',
-                 'import ../proofs/word_facts.bend as WF']
+VHEAD = EHEAD + [*import_list('X16 V WF')]
 
 
 def _encoder_put(en):
@@ -2944,24 +2937,9 @@ def pbsw_text():
         return f'U32{{{s}}}'
     def wbl(p, tail):   # the 32 bits then tail
         return ' <> '.join(A(p)) + ' <> ' + tail
-    L = ['import Base',
-         'import ../src/obj.bend as O',
-         'import ../types/schema.bend as S',
-         'import ../types/bitvector_256_def_generated.bend as bitvector_256_d',
-         'import ../types/bitvector_257_def_generated.bend as bitvector_257_d',
-         'import ../proofs/compact/found.bend as FD',
-         'import ../proofs/obj/bits_leaf.bend as BLf',
-         'import ../proofs/obj/bitlist_pack.bend as BK',
-         'import ../proofs/obj/spec_bits.bend as FB',
-         'import ../proofs/obj/vspec.bend as VS',
-         'import ../proofs/obj/vbuf.bend as VB',
-         'import ../proofs/obj/vuw.bend as UW',
-         'import ../proofs/obj/wbits_obj.bend as WBV',
-         'import ../proofs/obj/root_gnames.bend as RN',
-         'import ../proofs/obj/vbv257s.bend as V2S',
-         'import ../proofs/obj/vbv128s.bend as V2S8',
-         'import ../proofs/obj/vfx_bv1281.bend as G81',
-         'import ../proofs/obj/encx_ProgressiveBitsStruct_iface.bend as CI',
+    L = [*import_list(
+        'Base O S bitvector_256_d bitvector_257_d FD BLf BK FB VS=vspec VB UW=vuw WBV=wbits_obj '
+        'RN=root_gnames V2S V2S8 G81 CI=encx_ProgressiveBitsStruct_iface'),
          '',
          '# GENERATED by e2e_bridge (codegen: entries: e2e_fix_d). Do not edit.',
          '# ProgressiveBitsStruct\'s bit vectors: the root law\'s views (root_gnames, wbits_obj) are the encode record\'s',
@@ -3064,30 +3042,9 @@ def pbs_support_text():
     L = pbsw_text().rstrip().split('\n')
     heads = [l for l in L if l.startswith('import')]
     body = [l for l in L if not l.startswith('import')]
-    extra = ['import ../types/bitvector_257_encode_ssz_generated.bend as bitvector_257_e',
-             'import ../proofs/compact/arith.bend as A',
-             'import ../proofs/compact/reads.bend as RD',
-             'import ../proofs/nat_order.bend as Order',
-             'import ../proofs/word_split.bend as WSp',
-             'import ../proofs/power_division.bend as PD',
-             'import ../proofs/obj/vbig.bend as VBG',
-             'import ../proofs/obj/vdepth.bend as VD',
-             'import ../proofs/obj/vbytes.bend as VY',
-             'import ../proofs/obj/vbitenc.bend as VBT',
-             'import ../proofs/obj/vbitdl.bend as DL',
-             'import ../proofs/obj/vbitcore.bend as CO',
-             'import ../proofs/obj/vbitrep.bend as VBR',
-             'import ../proofs/obj/vua_lay.bend as LY',
-             'import ../proofs/obj/vu32.bend as VU',
-             'import ../proofs/obj/words_spec.bend as WS',
-             'import ../proofs/obj/words_obj.bend as WO',
-             'import ../proofs/obj/bitlist_obj.bend as BO',
-             'import ../proofs/obj/dk.bend as DK',
-             'import ../proofs/obj/vbv1281d.bend as V81',
-             'import ../proofs/obj/encx_bits256.bend as EX_bits256',
-             'import ../proofs/obj/encx_bits257.bend as EX_bits257',
-             'import ../proofs/obj/encx_bits1280.bend as EX_bits1280',
-             'import ../proofs/obj/encx_bits1281.bend as EX_bits1281',
+    extra = [*import_list(
+        'bitvector_257_e A RD Order WSp PD VBG VD VY=vbytes VBT DL CO VBR=vbitrep LY VU WS '
+        'WO=words_obj BO=bitlist_obj DK V81 EX_bits256 EX_bits257 EX_bits1280 EX_bits1281'),
              './e2e_tree.bend as E3', './e2e_tz.bend as TZ', './e2e_bitl.bend as BLB', './e2e_encp.bend as EP', './e2e_fixdw.bend as XW']
     extra = [e if e.startswith('import') else 'import ' + e for e in extra]
     B = []
@@ -3675,18 +3632,10 @@ def pbsd_text(bs='./e2e_pbs.bend'):
         it = [lhs[q] if q < i else ('_' if q == i else rhs[q]) for q in range(12)]
         L.append(f'  %e{i} : {{{V} == {seq(it)} : S.Value}}')
     L += ['  {==}', '']
-    H = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
-         'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order',
-         'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
-         'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/vbrt.bend as VR', 'import ../proofs/obj/vbyte.bend as VY',
-         'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vua.bend as UA',
-         'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua_rd.bend as UR',
-         'import ../proofs/obj/vua_fixb.bend as VXB', 'import ../proofs/obj/spec_bits.bend as FB', 'import ../proofs/obj/bitlist_pack.bend as BK',
-         'import ../proofs/obj/bitlist_obj.bend as BO', 'import ../proofs/obj/wbits_obj.bend as WBV', 'import ../proofs/obj/root_gnames.bend as RN',
-         'import ../proofs/obj/root_gtypes2.bend as RT',
-         'import ../proofs/obj/vfx_bv256.bend as F56', 'import ../proofs/obj/vfx_bv257.bend as F57', 'import ../proofs/obj/vfx_bv1280.bend as F80', 'import ../proofs/obj/vfx_bv1281.bend as F81',
-         'import ../proofs/obj/var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_g_bits256.bend as CB256', 'import ../proofs/obj/var_winx_g_bits257.bend as CB257',
-         'import ../proofs/obj/var_winx_g_bits1280.bend as CB1280', 'import ../proofs/obj/var_winx_g_bits1281.bend as CB1281',
+    H = [*import_list(
+        'Base O S FD A Order SF VSP VB VBG VR=vbrt VY=vbyte VBL VLS UA UW UCT UR VXB FB BK '
+        'BO=bitlist_obj WBV=wbits_obj RN=root_gnames RT=root_gtypes2 F56 F57 F80 F81 PBW CB256 '
+        'CB257 CB1280 CB1281'),
          f'import ../proofs/obj/var_winx_{X}.bend as W',
          './e2e_gpb.bend as GPB', './e2e_bview.bend as BV', './e2e_bx.bend as BX', f'{bs} as BS']
     H = [h if h.startswith('import') else 'import ' + h for h in H]
@@ -3712,8 +3661,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
 if 'Nat.is_lt(d, 31n)' in (_P(__file__).resolve().parents[3] / 'proofs/obj/var_codec_ProgressiveBitsStruct.bend').read_text():
     # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
     from codegen.proofs.bridges import e2e_var_c as _EVC
-    VDEC_VIEWS['ProgressiveBitsStruct'] = {'view': 'RT.v_ProgressiveBitsStruct', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', 'import ./e2e_pbsd.bend as PBD',
-                                                                          'import ../proofs/obj/vbuf.bend as VB'],
+    VDEC_VIEWS['ProgressiveBitsStruct'] = {'view': 'RT.v_ProgressiveBitsStruct', 'imports': [*import_list('RT=root_gtypes2 PBD VB')],
                                   'text': _EVC.deep_vv_text('ProgressiveBitsStruct', 'PBD.vw_ProgressiveBitsStructD', 'e2e_pbsd')}
 VROOT_SHAPES = {}
 VENC_SHAPES = {}
