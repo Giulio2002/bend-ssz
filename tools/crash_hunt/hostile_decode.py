@@ -145,6 +145,7 @@ def main():
     ap.add_argument('--only', default=None)
     ap.add_argument('--limit-seeds', type=int, default=0, help='accepted seeds per type (0 = all in the sample)')
     ap.add_argument('--seed', type=int, default=1)
+    ap.add_argument('--max-runs', type=int, default=0, help='shuffle the runs and keep this many')
     a = ap.parse_args()
     repo = os.path.abspath(a.repo)
     rng = random.Random(a.seed)
@@ -177,6 +178,9 @@ def main():
                 continue
             seen.add(d)
             jobs.append((nm, lab, prog, idx, d))
+    if a.max_runs and len(jobs) > a.max_runs:
+        rng.shuffle(jobs)
+        jobs = jobs[:a.max_runs]
     os.makedirs(a.out, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix='crashhunt-', dir=a.out)
     print('types %d, runs %d' % (len(names), len(jobs)), flush=True)

@@ -11,3 +11,5 @@ run() { ( ulimit -d 33554432; export SSZ_CASE=$1 SSZ_ARG=$2 SSZ_ARG2=$3; timeout
 for n in 0 1 2 3 4 5 8 9 15 16; do run 1 $n 0; done
 for spec in "0 1" "0 5" "3 4" "3 9" "4 5" "8 9" "15 16" "16 17" "15 20" "0 17"; do set -- $spec; run 2 $1 $2; done
 run 3 4294967295 0; run 3 3 0; run 3 2 0
+CH_BIG=1 nice -n 19 timeout 1500 /srv/ssz-optimization/agents/rename-venv/bin/python tools/crash_hunt/hostile_decode.py --repo . --out $OUT --jobs 4 --limit-seeds 2 --timeout 30 --mem-gb 32 --max-runs 24000 > $OUT/hostile_big.log 2>&1
+tail -3 $OUT/hostile_big.log
