@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c0() -> {Bytes.vector_decoding(48n, [55, 65, 23, 58, 51, 72, 191, 193, 239, 122, 14, 111, 103, 80, 20, 200, 210, 52, 80, 209, 230, 194, 164, 130, 45, 161, 138, 240, 234, 160, 98, 255, 201, 166, 157, 183, 195, 52, 123, 39, 244, 69, 172, 43, 58, 203, 1, 128]) == Some{[55, 65, 23, 58, 51, 72, 191, 193, 239, 122, 14, 111, 103, 80, 20, 200, 210, 52, 80, 209, 230, 194, 164, 130, 45, 161, 138, 240, 234, 160, 98, 255, 201, 166, 157, 183, 195, 52, 123, 39, 244, 69, 172, 43, 58, 203, 1, 128]} : Maybe<&2, +List<U32>>}:

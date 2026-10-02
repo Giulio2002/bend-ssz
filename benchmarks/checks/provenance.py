@@ -120,7 +120,7 @@ def executables(bend, base):
         d, stem = (ROOT / pre).parent, (ROOT / pre).name
         for q in sorted(d.glob(stem + '*')):
             n = q.name[len(stem):]
-            entry = ROOT / (src + n + '.bend')
+            entry = ROOT / (src + n + ('_generated' if src.startswith('benchmarks/objprog/') else '') + '.bend')
             if not entry.exists() or not q.exists():
                 continue
             target = q.resolve().name if q.is_symlink() else None

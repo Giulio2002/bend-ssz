@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c672() -> {BitDec.bitvector_deserialize(513n, [123, 84, 223, 36, 207, 194, 215, 79, 140, 10, 143, 181, 105, 95, 44, 136, 102, 241, 238, 140, 64, 90, 107, 159, 219, 17, 139, 43, 111, 19, 18, 24, 17, 48, 250, 78, 145, 96, 92, 110, 181, 146, 44, 210, 64, 8, 185, 124, 125, 2, 199, 183, 236, 140, 179, 57, 179, 98, 66, 197, 176, 33, 79, 235]) == None{} : Maybe<&2, +List<Bool>>}:

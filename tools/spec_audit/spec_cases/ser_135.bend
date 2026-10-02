@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c753() -> {Codec.encoding_for_legal_type(G.vec_uint128_4(), T.Sequence{T.Items{T.UnsignedValue{P.UInt{1, 0, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{1, 0, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{2928820527, 1242007276, 3433957597, 2829999117, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{926067994, 510894831, 1894952435, 3301359030, 0, 0, 0, 0}}, T.EmptyItems{}}}}}}) == Some{[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 47, 65, 146, 174, 236, 134, 7, 74, 221, 8, 174, 204, 13, 92, 174, 168, 26, 173, 50, 55, 239, 162, 115, 30, 243, 173, 242, 112, 182, 189, 198, 196]} : Maybe<&2, +List<U32>>}:

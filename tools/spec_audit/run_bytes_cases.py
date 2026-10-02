@@ -42,7 +42,7 @@ def build(repo, work, groups, patch):
     shutil.rmtree(d, ignore_errors=True)
     files = set()
     for p, k in groups:
-        files |= closure(repo, 'benchmarks/objprog/%s%d.bend' % (p, k))
+        files |= closure(repo, 'benchmarks/objprog/%s%d_generated.bend' % (p, k))
     for f in files:
         os.makedirs(os.path.dirname(os.path.join(d, f)), exist_ok=True)
         os.link(os.path.join(repo, f), os.path.join(d, f))
@@ -59,7 +59,7 @@ def build(repo, work, groups, patch):
     os.makedirs(os.path.join(d, 'build'), exist_ok=True)
     env = dict(os.environ, BEND_NO_TELEMETRY='1', BUN_JSC_forceRAMSize='3000000000')
     for p, k in groups:
-        r = subprocess.run(['nice', '-n', '19', BEND, 'benchmarks/objprog/%s%d.bend' % (p, k), '-o', os.path.join(d, 'build', 'obj-%s%d' % (p, k))],
+        r = subprocess.run(['nice', '-n', '19', BEND, 'benchmarks/objprog/%s%d_generated.bend' % (p, k), '-o', os.path.join(d, 'build', 'obj-%s%d' % (p, k))],
                            cwd=d, env=env, capture_output=True, text=True)
         if r.returncode:
             raise RuntimeError('compile failed %s%d: %s' % (p, k, (r.stdout + r.stderr)[-400:]))

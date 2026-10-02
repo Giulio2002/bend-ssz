@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # a git checkout of bend-collections (published-snapshots/bend-collections); BEND_COLLECTIONS_SNAPSHOT names it
 SNAPSHOT = Path(os.environ.get('BEND_COLLECTIONS_SNAPSHOT', '/Users/monkeair/work/published-snapshots/bend-collections'))
 SNAPSHOT_COMMIT = 'c18a4bf9d34550baa426fff208fc0d29973b9637'  # files are read at this commit (git show)
-OUT = ROOT / 'proofs/compact/found.bend'
+OUT = ROOT / 'proofs/compact/found_generated.bend'
 
 # Roots: every definition of these modules, plus the listed single names.
 ROOT_MODULES = [

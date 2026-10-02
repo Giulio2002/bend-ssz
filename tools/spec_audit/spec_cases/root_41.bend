@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c82() -> {ByteRoot.at_depth(33n, 1n, [2, 15, 28, 41, 54, 67, 80, 93, 106, 119, 132, 145, 158, 171, 184, 197, 210, 223, 236, 249, 6, 19, 32, 45, 58, 71, 84, 97, 110, 123, 136, 149, 162]) == Some{[175, 214, 187, 196, 201, 202, 197, 191, 8, 19, 166, 114, 10, 156, 33, 140, 241, 1, 88, 124, 240, 254, 24, 193, 82, 178, 216, 51, 151, 178, 131, 187]} : Maybe<&2, +List<U32>>}:

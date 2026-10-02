@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c990() -> {Codec.encoding_for_legal_type(G.vec_uint64_5(), T.Sequence{T.Items{T.UnsignedValue{P.UInt{1459059331, 1845464648, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{4131726097, 217155816, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{0, 0, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{4102173847, 2415018227, 0, 0, 0, 0, 0, 0}}, T.Items{T.UnsignedValue{P.UInt{4294967295, 4294967295, 0, 0, 0, 0, 0, 0}}, T.EmptyItems{}}}}}}}) == Some{[131, 122, 247, 86, 72, 142, 255, 109, 17, 35, 69, 246, 232, 136, 241, 12, 0, 0, 0, 0, 0, 0, 0, 0, 151, 52, 130, 244, 243, 64, 242, 143, 255, 255, 255, 255, 255, 255, 255, 255]} : Maybe<&2, +List<U32>>}:

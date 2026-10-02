@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c389() -> {BitDec.bitlist_deserialize(17n, [36, 3]) == Some{[False{}, False{}, True{}, False{}, False{}, True{}, False{}, False{}, True{}]} : Maybe<&2, +List<Bool>>}:

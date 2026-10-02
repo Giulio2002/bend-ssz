@@ -22,7 +22,7 @@ never evaluated either. What remains to establish about the input `bs0`:
 
 ## 2. What the window check really reads (the finding that sizes the work)
 
-`CHKw` (`proofs/obj/var_winx_BeaconState.bend`, `K0 .. K25`) is a conjunction over the 26 variable-size fields:
+`CHKw` (`proofs/obj/var_winx_BeaconState_generated.bend`, `K0 .. K25`) is a conjunction over the 26 variable-size fields:
 
 * `IT0`: the input holds the fixed part (`2737225 <= len`); `IT1`: the first offset word is 2737225;
 * `IT2 .. IT25`: consecutive offset words are ordered and inside the window;

@@ -88,7 +88,7 @@ def of_result(r: Maybe<&1, Array<U32>>) -> Digest:
 # literal at every node, so that laws about whole roots can keep it abstract:
 # with a symbolic length the package's SHA-256 does not unfold in a proof,
 # while every root law is instantiated at 64 exactly where the public
-# `*_hash_tree_root` entry points pass it (proofs/obj/sha_node.bend).
+# `*_hash_tree_root` entry points pass it (proofs/obj/sha_node_generated.bend).
 def node(+hl: Nat, l: Digest, r: Digest) -> Digest:
   of_result(PKG.sha256(pair_words(l, r), hl))
 
@@ -99,7 +99,7 @@ def zero() -> Digest: D{0, 0, 0, 0, 0, 0, 0, 0}
 # The zero-subtree roots Z(0) .. Z(63) of SSZ merkleization: Z(0) is the zero
 # chunk and Z(k + 1) = SHA-256(Z(k) ++ Z(k)), as big-endian words. They are
 # constants of SHA-256, like fastssz's zero-hash table, and are checked against
-# the specification's zero_subtree by proofs/obj/zero_roots.bend (one concrete
+# the specification's zero_subtree by proofs/obj/zero_roots_generated.bend (one concrete
 # FIPS evaluation per level); a depth of 64 or more is never reached (the
 # deepest Fulu limit is 2^40 elements, and no U32 chunk count needs more).
 def zconst(+k: Nat) -> Digest:

@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c0() -> {Codec.encoding_for_legal_type(T.Union{T.Chain{T.Null{}, T.Chain{T.Unsigned{P.U64{}}, T.Chain{T.Unsigned{P.U32Width{}}, T.End{}}}}}, T.Selected{0, T.NullValue{}}) == Some{[0]} : Maybe<&2, +List<U32>>}:

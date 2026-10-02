@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c191() -> {Codec.encoding_for_legal_type(F.PowBlock(), T.Sequence{T.Items{T.BytesValue{[185, 230, 99, 89, 224, 136, 120, 60, 44, 207, 181, 109, 238, 17, 188, 177, 212, 93, 227, 68, 196, 70, 215, 131, 250, 56, 44, 116, 74, 223, 245, 4]}, T.Items{T.BytesValue{[88, 68, 143, 178, 172, 227, 196, 240, 159, 24, 242, 144, 238, 60, 237, 187, 3, 157, 8, 48, 85, 109, 114, 229, 134, 132, 69, 95, 131, 71, 118, 199]}, T.Items{T.UnsignedValue{P.UInt{0, 0, 0, 0, 8388608, 0, 0, 0}}, T.EmptyItems{}}}}}) == Some{[185, 230, 99, 89, 224, 136, 120, 60, 44, 207, 181, 109, 238, 17, 188, 177, 212, 93, 227, 68, 196, 70, 215, 131, 250, 56, 44, 116, 74, 223, 245, 4, 88, 68, 143, 178, 172, 227, 196, 240, 159, 24, 242, 144, 238, 60, 237, 187, 3, 157, 8, 48, 85, 109, 114, 229, 134, 132, 69, 95, 131, 71, 118, 199, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} : Maybe<&2, +List<U32>>}:

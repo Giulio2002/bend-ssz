@@ -8,7 +8,7 @@ Reference: github.com/ethereum/consensus-specs at the tag pinned in upstream.loc
 specs/{phase0..fulu}/**/*.md (container classes, custom-type and constant tables), presets/mainnet/*.yaml,
 configs/mainnet.yaml, tests/generators/runners/ssz_generic_cases/*.py (generic types).
 Bend side: spec/*.bend, spec/fulu_schemas.bend, schemas/fulu_mainnet.json, codegen/fulu.yaml, types/byte_alias.bend,
-types/list_alias.bend, proofs/obj/generic_specs.bend, the generated types/*_generated.bend file names.
+types/list_alias.bend, proofs/obj/generic_specs_generated.bend, the generated types/*_generated.bend file names.
 
 Writes DIR/constants_report.md (tables: item, Bend value (file:line), reference value (file:line), status) and
 DIR/constants_report.json, and exits 1 if any row is a mismatch or a rule probe finds no Bend pattern.
@@ -279,7 +279,7 @@ def strip_f(nf):
 
 
 def audit_generic(ref_g, repo):
-    path = 'proofs/obj/generic_specs.bend'
+    path = 'proofs/obj/generic_specs_generated.bend'
     defs = read_defs(os.path.join(repo, path))
     be = Bend(defs)
     shared = {'boolean', 'uint8', 'uint32', 'uint64', 'uint256'}

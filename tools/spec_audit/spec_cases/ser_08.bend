@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c34() -> {Codec.encoding_for_legal_type(F.Bytes20(), T.BytesValue{[88, 70, 238, 138, 61, 126, 219, 180, 93, 237, 190, 31, 254, 236, 213, 46, 189, 0, 99, 198]}) == Some{[88, 70, 238, 138, 61, 126, 219, 180, 93, 237, 190, 31, 254, 236, 213, 46, 189, 0, 99, 198]} : Maybe<&2, +List<U32>>}:

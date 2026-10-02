@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c64() -> {BitRoot.bitvector_at_depth(7n, 0n, [False{}, True{}, False{}, False{}, True{}, False{}, False{}, False{}]) == None{} : Maybe<&2, +List<U32>>}:

@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c212() -> {Codec.encoding_for_legal_type(G.ProgressiveSingleListContainerTestStruct(), T.Sequence{T.Items{T.BitsValue{[False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}]}, T.EmptyItems{}}}) == Some{[4, 0, 0, 0, 0, 0, 16]} : Maybe<&2, +List<U32>>}:

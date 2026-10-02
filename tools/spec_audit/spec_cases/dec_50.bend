@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c799() -> {Bytes.vector_decoding(16n, [118, 127, 2, 175, 213, 255, 11, 109, 124, 240, 42, 234, 63, 196, 139, 99]) == Some{[118, 127, 2, 175, 213, 255, 11, 109, 124, 240, 42, 234, 63, 196, 139, 99]} : Maybe<&2, +List<U32>>}:

@@ -192,7 +192,7 @@ def build(log):
     (OUT / 'source-before-build.json').write_text(json.dumps(sources, indent=2) + '\n')
     log('building native Bend benchmark executables (typed object API)')
     for k in sorted({g['group'] for g in GROUPS.values()}):
-        source = f'benchmarks/objprog/g{k}.bend'
+        source = f'benchmarks/objprog/g{k}_generated.bend'
         capped_compile(source, OUT / f'bend-obj-g{k}', log)
         capped_compile(source, OUT / f'bend-obj-g{k}.c', log)
     log('building native Go reference executable')

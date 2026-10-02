@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c572() -> {Codec.encoding_for_legal_type(G.bitvector_9(), T.BitsValue{[False{}, True{}, True{}, True{}, True{}, True{}, True{}, True{}, True{}]}) == Some{[254, 1]} : Maybe<&2, +List<U32>>}:

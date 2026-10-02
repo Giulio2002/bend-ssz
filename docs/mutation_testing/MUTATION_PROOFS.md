@@ -256,4 +256,4 @@ Fixers: `codegen/proofs/slop/container_field_validity.py`, `packed_boolean_valid
 | f03/06 (`bv64_ok` accepts len >= 8) | none: `bv64_ok` is referenced only by its own definition and `types/runtime_index.json`; `Fulu_bitvector_64` is not an API name and the Attestation decoder reads committee_bits by `bv64_read(.., 8)` | none | dead code, equivalent |
 
 Limitation: the bit-list names without a `_serialize` entry (bitlist_256, 257, 1280, 1281, the Fulu bit lists, bitvector_1281) have no table law on their own facades.
-The audit's own killer of bv03/02 is `proofs/obj/bitz.bend` `bz_5`, which no facade imports; the table laws on the 19 bit-list facades with a `_serialize` entry are the facade-level pin.
+The audit's own killer of bv03/02 is `proofs/obj/bitz_generated.bend` `bz_5`, which no facade imports; the table laws on the 19 bit-list facades with a `_serialize` entry are the facade-level pin.

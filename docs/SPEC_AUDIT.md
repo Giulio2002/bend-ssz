@@ -17,7 +17,7 @@ reference (it is generated from the same markdown and is itself one of the thing
 |---|---|
 | Real transcription errors (Bend differs from the reference) | **none found** |
 | Constants, sizes, limits, field names and active-field bits compared mechanically | 6,841 items (172 scalar constants, 3,413 numeric attributes, 3,180 field names/orders, 76 protocol-rule probes); **0 mismatches** |
-| Names compared | 109 Fulu names (3 sources each: `schemas/fulu_mainnet.json`, `spec/fulu_schemas.bend`, `codegen/fulu.yaml`) and 131 generic names (`proofs/obj/generic_specs.bend`) against the reference markdown/python |
+| Names compared | 109 Fulu names (3 sources each: `schemas/fulu_mainnet.json`, `spec/fulu_schemas.bend`, `codegen/fulu.yaml`) and 131 generic names (`proofs/obj/generic_specs_generated.bend`) against the reference markdown/python |
 | Semantic rules read and audited | 60 rules in the tables of section 4.1 to 4.8, plus the root-domain paragraph 4.9 |
 | Differential cases (reference port -> compiled Bend object programs) | 48,279 cases over all 240 names, 37,138 accepted and 11,141 rejected by the reference: **0 disagreements** (verdict, re-encoding and `hash_tree_root` all equal) |
 | The oracle itself (`ssz_ref.py`) against the official vectors of the pinned release | 5,432 of 5,432 (3,003 valid: decode, re-encode, root; 2,429 invalid: reject): the 5,137 `ssz_generic` cases that have a type plus the 295 `mainnet/fulu/ssz_static` cases (`official_vectors.py`) |
@@ -40,7 +40,7 @@ above about 10^6 elements.
   progressive types, unions). A third source, remerkleable at commit 667eab00 (the one `pyproject.toml` of the tag pins), is
   run on the same cases by `rk_oracle.py` under Python 3.12 (it does not import on 3.14).
 * **Bend side.** Text only for the constants audit: `spec/*.bend`, `spec/fulu_schemas.bend`, `schemas/fulu_mainnet.json`,
-  `codegen/fulu.yaml`, `types/byte_alias.bend`, `types/list_alias.bend`, `proofs/obj/generic_specs.bend`, and the generated
+  `codegen/fulu.yaml`, `types/byte_alias.bend`, `types/list_alias.bend`, `proofs/obj/generic_specs_generated.bend`, and the generated
   `types/*_def_generated.bend` names. Executed: the native object programs built by the repository's own pipeline
   (`benchmarks/quick.py`, Bend 2.0.34 runtime) and the pinned checker (`tools/check.sh`) on small computation proofs.
 * **Why runtime agreement is evidence about the specification.** `END_TO_END.bend` and the `e2e/` bridges prove the object API
@@ -61,7 +61,7 @@ Run: `python3 tools/spec_audit/constants.py --repo . --cs <consensus-specs at v1
 | A3 | constants the reference types depend on that the yaml does not list | 0 | none missing |
 | B | every name: field names and order, types, lengths, limits, nesting, in `schemas/fulu_mainnet.json`, `spec/fulu_schemas.bend` and `codegen/fulu.yaml` vs the markdown class | 109 | all match (3 sources each); no `(Container)` class of the forks up to Fulu is missing from the Bend side, and no Bend name is missing from the reference |
 | C | `types/byte_alias.bend` sizes (24 aliases) and `list_alias.bend` (Transaction = 2^30) | 25 | all match |
-| D | the 131 generic names (`proofs/obj/generic_specs.bend`) vs `ssz_generic_cases` (container, progressive-container, compatible-union classes, and the size families of vectors, bit vectors, bit lists, progressive lists) | 140 (131 match, 9 reference-only) | all match; `ModifiedTestStruct1..9` exist only in the reference (invalid-case helpers that map to the same schemas, no generated type) |
+| D | the 131 generic names (`proofs/obj/generic_specs_generated.bend`) vs `ssz_generic_cases` (container, progressive-container, compatible-union classes, and the size families of vectors, bit vectors, bit lists, progressive lists) | 140 (131 match, 9 reference-only) | all match; `ModifiedTestStruct1..9` exist only in the reference (invalid-case helpers that map to the same schemas, no generated type) |
 | E | protocol constants inside `spec/*.bend`: BYTES_PER_LENGTH_OFFSET (4), BYTES_PER_CHUNK (32), BITS_PER_BYTE (8), uint widths, bit weights, chunk-count formulas, delimiter room (7), union selector bounds (127/128, 1..127, at least 2 options after None), 256 active fields, progressive growth (x4, first leaf 1), 2^32 total size (four-fold /256) and the byte/limb radices | 87 (76 probes) | all match |
 | F | limits in the names of the generated `types/*_generated.bend` files vs limits occurring in the reference types | informational | the `vec_uint8_N` files are the generic byte-vector schemas; the reference-only entries (`bitvector_4/64/128/512`, `bitlist_2048/131072`, `vec_uint64_64/8192`) are Fulu limits for which the object runtime uses a different generated shape (their roots and encodings are exercised by the differential run) |
 | G | every numeric literal in `spec/*.bend` other than 0, 1, 2 (the arity annotation `&2` and base cases) that no probe in table E claims | 0 | complete: no unexplained numeric constant remains in the specification files |

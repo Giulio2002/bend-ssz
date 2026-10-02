@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c106() -> {Limits.at_depth(5n, 3n, [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]) == Some{[24, 22, 194, 71, 205, 34, 88, 34, 252, 151, 148, 69, 77, 235, 185, 240, 213, 87, 192, 202, 18, 7, 177, 49, 159, 223, 112, 253, 35, 18, 193, 52]} : Maybe<&2, +List<U32>>}:

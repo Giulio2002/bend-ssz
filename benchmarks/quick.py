@@ -85,7 +85,7 @@ def import_cone(entry):
 
 
 def group_key(b, k, prefix='g', entry=None):
-    entry = entry or ROOT / f'benchmarks/objprog/{prefix}{k}.bend'
+    entry = entry or ROOT / f'benchmarks/objprog/{prefix}{k}_generated.bend'
     h = hashlib.sha256()
     h.update(Path(b.BEND).read_bytes())
     # Base is part of every program's cone; a toolchain change replaces it too
@@ -191,7 +191,7 @@ def main():
                 if not exe.exists():
                     started = time.monotonic()
                     tmp = CACHE / f'{prefix}{k}-{key}.tmp'
-                    b.capped_compile(f'benchmarks/objprog/{prefix}{k}.bend', tmp, print)
+                    b.capped_compile(f'benchmarks/objprog/{prefix}{k}_generated.bend', tmp, print)
                     tmp.rename(exe)
                     print(f'{prefix}{k}: compiled in {time.monotonic() - started:.1f} s')
                 link = ROOT / 'build' / link_name.format(prefix=prefix, k=k)
@@ -212,7 +212,7 @@ def main():
             if not exe.exists():
                 started = time.monotonic()
                 tmp = CACHE / f'g{k}-{key}.tmp'
-                b.capped_compile(f'benchmarks/objprog/g{k}.bend', tmp, print)
+                b.capped_compile(f'benchmarks/objprog/g{k}_generated.bend', tmp, print)
                 tmp.rename(exe)
                 report['compiles'].append({'group': k, 'key': key, 'seconds': round(time.monotonic() - started, 1)})
             else:

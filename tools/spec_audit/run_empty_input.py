@@ -72,7 +72,7 @@ def main():
     groups = sorted({(p, k) for _, p, k, _, _ in names})
     mod = {}
     for p, k in groups:
-        src = open(os.path.join(repo, 'benchmarks/objprog/%s%d.bend' % (p, k))).read()
+        src = open(os.path.join(repo, 'benchmarks/objprog/%s%d_generated.bend' % (p, k))).read()
         mod[(p, k)] = re.search(r'^import \.\./\.\./types/(\w+)\.bend as G$', src, re.M).group(1)
     files = set()
     for p, k in groups:

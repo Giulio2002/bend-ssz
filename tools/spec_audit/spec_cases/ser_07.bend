@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c24() -> {Codec.encoding_for_legal_type(F.BlobIdentifier(), T.Sequence{T.Items{T.BytesValue{[237, 53, 115, 185, 25, 42, 53, 217, 216, 167, 158, 103, 58, 0, 103, 250, 13, 116, 59, 122, 182, 106, 25, 9, 92, 120, 84, 108, 140, 129, 5, 41]}, T.Items{T.UnsignedValue{P.UInt{0, 0, 0, 0, 0, 0, 0, 0}}, T.EmptyItems{}}}}) == Some{[237, 53, 115, 185, 25, 42, 53, 217, 216, 167, 158, 103, 58, 0, 103, 250, 13, 116, 59, 122, 182, 106, 25, 9, 92, 120, 84, 108, 140, 129, 5, 41, 0, 0, 0, 0, 0, 0, 0, 0]} : Maybe<&2, +List<U32>>}:

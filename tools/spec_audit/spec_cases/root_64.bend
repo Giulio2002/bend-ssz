@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c128() -> {Mix.mix_in_selector([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], 1) == Some{[233, 135, 180, 43, 213, 1, 35, 254, 119, 100, 235, 174, 79, 65, 85, 190, 235, 217, 155, 158, 222, 38, 19, 166, 50, 72, 74, 160, 144, 226, 112, 223]} : Maybe<&2, +List<U32>>}:

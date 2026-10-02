@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate proofs/compact/bits.bend: bit-level facts about the byte readers
+"""Generate proofs/compact/bits_generated.bend: bit-level facts about the byte readers
 of src/buffer.bend (`byte_sel`, `join_sel`).
 
 Base's U32 operations are defined bit by bit (Word.and / Word.or / shifts), and
@@ -16,7 +16,7 @@ to cite; Bend re-checks every statement, so a wrong simulation fails the check.
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'proofs/compact/bits.bend'
+OUT = ROOT / 'proofs/compact/bits_generated.bend'
 F, T = 'False{}', 'True{}'
 
 

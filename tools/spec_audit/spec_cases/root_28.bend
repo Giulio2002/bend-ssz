@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c56() -> {BitRoot.bitlist_at_depth(513n, 2n, []) == Some{[40, 186, 24, 52, 163, 167, 182, 87, 70, 12, 231, 159, 163, 161, 217, 9, 171, 136, 40, 253, 85, 118, 89, 212, 208, 85, 74, 155, 219, 192, 236, 48]} : Maybe<&2, +List<U32>>}:

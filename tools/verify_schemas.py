@@ -23,7 +23,7 @@ Four comparisons, each with its own reader (none of them imports a generator):
      generic descriptions (tools/test_schemas.py, read from the suite's README); the schemas of
      the supported forms (all but the zero-length vectors and bit vectors, which are not SSZ
      types), minus the five basic types the Fulu set already has, must be exactly the schemas of
-     proofs/obj/generic_specs.bend (parsed as in 2, with ProgressiveList, ProgressiveBits,
+     proofs/obj/generic_specs_generated.bend (parsed as in 2, with ProgressiveList, ProgressiveBits,
      ProgressiveContainer and CompatibleUnion; the classes' field names A, B, .. are written
      f_A, f_B, .. there, which is undone), and every one of those must have a case.
 
@@ -340,11 +340,11 @@ def main():
     shared = {key(frozen[n]) for n in ('boolean', 'uint8', 'uint32', 'uint64', 'uint256')}
     supported = set(want) - zero
     # the generic classes' field names (A, B, ...) are written f_A, f_B, ... in Bend (codegen/core/generic_form_schemas.py)
-    gspecs = read_bend_schemas(ROOT / 'proofs/obj/generic_specs.bend', field_prefix='f_')
+    gspecs = read_bend_schemas(ROOT / 'proofs/obj/generic_specs_generated.bend', field_prefix='f_')
     have = {}
     for n, s in gspecs.items():
         if key(s) in have:
-            bad.append('proofs/obj/generic_specs.bend: %s and %s are the same schema' % (have[key(s)], n))
+            bad.append('proofs/obj/generic_specs_generated.bend: %s and %s are the same schema' % (have[key(s)], n))
         have[key(s)] = n
     only_cases = supported - shared - set(have)
     only_bend = set(have) - supported
@@ -358,7 +358,7 @@ def main():
         sys.exit(1)
     print('verify_schemas: fulu_mainnet.py = schemas/fulu_mainnet.json = spec/fulu_schemas.bend (%d names); '
           '%d cases with their fixtures; %d generic cases -> %d schemas (%d zero-length, not SSZ types), '
-          '%d = %d in proofs/obj/generic_specs.bend + %d basic types shared with the Fulu set'
+          '%d = %d in proofs/obj/generic_specs_generated.bend + %d basic types shared with the Fulu set'
           % (len(frozen), len(cases), len(generic), len(want), len(zero), len(supported), len(have),
              len(supported & shared)))
 

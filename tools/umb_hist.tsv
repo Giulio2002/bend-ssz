@@ -1,15 +1,15 @@
 # measured wall seconds per umbrella (first root, seconds), from a 78-umbrella full check at load 17-24 (tools/umbrellas.py --hist)
 benchmarks/compact/ocache.bend	5
 benchmarks/compact/omut.bend	59
-benchmarks/objprog/f11.bend	107
-benchmarks/objprog/f19.bend	188
-benchmarks/objprog/g2.bend	136
-benchmarks/objprog/g7.bend	108
-benchmarks/objprog/x0.bend	111
-benchmarks/objprog/x10.bend	102
-benchmarks/objprog/x11.bend	6
-benchmarks/objprog/x14.bend	126
-benchmarks/objprog/x15.bend	98
+benchmarks/objprog/f11_generated.bend	107
+benchmarks/objprog/f19_generated.bend	188
+benchmarks/objprog/g2_generated.bend	136
+benchmarks/objprog/g7_generated.bend	108
+benchmarks/objprog/x0_generated.bend	111
+benchmarks/objprog/x10_generated.bend	102
+benchmarks/objprog/x11_generated.bend	6
+benchmarks/objprog/x14_generated.bend	126
+benchmarks/objprog/x15_generated.bend	98
 e2e/b131072_api_witness_generated.bend	5
 e2e/b256_api_witness_generated.bend	9
 e2e/bitlist_15_e2e_decode_witness_generated.bend	97
@@ -75,5 +75,5 @@ proofs/gate/slop/offsets/proglist_uint16_generated.bend	123
 proofs/gate/slop/size/Root_generated.bend	41
 proofs/gate/slop/validity/fulu_ValidatorIndex_generated.bend	61
 proofs/obj/cache.bend	45
-proofs/obj/coll_bits.bend	20
-proofs/obj/coll_bytes.bend	3
+proofs/obj/coll_bits_generated.bend	20
+proofs/obj/coll_bytes_generated.bend	3

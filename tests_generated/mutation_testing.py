@@ -728,7 +728,7 @@ def main():
                       | {('f', e['program']) for e in fuzz_ops.values()})
     cone = {}
     for kind, k in programs:
-        entry = S / f'benchmarks/objprog/{kind if kind != "g" else "g"}{k}.bend'
+        entry = S / f'benchmarks/objprog/{kind if kind != "g" else "g"}{k}_generated.bend'
         cone[(kind, k)] = {c for c in import_cone(entry)}
     # baseline: the unmutated tree must pass what a mutant is required to fail (a missing module or a stale program
     # would otherwise "kill" every mutant)

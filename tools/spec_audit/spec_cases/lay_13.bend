@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c124() -> {Lay.decoding([Some{1n}, None{}, None{}, None{}, None{}, None{}, None{}, None{}], [0, 29, 0, 0, 0, 35, 0, 0, 0, 36, 0, 0, 0, 60, 0, 0, 0, 68, 0, 0, 0, 68, 0, 0, 0, 70, 0, 0, 0, 255, 255, 152, 78, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 15, 208, 246, 135, 81, 201, 175, 25, 0, 0, 197, 171, 43, 190, 1, 0, 255, 255, 4, 0, 0, 0, 255, 10, 0, 0, 0, 15, 0, 0, 0, 255, 255, 1, 0, 175, 85, 215, 91]) == Some{[[0], [255, 255, 152, 78, 0, 0], [1], [1, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 15, 208, 246, 135, 81, 201, 175, 25], [0, 0, 197, 171, 43, 190, 1, 0], [], [255, 255], [4, 0, 0, 0, 255, 10, 0, 0, 0, 15, 0, 0, 0, 255, 255, 1, 0, 175, 85, 215, 91]]} : Maybe<&2, +List<+List<U32>>>}:

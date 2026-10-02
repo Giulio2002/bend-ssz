@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c24() -> {ByteList.at_depth(65n, 2n, [1]) == Some{[118, 249, 67, 155, 38, 54, 121, 117, 187, 151, 161, 1, 14, 244, 48, 151, 137, 209, 129, 74, 246, 52, 2, 162, 115, 185, 219, 105, 45, 200, 159, 72]} : Maybe<&2, +List<U32>>}:

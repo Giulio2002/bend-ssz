@@ -1,5 +1,5 @@
 """Bend-side extraction for tools/spec_audit/constants.py: a reader for the constructor/arithmetic subset in
-spec/fulu_schemas.bend, proofs/obj/generic_specs.bend, types/byte_alias.bend, types/list_alias.bend; the JSON
+spec/fulu_schemas.bend, proofs/obj/generic_specs_generated.bend, types/byte_alias.bend, types/list_alias.bend; the JSON
 schema; the codegen YAML. Stdlib only. The Bend files are read as text, never executed."""
 import ast
 import json

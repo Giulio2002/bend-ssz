@@ -806,7 +806,7 @@ def mt_join(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<U32> & D.Digest)) -> B.
 # shrinks for both children, and the phase shrinks from 1 to its predecessor
 # 0 at the same depth. `hl` is the byte length of a node's message, 64 - a
 # parameter rather than a literal so that laws about roots can hold it
-# abstract (proofs/obj/sha_node.bend).
+# abstract (proofs/obj/sha_node_generated.bend).
 
 # The tree of one element: the chunks of the `ew`-word element at word `base`.
 def ctree(d: Nat, m: Nat, inside: Bool, +hl: Nat, +base: Nat, +ew: Nat, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):

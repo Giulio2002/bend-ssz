@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c609() -> {BitDec.bitvector_deserialize(32n, [233, 0, 250, 160]) == Some{[True{}, False{}, False{}, True{}, False{}, True{}, True{}, True{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}, True{}, False{}, True{}, True{}, True{}, True{}, True{}, False{}, False{}, False{}, False{}, False{}, True{}, False{}, True{}]} : Maybe<&2, +List<Bool>>}:

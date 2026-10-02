@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c48() -> {Lay.decoding([Some{32n}, None{}], [51, 213, 48, 240, 87, 45, 102, 122, 213, 98, 7, 7, 241, 21, 242, 130, 47, 150, 51, 71, 143, 166, 77, 103, 37, 161, 90, 156, 128, 190, 34, 24, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]) == None{} : Maybe<&2, +List<+List<U32>>>}:

@@ -12,7 +12,7 @@ lists: <!-- fig:manifest_open -->`uncovered` empty, `decode_uncovered` empty, `r
 ## 1. Object validity: `rep`, and what is not yet proved of decoded objects
 
 The encode (i) and root (iv) bridges are about objects satisfying the API's representation
-invariant `rep` (`rep_X` of `proofs/obj/root_types_light.bend`; `rep_v*` / `rep_bits` / `rep_pl*`
+invariant `rep` (`rep_X` of `proofs/obj/root_types_light_generated.bend`; `rep_v*` / `rep_bits` / `rep_pl*`
 for generic forms), and the encode bridges of some names also take storage premises (`hs*`,
 `hc`, `hd*`, `hsP`: a field's words tree at depth below 31). The decode bridges (ii)/(iii) fix
 the decoded object's view (its spec value), not its representation.
@@ -283,7 +283,7 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 - **`h31` in the composed theorems (FuluBeaconState).** `<Name>_e2e_decode_encode` and `_decode_root` of
   a name with `hZ` take the explicit hypothesis `h31: U32.to_nat(n) < 2^31` on the input length. It is `hZ`
   restated on the input: the decoded object re-encodes to exactly the input (that is the theorem), so
-  its encoding size is `n`, and `e2e/e2e_dbs.bend` (`szr`, `hz`) proves `hZ` from `n < 2^31` by the telescoping
+  its encoding size is `n`, and `e2e/e2e_dbs_generated.bend` (`szr`, `hz`) proves `hZ` from `n < 2^31` by the telescoping
   of the codec's offsets. The bound is the encode laws' own (section 2, the container encode limit); it is not the
   API's U32 byte length, which is `hS` (`n <= NMAX = 2^32 - 32`) and is also a hypothesis of the composed theorem.
   Non-vacuity: `<Name>_e2e_witness_size` (and `_nonempty`) in `e2e/<Name>_e2e_witness_generated.bend` states `hZ`
@@ -298,7 +298,7 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
   lists of FuluBeaconBlockBody, FuluBeaconBlock and FuluSignedBeaconBlock must encode within
   4 * 2^28 bytes for their own encode records. This is now proved from `rep`: at most 1 attester
   slashing of at most 8 + 2 * 2^21 bytes, and at most 8 attestations of at most 236 + 2^17 + 1
-  bytes each (`elz`, `wSZ` and `cap` in `e2e/e2e_bbsl.bend` and `e2e/e2e_bbatt.bend`). The former
+  bytes each (`elz`, `wSZ` and `cap` in `e2e/e2e_bbsl_generated.bend` and `e2e/e2e_bbatt_generated.bend`). The former
   premises `hzb4` / `hzb5` are gone from the three bridges. `hs4` / `hs5` remain as the same lists'
   storage premises.
 
@@ -351,7 +351,7 @@ premise is proved of that object in its own def (`premise_<binder>`, `premise_ro
 light-client branch types' bridges quantify over a perfect word tree `t` of depth `dw`: their witness is
 the zero tree of the least depth with room. So each of these premise sets is jointly satisfiable, and each
 bridge's conclusion holds of at least one object. The large zero arrays of FuluBeaconState (2^16 to 2^21
-bytes) go through lemmas that keep their sizes symbolic (`e2e/e2e_wit.bend`).
+bytes) go through lemmas that keep their sizes symbolic (`e2e/e2e_wit_generated.bend`).
 
 <!-- fig:witness_nonempty -->17<!-- /fig --> of these files (every name with a list reachable through
 containers and boxes) also apply the same bridges to a non-empty object, `NE()`: the default with one element
@@ -428,7 +428,7 @@ these names; `obl_buf` stays as a library lemma.
 object is the old view with that field's value replaced (`proofs/obj/value_set.bend`'s
 `field_set`); this law has no premise. Composed with the root bridge it gives the spec root of the
 changed value (<!-- fig:set_root_count -->315<!-- /fig --> statements): with no further premise where the root bridge
-takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters.bend`
+takes only the object, and under `rep` where it takes `rep`, through `proofs/obj/prep_setters_generated.bend`
 (a setter keeps `rep`, given the new value's own invariant for fields that have one). The same for
 the encoding (<!-- fig:set_encode_count -->208<!-- /fig --> statements) where the encode bridge takes only the object or
 `rep`, or storage premises (`hs*`, `hc*`, section 1) each about one projection of the object: the premises of the fields the setter
@@ -450,6 +450,6 @@ The spec-value laws (`..._api_view_set`) add to these only what relates the mach
 collections of Bytes32, Bytes48 and uint64, `hqe`, that the element's first word `q` is the block base of its index
 (`q == 8 * i`, `12 * i`, `2 * i`); for a uint64 collection, `hcap`, that the storage holds the words of its element count
 (`2 * count <= 2^d`, which the representation invariant gives), because the list view stops at the end of the word list. For the
-record lists they take the old element `x` at the index (`hx`, as the other-index law does) and the index below `2^d`. The byte collections' laws take what their read-back law takes (the word index `q` of the byte, `hq`, below `2^d`, `hk`, the value a byte, `hv`, the index below the length, `hg`); the spec index `to_nat(i)` is the word and offset the write used by `proofs/obj/u32split.bend` (no premise). They
+record lists they take the old element `x` at the index (`hx`, as the other-index law does) and the index below `2^d`. The byte collections' laws take what their read-back law takes (the word index `q` of the byte, `hq`, below `2^d`, `hk`, the value a byte, `hv`, the index below the length, `hg`); the spec index `to_nat(i)` is the word and offset the write used by `proofs/obj/u32split_generated.bend` (no premise). They
 do not assume the accepted set's index is below the length beyond the guard `hs`, and they state the view, not the guard, so
 they say nothing about the relation of the runtime's guard to the spec's length limit. The composed root laws (`..._api_root_set`) take the root law's own premises (`rep`, `ok`, `hdep`, and for vectors `edu`) and the set's: `hs` on the object's length, `hq`, `hqe`; for the Bytes32 vectors also `hlt`, that the index is below the chunk count (the runtime's guard counts with `U32.div`, the view with `chunks_of`); the room of the written words is derived from the representation invariant. The append laws (`..._api_view_append`) take the read-back law's premises for an append with room (`hroom`, `hq`, `hr`, or for the record lists `hr`, `hx`) and two more: `hqe`, that the appended element's first word is the block base of the old count, and `hcn`, that the new length counts one element more (no 32-bit wrap); for an append that reallocates, also `hcov`, that the words copied (`(n + 3) / 4` and the word after) cover the old elements' words; the byte lists' laws take `hp` and `hnb`, that the appended byte's offset is the old length and the new length is one more.

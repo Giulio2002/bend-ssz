@@ -110,7 +110,7 @@ Trusted (not proved here):
   digit i arithmetically (`(x / 2^i) mod 2`), the runtime by shift and mask.
   `frozen.lock.json` records the sha256 of every spec file (and the representations and
   normative sources it rests on), of the four roots' statement text (proof bodies excluded), of
-  `types/fulu_model.bend` and `proofs/obj/generic_specs.bend` (what END_TO_END's per-name laws
+  `types/fulu_model.bend` and `proofs/obj/generic_specs_generated.bend` (what END_TO_END's per-name laws
   and the generic bridges quantify over), and, per file, of every statement in
   `e2e/STATEMENTS.txt` and every definition it reaches, transitively, on the premise side and the
   conclusion side: the object views, `rep` invariants and their helpers in `proofs/` and `e2e/`,

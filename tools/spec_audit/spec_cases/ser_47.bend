@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c233() -> {Codec.encoding_for_legal_type(F.RowIndex(), T.UnsignedValue{P.UInt{2158935759, 2495908521, 0, 0, 0, 0, 0, 0}}) == Some{[207, 190, 174, 128, 169, 138, 196, 148]} : Maybe<&2, +List<U32>>}:

@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c18() -> {Codec.encoding_for_legal_type(G.BitsStruct(), T.Sequence{T.Items{T.BitsValue{[True{}, True{}, True{}, True{}]}, T.Items{T.BitsValue{[False{}, False{}]}, T.Items{T.BitsValue{[False{}]}, T.Items{T.BitsValue{[]}, T.Items{T.BitsValue{[False{}, False{}, False{}, False{}, False{}, False{}, False{}, False{}]}, T.EmptyItems{}}}}}}}) == Some{[11, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 31, 1]} : Maybe<&2, +List<U32>>}:

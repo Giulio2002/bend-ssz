@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c749() -> {Prim.uint_decoding(P.U256{}, [104, 249, 239, 155, 0, 227, 222, 34, 97, 126, 198, 253, 88, 70, 157, 127, 161, 155, 168, 237, 201, 192, 245, 149, 59, 33, 25, 248, 108, 245, 55, 93]) == Some{P.UInt{2616195432, 585032448, 4257644129, 2141013592, 3987250081, 2515910857, 4162396475, 1563948396}} : Maybe<&2, P.UInt>}:

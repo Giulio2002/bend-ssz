@@ -13,7 +13,7 @@ import ../../../spec/limits.bend as Limits
 import ../../../spec/progressive.bend as Prog
 import ../../../spec/mixing.bend as Mix
 import ../../../spec/packing.bend as Pack
-import ../../../proofs/obj/generic_specs.bend as G
+import ../../../proofs/obj/generic_specs_generated.bend as G
 import ../../../spec/fulu_schemas.bend as F
 
 def c169() -> {Codec.encoding_for_legal_type(F.KZGProof(), T.BytesValue{[83, 128, 77, 84, 116, 160, 50, 130, 16, 74, 101, 237, 219, 84, 255, 105, 246, 101, 250, 202, 45, 112, 235, 144, 150, 102, 226, 219, 152, 66, 212, 173, 119, 245, 21, 231, 194, 40, 238, 23, 127, 247, 59, 147, 90, 18, 165, 148]}) == Some{[83, 128, 77, 84, 116, 160, 50, 130, 16, 74, 101, 237, 219, 84, 255, 105, 246, 101, 250, 202, 45, 112, 235, 144, 150, 102, 226, 219, 152, 66, 212, 173, 119, 245, 21, 231, 194, 40, 238, 23, 127, 247, 59, 147, 90, 18, 165, 148]} : Maybe<&2, +List<U32>>}:
