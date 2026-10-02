@@ -21,7 +21,7 @@ _sys.path.insert(0, str(_pathlib.Path(__file__).resolve().parents[3]))  # the re
 import re
 from codegen.core.paths import ROOT  # noqa: E402
 from codegen.core.shared_laws import run_each  # noqa: E402
-from codegen.proofs.collections.encset_w import split_top, conjuncts  # noqa: E402
+from codegen.proofs.collections.encset_w import conjuncts  # noqa: E402
 
 OBJ = ROOT / 'proofs/obj'
 BASE = OBJ / 'encset_t_base.bend'
