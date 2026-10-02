@@ -1,5 +1,4 @@
 import Base
-import ./FuluBeaconState_e2e_generated.bend as W_e2e_FuluBeaconState_e2e_generated
 import ./e2e_blist.bend as BL
 import ./e2e_dbs.bend as W_e2e_e2e_dbs
 import ./e2e_dfx.bend as W_e2e_e2e_dfx
@@ -17,9 +16,7 @@ import ./e2e_u64l.bend as U
 import ./e2e_ulist.bend as UW
 import ../proofs/compact/arith.bend as A
 import ../proofs/compact/found.bend as FD
-import ../proofs/nat_order.bend as Order
 import ../proofs/obj/blist_obj_light.bend as BLI
-import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/packed_obj_light.bend as PK_L
 import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/root_state_light.bend as ST
@@ -29,52 +26,23 @@ import ../proofs/obj/ulist_obj_light.bend as UL
 import ../proofs/obj/vadd.bend as VA
 import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as CH7
 import ../proofs/obj/var_winx_BeaconState.bend as DC
-import ../proofs/obj/var_winx_l1099511627776_Validator.bend as CH2
 import ../proofs/obj/var_winx_l1099511627776_u64.bend as CH3
-import ../proofs/obj/var_winx_l1099511627776_u8.bend as CH4
-import ../proofs/obj/var_winx_l134217728_PendingDeposit.bend as CH9
-import ../proofs/obj/var_winx_l134217728_PendingPartialWithdrawal.bend as CH10
-import ../proofs/obj/var_winx_l16777216_HistoricalSummary.bend as CH8
 import ../proofs/obj/var_winx_l16777216_b32.bend as CH0
-import ../proofs/obj/var_winx_l2048_Eth1Data.bend as CH1
-import ../proofs/obj/var_winx_l262144_PendingConsolidation.bend as CH11
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vdepth.bend as VD
-import ../proofs/obj/vfx_BeaconBlockHeader.bend as FX_BeaconBlockHeader
-import ../proofs/obj/vfx_Checkpoint.bend as FX_Checkpoint
-import ../proofs/obj/vfx_Eth1Data.bend as FX_Eth1Data
-import ../proofs/obj/vfx_Fork.bend as FX_Fork
-import ../proofs/obj/vfx_SyncCommittee.bend as FX_SyncCommittee
-import ../proofs/obj/vfx_b32.bend as FX_b32
-import ../proofs/obj/vfx_bv4.bend as VFB4
-import ../proofs/obj/vfx_u64.bend as FX_u64
-import ../proofs/obj/vfx_v64_u64.bend as FX_v64_u64
-import ../proofs/obj/vfx_v65536_b32.bend as FX_v65536_b32
-import ../proofs/obj/vfx_v8192_b32.bend as FX_v8192_b32
-import ../proofs/obj/vfx_v8192_u64.bend as FX_v8192_u64
 import ../proofs/obj/vlist.bend as VLS
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vu40.bend as W_proofs_obj_vu40
-import ../proofs/obj/vua_ct.bend as UCT
-import ../proofs/obj/vua_fixb.bend as W_proofs_obj_vua_fixb
 import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/words_obj_light.bend as WO_L
 import ../proofs/obj/words_spec.bend as WS
 import ../spec/fulu_schemas.bend as Spec
 import ../src/obj.bend as O
-import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
 import ../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-import ../types/FuluBytes4_def_generated.bend as FuluBytes4_d
-import ../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
-import ../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
-import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
-import ../types/FuluFork_def_generated.bend as FuluFork_d
-import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
 import ../types/schema.bend as S
 import ../types/uint256_def_generated.bend as uint256_d
@@ -192,7 +160,3 @@ def p_hs36(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {
 def p_hs37(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd31: {Nat.is_lt(d, 31n) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHKw(t, x, off, n) == True{} : Bool})
     -> BL.sdk1(ST.pj_BeaconState_37(DC.OBJw(d, t, x, off, n)), 31n):
   W_e2e_e2e_dfx.fsdk1(d, t, Nat.add(x, U32.to_nat(2736713)), 31n, 4n, 9n, 8n, {==}, {==}, {==}, {==})
-
-def p_hZ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd31: {Nat.is_lt(d, 31n) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {DC.CHKw(t, x, off, n) == True{} : Bool})
-    -> {Nat.is_lt(W_e2e_FuluBeaconState_e2e_generated.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(DC.OBJw(d, t, x, off, n)))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(DC.OBJw(d, t, x, off, n))), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(DC.OBJw(d, t, x, off, n))), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(DC.OBJw(d, t, x, off, n)))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(DC.OBJw(d, t, x, off, n)))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(DC.OBJw(d, t, x, off, n)))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(DC.OBJw(d, t, x, off, n)))), W_e2e_FuluBeaconState_e2e_generated.LNEH(ST.pj_BeaconState_24(DC.OBJw(d, t, x, off, n))), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(DC.OBJw(d, t, x, off, n))), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(DC.OBJw(d, t, x, off, n))), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(DC.OBJw(d, t, x, off, n))), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(DC.OBJw(d, t, x, off, n)))), VB.pw(31n)) == True{} : Bool}:
-  W_e2e_e2e_dbs.hz(d, t, x, off, n, h31, hchk)
