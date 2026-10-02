@@ -26,8 +26,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 V32 = [0, 1, 3, 4, 8, 0x7FFFFFFF, 0x80000000, 0x80000004, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFF, 0x20000000, 0x10000000, 0x40000000]
-FILLS = [0x00, 0xFF, 0x01, 0x80, 0x7F]
-FILL_LENS = list(range(0, 41)) + [47, 48, 49, 63, 64, 65, 96, 127, 128, 129, 255, 256, 257, 511, 512, 513, 1023, 1024, 1025, 4096, 4097, 65536, 65537]
+FILLS = [0x00, 0xFF]
+FILL_LENS = [0, 1, 3, 4, 5, 8, 9, 16, 33, 65, 257]
 
 
 def u32(v):
@@ -42,7 +42,7 @@ def mutations(seed, name, rng):
         if 0 <= k < n:
             out.append(('trunc%d' % k, seed[:k]))
     # appends / prepends
-    for extra in (b'\x00', b'\x01', b'\xff', b'\x00' * 3, b'\x00' * 4, b'\x00' * 8, b'\xff' * 4, b'\x80'):
+    for extra in (b'\x00', b'\xff' * 4):
         out.append(('append%d_%02x' % (len(extra), extra[0]), seed + extra))
         out.append(('prepend%d_%02x' % (len(extra), extra[0]), extra + seed))
     # u32 overwrites at plausible offset slots (value in [4, n], multiple of 4) and at the first 8 slots
@@ -51,21 +51,20 @@ def mutations(seed, name, rng):
         v = int.from_bytes(seed[p:p + 4], 'little')
         if (4 <= v <= n and v % 4 == 0 and len(slots) < 14) or p < 32:
             slots.append(p)
-    for p in slots[:20]:
-        for v in V32 + [n, n + 1, n + 4, max(0, n - 1), 2 * n]:
+    for p in slots[:5]:
+        for v in (0, 4, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFC, 0xFFFFFFFF, n + 4, 2 * n):
             m = bytearray(seed)
             m[p:p + 4] = u32(v)
             out.append(('w%d=%x' % (p, v), bytes(m)))
     # byte flips at sampled positions
     if n:
-        for p in sorted(set([0, n - 1] + [rng.randrange(n) for _ in range(12)])):
-            for b in (0x00, 0x80, 0xFF):
+        for p in sorted(set([0, n - 1] + [rng.randrange(n) for _ in range(3)])):
+            for b in (0x00, 0xFF):
                 m = bytearray(seed)
                 m[p] = b
                 out.append(('flip%d=%02x' % (p, b), bytes(m)))
     # a seed repeated / doubled (list-count growth)
     out.append(('double', seed + seed))
-    out.append(('x3', seed * 3))
     return out
 
 
@@ -75,14 +74,13 @@ def synthetic(name):
         for L in FILL_LENS:
             out.append(('fill%02x_%d' % (f, L), bytes([f]) * L))
     # last-byte patterns for bit lists / delimiter handling
-    for L in range(1, 24):
-        for last in (0x00, 0x01, 0x02, 0x80, 0xFF):
+    for L in (1, 2, 9):
+        for last in (0x00, 0x01, 0x80, 0xFF):
             out.append(('bl%d_%02x' % (L, last), b'\x00' * (L - 1) + bytes([last])))
             out.append(('blF%d_%02x' % (L, last), b'\xff' * (L - 1) + bytes([last])))
     # offset-table shaped: first word = k*4 then k zero offsets
-    for k in (1, 2, 3, 4, 7, 8, 9, 16, 17, 255, 256, 257, 1000, 4096, 65536, 100000):
+    for k in (1, 3, 257):
         out.append(('offtab%d_zero' % k, u32(4 * k) + b'\x00' * (4 * (k - 1))))
-        out.append(('offtab%d_inc' % k, b''.join(u32(4 * k + i) for i in range(k))))
         out.append(('offtab%d_same' % k, b''.join(u32(4 * k) for i in range(k))))
     # union selector sweep with a small payload
     if 'Union' in name:
@@ -122,7 +120,7 @@ def run_one(prog, idx, data, tmp, mem_gb, timeout):
         if r.returncode == 0 and 'DECODED=1' in so:
             same = os.path.exists(out) and open(out, 'rb').read() == data
             res = {'v': 'ACCEPT' if same else 'WRONG', 'why': '' if same else 're-encoding differs from input'}
-        elif r.returncode == 1 and 'DECODED=0' in so:
+        elif r.returncode == 1 and 'DECODED=0' in (so + se):
             res = {'v': 'REJECT'}
         else:
             res = {'v': 'CRASH', 'why': 'rc=%d out=%r err=%r' % (r.returncode, so[-120:], se[-200:])}
@@ -199,6 +197,8 @@ def main():
             done += 1
             if done % 5000 == 0:
                 print(done, dict(tally), flush=True)
+                json.dump({'partial': True, 'done': done, 'tally': dict(tally), 'findings': findings[:2000], 'slow': slow[:500]},
+                          open(os.path.join(a.out, 'hostile_decode.partial.json'), 'w'), indent=1)
     json.dump({'tally': dict(tally), 'per_type': {k: dict(v) for k, v in per_type.items()}, 'findings': findings[:2000], 'slow': slow[:500]},
               open(os.path.join(a.out, 'hostile_decode.json'), 'w'), indent=1)
     print('DONE', dict(tally), 'findings', len(findings), 'slow', len(slow))

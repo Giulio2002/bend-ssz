@@ -61,12 +61,18 @@ def run(prog, idx, data, tmp, mem_gb, timeout):
 
 
 def main():
+    if os.environ.get('CH_HOSTILE_FIRST', '1') == '1' and '--no-hostile' not in sys.argv:
+        # job2 ran the first (misclassifying) version of the hostile decode run; run the fixed one before the scale cases
+        mg = sys.argv[sys.argv.index('--mem-gb') + 1] if '--mem-gb' in sys.argv else '1000'
+        out = sys.argv[sys.argv.index('--out') + 1]
+        subprocess.call([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hostile_decode.py'), '--repo', '.', '--out', out,
+                         '--jobs', '4', '--limit-seeds', '1', '--timeout', '30', '--mem-gb', mg], stdout=open(os.path.join(out, 'hostile2.log'), 'w'), stderr=subprocess.STDOUT)
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', default='.')
     ap.add_argument('--out', required=True)
     ap.add_argument('--mem-gb', type=float, default=12)
     ap.add_argument('--timeout', type=int, default=120)
-    a = ap.parse_args()
+    a, _ = ap.parse_known_args()
     repo = os.path.abspath(a.repo)
     groups = json.load(open(os.path.join(repo, 'types/obj_groups.json')))
     generic = json.load(open(os.path.join(repo, 'types/generic_obj_index.json')))['generated']
