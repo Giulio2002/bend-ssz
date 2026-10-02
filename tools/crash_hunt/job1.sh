@@ -1,6 +1,7 @@
 #!/bin/bash
 # Crash-hunt job 1, run on the server under the full-check lock. Everything bounded; nice 19; at most 4 programs at a time.
 cd /srv/ssz-optimization/agents/crashhunt/repo || exit 1
+ulimit -s 16384
 export BEND_NO_TELEMETRY=1
 BEND=${BEND:-/srv/ssz-optimization/toolchain-memo-788a6866/bin/bend}
 OUT=/srv/ssz-optimization/agents/crashhunt/out1
