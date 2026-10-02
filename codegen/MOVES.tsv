@@ -185,3 +185,4 @@ codegen/zero_run.py	codegen/proofs/witnesses/zero_run.py
 codegen/encset_w.py	codegen/proofs/collections/encset_w.py
 codegen/subword_tz.py	codegen/proofs/collections/subword_tz.py
 codegen/encset_b.py	codegen/proofs/collections/encset_b.py
+codegen/halfword.py	codegen/proofs/collections/halfword.py
