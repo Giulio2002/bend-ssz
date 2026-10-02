@@ -445,6 +445,9 @@ def lib_wide(S, a):
     for pat in LIB_GROUPS[a.lib]:
         files += sorted(pathlib.Path(g).resolve() for g in glob.glob(str(S / pat), recursive=True))
     files = sorted(set(files))
+    if a.lib_only:
+        want = {(S / w).resolve() for w in a.lib_only.split(',')}
+        files = [f for f in files if f in want]
     if a.lib_files:
         files = files[:a.lib_files]
     rev = lib_importers(S)
@@ -557,6 +560,7 @@ def main():
     ap.add_argument('--lib', default=None, choices=sorted(LIB_GROUPS), help='mutate the library code of this group (collections, e2e, sha256, spec) instead of the generated codec files')
     ap.add_argument('--lib-per-file', type=int, default=4)
     ap.add_argument('--lib-files', type=int, default=0, help='only the first N files of the group (a pilot)')
+    ap.add_argument('--lib-only', default=None, help='only these files of the group (comma-separated paths relative to the root)')
     ap.add_argument('--lib-timeout', type=int, default=120, help='a mutant check over this many seconds is `too slow`, not a kill')
     ap.add_argument('--replay', default=None, help='with --proof-wide: instead of drawing, re-check the survivors of this earlier report (by file, def, operator, before, after and line text) on the current tree')
     ap.add_argument('--restamp', default=None, help='recompute the provenance of this result file for the tree this script is in (after the programs of this tree are built); runs nothing')
