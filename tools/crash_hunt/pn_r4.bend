@@ -39,8 +39,8 @@ import ../../benchmarks/compact/objio.bend as IOx
 #  15   proglist_uint8 decode_checked / decode of an honest 4 GiB buffer whose size field is ARG
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
-def dirty() -> Array<U32>: Array.set(U32, data(), 1073741823, 2864434397)
 def data() -> Array<U32>: Array.set(U32, big(), 1073741821, 287454020)
+def dirty() -> Array<U32>: Array.set(U32, data(), 1073741823, 2864434397)
 def wbig(+d: Bool, +n: U32) -> O.Words:
   match d:
     case True{}: O.Words{dirty(), n}
