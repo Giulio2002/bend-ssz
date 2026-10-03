@@ -105,6 +105,9 @@ def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_ms_serde
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_ms_size() -> {Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_size(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default())) == 584 : U32}:
   P5_PRV.ExecutionPayloadHeader_ms_size()
 
+def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_ms_bxsize_ExecutionPayloadHeader() -> {Pair.snd(P5_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_size(P5_O.BNone{})) == 0 : U32}:
+  P5_PRV.ExecutionPayloadHeader_ms_bxsize_ExecutionPayloadHeader()
+
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_mc_bxpoison_ExecutionPayloadHeader(out: Array<U32>, pos: U32) -> {FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putk(out, pos, P6_O.BNone{}) == (out, (P6_O.BNone{}, P6_O.poison())) : Array<U32> & (P6_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32)}:
   P6_PRV.ExecutionPayloadHeader_mc_bxpoison_ExecutionPayloadHeader(out, pos)
 

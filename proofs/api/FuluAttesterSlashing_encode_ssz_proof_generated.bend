@@ -70,6 +70,9 @@ def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vreject_at
 def FuluAttesterSlashing__serialize_valid__AttesterSlashing_ms_size() -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, U32, FuluAttesterSlashing_e.AttesterSlashing_size(FuluAttesterSlashing_d.AttesterSlashing_default())) == 464 : U32}:
   P2_PRV.AttesterSlashing_ms_size()
 
+def FuluAttesterSlashing__serialize_valid__AttesterSlashing_ms_bxsize_AttesterSlashing() -> {Pair.snd(P2_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, FuluAttesterSlashing_e.AttesterSlashing_bx_size(P2_O.BNone{})) == 0 : U32}:
+  P2_PRV.AttesterSlashing_ms_bxsize_AttesterSlashing()
+
 def FuluAttesterSlashing__serialize_valid__AttesterSlashing_mc_bxpoison_AttesterSlashing(out: Array<U32>, pos: U32) -> {FuluAttesterSlashing_e.AttesterSlashing_bx_putk(out, pos, P3_O.BNone{}) == (out, (P3_O.BNone{}, P3_O.poison())) : Array<U32> & (P3_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32)}:
   P3_PRV.AttesterSlashing_mc_bxpoison_AttesterSlashing(out, pos)
 

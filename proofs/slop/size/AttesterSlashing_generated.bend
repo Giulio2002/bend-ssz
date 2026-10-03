@@ -10,3 +10,7 @@ import ../../../types/FuluAttesterSlashing_encode_ssz_generated.bend as FuluAtte
 def AttesterSlashing_ms_size()
     -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, U32, FuluAttesterSlashing_e.AttesterSlashing_size(FuluAttesterSlashing_d.AttesterSlashing_default())) == 464 : U32}:
   {==}
+
+def AttesterSlashing_ms_bxsize_AttesterSlashing()
+    -> {Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, FuluAttesterSlashing_e.AttesterSlashing_bx_size(O.BNone{})) == 0 : U32}:
+  {==}

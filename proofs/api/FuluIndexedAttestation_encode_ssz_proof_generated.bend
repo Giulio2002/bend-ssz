@@ -79,6 +79,9 @@ def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_ms_size() -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, U32, FuluIndexedAttestation_e.IndexedAttestation_size(FuluIndexedAttestation_d.IndexedAttestation_default())) == 228 : U32}:
   P3_PRV.IndexedAttestation_ms_size()
 
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_ms_bxsize_IndexedAttestation() -> {Pair.snd(P3_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, FuluIndexedAttestation_e.IndexedAttestation_bx_size(P3_O.BNone{})) == 0 : U32}:
+  P3_PRV.IndexedAttestation_ms_bxsize_IndexedAttestation()
+
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_mc_bxpoison_IndexedAttestation(out: Array<U32>, pos: U32) -> {FuluIndexedAttestation_e.IndexedAttestation_bx_putk(out, pos, P4_O.BNone{}) == (out, (P4_O.BNone{}, P4_O.poison())) : Array<U32> & (P4_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32)}:
   P4_PRV.IndexedAttestation_mc_bxpoison_IndexedAttestation(out, pos)
 

@@ -22,3 +22,7 @@ def Deposit_ms_encout(out: Array<U32>, o: FuluDeposit_d.Deposit)
 def Deposit_ms_size()
     -> {Pair.snd(FuluDeposit_d.Deposit, U32, FuluDeposit_e.Deposit_size(FuluDeposit_d.Deposit_default())) == 1240 : U32}:
   {==}
+
+def Deposit_ms_bxsize_Deposit()
+    -> {Pair.snd(O.Boxed<FuluDeposit_d.Deposit>, U32, FuluDeposit_e.Deposit_bx_size(O.BNone{})) == 0 : U32}:
+  {==}

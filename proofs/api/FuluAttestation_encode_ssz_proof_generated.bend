@@ -85,6 +85,9 @@ def FuluAttestation__serialize_valid__Attestation_serialize_vreject_aggregation_
 def FuluAttestation__serialize_valid__Attestation_ms_size() -> {Pair.snd(FuluAttestation_d.Attestation, U32, FuluAttestation_e.Attestation_size(FuluAttestation_d.Attestation_default())) == 237 : U32}:
   P3_PRV.Attestation_ms_size()
 
+def FuluAttestation__serialize_valid__Attestation_ms_bxsize_Attestation() -> {Pair.snd(P3_O.Boxed<FuluAttestation_d.Attestation>, U32, FuluAttestation_e.Attestation_bx_size(P3_O.BNone{})) == 0 : U32}:
+  P3_PRV.Attestation_ms_bxsize_Attestation()
+
 def FuluAttestation__serialize_valid__Attestation_mc_bxpoison_Attestation(out: Array<U32>, pos: U32) -> {FuluAttestation_e.Attestation_bx_putk(out, pos, P4_O.BNone{}) == (out, (P4_O.BNone{}, P4_O.poison())) : Array<U32> & (P4_O.Boxed<FuluAttestation_d.Attestation> & U32)}:
   P4_PRV.Attestation_mc_bxpoison_Attestation(out, pos)
 

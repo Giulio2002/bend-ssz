@@ -140,6 +140,9 @@ def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vunit_l4096_
 def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_ms_size() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, U32, FuluBeaconBlockBody_e.BeaconBlockBody_size(FuluBeaconBlockBody_d.BeaconBlockBody_default())) == 936 : U32}:
   P3_PRV.BeaconBlockBody_ms_size()
 
+def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_ms_bxsize_BeaconBlockBody() -> {Pair.snd(P3_O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_size(P3_O.BNone{})) == 0 : U32}:
+  P3_PRV.BeaconBlockBody_ms_bxsize_BeaconBlockBody()
+
 def FuluBeaconBlockBody__serialize_valid__BeaconBlockBody_mc_bxpoison_BeaconBlockBody(out: Array<U32>, pos: U32) -> {FuluBeaconBlockBody_e.BeaconBlockBody_bx_putk(out, pos, P4_O.BNone{}) == (out, (P4_O.BNone{}, P4_O.poison())) : Array<U32> & (P4_O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32)}:
   P4_PRV.BeaconBlockBody_mc_bxpoison_BeaconBlockBody(out, pos)
 

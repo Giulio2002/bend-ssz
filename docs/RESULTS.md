@@ -25,7 +25,7 @@
 | `encode_eval` | 240 |
 | `encode_spec` | 240 |
 | `roundtrip` | 73 |
-| `encoded_size` | 73 |
+| `encoded_size` | 75 |
 | `reject_short` | 73 |
 | `reject_long` | 73 |
 | `decode_tree` | 118 |
