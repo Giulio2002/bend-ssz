@@ -18,7 +18,7 @@
 # Failures are localized: each failed umbrella is bisected into sub-umbrellas (still import-only,
 # so every file is checked exactly as in the full run) until single roots remain, and the failing
 # root files are printed with the definition the checker names. Writes DIR/<n>.log,
-# DIR/summary.tsv (umbrella, exit, ok, seconds, peak MB, roots), DIR/bisect/*.log and
+# DIR/summary.tsv (umbrella, exit, ok, seconds, peak MB, roots; collected from DIR/rows/*.row, one atomically written file per umbrella), DIR/bisect/*.log and
 # DIR/failed.tsv (root file, log, first Location line), and DIR/stamp.json (tools/check_stamp.py:
 # commit, checker, lock, source, harness and plan hashes, per-umbrella results, totals); a full run
 # (no --files) also copies the stamp to benchmarks/evidence/check_fast.json. Exits nonzero if any
@@ -94,7 +94,6 @@ run() {
 one() {
   u=$1; out=$2
   lg=$out/${u%.bend}.log
-  roots=$(awk -F'\t' -v u="$u" '$1 == u {print $4}' "$out/umb/plan.tsv")
   ck=-; how=run; ent=""
   if [ "$CACHE" = 1 ] && [ -s "$out/cache_keys.tsv" ]; then
     ent=$(awk -F'\t' -v u="$u" '$1 == u {print}' "$out/cache_keys.tsv")
@@ -102,7 +101,7 @@ one() {
     if [ "$st" = hit ]; then
       printf 'CHECK_STACK ulimit_kb=%s jsc_bytes=%s\nCACHED key=%s from commit %s at %s (original %s s, %s MB); not run here\n' \
         "${CHECK_STACK_KB:-16384}" "$JSC" "$ck" "$(echo "$ent" | cut -f6)" "$(echo "$ent" | cut -f7)" "$(echo "$ent" | cut -f4)" "$(echo "$ent" | cut -f5)" > "$lg"
-      printf '%s\t0\t1\t%s\t%s\t%s\t%s\tcached\n' "$u" "$(echo "$ent" | cut -f4)" "$(echo "$ent" | cut -f5)" "$roots" "$ck" >> "$out/summary.tsv"
+      python3 tools/summary_rows.py write "$out" "$u" 0 1 "$(echo "$ent" | cut -f4)" "$(echo "$ent" | cut -f5)" "$ck" cached
       return
     fi
     [ "$st" = recheck ] && how=recheck
@@ -111,7 +110,7 @@ one() {
   ok=$(grep -cx 'ALL PROOFS CHECK' "$lg")
   tl=$(grep '^CHECK_TIME' "$lg" | tail -n 1)
   s=$(echo "$tl" | awk '{print $2}'); kb=$(echo "$tl" | awk '{print $3}')
-  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$rc" "$ok" "${s:-0}" "$(( ${kb:-0} / 1024 ))" "$roots" "$ck" "$how" >> "$out/summary.tsv"
+  python3 tools/summary_rows.py write "$out" "$u" "$rc" "$ok" "${s:-0}" "$(( ${kb:-0} / 1024 ))" "$ck" "$how"
   if [ "$ck" != - ] && [ "$CACHE" = 1 ]; then
     if [ $rc = 0 ] && [ "$ok" != 0 ]; then
       python3 tools/umbrella_cache.py store "$ck" --seconds "${s:-0}" --peak-mb "$(( ${kb:-0} / 1024 ))" --plan "$out/umb/plan.tsv" --umbrella "$u"
@@ -163,6 +162,8 @@ if [ "$CACHE" = 1 ]; then
 fi
 # tools/umb_pool.py: at most J at once, and only while the running umbrellas' expected memory fits (UMB_BUDGET_MB, default 170000)
 UMB_BIG_RE="$BIG_RE" python3 tools/umb_pool.py --jobs "$J" --plan "$OUT/umb/plan.tsv" -- bash -c 'one "$@"' _ {} "$OUT"
+# each umbrella wrote its own row atomically (tools/summary_rows.py); concatenate them into summary.tsv, plan order
+python3 tools/summary_rows.py collect "$OUT" || { echo "FAILED: a result row does not parse (see above; the umbrella's log is $OUT/<n>.log)"; exit 1; }
 n=$(wc -l < "$OUT/summary.tsv")
 if [ -s "$OUT/cache_mismatch" ]; then
   echo "CACHE MISMATCH: umbrellas whose cached pass failed when re-run: $(tr '\n' ' ' < "$OUT/cache_mismatch")"
