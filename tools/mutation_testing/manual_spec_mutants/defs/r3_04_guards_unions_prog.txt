@@ -1,0 +1,699 @@
+## ROUND 3, area 4: per-kind append guards and min(N, 2^32-1) bounds, cached trees of list types without a cache law, checked decode storage test, unions, progressive containers, BeaconState offsets
+=== r3-g01-append-guard
+type: Fulu_list_uint64_1099511627776
+ops: encode
+file: types/Fulu_list_uint64_1099511627776_def_generated.bend
+sym: l1099511627776_u64_append,l1099511627776_u64_grow
+spec: the append guard keeps (n + 1) * 8 + 31 below 2^32: n < floor((2^32 - 32) / 8) = 536870908
+fault: the guard is n < 536870909 (the append at n = 536870908 wraps the chunk rounding)
+why: guard off by one
+-U32.is_lt(n, 536870908)
++U32.is_lt(n, 536870909)
+=== r3-g01-append-guard
+type: Fulu_list_uint64_1099511627776
+ops: encode
+file: types/Fulu_list_uint64_1099511627776_def_generated.bend
+sym: l1099511627776_u64_append,l1099511627776_u64_grow
+spec: same
+fault: the guard is n < 536870907 (the last legal element is refused)
+why: guard off by one
+-U32.is_lt(n, 536870908)
++U32.is_lt(n, 536870907)
+=== r3-g01-append-guard
+type: proglist_uint32
+ops: encode
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_append,pl_u32_grow
+spec: n < floor((2^32 - 32) / 4) = 1073741816
+fault: the guard is n < 1073741817
+why: guard off by one
+-U32.is_lt(n, 1073741816)
++U32.is_lt(n, 1073741817)
+=== r3-g01-append-guard
+type: proglist_uint32
+ops: encode
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_append,pl_u32_grow
+spec: same
+fault: the guard is n < 1073741824 (2^30 elements: (n + 1) * 4 wraps)
+why: guard constant
+-U32.is_lt(n, 1073741816)
++U32.is_lt(n, 1073741824)
+=== r3-g01-append-guard
+type: proglist_bool
+ops: encode
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_append,pl_bool_grow
+spec: n < 2^32 - 32 for one-byte elements
+fault: the guard is n < 2^32 - 1
+why: guard constant
+-U32.is_lt(n, 4294967264)
++U32.is_lt(n, 4294967295)
+=== r3-g01-append-guard
+type: proglist_bool
+ops: encode
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_append,pl_bool_grow
+spec: same
+fault: the guard is n <= 2^32 - 32
+why: guard boundary
+-U32.is_lt(n, 4294967264)
++U32.is_le(n, 4294967264)
+=== r3-g01-append-guard
+type: Fulu_list_uint8_1099511627776
+ops: encode
+file: types/Fulu_list_uint8_1099511627776_def_generated.bend
+sym: l1099511627776_u8_append,l1099511627776_u8_grow
+spec: n < 2^32 - 32
+fault: the guard is n < 2^32 - 31
+why: guard boundary
+-U32.is_lt(n, 4294967264)
++U32.is_lt(n, 4294967265)
+=== r3-g01-append-guard
+type: FuluTransaction
+ops: encode
+file: types/FuluTransaction_def_generated.bend
+sym: bl1073741824_append,bl1073741824_grow
+spec: a ByteList[2^30] holds at most 2^30 bytes: the append at n = 2^30 is refused
+fault: the guard is n <= 2^30
+why: guard boundary
+-U32.is_lt(n, 1073741824), U32.is_le(v, 255)
++U32.is_le(n, 1073741824), U32.is_le(v, 255)
+=== r3-g01-append-guard
+type: FuluTransaction
+ops: encode
+file: types/FuluTransaction_def_generated.bend
+sym: bl1073741824_append,bl1073741824_grow
+spec: a byte element is at most 255
+fault: the value range test is v <= 256
+why: value range
+-U32.is_lt(n, 1073741824), U32.is_le(v, 255)
++U32.is_lt(n, 1073741824), U32.is_le(v, 256)
+=== r3-g01-append-guard
+type: Fulu_list_Validator_1099511627776
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_append,l1099511627776_Validator_app_in
+spec: n + 1 must not wrap: n < 2^32 - 1
+fault: the append guard is n <= 2^32 - 1 (the count wraps to 0 at n = 2^32 - 1)
+why: guard boundary
+-l1099511627776_Validator_app_in(U32.is_lt(n, 4294967295), arr, n, v)
++l1099511627776_Validator_app_in(U32.is_le(n, 4294967295), arr, n, v)
+=== r3-g01-append-guard
+type: Fulu_list_Validator_1099511627776
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_capp,l1099511627776_Validator_capp_in
+spec: same for the cached list
+fault: the cached append guard is n <= 2^32 - 1
+why: guard boundary
+-l1099511627776_Validator_capp_in(U32.is_lt(n, 4294967295), arr, n, d, nodes, lo, hi, v)
++l1099511627776_Validator_capp_in(U32.is_le(n, 4294967295), arr, n, d, nodes, lo, hi, v)
+=== r3-g01-append-guard
+type: proglist_SmallTestStruct
+ops: root
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_append,pl_SmallTestStruct_app_in
+spec: same
+fault: the append guard is n <= 2^32 - 1
+why: guard boundary
+-pl_SmallTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
++pl_SmallTestStruct_app_in(U32.is_le(n, 4294967295), arr, n, v)
+=== r3-g01-append-guard
+type: proglist_ProgressiveVarTestStruct
+ops: root
+file: types/proglist_ProgressiveVarTestStruct_def_generated.bend
+sym: pl_ProgressiveVarTestStruct_append,pl_ProgressiveVarTestStruct_app_in
+spec: same
+fault: the append guard is dropped (always true)
+why: guard removed
+-pl_ProgressiveVarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
++pl_ProgressiveVarTestStruct_app_in(True{}, arr, n, v)
+=== r3-g01-append-guard
+type: progbitlist
+ops: encode
+file: types/progbitlist_def_generated.bend
+sym: pbits_append,pbits_push
+spec: the bit count n + 1 must not exceed 2^32 - 1
+fault: the guard is n < 2^32 - 2
+why: guard boundary
+-pbits_push(U32.is_lt(n, 4294967295), o, v)
++pbits_push(U32.is_lt(n, 4294967294), o, v)
+=== r3-g01-append-guard
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_append,l16_ProposerSlashing_app_in
+spec: a List[ProposerSlashing, 16] holds at most 16
+fault: the guard is n <= 16
+why: guard boundary
+-l16_ProposerSlashing_app_in(U32.is_lt(n, 16), arr, n, v)
++l16_ProposerSlashing_app_in(U32.is_le(n, 16), arr, n, v)
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_dfill,l16_ProposerSlashing_cache_at
+spec: a cache of depth d holds 2^(d+1) digest slots
+fault: the digest array has 2^d slots (dfill d instead of 1 + d)
+why: allocation size
+-l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_ProposerSlashing_dfill(d), 0, (O.pow2u(d) - 1 : U32)}
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_cached_root
+spec: a freshly built cache has every leaf dirty: the dirty range is [0, 2^d - 1]
+fault: the dirty range ends at 2^d - 2
+why: range
+-l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 2 : U32)}
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_cached_root
+spec: same
+fault: the dirty range starts at 1
+why: range
+-l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_ProposerSlashing_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cset_in,l16_ProposerSlashing_cset
+spec: setting leaf i marks the dirty range to include i
+fault: only the lower bound of the dirty range is updated
+why: hi not updated
+-O.pick(U32.is_le(i, hi), hi, i)}, True{})
++hi}, True{})
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_croot_pad,l16_ProposerSlashing_pad_go,l16_ProposerSlashing_croot_fin
+spec: the root of the 16-leaf tree padded to the limit depth 4 hashes (4 - d) more levels with the zero subtrees
+fault: one pad level too few (Nat.sub(3n, d))
+why: pad levels
+-Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))
++Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_croot_pad,l16_ProposerSlashing_pad_go
+spec: the first pad level hashes the root with the zero subtree of depth d
+fault: the first zero subtree is zconst(d + 1)
+why: zero level
+-O.nat_u32(d), r, (h, D.zconst(d))
++O.nat_u32(d), r, (h, D.zconst(1n+d))
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_node_go,l16_ProposerSlashing_node_step
+spec: node j hashes children 2j and 2j + 1
+fault: the right child is node 2 j + 2
+why: child index
+-Array.get(D.Digest, nodes, (2 * j + 1 : U32))
++Array.get(D.Digest, nodes, (2 * j + 2 : U32))
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_leaf_step,l16_ProposerSlashing_leaves
+spec: a leaf past the count is the zero chunk (i < n is inside)
+fault: a leaf at i = n counts as inside
+why: boundary
+-l16_ProposerSlashing_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++l16_ProposerSlashing_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cget_in,l16_ProposerSlashing_cget
+spec: cached get is inside iff i < n
+fault: cached get is inside iff i <= n
+why: boundary
+-l16_ProposerSlashing_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
++l16_ProposerSlashing_cget_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i)
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cset_in,l16_ProposerSlashing_cset
+spec: cached set is accepted iff i < n
+fault: cached set is accepted iff i <= n
+why: boundary
+-l16_ProposerSlashing_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++l16_ProposerSlashing_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_capp,l16_ProposerSlashing_capp_in
+spec: the cached append guard is the list limit
+fault: the cached append guard is n < 15
+why: guard off by one
+-l16_ProposerSlashing_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
++l16_ProposerSlashing_capp_in(U32.is_lt(n, 15), arr, n, d, nodes, lo, hi, v)
+=== r3-g02-cached-tree
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_croot_fin,l16_ProposerSlashing_cached_root
+spec: after a cached root the dirty range is empty (lo = n, hi = 0 marks nothing dirty)
+fault: the range after the root is (0, n): the whole tree stays dirty (recomputed, same root: designed equivalent)
+why: performance only
+-(l16_ProposerSlashing_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n))
++(l16_ProposerSlashing_Cached{arr, n, d, nodes, 0, n}, O.mix_len(hl, r, n))
+=== r3-d01-checked-storage
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: uint256_dchw,uint256_decode_checked,uint256_dchk
+spec: the checked decoder refuses a window the buffer's array does not hold
+fault: the storage test counts floor(size / 4) words (a partial last word need not be stored)
+why: rounding
+-U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_le(U32.shrn(size, 2n), c)), buf, size)
+=== r3-d01-checked-storage
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: uint256_dchw,uint256_decode_checked,uint256_dchk
+spec: same
+fault: the storage test is dropped (only the size tests remain)
+why: conjunct dropped
+-Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c))
++Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648))
+=== r3-d01-checked-storage
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: uint256_dchw,uint256_decode_checked
+spec: same
+fault: the storage is compared with the size in bytes (a buffer of 8 words for 32 bytes is refused only above ... c >= size)
+why: unit
+-U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_le(size, c)), buf, size)
+=== r3-d01-checked-storage
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: uint256_dchk,uint256_decode_checked,uint256_dchw
+spec: the storage comes from B.stored(buf), the size from B.size(buf)
+fault: both come from the size field
+why: wrong accessor
+-  uint256_dchw(size, n, B.stored(buf))
++  uint256_dchw(size, n, (buf, n))
+=== r3-d01-checked-storage
+type: bitvector_9
+ops: decode
+file: types/bitvector_9_decode_ssz_generated.bend
+sym: bitvector_9_dchw,bitvector_9_decode_checked
+spec: window <= buffer size, window < 2^31
+fault: the window test is size < n (a window equal to the buffer size is refused)
+why: boundary
+-Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c))
++Bool.and(Bool.and(U32.is_lt(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c))
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt1,CompatibleUnionABCA_put
+spec: union selector 2 is written as the byte 2
+fault: arm 1 writes the selector 1
+why: selector constant
+-ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 2)
++ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 1)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt2,CompatibleUnionABCA_put
+spec: union selector 3 is written as the byte 3
+fault: arm 2 writes the selector 2
+why: selector constant
+-ProgressiveVarTestStruct_put(O.w8(out, pos, 3)
++ProgressiveVarTestStruct_put(O.w8(out, pos, 2)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt3,CompatibleUnionABCA_put
+spec: the fourth arm has selector 4 (it has the same payload type as arm 1)
+fault: arm 3 writes selector 1
+why: selector constant
+-ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 4)
++ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_size,CompatibleUnionABCA_putn
+spec: the size of arm 3 is 1 selector byte + 1 payload byte
+fault: arm 3's size is 1
+why: size constant
+-(CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, 2)
++(CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, 1)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_sz1,CompatibleUnionABCA_size
+spec: the size of arm 1 is the selector byte plus the payload size
+fault: arm 1 does not count the selector byte
+why: size
+-(CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, (m + 1 : U32))
++(CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, m)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_sz2,CompatibleUnionABCA_size
+spec: same for arm 2
+fault: arm 2 counts two selector bytes
+why: size
+-(CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, (m + 1 : U32))
++(CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, (m + 2 : U32))
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pk,CompatibleUnionABCA_putk,CompatibleUnionABCA_valid
+spec: a payload that is invalid poisons the union's size
+fault: an invalid payload is written as if valid (the checked writer ignores the flag)
+why: poison dropped
+-    case True{}: CompatibleUnionABCA_putn(out, pos, o)
+-    case False{}: (out, (o, 2147483648))
++    case True{}: CompatibleUnionABCA_putn(out, pos, o)
++    case False{}: CompatibleUnionABCA_putn(out, pos, o)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_valid,CompatibleUnionABCA_va1
+spec: the validity of arm 1 is the validity of its payload
+fault: arm 1's validity is not consulted (always valid)
+why: validity dropped
+-  (v, ok) = pair
+-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, ok)
++  (v, ok) = pair
++  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, True{})
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt1,CompatibleUnionABCA_root
+spec: hash_tree_root(union) = mix_in_selector(root(payload), selector)
+fault: arm 1 mixes selector 1 (selector 2)
+why: selector
+-O.mix_len(hl, d, 2)
++O.mix_len(hl, d, 1)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt3,CompatibleUnionABCA_root
+spec: arm 3 has selector 4
+fault: arm 3 mixes selector 3
+why: selector
+-O.mix_len(hl, d, 4)
++O.mix_len(hl, d, 3)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt0,CompatibleUnionABCA_root
+spec: arm 0 has selector 1
+fault: arm 0 mixes selector 0
+why: selector
+-O.mix_len(hl, d, 1)
++O.mix_len(hl, d, 0)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_rd3,CompatibleUnionABCA_rd_sel
+spec: selector 4 decodes to the fourth arm (not the first: same payload type)
+fault: selector 4 is built as arm 0
+why: arm identity
+-    case True{}: CompatibleUnionABCA_rw3(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
++    case True{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_ok3,CompatibleUnionABCA_ok2
+spec: selector 4's payload is validated over [off + 1, len - 1)
+fault: selector 4's payload window is the whole window (len)
+why: window
+-def CompatibleUnionABCA_ok3(c: Bool, +s: U32, buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool:
+-  match c:
+-    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++def CompatibleUnionABCA_ok3(c: Bool, +s: U32, buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool:
++  match c:
++    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), len)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_ok2,CompatibleUnionABCA_ok1
+spec: selector 3's payload is validated at off + 1
+fault: selector 3's payload is validated at off
+why: window
+-    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, off, (len - 1 : U32))
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_ok_sel,CompatibleUnionABCA_ok0
+spec: selector 0 is invalid in a compatible union and so is any selector above 4
+fault: selector 1 is tested as s <= 1 (selector 0 is accepted as arm 0)
+why: selector test
+-  CompatibleUnionABCA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++  CompatibleUnionABCA_ok0(U32.is_le(s, 1), s, buf, off, len)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_ok_nz,CompatibleUnionABCA_ok
+spec: the empty window is invalid (a union needs a selector byte)
+fault: the empty window is accepted as non-empty (is_le(0, len)); the selector read is then past the window
+why: boundary
+-CompatibleUnionABCA_ok_nz(U32.is_le(1, len), buf, off, len)
++CompatibleUnionABCA_ok_nz(U32.is_le(0, len), buf, off, len)
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_rd_sel,CompatibleUnionABCA_read
+spec: the selector is the first byte of the window
+fault: the selector byte is read at off + 1
+why: index
+-CompatibleUnionABCA_rd_sel(off, len, O.rd_u8(buf, off))
++CompatibleUnionABCA_rd_sel(off, len, O.rd_u8(buf, (off + 1 : U32)))
+=== r3-u01-union
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_ok_sel,CompatibleUnionABCA_ok_nz
+spec: the selector is the first byte of the window (validation)
+fault: validation reads the selector at off + len - 1 (the last byte)
+why: index
+-CompatibleUnionABCA_ok_sel(off, len, O.rd_u8(buf, off))
++CompatibleUnionABCA_ok_sel(off, len, O.rd_u8(buf, (off + len - 1 : U32)))
+=== r3-q01-progressive-container
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleFieldContainerTestStruct_fin,ProgressiveSingleFieldContainerTestStruct_root
+spec: hash_tree_root(progressive container) = mix_in_active_fields(merkleize_progressive(field roots), active_fields): the active bitvector [1] is the chunk 1
+fault: the active-fields chunk is 2
+why: constant
+-O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1)
++O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 2)
+=== r3-q01-progressive-container
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleFieldContainerTestStruct_fin
+spec: merkleize_progressive of one chunk is H(zero, chunk)
+fault: the node is H(chunk, zero)
+why: operand order
+-O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1)
++O.mix_len(hl, D.node(hl, d_f_A, D.zero()), 1)
+=== r3-q01-progressive-container
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin,ProgressiveSingleListContainerTestStruct_root
+spec: the active-fields bitvector of this container (field at slot 4) is the chunk 16
+fault: the chunk is 8 (slot 3)
+why: constant
+-D.zero()), 16)))
++D.zero()), 8)))
+=== r3-q01-progressive-container
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin
+spec: same
+fault: the chunk is 17
+why: constant
+-D.zero()), 16)))
++D.zero()), 17)))
+=== r3-q01-progressive-container
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin
+spec: the field at slot 4 sits in the third progressive subtree (chunks 5..20) at position 1 of the 4-leaf subtree, with zero leaves around it
+fault: the inner zero subtree is on the left of the field instead of the right
+why: operand order
+-D.node(hl, z1, D.node(hl, D.zero(), d_f_C))
++D.node(hl, z1, D.node(hl, d_f_C, D.zero()))
+=== r3-q01-progressive-container
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_rt0,ProgressiveSingleListContainerTestStruct_rt1
+spec: z1 is the zero subtree of depth 1
+fault: z1 is the zero chunk of depth 2
+why: zero level
+-(h, D.zconst(1n)))
++(h, D.zconst(2n)))
+=== r3-q01-progressive-container
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin
+spec: the progressive tree is H(rest, subtree): the rest (zero) is the left operand at the outermost level
+fault: the outermost node is H(zero, subtree) (rest on the right)
+why: operand order
+-O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C))), D.zero()), 16)
++O.mix_len(hl, D.node(hl, D.zero(), D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C)))), 16)
+=== r3-q01-progressive-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin,ProgressiveComplexTestStruct_root
+spec: the active-fields chunk of ProgressiveComplexTestStruct (fields at slots 0,1,2,3,4,... ) is the integer of its bitvector
+fault: the chunk is 3158292
+why: constant
+-3158293)))
++3158292)))
+=== r3-q01-progressive-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: same
+fault: the chunk is 3158293 + 2^21
+why: constant
+-3158293)))
++5255445)))
+=== r3-q01-progressive-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_rt11,ProgressiveComplexTestStruct_rt12,ProgressiveComplexTestStruct_fin
+spec: z5 is the zero subtree of depth 5
+fault: z5 is the zero subtree of depth 4
+why: zero level
+-ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(5n)))
++ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(4n)))
+=== r3-q01-progressive-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_rt8,ProgressiveComplexTestStruct_rt9
+spec: z2 is the zero subtree of depth 2
+fault: z2 is the zero subtree of depth 3
+why: zero level
+-d_f_G, d_f_H, z1, (h, D.zconst(2n)))
++d_f_G, d_f_H, z1, (h, D.zconst(3n)))
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_v0,BeaconState_ok_len,BeaconState_ok
+spec: a container's first offset equals its fixed size (2737225 for BeaconState)
+fault: the first offset may be any value above the fixed size (>=)
+why: boundary
+-BeaconState_c0(U32.is_eq(o0, 2737225), buf, off, len, o0)
++BeaconState_c0(U32.is_le(2737225, o0), buf, off, len, o0)
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_ok_len,BeaconState_ok
+spec: a BeaconState window is at least its fixed size
+fault: a window of fixed size - 1 bytes is accepted
+why: boundary
+-BeaconState_ok_len(U32.is_le(2737225, len), buf, off, len)
++BeaconState_ok_len(U32.is_le(2737224, len), buf, off, len)
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_c3,BeaconState_v3
+spec: the offset of field 4 is read at its fixed position (off + 2687248)
+fault: it is read at off + 2687244
+why: offset position
+-BeaconState_v4(off, len, o0, o1, o2, o3, B.read32(buf, (off + 2687248 : U32)))
++BeaconState_v4(off, len, o0, o1, o2, o3, B.read32(buf, (off + 2687244 : U32)))
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_c2,BeaconState_v2
+spec: the offset of field 3 is read at off + 524556
+fault: it is read at off + 524552 (the offset of field 2 again)
+why: offset position
+-BeaconState_v3(off, len, o0, o1, o2, B.read32(buf, (off + 524556 : U32)))
++BeaconState_v3(off, len, o0, o1, o2, B.read32(buf, (off + 524552 : U32)))
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_v3,BeaconState_c3
+spec: offsets are non-decreasing: o2 <= o3 <= len
+fault: the order test o2 <= o3 is dropped (o3 <= len only)
+why: check dropped
+-BeaconState_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++BeaconState_c3(U32.is_le(o3, len), buf, off, len, o0, o1, o2, o3)
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_v1,BeaconState_c1
+spec: o1 <= len
+fault: the bound o1 <= len is dropped
+why: check dropped
+-BeaconState_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++BeaconState_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_c13,BeaconState_v13
+spec: the Eth1Data list (field 9) is the window [o1, o2)
+fault: its window length is o2 - o1 - 1
+why: window
+-Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_ok(buf, (off + o1 : U32), (o2 - o1 : U32))
++Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_ok(buf, (off + o1 : U32), (o2 - o1 - 1 : U32))
+=== r3-b01-beacon-state
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_c12,BeaconState_v12
+spec: the historical_roots list (field 7) is the window [o0, o1)
+fault: it starts at o1
+why: window
+-Fulu_list_bytevec_32_16777216_r.l16777216_b32_ok(buf, (off + o0 : U32), (o1 - o0 : U32))
++Fulu_list_bytevec_32_16777216_r.l16777216_b32_ok(buf, (off + o1 : U32), (o1 - o0 : U32))

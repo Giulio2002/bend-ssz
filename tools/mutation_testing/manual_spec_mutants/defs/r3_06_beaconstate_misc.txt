@@ -1,0 +1,101 @@
+## ROUND 3, area 6: Fulu containers with many fields (BeaconState encoder: group sizes and offsets), uint128 / uint256 packed progressive lists
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_sz0,BeaconState_size
+spec: the fixed part of a BeaconState is 2737225 bytes; the size is the fixed part plus the variable parts
+fault: the size starts at 2737224
+why: constant
+-BeaconState_sz0(g1, g2, g3, g4, 2737225, BeaconState_g0_size(g0))
++BeaconState_sz0(g1, g2, g3, g4, 2737224, BeaconState_g0_size(g0))
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_sz0,BeaconState_size
+spec: same
+fault: group 0's size is not added to the running size
+why: term dropped
+-BeaconState_sz1(g2, g3, g4, g0, O.padd(acc, m), BeaconState_g1_size(g1))
++BeaconState_sz1(g2, g3, g4, g0, acc, BeaconState_g1_size(g1))
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_sz1,BeaconState_size
+spec: same
+fault: group 1's size is counted once more than needed (+ 1)
+why: constant
+-BeaconState_sz2(g3, g4, g0, g1, O.padd(acc, m), BeaconState_g2_size(g2))
++BeaconState_sz2(g3, g4, g0, g1, O.padd((acc + 1 : U32), m), BeaconState_g2_size(g2))
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_pw2v,BeaconState_pw2
+spec: group 3's offsets are written with the running variable offset
+fault: group 3 starts 4 bytes late
+why: offset
+-BeaconState_pw3(pos, g0, g1, g2, g4, BeaconState_g3_put(out, pos, voff, g3))
++BeaconState_pw3(pos, g0, g1, g2, g4, BeaconState_g3_put(out, pos, (voff + 4 : U32), g3))
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_pw3v,BeaconState_pw3
+spec: same
+fault: group 4 is written at variable offset 0
+why: offset
+-BeaconState_pw4(pos, g0, g1, g2, g3, BeaconState_g4_put(out, pos, voff, g4))
++BeaconState_pw4(pos, g0, g1, g2, g3, BeaconState_g4_put(out, pos, 0, g4))
+=== r3-b02-beacon-state-encode
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_pw1v,BeaconState_pw1
+spec: same
+fault: group 2 is written at position pos + 4
+why: position
+-BeaconState_pw2(pos, g0, g1, g3, g4, BeaconState_g2_put(out, pos, voff, g2))
++BeaconState_pw2(pos, g0, g1, g3, g4, BeaconState_g2_put(out, (pos + 4 : U32), voff, g2))
+=== r3-m01-packed-prog
+type: proglist_uint128
+ops: encode
+file: types/proglist_uint128_encode_ssz_generated.bend
+sym: pl_u128_valid,words_ok
+spec: a ProgressiveList[uint128] has a byte length that is a multiple of 16
+fault: the element size is 8
+why: unit
+-O.words_ok(o, 0, 0, True{}, 16)
++O.words_ok(o, 0, 0, True{}, 8)
+=== r3-m01-packed-prog
+type: proglist_uint256
+ops: encode
+file: types/proglist_uint256_encode_ssz_generated.bend
+sym: pl_u256_valid,words_ok
+spec: a ProgressiveList[uint256] has a byte length that is a multiple of 32
+fault: the element size is 16
+why: unit
+-O.words_ok(o, 0, 0, True{}, 32)
++O.words_ok(o, 0, 0, True{}, 16)
+=== r3-m01-packed-prog
+type: proglist_uint128
+ops: root
+file: types/proglist_uint128_hashtreeroot_generated.bend
+sym: pl_u128_root
+spec: the count mixed into a ProgressiveList[uint128] root is the byte length / 16
+fault: the shift is 3 (byte length / 8)
+why: shift
+-O.mix_count(hl, 4n,
++O.mix_count(hl, 3n,
+=== r3-m01-packed-prog
+type: proglist_uint256
+ops: root
+file: types/proglist_uint256_hashtreeroot_generated.bend
+sym: pl_u256_root
+spec: the count mixed into a ProgressiveList[uint256] root is the byte length / 32
+fault: the shift is 4 (byte length / 16)
+why: shift
+-O.mix_count(hl, 5n,
++O.mix_count(hl, 4n,

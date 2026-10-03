@@ -1,0 +1,543 @@
+## ROUND 3, area 3: per-type validity parameters, uint128/uint256 packing and endianness, boolean and bitvector tail bits, absent boxes (CH-12) of generated types
+=== r3-p01-words-ok-params
+type: bytelist_256
+ops: encode
+file: types/bytelist_256_encode_ssz_generated.bend
+sym: bl256_valid,words_ok
+spec: a ByteList[256] of more than 256 bytes is invalid
+fault: the upper bound is 257
+why: parameter off by one
+-O.words_ok(o, 0, 256, False{}, 1)
++O.words_ok(o, 0, 257, False{}, 1)
+=== r3-p01-words-ok-params
+type: bytelist_256
+ops: encode
+file: types/bytelist_256_encode_ssz_generated.bend
+sym: bl256_valid,words_ok
+spec: same
+fault: the upper bound is 255 (a full list is invalid)
+why: parameter off by one
+-O.words_ok(o, 0, 256, False{}, 1)
++O.words_ok(o, 0, 255, False{}, 1)
+=== r3-p01-words-ok-params
+type: bytelist_256
+ops: encode
+file: types/bytelist_256_encode_ssz_generated.bend
+sym: bl256_valid,words_ok
+spec: same
+fault: the list is declared unbounded (big)
+why: parameter
+-O.words_ok(o, 0, 256, False{}, 1)
++O.words_ok(o, 0, 256, True{}, 1)
+=== r3-p01-words-ok-params
+type: list_uint16_128
+ops: encode
+file: types/list_uint16_128_encode_ssz_generated.bend
+sym: l128_u16_valid,words_ok
+spec: a List[uint16, 128] holds at most 128 elements = 256 bytes, an even number of bytes
+fault: the element size is 1 (an odd byte length is valid)
+why: unit
+-O.words_ok(o, 0, 256, False{}, 2)
++O.words_ok(o, 0, 256, False{}, 1)
+=== r3-p01-words-ok-params
+type: list_uint16_128
+ops: encode
+file: types/list_uint16_128_encode_ssz_generated.bend
+sym: l128_u16_valid,words_ok
+spec: same
+fault: the upper bound is 258 bytes (129 elements)
+why: parameter
+-O.words_ok(o, 0, 256, False{}, 2)
++O.words_ok(o, 0, 258, False{}, 2)
+=== r3-p01-words-ok-params
+type: Fulu_vec_uint64_8192
+ops: encode
+file: types/Fulu_vec_uint64_8192_encode_ssz_generated.bend
+sym: v8192_u64_valid,words_ok
+spec: a Vector[uint64, 8192] is exactly 65536 bytes
+fault: any length up to 65536 is valid (lower bound 0)
+why: parameter
+-O.words_ok(o, 65536, 65536, False{}, 8)
++O.words_ok(o, 0, 65536, False{}, 8)
+=== r3-p01-words-ok-params
+type: vec_uint128_513
+ops: encode
+file: types/vec_uint128_513_encode_ssz_generated.bend
+sym: v513_u128_valid,words_ok
+spec: a Vector[uint128, 513] is exactly 8208 bytes
+fault: any length from 8208 up to 8224 is valid
+why: parameter
+-O.words_ok(o, 8208, 8208, False{}, 16)
++O.words_ok(o, 8208, 8224, False{}, 16)
+=== r3-p01-words-ok-params
+type: vec_uint256_31
+ops: encode
+file: types/vec_uint256_31_encode_ssz_generated.bend
+sym: v31_u256_valid,words_ok
+spec: a Vector[uint256, 31] is 992 bytes: a multiple of 32
+fault: the element size is 16
+why: unit
+-O.words_ok(o, 992, 992, False{}, 32)
++O.words_ok(o, 992, 992, False{}, 16)
+=== r3-p01-words-ok-params
+type: vec_uint64_513
+ops: encode
+file: types/vec_uint64_513_encode_ssz_generated.bend
+sym: v513_u64_valid,words_ok
+spec: a Vector[uint64, 513] is 4104 bytes
+fault: the lower bound is 4096
+why: parameter
+-O.words_ok(o, 4104, 4104, False{}, 8)
++O.words_ok(o, 4096, 4104, False{}, 8)
+=== r3-p01-words-ok-params
+type: vec_bool_513
+ops: encode
+file: types/vec_bool_513_encode_ssz_generated.bend
+sym: v513_bool_valid,bools_ok
+spec: a boolean byte other than 0 and 1 is invalid
+fault: the boolean scan is dropped from the validity
+why: conjunct dropped
+-O.bools_ok(O.words_ok(o, 513, 513, False{}, 1))
++O.words_ok(o, 513, 513, False{}, 1)
+=== r3-p01-words-ok-params
+type: bitlist_513
+ops: encode
+file: types/bitlist_513_encode_ssz_generated.bend
+sym: bits513_valid,bits_ok
+spec: a Bitlist[513] of 514 bits is invalid
+fault: the limit is 514
+why: parameter
+-O.bits_ok(o, 513, False{})
++O.bits_ok(o, 514, False{})
+=== r3-p01-words-ok-params
+type: bitlist_9
+ops: encode
+file: types/bitlist_9_encode_ssz_generated.bend
+sym: bits9_valid,bits_ok
+spec: a Bitlist[9] of 10 bits is invalid
+fault: the limit is 8
+why: parameter
+-O.bits_ok(o, 9, False{})
++O.bits_ok(o, 8, False{})
+=== r3-p01-words-ok-params
+type: Fulu_list_uint64_1099511627776
+ops: encode
+file: types/Fulu_list_uint64_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_u64_valid,words_ok
+spec: a List[uint64, 2^40] has a byte length that is a multiple of 8
+fault: the element size is 4
+why: unit
+-O.words_ok(o, 0, 0, True{}, 8)
++O.words_ok(o, 0, 0, True{}, 4)
+=== r3-p01-words-ok-params
+type: proglist_uint64
+ops: encode
+file: types/proglist_uint64_encode_ssz_generated.bend
+sym: pl_u64_valid,words_ok
+spec: a ProgressiveList[uint64] has a byte length that is a multiple of 8
+fault: the element size is 2
+why: unit
+-O.words_ok(o, 0, 0, True{}, 8)
++O.words_ok(o, 0, 0, True{}, 2)
+=== r3-p02-bitvector-tail
+type: bitvector_9
+ops: encode
+file: types/bitvector_9_encode_ssz_generated.bend
+sym: bv9_valid
+spec: a Bitvector[9] object with a bit above bit 8 is invalid (the encoder would write it into the padding)
+fault: the bound is w0 <= 512
+why: boundary
+-U32.is_lt(w0, 512)
++U32.is_le(w0, 512)
+=== r3-p02-bitvector-tail
+type: bitvector_17
+ops: encode
+file: types/bitvector_17_encode_ssz_generated.bend
+sym: bv17_valid
+spec: a Bitvector[17] object with a bit above bit 16 is invalid
+fault: the bound is w0 < 262144 (bit 17 allowed)
+why: parameter
+-U32.is_lt(w0, 131072)
++U32.is_lt(w0, 262144)
+=== r3-p02-bitvector-tail
+type: bitvector_513
+ops: encode
+file: types/bitvector_513_encode_ssz_generated.bend
+sym: bv513_valid
+spec: a Bitvector[513] object with a bit above bit 512 (bits of w16 above bit 0) is invalid
+fault: the bound is w16 < 4
+why: parameter
+-U32.is_lt(w16, 2)
++U32.is_lt(w16, 4)
+=== r3-p02-bitvector-tail
+type: bitvector_513
+ops: decode
+file: types/bitvector_513_decode_ssz_generated.bend
+sym: bv513_ok_at,bv513_read,ok_pad
+spec: the padding bits of the last byte (byte 64) of a Bitvector[513] are zero
+fault: the padding byte tested is byte 63
+why: offset
+-O.ok_pad(buf, (off + 64 : U32), 1)
++O.ok_pad(buf, (off + 63 : U32), 1)
+=== r3-p02-bitvector-tail
+type: bitvector_513
+ops: decode
+file: types/bitvector_513_decode_ssz_generated.bend
+sym: bv513_ok_at,bv513_read,ok_pad
+spec: same
+fault: the last word keeps two bytes (bits 513..15 of the byte after are data)
+why: keep
+-O.keep(1, x)})
++O.keep(2, x)})
+=== r3-p02-bitvector-tail
+type: bitvector_17
+ops: decode
+file: types/bitvector_17_decode_ssz_generated.bend
+sym: bv17_ok_at,ok_pad,bv17_read
+spec: the padding bits of byte 2 of a Bitvector[17] are bits 1..7
+fault: the pad rule is r = 0 (mask 255: nothing must be zero)
+why: parameter
+-O.ok_pad(buf, (off + 2 : U32), 1)
++O.ok_pad(buf, (off + 2 : U32), 0)
+=== r3-p02-bitvector-tail
+type: bitvector_17
+ops: decode
+file: types/bitvector_17_decode_ssz_generated.bend
+sym: bv17_ok_at,ok_pad,bv17_read
+spec: same
+fault: the pad rule is r = 2
+why: parameter
+-O.ok_pad(buf, (off + 2 : U32), 1)
++O.ok_pad(buf, (off + 2 : U32), 2)
+=== r3-p02-bitvector-tail
+type: bitvector_513
+ops: root
+file: types/bitvector_513_hashtreeroot_generated.bend
+sym: bv513_root
+spec: the last chunk of a Bitvector[513] holds byte 64 in its first byte
+fault: the last chunk word is not byte-swapped
+why: endianness
+-D.D{B.swap32(w16)
++D.D{w16
+=== r3-p03-uint-pack
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+sym: u128_root
+spec: a uint128 is a chunk of its 16 little-endian bytes padded with zeros
+fault: the high word is not byte-swapped
+why: endianness
+-B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
++B.swap32(w2), w3, 0, 0, 0, 0}
+=== r3-p03-uint-pack
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+sym: u128_root
+spec: same
+fault: words 1 and 2 are exchanged
+why: word order
+-D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
++D.D{B.swap32(w0), B.swap32(w2), B.swap32(w1), B.swap32(w3), 0, 0, 0, 0}
+=== r3-p03-uint-pack
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+sym: u128_root
+spec: same
+fault: the high word is repeated into the padding
+why: padding
+-B.swap32(w3), 0, 0, 0, 0}
++B.swap32(w3), B.swap32(w3), 0, 0, 0}
+=== r3-p03-uint-pack
+type: uint256
+ops: root
+file: types/uint256_hashtreeroot_generated.bend
+sym: u256_root
+spec: a uint256 is a chunk of its 32 little-endian bytes
+fault: the top word is not byte-swapped
+why: endianness
+-B.swap32(w6), B.swap32(w7)})
++B.swap32(w6), w7})
+=== r3-p03-uint-pack
+type: uint256
+ops: root
+file: types/uint256_hashtreeroot_generated.bend
+sym: u256_root
+spec: same
+fault: words 3 and 4 are exchanged
+why: word order
+-B.swap32(w3), B.swap32(w4),
++B.swap32(w4), B.swap32(w3),
+=== r3-p03-uint-pack
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: u256_r4,u256_read
+spec: word 5 is at byte offset 20
+fault: word 5 is read at offset 16
+why: offset
+-B.read32(buf, (off + 20 : U32))
++B.read32(buf, (off + 16 : U32))
+=== r3-p03-uint-pack
+type: uint256
+ops: decode
+file: types/uint256_decode_ssz_generated.bend
+sym: u256_ok,u256_ok_len
+spec: a uint256 is exactly 32 bytes
+fault: any length up to 32 is accepted
+why: boundary
+-U32.is_eq(len, 32)
++U32.is_le(len, 32)
+=== r3-p03-uint-pack
+type: uint128
+ops: decode
+file: types/uint128_decode_ssz_generated.bend
+sym: u128_ok,u128_ok_len
+spec: a uint128 is exactly 16 bytes
+fault: any length from 16 up is accepted
+why: boundary
+-U32.is_eq(len, 16)
++U32.is_le(16, len)
+=== r3-p03-uint-pack
+type: uint128
+ops: decode
+file: types/uint128_decode_ssz_generated.bend
+sym: u128_r3,u128_r2
+spec: word 3 is at byte offset 12
+fault: word 3 is read at offset 8
+why: offset
+-B.read32(buf, (off + 12 : U32))
++B.read32(buf, (off + 8 : U32))
+=== r3-p03-uint-pack
+type: uint128
+ops: encode
+file: types/uint128_encode_ssz_generated.bend
+sym: u128_pw1,u128_pwu
+spec: a uint128 written at a position 1 mod 4 spills the high byte of word 3 into the next word
+fault: the spill is word 3 shifted by 16
+why: shift
+-(q + 4 : U32), U32.shrn(w3, 24n))
++(q + 4 : U32), U32.shrn(w3, 16n))
+=== r3-p03-uint-pack
+type: uint128
+ops: encode
+file: types/uint128_encode_ssz_generated.bend
+sym: u128_pw3,u128_pwu
+spec: a uint128 written at a position 3 mod 4 carries the high 8 bits of the previous word
+fault: the carry into word 2 is w1 shifted by 24
+why: shift
+-((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)
++((w2 * 16777216 : U32) .|. U32.shrn(w1, 24n) : U32)
+=== r3-p03-uint-pack
+type: uint128
+ops: encode
+file: types/uint128_encode_ssz_generated.bend
+sym: u128_pwu
+spec: position 2 mod 4 uses the 16-bit shift family
+fault: position 2 mod 4 uses the 24-bit family
+why: dispatch
+-    case 2: u128_pw2(out, q, w0, w1, w2, w3)
++    case 2: u128_pw3(out, q, w0, w1, w2, w3)
+=== r3-p03-uint-pack
+type: uint256
+ops: encode
+file: types/uint256_encode_ssz_generated.bend
+sym: u256_pwu,u256_pwd
+spec: position 3 mod 4 uses the 8-bit carry family (pw3)
+fault: it uses pw1
+why: dispatch
+-    case _: u256_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
++    case _: u256_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+=== r3-p03-uint-pack
+type: uint256
+ops: encode
+file: types/uint256_encode_ssz_generated.bend
+sym: uint256_encode,u256_put
+spec: a uint256 encodes to 32 bytes
+fault: the output length is 31
+why: size
+-O.out_done(32, u256_put(O.out_at(3n), 0, o))
++O.out_done(31, u256_put(O.out_at(3n), 0, o))
+=== r3-p04-box-absent
+type: FuluIndexedAttestation
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_putk,IndexedAttestation_bx_size,IndexedAttestation_bx_valid
+spec: CH-12: an absent box is refused by the checked writer (poison)
+fault: the checked writer answers an absent box with a valid zero count
+why: poison dropped
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 0))
+=== r3-p04-box-absent
+type: FuluIndexedAttestation
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_putk,IndexedAttestation_bx_size
+spec: same
+fault: the poison is bit 30 (not bit 31)
+why: poison bit
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 1073741824))
+=== r3-p04-box-absent
+type: FuluIndexedAttestation
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_size,IndexedAttestation_bx_putk
+spec: CH-12: the size pass keeps the absent box absent
+fault: the size pass replaces the absent box by the default box (the original CH-12 defect)
+why: absent box lost in the size pass
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluIndexedAttestation_d.IndexedAttestation_bx_default(), 0)
+=== r3-p04-box-absent
+type: FuluIndexedAttestation
+ops: encode
+file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+sym: IndexedAttestation_bx_valid
+spec: an absent box is not a valid value
+fault: an absent box is valid
+why: validity
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+=== r3-p04-box-absent
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_bx_putk,Attestation_bx_size,Attestation_bx_valid
+spec: same
+fault: the checked writer answers an absent box with a valid zero count
+why: poison dropped
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 0))
+=== r3-p04-box-absent
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_bx_size,Attestation_bx_putk
+spec: same
+fault: the size pass replaces the absent box by the default box
+why: absent box lost in the size pass
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluAttestation_d.Attestation_bx_default(), 0)
+=== r3-p04-box-absent
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_bx_valid
+spec: same
+fault: an absent box is valid
+why: validity
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+=== r3-p04-box-absent
+type: FuluAttestation
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_bx_pk_back,Attestation_bx_putk
+spec: a present box reports the size of its value
+fault: a present box's checked writer reports size 0
+why: size lost
+-  (out, (O.BSome{v, O.BNone{}}, m))
++  (out, (O.BSome{v, O.BNone{}}, 0))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_bx_size,AttesterSlashing_bx_putk
+spec: same
+fault: the size pass replaces an absent box by the default box
+why: absent box lost in the size pass
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluAttesterSlashing_d.AttesterSlashing_bx_default(), 0)
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_bx_putv,AttesterSlashing_putn,AttesterSlashing_pw0
+spec: the offset of variable field 2 is written at its slot (pos + 4) with the running size
+fault: the second offset is written at slot 0
+why: slot
+-FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 4, c, attestation_2))
++FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, c, attestation_2))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_bx_pvb,AttesterSlashing_bx_putv
+spec: the running offset after a variable field is the offset plus the field's size, poison kept
+fault: the running offset adds the size with a plain sum (poison of the field lost when cur is small)
+why: padd -> +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_sz1,AttesterSlashing_sz0,AttesterSlashing_size
+spec: the size of a container with two variable fields is the fixed part plus each field's size and 4-byte offset
+fault: the fixed part is 4 (one offset)
+why: constant
+-AttesterSlashing_sz0(attestation_2, 8, FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_1))
++AttesterSlashing_sz0(attestation_2, 4, FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_1))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_sz1,AttesterSlashing_size
+spec: same
+fault: the size accumulation drops the poison of the first field (plain +)
+why: padd -> +
+-  AttesterSlashing_sz1(attestation_1, O.padd(acc, m), FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_2))
++  AttesterSlashing_sz1(attestation_1, (acc + m : U32), FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_2))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_sz1,AttesterSlashing_size
+spec: same
+fault: the size accumulation drops the poison of the second field (plain +)
+why: padd -> +
+-  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, O.padd(acc, m))
++  (FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}, (acc + m : U32))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_senc_go,AttesterSlashing_senc_sized,AttesterSlashing_serialize
+spec: serialize refuses a value whose size pass reports poison
+fault: the refusal test is removed (serialize always writes)
+why: refusal dropped
+-    case True{}: (o, O.refused())
+-    case False{}: AttesterSlashing_senc_put(n, AttesterSlashing_putk(O.out_new(n), 0, o))
++    case True{}: AttesterSlashing_senc_put(n, AttesterSlashing_putk(O.out_new(n), 0, o))
++    case False{}: AttesterSlashing_senc_put(n, AttesterSlashing_putk(O.out_new(n), 0, o))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_senc_out,AttesterSlashing_serialize
+spec: serialize refuses a value whose checked writer reports poison
+fault: the final poison test is dropped (the writer's flag is ignored)
+why: refusal dropped
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_senc_out,AttesterSlashing_serialize
+spec: same
+fault: the final poison test looks at the size n (already tested) instead of the writer's flag m
+why: wrong variable
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(O.is_poisoned(n), n, out))
+=== r3-p04-box-absent
+type: FuluAttesterSlashing
+ops: encode
+file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+sym: AttesterSlashing_senc_sized,AttesterSlashing_serialize
+spec: serialize tests the size pass's flag
+fault: the pre-write test looks at bit 30 (a size with only the poison bit 31 is not refused here)
+why: constant
+-  AttesterSlashing_senc_go(O.is_poisoned(n), n, o)
++  AttesterSlashing_senc_go(U32.is_le(1073741824, n), n, o)

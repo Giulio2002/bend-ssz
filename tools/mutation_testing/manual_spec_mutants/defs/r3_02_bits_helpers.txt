@@ -1,0 +1,559 @@
+## ROUND 3, area 2: shared helpers of src/obj.bend not mutated before: bit lists, tail-bit masks, boolean mask, cache depth, byte reads; and the bitvector / boolean validity of generated types
+=== r3-x01-high-bit
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+spec: the delimiter of a Bitlist is its highest set bit of the last byte: the bit count is 8 (len - 1) + position of that bit
+fault: the threshold for position 7 is v >= 129 (a last byte of exactly 128 has its delimiter taken as bit 6)
+why: threshold
+-pick(U32.is_ge(v, 128), 7,
++pick(U32.is_ge(v, 129), 7,
+=== r3-x01-high-bit
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+spec: same
+fault: the threshold for position 4 is v >= 17
+why: threshold
+-pick(U32.is_ge(v, 16), 4,
++pick(U32.is_ge(v, 17), 4,
+=== r3-x01-high-bit
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+spec: same
+fault: the last arm answers 1 for v = 1 (the delimiter of a one-bit... byte 0x01 is position 0)
+why: base case
+-pick(U32.is_ge(v, 2), 1, 0)
++pick(U32.is_ge(v, 2), 1, 1)
+=== r3-x01-high-bit
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+spec: same
+fault: the position-2 threshold tests v >= 5
+why: threshold
+-pick(U32.is_ge(v, 4), 2,
++pick(U32.is_ge(v, 5), 2,
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: clear_at,clear_bit,bits_clear,bits_from,bits_in
+spec: the decoded bits do not contain the delimiter
+fault: the delimiter is not cleared (the object holds the delimiter bit as data)
+why: clear skipped
+-    case Words{ws, +n}: (buf, Bits{clear_bit(ws, nbits), nbits})
++    case Words{ws, +n}: (buf, Bits{ws, nbits})
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: clear_at,clear_bit,bits_clear
+spec: same
+fault: the mask is OR-ed instead of cleared
+why: and-not / or
+-  Array.set(U32, a, i, (w .&. U32.not(m) : U32))
++  Array.set(U32, a, i, (w .|. m : U32))
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: clear_at,clear_bit,bits_clear
+spec: same
+fault: the mask position inside the word is k mod 8 (not k mod 32)
+why: position
+-clear_at(U32.shrn(k, 5n), M.shl_by(1, (k .&. 31 : U32)), Array.get(U32, ws, U32.shrn(k, 5n)))
++clear_at(U32.shrn(k, 5n), M.shl_by(1, (k .&. 7 : U32)), Array.get(U32, ws, U32.shrn(k, 5n)))
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: clear_at,clear_bit,bits_clear
+spec: same
+fault: the word of the delimiter is k >> 4
+why: word index
+-clear_at(U32.shrn(k, 5n), M.shl_by(1, (k .&. 31 : U32)), Array.get(U32, ws, U32.shrn(k, 5n)))
++clear_at(U32.shrn(k, 4n), M.shl_by(1, (k .&. 31 : U32)), Array.get(U32, ws, U32.shrn(k, 4n)))
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: bits_from,bits_in,bits_clear,high_bit
+spec: the bit count is 8 (len - 1) + position
+fault: the bit count is 8 len + position
+why: off by a byte
+-bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++bits_clear((8 * len + high_bit(last) : U32), copy_in(buf, off, len))
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: bits_from,bits_in,bits_clear,high_bit
+spec: same
+fault: the bit count adds one for the delimiter
+why: delimiter counted
+-bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++bits_clear((8 * (len - 1 : U32) + high_bit(last) + 1 : U32), copy_in(buf, off, len))
+=== r3-x02-bits-clear
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bits_in,bits_from
+spec: the delimiter is in the last byte of the window
+fault: the last byte is read at off + len (one past the window)
+why: index
+-bits_from(len, off, B.byte_at(buf, (off + len - 1 : U32)))
++bits_from(len, off, B.byte_at(buf, (off + len : U32)))
+=== r3-x03-bits-encode
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: w8_delim,put_bits,bits_size,put_bits_n
+spec: the encoding of a Bitlist is its bits and a delimiter bit at position k
+fault: the delimiter bit is at position k mod 4 inside its byte
+why: mask
+-M.shl_by(1, (k .&. 7 : U32))), w)
++M.shl_by(1, (k .&. 3 : U32))), w)
+=== r3-x03-bits-encode
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: w8_delim,put_bits,bits_size,put_bits_n
+spec: same
+fault: the delimiter byte is p + (k >> 3) + 1
+why: byte index
+-(w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++(w8(out, (p + U32.shrn(k, 3n) + 1 : U32), M.shl_by(1, (k .&. 7 : U32))), w)
+=== r3-x03-bits-encode
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: w8_delim,put_bits,bits_size,put_bits_n
+spec: same
+fault: the delimiter is written with a shift by 2 (value 2 << position)
+why: constant
+-(w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++(w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(2, (k .&. 7 : U32))), w)
+=== r3-x03-bits-encode
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: bits_size,put_bits_n,pbn
+spec: the size of a Bitlist of k bits is floor(k / 8) + 1
+fault: the size is floor(k / 8)
+why: delimiter byte dropped
+-    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
++    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) : U32))
+=== r3-x03-bits-encode
+type: bitlist_9
+ops: encode
+file: src/obj.bend
+sym: put_bits,bits_nbytes,bits_fin
+spec: the bits are written as ceil(k / 8) bytes
+fault: floor(k / 8) bytes are written (the last partial byte is dropped before the delimiter is ORed in)
+why: rounding
+-    case Bits{ws, +k}: bits_fin(k, w8_delim(p, k, put_words(out, p, Words{ws, bits_nbytes(k)})))
++    case Bits{ws, +k}: bits_fin(k, w8_delim(p, k, put_words(out, p, Words{ws, U32.shrn(k, 3n)})))
+=== r3-x04-tailmask
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_above_zero,bk_last,bits_ok,bk_cap
+spec: a Bitlist object is valid only if the bits of its last word past its length are zero (they would be hashed and encoded)
+fault: the mask for a length of 12 mod 32 tests bits 8..31 (bits 8..11, which are data, must be zero)
+why: mask constant
+-    case 12: U32.is_eq((x .&. 4294963200 : U32), 0)
++    case 12: U32.is_eq((x .&. 4294967040 : U32), 0)
+=== r3-x04-tailmask
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_above_zero,bk_last,bits_ok,bk_cap
+spec: same
+fault: the mask for a length of 27 mod 32 omits the top bit
+why: mask constant
+-    case 27: U32.is_eq((x .&. 4160749568 : U32), 0)
++    case 27: U32.is_eq((x .&. 2013265920 : U32), 0)
+=== r3-x04-tailmask
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_above_zero,bk_last,bits_ok,bk_cap
+spec: same
+fault: the mask for a length of 20 mod 32 is the mask of 21
+why: mask constant
+-    case 20: U32.is_eq((x .&. 4293918720 : U32), 0)
++    case 20: U32.is_eq((x .&. 4292870144 : U32), 0)
+=== r3-x04-tailmask
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_above_zero,bk_last,bits_ok,bk_cap
+spec: same
+fault: the mask for a length of 31 mod 32 tests nothing
+why: mask constant
+-    case _: U32.is_eq((x .&. 2147483648 : U32), 0)
++    case _: U32.is_eq((x .&. 0 : U32), 0)
+=== r3-x04-tailmask
+type: bitlist_9
+ops: root
+file: src/obj.bend
+sym: bits_above_zero,bk_last,bits_ok,bk_cap
+spec: same
+fault: the mask for a length of 3 mod 32 tests bits 4..31
+why: mask constant
+-    case 3: U32.is_eq((x .&. 4294967288 : U32), 0)
++    case 3: U32.is_eq((x .&. 4294967280 : U32), 0)
+=== r3-x05-bool-mask
+type: vec_bool_16
+ops: root,encode
+file: src/obj.bend
+sym: bo_go,bools_ok,bools_fin
+spec: a boolean is encoded as 0 or 1: a packed boolean collection holding any other byte is invalid
+fault: the first byte of every word may hold any value (mask 0xFEFEFEFF)
+why: mask constant
+-(x .&. 4278124286 : U32)
++(x .&. 4278124287 : U32)
+=== r3-x05-bool-mask
+type: vec_bool_16
+ops: root,encode
+file: src/obj.bend
+sym: bo_go,bools_ok,bools_fin
+spec: same
+fault: the top byte of every word may hold any value (mask 0x00FEFEFE)
+why: mask constant
+-(x .&. 4278124286 : U32)
++(x .&. 16711422 : U32)
+=== r3-x05-bool-mask
+type: vec_bool_16
+ops: root,encode
+file: src/obj.bend
+sym: bo_go,bools_ok,bools_fin
+spec: same
+fault: the second byte may hold 2 or 3 (mask 0xFEFEFCFE)... only the lowest bit of byte 1 is tested
+why: mask constant
+-(x .&. 4278124286 : U32)
++(x .&. 4278123774 : U32)
+=== r3-x05-bool-mask
+type: vec_bool_16
+ops: root,encode
+file: src/obj.bend
+sym: bo_go,bools_ok,bools_fin
+spec: same
+fault: the scan stops one word early (k - 1 words, the last word of the booleans is not tested)
+why: loop bound
+-bools_fin(n, ok, bo_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, True{}, Array.get(U32, ws, 0)))
++bools_fin(n, ok, bo_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, True{}, Array.get(U32, ws, 0)))
+=== r3-x05-bool-mask
+type: vec_bool_16
+ops: root,encode
+file: src/obj.bend
+sym: bo_go,bools_ok,bools_fin
+spec: same
+fault: the conjunction of the words is an or (one clean word makes the collection valid)
+why: and/or
+-Bool.and(acc, U32.is_eq((x .&. 4278124286 : U32), 0))
++Bool.or(acc, U32.is_eq((x .&. 4278124286 : U32), 0))
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: low_mask,pad_pick,ok_pad
+spec: the padding bits of the last byte of a Bitvector[N] are zero (N = 8 q + r: bits r..7)
+fault: for r = 3 the allowed mask is 15 (bit 3 may be set)
+why: constant
+-    case 3: 7
++    case 3: 15
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: low_mask,pad_pick,ok_pad
+spec: same
+fault: for r = 7 the allowed mask is 255
+why: constant
+-    case _: 127
++    case _: 255
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: low_mask,pad_pick,ok_pad
+spec: same
+fault: for r = 1 the allowed mask is 0 (bit 0 may not be set: a valid vector is refused)
+why: constant
+-    case 1: 1
++    case 1: 0
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: low_mask,pad_pick,ok_pad
+spec: same
+fault: for r = 5 the allowed mask is 63
+why: constant
+-    case 5: 31
++    case 5: 63
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: pad_pick,ok_pad
+spec: same
+fault: the padding test masks with the allowed bits (low_mask) instead of their complement
+why: not dropped
+-(buf, U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0))
++(buf, U32.is_eq((v .&. low_mask(r) : U32), 0))
+=== r3-x06-pad
+type: bitvector_9
+ops: decode
+file: src/obj.bend
+sym: ok_pad
+spec: the padding byte is the last byte of the vector (position pos)
+fault: the padding test reads the byte at pos + 1
+why: index
+-def ok_pad(buf: B.Buf, +pos: U32, +r: U32) -> B.Buf & Bool: pad_pick(r, B.byte_at(buf, pos))
++def ok_pad(buf: B.Buf, +pos: U32, +r: U32) -> B.Buf & Bool: pad_pick(r, B.byte_at(buf, (pos + 1 : U32)))
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bitlist_pick,bsel,ok_bitlist,bitlist_nz
+spec: a Bitlist whose last byte is zero (no delimiter) is invalid
+fault: an all-zero last byte is accepted
+why: branch value
+-(buf, bsel(U32.is_eq(v, 0), False{},
++(buf, bsel(U32.is_eq(v, 0), True{},
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bitlist_pick,bsel
+spec: a Bitlist of N max bits holds at most N bits
+fault: the limit is strict (a list of exactly N bits is refused)
+why: boundary
+-Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim))
++Nat.is_lt(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim))
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bitlist_pick,bsel
+spec: same
+fault: the bit count weight is 7 per byte
+why: constant
+-Nat.mul(8n, U32.to_nat((len - 1 : U32)))
++Nat.mul(7n, U32.to_nat((len - 1 : U32)))
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bitlist_pick,bsel
+spec: same
+fault: the delimiter position is not added (the limit is tested on 8 (len - 1))
+why: term dropped
+-Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v)))
++Nat.mul(8n, U32.to_nat((len - 1 : U32)))
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bitlist_pick,bsel
+spec: an unbounded Bitlist's bit count 8 (len - 1) + position must fit 32 bits: len - 1 < 2^29
+fault: the unbounded check is len - 1 <= 2^29 (the count 2^32 + position wraps)
+why: boundary
+-U32.is_lt((len - 1 : U32), 536870912)
++U32.is_le((len - 1 : U32), 536870912)
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: bsel,bitlist_pick
+spec: bsel c x y selects x when c holds
+fault: the selector swaps its arms
+why: arms
+-def bsel(c: Bool, x: Bool, y: Bool) -> Bool:
+-  match c:
+-    case True{}: x
+-    case False{}: y
++def bsel(c: Bool, x: Bool, y: Bool) -> Bool:
++  match c:
++    case True{}: y
++    case False{}: x
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: ok_bitlist,bitlist_nz
+spec: an empty window is not a Bitlist
+fault: a window of length 0 is non-empty (is_le(0, len))
+why: boundary
+-bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+=== r3-x07-bitlist-window
+type: bitlist_9
+ops: decode
+file: src/obj.bend
+sym: and_pair
+spec: a guarded child validation is conjoined with the earlier ones
+fault: the accumulated validity is or-ed with the child
+why: and/or
+-  (buf, Bool.and(acc, ok))
++  (buf, Bool.or(acc, ok))
+=== r3-x08-cache
+type: Fulu_list_Attestation_8
+ops: root
+file: src/obj.bend
+sym: cache_dok,pow2u,nat_u32
+spec: cached tree depth covers the leaves
+fault: a depth is accepted when 2^d < the array size (strict: an array exactly 2^d long is refused)
+why: boundary
+-    case True{}: U32.is_le(pow2u(d), c)
++    case True{}: U32.is_lt(pow2u(d), c)
+=== r3-x08-cache
+type: Fulu_list_Attestation_8
+ops: root
+file: src/obj.bend
+sym: cache_dok,pow2u,nat_u32
+spec: same
+fault: any depth below 32 is accepted whatever the array holds
+why: check dropped
+-    case True{}: U32.is_le(pow2u(d), c)
++    case True{}: True{}
+=== r3-x08-cache
+type: Fulu_list_Attestation_8
+ops: root
+file: src/obj.bend
+sym: cache_dok,pow2u,nat_u32
+spec: same
+fault: a depth of 32 or more is accepted
+why: arm
+-    case False{}: False{}
++    case False{}: True{}
+=== r3-x08-cache
+type: Fulu_list_Attestation_8
+ops: root
+file: src/obj.bend
+sym: pow2u,cache_dok
+spec: 2^0 = 1
+fault: pow2u 0 = 2
+why: base
+-    case 0n: 1
+-    case 1n+q: U32.shl(pow2u(q))
++    case 0n: 2
++    case 1n+q: U32.shl(pow2u(q))
+=== r3-x08-cache
+type: Fulu_list_Attestation_8
+ops: root
+file: src/obj.bend
+sym: nat_u32
+spec: nat_u32 d = d
+fault: nat_u32 counts by two
+why: step
+-    case 1n+q: (nat_u32(q) + 1 : U32)
++    case 1n+q: (nat_u32(q) + 2 : U32)
+=== r3-x09-unit
+type: Fulu_list_uint64_128
+ops: root
+file: src/obj.bend
+sym: unit_ok,words_ok
+spec: a packed list of 8-byte elements has a byte length that is a multiple of 8
+fault: the 8-byte case tests n mod 4
+why: mask
+-    case 8: U32.is_eq((n .&. 7 : U32), 0)
++    case 8: U32.is_eq((n .&. 3 : U32), 0)
+=== r3-x09-unit
+type: Fulu_list_uint64_128
+ops: root
+file: src/obj.bend
+sym: unit_ok,words_ok
+spec: a packed list of 32-byte elements has a byte length that is a multiple of 32
+fault: the 32-byte case tests n mod 16
+why: mask
+-    case 32: U32.is_eq((n .&. 31 : U32), 0)
++    case 32: U32.is_eq((n .&. 15 : U32), 0)
+=== r3-x09-unit
+type: Fulu_list_uint64_128
+ops: root
+file: src/obj.bend
+sym: unit_ok,words_ok
+spec: a packed list of 2-byte elements has an even byte length
+fault: the 2-byte case answers True
+why: check dropped
+-    case 2: U32.is_eq((n .&. 1 : U32), 0)
++    case 2: True{}
+=== r3-x10-mix-count
+type: proglist_uint128
+ops: root
+file: src/obj.bend
+sym: mix_count,mix_len,len_chunk
+spec: the length mixed into a packed list root is the element count: n / element size
+fault: the byte length is mixed in (no shift)
+why: shift dropped
+-(h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++(h, (Words{ws, n}, mix_len(hl, d, n)))
+=== r3-x10-mix-count
+type: proglist_uint128
+ops: root
+file: src/obj.bend
+sym: mix_count,mix_len,len_chunk
+spec: same
+fault: the shift is applied to the byte length plus one
+why: off by one
+-(h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++(h, (Words{ws, n}, mix_len(hl, d, U32.shrn((n + 1 : U32), shift))))
+=== r3-x11-reads
+type: Fulu_list_uint64_128
+ops: decode
+file: src/obj.bend
+sym: rd_u16,keep2,rd_u64,u64_of
+spec: a uint16 is the low two bytes of the word read at its offset
+fault: the read keeps one byte
+why: mask
+-  (buf, (v .&. 65535 : U32))
++  (buf, (v .&. 255 : U32))
+=== r3-x11-reads
+type: Fulu_list_uint64_128
+ops: decode
+file: src/obj.bend
+sym: u64_of,rd_u64
+spec: uint64 is little endian: the low word is read first
+fault: the two words of a uint64 are swapped
+why: endianness
+-  (buf, U64{lo, hi})
++  (buf, U64{hi, lo})
+=== r3-x11-reads
+type: boolean
+ops: decode
+file: src/obj.bend
+sym: bool_of,rd_bool,bool_ok_pick,ok_bool
+spec: a boolean is True iff its byte is 1 (0 is False; others are invalid and refused before the read)
+fault: the read answers True for every non-zero byte (designed equivalent after validation)
+why: validated window
+-  (buf, U32.is_eq(v, 1))
++  (buf, U32.is_lt(0, v))
+=== r3-x11-reads
+type: boolean
+ops: decode
+file: src/obj.bend
+sym: bool_ok_pick,ok_bool
+spec: a boolean byte of 2 or more is invalid
+fault: the validity bound is v <= 2
+why: boundary
+-  (buf, U32.is_le(v, 1))
++  (buf, U32.is_le(v, 2))
+=== r3-x11-reads
+type: boolean
+ops: decode
+file: src/obj.bend
+sym: bool_ok_pick,ok_bool
+spec: same
+fault: the validity bound is v < 1 (True refused)
+why: boundary
+-  (buf, U32.is_le(v, 1))
++  (buf, U32.is_lt(v, 1))

@@ -1,0 +1,375 @@
+## ROUND 3, area 1: the clean-chunk test (O.wcn), the clean copy (O.words_copy) and the tight-storage dispatch of the packed roots (crash-fix3, R2-02 b/c)
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_step,wcn_k,wcn_t,wr_size,words_root
+spec: hash_tree_root(bytes) hashes the zero-padded chunks of the value: a byte past the length inside the last chunk is part of the chunk, so storage with junk there must not hash as the value
+fault: a word that starts exactly at the length is exempt from the zero test (c <= rN instead of c < rN)
+why: boundary of the partial chunk
+-(ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++(ws, Bool.and(acc, Bool.or(Nat.is_le(c, rN), U32.is_eq(x, 0))))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_step,wcn_k,wcn_t,wr_size,words_root
+spec: same
+fault: the words of the chunk are accepted when ANY of them is clean (acc or-ed instead of and-ed)
+why: and/or
+-(ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++(ws, Bool.or(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_step,lc_s0,wcn_k,words_root
+spec: same
+fault: the first word of the chunk is tested against byte offset 4 instead of 0
+why: constant of the first step
+-lc_s1(q, rN, lc_step(rN, 0n, acc, lc_read(q, 0n, ws)))
++lc_s1(q, rN, lc_step(rN, 4n, acc, lc_read(q, 0n, ws)))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_step,lc_s3,wcn_k,words_root
+spec: same
+fault: the fourth word of the chunk is tested against byte offset 16 (word 3 starts at byte 12)
+why: constant of the step 3
+-lc_s4(q, rN, lc_step(rN, 12n, acc, lc_read(q, 3n, ws)))
++lc_s4(q, rN, lc_step(rN, 16n, acc, lc_read(q, 3n, ws)))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_step,lc_s7,wcn_k,words_root
+spec: same
+fault: the last word of the chunk (word 7, byte 28) is tested against offset 24
+why: constant of the step 7
+-lc_step(rN, 28n, acc, lc_read(q, 7n, ws))
++lc_step(rN, 24n, acc, lc_read(q, 7n, ws))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_s5,lc_read,wcn_k,words_root
+spec: same
+fault: word 5 of the chunk is never read (word 4 is read twice)
+why: read index
+-lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 5n, ws)))
++lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 4n, ws)))
+=== r3-w01-clean-chunk
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: lc_read,e8,wcn_k,words_root
+spec: same
+fault: the chunk base is 4 q words (not 8 q)
+why: chunk size in words
+-Array.get(U32, ws, U32.from_nat(Nat.add(e8(q), j)))
++Array.get(U32, ws, U32.from_nat(Nat.add(Nat.double(Nat.double(q)), j)))
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_tz,tail_zero,wcn_t,wcn_k
+spec: the bytes of the last word past the length are part of the last chunk
+fault: the partial word is accepted only when it is past the storage (the tail test is dropped)
+why: tail test dropped
+-(ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++(ws, U32.is_le(c, U32.shrn(n, 2n)))
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_tz,tail_zero,wcn_t,wcn_k
+spec: same
+fault: the storage test and the tail test are and-ed
+why: or/and
+-(ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++(ws, Bool.and(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_tz,tail_zero,wcn_t,wcn_k
+spec: same
+fault: the tail test uses n mod 2 (lengths 3 mod 4 are tested like 1 mod 4)
+why: mask width
+-(ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++(ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 1 : U32), x)))
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_c,wcn_t,wcn_k
+spec: same
+fault: when the partial word is unclean the test answers True (the dirty storage is hashed as it is)
+why: wrong branch value
+-    case True{}: lc_s0(q, rN, (ws, True{}))
+-    case False{}: (ws, False{})
++    case True{}: lc_s0(q, rN, (ws, True{}))
++    case False{}: (ws, True{})
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_c,wcn_t,wcn_k
+spec: same
+fault: when the partial word is clean the chunk words are not examined (answer True)
+why: wrong branch value
+-    case True{}: lc_s0(q, rN, (ws, True{}))
++    case True{}: (ws, True{})
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_k,e32,chunks_of
+spec: the last chunk q holds bytes 32 q .. 32 q + rN of the value: rN = n - 32 q
+fault: the remainder is n - 8 q (e8 instead of e32)
+why: chunk size in bytes
+-wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e8(q)), ws)
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: e32,wcn_k
+spec: same
+fault: e32 is only 16 x
+why: shift count
+-def e32(+x: Nat) -> Nat: Nat.double(Nat.double(e8(x)))
++def e32(+x: Nat) -> Nat: Nat.double(e8(x))
+=== r3-w02-partial-word
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wcn_k,chunks_of
+spec: an empty value has no chunk to test
+fault: with no chunk the clean test answers False (the empty value takes the copy path)
+why: base case value
+-    case 0n: (ws, True{})
++    case 0n: (ws, False{})
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_size,wr_cap,words_root
+spec: root of a valid object of tight storage equals the root of the same bytes in roomy storage
+fault: the capacity test compares chunks (not 8 words per chunk) with the storage
+why: unit
+-wr_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++wr_cap(Nat.is_le(chunks_of(n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_size,wr_cap,words_root
+spec: same
+fault: the capacity test is strict (a storage of exactly 8 words per chunk takes the slow path)
+why: boundary
+-wr_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++wr_cap(Nat.is_lt(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_cap,wr_fit,words_root
+spec: same
+fault: an object without chunk room skips the clean test and is treated as clean
+why: branch
+-    case False{}: wr_fit(False{}, hl, h, depth, n, sz, ws)
++    case False{}: wr_fit(True{}, hl, h, depth, n, sz, ws)
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_fit,wr_slow,words_root
+spec: same
+fault: a tight storage (ceil(n / 4) words exactly) counts as not covered (is_lt) and is hashed over w / 8 chunks
+why: boundary of ceil(n/4) <= w
+-case False{}: wr_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++case False{}: wr_slow(Nat.is_lt(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_fit,wr_slow,words_root
+spec: same
+fault: the covered test rounds down (n / 4 words instead of ceil(n / 4))
+why: rounding
+-case False{}: wr_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++case False{}: wr_slow(Nat.is_le(Nat.div(U32.to_nat(n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_slow,words_copy,wr_clean,words_root
+spec: same
+fault: the arms of the covered test are swapped (a covered object is clamped, an uncovered one is copied)
+why: arms
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+-    case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case True{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case False{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+=== r3-w03-dispatch
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_clean,wr_slow,words_root
+spec: same
+fault: the clean copy is not used: the digest is computed over the ORIGINAL storage
+why: wrong array
+-  wr_swap(ws, wr_cnt(hl, h, depth, n, out, chunks_of(n)))
++  wr_swap(ws, wr_cnt(hl, h, depth, n, ws, chunks_of(n)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: words_copy,cc_go,cc_fin,wr_clean
+spec: the clean copy holds all ceil(n / 4) words of the value
+fault: the copy moves floor(n / 4) words (a partial last word is lost)
+why: rounding
+-cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
++cc_fin(n, cc_go(Nat.div(U32.to_nat(n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: words_copy,cc_go,cc_fin,wr_clean
+spec: same
+fault: the copy moves one word more than the value has (junk past the length is copied in)
+why: rounding
+-cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
++cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 7n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cc_go,words_copy
+spec: same
+fault: each word is stored one slot late
+why: index
+-    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 1 : U32)))
++    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, (j + 1 : U32), x), Array.get(U32, ws, (j + 1 : U32)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cc_go,words_copy
+spec: same
+fault: the source index advances by 2
+why: stride
+-    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 1 : U32)))
++    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 2 : U32)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: cc_fin,words_copy,mask_last
+spec: the copy is clean: the unused bytes of the last word are zero
+fault: the last word is not masked
+why: mask dropped
+-  (mask_last(n, out), ws)
++  (out, ws)
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: words_copy,zeros_for
+spec: the copy has room for whole chunks
+fault: the copy is allocated for n - 1 bytes (one chunk less when n is a multiple of 32)
+why: room
+-cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
++cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for((n - 1 : U32)), Array.get(U32, ws, 0)))
+=== r3-w04-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_swap,wr_clean
+spec: the root call returns the object it was given
+fault: the object returned is the clean copy
+why: only observable through the object
+-    case Words{out, +n}: (h, (Words{ws, n}, d))
++    case Words{out, +n}: (h, (Words{out, n}, d))
+=== r3-w05-prog
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_size,wrp_cap,wrp_fit,wrp_slow,wrp_clean,words_root_prog
+spec: the progressive packed-bytes root has the same tight-storage rule as the binary one
+fault: the capacity test compares chunks with the storage
+why: unit
+-wrp_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, n, sz, ws)
++wrp_cap(Nat.is_le(chunks_of(n), U32.to_nat(sz)), hl, h, n, sz, ws)
+=== r3-w05-prog
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_fit,wrp_slow,words_root_prog
+spec: same
+fault: tight storage counts as uncovered (is_lt)
+why: boundary
+-case False{}: wrp_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)
++case False{}: wrp_slow(Nat.is_lt(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)
+=== r3-w05-prog
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_slow,wrp_clean,words_root_prog
+spec: same
+fault: the clean copy is not used
+why: wrong array
+-  wr_swap(ws, wrp_cnt(hl, h, n, out, chunks_of(n)))
++  wr_swap(ws, wrp_cnt(hl, h, n, ws, chunks_of(n)))
+=== r3-w05-prog
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_cap,wrp_fit,words_root_prog
+spec: same
+fault: an object without chunk room is treated as clean
+why: branch
+-    case False{}: wrp_fit(False{}, hl, h, n, sz, ws)
++    case False{}: wrp_fit(True{}, hl, h, n, sz, ws)
+=== r3-w05-prog
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_cnt,prog_root,words_root_prog
+spec: the progressive root hashes the chunks of the value
+fault: the chunk count passed to the progressive tree is the byte count
+why: unit
+-  mt_words(n, prog_root(hl, LWords{}, k, h, ws))
++  mt_words(n, prog_root(hl, LWords{}, U32.to_nat(n), h, ws))
+=== r3-w06-chunks
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunks_of,wr_cnt,wr_clean,wr_size
+spec: chunk count of n bytes is ceil(n / 32)
+fault: chunks_of adds 32 before dividing (a chunk more when n is a multiple of 32)
+why: rounding constant
+-Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
+=== r3-w06-chunks
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: chunks_of,wr_cnt,wr_clean,wr_size
+spec: same
+fault: chunks_of divides by 31
+why: constant
+-Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++Nat.div(Nat.add(U32.to_nat(n), 31n), 31n)
+=== r3-w06-chunks
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_cnt,mtree
+spec: an empty list has the zero root: no chunk is present when k = 0
+fault: the presence flag of the first leaf is 0 <= k (always true)
+why: flag
+-mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))

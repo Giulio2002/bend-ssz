@@ -1,0 +1,243 @@
+## ROUND 3, area 5: composite list kinds not mutated before (fixed-size elements: Withdrawal; variable-size: AttesterSlashing), the cell list storage checks
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_szf,l16_Withdrawal_size
+spec: the size of n fixed-size elements is n * 44, and a list whose storage cannot hold n elements is invalid
+fault: the size is n * 43
+why: constant
+-O.pick(U32.is_le(n, c), (n * 44 : U32), 2147483648)
++O.pick(U32.is_le(n, c), (n * 43 : U32), 2147483648)
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_szf,l16_Withdrawal_size
+spec: same
+fault: a list whose storage is smaller than its count is not poisoned (the size is n * 44 whatever the array holds)
+why: poison dropped
+-O.pick(U32.is_le(n, c), (n * 44 : U32), 2147483648)
++O.pick(U32.is_le(0, c), (n * 44 : U32), 2147483648)
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_szf,l16_Withdrawal_size
+spec: same
+fault: a list whose count equals its storage is poisoned (is_lt)
+why: boundary
+-O.pick(U32.is_le(n, c), (n * 44 : U32), 2147483648)
++O.pick(U32.is_lt(n, c), (n * 44 : U32), 2147483648)
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_pt,l16_Withdrawal_putn
+spec: element i is written at pos + 44 i
+fault: the last element (case 0n) is written at pos + 43 i
+why: stride
+-      (FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 44 : U32), v), arr)
++      (FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 43 : U32), v), arr)
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_pt,l16_Withdrawal_putn
+spec: same
+fault: the intermediate elements are written at pos + 44 i + 4
+why: stride
+-l16_Withdrawal_pt(q, (i + 1 : U32), pos, FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 44 : U32), v), Array.get(
++l16_Withdrawal_pt(q, (i + 1 : U32), pos, FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 44 + 4 : U32), v), Array.get(
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_ptn_fin,l16_Withdrawal_putn
+spec: the checked writer reports n * 44 bytes
+fault: it reports (n - 1) * 44 + 44 wrapped: n * 44 + 1
+why: count
+-  (out, (sq, (n * 44 : U32)))
++  (out, (sq, (n * 44 + 1 : U32)))
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_valid,l16_Withdrawal_va_cap
+spec: a List[Withdrawal, 16] with more than 16 elements is invalid
+fault: the limit is 17
+why: parameter
+-Bool.or(False{}, U32.is_le(n, 16))
++Bool.or(False{}, U32.is_le(n, 17))
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_valid,l16_Withdrawal_va_cap
+spec: a list whose storage cannot hold its count is invalid
+fault: the storage test is n < c
+why: boundary
+-Bool.and(ok, U32.is_le(n, c)))
++Bool.and(ok, U32.is_lt(n, c)))
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_valid,l16_Withdrawal_va_cap
+spec: same
+fault: the storage test is dropped
+why: conjunct dropped
+-Bool.and(ok, U32.is_le(n, c)))
++Bool.and(ok, True{}))
+=== r3-l01-fixed-elements
+type: Fulu_list_Withdrawal_16
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_pk,l16_Withdrawal_putk
+spec: an invalid list poisons the writer
+fault: an invalid list is written (the flag is ignored)
+why: poison dropped
+-    case True{}: l16_Withdrawal_putn(out, pos, o)
+-    case False{}: (out, (o, 2147483648))
++    case True{}: l16_Withdrawal_putn(out, pos, o)
++    case False{}: l16_Withdrawal_putn(out, pos, o)
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_fin,l1_AttesterSlashing_size
+spec: the size of a list of variable-size elements is 4 n offsets plus the sizes of the elements
+fault: the offset table is not counted
+why: term dropped
+-O.padd((4 * n : U32), m))
++O.padd(0, m))
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_nz,l1_AttesterSlashing_sz
+spec: the running size starts at 0
+fault: the running size starts at 1
+why: constant
+-l1_AttesterSlashing_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
++l1_AttesterSlashing_sz(U32.to_nat(n), 0, (arr, (1, O.BNone{}))))
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_ok,l1_AttesterSlashing_sz_cap,l1_AttesterSlashing_size
+spec: a list whose storage cannot hold its count is poisoned in the size pass
+fault: the storage test is n < c
+why: boundary
+-l1_AttesterSlashing_sz_ok(U32.is_le(n, c), arr, n)
++l1_AttesterSlashing_sz_ok(U32.is_lt(n, c), arr, n)
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_ok,l1_AttesterSlashing_sz_cap,l1_AttesterSlashing_size
+spec: same
+fault: the storage test is dropped (a claimed count with a smaller array is sized by its claim)
+why: check dropped
+-l1_AttesterSlashing_sz_ok(U32.is_le(n, c), arr, n)
++l1_AttesterSlashing_sz_ok(True{}, arr, n)
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_back,l1_AttesterSlashing_sz_one
+spec: every element's size is added to the running size
+fault: the element's size is dropped
+why: term dropped
+-l1_AttesterSlashing_sz_ret(O.padd(acc, m), Array.swap(
++l1_AttesterSlashing_sz_ret(acc, Array.swap(
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_pv_one,l1_AttesterSlashing_pv
+spec: the offset of element i is stored at slot 4 i
+fault: the offset slot is 4 i + 4
+why: slot
+-FuluAttesterSlashing_e.AttesterSlashing_bx_putv(out, pos, (4 * i : U32), cur, v)
++FuluAttesterSlashing_e.AttesterSlashing_bx_putv(out, pos, (4 * i + 4 : U32), cur, v)
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_pvn_nz,l1_AttesterSlashing_pv
+spec: the first element starts after the offset table: at 4 n
+fault: the first element starts at 4 n + 4
+why: constant
+-(arr, ((4 * n : U32), O.BNone{})))))
++(arr, ((4 * n + 4 : U32), O.BNone{})))))
+=== r3-l02-variable-elements
+type: Fulu_list_AttesterSlashing_1
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_nz
+spec: an empty list encodes to 0 bytes
+fault: an empty list is sized 4
+why: constant
+-    case True{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 0)
++    case True{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 4)
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set_w,l4096_b2048_set,l4096_b2048_put_at
+spec: the cell setter refuses a cell whose storage holds fewer than 512 words (R2-05)
+fault: the setter's storage test is 511 words
+why: boundary
+-U32.is_le(512, vc)), o, i, O.Words{vws, vn})
++U32.is_le(511, vc)), o, i, O.Words{vws, vn})
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set_w,l4096_b2048_set,l4096_b2048_put_at
+spec: same
+fault: the setter's storage test is strict (a cell with exactly 512 words is refused)
+why: boundary
+-U32.is_le(512, vc)), o, i, O.Words{vws, vn})
++U32.is_lt(512, vc)), o, i, O.Words{vws, vn})
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_app_w,l4096_b2048_append,l4096_b2048_grow
+spec: the cell appender refuses a cell whose storage holds fewer than 512 words (R2-05)
+fault: the appender's storage test is 256 words
+why: boundary
+-U32.is_le(512, vc)), o, n, O.Words{vws, vn})
++U32.is_le(256, vc)), o, n, O.Words{vws, vn})
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_app_w,l4096_b2048_append,l4096_b2048_grow
+spec: same
+fault: the appender's storage test is dropped
+why: conjunct dropped
+-Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
++Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), o, n, O.Words{vws, vn})
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_app_w,l4096_b2048_append,l4096_b2048_grow
+spec: the cell list holds at most 4096 cells
+fault: the appender's count limit is dropped (n < 4096 removed)
+why: conjunct dropped
+-Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
++Bool.and(U32.is_eq(vn, 2048), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
+=== r3-c01-cells-storage
+type: Fulu_list_bytevec_2048_4096
+ops: encode
+file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+sym: l4096_b2048_set_w,l4096_b2048_set
+spec: the setter refuses i >= n
+fault: the setter's index test is dropped (i < n removed)
+why: conjunct dropped
+-Bool.and(Bool.and(U32.is_lt(i, n), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, i, O.Words{vws, vn})
++Bool.and(U32.is_eq(vn, 2048), U32.is_le(512, vc)), o, i, O.Words{vws, vn})
