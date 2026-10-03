@@ -282,3 +282,16 @@ Generators (all in `codegen/proofs/slop/`, outputs `proofs/slop/validity/*_gener
 
 Equivalent, with the argument: a01 append-grow/01 makes room for n instead of n + 1 elements. `zeros_for` and `fit_sized` allocate a whole chunk of 8 words plus 8 words of slack, so the write at word n/4 is always inside the array (needed(n) is at least n/4 + 8 words, more than the index): no input differs.
 Limitations: the four v04 facades and s04/04 crash the pinned checker with the mutant in (an unmutated facade passes, 8 facades re-checked); their kill is shown on the module. Group (4) (List[Cell,4096] len/get/set at index 1, `O.words_blit`) waits for the crash fix on main. Baseline findings (valid vs root storage, absent attestation_1 accepted) are not pinned.
+
+## Manual spec-mutation audit, round 2 (cells: `List[Cell, 4096]` and the word blit)
+
+Generator `codegen/proofs/slop/cell_list_guards.py`, one law per module `proofs/slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_<tag>_generated.bend` (each under 25 s, the facade `FuluDataColumnSidecar_encode` 86 s), filed under `serialize_valid` (`<X>_serialize_vcoll_<p>_cell_<tag>`; the gate's serialize_valid shape now also accepts `T.p_len_of(` and `O.words_blit(`). Public counterexamples: `l4096_b2048_len` of 2047 cells answering 2048, `get(l, 0)` of 2047 bytes or the cell at index 1, `set(l, 1, c)` then `get(l, 1)` leaving the old cell, a wrong blit source length. Laws: `len` (`p_len_of` at 0, U-1, U, 2U-1, 2U, 2047 U, 4096 U), `get_0/get_1/get_end`, `set_get_0/set_get_1` (cell 0 unchanged, cell 1 as written, word 0 non-zero), `refuse_set_end/short/long/tight`, `refuse_app_short/long/tight/ok` (the length AND the storage of the cell are checked), `blit` (words 2 and 3 of the destination written, the source returned with its length, an empty source changes nothing).
+
+| fault | law | module | facade |
+|---|---|---|---|
+| a06-cells/08 (count divides by 2047) | `cell_len` | killed | killed |
+| a06-cells/09 (getter slices 2047 bytes) | `cell_get_0/1` | killed | killed |
+| a06-cells/10 (getter starts at 2048 (i + 1)) | `cell_get_0/1` | killed | killed |
+| a07-words-blit/04 (destination word base p) | `cell_blit`, `cell_set_get_1` | killed | killed |
+| a07-words-blit/07 (source length n + 1) | `cell_blit` | killed | killed |
+| guard probes (not in the audit): set accepts a short cell, set without the storage test, `i <= n` in set, append without the storage test | `refuse_set_short/tight/end`, `refuse_app_tight` | killed | not run |

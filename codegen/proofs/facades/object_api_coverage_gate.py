@@ -109,7 +109,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes)\(|T\.\w+_(?:append|set|get|len)\(', concl) is not None
+        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes|words_blit)\(|T\.\w+_(?:append|set|get|len|len_of)\(', concl) is not None
     if kind == 'decode_offsets':
         return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
     if kind == 'decode_first_offset':

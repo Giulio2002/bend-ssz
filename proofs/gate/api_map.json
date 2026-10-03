@@ -14271,6 +14271,66 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_blit_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_blit"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_get_0_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_get_0"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_get_1_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_get_1"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_get_end_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_get_end"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_len_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_len"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_app_long_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_app_long"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_app_ok_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_app_ok"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_app_short_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_app_short"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_app_tight_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_app_tight"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_set_end_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_set_end"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_set_long_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_set_long"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_set_short_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_set_short"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_refuse_set_tight_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_refuse_set_tight"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_set_get_0_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_set_get_0"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_set_get_1_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_set_get_1"
+    },
+    {
      "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
      "law": "DataColumnSidecar_serialize_vreject_default_valid"
     },
