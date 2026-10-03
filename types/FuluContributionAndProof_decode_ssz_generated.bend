@@ -46,8 +46,19 @@ def ContributionAndProof_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<
     case True{}: ContributionAndProof_some(ContributionAndProof_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ContributionAndProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>:
+def ContributionAndProof_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>:
   ContributionAndProof_built(size, ContributionAndProof_ok(buf, 0, size))
+
+def ContributionAndProof_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>:
+  match ok:
+    case True{}: ContributionAndProof_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ContributionAndProof_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>:
+  (buf, +n) = pair
+  ContributionAndProof_dwgo(U32.is_le(size, n), buf, size)
+
+def ContributionAndProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dwin(size, B.size(buf))
 
 def ContributionAndProof_build(buf: B.Buf, +size: U32) -> B.Buf & FuluContributionAndProof_d.ContributionAndProof: ContributionAndProof_read(buf, 0, size)
 

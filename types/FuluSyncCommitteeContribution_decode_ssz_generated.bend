@@ -62,8 +62,19 @@ def SyncCommitteeContribution_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & M
     case True{}: SyncCommitteeContribution_some(SyncCommitteeContribution_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SyncCommitteeContribution_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>:
+def SyncCommitteeContribution_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>:
   SyncCommitteeContribution_built(size, SyncCommitteeContribution_ok(buf, 0, size))
+
+def SyncCommitteeContribution_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>:
+  match ok:
+    case True{}: SyncCommitteeContribution_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SyncCommitteeContribution_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>:
+  (buf, +n) = pair
+  SyncCommitteeContribution_dwgo(U32.is_le(size, n), buf, size)
+
+def SyncCommitteeContribution_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>: SyncCommitteeContribution_dwin(size, B.size(buf))
 
 def SyncCommitteeContribution_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncCommitteeContribution_d.SyncCommitteeContribution: SyncCommitteeContribution_read(buf, 0, size)
 

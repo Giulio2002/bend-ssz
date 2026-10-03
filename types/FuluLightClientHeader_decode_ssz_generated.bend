@@ -66,8 +66,19 @@ def LightClientHeader_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: LightClientHeader_some(LightClientHeader_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def LightClientHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>:
+def LightClientHeader_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>:
   LightClientHeader_built(size, LightClientHeader_ok(buf, 0, size))
+
+def LightClientHeader_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>:
+  match ok:
+    case True{}: LightClientHeader_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientHeader_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>:
+  (buf, +n) = pair
+  LightClientHeader_dwgo(U32.is_le(size, n), buf, size)
+
+def LightClientHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>: LightClientHeader_dwin(size, B.size(buf))
 
 def LightClientHeader_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientHeader_d.LightClientHeader: LightClientHeader_read(buf, 0, size)
 

@@ -21,8 +21,19 @@ def proglist_uint256_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, 
     case True{}: proglist_uint256_some(pl_u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def proglist_uint256_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint256_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   proglist_uint256_built(size, pl_u256_ok(buf, 0, size))
+
+def proglist_uint256_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: proglist_uint256_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def proglist_uint256_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  proglist_uint256_dwgo(U32.is_le(size, n), buf, size)
+
+def proglist_uint256_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint256_dwin(size, B.size(buf))
 
 def proglist_uint256_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u256_read(buf, 0, size)
 

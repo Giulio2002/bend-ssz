@@ -18,8 +18,19 @@ def BlobIndex_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.U64>:
     case True{}: BlobIndex_some(uint64_r.u64_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def BlobIndex_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+def BlobIndex_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
   BlobIndex_built(size, uint64_r.u64_ok(buf, 0, size))
+
+def BlobIndex_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: BlobIndex_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def BlobIndex_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
+  (buf, +n) = pair
+  BlobIndex_dwgo(U32.is_le(size, n), buf, size)
+
+def BlobIndex_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: BlobIndex_dwin(size, B.size(buf))
 
 def BlobIndex_build(buf: B.Buf, +size: U32) -> B.Buf & O.U64: uint64_r.u64_read(buf, 0, size)
 

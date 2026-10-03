@@ -28,8 +28,19 @@ def vec_uint256_513_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O
     case True{}: vec_uint256_513_some(v513_u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def vec_uint256_513_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint256_513_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   vec_uint256_513_built(size, v513_u256_ok(buf, 0, size))
+
+def vec_uint256_513_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_uint256_513_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def vec_uint256_513_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  vec_uint256_513_dwgo(U32.is_le(size, n), buf, size)
+
+def vec_uint256_513_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_513_dwin(size, B.size(buf))
 
 def vec_uint256_513_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u256_read(buf, 0, size)
 

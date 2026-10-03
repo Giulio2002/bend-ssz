@@ -28,8 +28,19 @@ def ExecutionBranch_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O
     case True{}: ExecutionBranch_some(v4_b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ExecutionBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def ExecutionBranch_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   ExecutionBranch_built(size, v4_b32_ok(buf, 0, size))
+
+def ExecutionBranch_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: ExecutionBranch_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionBranch_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  ExecutionBranch_dwgo(U32.is_le(size, n), buf, size)
+
+def ExecutionBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: ExecutionBranch_dwin(size, B.size(buf))
 
 def ExecutionBranch_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_b32_read(buf, 0, size)
 

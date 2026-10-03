@@ -49,8 +49,19 @@ def MatrixEntry_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluM
     case True{}: MatrixEntry_some(MatrixEntry_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def MatrixEntry_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>:
+def MatrixEntry_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>:
   MatrixEntry_built(size, MatrixEntry_ok(buf, 0, size))
+
+def MatrixEntry_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>:
+  match ok:
+    case True{}: MatrixEntry_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def MatrixEntry_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>:
+  (buf, +n) = pair
+  MatrixEntry_dwgo(U32.is_le(size, n), buf, size)
+
+def MatrixEntry_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dwin(size, B.size(buf))
 
 def MatrixEntry_build(buf: B.Buf, +size: U32) -> B.Buf & FuluMatrixEntry_d.MatrixEntry: MatrixEntry_read(buf, 0, size)
 

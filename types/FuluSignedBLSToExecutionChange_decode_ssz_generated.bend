@@ -41,8 +41,19 @@ def SignedBLSToExecutionChange_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & 
     case True{}: SignedBLSToExecutionChange_some(SignedBLSToExecutionChange_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SignedBLSToExecutionChange_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>:
+def SignedBLSToExecutionChange_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>:
   SignedBLSToExecutionChange_built(size, SignedBLSToExecutionChange_ok(buf, 0, size))
+
+def SignedBLSToExecutionChange_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>:
+  match ok:
+    case True{}: SignedBLSToExecutionChange_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SignedBLSToExecutionChange_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>:
+  (buf, +n) = pair
+  SignedBLSToExecutionChange_dwgo(U32.is_le(size, n), buf, size)
+
+def SignedBLSToExecutionChange_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>: SignedBLSToExecutionChange_dwin(size, B.size(buf))
 
 def SignedBLSToExecutionChange_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange: SignedBLSToExecutionChange_read(buf, 0, size)
 

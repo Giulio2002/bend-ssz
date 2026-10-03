@@ -66,8 +66,19 @@ def LightClientOptimisticUpdate_built(+size: U32, pair: B.Buf & Bool) -> B.Buf &
     case True{}: LightClientOptimisticUpdate_some(LightClientOptimisticUpdate_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def LightClientOptimisticUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
+def LightClientOptimisticUpdate_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
   LightClientOptimisticUpdate_built(size, LightClientOptimisticUpdate_ok(buf, 0, size))
+
+def LightClientOptimisticUpdate_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
+  match ok:
+    case True{}: LightClientOptimisticUpdate_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientOptimisticUpdate_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
+  (buf, +n) = pair
+  LightClientOptimisticUpdate_dwgo(U32.is_le(size, n), buf, size)
+
+def LightClientOptimisticUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>: LightClientOptimisticUpdate_dwin(size, B.size(buf))
 
 def LightClientOptimisticUpdate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate: LightClientOptimisticUpdate_read(buf, 0, size)
 

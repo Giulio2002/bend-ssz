@@ -46,8 +46,19 @@ def Deposit_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluDepos
     case True{}: Deposit_some(Deposit_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Deposit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
+def Deposit_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
   Deposit_built(size, Deposit_ok(buf, 0, size))
+
+def Deposit_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
+  match ok:
+    case True{}: Deposit_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Deposit_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
+  (buf, +n) = pair
+  Deposit_dwgo(U32.is_le(size, n), buf, size)
+
+def Deposit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>: Deposit_dwin(size, B.size(buf))
 
 def Deposit_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDeposit_d.Deposit: Deposit_read(buf, 0, size)
 

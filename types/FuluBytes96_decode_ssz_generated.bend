@@ -125,8 +125,19 @@ def Bytes96_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: Bytes96_some(b96_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Bytes96_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+def Bytes96_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
   Bytes96_built(size, b96_ok(buf, 0, size))
+
+def Bytes96_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  match ok:
+    case True{}: Bytes96_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Bytes96_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  (buf, +n) = pair
+  Bytes96_dwgo(U32.is_le(size, n), buf, size)
+
+def Bytes96_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: Bytes96_dwin(size, B.size(buf))
 
 def Bytes96_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes96_d.Bytes96: b96_read(buf, 0, size)
 

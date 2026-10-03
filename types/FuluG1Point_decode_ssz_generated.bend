@@ -19,8 +19,19 @@ def G1Point_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: G1Point_some(FuluBytes48_r.b48_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def G1Point_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+def G1Point_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   G1Point_built(size, FuluBytes48_r.b48_ok(buf, 0, size))
+
+def G1Point_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: G1Point_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def G1Point_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  G1Point_dwgo(U32.is_le(size, n), buf, size)
+
+def G1Point_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dwin(size, B.size(buf))
 
 def G1Point_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: FuluBytes48_r.b48_read(buf, 0, size)
 

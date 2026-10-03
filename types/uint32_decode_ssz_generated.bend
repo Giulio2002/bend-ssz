@@ -28,8 +28,19 @@ def uint32_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, U32>:
     case True{}: uint32_some(u32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def uint32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+def uint32_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   uint32_built(size, u32_ok(buf, 0, size))
+
+def uint32_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  match ok:
+    case True{}: uint32_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def uint32_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +n) = pair
+  uint32_dwgo(U32.is_le(size, n), buf, size)
+
+def uint32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint32_dwin(size, B.size(buf))
 
 def uint32_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u32_read(buf, 0, size)
 

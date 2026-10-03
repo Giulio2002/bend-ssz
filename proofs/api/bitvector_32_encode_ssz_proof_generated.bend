@@ -11,6 +11,8 @@ import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/generic_specs_generated.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
 import ../obj/spec_bits_generated.bend as P0_FB
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_bitvector_32_generated.bend as P0_DW_bitvector_32
 import ../obj/spec_gcodec_bitvector_32_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

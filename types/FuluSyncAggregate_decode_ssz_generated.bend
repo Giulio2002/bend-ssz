@@ -47,8 +47,19 @@ def SyncAggregate_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Ful
     case True{}: SyncAggregate_some(SyncAggregate_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SyncAggregate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+def SyncAggregate_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
   SyncAggregate_built(size, SyncAggregate_ok(buf, 0, size))
+
+def SyncAggregate_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+  match ok:
+    case True{}: SyncAggregate_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SyncAggregate_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+  (buf, +n) = pair
+  SyncAggregate_dwgo(U32.is_le(size, n), buf, size)
+
+def SyncAggregate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>: SyncAggregate_dwin(size, B.size(buf))
 
 def SyncAggregate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncAggregate_d.SyncAggregate: SyncAggregate_read(buf, 0, size)
 

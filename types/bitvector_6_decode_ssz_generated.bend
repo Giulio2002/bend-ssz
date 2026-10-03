@@ -33,8 +33,19 @@ def bitvector_6_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitve
     case True{}: bitvector_6_some(bv6_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_6_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+def bitvector_6_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
   bitvector_6_built(size, bv6_ok(buf, 0, size))
+
+def bitvector_6_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+  match ok:
+    case True{}: bitvector_6_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_6_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>:
+  (buf, +n) = pair
+  bitvector_6_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_6_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>: bitvector_6_dwin(size, B.size(buf))
 
 def bitvector_6_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_6_d.Bitvector6: bv6_read(buf, 0, size)
 

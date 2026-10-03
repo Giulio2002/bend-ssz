@@ -50,8 +50,19 @@ def SingleAttestation_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: SingleAttestation_some(SingleAttestation_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SingleAttestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>:
+def SingleAttestation_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>:
   SingleAttestation_built(size, SingleAttestation_ok(buf, 0, size))
+
+def SingleAttestation_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>:
+  match ok:
+    case True{}: SingleAttestation_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SingleAttestation_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>:
+  (buf, +n) = pair
+  SingleAttestation_dwgo(U32.is_le(size, n), buf, size)
+
+def SingleAttestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>: SingleAttestation_dwin(size, B.size(buf))
 
 def SingleAttestation_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSingleAttestation_d.SingleAttestation: SingleAttestation_read(buf, 0, size)
 

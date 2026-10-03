@@ -54,8 +54,19 @@ def ProgressiveSingleListContainerTestStruct_built(+size: U32, pair: B.Buf & Boo
     case True{}: ProgressiveSingleListContainerTestStruct_some(ProgressiveSingleListContainerTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ProgressiveSingleListContainerTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>:
+def ProgressiveSingleListContainerTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>:
   ProgressiveSingleListContainerTestStruct_built(size, ProgressiveSingleListContainerTestStruct_ok(buf, 0, size))
+
+def ProgressiveSingleListContainerTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>:
+  match ok:
+    case True{}: ProgressiveSingleListContainerTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveSingleListContainerTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>:
+  (buf, +n) = pair
+  ProgressiveSingleListContainerTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def ProgressiveSingleListContainerTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>: ProgressiveSingleListContainerTestStruct_dwin(size, B.size(buf))
 
 def ProgressiveSingleListContainerTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct: ProgressiveSingleListContainerTestStruct_read(buf, 0, size)
 

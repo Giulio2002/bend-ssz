@@ -19,6 +19,8 @@ import ../../proofs/compact/found_generated.bend as P0_FD
 import ../obj/arr_copy_generated.bend as P0_AC
 import ../obj/arr_emit_generated.bend as P0_AE
 import ../obj/arr_enc_generated.bend as P0_AN
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluDeposit_generated.bend as P0_DW_FuluDeposit
 import ../obj/spec_codec_Deposit_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
@@ -28,6 +30,7 @@ import ../../src/obj.bend as P2_O
 import ../slop/alignment/Deposit_flag_generated.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
+import ../obj/decode_window_library_generated.bend as P3_DWL
 import ../slop/offsets/Deposit_reported_size_generated.bend as P3_PRV
 import ../../src/obj.bend as P4_O
 import ../slop/validity/fulu_Deposit_fields_generated.bend as P4_PRV

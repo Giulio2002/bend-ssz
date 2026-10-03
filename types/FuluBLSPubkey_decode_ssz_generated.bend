@@ -19,8 +19,19 @@ def BLSPubkey_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluByt
     case True{}: BLSPubkey_some(FuluBytes48_r.b48_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def BLSPubkey_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+def BLSPubkey_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   BLSPubkey_built(size, FuluBytes48_r.b48_ok(buf, 0, size))
+
+def BLSPubkey_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: BLSPubkey_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def BLSPubkey_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  BLSPubkey_dwgo(U32.is_le(size, n), buf, size)
+
+def BLSPubkey_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: BLSPubkey_dwin(size, B.size(buf))
 
 def BLSPubkey_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: FuluBytes48_r.b48_read(buf, 0, size)
 

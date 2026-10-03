@@ -300,8 +300,19 @@ def ProgressiveBitsStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe
     case True{}: ProgressiveBitsStruct_some(ProgressiveBitsStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
+def ProgressiveBitsStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
   ProgressiveBitsStruct_built(size, ProgressiveBitsStruct_ok(buf, 0, size))
+
+def ProgressiveBitsStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
+  match ok:
+    case True{}: ProgressiveBitsStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveBitsStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
+  (buf, +n) = pair
+  ProgressiveBitsStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dwin(size, B.size(buf))
 
 def ProgressiveBitsStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct: ProgressiveBitsStruct_read(buf, 0, size)
 

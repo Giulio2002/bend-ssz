@@ -123,8 +123,19 @@ def DataColumnSidecar_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: DataColumnSidecar_some(DataColumnSidecar_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def DataColumnSidecar_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
+def DataColumnSidecar_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
   DataColumnSidecar_built(size, DataColumnSidecar_ok(buf, 0, size))
+
+def DataColumnSidecar_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
+  match ok:
+    case True{}: DataColumnSidecar_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def DataColumnSidecar_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
+  (buf, +n) = pair
+  DataColumnSidecar_dwgo(U32.is_le(size, n), buf, size)
+
+def DataColumnSidecar_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>: DataColumnSidecar_dwin(size, B.size(buf))
 
 def DataColumnSidecar_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar: DataColumnSidecar_read(buf, 0, size)
 

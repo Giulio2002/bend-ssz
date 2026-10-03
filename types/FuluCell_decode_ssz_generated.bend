@@ -28,8 +28,19 @@ def Cell_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Words>:
     case True{}: Cell_some(b2048_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Cell_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def Cell_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   Cell_built(size, b2048_ok(buf, 0, size))
+
+def Cell_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: Cell_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Cell_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  Cell_dwgo(U32.is_le(size, n), buf, size)
+
+def Cell_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Cell_dwin(size, B.size(buf))
 
 def Cell_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: b2048_read(buf, 0, size)
 

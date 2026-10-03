@@ -28,8 +28,19 @@ def boolean_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Bool>:
     case True{}: boolean_some(bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def boolean_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>:
+def boolean_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>:
   boolean_built(size, bool_ok(buf, 0, size))
+
+def boolean_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>:
+  match ok:
+    case True{}: boolean_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def boolean_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Bool>:
+  (buf, +n) = pair
+  boolean_dwgo(U32.is_le(size, n), buf, size)
+
+def boolean_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>: boolean_dwin(size, B.size(buf))
 
 def boolean_build(buf: B.Buf, +size: U32) -> B.Buf & Bool: bool_read(buf, 0, size)
 

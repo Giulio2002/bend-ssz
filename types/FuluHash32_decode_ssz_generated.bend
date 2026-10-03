@@ -19,8 +19,19 @@ def Hash32_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes3
     case True{}: Hash32_some(FuluBytes32_r.b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Hash32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+def Hash32_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   Hash32_built(size, FuluBytes32_r.b32_ok(buf, 0, size))
+
+def Hash32_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  match ok:
+    case True{}: Hash32_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Hash32_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  (buf, +n) = pair
+  Hash32_dwgo(U32.is_le(size, n), buf, size)
+
+def Hash32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Hash32_dwin(size, B.size(buf))
 
 def Hash32_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes32_d.Bytes32: FuluBytes32_r.b32_read(buf, 0, size)
 

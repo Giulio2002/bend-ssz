@@ -33,8 +33,19 @@ def bitvector_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitve
     case True{}: bitvector_2_some(bv2_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+def bitvector_2_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
   bitvector_2_built(size, bv2_ok(buf, 0, size))
+
+def bitvector_2_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+  match ok:
+    case True{}: bitvector_2_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_2_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+  (buf, +n) = pair
+  bitvector_2_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>: bitvector_2_dwin(size, B.size(buf))
 
 def bitvector_2_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_2_d.Bitvector2: bv2_read(buf, 0, size)
 

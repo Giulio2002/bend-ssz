@@ -19,8 +19,19 @@ def PayloadId_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluByt
     case True{}: PayloadId_some(FuluBytes8_r.b8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def PayloadId_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>:
+def PayloadId_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>:
   PayloadId_built(size, FuluBytes8_r.b8_ok(buf, 0, size))
+
+def PayloadId_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>:
+  match ok:
+    case True{}: PayloadId_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def PayloadId_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>:
+  (buf, +n) = pair
+  PayloadId_dwgo(U32.is_le(size, n), buf, size)
+
+def PayloadId_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>: PayloadId_dwin(size, B.size(buf))
 
 def PayloadId_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes8_d.Bytes8: FuluBytes8_r.b8_read(buf, 0, size)
 

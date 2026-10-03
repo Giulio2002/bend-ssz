@@ -61,8 +61,19 @@ def Bytes32_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: Bytes32_some(b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Bytes32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+def Bytes32_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   Bytes32_built(size, b32_ok(buf, 0, size))
+
+def Bytes32_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  match ok:
+    case True{}: Bytes32_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Bytes32_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  (buf, +n) = pair
+  Bytes32_dwgo(U32.is_le(size, n), buf, size)
+
+def Bytes32_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dwin(size, B.size(buf))
 
 def Bytes32_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes32_d.Bytes32: b32_read(buf, 0, size)
 

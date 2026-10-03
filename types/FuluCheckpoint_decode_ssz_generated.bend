@@ -40,8 +40,19 @@ def Checkpoint_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluCh
     case True{}: Checkpoint_some(Checkpoint_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Checkpoint_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+def Checkpoint_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
   Checkpoint_built(size, Checkpoint_ok(buf, 0, size))
+
+def Checkpoint_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+  match ok:
+    case True{}: Checkpoint_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Checkpoint_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+  (buf, +n) = pair
+  Checkpoint_dwgo(U32.is_le(size, n), buf, size)
+
+def Checkpoint_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dwin(size, B.size(buf))
 
 def Checkpoint_build(buf: B.Buf, +size: U32) -> B.Buf & FuluCheckpoint_d.Checkpoint: Checkpoint_read(buf, 0, size)
 

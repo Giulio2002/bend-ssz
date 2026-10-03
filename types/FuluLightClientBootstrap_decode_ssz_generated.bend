@@ -66,8 +66,19 @@ def LightClientBootstrap_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<
     case True{}: LightClientBootstrap_some(LightClientBootstrap_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def LightClientBootstrap_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
+def LightClientBootstrap_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
   LightClientBootstrap_built(size, LightClientBootstrap_ok(buf, 0, size))
+
+def LightClientBootstrap_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
+  match ok:
+    case True{}: LightClientBootstrap_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientBootstrap_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
+  (buf, +n) = pair
+  LightClientBootstrap_dwgo(U32.is_le(size, n), buf, size)
+
+def LightClientBootstrap_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>: LightClientBootstrap_dwin(size, B.size(buf))
 
 def LightClientBootstrap_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientBootstrap_d.LightClientBootstrap: LightClientBootstrap_read(buf, 0, size)
 

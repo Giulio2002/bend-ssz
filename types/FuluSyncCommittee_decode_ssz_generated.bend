@@ -40,8 +40,19 @@ def SyncCommittee_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Ful
     case True{}: SyncCommittee_some(SyncCommittee_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SyncCommittee_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>:
+def SyncCommittee_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>:
   SyncCommittee_built(size, SyncCommittee_ok(buf, 0, size))
+
+def SyncCommittee_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>:
+  match ok:
+    case True{}: SyncCommittee_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SyncCommittee_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>:
+  (buf, +n) = pair
+  SyncCommittee_dwgo(U32.is_le(size, n), buf, size)
+
+def SyncCommittee_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>: SyncCommittee_dwin(size, B.size(buf))
 
 def SyncCommittee_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncCommittee_d.SyncCommittee: SyncCommittee_read(buf, 0, size)
 

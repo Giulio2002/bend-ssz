@@ -108,8 +108,19 @@ def LightClientUpdate_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: LightClientUpdate_some(LightClientUpdate_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def LightClientUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
+def LightClientUpdate_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
   LightClientUpdate_built(size, LightClientUpdate_ok(buf, 0, size))
+
+def LightClientUpdate_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
+  match ok:
+    case True{}: LightClientUpdate_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientUpdate_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>:
+  (buf, +n) = pair
+  LightClientUpdate_dwgo(U32.is_le(size, n), buf, size)
+
+def LightClientUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>: LightClientUpdate_dwin(size, B.size(buf))
 
 def LightClientUpdate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientUpdate_d.LightClientUpdate: LightClientUpdate_read(buf, 0, size)
 

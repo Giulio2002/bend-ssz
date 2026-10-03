@@ -19,8 +19,19 @@ def NodeID_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, uint256_d.
     case True{}: NodeID_some(uint256_r.u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def NodeID_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+def NodeID_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
   NodeID_built(size, uint256_r.u256_ok(buf, 0, size))
+
+def NodeID_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+  match ok:
+    case True{}: NodeID_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def NodeID_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+  (buf, +n) = pair
+  NodeID_dwgo(U32.is_le(size, n), buf, size)
+
+def NodeID_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>: NodeID_dwin(size, B.size(buf))
 
 def NodeID_build(buf: B.Buf, +size: U32) -> B.Buf & uint256_d.Uint256: uint256_r.u256_read(buf, 0, size)
 

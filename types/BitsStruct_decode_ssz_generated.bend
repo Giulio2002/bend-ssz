@@ -117,8 +117,19 @@ def BitsStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, BitsSt
     case True{}: BitsStruct_some(BitsStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def BitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
+def BitsStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
   BitsStruct_built(size, BitsStruct_ok(buf, 0, size))
+
+def BitsStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
+  match ok:
+    case True{}: BitsStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def BitsStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
+  (buf, +n) = pair
+  BitsStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def BitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>: BitsStruct_dwin(size, B.size(buf))
 
 def BitsStruct_build(buf: B.Buf, +size: U32) -> B.Buf & BitsStruct_d.BitsStruct: BitsStruct_read(buf, 0, size)
 

@@ -19,8 +19,19 @@ def VersionedHash_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Ful
     case True{}: VersionedHash_some(FuluBytes32_r.b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def VersionedHash_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+def VersionedHash_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   VersionedHash_built(size, FuluBytes32_r.b32_ok(buf, 0, size))
+
+def VersionedHash_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  match ok:
+    case True{}: VersionedHash_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def VersionedHash_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  (buf, +n) = pair
+  VersionedHash_dwgo(U32.is_le(size, n), buf, size)
+
+def VersionedHash_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dwin(size, B.size(buf))
 
 def VersionedHash_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes32_d.Bytes32: FuluBytes32_r.b32_read(buf, 0, size)
 

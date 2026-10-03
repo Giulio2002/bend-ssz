@@ -19,8 +19,19 @@ def KZGProof_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluByte
     case True{}: KZGProof_some(FuluBytes48_r.b48_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def KZGProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+def KZGProof_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   KZGProof_built(size, FuluBytes48_r.b48_ok(buf, 0, size))
+
+def KZGProof_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: KZGProof_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def KZGProof_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  KZGProof_dwgo(U32.is_le(size, n), buf, size)
+
+def KZGProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dwin(size, B.size(buf))
 
 def KZGProof_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: FuluBytes48_r.b48_read(buf, 0, size)
 

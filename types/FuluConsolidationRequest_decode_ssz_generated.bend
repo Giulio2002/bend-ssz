@@ -45,8 +45,19 @@ def ConsolidationRequest_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<
     case True{}: ConsolidationRequest_some(ConsolidationRequest_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ConsolidationRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+def ConsolidationRequest_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
   ConsolidationRequest_built(size, ConsolidationRequest_ok(buf, 0, size))
+
+def ConsolidationRequest_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+  match ok:
+    case True{}: ConsolidationRequest_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ConsolidationRequest_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+  (buf, +n) = pair
+  ConsolidationRequest_dwgo(U32.is_le(size, n), buf, size)
+
+def ConsolidationRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>: ConsolidationRequest_dwin(size, B.size(buf))
 
 def ConsolidationRequest_build(buf: B.Buf, +size: U32) -> B.Buf & FuluConsolidationRequest_d.ConsolidationRequest: ConsolidationRequest_read(buf, 0, size)
 

@@ -45,8 +45,19 @@ def uint128_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, uint128_d
     case True{}: uint128_some(u128_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def uint128_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+def uint128_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
   uint128_built(size, u128_ok(buf, 0, size))
+
+def uint128_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+  match ok:
+    case True{}: uint128_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def uint128_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+  (buf, +n) = pair
+  uint128_dwgo(U32.is_le(size, n), buf, size)
+
+def uint128_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>: uint128_dwin(size, B.size(buf))
 
 def uint128_build(buf: B.Buf, +size: U32) -> B.Buf & uint128_d.Uint128: u128_read(buf, 0, size)
 

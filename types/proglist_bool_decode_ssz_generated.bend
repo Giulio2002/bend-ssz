@@ -41,8 +41,19 @@ def proglist_bool_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.W
     case True{}: proglist_bool_some(pl_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def proglist_bool_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_bool_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   proglist_bool_built(size, pl_bool_ok(buf, 0, size))
+
+def proglist_bool_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: proglist_bool_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def proglist_bool_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  proglist_bool_dwgo(U32.is_le(size, n), buf, size)
+
+def proglist_bool_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_bool_dwin(size, B.size(buf))
 
 def proglist_bool_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_bool_read(buf, 0, size)
 

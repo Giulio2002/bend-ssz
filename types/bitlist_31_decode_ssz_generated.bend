@@ -21,8 +21,19 @@ def bitlist_31_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bits
     case True{}: bitlist_31_some(bits31_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitlist_31_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+def bitlist_31_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
   bitlist_31_built(size, bits31_ok(buf, 0, size))
+
+def bitlist_31_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  match ok:
+    case True{}: bitlist_31_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitlist_31_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
+  (buf, +n) = pair
+  bitlist_31_dwgo(U32.is_le(size, n), buf, size)
+
+def bitlist_31_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_31_dwin(size, B.size(buf))
 
 def bitlist_31_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits31_read(buf, 0, size)
 

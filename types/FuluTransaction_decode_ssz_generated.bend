@@ -30,8 +30,19 @@ def Transaction_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Wor
     case True{}: Transaction_some(bl1073741824_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Transaction_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def Transaction_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   Transaction_built(size, bl1073741824_ok(buf, 0, size))
+
+def Transaction_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: Transaction_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Transaction_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  Transaction_dwgo(U32.is_le(size, n), buf, size)
+
+def Transaction_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dwin(size, B.size(buf))
 
 def Transaction_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: bl1073741824_read(buf, 0, size)
 

@@ -56,8 +56,19 @@ def DepositRequest_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Fu
     case True{}: DepositRequest_some(DepositRequest_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def DepositRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>:
+def DepositRequest_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>:
   DepositRequest_built(size, DepositRequest_ok(buf, 0, size))
+
+def DepositRequest_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>:
+  match ok:
+    case True{}: DepositRequest_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def DepositRequest_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>:
+  (buf, +n) = pair
+  DepositRequest_dwgo(U32.is_le(size, n), buf, size)
+
+def DepositRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>: DepositRequest_dwin(size, B.size(buf))
 
 def DepositRequest_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDepositRequest_d.DepositRequest: DepositRequest_read(buf, 0, size)
 

@@ -46,8 +46,19 @@ def WithdrawalRequest_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: WithdrawalRequest_some(WithdrawalRequest_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def WithdrawalRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>:
+def WithdrawalRequest_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>:
   WithdrawalRequest_built(size, WithdrawalRequest_ok(buf, 0, size))
+
+def WithdrawalRequest_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>:
+  match ok:
+    case True{}: WithdrawalRequest_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def WithdrawalRequest_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>:
+  (buf, +n) = pair
+  WithdrawalRequest_dwgo(U32.is_le(size, n), buf, size)
+
+def WithdrawalRequest_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>: WithdrawalRequest_dwin(size, B.size(buf))
 
 def WithdrawalRequest_build(buf: B.Buf, +size: U32) -> B.Buf & FuluWithdrawalRequest_d.WithdrawalRequest: WithdrawalRequest_read(buf, 0, size)
 

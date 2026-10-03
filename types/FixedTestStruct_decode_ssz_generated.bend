@@ -44,8 +44,19 @@ def FixedTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, F
     case True{}: FixedTestStruct_some(FixedTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def FixedTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>:
+def FixedTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>:
   FixedTestStruct_built(size, FixedTestStruct_ok(buf, 0, size))
+
+def FixedTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>:
+  match ok:
+    case True{}: FixedTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def FixedTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>:
+  (buf, +n) = pair
+  FixedTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def FixedTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>: FixedTestStruct_dwin(size, B.size(buf))
 
 def FixedTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & FixedTestStruct_d.FixedTestStruct: FixedTestStruct_read(buf, 0, size)
 

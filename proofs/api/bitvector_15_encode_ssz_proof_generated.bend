@@ -16,6 +16,8 @@ import ../../spec/bit_packing.bend as P0_SB
 import ../../spec/bitfields.bend as P0_SBF
 import ../obj/spec_bits_generated.bend as P0_FB
 import ../../proofs/compact/bits_generated.bend as P0_BT
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_bitvector_15_generated.bend as P0_DW_bitvector_15
 import ../obj/sub_bitvector_15_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

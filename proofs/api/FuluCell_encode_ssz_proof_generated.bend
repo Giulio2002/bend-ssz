@@ -14,6 +14,8 @@ import ../../proofs/compact/found_generated.bend as P0_FD
 import ../obj/arr_copy_generated.bend as P0_AC
 import ../obj/arr_emit_generated.bend as P0_AE
 import ../obj/tree_bytes.bend as P0_TB
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluCell_generated.bend as P0_DW_FuluCell
 import ../obj/spec_codec_Cell_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

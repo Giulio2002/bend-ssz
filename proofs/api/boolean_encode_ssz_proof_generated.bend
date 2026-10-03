@@ -14,6 +14,11 @@ import ../../proofs/word_facts.bend as P0_WF
 import ../../spec/primitives.bend as P0_SP
 import ../../proofs/integer_encoding.bend as P0_IE
 import ../obj/spec_fixed.bend as P0_SF
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluBytes1_generated.bend as P0_DW_FuluBytes1
+import ../../proofs/obj/decode_window_FuluParticipationFlags_generated.bend as P0_DW_FuluParticipationFlags
+import ../../proofs/obj/decode_window_boolean_generated.bend as P0_DW_boolean
+import ../../proofs/obj/decode_window_uint8_generated.bend as P0_DW_uint8
 import ../obj/spec_small_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
@@ -27,6 +32,8 @@ import ../../proofs/compact/found_generated.bend as P1_F
 import ../obj/spec_fixed.bend as P1_SF
 import ../obj/sub_pack_generated.bend as P1_SP2
 import ../obj/word_mul_generated.bend as P1_WM
+import ../../proofs/obj/decode_window_library_generated.bend as P1_DWL
+import ../../proofs/obj/decode_window_boolean_generated.bend as P1_DW_boolean
 import ../obj/sub_boolean_generated.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O

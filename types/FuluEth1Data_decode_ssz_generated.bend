@@ -44,8 +44,19 @@ def Eth1Data_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluEth1
     case True{}: Eth1Data_some(Eth1Data_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Eth1Data_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+def Eth1Data_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
   Eth1Data_built(size, Eth1Data_ok(buf, 0, size))
+
+def Eth1Data_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+  match ok:
+    case True{}: Eth1Data_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Eth1Data_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+  (buf, +n) = pair
+  Eth1Data_dwgo(U32.is_le(size, n), buf, size)
+
+def Eth1Data_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dwin(size, B.size(buf))
 
 def Eth1Data_build(buf: B.Buf, +size: U32) -> B.Buf & FuluEth1Data_d.Eth1Data: Eth1Data_read(buf, 0, size)
 

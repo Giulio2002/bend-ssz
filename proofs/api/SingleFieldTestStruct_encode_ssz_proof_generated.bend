@@ -18,6 +18,8 @@ import ../../src/primitives.bend as P0_I
 import ../../proofs/compact/bits_generated.bend as P0_BT
 import ../../proofs/integer_encoding.bend as P0_IE
 import ../../spec/schema.bend as P0_SSC
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_SingleFieldTestStruct_generated.bend as P0_DW_SingleFieldTestStruct
 import ../obj/sub_SingleFieldTestStruct_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

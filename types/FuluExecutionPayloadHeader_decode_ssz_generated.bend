@@ -156,8 +156,19 @@ def ExecutionPayloadHeader_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Mayb
     case True{}: ExecutionPayloadHeader_some(ExecutionPayloadHeader_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ExecutionPayloadHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
+def ExecutionPayloadHeader_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
   ExecutionPayloadHeader_built(size, ExecutionPayloadHeader_ok(buf, 0, size))
+
+def ExecutionPayloadHeader_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
+  match ok:
+    case True{}: ExecutionPayloadHeader_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionPayloadHeader_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
+  (buf, +n) = pair
+  ExecutionPayloadHeader_dwgo(U32.is_le(size, n), buf, size)
+
+def ExecutionPayloadHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>: ExecutionPayloadHeader_dwin(size, B.size(buf))
 
 def ExecutionPayloadHeader_build(buf: B.Buf, +size: U32) -> B.Buf & FuluExecutionPayloadHeader_d.ExecutionPayloadHeader: ExecutionPayloadHeader_read(buf, 0, size)
 

@@ -39,8 +39,19 @@ def HistoricalSummary_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: HistoricalSummary_some(HistoricalSummary_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def HistoricalSummary_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>:
+def HistoricalSummary_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>:
   HistoricalSummary_built(size, HistoricalSummary_ok(buf, 0, size))
+
+def HistoricalSummary_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>:
+  match ok:
+    case True{}: HistoricalSummary_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def HistoricalSummary_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>:
+  (buf, +n) = pair
+  HistoricalSummary_dwgo(U32.is_le(size, n), buf, size)
+
+def HistoricalSummary_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>: HistoricalSummary_dwin(size, B.size(buf))
 
 def HistoricalSummary_build(buf: B.Buf, +size: U32) -> B.Buf & FuluHistoricalSummary_d.HistoricalSummary: HistoricalSummary_read(buf, 0, size)
 

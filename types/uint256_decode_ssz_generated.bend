@@ -61,8 +61,19 @@ def uint256_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, uint256_d
     case True{}: uint256_some(u256_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def uint256_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+def uint256_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
   uint256_built(size, u256_ok(buf, 0, size))
+
+def uint256_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+  match ok:
+    case True{}: uint256_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def uint256_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
+  (buf, +n) = pair
+  uint256_dwgo(U32.is_le(size, n), buf, size)
+
+def uint256_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>: uint256_dwin(size, B.size(buf))
 
 def uint256_build(buf: B.Buf, +size: U32) -> B.Buf & uint256_d.Uint256: u256_read(buf, 0, size)
 

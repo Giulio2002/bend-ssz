@@ -38,8 +38,19 @@ def HistoricalBatch_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, F
     case True{}: HistoricalBatch_some(HistoricalBatch_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def HistoricalBatch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>:
+def HistoricalBatch_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>:
   HistoricalBatch_built(size, HistoricalBatch_ok(buf, 0, size))
+
+def HistoricalBatch_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>:
+  match ok:
+    case True{}: HistoricalBatch_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def HistoricalBatch_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>:
+  (buf, +n) = pair
+  HistoricalBatch_dwgo(U32.is_le(size, n), buf, size)
+
+def HistoricalBatch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>: HistoricalBatch_dwin(size, B.size(buf))
 
 def HistoricalBatch_build(buf: B.Buf, +size: U32) -> B.Buf & FuluHistoricalBatch_d.HistoricalBatch: HistoricalBatch_read(buf, 0, size)
 

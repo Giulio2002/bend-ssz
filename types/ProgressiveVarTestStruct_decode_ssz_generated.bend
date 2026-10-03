@@ -94,8 +94,19 @@ def ProgressiveVarTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Ma
     case True{}: ProgressiveVarTestStruct_some(ProgressiveVarTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ProgressiveVarTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+def ProgressiveVarTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
   ProgressiveVarTestStruct_built(size, ProgressiveVarTestStruct_ok(buf, 0, size))
+
+def ProgressiveVarTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+  match ok:
+    case True{}: ProgressiveVarTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveVarTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+  (buf, +n) = pair
+  ProgressiveVarTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def ProgressiveVarTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>: ProgressiveVarTestStruct_dwin(size, B.size(buf))
 
 def ProgressiveVarTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveVarTestStruct_d.ProgressiveVarTestStruct: ProgressiveVarTestStruct_read(buf, 0, size)
 

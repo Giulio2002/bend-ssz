@@ -225,8 +225,19 @@ def ProgressiveComplexTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf 
     case True{}: ProgressiveComplexTestStruct_some(ProgressiveComplexTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ProgressiveComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+def ProgressiveComplexTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
   ProgressiveComplexTestStruct_built(size, ProgressiveComplexTestStruct_ok(buf, 0, size))
+
+def ProgressiveComplexTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+  match ok:
+    case True{}: ProgressiveComplexTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveComplexTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+  (buf, +n) = pair
+  ProgressiveComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def ProgressiveComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dwin(size, B.size(buf))
 
 def ProgressiveComplexTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct: ProgressiveComplexTestStruct_read(buf, 0, size)
 

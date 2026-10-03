@@ -97,8 +97,19 @@ def LightClientFinalityUpdate_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & M
     case True{}: LightClientFinalityUpdate_some(LightClientFinalityUpdate_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def LightClientFinalityUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>:
+def LightClientFinalityUpdate_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>:
   LightClientFinalityUpdate_built(size, LightClientFinalityUpdate_ok(buf, 0, size))
+
+def LightClientFinalityUpdate_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>:
+  match ok:
+    case True{}: LightClientFinalityUpdate_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientFinalityUpdate_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>:
+  (buf, +n) = pair
+  LightClientFinalityUpdate_dwgo(U32.is_le(size, n), buf, size)
+
+def LightClientFinalityUpdate_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>: LightClientFinalityUpdate_dwin(size, B.size(buf))
 
 def LightClientFinalityUpdate_build(buf: B.Buf, +size: U32) -> B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate: LightClientFinalityUpdate_read(buf, 0, size)
 

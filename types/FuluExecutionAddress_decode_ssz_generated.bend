@@ -19,8 +19,19 @@ def ExecutionAddress_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, 
     case True{}: ExecutionAddress_some(FuluBytes20_r.b20_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ExecutionAddress_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>:
+def ExecutionAddress_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>:
   ExecutionAddress_built(size, FuluBytes20_r.b20_ok(buf, 0, size))
+
+def ExecutionAddress_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>:
+  match ok:
+    case True{}: ExecutionAddress_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionAddress_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>:
+  (buf, +n) = pair
+  ExecutionAddress_dwgo(U32.is_le(size, n), buf, size)
+
+def ExecutionAddress_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>: ExecutionAddress_dwin(size, B.size(buf))
 
 def ExecutionAddress_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes20_d.Bytes20: FuluBytes20_r.b20_read(buf, 0, size)
 

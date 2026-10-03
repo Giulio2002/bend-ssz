@@ -19,8 +19,19 @@ def DomainType_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBy
     case True{}: DomainType_some(FuluBytes4_r.b4_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def DomainType_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+def DomainType_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
   DomainType_built(size, FuluBytes4_r.b4_ok(buf, 0, size))
+
+def DomainType_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  match ok:
+    case True{}: DomainType_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def DomainType_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  (buf, +n) = pair
+  DomainType_dwgo(U32.is_le(size, n), buf, size)
+
+def DomainType_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: DomainType_dwin(size, B.size(buf))
 
 def DomainType_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes4_d.Bytes4: FuluBytes4_r.b4_read(buf, 0, size)
 

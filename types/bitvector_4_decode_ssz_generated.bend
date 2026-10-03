@@ -19,8 +19,19 @@ def bitvector_4_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Fulu_
     case True{}: bitvector_4_some(Fulu_bitvector_4_r.bv4_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
+def bitvector_4_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
   bitvector_4_built(size, Fulu_bitvector_4_r.bv4_ok(buf, 0, size))
+
+def bitvector_4_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
+  match ok:
+    case True{}: bitvector_4_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_4_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>:
+  (buf, +n) = pair
+  bitvector_4_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_4_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>: bitvector_4_dwin(size, B.size(buf))
 
 def bitvector_4_build(buf: B.Buf, +size: U32) -> B.Buf & Fulu_bitvector_4_d.Bitvector4: Fulu_bitvector_4_r.bv4_read(buf, 0, size)
 

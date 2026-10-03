@@ -18,8 +18,19 @@ def ValidatorIndex_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.
     case True{}: ValidatorIndex_some(uint64_r.u64_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ValidatorIndex_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+def ValidatorIndex_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
   ValidatorIndex_built(size, uint64_r.u64_ok(buf, 0, size))
+
+def ValidatorIndex_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: ValidatorIndex_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ValidatorIndex_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
+  (buf, +n) = pair
+  ValidatorIndex_dwgo(U32.is_le(size, n), buf, size)
+
+def ValidatorIndex_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: ValidatorIndex_dwin(size, B.size(buf))
 
 def ValidatorIndex_build(buf: B.Buf, +size: U32) -> B.Buf & O.U64: uint64_r.u64_read(buf, 0, size)
 

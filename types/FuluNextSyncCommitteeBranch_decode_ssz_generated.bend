@@ -18,8 +18,19 @@ def NextSyncCommitteeBranch_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & May
     case True{}: NextSyncCommitteeBranch_some(FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def NextSyncCommitteeBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def NextSyncCommitteeBranch_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   NextSyncCommitteeBranch_built(size, FuluCurrentSyncCommitteeBranch_r.v6_b32_ok(buf, 0, size))
+
+def NextSyncCommitteeBranch_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: NextSyncCommitteeBranch_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def NextSyncCommitteeBranch_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  NextSyncCommitteeBranch_dwgo(U32.is_le(size, n), buf, size)
+
+def NextSyncCommitteeBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: NextSyncCommitteeBranch_dwin(size, B.size(buf))
 
 def NextSyncCommitteeBranch_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, 0, size)
 

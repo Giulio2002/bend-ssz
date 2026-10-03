@@ -21,8 +21,19 @@ def proglist_uint64_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O
     case True{}: proglist_uint64_some(pl_u64_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def proglist_uint64_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def proglist_uint64_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   proglist_uint64_built(size, pl_u64_ok(buf, 0, size))
+
+def proglist_uint64_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: proglist_uint64_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def proglist_uint64_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  proglist_uint64_dwgo(U32.is_le(size, n), buf, size)
+
+def proglist_uint64_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint64_dwin(size, B.size(buf))
 
 def proglist_uint64_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: pl_u64_read(buf, 0, size)
 

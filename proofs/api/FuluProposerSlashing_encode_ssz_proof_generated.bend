@@ -18,6 +18,8 @@ import ../obj/spec_bits_generated.bend as P0_FB
 import ../../proofs/compact/found_generated.bend as P0_FD
 import ../obj/arr_copy_generated.bend as P0_AC
 import ../obj/arr_emit_generated.bend as P0_AE
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluProposerSlashing_generated.bend as P0_DW_FuluProposerSlashing
 import ../obj/spec_codec_ProposerSlashing_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
@@ -27,6 +29,7 @@ import ../../src/obj.bend as P2_O
 import ../slop/alignment/ProposerSlashing_flag_generated.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
+import ../obj/decode_window_library_generated.bend as P3_DWL
 import ../slop/offsets/ProposerSlashing_reported_size_generated.bend as P3_PRV
 import ../../src/obj.bend as P4_O
 import ../slop/validity/fulu_ProposerSlashing_fields_generated.bend as P4_PRV

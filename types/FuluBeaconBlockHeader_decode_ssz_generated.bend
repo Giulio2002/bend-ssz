@@ -52,8 +52,19 @@ def BeaconBlockHeader_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: BeaconBlockHeader_some(BeaconBlockHeader_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def BeaconBlockHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
+def BeaconBlockHeader_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
   BeaconBlockHeader_built(size, BeaconBlockHeader_ok(buf, 0, size))
+
+def BeaconBlockHeader_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
+  match ok:
+    case True{}: BeaconBlockHeader_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def BeaconBlockHeader_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
+  (buf, +n) = pair
+  BeaconBlockHeader_dwgo(U32.is_le(size, n), buf, size)
+
+def BeaconBlockHeader_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>: BeaconBlockHeader_dwin(size, B.size(buf))
 
 def BeaconBlockHeader_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader: BeaconBlockHeader_read(buf, 0, size)
 

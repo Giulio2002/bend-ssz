@@ -28,8 +28,19 @@ def vec_uint128_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.W
     case True{}: vec_uint128_2_some(v2_u128_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def vec_uint128_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def vec_uint128_2_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   vec_uint128_2_built(size, v2_u128_ok(buf, 0, size))
+
+def vec_uint128_2_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_uint128_2_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def vec_uint128_2_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  vec_uint128_2_dwgo(U32.is_le(size, n), buf, size)
+
+def vec_uint128_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_2_dwin(size, B.size(buf))
 
 def vec_uint128_2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u128_read(buf, 0, size)
 

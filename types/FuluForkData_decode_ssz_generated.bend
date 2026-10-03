@@ -41,8 +41,19 @@ def ForkData_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluFork
     case True{}: ForkData_some(ForkData_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ForkData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
+def ForkData_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
   ForkData_built(size, ForkData_ok(buf, 0, size))
+
+def ForkData_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
+  match ok:
+    case True{}: ForkData_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ForkData_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
+  (buf, +n) = pair
+  ForkData_dwgo(U32.is_le(size, n), buf, size)
+
+def ForkData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>: ForkData_dwin(size, B.size(buf))
 
 def ForkData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluForkData_d.ForkData: ForkData_read(buf, 0, size)
 

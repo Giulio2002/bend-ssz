@@ -28,8 +28,19 @@ def uint8_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, U32>:
     case True{}: uint8_some(u8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def uint8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+def uint8_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   uint8_built(size, u8_ok(buf, 0, size))
+
+def uint8_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  match ok:
+    case True{}: uint8_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def uint8_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +n) = pair
+  uint8_dwgo(U32.is_le(size, n), buf, size)
+
+def uint8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint8_dwin(size, B.size(buf))
 
 def uint8_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u8_read(buf, 0, size)
 

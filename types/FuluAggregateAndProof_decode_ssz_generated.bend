@@ -66,8 +66,19 @@ def AggregateAndProof_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1,
     case True{}: AggregateAndProof_some(AggregateAndProof_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def AggregateAndProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>:
+def AggregateAndProof_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>:
   AggregateAndProof_built(size, AggregateAndProof_ok(buf, 0, size))
+
+def AggregateAndProof_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>:
+  match ok:
+    case True{}: AggregateAndProof_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def AggregateAndProof_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>:
+  (buf, +n) = pair
+  AggregateAndProof_dwgo(U32.is_le(size, n), buf, size)
+
+def AggregateAndProof_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>: AggregateAndProof_dwin(size, B.size(buf))
 
 def AggregateAndProof_build(buf: B.Buf, +size: U32) -> B.Buf & FuluAggregateAndProof_d.AggregateAndProof: AggregateAndProof_read(buf, 0, size)
 

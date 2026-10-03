@@ -21,6 +21,8 @@ import ../obj/arr_vec_generated.bend as P0_AV
 import ../../proofs/compact/arith.bend as P0_A
 import ../../spec/nat_bytes.bend as P0_NB
 import ../obj/vfits.bend as P0_VFT
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluHistoricalBatch_generated.bend as P0_DW_FuluHistoricalBatch
 import ../obj/spec_arr_HistoricalBatch_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

@@ -77,8 +77,19 @@ def Bytes48_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: Bytes48_some(b48_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Bytes48_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+def Bytes48_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   Bytes48_built(size, b48_ok(buf, 0, size))
+
+def Bytes48_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: Bytes48_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Bytes48_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +n) = pair
+  Bytes48_dwgo(U32.is_le(size, n), buf, size)
+
+def Bytes48_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: Bytes48_dwin(size, B.size(buf))
 
 def Bytes48_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes48_d.Bytes48: b48_read(buf, 0, size)
 

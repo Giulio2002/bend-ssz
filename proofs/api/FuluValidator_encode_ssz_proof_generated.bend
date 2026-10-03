@@ -18,6 +18,8 @@ import ../../proofs/compact/found_generated.bend as P0_FD
 import ../../proofs/compact/bits_generated.bend as P0_BT
 import ../../src/primitives.bend as P0_I
 import ../obj/word_mul_generated.bend as P0_WM
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluValidator_generated.bend as P0_DW_FuluValidator
 import ../obj/spec_rec_Validator_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

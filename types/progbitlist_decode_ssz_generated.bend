@@ -21,8 +21,19 @@ def progbitlist_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Bit
     case True{}: progbitlist_some(pbits_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def progbitlist_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+def progbitlist_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
   progbitlist_built(size, pbits_ok(buf, 0, size))
+
+def progbitlist_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  match ok:
+    case True{}: progbitlist_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def progbitlist_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
+  (buf, +n) = pair
+  progbitlist_dwgo(U32.is_le(size, n), buf, size)
+
+def progbitlist_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: progbitlist_dwin(size, B.size(buf))
 
 def progbitlist_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: pbits_read(buf, 0, size)
 

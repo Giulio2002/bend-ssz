@@ -39,8 +39,19 @@ def SigningData_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluS
     case True{}: SigningData_some(SigningData_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SigningData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
+def SigningData_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
   SigningData_built(size, SigningData_ok(buf, 0, size))
+
+def SigningData_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
+  match ok:
+    case True{}: SigningData_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SigningData_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
+  (buf, +n) = pair
+  SigningData_dwgo(U32.is_le(size, n), buf, size)
+
+def SigningData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>: SigningData_dwin(size, B.size(buf))
 
 def SigningData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSigningData_d.SigningData: SigningData_read(buf, 0, size)
 

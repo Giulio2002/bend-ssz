@@ -18,8 +18,19 @@ def ParticipationFlags_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1
     case True{}: ParticipationFlags_some(uint8_r.u8_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ParticipationFlags_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+def ParticipationFlags_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   ParticipationFlags_built(size, uint8_r.u8_ok(buf, 0, size))
+
+def ParticipationFlags_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  match ok:
+    case True{}: ParticipationFlags_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ParticipationFlags_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +n) = pair
+  ParticipationFlags_dwgo(U32.is_le(size, n), buf, size)
+
+def ParticipationFlags_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: ParticipationFlags_dwin(size, B.size(buf))
 
 def ParticipationFlags_build(buf: B.Buf, +size: U32) -> B.Buf & U32: uint8_r.u8_read(buf, 0, size)
 

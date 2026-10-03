@@ -80,8 +80,19 @@ def Attestation_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluA
     case True{}: Attestation_some(Attestation_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Attestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
+def Attestation_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
   Attestation_built(size, Attestation_ok(buf, 0, size))
+
+def Attestation_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
+  match ok:
+    case True{}: Attestation_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Attestation_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
+  (buf, +n) = pair
+  Attestation_dwgo(U32.is_le(size, n), buf, size)
+
+def Attestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>: Attestation_dwin(size, B.size(buf))
 
 def Attestation_build(buf: B.Buf, +size: U32) -> B.Buf & FuluAttestation_d.Attestation: Attestation_read(buf, 0, size)
 

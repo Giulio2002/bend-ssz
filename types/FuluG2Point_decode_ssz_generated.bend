@@ -19,8 +19,19 @@ def G2Point_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: G2Point_some(FuluBytes96_r.b96_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def G2Point_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+def G2Point_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
   G2Point_built(size, FuluBytes96_r.b96_ok(buf, 0, size))
+
+def G2Point_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  match ok:
+    case True{}: G2Point_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def G2Point_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  (buf, +n) = pair
+  G2Point_dwgo(U32.is_le(size, n), buf, size)
+
+def G2Point_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: G2Point_dwin(size, B.size(buf))
 
 def G2Point_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBytes96_d.Bytes96: FuluBytes96_r.b96_read(buf, 0, size)
 

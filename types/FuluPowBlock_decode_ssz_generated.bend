@@ -45,8 +45,19 @@ def PowBlock_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluPowB
     case True{}: PowBlock_some(PowBlock_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def PowBlock_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+def PowBlock_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
   PowBlock_built(size, PowBlock_ok(buf, 0, size))
+
+def PowBlock_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+  match ok:
+    case True{}: PowBlock_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def PowBlock_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+  (buf, +n) = pair
+  PowBlock_dwgo(U32.is_le(size, n), buf, size)
+
+def PowBlock_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>: PowBlock_dwin(size, B.size(buf))
 
 def PowBlock_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPowBlock_d.PowBlock: PowBlock_read(buf, 0, size)
 

@@ -33,8 +33,19 @@ def bitvector_17_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitv
     case True{}: bitvector_17_some(bv17_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_17_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+def bitvector_17_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
   bitvector_17_built(size, bv17_ok(buf, 0, size))
+
+def bitvector_17_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+  match ok:
+    case True{}: bitvector_17_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_17_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+  (buf, +n) = pair
+  bitvector_17_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_17_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>: bitvector_17_dwin(size, B.size(buf))
 
 def bitvector_17_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_17_d.Bitvector17: bv17_read(buf, 0, size)
 

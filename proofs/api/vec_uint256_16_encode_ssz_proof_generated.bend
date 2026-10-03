@@ -13,6 +13,8 @@ import ../obj/spec_bits_generated.bend as P0_FB
 import ../../proofs/compact/found_generated.bend as P0_FD
 import ../obj/arr_copy_generated.bend as P0_AC
 import ../obj/arr_emit_generated.bend as P0_AE
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_vec_uint256_16_generated.bend as P0_DW_vec_uint256_16
 import ../obj/spec_gcodec_vec_uint256_16_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

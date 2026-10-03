@@ -69,8 +69,19 @@ def PendingAttestation_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1
     case True{}: PendingAttestation_some(PendingAttestation_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def PendingAttestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>:
+def PendingAttestation_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>:
   PendingAttestation_built(size, PendingAttestation_ok(buf, 0, size))
+
+def PendingAttestation_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>:
+  match ok:
+    case True{}: PendingAttestation_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def PendingAttestation_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>:
+  (buf, +n) = pair
+  PendingAttestation_dwgo(U32.is_le(size, n), buf, size)
+
+def PendingAttestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>: PendingAttestation_dwin(size, B.size(buf))
 
 def PendingAttestation_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPendingAttestation_d.PendingAttestation: PendingAttestation_read(buf, 0, size)
 

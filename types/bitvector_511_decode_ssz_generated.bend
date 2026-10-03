@@ -93,8 +93,19 @@ def bitvector_511_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bit
     case True{}: bitvector_511_some(bv511_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_511_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>:
+def bitvector_511_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>:
   bitvector_511_built(size, bv511_ok(buf, 0, size))
+
+def bitvector_511_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>:
+  match ok:
+    case True{}: bitvector_511_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_511_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>:
+  (buf, +n) = pair
+  bitvector_511_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_511_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>: bitvector_511_dwin(size, B.size(buf))
 
 def bitvector_511_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_511_d.Bitvector511: bv511_read(buf, 0, size)
 

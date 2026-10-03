@@ -38,8 +38,19 @@ def SmallTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, S
     case True{}: SmallTestStruct_some(SmallTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SmallTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+def SmallTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
   SmallTestStruct_built(size, SmallTestStruct_ok(buf, 0, size))
+
+def SmallTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+  match ok:
+    case True{}: SmallTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SmallTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+  (buf, +n) = pair
+  SmallTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def SmallTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dwin(size, B.size(buf))
 
 def SmallTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & SmallTestStruct_d.SmallTestStruct: SmallTestStruct_read(buf, 0, size)
 

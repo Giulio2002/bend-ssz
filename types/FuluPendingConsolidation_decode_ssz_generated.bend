@@ -38,8 +38,19 @@ def PendingConsolidation_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<
     case True{}: PendingConsolidation_some(PendingConsolidation_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def PendingConsolidation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
+def PendingConsolidation_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
   PendingConsolidation_built(size, PendingConsolidation_ok(buf, 0, size))
+
+def PendingConsolidation_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
+  match ok:
+    case True{}: PendingConsolidation_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def PendingConsolidation_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
+  (buf, +n) = pair
+  PendingConsolidation_dwgo(U32.is_le(size, n), buf, size)
+
+def PendingConsolidation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>: PendingConsolidation_dwin(size, B.size(buf))
 
 def PendingConsolidation_build(buf: B.Buf, +size: U32) -> B.Buf & FuluPendingConsolidation_d.PendingConsolidation: PendingConsolidation_read(buf, 0, size)
 

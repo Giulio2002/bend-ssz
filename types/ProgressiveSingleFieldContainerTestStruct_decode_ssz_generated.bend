@@ -34,8 +34,19 @@ def ProgressiveSingleFieldContainerTestStruct_built(+size: U32, pair: B.Buf & Bo
     case True{}: ProgressiveSingleFieldContainerTestStruct_some(ProgressiveSingleFieldContainerTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ProgressiveSingleFieldContainerTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
+def ProgressiveSingleFieldContainerTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
   ProgressiveSingleFieldContainerTestStruct_built(size, ProgressiveSingleFieldContainerTestStruct_ok(buf, 0, size))
+
+def ProgressiveSingleFieldContainerTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
+  match ok:
+    case True{}: ProgressiveSingleFieldContainerTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveSingleFieldContainerTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>:
+  (buf, +n) = pair
+  ProgressiveSingleFieldContainerTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def ProgressiveSingleFieldContainerTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>: ProgressiveSingleFieldContainerTestStruct_dwin(size, B.size(buf))
 
 def ProgressiveSingleFieldContainerTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct: ProgressiveSingleFieldContainerTestStruct_read(buf, 0, size)
 

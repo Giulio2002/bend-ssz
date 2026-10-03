@@ -28,8 +28,19 @@ def FinalityBranch_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.
     case True{}: FinalityBranch_some(v7_b32_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def FinalityBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def FinalityBranch_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   FinalityBranch_built(size, v7_b32_ok(buf, 0, size))
+
+def FinalityBranch_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: FinalityBranch_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def FinalityBranch_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  FinalityBranch_dwgo(U32.is_le(size, n), buf, size)
+
+def FinalityBranch_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: FinalityBranch_dwin(size, B.size(buf))
 
 def FinalityBranch_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v7_b32_read(buf, 0, size)
 

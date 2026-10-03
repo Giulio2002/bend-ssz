@@ -97,8 +97,19 @@ def CompatibleUnionABCA_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&
     case True{}: CompatibleUnionABCA_some(CompatibleUnionABCA_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
+def CompatibleUnionABCA_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
   CompatibleUnionABCA_built(size, CompatibleUnionABCA_ok(buf, 0, size))
+
+def CompatibleUnionABCA_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
+  match ok:
+    case True{}: CompatibleUnionABCA_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def CompatibleUnionABCA_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
+  (buf, +n) = pair
+  CompatibleUnionABCA_dwgo(U32.is_le(size, n), buf, size)
+
+def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dwin(size, B.size(buf))
 
 def CompatibleUnionABCA_build(buf: B.Buf, +size: U32) -> B.Buf & CompatibleUnionABCA_d.CompatibleUnionABCA: CompatibleUnionABCA_read(buf, 0, size)
 

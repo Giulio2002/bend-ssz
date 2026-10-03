@@ -60,8 +60,19 @@ def DataColumnsByRootIdentifier_built(+size: U32, pair: B.Buf & Bool) -> B.Buf &
     case True{}: DataColumnsByRootIdentifier_some(DataColumnsByRootIdentifier_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def DataColumnsByRootIdentifier_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>:
+def DataColumnsByRootIdentifier_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>:
   DataColumnsByRootIdentifier_built(size, DataColumnsByRootIdentifier_ok(buf, 0, size))
+
+def DataColumnsByRootIdentifier_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>:
+  match ok:
+    case True{}: DataColumnsByRootIdentifier_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def DataColumnsByRootIdentifier_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>:
+  (buf, +n) = pair
+  DataColumnsByRootIdentifier_dwgo(U32.is_le(size, n), buf, size)
+
+def DataColumnsByRootIdentifier_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>: DataColumnsByRootIdentifier_dwin(size, B.size(buf))
 
 def DataColumnsByRootIdentifier_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier: DataColumnsByRootIdentifier_read(buf, 0, size)
 

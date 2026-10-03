@@ -34,8 +34,19 @@ def SingleFieldTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe
     case True{}: SingleFieldTestStruct_some(SingleFieldTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SingleFieldTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+def SingleFieldTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
   SingleFieldTestStruct_built(size, SingleFieldTestStruct_ok(buf, 0, size))
+
+def SingleFieldTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+  match ok:
+    case True{}: SingleFieldTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SingleFieldTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+  (buf, +n) = pair
+  SingleFieldTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def SingleFieldTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>: SingleFieldTestStruct_dwin(size, B.size(buf))
 
 def SingleFieldTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & SingleFieldTestStruct_d.SingleFieldTestStruct: SingleFieldTestStruct_read(buf, 0, size)
 

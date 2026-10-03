@@ -51,8 +51,19 @@ def CompatibleUnionA_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, 
     case True{}: CompatibleUnionA_some(CompatibleUnionA_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def CompatibleUnionA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>:
+def CompatibleUnionA_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>:
   CompatibleUnionA_built(size, CompatibleUnionA_ok(buf, 0, size))
+
+def CompatibleUnionA_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>:
+  match ok:
+    case True{}: CompatibleUnionA_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def CompatibleUnionA_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>:
+  (buf, +n) = pair
+  CompatibleUnionA_dwgo(U32.is_le(size, n), buf, size)
+
+def CompatibleUnionA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>: CompatibleUnionA_dwin(size, B.size(buf))
 
 def CompatibleUnionA_build(buf: B.Buf, +size: U32) -> B.Buf & CompatibleUnionA_d.CompatibleUnionA: CompatibleUnionA_read(buf, 0, size)
 

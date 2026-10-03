@@ -72,8 +72,19 @@ def VarTestStruct_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Var
     case True{}: VarTestStruct_some(VarTestStruct_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def VarTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>:
+def VarTestStruct_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>:
   VarTestStruct_built(size, VarTestStruct_ok(buf, 0, size))
+
+def VarTestStruct_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>:
+  match ok:
+    case True{}: VarTestStruct_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def VarTestStruct_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>:
+  (buf, +n) = pair
+  VarTestStruct_dwgo(U32.is_le(size, n), buf, size)
+
+def VarTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dwin(size, B.size(buf))
 
 def VarTestStruct_build(buf: B.Buf, +size: U32) -> B.Buf & VarTestStruct_d.VarTestStruct: VarTestStruct_read(buf, 0, size)
 

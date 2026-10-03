@@ -33,8 +33,19 @@ def bitvector_9_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, bitve
     case True{}: bitvector_9_some(bv9_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def bitvector_9_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+def bitvector_9_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
   bitvector_9_built(size, bv9_ok(buf, 0, size))
+
+def bitvector_9_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+  match ok:
+    case True{}: bitvector_9_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_9_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>:
+  (buf, +n) = pair
+  bitvector_9_dwgo(U32.is_le(size, n), buf, size)
+
+def bitvector_9_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>: bitvector_9_dwin(size, B.size(buf))
 
 def bitvector_9_build(buf: B.Buf, +size: U32) -> B.Buf & bitvector_9_d.Bitvector9: bv9_read(buf, 0, size)
 

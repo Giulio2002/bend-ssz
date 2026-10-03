@@ -43,8 +43,19 @@ def vec_bool_2_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, O.Word
     case True{}: vec_bool_2_some(v2_bool_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def vec_bool_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+def vec_bool_2_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   vec_bool_2_built(size, v2_bool_ok(buf, 0, size))
+
+def vec_bool_2_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_bool_2_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def vec_bool_2_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +n) = pair
+  vec_bool_2_dwgo(U32.is_le(size, n), buf, size)
+
+def vec_bool_2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_2_dwin(size, B.size(buf))
 
 def vec_bool_2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_bool_read(buf, 0, size)
 

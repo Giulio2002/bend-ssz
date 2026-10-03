@@ -20,6 +20,8 @@ import ../obj/arr_emit_generated.bend as P0_AE
 import ../obj/arr_spec_generated.bend as P0_AS
 import ../obj/arr_vec_generated.bend as P0_AV
 import ../obj/arr_enc_generated.bend as P0_AN
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluSyncCommittee_generated.bend as P0_DW_FuluSyncCommittee
 import ../obj/spec_arr_SyncCommittee_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

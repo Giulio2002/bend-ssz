@@ -204,8 +204,19 @@ def ExecutionPayload_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, 
     case True{}: ExecutionPayload_some(ExecutionPayload_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def ExecutionPayload_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
+def ExecutionPayload_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
   ExecutionPayload_built(size, ExecutionPayload_ok(buf, 0, size))
+
+def ExecutionPayload_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
+  match ok:
+    case True{}: ExecutionPayload_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionPayload_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>:
+  (buf, +n) = pair
+  ExecutionPayload_dwgo(U32.is_le(size, n), buf, size)
+
+def ExecutionPayload_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dwin(size, B.size(buf))
 
 def ExecutionPayload_build(buf: B.Buf, +size: U32) -> B.Buf & FuluExecutionPayload_d.ExecutionPayload: ExecutionPayload_read(buf, 0, size)
 

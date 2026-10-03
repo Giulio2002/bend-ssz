@@ -76,8 +76,19 @@ def Validator_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, FuluVal
     case True{}: Validator_some(Validator_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def Validator_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+def Validator_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
   Validator_built(size, Validator_ok(buf, 0, size))
+
+def Validator_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+  match ok:
+    case True{}: Validator_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def Validator_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+  (buf, +n) = pair
+  Validator_dwgo(U32.is_le(size, n), buf, size)
+
+def Validator_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dwin(size, B.size(buf))
 
 def Validator_build(buf: B.Buf, +size: U32) -> B.Buf & FuluValidator_d.Validator: Validator_read(buf, 0, size)
 

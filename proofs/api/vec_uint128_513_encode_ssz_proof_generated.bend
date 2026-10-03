@@ -18,6 +18,8 @@ import ../obj/arr_spec_generated.bend as P0_AS
 import ../obj/arr_vec_generated.bend as P0_AV
 import ../obj/arr_shift_generated.bend as P0_AH
 import ../obj/arr_enc_generated.bend as P0_AN
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_vec_uint128_513_generated.bend as P0_DW_vec_uint128_513
 import ../obj/spec_garr_vec_uint128_513_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O

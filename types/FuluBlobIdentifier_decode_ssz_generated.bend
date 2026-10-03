@@ -40,8 +40,19 @@ def BlobIdentifier_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Fu
     case True{}: BlobIdentifier_some(BlobIdentifier_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def BlobIdentifier_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
+def BlobIdentifier_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
   BlobIdentifier_built(size, BlobIdentifier_ok(buf, 0, size))
+
+def BlobIdentifier_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
+  match ok:
+    case True{}: BlobIdentifier_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def BlobIdentifier_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>:
+  (buf, +n) = pair
+  BlobIdentifier_dwgo(U32.is_le(size, n), buf, size)
+
+def BlobIdentifier_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>: BlobIdentifier_dwin(size, B.size(buf))
 
 def BlobIdentifier_build(buf: B.Buf, +size: U32) -> B.Buf & FuluBlobIdentifier_d.BlobIdentifier: BlobIdentifier_read(buf, 0, size)
 

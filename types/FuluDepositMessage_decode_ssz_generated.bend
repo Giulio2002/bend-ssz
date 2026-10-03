@@ -46,8 +46,19 @@ def DepositMessage_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Fu
     case True{}: DepositMessage_some(DepositMessage_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def DepositMessage_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>:
+def DepositMessage_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>:
   DepositMessage_built(size, DepositMessage_ok(buf, 0, size))
+
+def DepositMessage_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>:
+  match ok:
+    case True{}: DepositMessage_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def DepositMessage_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>:
+  (buf, +n) = pair
+  DepositMessage_dwgo(U32.is_le(size, n), buf, size)
+
+def DepositMessage_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>: DepositMessage_dwin(size, B.size(buf))
 
 def DepositMessage_build(buf: B.Buf, +size: U32) -> B.Buf & FuluDepositMessage_d.DepositMessage: DepositMessage_read(buf, 0, size)
 

@@ -38,8 +38,19 @@ def VoluntaryExit_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, Ful
     case True{}: VoluntaryExit_some(VoluntaryExit_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def VoluntaryExit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>:
+def VoluntaryExit_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>:
   VoluntaryExit_built(size, VoluntaryExit_ok(buf, 0, size))
+
+def VoluntaryExit_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>:
+  match ok:
+    case True{}: VoluntaryExit_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def VoluntaryExit_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>:
+  (buf, +n) = pair
+  VoluntaryExit_dwgo(U32.is_le(size, n), buf, size)
+
+def VoluntaryExit_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>: VoluntaryExit_dwin(size, B.size(buf))
 
 def VoluntaryExit_build(buf: B.Buf, +size: U32) -> B.Buf & FuluVoluntaryExit_d.VoluntaryExit: VoluntaryExit_read(buf, 0, size)
 

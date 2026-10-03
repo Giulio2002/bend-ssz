@@ -28,8 +28,19 @@ def uint16_built(+size: U32, pair: B.Buf & Bool) -> B.Buf & Maybe<&1, U32>:
     case True{}: uint16_some(u16_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def uint16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+def uint16_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   uint16_built(size, u16_ok(buf, 0, size))
+
+def uint16_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
+  match ok:
+    case True{}: uint16_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def uint16_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +n) = pair
+  uint16_dwgo(U32.is_le(size, n), buf, size)
+
+def uint16_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint16_dwin(size, B.size(buf))
 
 def uint16_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u16_read(buf, 0, size)
 

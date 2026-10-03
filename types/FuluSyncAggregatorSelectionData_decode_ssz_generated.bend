@@ -38,8 +38,19 @@ def SyncAggregatorSelectionData_built(+size: U32, pair: B.Buf & Bool) -> B.Buf &
     case True{}: SyncAggregatorSelectionData_some(SyncAggregatorSelectionData_read(buf, 0, size))
     case False{}: (buf, None{})
 
-def SyncAggregatorSelectionData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+def SyncAggregatorSelectionData_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
   SyncAggregatorSelectionData_built(size, SyncAggregatorSelectionData_ok(buf, 0, size))
+
+def SyncAggregatorSelectionData_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+  match ok:
+    case True{}: SyncAggregatorSelectionData_decode_in(buf, size)
+    case False{}: (buf, None{})
+
+def SyncAggregatorSelectionData_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+  (buf, +n) = pair
+  SyncAggregatorSelectionData_dwgo(U32.is_le(size, n), buf, size)
+
+def SyncAggregatorSelectionData_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dwin(size, B.size(buf))
 
 def SyncAggregatorSelectionData_build(buf: B.Buf, +size: U32) -> B.Buf & FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData: SyncAggregatorSelectionData_read(buf, 0, size)
 

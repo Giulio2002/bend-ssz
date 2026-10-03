@@ -28,6 +28,8 @@ import ../obj/arr_shift_generated.bend as P0_AH
 import ../obj/arr_enc_generated.bend as P0_AN
 import ../obj/vseq.bend as P0_VSQ
 import ../obj/vspec.bend as P0_VS
+import ../../proofs/obj/decode_window_library_generated.bend as P0_DWL
+import ../../proofs/obj/decode_window_FuluBlobSidecar_generated.bend as P0_DW_FuluBlobSidecar
 import ../obj/spec_arr_BlobSidecar_generated.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
