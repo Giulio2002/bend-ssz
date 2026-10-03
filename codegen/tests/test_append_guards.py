@@ -45,6 +45,23 @@ class AppendGuardTest(unittest.TestCase):
             checked += 1
         self.assertGreater(checked, 10)
 
+    def test_composite_count_bound_keeps_the_encoding_below_2_31_bytes(self):
+        """for a list of fixed-size composites, the append guard bound B satisfies B * es < 2^31: the size, validity and writer arithmetic is U32,
+        and n * es wraps from n = 2^32 / es (docs/CRASH_HUNT.md R3-03)"""
+        checked = 0
+        for p in sorted(TYPES.glob('*_def_generated.bend')):
+            text = p.read_text()
+            m = re.search(r'^def \w+_app_sz\(.*\n.*\n  \w+_app_in\(Bool\.and\(U32\.is_lt\(n, (\d+)\), U32\.is_le\(n, sc\)\), arr, n, v\)', text, re.M)
+            enc = TYPES / p.name.replace('_def_', '_encode_ssz_')
+            if m is None or not enc.exists():
+                continue
+            es = re.search(r'O\.pick\(U32\.is_le\(n, c\), \(n \* (\d+) : U32\), 2147483648\)', enc.read_text())
+            if es is None:
+                continue
+            self.assertLess(int(m.group(1)) * int(es.group(1)), 1 << 31, f'{p.name}: the guard bound {m.group(1)} lets n * {es.group(1)} reach 2^31')
+            checked += 1
+        self.assertGreater(checked, 5)
+
 
 if __name__ == '__main__':
     unittest.main()

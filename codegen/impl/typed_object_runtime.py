@@ -442,6 +442,15 @@ def within(expr, n):
     return 'True{}' if big == 'True{}' else f'U32.is_le({expr}, {lim})'
 
 
+def seq_count_bound(t, e):
+    """The largest count of a list of composites: its limit, and for fixed-size elements the largest count whose encoding stays below 2^31 bytes
+    (n * es wraps in U32 from n >= 2^32 / es, and the size, validity and writer arithmetic is U32: docs/CRASH_HUNT.md R3-03)."""
+    b = t.size
+    if e.fixed and e.fsize:
+        b = min(b, ((1 << 31) - 1) // e.fsize)
+    return b
+
+
 def append_room(n, limit):
     """The guard of an append to a list of n elements whose count can reach 2^32 - 1 (bit lists, byte lists, element arrays,
     cached lists): n < limit. The older `n + 1 <= limit` wrapped to 0 at n = 2^32 - 1 and accepted the append
@@ -915,7 +924,7 @@ def emit_access(s, w):
             # and copy for the claim (docs/CRASH_HUNT.md R3-02)
             w(f'def {p}_app_sz(+n: U32, v: {Pe}, pair: Array<{Re}> & U32) -> {S} & Bool:')
             w('  (arr, +sc) = pair')
-            w(f'  {p}_app_in(Bool.and({append_room("n", t.size)}, U32.is_le(n, sc)), arr, n, v)')
+            w(f'  {p}_app_in(Bool.and({append_room("n", seq_count_bound(t, e))}, U32.is_le(n, sc)), arr, n, v)')
             w(f'def {p}_append(o: {S}, v: {Pe}) -> {S} & Bool:')
             w('  match o:')
             w(f'    case {S}{{arr, +n}}: {p}_app_sz(n, v, Array.size({Re}, arr))')
@@ -2065,7 +2074,7 @@ def emit_seq_cache(s, w):
     # the storage test of the uncached append (docs/CRASH_HUNT.md R3-02)
     w(f'def {p}_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}, pair: Array<{R}> & U32) -> {C} & Bool:')
     w('  (arr, +sc) = pair')
-    w(f'  {p}_capp_in(Bool.and({append_room("n", t.size)}, U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)')
+    w(f'  {p}_capp_in(Bool.and({append_room("n", seq_count_bound(t, e))}, U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)')
     w(f'def {p}_capp(c: {C}, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_sz(n, d, nodes, lo, hi, v, Array.size({R}, arr))')
