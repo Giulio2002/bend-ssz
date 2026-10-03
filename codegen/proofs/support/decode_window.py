@@ -35,13 +35,18 @@ def balanced(s, i, open_='(', close=')'):
 
 
 def split_top(s):
-    out, d, cur = [], 0, ''
-    for ch in s:
+    """split on the commas outside every bracket pair (round, curly, square, and the angle brackets of a type application)"""
+    out, d, cur, ang = [], 0, '', 0
+    for x, ch in enumerate(s):
         if ch in '({[':
             d += 1
         elif ch in ')}]':
             d -= 1
-        if ch == ',' and d == 0:
+        elif ch == '<' and x > 0 and (s[x - 1].isalnum() or s[x - 1] in '._'):
+            ang += 1
+        elif ch == '>' and ang > 0 and s[x - 1] != '-':
+            ang -= 1
+        if ch == ',' and d == 0 and ang == 0:
             out.append(cur.strip())
             cur = ''
         else:
@@ -81,23 +86,6 @@ def parse_statement(stmt):
     return m.group(1), m.group(2), args[0], args[1], inner[:cut], inner[cut + 3:]
 
 
-def hle_for(buf, size):
-    """the proof of U32.is_le(size, bsz(buf)) == True{}: ({==}, 'refl') or None when it needs a premise"""
-    if re.fullmatch(r'\d+', size):
-        return '{==}'
-    m = re.match(r'^(B\.Buf\{|[\w.]+\()', buf)
-    if m:
-        op = len(m.group(1)) - 1
-        try:
-            cl = balanced(buf, op)
-        except ValueError:
-            return None
-        args = split_top(buf[op + 1:cl])
-        if args and args[-1] == size and cl == len(buf) - 1:
-            return f'DWL.le_refl({size})'
-    return None
-
-
 def block_spans(lines):
     """(start, stmt_start, def_start, end) of every law block: `law NAME:` form and typed `def NAME(...) -> {stmt}:` form"""
     i, n = 0, len(lines)
@@ -133,102 +121,139 @@ def block_spans(lines):
         i += 1
 
 
-def wrap(text, names):
-    """`text` with its laws of X_decode wrapped. `names`: {X: file name of its decoder} (the runtime index)."""
-    if '_decode(' not in text or '# decode window' in text:
-        return text
-    lines = text.split('\n')
-    out, used, last = [], set(), 0
-    changed = False
-    for kind, i, j, k, name in block_spans(lines):
-        if kind == 'law':
-            # statement: the first `  {` line after the `for` lines, up to the def
-            s0 = next(x for x in range(i + 1, j) if lines[x].startswith('  {'))
-            stmt = ' '.join(l.strip() for l in lines[s0:j])
-        else:
-            hdr = ' '.join(l.strip() for l in lines[i:j + 1])
-            if ' -> ' not in hdr:
-                continue
-            stmt = hdr[hdr.index(' -> ') + 4:]
-            stmt = stmt[:-1] if stmt.endswith(':') else stmt
-        p = parse_statement(stmt)
+def statement_of(lines, kind, i, j):
+    if kind == 'law':
+        s0 = next((x for x in range(i + 1, j) if lines[x].startswith('  {')), None)
+        return None if s0 is None else ' '.join(l.strip() for l in lines[s0:j])
+    hdr = ' '.join(l.strip() for l in lines[i:j + 1])
+    if ' -> ' not in hdr:
+        return None
+    stmt = hdr[hdr.index(' -> ') + 4:]
+    return stmt[:-1] if stmt.endswith(':') else stmt
+
+
+def mentions_any(vars_, texts):
+    return any(mentions(v, texts) for v in vars_)
+
+
+def mentions(var, texts):
+    return any(re.search(rf'(?<![\w.]){re.escape(var)}(?![\w])', t) for t in texts)
+
+
+def classify(lines, spans, names):
+    """{name: record} of the laws that state a result of X_decode over a symbolic window: the buffer's size field is the window
+    (`X_decode(BF(t, n), n)`), or a free buffer is refused (`X_decode(buf, m) == (buf, None{})`)"""
+    recs = {}
+    for kind, i, j, k, name in spans:
+        stmt = statement_of(lines, kind, i, j)
+        p = parse_statement(stmt) if stmt else None
         if p is None or p[1] not in names:
             continue
         alias, X, buf, size, rhs, ty = p
-        fname = names[X]
-        used.add(fname)
+        if re.fullmatch(r'\d+', size):
+            continue          # a literal window: the guard evaluates
+        body_ = [l for l in lines[j + 1:k] if l.strip()]
+        if len(body_) == 1 and 'PRV.' in body_[0]:
+            continue          # a gate or facade law: a call of the law it restates
+        if kind == 'law':
+            dl_ = lines[j]
+            pn = [x.strip() for x in dl_[dl_.index('(') + 1:balanced(dl_, dl_.index('('))].split(',') if x.strip()]
+            fors = [l for l in lines[i + 1:j] if l.startswith('  for ')]
+        else:
+            sg = ' '.join(l.strip() for l in lines[i:j + 1])
+            op = sg.index('(')
+            params = split_top(sg[op + 1:balanced(sg, op)])
+            pn = [(re.match(r'^[+\-]?(\w+)', q) or re.match(r'(.*)', q)).group(1) for q in params]
+            fors = params
+        if not mentions_any(pn, [buf, size]):
+            continue          # closed: an encoding and its size, evaluated
         none = 'None{}' in rhs.replace(' ', '') and 'Some{' not in rhs
-        hle = None if none else hle_for(buf, size)
+        varbuf = bool(re.fullmatch(r'\w+', buf))
+        if varbuf:
+            if not none:
+                raise ValueError(f'decode_window: {name}: a result that decodes over a free buffer {buf} needs a premise')
+            if mentions(buf, [f for f in fors if not re.match(rf'\s*(for )?\+?{buf}:', f)]):
+                raise ValueError(f'decode_window: {name}: a hypothesis mentions the free buffer {buf}')
+        else:
+            m = re.match(r'^(B\.Buf\{|[\w.]+\()', buf)
+            args = None
+            if m:
+                op = len(m.group(1)) - 1
+                try:
+                    cl = balanced(buf, op)
+                except ValueError:
+                    cl = -1
+                if cl == len(buf) - 1:
+                    args = split_top(buf[op + 1:cl])
+            if not args or args[-1] != size:
+                raise ValueError(f'decode_window: {name}: the window {size} is not the size field of {buf}')
+        recs[name] = dict(kind=kind, i=i, j=j, k=k, alias=alias, X=X, buf=buf, size=size, rhs=rhs, none=none, varbuf=varbuf, pn=pn)
+    return recs
+
+
+def wrap(text, names):
+    """`text` with the laws that state a result of X_decode over a symbolic window moved to `NAME_in` (the proof, about the decoder
+    of a window inside the buffer; the laws it calls are called as `_in` too) and carried to `X_decode` by the lemma of the decoder's
+    window module. `names`: {X: file name of its decoder} (the runtime index)."""
+    if '_decode(' not in text or '# decode window' in text:
+        return text
+    lines = text.split('\n')
+    spans = list(block_spans(lines))
+    recs = classify(lines, spans, names)
+    if not recs:
+        return text
+    callee = re.compile(r'(?<![\w.])(' + '|'.join(sorted(recs, key=len, reverse=True)) + r')\(')
+    out, used, last = [], set(), 0
+    for kind, i, j, k, name in spans:
+        r = recs.get(name)
+        if r is None:
+            continue
         out.extend(lines[last:i])
         last = k
-        dw = f'DW_{fname}'
+        alias, X, buf, size, rhs, pn = r['alias'], r['X'], r['buf'], r['size'], r['rhs'], r['pn']
+        dw = f'DW_{names[X]}'
+        used.add(names[X])
+        lam = 'b_'
+        if r['varbuf']:
+            inner = ', '.join(lam if a == buf else a for a in pn)
+            proof = f'  {dw}.{X}_win_none_f({buf}, {size}, {lam} => {name}_in({inner}))'
+        elif r['none']:
+            proof = f'  {dw}.{X}_win_none({buf}, {size}, {name}_in({", ".join(pn)}))'
+        else:
+            proof = f'  {dw}.{X}_win_some({buf}, {size}, {rhs}, DWL.le_refl({size}), {name}_in({", ".join(pn)}))'
+        body = [callee.sub(lambda m: m.group(1) + '_in(', l) for l in lines[j + 1:k]]
+        out.append('# decode window: the proof is on the decoder of a window inside the buffer')
         if kind == 'law':
-            names_ = [x.strip() for x in lines[j][lines[j].index('(') + 1:lines[j].rindex(')')].split(',') if x.strip()] if '(' in lines[j] else []
-            fors = lines[i + 1:s0]
-            body = lines[j + 1:k]
+            fors = list(lines[i + 1:next(x for x in range(i + 1, j) if lines[x].startswith('  {'))])
+            s0 = i + 1 + len(fors)
             sl = lines[s0:j]
             sl_in = [l.replace(f'{alias}.{X}_decode(', f'{alias}.{X}_decode_in(', 1) if x == 0 else l for x, l in enumerate(sl)]
-            defline = lines[j]
-            prem = []
-            if not none and hle is None:
-                fors = fors + ['  for +hwin: {U32.is_le(' + size + ', DWL.bsz(' + buf + ')) == True{} : Bool}']
-                names_ = names_ + ['hwin']
-                hle = 'hwin'
-            args = ', '.join(names_)
-            out.append(f'# decode window: the proof is on the decoder of a window inside the buffer')
+            dline = lines[j]
             out.append(f'law {name}_in:')
-            out.extend(l for l in lines[i + 1:s0])
+            out.extend(fors)
             out.extend(sl_in)
-            out.append(defline.replace(f'def {name}(', f'def {name}_in(', 1))
+            op = dline.index('(')
+            cl = balanced(dline, op)
+            head, rest = dline[:cl + 1], dline[cl + 1:]
+            out.append(head.replace(f'def {name}(', f'def {name}_in(', 1) + callee.sub(lambda m: m.group(1) + '_in(', rest))
             out.extend(body)
             out.append('')
             out.append(f'law {name}:')
             out.extend(fors)
             out.extend(sl)
-            out.append(f'def {name}({", ".join(names_)}):')
-            inner_args = ', '.join(x for x in names_ if x != 'hwin')
-            if none:
-                out.append(f'  {dw}.{X}_win_none({buf}, {size}, {name}_in({inner_args}))')
-            else:
-                out.append(f'  {dw}.{X}_win_some({buf}, {size}, {rhs}, {hle}, {name}_in({inner_args}))')
+            out.append(f'def {name}({", ".join(pn)}):')
+            out.append(proof)
         else:
             header = lines[i:j + 1]
-            body = lines[j + 1:k]
-            sig = ' '.join(l.strip() for l in lines[i:j + 1])
-            op = sig.index('(')
-            cl = balanced(sig, op)
-            params = split_top(sig[op + 1:cl])
-            pnames = [re.match(r'\+?(\w+)', q).group(1) for q in params]
             h2 = [l.replace(f'def {name}(', f'def {name}_in(', 1) if x == 0 else l for x, l in enumerate(header)]
             h2 = [l.replace(f'{alias}.{X}_decode(', f'{alias}.{X}_decode_in(', 1) for l in h2]
-            out.append('# decode window: the proof is on the decoder of a window inside the buffer')
             out.extend(h2)
             out.extend(body)
             out.append('')
-            hdr_lines = list(header)
-            if not none and hle is None:
-                # a premise: appended to the parameters of the law itself
-                sig_open = hdr_lines[0].index('(')
-                prem = f'+hwin: {{U32.is_le({size}, DWL.bsz({buf})) == True{{}} : Bool}}'
-                # the closing parenthesis of the parameter list is on the line before ` -> `
-                k2 = next(x for x in range(len(hdr_lines)) if ' -> {' in hdr_lines[x] or hdr_lines[x].lstrip().startswith('-> {'))
-                line = hdr_lines[k2]
-                pos = line.index(')', 0) if ' -> {' not in line and not line.lstrip().startswith('-> {') else line.rindex(')', 0, line.index('-> {'))
-                hdr_lines[k2] = line[:pos] + ', ' + prem + line[pos:]
-                pnames.append('hwin')
-                hle = 'hwin'
-            out.extend(hdr_lines)
-            inner_args = ', '.join(x for x in pnames if x != 'hwin')
-            if none:
-                out.append(f'  {dw}.{X}_win_none({buf}, {size}, {name}_in({inner_args}))')
-            else:
-                out.append(f'  {dw}.{X}_win_some({buf}, {size}, {rhs}, {hle}, {name}_in({inner_args}))')
-        changed = True
-    if not changed:
-        return text
+            out.extend(header)
+            out.append(proof)
     out.extend(lines[last:])
     new = '\n'.join(out)
-    # imports
     m = IMPORT.search(new)
     prefix = m.group(1) if m else '../../'
     imps = [f'import {prefix}proofs/obj/decode_window_library_generated.bend as DWL'] + \

@@ -56,16 +56,26 @@ BXM = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+?)>\) -> [^\n]*:\n  ma
 
 def header(tmod, what):
     return ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
-            f'import ../../types/{tmod}.bend as T', '', writer.header('decoder_offsets'), f'# {what}', '']
+            f'import ../../types/{tmod}.bend as T', 'import ./decode_window_library_generated.bend as DWL', '',
+            writer.header('decoder_offsets'), f'# {what}', '# decode window', '']
+
+
+def on_buffer(lines):
+    """the proof lines `lines` (about the free buffer `buf`) under a match that opens it: `buf` is B.Buf{ws, n} there, and the window
+    premise `hwin` says the window is inside the buffer: the guard of the decoder, rewritten to True, is the first step"""
+    sub = lambda l: re.sub(r'(?<![\w.])buf(?![\w])', 'B.Buf{ws, n}', l)
+    return ['  match buf:', '    case B.Buf{ws, +n}:'] + ['      ' + sub(l) for l in lines]
 
 
 def build_law(X, P, R):
     ty = f'B.Buf & Maybe<&1, {R}>'
     rhs = f'T.{X}_some(T.{X}_build(b2, size))'
-    return [f'def {X}_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {{T.{P}_ok(buf, 0, size) == (b2, True{{}}) : B.Buf & Bool}})',
-            f'    -> {{T.{X}_decode(buf, size) == {rhs} : {ty}}}:',
-            f'  %Equal.sym(B.Buf & Bool, T.{P}_ok(buf, 0, size), (b2, True{{}}), e) : {{T.{X}_built(size, _) == {rhs} : {ty}}}',
-            '  {==}']
+    lines = [f'%Equal.sym(Bool, U32.is_le(size, n), True{{}}, hwin) : {{T.{X}_dwgo(_, B.Buf{{ws, n}}, size) == {rhs} : {ty}}}',
+             f'%Equal.sym(B.Buf & Bool, T.{P}_ok(buf, 0, size), (b2, True{{}}), e) : {{T.{X}_built(size, _) == {rhs} : {ty}}}',
+             '{==}']
+    return [f'def {X}_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {{T.{P}_ok(buf, 0, size) == (b2, True{{}}) : B.Buf & Bool}}, '
+            f'hwin: {{U32.is_le(size, DWL.bsz(buf)) == True{{}} : Bool}})',
+            f'    -> {{T.{X}_decode(buf, size) == {rhs} : {ty}}}:'] + on_buffer(lines)
 
 
 def fields_law(X, s, P, text):
@@ -95,15 +105,17 @@ def fields_law(X, s, P, text):
     for i, (_, fs) in enumerate(F):
         params.append(f'h{i}: {{T.{fs.p}_read({chain[i]}, {hoff[i]}, {fs.fsize}) == ({chain[i + 1]}, {vs[i]}) : B.Buf & {qual(fs.rep)}}}')
     rhs = f'({chain[-1]}, Some{{{rec}}})'
+    params.append(f'hwin: {{U32.is_le({N}, DWL.bsz(buf)) == True{{}} : Bool}}')
     L = [f'def {X}_decode_fields({", ".join(params)})', f'    -> {{T.{X}_decode(buf, {N}) == {rhs} : {mt}}}:']
+    B = [f'%Equal.sym(Bool, U32.is_le({N}, n), True{{}}, hwin) : {{T.{X}_dwgo(_, B.Buf{{ws, n}}, {N}) == {rhs} : {mt}}}']
     if not ok_lit:
-        L.append(f'  %Equal.sym(B.Buf & Bool, T.{P}_ok(buf, 0, {N}), (b0, True{{}}), e) : {{T.{X}_built({N}, _) == {rhs} : {mt}}}')
+        B.append(f'%Equal.sym(B.Buf & Bool, T.{P}_ok(buf, 0, {N}), (b0, True{{}}), e) : {{T.{X}_built({N}, _) == {rhs} : {mt}}}')
     for i, (_, fs) in enumerate(F):
         so = ', '.join(vs[:i])
-        L.append(f'  %Equal.sym(B.Buf & {qual(fs.rep)}, T.{fs.p}_read({chain[i]}, {hoff[i]}, {fs.fsize}), ({chain[i + 1]}, {vs[i]}), h{i}) : '
+        B.append(f'%Equal.sym(B.Buf & {qual(fs.rep)}, T.{fs.p}_read({chain[i]}, {hoff[i]}, {fs.fsize}), ({chain[i + 1]}, {vs[i]}), h{i}) : '
                  f'{{T.{X}_some(T.{s.p}_rd{i}(0, {N}, {so + ", " if so else ""}_)) == {rhs} : {mt}}}')
-    L.append('  {==}')
-    return L
+    B.append('{==}')
+    return L + on_buffer(B)
 
 
 def size_law(X, rep, N):

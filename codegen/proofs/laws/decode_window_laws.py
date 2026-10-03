@@ -8,6 +8,7 @@
 `(buf, None{})` when it does not. Every decode law of the library was proved on the decoder that trusted the window; it is
 proved on `X_decode_in` as before, and these lemmas carry it to `X_decode`:
 
+  <X>_win_none_f(buf, m, hf)        hf: @b -> X_decode_in(b, m) == (b, None{})  : the same for a free buffer variable (it is used once)
   <X>_win_none(buf, m, h)           h: X_decode_in(buf, m) == (buf, None{})              gives X_decode(buf, m) == (buf, None{})
                                     for every window m, whether it fits or not
   <X>_win_some(buf, m, r, hle, h)   hle: U32.is_le(m, L.bsz(buf)) == True{}, h: X_decode_in(buf, m) == r   gives X_decode(buf, m) == r
@@ -92,6 +93,17 @@ def {X}_win_none(buf: B.Buf, +m: U32, h: {{{r}.{X}_decode_in(buf, m) == (buf, No
   match buf:
     case B.Buf{{ws, +n}}: {X}_win_none_go(U32.is_le(m, n), B.Buf{{ws, n}}, m, h)
 
+def {X}_win_none_go_f(ok: Bool, buf: B.Buf, +m: U32, hf: @b: B.Buf -> {{{r}.{X}_decode_in(b, m) == (b, None{{}}) : {T}}})
+    -> {{{r}.{X}_dwgo(ok, buf, m) == (buf, None{{}}) : {T}}}:
+  match ok:
+    case True{{}}: hf(buf)
+    case False{{}}: {{==}}
+
+def {X}_win_none_f(buf: B.Buf, +m: U32, hf: @b: B.Buf -> {{{r}.{X}_decode_in(b, m) == (b, None{{}}) : {T}}})
+    -> {{{r}.{X}_decode(buf, m) == (buf, None{{}}) : {T}}}:
+  match buf:
+    case B.Buf{{ws, +n}}: {X}_win_none_go_f(U32.is_le(m, n), B.Buf{{ws, n}}, m, hf)
+
 def {X}_win_some_go(ok: Bool, buf: B.Buf, +m: U32, r: {T}, hle: {{ok == True{{}} : Bool}}, h: {{{r}.{X}_decode_in(buf, m) == r : {T}}})
     -> {{{r}.{X}_dwgo(ok, buf, m) == r : {T}}}:
   match ok:
@@ -106,7 +118,7 @@ def {X}_win_some(buf: B.Buf, +m: U32, r: {T}, hle: {{U32.is_le(m, L.bsz(buf)) ==
 def {X}_win_out_go(ok: Bool, buf: B.Buf, +m: U32, hgt: {{ok == False{{}} : Bool}})
     -> {{{r}.{X}_dwgo(ok, buf, m) == (buf, None{{}}) : {T}}}:
   match ok:
-    case True{{}}: Empty.absurd({{{r}.{X}_dwgo(True{{}}, buf, m) == (buf, None{{}}) : {T}}}, W.false_true(hgt))
+    case True{{}}: Empty.absurd({{{r}.{X}_dwgo(True{{}}, buf, m) == (buf, None{{}}) : {T}}}, W.false_true(Equal.sym(Bool, True{{}}, False{{}}, hgt)))
     case False{{}}: {{==}}
 
 def {X}_win_out(buf: B.Buf, +m: U32, hgt: {{U32.is_le(m, L.bsz(buf)) == False{{}} : Bool}})
@@ -124,7 +136,8 @@ def outputs():
             continue
         text = (ROOT / 'types' / RR.split_rel(name, op)).read_text()
         m = DECODE.search(text)
-        assert m, name
+        if not m:        # a helper type with no decoder of its own
+            continue
         X, rep = m.group(1), m.group(2)
         alias = rep.split('.')[0]
         im = re.search(rf'^import (\S+) as {alias}$', text, re.M)
