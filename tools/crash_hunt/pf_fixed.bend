@@ -23,6 +23,15 @@ import ../../types/FuluAttesterSlashing_encode_ssz_generated.bend as AsE
 import ../../types/FuluIndexedAttestation_def_generated.bend as IaD
 import ../../types/ComplexTestStruct_encode_ssz_generated.bend as CtE
 import ../../benchmarks/compact/objio.bend as IOx
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as LV
+import ../../types/FuluValidator_def_generated.bend as Va
+import ../../types/FuluPendingDeposit_def_generated.bend as Pd
+import ../../types/Fulu_list_Attestation_8_def_generated.bend as L8
+import ../../types/Fulu_list_Attestation_8_hashtreeroot_generated.bend as L8H
+import ../../types/FuluAttestation_def_generated.bend as At
+import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as LW
+import ../../types/FuluWithdrawal_def_generated.bend as Wd
+import ../../types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend as LWE
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -147,6 +156,69 @@ def case27() -> IO(Unit): ser_ok_line("attestation_1_absent", AsE.AttesterSlashi
 def case28() -> IO(Unit): ser_ok_line("attestation_2_absent", AsE.AttesterSlashing_serialize(AsD.AttesterSlashing{dflt(), none()}))
 def case29() -> IO(Unit): ser_ok_line("both_present_control", AsE.AttesterSlashing_serialize(AsD.AttesterSlashing_default()))
 
+# R3-02: an append to an object that claims more elements than its storage holds is refused, and does not allocate or copy for the claim
+def va_line(label: String, pair: LV.l1099511627776_Validator_Seq & Bool) -> IO(Unit):
+  (o, ok) = pair
+  match o:
+    case LV.l1099511627776_Validator_Seq{arr, +n}: IO.print(label ++ " ok=" ++ O.pick_str(ok) ++ " len=" ++ U32.show(n))
+def case31() -> IO(Unit): va_line("validator_claim_67108864", LV.l1099511627776_Validator_append(LV.l1099511627776_Validator_Seq{LV.l1099511627776_Validator_fill(0n), 67108864}, Va.Validator_default()))
+def pd_line(label: String, pair: LPD.l134217728_PendingDeposit_Seq & Bool) -> IO(Unit):
+  (o, ok) = pair
+  match o:
+    case LPD.l134217728_PendingDeposit_Seq{arr, +n}: IO.print(label ++ " ok=" ++ O.pick_str(ok) ++ " len=" ++ U32.show(n))
+def case32() -> IO(Unit): pd_line("pending_deposit_claim_33554432", LPD.l134217728_PendingDeposit_append(LPD.l134217728_PendingDeposit_Seq{LPD.l134217728_PendingDeposit_fill(0n), 33554432}, Pd.PendingDeposit_default()))
+def case33() -> IO(Unit): flag_line("pl_u8_claim_2gib", PlD.pl_u8_append(O.Words{Array.new(U32, 8n, 0), 2147483647}, 7))
+def case34() -> IO(Unit): bits_flag_line("pbits_claim_2g", PbD.pbits_append(O.Bits{Array.new(U32, 4n, 0), 2147483647}, True{}))
+def cv_line(label: String, pair: LV.l1099511627776_Validator_Cached & Bool) -> IO(Unit):
+  (c, ok) = pair
+  match c:
+    case LV.l1099511627776_Validator_Cached{arr, +n, +d, nodes, +lo, +hi}: IO.print(label ++ " ok=" ++ O.pick_str(ok) ++ " len=" ++ U32.show(n))
+def case35() -> IO(Unit): cv_line("validator_capp_claim_67108864", LV.l1099511627776_Validator_capp(LV.l1099511627776_Validator_cache(LV.l1099511627776_Validator_Seq{LV.l1099511627776_Validator_fill(0n), 67108864}), Va.Validator_default()))
+def len_of(t: +List<U32>, +acc: U32) -> U32:
+  match t:
+    case Nil{}: acc
+    case Con{+h, tl}: len_of(tl, (acc + 1 : U32))
+def case36() -> IO(Unit): IO.print("dump_len=" ++ U32.show(len_of(PlD.pl_u8_dump(O.Words{Array.new(U32, 2n, 0), 100000000}, Nil{}), 0)))
+def force_line(pair: L8.l8_Attestation_Seq & U32) -> IO(Unit):
+  (o, +x) = pair
+  IO.print("force_claim_100000000=" ++ U32.show(x))
+def case37() -> IO(Unit): force_line(L8.l8_Attestation_force(L8.l8_Attestation_Seq{L8.l8_Attestation_fill(0n), 100000000}))
+
+# R3-01: `_get` of an unboxed list leaves it valid; the cached `_ctake` of a boxed list marks the slot dirty, so the cached root is the plain root
+def w_valid_line(pair: LW.l16_Withdrawal_Seq & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print("valid_after_get=" ++ O.pick_str(ok))
+def w_get_valid(pair: LW.l16_Withdrawal_Seq & Maybe<&1, Wd.Withdrawal>) -> IO(Unit):
+  (o, m) = pair
+  w_valid_line(LWE.l16_Withdrawal_valid(o))
+def w_one(pair: LW.l16_Withdrawal_Seq & Bool) -> LW.l16_Withdrawal_Seq:
+  (o, ok) = pair
+  o
+def case38() -> IO(Unit): w_get_valid(LW.l16_Withdrawal_get(w_one(LW.l16_Withdrawal_append(LW.l16_Withdrawal_default(), Wd.Withdrawal_default())), 0))
+def tk3(label: String, d_c: D.Digest, pair: B.Buf & (L8.l8_Attestation_Seq & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (o, d_p) = r
+  IO.print(label ++ "=" ++ O.pick_str(dig_eq(d_c, d_p)))
+def tk2(label: String, d_c: D.Digest, pair: L8.l8_Attestation_Seq & Maybe<&1, At.Attestation>) -> IO(Unit):
+  (o, m) = pair
+  tk3(label, d_c, L8H.l8_Attestation_root(64n, O.hasher(), o, 0))
+def tk1(label: String, o2: L8.l8_Attestation_Seq, pair: B.Buf & (L8.l8_Attestation_Cached & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (c, d_c) = r
+  tk2(label, d_c, L8.l8_Attestation_take(o2, 0))
+def tk0(label: String, o2: L8.l8_Attestation_Seq, pair: L8.l8_Attestation_Cached & Maybe<&1, At.Attestation>) -> IO(Unit):
+  (c, m) = pair
+  tk1(label, o2, L8.l8_Attestation_cached_root(64n, O.hasher(), c, 0))
+def ctk0(label: String, o2: L8.l8_Attestation_Seq, pair: B.Buf & (L8.l8_Attestation_Cached & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (c, d) = r
+  tk0(label, o2, L8.l8_Attestation_ctake(c, 0))
+def one_att(pair: L8.l8_Attestation_Seq & Bool) -> L8.l8_Attestation_Seq:
+  (o, ok) = pair
+  o
+def mk_att() -> L8.l8_Attestation_Seq: one_att(L8.l8_Attestation_append(L8.l8_Attestation_default(), At.Attestation_default()))
+def case39() -> IO(Unit): ctk0("cached_root_after_ctake_equals_plain_root_after_take", mk_att(), L8.l8_Attestation_cached_root(64n, O.hasher(), L8.l8_Attestation_cache(mk_att()), 0))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -178,6 +250,15 @@ def dispatch(+c: U32) -> IO(Unit):
     case 28: case28()
     case 29: case29()
     case 30: case30()
+    case 31: case31()
+    case 32: case32()
+    case 33: case33()
+    case 34: case34()
+    case 35: case35()
+    case 36: case36()
+    case 37: case37()
+    case 38: case38()
+    case 39: case39()
     case _: case12()
 
 def main() -> IO(Unit):

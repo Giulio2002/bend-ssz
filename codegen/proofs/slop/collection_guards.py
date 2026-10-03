@@ -9,7 +9,7 @@ byte, `bits9_append` of a tenth bit, the new bit stored at the wrong index. No l
 
 One module per name X whose collection is a packed list of U32 elements (byte lists, uint16 lists) or a bit list,
 proofs/slop/validity/<runtime>_<X>_collection_generated.bend, written from the generated definitions (the limit L, the largest element R
-and the element size U are read from `p_app_n`, `p_set_n` and `p_at`; the generator stops when a definition does not have the expected shape):
+and the element size U are read from `p_app_c`, `p_set_n` and `p_at`; the generator stops when a definition does not have the expected shape):
 
   packed U32 list      <X>_serialize_vcoll_len_get         after appending [R, 1] the length is 2, get 0 / 1 are R / 1 and get 2 is None
                        <X>_serialize_vcoll_get_edge       on a list of three zeros get 2 is Some(0) and get 3 is None (the bound is i < n)
@@ -59,7 +59,7 @@ def limit_of(guard):
 
 def packed_params(tx, p):
     """(L or None, R, U) of the packed U32 list with prefix p, or None when its definitions are not of the expected shape"""
-    app = tx.blk.get(f'{p}_app_n', '')
+    app = tx.blk.get(f'{p}_app_c', '')
     st = tx.blk.get(f'{p}_set_n', '')
     at = tx.blk.get(f'{p}_at', '')
     mr = re.search(r'U32\.is_le\(v, (\d+)\)', app)
@@ -158,7 +158,7 @@ def outputs():
                     continue
                 build = lambda X, prm=prm, p=p: packed_laws(X, p, *prm)   # noqa: E731
             elif rep == 'O.Bits':
-                g = re.search(r'_push\((U32\.is_lt\(n, \d+\)), o, v\)', tx.blk.get(f'{p}_app_n', ''))
+                g = re.search(r'_push\(Bool\.and\((U32\.is_lt\(n, \d+\)), ', tx.blk.get(f'{p}_app_c', ''))
                 if not g:
                     continue
                 build = lambda X, g=g, p=p: bits_laws(X, p, limit_of(g.group(1)))   # noqa: E731

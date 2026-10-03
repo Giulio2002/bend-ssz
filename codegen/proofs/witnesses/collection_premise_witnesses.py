@@ -134,7 +134,8 @@ def build_stmt(ctx, mod, name, txt):
             rep_arg = f'(({T}, ({dw}n, ({NN}, ({{==}}, ({PF}, ({{==}}, {{==}})))))), {{==}})'
     if 'j' in have and M < 2:
         return None, 'needs two distinct indices and the collection holds one element'
-    mc = re.search(r'\{U32\.is_le\(\(n \+ 1 : U32\), (\d+)\) == False\{\}', alltext) or \
+    mc = re.search(r'\{(?:Bool\.and\()+U32\.is_lt\((?:n|\(U32\.div\(n, \d+\)\)), (\d+)\)[^{}]* == False\{\}', alltext) or \
+        re.search(r'\{U32\.is_le\(\(n \+ 1 : U32\), (\d+)\) == False\{\}', alltext) or \
         re.search(r'\{U32\.is_lt\(n, (\d+)\) == False\{\}', alltext) or \
         re.search(r'\{(?:Bool\.and\()?U32\.is_lt\(\(U32\.div\(n, \d+\)\), (\d+)\)(?:, U32\.is_eq\(vn, \d+\))?\)? == False\{\}', alltext) or \
         re.search(r'\{(?:Bool\.and\()?U32\.is_le\(\(\(U32\.div\(n, \d+\)\) \+ 1 : U32\), (\d+)\)(?:, U32\.is_eq\(vn, \d+\)\))? == False\{\}', alltext)
@@ -174,6 +175,8 @@ def build_stmt(ctx, mod, name, txt):
                     env['arr'] = f'{ctx.alias(pth)}.{coll}_fill({dd}n)'
         else:
             env['arr'] = f'Array.new({etype}, {dd}n, {fill})'
+    if 'sc' in have:        # the append laws read the storage size of the object (docs/CRASH_HUNT.md R3-02): the premise esc is its size
+        env['sc'] = str(2 ** dd)    # the slots of Array.new(.., dd, ..) and of the boxed list's fill(dd)
     # objects of the statement that are not collections: elements, bytes, bits
     for n, t, _ in pl:
         if n in ('v', 'x', 'y') and n not in env:

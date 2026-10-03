@@ -335,7 +335,9 @@ def app_eq(+t: F.array__Tree<T.@E>, +dw: Nat, +N: U32, +v: T.@E, +k: Nat,
   +hn1 = n1_le(N, O.pow2n(k), en1, hlt)
   +hr = CA.rt_room(c, dw, N, k, hk, hn1, en1, {==})
   +pr = CA.rt_perfect(c, dw, N, t, pf)
-  %Equal.sym(Bool, U32.is_lt(N, @G), True{}, hg) :
+  %Equal.sym(Array<T.@E> & U32, Array.size(T.@E, F.array__thaw(T.@E, t)), (F.array__thaw(T.@E, t), F.u32__pow2u(dw)), F.array__size_thaw(T.@E, dw, t, pf)) :
+    {T.@L_app_sz(N, v, _) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(N, @G), U32.is_le(N, F.u32__pow2u(dw))), True{}, F.logic__and_intro(U32.is_lt(N, @G), U32.is_le(N, F.u32__pow2u(dw)), hg, CA.le_store(N, dw, hdw, hn))) :
     {T.@L_app_in(_, F.array__thaw(T.@E, t), N, v) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}
   %Equal.sym(Array<T.@E> & U32, Array.size(T.@E, F.array__thaw(T.@E, t)), (F.array__thaw(T.@E, t), F.u32__pow2u(dw)), F.array__size_thaw(T.@E, dw, t, pf)) :
     {(T.@L_Seq{Array.set(T.@E, T.@L_room_sized(N, _), N, v), (N + 1 : U32)}, True{}) == (T.@L_Seq{F.array__thaw(T.@E, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : T.@L_Seq & Bool}
@@ -499,7 +501,7 @@ def read_empty_rep(buf, off, len, s, heq):
 
 def app_guard(name):
     types = RR.mono_text('fulu')
-    m = re.search(rf'^def {name}_append\(.*\n.*\n.*_app_in\(U32\.is_lt\(n, (\d+)\), arr, n, v\)', types, re.M)
+    m = re.search(rf'^def {name}_app_sz\(.*\n.*\n.*_app_in\(Bool\.and\(U32\.is_lt\(n, (\d+)\), U32\.is_le\(n, sc\)\), arr, n, v\)', types, re.M)
     return m.group(1) if m else None
 
 
@@ -539,7 +541,7 @@ def build_spec(name, elem, depth, eq):
 
 def app_guard_cached(name):
     types = RR.mono_text('fulu')
-    m = re.search(rf'^def {name}_capp\(.*\n.*\n.*_capp_in\(U32\.is_lt\(n, (\d+)\), arr', types, re.M)
+    m = re.search(rf'^def {name}_capp_sz\(.*\n.*\n.*_capp_in\(Bool\.and\(U32\.is_lt\(n, (\d+)\), U32\.is_le\(n, sc\)\), arr', types, re.M)
     if not m:
         raise SystemExit(f'{name}: capp guard not in the expected form')
     return m.group(1)

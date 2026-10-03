@@ -41,7 +41,7 @@ def mk2() -> L8.l8_Attestation_Seq: app_fst(L8.l8_Attestation_append(app_fst(L8.
 
 def root_of(o: L8.l8_Attestation_Seq) -> String & L8.l8_Attestation_Seq: rstr(L8H.l8_Attestation_root(64n, O.hasher(), o, 0))
 def valid_of(o: L8.l8_Attestation_Seq) -> String & L8.l8_Attestation_Seq: vstr(L8E.l8_Attestation_valid(o))
-def get_of(o: L8.l8_Attestation_Seq, +i: U32) -> String & L8.l8_Attestation_Seq: gstr(L8.l8_Attestation_get(o, i))
+def get_of(o: L8.l8_Attestation_Seq, +i: U32) -> String & L8.l8_Attestation_Seq: gstr(L8.l8_Attestation_take(o, i))
 
 def c1e(r0: String, v0: String, g0: String, v1: String, r1: String, pair: String & L8.l8_Attestation_Seq) -> IO(Unit):
   (g1, o) = pair
@@ -94,7 +94,7 @@ def c4a(pair: V2.v2_VarTestStruct_Seq & Maybe<&1, Vt.VarTestStruct>) -> IO(Unit)
   match m:
     case Some{x}: c4b("some", V2E.v2_VarTestStruct_valid(o))
     case None{}: c4b("none", V2E.v2_VarTestStruct_valid(o))
-def c4() -> IO(Unit): c4a(V2.v2_VarTestStruct_get(V2.v2_VarTestStruct_default(), 0))
+def c4() -> IO(Unit): c4a(V2.v2_VarTestStruct_take(V2.v2_VarTestStruct_default(), 0))
 
 # 5: transactions list: append one empty byte list, valid, get(0), valid
 def c5b(g: String, pair: Tx.l1048576_bl1073741824_Seq & Bool) -> IO(Unit):
@@ -107,7 +107,7 @@ def c5a(pair: Tx.l1048576_bl1073741824_Seq & Maybe<&1, O.Words>) -> IO(Unit):
     case None{}: c5b("none", TxE.l1048576_bl1073741824_valid(o))
 def c5f(pair: Tx.l1048576_bl1073741824_Seq & Bool) -> IO(Unit):
   (o, ok) = pair
-  c5a(Tx.l1048576_bl1073741824_get(o, 0))
+  c5a(Tx.l1048576_bl1073741824_take(o, 0))
 def c5() -> IO(Unit): c5f(Tx.l1048576_bl1073741824_append(Tx.l1048576_bl1073741824_default(), O.words_new(5)))
 
 def dispatch(+c: U32, +a: U32) -> IO(Unit):

@@ -59,6 +59,16 @@ def words_len(w: Words) -> Words & U32:
   match w:
     case Words{ws, +n}: (Words{ws, n}, n)
 
+# The words of storage, beside the claimed length: an object may claim more bytes than its array holds, and an append or a write
+# that trusted the claim would allocate or copy for it (docs/CRASH_HUNT.md R3-02).
+def words_cap_sz(+n: U32, pair: Array<U32> & U32) -> Words & U32:
+  (ws, +c) = pair
+  (Words{ws, n}, c)
+
+def words_cap(w: Words) -> Words & U32:
+  match w:
+    case Words{ws, +n}: words_cap_sz(n, Array.size(U32, ws))
+
 # Mask keeping the low k bytes of a little-endian word, k = 1..4 (0 keeps all).
 def keep(+k: U32, +w: U32) -> U32:
   match k:
@@ -1465,6 +1475,15 @@ def bits_len(b: Bits) -> Bits & U32:
   match b:
     case Bits{ws, +k}: (Bits{ws, k}, k)
 
+# The words of storage of a bit list, beside its claimed bit count (docs/CRASH_HUNT.md R3-02).
+def bits_cap_sz(+k: U32, pair: Array<U32> & U32) -> Bits & U32:
+  (ws, +c) = pair
+  (Bits{ws, k}, c)
+
+def bits_cap(b: Bits) -> Bits & U32:
+  match b:
+    case Bits{ws, +k}: bits_cap_sz(k, Array.size(U32, ws))
+
 def bits_words(b: Bits) -> Words:
   match b:
     case Bits{ws, +k}: Words{ws, bits_nbytes(k)}
@@ -1588,8 +1607,14 @@ def dw_fin(st: Array<U32> & +List<U32>) -> +List<U32>:
   t
 
 # the first `n` bytes of packed storage
-def dump_bytes(ws: Array<U32>, +n: U32, t: +List<U32>) -> +List<U32>:
-  dw_fin(dw_go(U32.to_nat(n), n, (ws, t)))
+# (clamped to the bytes the storage holds: an object may claim more, docs/CRASH_HUNT.md R3-02)
+def dump_bytes_m(+m: U32, st: Array<U32> & +List<U32>) -> +List<U32>: dw_fin(dw_go(U32.to_nat(m), m, st))
+
+def dump_bytes_sz(+n: U32, t: +List<U32>, pair: Array<U32> & U32) -> +List<U32>:
+  (ws, +c) = pair
+  dump_bytes_m(pick(U32.is_lt(U32.shrn(n, 2n), c), n, (c * 4 : U32)), (ws, t))
+
+def dump_bytes(ws: Array<U32>, +n: U32, t: +List<U32>) -> +List<U32>: dump_bytes_sz(n, t, Array.size(U32, ws))
 
 def dump_words(w: Words, t: +List<U32>) -> +List<U32>:
   match w:

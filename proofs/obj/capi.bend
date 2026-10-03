@@ -133,6 +133,13 @@ def item_lt(+ta: F.array__Tree<FuluValidator_d.Validator>, +dw: Nat, +d: Nat, +I
     -> {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool}:
   F.nat__lt_le_trans(I, O.pow2n(d), F.spec_common__pow2(dw), hI, hcap)
 
+# The storage test of an append (docs/CRASH_HUNT.md R3-02): n is within the items array, which holds 2^dw slots.
+def le_store(+n: U32, +dw: Nat, +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool})
+    -> {U32.is_le(n, F.u32__pow2u(dw)) == True{} : Bool}:
+  %Equal.sym(Bool, U32.is_le(n, F.u32__pow2u(dw)), Nat.is_le(U32.to_nat(n), U32.to_nat(F.u32__pow2u(dw))), CX.le_nat(n, F.u32__pow2u(dw))) : {_ == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(dw)), F.spec_common__pow2(dw), F.u32__pow2u_value(dw, hdw)) : {Nat.is_le(U32.to_nat(n), _) == True{} : Bool}
+  h
+
 def item_len(+ta: F.array__Tree<FuluValidator_d.Validator>, +dw: Nat, +I: Nat,
     +pfa: {F.array__perfect(FuluValidator_d.Validator, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool})
@@ -304,7 +311,13 @@ def capp_eq(ta, dw, t, n, d, lo, hi, v, hfit, hgd, iv):
   (+pfa, w2) = w1
   (+hcap, w3) = w2
   (+hd, w4) = w3
-  %Equal.sym(Bool, guard(n), True{}, hgd) :
+  %Equal.sym(Array<FuluValidator_d.Validator> & U32, Array.size(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, ta)), (F.array__thaw(FuluValidator_d.Validator, ta), F.u32__pow2u(dw)),
+      F.array__size_thaw(FuluValidator_d.Validator, dw, ta, pfa)) :
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_capp_sz(n, d, F.array__thaw(D.Digest, t), lo, hi, v, _)
+     == (cached(F.array__upd(FuluValidator_d.Validator, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+     : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached & Bool}
+  %Equal.sym(Bool, Bool.and(guard(n), U32.is_le(n, F.u32__pow2u(dw))), True{},
+      F.logic__and_intro(guard(n), U32.is_le(n, F.u32__pow2u(dw)), hgd, le_store(n, dw, hdw, F.nat__lt_le(U32.to_nat(n), F.spec_common__pow2(dw), item_lt(ta, dw, d, U32.to_nat(n), pfa, hcap, hfit))))) :
     {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_capp_in(_, F.array__thaw(FuluValidator_d.Validator, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
      == (cached(F.array__upd(FuluValidator_d.Validator, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
      : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached & Bool}

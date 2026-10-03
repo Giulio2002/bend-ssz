@@ -127,7 +127,8 @@ def info(c):
     I['T'] = params[0].split(':', 1)[1].strip()
     vm, vt = re.match(r'([+-]?)v: (.*)$', params[2]).groups()
     I['vm'], I['VT'] = vm, vt
-    g = body(t, c + '_get')
+    I['gn'] = 'get' if body(t, c + '_get') else 'take'   # a linear element has a taker, not a getter (R3-01)
+    g = body(t, c + '_' + I['gn'])
     I['ET'] = re.match(r'.* & Maybe<&1, (.*)>$', g[1]).group(1)
     if I['T'].endswith('_Seq'):
         I['kind'] = 'seq'
@@ -136,8 +137,9 @@ def info(c):
         I['data'] = not I['EL'].startswith('O.Boxed<')
         I['ln'] = 'n'
         I['GS'] = call_args(b.split(': ', 1)[1] if 'case' in b else b, c + '_put_in')[0]
-        a = body(t, c + '_append')
-        I['GA'] = call_args(a[2].split(': ', 1)[1], c + '_app_in')[0] if a else None
+        # the append's guard is in `_app_sz`, which also reads the storage size `sc` of the array (docs/CRASH_HUNT.md R3-02)
+        a = body(t, c + '_app_sz')
+        I['GA'] = call_args(a[2].strip().split('\n')[-1].strip(), c + '_app_in')[0] if a else None
         gb = g[2]
         I['GG'] = call_args(gb.split(': ', 1)[1], c + '_get_in')[0]
     else:
@@ -161,7 +163,7 @@ def info(c):
         sb = (sw or sv or body(t, c + '_set_n'))[2].split('\n')[-1].strip()
         sb = re.sub(r'^case [^:]*: ', '', sb)
         I['GS'] = subst_n(call_args(sb, c + '_put_at')[0], I['ln'])
-        a = body(t, c + '_app_w') or body(t, c + '_app_v') or body(t, c + '_app_n')
+        a = body(t, c + '_app_w') or body(t, c + '_app_c')
         if a:
             ab = re.sub(r'^case [^:]*: ', '', a[2].split('\n')[-1].strip())
             fn = c + '_grow' if ab.startswith(c + '_grow(') else c + '_push'
@@ -243,7 +245,7 @@ def laws(I, imps):
         getin = lambda g: '%s.%s_get_in(%s, %s, i)' % (DA, c, g, OBJ)
     SET = '%s.%s_set(%s, i, %s)' % (DA, c, OBJ, V)
     APP = '%s.%s_append(%s, %s)' % (DA, c, OBJ, V)
-    GET = '%s.%s_get(%s, i)' % (DA, c, OBJ)
+    GET = '%s.%s_%s(%s, i)' % (DA, c, I['gn'], OBJ)
     n = 0
     w('# ---- %s ----' % c)
     # the flags: exactly the guard (a case split on the guard's value)
@@ -251,7 +253,20 @@ def laws(I, imps):
     w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
     LNQ = I['ln'] if re.fullmatch(r'\w+', I['ln']) else '(%s)' % I['ln']
     SETW = '%s.%s_set_w(i, %s, %s, vn, _)' % (DA, c, OBJ, LNQ)
-    APPW = '%s.%s_app_w(%s, %s, vn, _)' % (DA, c, OBJ, LNQ)
+    APPW = '%s.%s_app_w(%s, %s, sc, vn, _)' % (DA, c, OBJ, LNQ)
+    # the append's guard also reads the storage size `sc` of the object (docs/CRASH_HUNT.md R3-02): the append laws take it, tied to the
+    # object's array by the premise `esc`, and first rewrite the runtime's `Array.size` to that pair
+    SCP, ESCA, APPM = '', '%s', None
+    if GA:
+        STO, AT = ('arr', EL) if I['kind'] == 'seq' else ('ws', 'U32')
+        SCP = ', +sc: U32, +esc: {Array.size(%s, %s) == (%s, sc) : Array<%s> & U32}' % (AT, STO, STO, AT)
+        ESCA = '  %%%%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, sc), esc) : {%%s}' % (AT, AT, STO, STO)
+        if I['kind'] == 'seq':
+            APPM = '%s.%s_app_sz(n, v, _)' % (DA, c)
+        elif T == 'O.Bits':
+            APPM = '%s.%s_app_c(v, n, O.bits_cap_sz(n, _))' % (DA, c)
+        else:
+            APPM = '%s.%s_app_c(%s, %s, O.words_cap_sz(n, _))' % (DA, c, V, LNQ)
     w('def %s_api_set_flag(%s, +i: U32, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vbp, T, SET, GS))
     if VW:
         w(ESZ % ('Pair.snd(%s, Bool, %s) == %s : Bool' % (T, SETW, GS)))
@@ -268,11 +283,13 @@ def laws(I, imps):
     if GA:
         w('def %s_flag_append(b: Bool, %s, %s) -> {Pair.snd(%s, Bool, %s) == b : Bool}:' % (c, bind, vb, T, app('b')))
         w('  match b:\n    case True{}: {==}\n    case False{}: {==}')
-        w('def %s_api_append_flag(%s, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, vbp, T, APP, GA))
+        w('def %s_api_append_flag(%s%s, %s) -> {Pair.snd(%s, Bool, %s) == %s : Bool}:' % (c, bind, SCP, vbp, T, APP, GA))
+        w(ESCA % ('Pair.snd(%s, Bool, %s) == %s : Bool' % (T, APPM, GA)))
         if VW:
             w(ESZ % ('Pair.snd(%s, Bool, %s) == %s : Bool' % (T, APPW, GA)))
         w('  %s_flag_append(%s, %s, %s)' % (c, GA, 'arr, n' if I['kind'] == 'seq' else 'ws, n', VA))
-        w('def %s_api_append_rejected(%s, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, vbp, GA, APP, OBJ, T))
+        w('def %s_api_append_rejected(%s%s, %s, +e: {%s == False{} : Bool}) -> {%s == (%s, False{}) : %s & Bool}:' % (c, bind, SCP, vbp, GA, APP, OBJ, T))
+        w(ESCA % ('%s == (%s, False{}) : %s & Bool' % (APP, OBJ, T)).replace(APP, APPM, 1))
         if VW:
             w(ESZ % ('%s == (%s, False{}) : %s & Bool' % (APPW, OBJ, T)))
         w('  %%Equal.sym(Bool, %s, False{}, e) : {%s == (%s, False{}) : %s & Bool}' % (GA, app('_'), OBJ, T))
@@ -285,7 +302,8 @@ def laws(I, imps):
         w('  {==}')
         n += 1
         if GA:
-            w('def %s_api_append_length(%s, %s, +e: {%s == True{} : Bool}) -> {%s == (n + 1 : U32) : U32}:' % (c, bind, vb, GA, LEN(APP)))
+            w('def %s_api_append_length(%s%s, %s, +e: {%s == True{} : Bool}) -> {%s == (n + 1 : U32) : U32}:' % (c, bind, SCP, vb, GA, LEN(APP)))
+            w(ESCA % ('%s == (n + 1 : U32) : U32' % LEN(APPM)))
             w('  %%Equal.sym(Bool, %s, True{}, e) : {%s == (n + 1 : U32) : U32}' % (GA, LEN(app('_'))))
             w('  {==}')
             n += 1
@@ -963,6 +981,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     # append, then get the old length: when the storage has room (O.words_fit does not reallocate)
     imps['WR'] = 'proofs/obj/words_rw.bend'
     GA = q(I['GA'])
+    GA = re.sub(r'(?<![\w.])sc(?![\w.])', 'F.u32__pow2u(d)', GA)   # the storage test: the tree of depth d holds 2^d words (R3-02)
     LN = LEN if re.fullmatch(r'\w+', LEN) else '(%s)' % LEN
     NB = '((%s + 1 : U32) * %s : U32)' % (LN, K)
     PA = '(%s * %s : U32)' % (LN, K)
@@ -976,6 +995,10 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
              % (', '.join('+%s: U32' % x for x in xs), GA, NB, gw, PA, W))
     la = 'd, t, %s, %s, q, hd, pf, hq, hr, %s' % (NB, PA, ', '.join(xs))
     APP = '%s.%s_append(%s, %s)' % (DA, c, OBJ('t'), V)
+    # the append reads the size of the storage first (R3-02): rewritten to the 2^d words of the tree before the guard is
+    APPP = '%s.%s_app_c(%s, %s, O.words_cap_sz(n, _))' % (DA, c, V, LN)
+    SZR = ('  %%Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), '
+           'F.array__size_thaw(U32, d, t, pf)) : {%s}')
     GROW = '%s.%s(_, %s, %s, %s)' % (DA, I['afn'], OBJ('t'), LN, V)
     RESA = '(%s, Some{%s}) : O.Words & Maybe<&1, %s>' % (OBJN(TW), V, ET)
     GETA = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, LN)
@@ -983,6 +1006,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     WRA = WRA[:-len(', v)')] + ', %s)' % V
     READA = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJN(TW), PA)
     w('def %s_api_read_append(%s)\n    -> {%s == %s}:' % (c, prema, GETA('Pair.fst(O.Words, Bool, %s)' % APP), RESA))
+    w(SZR % ('%s == %s' % (GETA('Pair.fst(O.Words, Bool, %s)' % APPP), RESA)))
     w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s}' % (GA, GETA('Pair.fst(O.Words, Bool, %s)' % GROW), RESA))
     w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s}'
       % (OBJ('t'), NB, OBJ('t'), NB, GETA('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))' % (DA, c, NB, LN, V)), RESA))
@@ -1015,6 +1039,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
                   % (', '.join('+%s: U32' % x for x in xs), GA, NB, PA, W, fam['BASE'](cnt_of('n')), cnt_of(NB), cnt_of('n')))
         RESVA = 'VS.seq_append(%s(%s), %s)' % (VIEW, OBJ('t'), MKV)
         w('def %s_api_view_append(%s)\n    -> {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}:' % (c, premva, VIEW, APP, RESVA))
+        w(SZR % ('%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value' % (VIEW, APPP, RESVA)))
         w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}' % (GA, VIEW, GROW, RESVA))
         w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s(Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))) == %s : S.Value}'
           % (OBJ('t'), NB, OBJ('t'), NB, VIEW, DA, c, NB, LN, V, RESVA))
@@ -1041,6 +1066,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
     WRG = WRG[:-len(', v)')] + ', %s)' % V
     READG = '%s(%s, %s)' % (m.group(1).rsplit('.', 1)[0] + '.' + rfn, OBJG(TWG), PA)
     w('def %s_api_read_append_grow(%s)\n    -> {%s == %s}:' % (c, premg, GETA('Pair.fst(O.Words, Bool, %s)' % APP), RESG))
+    w(SZR % ('%s == %s' % (GETA('Pair.fst(O.Words, Bool, %s)' % APPP), RESG)))
     w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s}' % (GA, GETA('Pair.fst(O.Words, Bool, %s)' % GROW), RESG))
     w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), n}, %s) : {%s == %s}'
       % (OBJ('t'), NB, TG, GW['call'], GETA('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))' % (DA, c, NB, LN, V)), RESG))
@@ -1064,6 +1090,7 @@ def words_readback(w, I, q, DA, T, ET, GS, GG, imps):
                      fam['BASE'](cnt_of('n')), KK))
         RESVG = 'VS.seq_append(%s(%s), %s)' % (VIEW, OBJ('t'), MKV)
         w('def %s_api_view_append_grow(%s)\n    -> {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}:' % (c, premvg, VIEW, APP, RESVG))
+        w(SZR % ('%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value' % (VIEW, APPP, RESVG)))
         w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(O.Words, Bool, %s)) == %s : S.Value}' % (GA, VIEW, GROW, RESVG))
         w('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), n}, %s) : {%s(Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, %s))) == %s : S.Value}'
           % (OBJ('t'), NB, TG, GW['call'], VIEW, DA, c, NB, LN, V, RESVG))
@@ -1240,6 +1267,7 @@ def seq_view_law(w, I, DA, T, EL, GS, c, imps):
         return 1
     # an accepted append (the storage has room): the view before with the new element's view at the end
     GA = re.sub(r'(?<![\w.])arr(?![\w.])', TH, I['GA'])
+    GA = re.sub(r"(?<![\w.])sc(?![\w.])", "F.u32__pow2u(d)", GA)   # the storage test: the array holds 2^d slots
     GAx = GA
     N1 = '(n + 1 : U32)'
     APPO = '%s.%s_append(%s, v)' % (DA, c, SEQ(TH))
@@ -1252,6 +1280,8 @@ def seq_view_law(w, I, DA, T, EL, GS, c, imps):
             '+pf: {F.array__perfect(%s, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, +hcn: {U32.to_nat(%s) == 1n+U32.to_nat(n) : Nat}'
             % (EL, EL, EL, EL, EL, EL, EL, GA, N1))
     w('def %s_api_view_append(%s)\n    -> {%s(Pair.fst(%s.%s, Bool, %s)) == %s : S.Value}:' % (c, prea, XV, DA, I['T'], APPO, RESA))
+    w('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, F.u32__pow2u(d)), F.array__size_thaw(%s, d, t, pf)) : {%s(Pair.fst(%s.%s, Bool, %s.%s_app_sz(n, v, _))) == %s : S.Value}'
+      % (EL, EL, TH, TH, EL, XV, DA, I['T'], DA, c, RESA))
     w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(%s.%s, Bool, %s.%s_app_in(_, %s, n, v))) == %s : S.Value}' % (GAx, XV, DA, I['T'], DA, c, TH, RESA))
     w('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, F.u32__pow2u(d)), F.array__size_thaw(%s, d, t, pf)) : {%s(%s) == %s : S.Value}'
       % (EL, EL, TH, TH, EL, XV, SEQA('%s.%s_room_sized(n, _)' % (DA, c)), RESA))
@@ -1295,6 +1325,7 @@ def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
         return 2
     # append, then get index n (the storage has room: no growth)
     GAx = sub(GA, arr=TH)
+    GAx = re.sub(r"(?<![\w.])sc(?![\w.])", "F.u32__pow2u(d)", GAx)   # the storage test: the array holds 2^d slots
     N1 = '(n + 1 : U32)'
     AN = 'Array.set(%s, %s, n, v)' % (EL, TH)
     RESA = '(%s, Some{v}) : %s & Maybe<&1, %s>' % (SEQ('F.array__thaw(%s, %s)' % (EL, UP('n', 'v')), N1), T, ET)
@@ -1306,6 +1337,8 @@ def data_readback(w, I, DA, T, EL, ET, GS, GA, GG, vm, c):
     APPO = '%s.%s_append(%s, v)' % (DA, c, OBJ)
     SEQA = lambda room: SEQ('Array.set(%s, %s, n, v)' % (EL, room), N1)
     w('def %s_api_read_append(%s) -> {%s == %s}:' % (c, prea, GET(TR(APPO), 'n'), RESA))
+    w('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, F.u32__pow2u(d)), F.array__size_thaw(%s, d, t, pf)) : {%s == %s}'
+      % (EL, EL, TH, TH, EL, GET(TR('%s.%s_app_sz(n, v, _)' % (DA, c)), 'n'), RESA))
     w('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s}' % (GAx, GET(TR('%s.%s_app_in(_, %s, n, v)' % (DA, c, TH)), 'n'), RESA))
     w('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, F.u32__pow2u(d)), F.array__size_thaw(%s, d, t, pf)) : {%s == %s}'
       % (EL, EL, TH, TH, EL, GET(SEQA('%s.%s_room_sized(n, _)' % (DA, c)), 'n'), RESA))
@@ -1624,6 +1657,7 @@ def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps, GA=None):
     # TA.put (as for set); the frozen tree is updated (tfzrs_<c>), and view_app_t_<c> reads the update
     N1 = '(n + 1 : U32)'
     Jn, Zn = 'TA.J(%s, n)' % NN, 'TA.Z(%s, n)' % NN
+    GA = re.sub(r'(?<![\w.])sc(?![\w.])', NN, GA)   # the storage test: the array holds 2^d slots (R3-02)
     SEQA = lambda a_: SEQ(a_, N1)
     RESA = 'VS.seq_append(%s(%s), VQ.vm_%s(%s))' % (XV, SEQ(AM, 'n'), c, FZW)
     LHSA = '%s(Pair.fst(%s, Bool, %s.%s_append(%s, v)))' % (XV, T, DA, c, SEQ(AM, 'n'))
@@ -1636,6 +1670,8 @@ def boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps, GA=None):
     out.append('  (+f1, r3) = r2')
     out.append('  (+f2, r4) = r3')
     out.append('  (+f3, f4) = r4')
+    out.append('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, %s), RT.amsize_%s(d, t, pfT)) : {%s(Pair.fst(%s, Bool, %s.%s_app_sz(n, v, _))) == %s : S.Value}'
+               % (EL, EL, AM, AM, NN, c, XV, T, DA, c, RESA))
     out.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s(Pair.fst(%s, Bool, %s.%s_app_in(_, %s, n, v))) == %s : S.Value}' % (GA, XV, T, DA, c, AM, RESA))
     out.append('  %%Equal.sym(Array<%s> & U32, Array.size(%s, %s), (%s, %s), RT.amsize_%s(d, t, pfT)) : {%s(%s) == %s : S.Value}'
                % (EL, EL, AM, AM, NN, c, XV, SEQA('Array.set(%s, %s.%s_room_sized(n, _), n, %s)' % (EL, DA, c, WV)), RESA))
@@ -1707,9 +1743,12 @@ def seq_laws(I, imps):
             lem = ('%%Equal.sym(Array<%s> & %s, Array.get(%s, %s, %s), (%s, %s), TA.get_set_same(%s, %s, N, %s, %s, hz))'
                    % (EL, EL, EL, SETW, IX, AFTER, WV, EL, A, IX, WV))
         RES = '(%s, Some{v}) : %s & Maybe<&1, %s>' % (SEQ(AFTER, M_), T, ET)
-        out.append('def %s_api_%s(arr: Array<%s>, +n: U32, +N: U32, %s%s, +hz: {TA.sz(%s, %s) == N : U32}, %s)'
-                   % (c, name, EL, '+i: U32, ' if IX == 'i' else '', vb, EL, A, prem))
+        out.append('def %s_api_%s(%s: Array<%s>, +n: U32, +N: U32, %s%s, +hz: {TA.sz(%s, %s) == N : U32}, %s)'
+                   % (c, name, 'arr', EL, '+i: U32, ' if IX == 'i' else '', vb, EL, A, prem))
         out.append('    -> {%s.%s_get(Pair.fst(%s, Bool, %s), %s) == %s}:' % (DA, c, T, first[0], IX, RES))
+        if len(first) > 3:
+            # the append first rewrites the runtime's `Array.size` of the storage to the size the premise names (R3-02)
+            out.append('  %s : {%s.%s_get(Pair.fst(%s, Bool, %s), %s) == %s}' % (first[3], DA, c, T, first[4], IX, RES))
         out.append('  %s : {%s.%s_get(Pair.fst(%s, Bool, %s), %s) == %s}' % (first[1], DA, c, T, first[2], IX, RES))
         out.append('  %s : {%s.%s_get_in(_, %s, %s, %s) == %s}' % (guard, DA, c, SETW, M_, IX, RES))
         out.append('  %s : {%s.%s_took(%s, _) == %s}' % (lem, DA, c, M_, RES))
@@ -1723,8 +1762,9 @@ def seq_laws(I, imps):
         N1 = '(n + 1 : U32)'
         gw = re.sub(r'(?<![\w.])(n|i)(?![\w.])', lambda m: {'n': N1, 'i': 'n'}[m.group(1)], GG)
         law('read_append', '%s.%s_room(arr, n)' % (DA, c), 'n', N1,
-            '+ha: {%s == True{} : Bool}, +hw: {%s == True{} : Bool}' % (GA, gw),
-            ('%s.%s_append(%s, v)' % (DA, c, SEQ('arr', 'n')), '%%Equal.sym(Bool, %s, True{}, ha)' % GA, '%s.%s_app_in(_, arr, n, v)' % (DA, c)),
+            '+sc: U32, +esc: {Array.size(%s, arr) == (arr, sc) : Array<%s> & U32}, +ha: {%s == True{} : Bool}, +hw: {%s == True{} : Bool}' % (EL, EL, GA, gw),
+            ('%s.%s_append(%s, v)' % (DA, c, SEQ('arr', 'n')), '%%Equal.sym(Bool, %s, True{}, ha)' % GA, '%s.%s_app_in(_, arr, n, v)' % (DA, c),
+             '%%Equal.sym(Array<%s> & U32, Array.size(%s, arr), (arr, sc), esc)' % (EL, EL), '%s.%s_app_sz(n, v, _)' % (DA, c)),
             '%%Equal.sym(Bool, %s, True{}, hw)' % gw)
         k = 2
     if boxed:
@@ -1767,7 +1807,10 @@ def seq_laws(I, imps):
         k += boxed_view_set(out, c, T, VT, EL, WV, GS, SEQ, DA, imps, GA=(q(I['GA']) if I['GA'] else None))
         boxed_root_law(c, I, T, VT, EL, WV, GS, SEQ, DA, imps)
     out.append('')
-    return '\n'.join(out), k
+    text = '\n'.join(out)
+    if not I['data']:
+        text = text.replace('%s.%s_get(' % (DA, c), '%s.%s_take(' % (DA, c))   # a linear element has a taker (docs/CRASH_HUNT.md R3-01)
+    return text, k
 
 
 def coll_seq(cs):
@@ -1786,8 +1829,8 @@ def coll_seq(cs):
              '# The lists stored as an array of elements (Data elements, or boxed Type-kind containers): reading',
              '# the index just set returns the value set, and reading the old length after an accepted append',
              '# returns the value appended, whether or not the append had to grow the storage. No premise on',
-             '# the storage: N names the size of the array written (proofs/obj/tarray.bend). The runtime\'s get of',
-             '# a boxed element takes it out of its slot, which the result shows. hw: the length does not wrap.', '']
+             '# the storage: N names the size of the array written (proofs/obj/tarray.bend). The runtime\'s take of',
+             '# a boxed element (its getter is _take) takes it out of its slot, which the result shows. hw: the length does not wrap.', '']
     return '\n'.join(head) + body_, n
 
 
@@ -1986,17 +2029,21 @@ def coll_bits(cs):
             N1 = '(n + 1 : U32)'
             NBY = 'O.bits_nbytes(%s)' % N1
             WB = 'O.Words{F.array__thaw(U32, t), %s}' % NBY
+            GAB = re.sub(r'(?<![\w.])sc(?![\w.])', 'F.u32__pow2u(d)', I['GA'])   # the storage test: the tree of depth d holds 2^d words (R3-02)
+            # the append reads the size of the storage first: rewritten to the 2^d words of the tree before the guard is
+            SZB = ('%Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf))',
+                   'Pair.fst(O.Bits, Bool, %s.%s_app_c(v, n, O.bits_cap_sz(n, _)))' % (DA, c))
             emit('read_append', N1, 'n',
-                 '+ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, ' % (I['GA'], NBY),
+                 '+ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, ' % (GAB, NBY),
                  'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
-                 [('%%Equal.sym(Bool, %s, True{}, ha)' % I['GA'], 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
+                 [SZB, ('%%Equal.sym(Bool, %s, True{}, ha)' % GAB, 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom))' % (WB, NBY, WB, NBY, NBY),
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
             n += 1
             # the spec value: the bits of the list after a roomy append are the bits before and the new bit
-            mlim = re.match(r'U32\.is_lt\(n, (\d+)\)$', I['GA'])
-            assert mlim, I['GA']
-            LE1 = 'BV2.lt_le1(n, %s, ha)' % mlim.group(1)     # the guard n < limit as n + 1 <= limit (bits_view.bend)
+            mlim = re.match(r'Bool\.and\((U32\.is_lt\(n, (\d+)\)), (.*)\)$', GAB)
+            assert mlim, GAB
+            LE1 = 'BV2.lt_le1(n, %s, F.logic__and_left(%s, %s, ha))' % (mlim.group(2), mlim.group(1), mlim.group(3))   # the guard n < limit as n + 1 <= limit (bits_view.bend)     # the guard n < limit as n + 1 <= limit (bits_view.bend)
             imps['BV2'] = 'proofs/obj/bits_view.bend'
             imps['BO'] = 'proofs/obj/bitlist_obj_light.bend'
             OBn = lambda t_: 'O.Bits{F.array__thaw(U32, %s), %s}' % (t_, N1)
@@ -2008,44 +2055,46 @@ def coll_bits(cs):
             VGn = lambda o: 'BO.bview(%s)' % o
             L.append('def %s_api_view_append(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
                      '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, '
-                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, I['GA'], NBY, N1, JWn))
+                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})' % (c, GAB, NBY, N1, JWn))
             L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
-            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (I['GA'], VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
+            L.append('  %s : {%s == %s : +List<Bool>}' % (SZB[0], VGn(SZB[1]), RHSn))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (GAB, VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
             L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom)) : {%s == %s : +List<Bool>}' % (WB, NBY, WB, NBY, NBY, VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
             L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, OBn('t'), Xn, N1, JWn, VGn('O.bit_put(n, v, _)'), RHSn))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, NWn, OBn(T1n), N1, JWn, NWn, VGn('_'), RHSn))
-            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, %s), hg, hq, hk)' % (N1, mlim.group(1), LE1))
+            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, %s), hg, hq, hk)' % (N1, mlim.group(2), LE1))
             L.append('')
             n += 1
             GW = grow_parts(NBY, NBY)
             cw_imps(imps)
             imps['B'] = 'src/buffer.bend'
-            emit('read_append_grow', N1, 'n', '+ha: {%s == True{} : Bool}, %s, ' % (I['GA'], GW['prem']),
+            emit('read_append_grow', N1, 'n', '+ha: {%s == True{} : Bool}, %s, ' % (GAB, GW['prem']),
                  'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
-                 [('%%Equal.sym(Bool, %s, True{}, ha)' % I['GA'], 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
+                 [SZB, ('%%Equal.sym(Bool, %s, True{}, ha)' % GAB, 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s)' % (WB, NBY, GW['G'], NBY, GW['call']),
                    'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)],
                  TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')
             n += 1
             # the spec value after an append that reallocates the storage: the bits before and the new bit (the grown tree keeps the old words: bits_view.bend's view_snoc_grow)
             KK = 'U32.to_nat(U32.shrn((%s + 3 : U32), 2n))' % NBY
-            KB = (int(mlim.group(1)) + 7).bit_length()  # the least kb with limit + 8 <= 2^kb
+            KB = (int(mlim.group(2)) + 7).bit_length()  # the least kb with limit + 8 <= 2^kb
             D2g, Gg = GW['D2'], GW['G']
             Xg = 'WR.at(F.array__slots(U32, %s), q)' % Gg
             NWg = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(n, 31)))' % Xg
             T1g = 'F.array__upd(U32, %s, %s, q, %s)' % (D2g, Gg, NWg)
             L.append('def %s_api_view_append_grow(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
                      '+pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +ha: {%s == True{} : Bool}, %s, '
-                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(%s)) == True{} : Bool})' % (c, I['GA'], GW['prem'], N1, JWn, D2g))
+                     '+hg: {U32.is_lt(n, %s) == True{} : Bool}, +hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(%s)) == True{} : Bool})' % (c, GAB, GW['prem'], N1, JWn, D2g))
             L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
-            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (I['GA'], VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
+            L.append('  %s : {%s == %s : +List<Bool>}' % (SZB[0], VGn(SZB[1]), RHSn))
+            L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (GAB, VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
             L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s) : {%s == %s : +List<Bool>}'
                      % (WB, NBY, Gg, NBY, GW['call'], VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
             L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(%s, %s, %s, %s, q, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
                      % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bit_put(n, v, _)'), RHSn))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
                      % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('_'), RHSn))
-            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, %s), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, %s, {==}), BV2.n1(n, %s, hg, %s), hq))' % (D2g, KK, N1, mlim.group(1), LE1, N1, KB, N1, mlim.group(1), KB, LE1, mlim.group(1), LE1))
+            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, %s), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, %s, {==}), BV2.n1(n, %s, hg, %s), hq))' % (D2g, KK, N1, mlim.group(2), LE1, N1, KB, N1, mlim.group(2), KB, LE1, mlim.group(2), LE1))
             L.append('')
             n += 1
         L.append('')
@@ -2318,11 +2367,14 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
         K1 = re.search(r'\(i \* (\d+) : U32\)', P)
         assert K1, (c, P)
         NB = '((%s + 1 : U32) * %s : U32)' % (LN, K1.group(1))
-        GA = I['GA']
+        GA = re.sub(r'(?<![\w.])sc(?![\w.])', 'F.u32__pow2u(d)', I['GA'])   # the storage test: the tree of depth d holds 2^d words (R3-02)
+        # the append reads the size of the storage first: rewritten to the 2^d words of the tree before the guard is
+        SZP = ('%Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf))',
+               'Pair.fst(O.Words, Bool, %s.%s_app_c(v, %s, O.words_cap_sz(n, _)))' % (DA, c, LN))
         emit('read_append', NB, LN,
              '+ha: {%s == True{} : Bool}, +hroom: {U32.is_le((U32.shrn((%s + 31 : U32), 5n) * 8 + 8 : U32), F.u32__pow2u(d)) == True{} : Bool}, ' % (GA, NB),
              ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
-              [('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
+              [SZP, ('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
                ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom))' % (O0, NB, O0, NB),
                 'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]))
         n += 1
@@ -2347,6 +2399,7 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
                  '+hq: {U32.to_nat(%s) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool}, '
                  '+hp: {U32.to_nat(%s) == U32.to_nat(n) : Nat}, +hnb: {U32.to_nat(%s) == 1n+U32.to_nat(n) : Nat})' % (c, GA, NB, LE, JWa, PA, NB))
         L.append('    -> {%s == %s : S.Value}:' % (VWa('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RESa))
+        L.append('  %s : {%s == %s : S.Value}' % (SZP[0], VWa(SZP[1]), RESa))
         L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : S.Value}' % (GA, VWa('Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)), RESa))
         L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s : S.Value}'
                  % (O0, NB, O0, NB, VWa('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN)), RESa))
@@ -2361,7 +2414,7 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
         imps['B'] = 'src/buffer.bend'
         emit('read_append_grow', NB, LN, '+ha: {%s == True{} : Bool}, %s, ' % (GA, GW['prem']),
              ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
-              [('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
+              [SZP, ('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
                ('%%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), n}, %s)' % (O0, NB, GW['G'], GW['call']),
                 'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]),
              TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')

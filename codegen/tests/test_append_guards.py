@@ -29,14 +29,16 @@ class AppendGuardTest(unittest.TestCase):
             self.assertTrue(calls, f'{p.name}: no append found')
             for fn, rest in calls:
                 self.assertFalse(rest.startswith('True{}'), f'{p.name}: {fn} with the guard True{{}}')
-                self.assertRegex(rest, r'^(?:Bool\.and\()?(?:Bool\.and\()?U32\.is_lt\(', f'{p.name}: the guard of {fn} is not a count comparison: {rest[:80]}')
+                self.assertRegex(rest, r'^(?:Bool\.and\()*U32\.is_lt\(', f'{p.name}: the guard of {fn} is not a count comparison: {rest[:80]}')
+                # and the storage test: the object may claim more elements than its array holds (docs/CRASH_HUNT.md R3-02)
+                self.assertRegex(rest, r'U32\.is_le\([^\n]*\bsc\)', f'{p.name}: the guard of {fn} does not test the storage: {rest[:120]}')
 
     def test_guard_bounds_keep_the_length_below_the_chunk_wrap(self):
         """for a packed list of es-byte elements, n < bound implies (n + 1) * es + 31 < 2^32"""
         checked = 0
         for p, text in list_types():
             es = re.search(r'\(\(n \+ 1 : U32\) \* (\d+) : U32\)', text)
-            m = re.search(r'_grow\((?:Bool\.and\()?U32\.is_lt\(n, (\d+)\)', text)
+            m = re.search(r'_grow\((?:Bool\.and\()*U32\.is_lt\(n, (\d+)\)', text)
             if es is None or m is None:
                 continue
             self.assertLess(int(m.group(1)) * int(es.group(1)) + 31, 1 << 32, f'{p.name}: the guard bound {m.group(1)} lets the length wrap')

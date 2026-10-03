@@ -763,16 +763,24 @@ def emit_access(s, w):
             acond = lim_ok if dom is None else f'Bool.and({lim_ok}, {dom})'
             w(f'def {p}_app_n({pl}v: {er}, pair: O.Words & U32) -> O.Words & Bool:')
             w('  (o, +n) = pair')
+            w(f'  {p}_app_c(v, n, O.words_cap(o))')
+            # the storage must hold the n elements the object claims: an append that trusted a larger claim would allocate and copy for it
+            # (docs/CRASH_HUNT.md R3-02); the sum cannot wrap where the count test above passes, and its value is ignored where it fails
+            store = f'U32.is_le(U32.shrn(((n * {es} : U32) + 3 : U32), 2n), sc)'
             if er == 'O.Words':
-                w(f'  {p}_app_v(o, n, v)')
-                w(f'def {p}_app_v(o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:')
+                w(f'def {p}_app_c(v: {er}, +n: U32, pair: O.Words & U32) -> O.Words & Bool:')
+                w('  (o, +sc) = pair')
+                w(f'  {p}_app_v(o, n, sc, v)')
+                w(f'def {p}_app_v(o: O.Words, +n: U32, +sc: U32, v: O.Words) -> O.Words & Bool:')
                 w('  match v:')
-                w(f'    case O.Words{{vws, +vn}}: {p}_app_w(o, n, vn, Array.size(U32, vws))')
-                w(f'def {p}_app_w(o: O.Words, +n: U32, +vn: U32, pair: Array<U32> & U32) -> O.Words & Bool:')
+                w(f'    case O.Words{{vws, +vn}}: {p}_app_w(o, n, sc, vn, Array.size(U32, vws))')
+                w(f'def {p}_app_w(o: O.Words, +n: U32, +sc: U32, +vn: U32, pair: Array<U32> & U32) -> O.Words & Bool:')
                 w('  (vws, +vc) = pair')
-                w(f'  {p}_grow(Bool.and(Bool.and({acond}, U32.is_eq(vn, {es})), U32.is_le({(es + 3) // 4}, vc)), o, n, O.Words{{vws, vn}})')
+                w(f'  {p}_grow(Bool.and(Bool.and(Bool.and({acond}, {store}), U32.is_eq(vn, {es})), U32.is_le({(es + 3) // 4}, vc)), o, n, O.Words{{vws, vn}})')
             else:
-                w(f'  {p}_grow({acond}, o, n, v)')
+                w(f'def {p}_app_c({pl}v: {er}, +n: U32, pair: O.Words & U32) -> O.Words & Bool:')
+                w('  (o, +sc) = pair')
+                w(f'  {p}_grow(Bool.and({acond}, {store}), o, n, v)')
             w(f'def {p}_append(o: O.Words, {pl}v: {er}) -> O.Words & Bool: {p}_app_n(v, {p}_len(o))')
         return
     if k in ('fixwords',):
@@ -823,9 +831,13 @@ def emit_access(s, w):
         w('  match ok:')
         w('    case True{}: (O.bits_push(o, v), True{})')
         w('    case False{}: (o, False{})')
+        # the storage must hold the claimed bits (docs/CRASH_HUNT.md R3-02)
         w(f'def {p}_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:')
         w('  (o, +n) = pair')
-        w(f'  {p}_push({append_room("n", t.size)}, o, v)')
+        w(f'  {p}_app_c(v, n, O.bits_cap(o))')
+        w(f'def {p}_app_c(v: Bool, +n: U32, pair: O.Bits & U32) -> O.Bits & Bool:')
+        w('  (o, +sc) = pair')
+        w(f'  {p}_push(Bool.and({append_room("n", t.size)}, U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)')
         w(f'def {p}_append(o: O.Bits, v: Bool) -> O.Bits & Bool: {p}_app_n(v, O.bits_len(o))')
         return
     if k == 'seq':
@@ -860,7 +872,9 @@ def emit_access(s, w):
         w('  match inside:')
         w(f'    case True{{}}: {p}_at(arr, n, i)')
         w(f'    case False{{}}: ({S}{{arr, n}}, None{{}})')
-        w(f'def {p}_get(o: {S}, +i: U32) -> {S} & Maybe<&1, {Pe}>:')
+        # a linear element cannot be both returned and kept: its getter is `_take` and leaves the empty box in the slot (docs/CRASH_HUNT.md R3-01)
+        gn = 'get' if e.data else 'take'
+        w(f'def {p}_{gn}(o: {S}, +i: U32) -> {S} & Maybe<&1, {Pe}>:')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: {p}_get_in(U32.is_lt(i, n), arr, n, i)')
         w(f'def {p}_put_in(ok: Bool, arr: Array<{Re}>, +n: U32, +i: U32, v: {Pe}) -> {S} & Bool:')
@@ -897,9 +911,14 @@ def emit_access(s, w):
             w('  match ok:')
             w(f'    case True{{}}: ({S}{{Array.set({Re}, {p}_room(arr, n), n, {wrap("v")}), (n + 1 : U32)}}, True{{}})')
             w(f'    case False{{}}: ({S}{{arr, n}}, False{{}})')
+            # the append also tests that the storage holds the n elements it claims: a claim the storage cannot hold would make `room` allocate
+            # and copy for the claim (docs/CRASH_HUNT.md R3-02)
+            w(f'def {p}_app_sz(+n: U32, v: {Pe}, pair: Array<{Re}> & U32) -> {S} & Bool:')
+            w('  (arr, +sc) = pair')
+            w(f'  {p}_app_in(Bool.and({append_room("n", t.size)}, U32.is_le(n, sc)), arr, n, v)')
             w(f'def {p}_append(o: {S}, v: {Pe}) -> {S} & Bool:')
             w('  match o:')
-            w(f'    case {S}{{arr, +n}}: {p}_app_in({append_room("n", t.size)}, arr, n, v)')
+            w(f'    case {S}{{arr, +n}}: {p}_app_sz(n, v, Array.size({Re}, arr))')
         return
 
 
@@ -942,10 +961,10 @@ def emit_force(s, w):
             w(f'def {p}_fo_fin(+n: U32, pair: Array<{Re}> & U32) -> {S} & U32:')
             w('  (arr, +x) = pair')
             w(f'  ({S}{{arr, n}}, x)')
-            w(f'def {p}_fo_nz(empty: Bool, +n: U32, arr: Array<{Re}>) -> {S} & U32:')
+            w(f'def {p}_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<{Re}>) -> {S} & U32:')
             w('  match empty:')
             w(f'    case True{{}}: ({S}{{arr, n}}, 0)')
-            w(f'    case False{{}}: {p}_fo_fin(n, {p}_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get({Re}, arr, 0)))')
+            w(f'    case False{{}}: {p}_fo_fin(n, {p}_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get({Re}, arr, 0)))')
         else:
             w(f'def {p}_fo_back(+i: U32, +acc: U32, arr: Array<{Re}>, pair: {Re} & U32) -> Array<{Re}> & U32:')
             w('  (v, +x) = pair')
@@ -962,11 +981,16 @@ def emit_force(s, w):
             w(f'def {p}_fo_fin(+n: U32, pair: Array<{Re}> & U32) -> {S} & U32:')
             w('  (arr, +x) = pair')
             w(f'  ({S}{{arr, n}}, x)')
-            w(f'def {p}_fo_nz(empty: Bool, +n: U32, arr: Array<{Re}>) -> {S} & U32:')
-            w(f'  {p}_fo_fin(n, {p}_fo(U32.to_nat(n), 0, (arr, 0)))')
+            w(f'def {p}_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<{Re}>) -> {S} & U32:')
+            w(f'  {p}_fo_fin(n, {p}_fo(U32.to_nat(m), 0, (arr, 0)))')
+        # the fold visits the elements the storage holds, not the claimed count (docs/CRASH_HUNT.md R3-02)
+        w(f'def {p}_fo_m(+n: U32, +m: U32, arr: Array<{Re}>) -> {S} & U32: {p}_fo_nz(U32.is_eq(m, 0), n, m, arr)')
+        w(f'def {p}_fo_sz(+n: U32, pair: Array<{Re}> & U32) -> {S} & U32:')
+        w('  (arr, +sc) = pair')
+        w(f'  {p}_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)')
         w(f'def {p}_force(o: {S}) -> {S} & U32:')
         w('  match o:')
-        w(f'    case {S}{{arr, +n}}: {p}_fo_nz(U32.is_eq(n, 0), n, arr)')
+        w(f'    case {S}{{arr, +n}}: {p}_fo_sz(n, Array.size({Re}, arr))')
     elif k == 'container':
         if len(s.fields) > GROUP:
             gs = [(f'g{g.k}', g) for g in s.groups]
@@ -1030,9 +1054,14 @@ def emit_dump(s, w):
         w(f'def {p}_du_fin(+n: U32, st: {ST}) -> {T}:')
         w('  (arr, t) = st')
         w('  t' if s.t.kind == 'vector' else '  O.dump_le(n, 4, t)')
+        # the dump lists the elements the storage holds, then the claimed count (docs/CRASH_HUNT.md R3-02)
+        w(f'def {p}_du_sz(+n: U32, t: {T}, pair: Array<{Re}> & U32) -> {T}:')
+        w('  (arr, +sc) = pair')
+        w(f'  {p}_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))')
+        w(f'def {p}_du_m(+n: U32, +m: U32, st: {ST}) -> {T}: {p}_du_fin(n, {p}_du(U32.to_nat(m), m, st))')
         w(f'def {p}_dump(o: {S}, t: {T}) -> {T}:')
         w('  match o:')
-        w(f'    case {S}{{arr, +n}}: {p}_du_fin(n, {p}_du(U32.to_nat(n), n, (arr, t)))')
+        w(f'    case {S}{{arr, +n}}: {p}_du_sz(n, t, Array.size({Re}, arr))')
     elif k == 'container':
         F = [(f'g{g.k}', g) for g in s.groups] if len(s.fields) > GROUP else s.fields
         emit_dump_fields(w, p, R, F)
@@ -2010,16 +2039,21 @@ def emit_seq_cache(s, w):
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: ({C}{{arr, n, d, nodes, lo, hi}}, n)')
     # indexed read and write through the cache
-    w(f'def {p}_cget(c: {C}, +i: U32) -> {C} & Maybe<&1, {Pe}>:')
+    cg = 'cget' if e.data else 'ctake'
+    w(f'def {p}_{cg}(c: {C}, +i: U32) -> {C} & Maybe<&1, {Pe}>:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)')
     w(f'def {p}_cget_in(inside: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> {C} & Maybe<&1, {Pe}>:')
     w('  match inside:')
-    w(f'    case True{{}}: {p}_ctook(n, d, nodes, lo, hi, {take})')
+    w(f'    case True{{}}: {p}_ctook(n, d, nodes, lo, hi, {"" if e.data else "i, "}{take})')
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, None{{}})')
-    w(f'def {p}_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<{R}> & {R}) -> {C} & Maybe<&1, {Pe}>:')
+    w(f'def {p}_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, {"" if e.data else "+i: U32, "}pair: Array<{R}> & {R}) -> {C} & Maybe<&1, {Pe}>:')
     w(f'  (arr, {plus(e)}v) = pair')
-    w(f'  ({C}{{arr, n, d, nodes, lo, hi}}, Some{{{unbox("v")}}})')
+    if e.data:
+        w(f'  ({C}{{arr, n, d, nodes, lo, hi}}, Some{{{unbox("v")}}})')
+    else:
+        # the slot now holds the empty box, which the root reads as the default element: its leaf is dirty (docs/CRASH_HUNT.md R3-01)
+        w(f'  ({C}{{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}}, Some{{{unbox("v")}}})')
     w(f'def {p}_cset(c: {C}, +i: U32, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)')
@@ -2028,9 +2062,13 @@ def emit_seq_cache(s, w):
     w(f'    case True{{}}: ({C}{{Array.set({R}, arr, i, {wrap("v")}), n, d, nodes,'
       ' O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})')
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, False{{}})')
+    # the storage test of the uncached append (docs/CRASH_HUNT.md R3-02)
+    w(f'def {p}_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}, pair: Array<{R}> & U32) -> {C} & Bool:')
+    w('  (arr, +sc) = pair')
+    w(f'  {p}_capp_in(Bool.and({append_room("n", t.size)}, U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)')
     w(f'def {p}_capp(c: {C}, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
-    w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_in({append_room("n", t.size)}, arr, n, d, nodes, lo, hi, v)')
+    w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_sz(n, d, nodes, lo, hi, v, Array.size({R}, arr))')
     w(f'def {p}_capp_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}) -> {C} & Bool:')
     w('  match ok:')
     w(f'    case True{{}}: ({p}_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{{}})')

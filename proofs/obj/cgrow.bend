@@ -308,7 +308,13 @@ def grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, hg, iv):
   +R = rtree(c, dw, n, ta)
   +hr = rt_room(c, dw, n, k, hk, hn1, en1, {==})
   +pr = rt_perfect(c, dw, n, ta, pfa)
-  %Equal.sym(Bool, CA.guard(n), True{}, hgd) :
+  %Equal.sym(Array<FuluValidator_d.Validator> & U32, Array.size(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, ta)), (F.array__thaw(FuluValidator_d.Validator, ta), F.u32__pow2u(dw)),
+      F.array__size_thaw(FuluValidator_d.Validator, dw, ta, pfa)) :
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_capp_sz(n, d, F.array__thaw(D.Digest, t), lo, hi, v, _)
+     == (CA.cached(gitems(dw, n, ta, v), CA.dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached & Bool}
+  %Equal.sym(Bool, Bool.and(CA.guard(n), U32.is_le(n, F.u32__pow2u(dw))), True{},
+      F.logic__and_intro(CA.guard(n), U32.is_le(n, F.u32__pow2u(dw)), hgd, CA.le_store(n, dw, hdw, F.nat__le_trans(N, O.pow2n(d), F.spec_common__pow2(dw), hnd, hcap)))) :
     {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_capp_in(_, F.array__thaw(FuluValidator_d.Validator, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
      == (CA.cached(gitems(dw, n, ta, v), CA.dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
      : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached & Bool}

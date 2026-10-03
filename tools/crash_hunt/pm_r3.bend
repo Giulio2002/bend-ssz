@@ -130,7 +130,7 @@ def x1c(s1: String, pair: L8.l8_Attestation_Cached & Maybe<&1, At.Attestation>) 
 def x1b(pair: B.Buf & (L8.l8_Attestation_Cached & D.Digest)) -> IO(Unit):
   (h, r) = pair
   (c, d) = r
-  x1c(IOx.words(d), L8.l8_Attestation_cget(c, 0))
+  x1c(IOx.words(d), L8.l8_Attestation_ctake(c, 0))
 def x1a(pair: L8.l8_Attestation_Seq & Bool) -> IO(Unit):
   (o, ok) = pair
   x1b(L8.l8_Attestation_cached_root(64n, O.hasher(), L8.l8_Attestation_cache(o), 0))

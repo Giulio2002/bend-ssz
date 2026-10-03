@@ -44,6 +44,14 @@ import ../../types/proglist_uint16_def_generated.bend as P16
 import ../../types/proglist_uint32_def_generated.bend as P32
 import ../../types/proglist_uint64_def_generated.bend as P64
 import ../../types/proglist_uint8_decode_ssz_generated.bend as PlR
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as LV
+import ../../types/FuluValidator_def_generated.bend as Va
+import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as LW
+import ../../types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend as LWE
+import ../../types/FuluWithdrawal_def_generated.bend as Wd
+import ../../types/Fulu_list_Attestation_8_def_generated.bend as L8
+import ../../types/Fulu_list_Attestation_8_encode_ssz_generated.bend as L8E
+import ../../types/FuluAttestation_def_generated.bend as At
 {H}
 # ---- CH-01: a cell is exactly 2048 bytes ----
 def cells2() -> O.Words: O.Words{{Array.new(U32, 10n, 0), 4096}}
@@ -123,6 +131,30 @@ def cells_append_one_word_refused() -> {{Cells.l4096_b2048_append(O.Words{{Array
 
 # ---- R2-04: the checked decoder looks at the words the buffer holds, not at its size field ----
 def decode_checked_lying_buf_refused() -> {{PlR.proglist_uint8_decode_checked(B.Buf{{Array.new(U32, 1n, 0), 2147483647}}, 2147483647) == (B.Buf{{Array.new(U32, 1n, 0), 2147483647}}, None{{}}) : B.Buf & Maybe<&1, O.Words>}}:
+  {{==}}
+
+# ---- R3-02: an append to an object that claims more elements than its storage holds is refused (it used to allocate and copy for the claim) ----
+def pl_u8_append_claim_over_storage_refused() -> {{PlD.pl_u8_append(O.Words{{Array.new(U32, 8n, 0), 2147483647}}, 7) == (O.Words{{Array.new(U32, 8n, 0), 2147483647}}, False{{}}) : O.Words & Bool}}:
+  {{==}}
+
+def pbits_append_claim_over_storage_refused() -> {{PbD.pbits_append(O.Bits{{Array.new(U32, 4n, 0), 2147483647}}, True{{}}) == (O.Bits{{Array.new(U32, 4n, 0), 2147483647}}, False{{}}) : O.Bits & Bool}}:
+  {{==}}
+
+def validator_append_claim_over_storage_refused() -> {{LV.l1099511627776_Validator_append(LV.l1099511627776_Validator_Seq{{LV.l1099511627776_Validator_fill(0n), 67108864}}, Va.Validator_default()) == (LV.l1099511627776_Validator_Seq{{LV.l1099511627776_Validator_fill(0n), 67108864}}, False{{}}) : LV.l1099511627776_Validator_Seq & Bool}}:
+  {{==}}
+
+def pl_u8_append_tight_storage_accepted() -> {{Pair.snd(O.Words, Bool, PlD.pl_u8_append(O.Words{{Array.new(U32, 0n, 0), 4}}, 7)) == True{{}} : Bool}}:
+  {{==}}
+
+# ---- R3-01: a getter does not remove the element it returns; the getter of a boxed element is `_take`, which leaves the empty box in the slot ----
+def unboxed_get_keeps_the_list() -> {{LW.l16_Withdrawal_get(LW.l16_Withdrawal_Seq{{Array.new(Wd.Withdrawal, 0n, Wd.Withdrawal_default()), 1}}, 0) == (LW.l16_Withdrawal_Seq{{Array.new(Wd.Withdrawal, 0n, Wd.Withdrawal_default()), 1}}, Some{{Wd.Withdrawal_default()}}) : LW.l16_Withdrawal_Seq & Maybe<&1, Wd.Withdrawal>}}:
+  {{==}}
+
+def valid_after_take(pair: L8.l8_Attestation_Seq & Maybe<&1, At.Attestation>) -> Bool:
+  (o, m) = pair
+  Pair.snd(L8.l8_Attestation_Seq, Bool, L8E.l8_Attestation_valid(o))
+
+def boxed_take_leaves_a_hole() -> {{valid_after_take(L8.l8_Attestation_take(L8.l8_Attestation_Seq{{Array.set(O.Boxed<At.Attestation>, L8.l8_Attestation_fill(0n), 0, O.BSome{{At.Attestation_default(), O.BNone{{}}}}), 1}}, 0)) == False{{}} : Bool}}:
   {{==}}
 """
 

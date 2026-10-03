@@ -28,3 +28,12 @@
 28 attestation_2_absent ok=0
 29 both_present_control ok=1
 30 dirty_root_equals_clean=1
+31 validator_claim_67108864 ok=0 len=67108864
+32 pending_deposit_claim_33554432 ok=0 len=33554432
+33 pl_u8_claim_2gib=0
+34 pbits_claim_2g=0
+35 validator_capp_claim_67108864 ok=0 len=67108864
+36 dump_len=20
+37 force_claim_100000000=0
+38 valid_after_get=1
+39 cached_root_after_ctake_equals_plain_root_after_take=1
