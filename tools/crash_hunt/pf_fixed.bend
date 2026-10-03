@@ -219,6 +219,20 @@ def one_att(pair: L8.l8_Attestation_Seq & Bool) -> L8.l8_Attestation_Seq:
 def mk_att() -> L8.l8_Attestation_Seq: one_att(L8.l8_Attestation_append(L8.l8_Attestation_default(), At.Attestation_default()))
 def case39() -> IO(Unit): ctk0("cached_root_after_ctake_equals_plain_root_after_take", mk_att(), L8.l8_Attestation_cached_root(64n, O.hasher(), L8.l8_Attestation_cache(mk_att()), 0))
 
+# CH-06 (agent/decode-window): `X_decode` itself refuses a window that is not inside the buffer (size > B.size(buf), also at 2^32 - 1
+# where an off + size would wrap); the window inside the buffer, and the empty window of an empty buffer, are decoded
+def maybe_w(label: String, pair: B.Buf & Maybe<&1, O.Words>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: IO.print(label ++ "=some")
+    case None{}: IO.print(label ++ "=none")
+def case40() -> IO(Unit): maybe_line("decode_empty_buf_40", CpR.Checkpoint_decode(B.empty(), 40))
+def case41() -> IO(Unit): maybe_line("decode_40_control", CpR.Checkpoint_decode(B.alloc(40), 40))
+def case42() -> IO(Unit): maybe_line("decode_window_41_of_40", CpR.Checkpoint_decode(B.alloc(40), 41))
+def case43() -> IO(Unit): maybe_line("decode_window_2_pow_32_minus_1", CpR.Checkpoint_decode(B.alloc(40), 4294967295))
+def case44() -> IO(Unit): maybe_w("decode_empty_list_empty_buf", PlR.proglist_uint8_decode(B.empty(), 0))
+def case45() -> IO(Unit): maybe_w("decode_list_window_5_of_empty_buf", PlR.proglist_uint8_decode(B.empty(), 5))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -259,6 +273,12 @@ def dispatch(+c: U32) -> IO(Unit):
     case 37: case37()
     case 38: case38()
     case 39: case39()
+    case 40: case40()
+    case 41: case41()
+    case 42: case42()
+    case 43: case43()
+    case 44: case44()
+    case 45: case45()
     case _: case12()
 
 def main() -> IO(Unit):

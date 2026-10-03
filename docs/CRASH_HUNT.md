@@ -19,7 +19,7 @@ section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12) and the round-3 hunte
 | CH-03 | FIXED (`src/obj.bend` moved, statements unchanged) | every root clamps its chunk count to the storage: `O.cap_cnt`; identical root for every storage-valid object (proved), work bounded by the allocation for an invalid one | `regress.sh` cases 13-14; `proofs/obj/words_cap.bend` |
 | CH-04 | FIXED (statements and lock moved, authorized) | `n + 1 <= N` became `n < min(N, 2^32 - 1)` for every list that can reach 2^32 - 1 | `regress.sh` cases 6-8; `proofs/slop/crash/` laws; regenerated `*_api_append_*` statements |
 | CH-05 | FIXED in the checked entry | `X_decode_checked` refuses a window of 2^31 bytes or more; `_decode` itself is unchanged (its statements are frozen and it is the subject of the decode bridges) | `regress.sh` case 11; slop law `decode_checked_2gib_refused` |
-| CH-06 | FIXED in the checked entry; `_decode` itself NOT changed (measured, section 6) | `X_decode_checked(buf, size)` refuses `size > B.size(buf)`; `X_decode` keeps its precondition (every decode statement is over `(buf, n)` with the buffer of size n, and a refusing `_decode` would need `n <= n` at every symbolic n) | `regress.sh` cases 9-10; slop laws |
+| CH-06 | FIXED in `_decode` itself (agent/decode-window) | `X_decode(buf, size)` answers `(buf, None{})` when `size > B.size(buf)` (a U32 comparison with the buffer's size field: nothing wraps, no size cap); otherwise it is `X_decode_in` (the old body). `X_decode_checked` stays (it also tests the storage and the 2^31 bound) | `regress.sh` cases 9-10 and 40-45; `proofs/obj/decode_window_*_generated.bend` (`X_win_out`: outside the buffer the result is None); docs/decode_window_statement_diff.md |
 | CH-07 | DOCUMENTED | the 2^31 byte size limit is part of the contract (docs/API_CONTRACTS.md) | - |
 | CH-08 | DOCUMENTED | `_hash_tree_root` precondition `X_valid(o)`; no error channel | - |
 | CH-09 | DOCUMENTED | `_build` / `_read` are unchecked by design (precondition `_ok`), with `_decode_checked` as the safe entry | - |
@@ -186,6 +186,16 @@ needs a case split on the guard) or `Checkpoint_decode(buf, size) == Checkpoint_
 size). The full count of what would be touched: 2,569 proof and witness files (all generated) with 14,687 occurrences of `_decode(`, in 19
 generator files (`codegen/proofs/{bridges,laws,slop,composed,witnesses,collections,var}/`). Each needs one rewrite step in its generator text,
 then a full recheck of those files. Not attempted; `X_decode_checked` is the safe entry (CH-05, CH-06).
+
+**Done in agent/decode-window.** The cost was not in the generators' number of occurrences but in three shapes: a law over a literal window and a buffer of that
+literal size needs nothing (the guard `U32.is_le(40, 40)` evaluates); a law over `(BF(t, n), n)` needs `U32.is_le(n, n)`, and a refusal over a free buffer
+needs the case split of the guard. `X_decode` is now `X_dwin(size, B.size(buf))` over `X_decode_in` (the old body); one lemma module per decoder
+(`proofs/obj/decode_window_<Name>_generated.bend`, `codegen/proofs/laws/decode_window_laws.py`) carries a law proved on `_decode_in` to `_decode`
+(`X_win_none`, `X_win_none_f` for a free buffer variable, `X_win_some` with `hle`, and `X_win_out`: outside the buffer the result is None); the wrapping of the
+generated laws is one function of `runtime_file_split.rewire` (`codegen/proofs/support/decode_window.py`), so no generator emits a decode proof by itself. The
+only statements that change are the 282 `decode_build` / `decode_fields` laws of `decoder_offsets` (premise `hwin`, the window is inside the buffer; with their
+gate and facade restatements): docs/decode_window_statement_diff.md. The importer closure of all 1,955 changed files (5,594 with their importers) checks (51 of 51
+umbrellas); `regress.sh` cases 40-45 (empty buffer, window past the end, window 2^32 - 1, the empty window of an empty buffer).
 
 
 # Round 2 (agent/crash-hunt-r2, off origin/main d21616e2b; branch agent/crash-fix2 29af0ebcc checked for CH-03)

@@ -37,3 +37,9 @@
 37 force_claim_100000000=0
 38 valid_after_get=1
 39 cached_root_after_ctake_equals_plain_root_after_take=1
+40 decode_empty_buf_40=none
+41 decode_40_control=some
+42 decode_window_41_of_40=none
+43 decode_window_2_pow_32_minus_1=none
+44 decode_empty_list_empty_buf=some
+45 decode_list_window_5_of_empty_buf=none
