@@ -46,8 +46,12 @@ def bits131072_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
     case True{}: (O.bits_push(o, v), True{})
     case False{}: (o, False{})
 
+def bits131072_app_c(v: Bool, +n: U32, pair: O.Bits & U32) -> O.Bits & Bool:
+  (o, +sc) = pair
+  bits131072_push(Bool.and(U32.is_lt(n, 131072), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
+
 def bits131072_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits131072_push(U32.is_lt(n, 131072), o, v)
+  bits131072_app_c(v, n, O.bits_cap(o))
 
 def bits131072_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits131072_app_n(v, O.bits_len(o))

@@ -39,12 +39,18 @@ def pl_ProgressiveVarTestStruct_fo_fin(+n: U32, pair: Array<O.Boxed<ProgressiveV
   (arr, +x) = pair
   (pl_ProgressiveVarTestStruct_Seq{arr, n}, x)
 
-def pl_ProgressiveVarTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>) -> pl_ProgressiveVarTestStruct_Seq & U32:
-  pl_ProgressiveVarTestStruct_fo_fin(n, pl_ProgressiveVarTestStruct_fo(U32.to_nat(n), 0, (arr, 0)))
+def pl_ProgressiveVarTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>) -> pl_ProgressiveVarTestStruct_Seq & U32:
+  pl_ProgressiveVarTestStruct_fo_fin(n, pl_ProgressiveVarTestStruct_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def pl_ProgressiveVarTestStruct_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>) -> pl_ProgressiveVarTestStruct_Seq & U32: pl_ProgressiveVarTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def pl_ProgressiveVarTestStruct_fo_sz(+n: U32, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & U32) -> pl_ProgressiveVarTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  pl_ProgressiveVarTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def pl_ProgressiveVarTestStruct_force(o: pl_ProgressiveVarTestStruct_Seq) -> pl_ProgressiveVarTestStruct_Seq & U32:
   match o:
-    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_fo_sz(n, Array.size(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, arr))
 
 def pl_ProgressiveVarTestStruct_du_took(t: +List<U32>, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>) -> Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & +List<U32>:
   (arr, v) = pair
@@ -61,9 +67,15 @@ def pl_ProgressiveVarTestStruct_du_fin(+n: U32, st: Array<O.Boxed<ProgressiveVar
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def pl_ProgressiveVarTestStruct_du_m(+n: U32, +m: U32, st: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & +List<U32>) -> +List<U32>: pl_ProgressiveVarTestStruct_du_fin(n, pl_ProgressiveVarTestStruct_du(U32.to_nat(m), m, st))
+
+def pl_ProgressiveVarTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  pl_ProgressiveVarTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def pl_ProgressiveVarTestStruct_dump(o: pl_ProgressiveVarTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_du_fin(n, pl_ProgressiveVarTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_du_sz(n, t, Array.size(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, arr))
 
 def pl_ProgressiveVarTestStruct_len(o: pl_ProgressiveVarTestStruct_Seq) -> pl_ProgressiveVarTestStruct_Seq & U32:
   match o:
@@ -81,7 +93,7 @@ def pl_ProgressiveVarTestStruct_get_in(inside: Bool, arr: Array<O.Boxed<Progress
     case True{}: pl_ProgressiveVarTestStruct_at(arr, n, i)
     case False{}: (pl_ProgressiveVarTestStruct_Seq{arr, n}, None{})
 
-def pl_ProgressiveVarTestStruct_get(o: pl_ProgressiveVarTestStruct_Seq, +i: U32) -> pl_ProgressiveVarTestStruct_Seq & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
+def pl_ProgressiveVarTestStruct_take(o: pl_ProgressiveVarTestStruct_Seq, +i: U32) -> pl_ProgressiveVarTestStruct_Seq & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>:
   match o:
     case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -123,6 +135,10 @@ def pl_ProgressiveVarTestStruct_app_in(ok: Bool, arr: Array<O.Boxed<ProgressiveV
     case True{}: (pl_ProgressiveVarTestStruct_Seq{Array.set(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, pl_ProgressiveVarTestStruct_room(arr, n), n, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (pl_ProgressiveVarTestStruct_Seq{arr, n}, False{})
 
+def pl_ProgressiveVarTestStruct_app_sz(+n: U32, v: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & U32) -> pl_ProgressiveVarTestStruct_Seq & Bool:
+  (arr, +sc) = pair
+  pl_ProgressiveVarTestStruct_app_in(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(n, sc)), arr, n, v)
+
 def pl_ProgressiveVarTestStruct_append(o: pl_ProgressiveVarTestStruct_Seq, v: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> pl_ProgressiveVarTestStruct_Seq & Bool:
   match o:
-    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
+    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_sz(n, v, Array.size(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, arr))

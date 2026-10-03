@@ -1562,6 +1562,13 @@ def item_lt(+ta: F.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +dw: 
     -> {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool}:
   F.nat__lt_le_trans(I, O.pow2n(d), F.spec_common__pow2(dw), hI, hcap)
 
+# The storage test of an append (docs/CRASH_HUNT.md R3-02): n is within the items array, which holds 2^dw slots.
+def le_store(+n: U32, +dw: Nat, +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool})
+    -> {U32.is_le(n, F.u32__pow2u(dw)) == True{} : Bool}:
+  %Equal.sym(Bool, U32.is_le(n, F.u32__pow2u(dw)), Nat.is_le(U32.to_nat(n), U32.to_nat(F.u32__pow2u(dw))), CX.le_nat(n, F.u32__pow2u(dw))) : {_ == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(dw)), F.spec_common__pow2(dw), F.u32__pow2u_value(dw, hdw)) : {Nat.is_le(U32.to_nat(n), _) == True{} : Bool}
+  h
+
 def item_len(+ta: F.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +dw: Nat, +I: Nat,
     +pfa: {F.array__perfect(FuluHistoricalSummary_d.HistoricalSummary, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool})
@@ -1708,8 +1715,9 @@ def app_state(+ta: F.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +dw
   {==}
 
 # The runtime's append guard: `capp` appends only when it holds. This list's
-# limit (2^40) is above every U32 length, so its guard is the largest count, n < 2^32 - 1 (docs/CRASH_HUNT.md CH-04: the older
-# `n + 1 <= limit` wrapped at 2^32 - 1); each generated list (codegen/proofs/laws/cached_root_laws.py) substitutes its own n < limit.
+# limit (2^40) is above every U32 length, so its guard is the largest count whose encoding stays below 2^31 bytes, n < 17747798 =
+# floor((2^31 - 1) / 121) (docs/CRASH_HUNT.md R3-03: n * 121 wraps in U32 from n = 35495597; CH-04: the older `n + 1 <= limit`
+# wrapped at 2^32 - 1); each generated list (codegen/proofs/laws/cached_root_laws.py) substitutes its own bound.
 def guard(+n: U32) -> Bool: U32.is_lt(n, 16777216)
 
 # An append into a cache with room (n < 2^d): the items tree updated at n, n + 1 elements.
@@ -1733,7 +1741,13 @@ def capp_eq(ta, dw, t, n, d, lo, hi, v, hfit, hgd, iv):
   (+pfa, w2) = w1
   (+hcap, w3) = w2
   (+hd, w4) = w3
-  %Equal.sym(Bool, guard(n), True{}, hgd) :
+  %Equal.sym(Array<FuluHistoricalSummary_d.HistoricalSummary> & U32, Array.size(FuluHistoricalSummary_d.HistoricalSummary, F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta)), (F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta), F.u32__pow2u(dw)),
+      F.array__size_thaw(FuluHistoricalSummary_d.HistoricalSummary, dw, ta, pfa)) :
+    {Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_capp_sz(n, d, F.array__thaw(D.Digest, t), lo, hi, v, _)
+     == (cached(F.array__upd(FuluHistoricalSummary_d.HistoricalSummary, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+     : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Cached & Bool}
+  %Equal.sym(Bool, Bool.and(guard(n), U32.is_le(n, F.u32__pow2u(dw))), True{},
+      F.logic__and_intro(guard(n), U32.is_le(n, F.u32__pow2u(dw)), hgd, le_store(n, dw, hdw, F.nat__lt_le(U32.to_nat(n), F.spec_common__pow2(dw), item_lt(ta, dw, d, U32.to_nat(n), pfa, hcap, hfit))))) :
     {Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_capp_in(_, F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
      == (cached(F.array__upd(FuluHistoricalSummary_d.HistoricalSummary, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
      : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Cached & Bool}
@@ -2202,7 +2216,13 @@ def grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, hg, iv):
   +R = rtree(c, dw, n, ta)
   +hr = rt_room(c, dw, n, k, hk, hn1, en1, {==})
   +pr = rt_perfect(c, dw, n, ta, pfa)
-  %Equal.sym(Bool, guard(n), True{}, hgd) :
+  %Equal.sym(Array<FuluHistoricalSummary_d.HistoricalSummary> & U32, Array.size(FuluHistoricalSummary_d.HistoricalSummary, F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta)), (F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta), F.u32__pow2u(dw)),
+      F.array__size_thaw(FuluHistoricalSummary_d.HistoricalSummary, dw, ta, pfa)) :
+    {Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_capp_sz(n, d, F.array__thaw(D.Digest, t), lo, hi, v, _)
+     == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Cached & Bool}
+  %Equal.sym(Bool, Bool.and(guard(n), U32.is_le(n, F.u32__pow2u(dw))), True{},
+      F.logic__and_intro(guard(n), U32.is_le(n, F.u32__pow2u(dw)), hgd, le_store(n, dw, hdw, F.nat__le_trans(N, O.pow2n(d), F.spec_common__pow2(dw), hnd, hcap)))) :
     {Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_capp_in(_, F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
      == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
      : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Cached & Bool}

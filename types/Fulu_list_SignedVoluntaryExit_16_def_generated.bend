@@ -31,14 +31,20 @@ def l16_SignedVoluntaryExit_fo_fin(+n: U32, pair: Array<FuluSignedVoluntaryExit_
   (arr, +x) = pair
   (l16_SignedVoluntaryExit_Seq{arr, n}, x)
 
-def l16_SignedVoluntaryExit_fo_nz(empty: Bool, +n: U32, arr: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>) -> l16_SignedVoluntaryExit_Seq & U32:
+def l16_SignedVoluntaryExit_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>) -> l16_SignedVoluntaryExit_Seq & U32:
   match empty:
     case True{}: (l16_SignedVoluntaryExit_Seq{arr, n}, 0)
-    case False{}: l16_SignedVoluntaryExit_fo_fin(n, l16_SignedVoluntaryExit_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr, 0)))
+    case False{}: l16_SignedVoluntaryExit_fo_fin(n, l16_SignedVoluntaryExit_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr, 0)))
+
+def l16_SignedVoluntaryExit_fo_m(+n: U32, +m: U32, arr: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>) -> l16_SignedVoluntaryExit_Seq & U32: l16_SignedVoluntaryExit_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l16_SignedVoluntaryExit_fo_sz(+n: U32, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> l16_SignedVoluntaryExit_Seq & U32:
+  (arr, +sc) = pair
+  l16_SignedVoluntaryExit_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l16_SignedVoluntaryExit_force(o: l16_SignedVoluntaryExit_Seq) -> l16_SignedVoluntaryExit_Seq & U32:
   match o:
-    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_fo_sz(n, Array.size(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr))
 
 def l16_SignedVoluntaryExit_du_took(t: +List<U32>, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l16_SignedVoluntaryExit_du_fin(+n: U32, st: Array<FuluSignedVoluntaryExit_d.
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l16_SignedVoluntaryExit_du_m(+n: U32, +m: U32, st: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & +List<U32>) -> +List<U32>: l16_SignedVoluntaryExit_du_fin(n, l16_SignedVoluntaryExit_du(U32.to_nat(m), m, st))
+
+def l16_SignedVoluntaryExit_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l16_SignedVoluntaryExit_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l16_SignedVoluntaryExit_dump(o: l16_SignedVoluntaryExit_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_du_fin(n, l16_SignedVoluntaryExit_du(U32.to_nat(n), n, (arr, t)))
+    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_du_sz(n, t, Array.size(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr))
 
 def l16_SignedVoluntaryExit_len(o: l16_SignedVoluntaryExit_Seq) -> l16_SignedVoluntaryExit_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l16_SignedVoluntaryExit_app_in(ok: Bool, arr: Array<FuluSignedVoluntaryExit_
     case True{}: (l16_SignedVoluntaryExit_Seq{Array.set(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, l16_SignedVoluntaryExit_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l16_SignedVoluntaryExit_Seq{arr, n}, False{})
 
+def l16_SignedVoluntaryExit_app_sz(+n: U32, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> l16_SignedVoluntaryExit_Seq & Bool:
+  (arr, +sc) = pair
+  l16_SignedVoluntaryExit_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
+
 def l16_SignedVoluntaryExit_append(o: l16_SignedVoluntaryExit_Seq, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> l16_SignedVoluntaryExit_Seq & Bool:
   match o:
-    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_app_in(U32.is_lt(n, 16), arr, n, v)
+    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_app_sz(n, v, Array.size(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr))
 
 type l16_SignedVoluntaryExit_Cached is Type:
   l16_SignedVoluntaryExit_Cached{items: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l16_SignedVoluntaryExit_capp_in(ok: Bool, arr: Array<FuluSignedVoluntaryExit
     case True{}: (l16_SignedVoluntaryExit_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l16_SignedVoluntaryExit_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l16_SignedVoluntaryExit_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> l16_SignedVoluntaryExit_Cached & Bool:
+  (arr, +sc) = pair
+  l16_SignedVoluntaryExit_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l16_SignedVoluntaryExit_capp(c: l16_SignedVoluntaryExit_Cached, v: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> l16_SignedVoluntaryExit_Cached & Bool:
   match c:
-    case l16_SignedVoluntaryExit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedVoluntaryExit_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
+    case l16_SignedVoluntaryExit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedVoluntaryExit_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr))
 
 def l16_SignedVoluntaryExit_ts_store(ts: l16_SignedVoluntaryExit_TS, +k: U32, +dg: D.Digest) -> l16_SignedVoluntaryExit_TS:
   match ts:

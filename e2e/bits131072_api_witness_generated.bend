@@ -16,8 +16,8 @@ def bits131072_api_set_rejected_witness() -> {Fulu_bitlist_131072_d.bits131072_s
 def bits131072_api_get_outside_witness() -> {Fulu_bitlist_131072_d.bits131072_get(W_src_obj.Bits{Array.new(U32, 6n, 0), 4}, 4) == (W_src_obj.Bits{Array.new(U32, 6n, 0), 4}, None{}) : W_src_obj.Bits & Maybe<&1, Bool>}:
   W_proofs_obj_coll_api_0.bits131072_api_get_outside(Array.new(U32, 6n, 0), 4, 4, {==})
 
-def bits131072_api_append_flag_witness() -> {Pair.snd(W_src_obj.Bits, Bool, Fulu_bitlist_131072_d.bits131072_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 0}, True{})) == U32.is_lt(0, 131072) : Bool}:
-  W_proofs_obj_coll_api_0.bits131072_api_append_flag(Array.new(U32, 6n, 0), 0, True{})
+def bits131072_api_append_flag_witness() -> {Pair.snd(W_src_obj.Bits, Bool, Fulu_bitlist_131072_d.bits131072_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 0}, True{})) == Bool.and(U32.is_lt(0, 131072), U32.is_le(U32.shrn((W_src_obj.bits_nbytes(0) + 3 : U32), 2n), 64)) : Bool}:
+  W_proofs_obj_coll_api_0.bits131072_api_append_flag(Array.new(U32, 6n, 0), 0, 64, {==}, True{})
 
 def bits131072_api_append_rejected_witness() -> {Fulu_bitlist_131072_d.bits131072_append(W_src_obj.Bits{Array.new(U32, 6n, 0), 131072}, True{}) == (W_src_obj.Bits{Array.new(U32, 6n, 0), 131072}, False{}) : W_src_obj.Bits & Bool}:
-  W_proofs_obj_coll_api_0.bits131072_api_append_rejected(Array.new(U32, 6n, 0), 131072, True{}, {==})
+  W_proofs_obj_coll_api_0.bits131072_api_append_rejected(Array.new(U32, 6n, 0), 131072, 64, {==}, True{}, {==})

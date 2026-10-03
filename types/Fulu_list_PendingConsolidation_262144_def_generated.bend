@@ -31,14 +31,20 @@ def l262144_PendingConsolidation_fo_fin(+n: U32, pair: Array<FuluPendingConsolid
   (arr, +x) = pair
   (l262144_PendingConsolidation_Seq{arr, n}, x)
 
-def l262144_PendingConsolidation_fo_nz(empty: Bool, +n: U32, arr: Array<FuluPendingConsolidation_d.PendingConsolidation>) -> l262144_PendingConsolidation_Seq & U32:
+def l262144_PendingConsolidation_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluPendingConsolidation_d.PendingConsolidation>) -> l262144_PendingConsolidation_Seq & U32:
   match empty:
     case True{}: (l262144_PendingConsolidation_Seq{arr, n}, 0)
-    case False{}: l262144_PendingConsolidation_fo_fin(n, l262144_PendingConsolidation_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluPendingConsolidation_d.PendingConsolidation, arr, 0)))
+    case False{}: l262144_PendingConsolidation_fo_fin(n, l262144_PendingConsolidation_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluPendingConsolidation_d.PendingConsolidation, arr, 0)))
+
+def l262144_PendingConsolidation_fo_m(+n: U32, +m: U32, arr: Array<FuluPendingConsolidation_d.PendingConsolidation>) -> l262144_PendingConsolidation_Seq & U32: l262144_PendingConsolidation_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l262144_PendingConsolidation_fo_sz(+n: U32, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> l262144_PendingConsolidation_Seq & U32:
+  (arr, +sc) = pair
+  l262144_PendingConsolidation_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l262144_PendingConsolidation_force(o: l262144_PendingConsolidation_Seq) -> l262144_PendingConsolidation_Seq & U32:
   match o:
-    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_fo_sz(n, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))
 
 def l262144_PendingConsolidation_du_took(t: +List<U32>, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & FuluPendingConsolidation_d.PendingConsolidation) -> Array<FuluPendingConsolidation_d.PendingConsolidation> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l262144_PendingConsolidation_du_fin(+n: U32, st: Array<FuluPendingConsolidat
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l262144_PendingConsolidation_du_m(+n: U32, +m: U32, st: Array<FuluPendingConsolidation_d.PendingConsolidation> & +List<U32>) -> +List<U32>: l262144_PendingConsolidation_du_fin(n, l262144_PendingConsolidation_du(U32.to_nat(m), m, st))
+
+def l262144_PendingConsolidation_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l262144_PendingConsolidation_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l262144_PendingConsolidation_dump(o: l262144_PendingConsolidation_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_du_fin(n, l262144_PendingConsolidation_du(U32.to_nat(n), n, (arr, t)))
+    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_du_sz(n, t, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))
 
 def l262144_PendingConsolidation_len(o: l262144_PendingConsolidation_Seq) -> l262144_PendingConsolidation_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l262144_PendingConsolidation_app_in(ok: Bool, arr: Array<FuluPendingConsolid
     case True{}: (l262144_PendingConsolidation_Seq{Array.set(FuluPendingConsolidation_d.PendingConsolidation, l262144_PendingConsolidation_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l262144_PendingConsolidation_Seq{arr, n}, False{})
 
+def l262144_PendingConsolidation_app_sz(+n: U32, v: FuluPendingConsolidation_d.PendingConsolidation, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> l262144_PendingConsolidation_Seq & Bool:
+  (arr, +sc) = pair
+  l262144_PendingConsolidation_app_in(Bool.and(U32.is_lt(n, 262144), U32.is_le(n, sc)), arr, n, v)
+
 def l262144_PendingConsolidation_append(o: l262144_PendingConsolidation_Seq, v: FuluPendingConsolidation_d.PendingConsolidation) -> l262144_PendingConsolidation_Seq & Bool:
   match o:
-    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_app_in(U32.is_lt(n, 262144), arr, n, v)
+    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_app_sz(n, v, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))
 
 type l262144_PendingConsolidation_Cached is Type:
   l262144_PendingConsolidation_Cached{items: Array<FuluPendingConsolidation_d.PendingConsolidation>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l262144_PendingConsolidation_capp_in(ok: Bool, arr: Array<FuluPendingConsoli
     case True{}: (l262144_PendingConsolidation_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l262144_PendingConsolidation_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l262144_PendingConsolidation_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluPendingConsolidation_d.PendingConsolidation, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> l262144_PendingConsolidation_Cached & Bool:
+  (arr, +sc) = pair
+  l262144_PendingConsolidation_capp_in(Bool.and(U32.is_lt(n, 262144), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l262144_PendingConsolidation_capp(c: l262144_PendingConsolidation_Cached, v: FuluPendingConsolidation_d.PendingConsolidation) -> l262144_PendingConsolidation_Cached & Bool:
   match c:
-    case l262144_PendingConsolidation_Cached{arr, +n, +d, nodes, +lo, +hi}: l262144_PendingConsolidation_capp_in(U32.is_lt(n, 262144), arr, n, d, nodes, lo, hi, v)
+    case l262144_PendingConsolidation_Cached{arr, +n, +d, nodes, +lo, +hi}: l262144_PendingConsolidation_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))
 
 def l262144_PendingConsolidation_ts_store(ts: l262144_PendingConsolidation_TS, +k: U32, +dg: D.Digest) -> l262144_PendingConsolidation_TS:
   match ts:

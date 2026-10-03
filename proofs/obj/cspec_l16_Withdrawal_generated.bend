@@ -234,7 +234,9 @@ def app_eq(+t: F.array__Tree<FuluWithdrawal_d.Withdrawal>, +dw: Nat, +N: U32, +v
   +hn1 = n1_le(N, O.pow2n(k), en1, hlt)
   +hr = CA.rt_room(c, dw, N, k, hk, hn1, en1, {==})
   +pr = CA.rt_perfect(c, dw, N, t, pf)
-  %Equal.sym(Bool, U32.is_lt(N, 16), True{}, hg) :
+  %Equal.sym(Array<FuluWithdrawal_d.Withdrawal> & U32, Array.size(FuluWithdrawal_d.Withdrawal, F.array__thaw(FuluWithdrawal_d.Withdrawal, t)), (F.array__thaw(FuluWithdrawal_d.Withdrawal, t), F.u32__pow2u(dw)), F.array__size_thaw(FuluWithdrawal_d.Withdrawal, dw, t, pf)) :
+    {Fulu_list_Withdrawal_16_d.l16_Withdrawal_app_sz(N, v, _) == (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & Bool}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(N, 16), U32.is_le(N, F.u32__pow2u(dw))), True{}, F.logic__and_intro(U32.is_lt(N, 16), U32.is_le(N, F.u32__pow2u(dw)), hg, CA.le_store(N, dw, hdw, hn))) :
     {Fulu_list_Withdrawal_16_d.l16_Withdrawal_app_in(_, F.array__thaw(FuluWithdrawal_d.Withdrawal, t), N, v) == (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & Bool}
   %Equal.sym(Array<FuluWithdrawal_d.Withdrawal> & U32, Array.size(FuluWithdrawal_d.Withdrawal, F.array__thaw(FuluWithdrawal_d.Withdrawal, t)), (F.array__thaw(FuluWithdrawal_d.Withdrawal, t), F.u32__pow2u(dw)), F.array__size_thaw(FuluWithdrawal_d.Withdrawal, dw, t, pf)) :
     {(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{Array.set(FuluWithdrawal_d.Withdrawal, Fulu_list_Withdrawal_16_d.l16_Withdrawal_room_sized(N, _), N, v), (N + 1 : U32)}, True{}) == (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & Bool}

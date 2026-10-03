@@ -22,11 +22,11 @@ def l128_u64_api_set_rejected_witness() -> {Fulu_list_uint64_128_d.l128_u64_set(
 def l128_u64_api_get_outside_witness() -> {Fulu_list_uint64_128_d.l128_u64_get(W_src_obj.Words{Array.new(U32, 6n, 0), 32}, 32) == (W_src_obj.Words{Array.new(U32, 6n, 0), 32}, None{}) : W_src_obj.Words & Maybe<&1, W_src_obj.U64>}:
   W_proofs_obj_coll_api_6.l128_u64_api_get_outside(Array.new(U32, 6n, 0), 32, 32, {==})
 
-def l128_u64_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, W_src_obj.U64{0, 0})) == U32.is_lt((U32.div(0, 8)), 128) : Bool}:
-  W_proofs_obj_coll_api_6.l128_u64_api_append_flag(Array.new(U32, 6n, 0), 0, W_src_obj.U64{0, 0})
+def l128_u64_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, W_src_obj.U64{0, 0})) == Bool.and(U32.is_lt((U32.div(0, 8)), 128), U32.is_le(U32.shrn((((U32.div(0, 8)) * 8 : U32) + 3 : U32), 2n), 64)) : Bool}:
+  W_proofs_obj_coll_api_6.l128_u64_api_append_flag(Array.new(U32, 6n, 0), 0, 64, {==}, W_src_obj.U64{0, 0})
 
 def l128_u64_api_append_rejected_witness() -> {Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 1024}, W_src_obj.U64{0, 0}) == (W_src_obj.Words{Array.new(U32, 6n, 0), 1024}, False{}) : W_src_obj.Words & Bool}:
-  W_proofs_obj_coll_api_6.l128_u64_api_append_rejected(Array.new(U32, 6n, 0), 1024, W_src_obj.U64{0, 0}, {==})
+  W_proofs_obj_coll_api_6.l128_u64_api_append_rejected(Array.new(U32, 6n, 0), 1024, 64, {==}, W_src_obj.U64{0, 0}, {==})
 
 def l128_u64_api_read_set_witness() -> {Fulu_list_uint64_128_d.l128_u64_get(Pair.fst(W_src_obj.Words, Bool, Fulu_list_uint64_128_d.l128_u64_set(W_src_obj.Words{W_proofs_compact_found.array__thaw(U32, W_proofs_compact_found.array__trep(U32, 6n, 0)), 32}, 0, W_src_obj.U64{1, 1})), 0) == (W_src_obj.Words{W_proofs_compact_found.array__thaw(U32, W_proofs_compact_found.array__upd(U32, 6n, W_proofs_compact_found.array__upd(U32, 6n, W_proofs_compact_found.array__trep(U32, 6n, 0), Nat.add((U32.to_nat(U32.shrn((0 * 8 : U32), 2n))), 0n), 1), Nat.add((U32.to_nat(U32.shrn((0 * 8 : U32), 2n))), 1n), 1)), 32}, Some{W_src_obj.U64{1, 1}}) : W_src_obj.Words & Maybe<&1, W_src_obj.U64>}:
   W_proofs_obj_coll_api_6.l128_u64_api_read_set(6n, W_proofs_compact_found.array__trep(U32, 6n, 0), 32, 0, (U32.to_nat(U32.shrn((0 * 8 : U32), 2n))), 1, 1, {==}, W_proofs_compact_found.array__trep_perfect(U32, 6n, 0), {==}, {==}, {==})

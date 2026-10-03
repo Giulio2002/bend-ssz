@@ -40,12 +40,18 @@ def l1048576_bl1073741824_fo_fin(+n: U32, pair: Array<O.Boxed<O.Words>> & U32) -
   (arr, +x) = pair
   (l1048576_bl1073741824_Seq{arr, n}, x)
 
-def l1048576_bl1073741824_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<O.Words>>) -> l1048576_bl1073741824_Seq & U32:
-  l1048576_bl1073741824_fo_fin(n, l1048576_bl1073741824_fo(U32.to_nat(n), 0, (arr, 0)))
+def l1048576_bl1073741824_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<O.Words>>) -> l1048576_bl1073741824_Seq & U32:
+  l1048576_bl1073741824_fo_fin(n, l1048576_bl1073741824_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def l1048576_bl1073741824_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<O.Words>>) -> l1048576_bl1073741824_Seq & U32: l1048576_bl1073741824_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l1048576_bl1073741824_fo_sz(+n: U32, pair: Array<O.Boxed<O.Words>> & U32) -> l1048576_bl1073741824_Seq & U32:
+  (arr, +sc) = pair
+  l1048576_bl1073741824_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l1048576_bl1073741824_force(o: l1048576_bl1073741824_Seq) -> l1048576_bl1073741824_Seq & U32:
   match o:
-    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_fo_sz(n, Array.size(O.Boxed<O.Words>, arr))
 
 def l1048576_bl1073741824_du_took(t: +List<U32>, pair: Array<O.Boxed<O.Words>> & O.Boxed<O.Words>) -> Array<O.Boxed<O.Words>> & +List<U32>:
   (arr, v) = pair
@@ -62,9 +68,15 @@ def l1048576_bl1073741824_du_fin(+n: U32, st: Array<O.Boxed<O.Words>> & +List<U3
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l1048576_bl1073741824_du_m(+n: U32, +m: U32, st: Array<O.Boxed<O.Words>> & +List<U32>) -> +List<U32>: l1048576_bl1073741824_du_fin(n, l1048576_bl1073741824_du(U32.to_nat(m), m, st))
+
+def l1048576_bl1073741824_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<O.Words>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l1048576_bl1073741824_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l1048576_bl1073741824_dump(o: l1048576_bl1073741824_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_du_fin(n, l1048576_bl1073741824_du(U32.to_nat(n), n, (arr, t)))
+    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_du_sz(n, t, Array.size(O.Boxed<O.Words>, arr))
 
 def l1048576_bl1073741824_len(o: l1048576_bl1073741824_Seq) -> l1048576_bl1073741824_Seq & U32:
   match o:
@@ -82,7 +94,7 @@ def l1048576_bl1073741824_get_in(inside: Bool, arr: Array<O.Boxed<O.Words>>, +n:
     case True{}: l1048576_bl1073741824_at(arr, n, i)
     case False{}: (l1048576_bl1073741824_Seq{arr, n}, None{})
 
-def l1048576_bl1073741824_get(o: l1048576_bl1073741824_Seq, +i: U32) -> l1048576_bl1073741824_Seq & Maybe<&1, O.Words>:
+def l1048576_bl1073741824_take(o: l1048576_bl1073741824_Seq, +i: U32) -> l1048576_bl1073741824_Seq & Maybe<&1, O.Words>:
   match o:
     case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -124,9 +136,13 @@ def l1048576_bl1073741824_app_in(ok: Bool, arr: Array<O.Boxed<O.Words>>, +n: U32
     case True{}: (l1048576_bl1073741824_Seq{Array.set(O.Boxed<O.Words>, l1048576_bl1073741824_room(arr, n), n, FuluTransaction_d.bl1073741824_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (l1048576_bl1073741824_Seq{arr, n}, False{})
 
+def l1048576_bl1073741824_app_sz(+n: U32, v: O.Words, pair: Array<O.Boxed<O.Words>> & U32) -> l1048576_bl1073741824_Seq & Bool:
+  (arr, +sc) = pair
+  l1048576_bl1073741824_app_in(Bool.and(U32.is_lt(n, 1048576), U32.is_le(n, sc)), arr, n, v)
+
 def l1048576_bl1073741824_append(o: l1048576_bl1073741824_Seq, v: O.Words) -> l1048576_bl1073741824_Seq & Bool:
   match o:
-    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_app_in(U32.is_lt(n, 1048576), arr, n, v)
+    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_app_sz(n, v, Array.size(O.Boxed<O.Words>, arr))
 
 type l1048576_bl1073741824_Cached is Type:
   l1048576_bl1073741824_Cached{items: Array<O.Boxed<O.Words>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -157,16 +173,16 @@ def l1048576_bl1073741824_clen(c: l1048576_bl1073741824_Cached) -> l1048576_bl10
   match c:
     case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, n)
 
-def l1048576_bl1073741824_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<O.Boxed<O.Words>> & O.Boxed<O.Words>) -> l1048576_bl1073741824_Cached & Maybe<&1, O.Words>:
+def l1048576_bl1073741824_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, pair: Array<O.Boxed<O.Words>> & O.Boxed<O.Words>) -> l1048576_bl1073741824_Cached & Maybe<&1, O.Words>:
   (arr, v) = pair
-  (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
+  (l1048576_bl1073741824_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
 
 def l1048576_bl1073741824_cget_in(inside: Bool, arr: Array<O.Boxed<O.Words>>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> l1048576_bl1073741824_Cached & Maybe<&1, O.Words>:
   match inside:
-    case True{}: l1048576_bl1073741824_ctook(n, d, nodes, lo, hi, Array.swap(O.Boxed<O.Words>, arr, i, O.BNone{}))
+    case True{}: l1048576_bl1073741824_ctook(n, d, nodes, lo, hi, i, Array.swap(O.Boxed<O.Words>, arr, i, O.BNone{}))
     case False{}: (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, None{})
 
-def l1048576_bl1073741824_cget(c: l1048576_bl1073741824_Cached, +i: U32) -> l1048576_bl1073741824_Cached & Maybe<&1, O.Words>:
+def l1048576_bl1073741824_ctake(c: l1048576_bl1073741824_Cached, +i: U32) -> l1048576_bl1073741824_Cached & Maybe<&1, O.Words>:
   match c:
     case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: l1048576_bl1073741824_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
 
@@ -189,9 +205,13 @@ def l1048576_bl1073741824_capp_in(ok: Bool, arr: Array<O.Boxed<O.Words>>, +n: U3
     case True{}: (l1048576_bl1073741824_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l1048576_bl1073741824_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: O.Words, pair: Array<O.Boxed<O.Words>> & U32) -> l1048576_bl1073741824_Cached & Bool:
+  (arr, +sc) = pair
+  l1048576_bl1073741824_capp_in(Bool.and(U32.is_lt(n, 1048576), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l1048576_bl1073741824_capp(c: l1048576_bl1073741824_Cached, v: O.Words) -> l1048576_bl1073741824_Cached & Bool:
   match c:
-    case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: l1048576_bl1073741824_capp_in(U32.is_lt(n, 1048576), arr, n, d, nodes, lo, hi, v)
+    case l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: l1048576_bl1073741824_capp_sz(n, d, nodes, lo, hi, v, Array.size(O.Boxed<O.Words>, arr))
 
 def l1048576_bl1073741824_ts_store(ts: l1048576_bl1073741824_TS, +k: U32, +dg: D.Digest) -> l1048576_bl1073741824_TS:
   match ts:

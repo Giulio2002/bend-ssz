@@ -56,8 +56,12 @@ def pl_bool_grow(ok: Bool, o: O.Words, +n: U32, +v: Bool) -> O.Words & Bool:
     case True{}: pl_bool_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
     case False{}: (o, False{})
 
+def pl_bool_app_c(+v: Bool, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  pl_bool_grow(Bool.and(U32.is_lt(n, 4294967264), U32.is_le(U32.shrn(((n * 1 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def pl_bool_app_n(+v: Bool, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_bool_grow(U32.is_lt(n, 4294967264), o, n, v)
+  pl_bool_app_c(v, n, O.words_cap(o))
 
 def pl_bool_append(o: O.Words, +v: Bool) -> O.Words & Bool: pl_bool_app_n(v, pl_bool_len(o))

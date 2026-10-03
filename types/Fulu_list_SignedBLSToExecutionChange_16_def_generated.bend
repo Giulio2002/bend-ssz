@@ -31,14 +31,20 @@ def l16_SignedBLSToExecutionChange_fo_fin(+n: U32, pair: Array<FuluSignedBLSToEx
   (arr, +x) = pair
   (l16_SignedBLSToExecutionChange_Seq{arr, n}, x)
 
-def l16_SignedBLSToExecutionChange_fo_nz(empty: Bool, +n: U32, arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>) -> l16_SignedBLSToExecutionChange_Seq & U32:
+def l16_SignedBLSToExecutionChange_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>) -> l16_SignedBLSToExecutionChange_Seq & U32:
   match empty:
     case True{}: (l16_SignedBLSToExecutionChange_Seq{arr, n}, 0)
-    case False{}: l16_SignedBLSToExecutionChange_fo_fin(n, l16_SignedBLSToExecutionChange_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr, 0)))
+    case False{}: l16_SignedBLSToExecutionChange_fo_fin(n, l16_SignedBLSToExecutionChange_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr, 0)))
+
+def l16_SignedBLSToExecutionChange_fo_m(+n: U32, +m: U32, arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>) -> l16_SignedBLSToExecutionChange_Seq & U32: l16_SignedBLSToExecutionChange_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l16_SignedBLSToExecutionChange_fo_sz(+n: U32, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32) -> l16_SignedBLSToExecutionChange_Seq & U32:
+  (arr, +sc) = pair
+  l16_SignedBLSToExecutionChange_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l16_SignedBLSToExecutionChange_force(o: l16_SignedBLSToExecutionChange_Seq) -> l16_SignedBLSToExecutionChange_Seq & U32:
   match o:
-    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_fo_sz(n, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr))
 
 def l16_SignedBLSToExecutionChange_du_took(t: +List<U32>, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l16_SignedBLSToExecutionChange_du_fin(+n: U32, st: Array<FuluSignedBLSToExec
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l16_SignedBLSToExecutionChange_du_m(+n: U32, +m: U32, st: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & +List<U32>) -> +List<U32>: l16_SignedBLSToExecutionChange_du_fin(n, l16_SignedBLSToExecutionChange_du(U32.to_nat(m), m, st))
+
+def l16_SignedBLSToExecutionChange_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l16_SignedBLSToExecutionChange_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l16_SignedBLSToExecutionChange_dump(o: l16_SignedBLSToExecutionChange_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_du_fin(n, l16_SignedBLSToExecutionChange_du(U32.to_nat(n), n, (arr, t)))
+    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_du_sz(n, t, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr))
 
 def l16_SignedBLSToExecutionChange_len(o: l16_SignedBLSToExecutionChange_Seq) -> l16_SignedBLSToExecutionChange_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l16_SignedBLSToExecutionChange_app_in(ok: Bool, arr: Array<FuluSignedBLSToEx
     case True{}: (l16_SignedBLSToExecutionChange_Seq{Array.set(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, l16_SignedBLSToExecutionChange_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l16_SignedBLSToExecutionChange_Seq{arr, n}, False{})
 
+def l16_SignedBLSToExecutionChange_app_sz(+n: U32, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32) -> l16_SignedBLSToExecutionChange_Seq & Bool:
+  (arr, +sc) = pair
+  l16_SignedBLSToExecutionChange_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
+
 def l16_SignedBLSToExecutionChange_append(o: l16_SignedBLSToExecutionChange_Seq, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> l16_SignedBLSToExecutionChange_Seq & Bool:
   match o:
-    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_app_in(U32.is_lt(n, 16), arr, n, v)
+    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_app_sz(n, v, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr))
 
 type l16_SignedBLSToExecutionChange_Cached is Type:
   l16_SignedBLSToExecutionChange_Cached{items: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l16_SignedBLSToExecutionChange_capp_in(ok: Bool, arr: Array<FuluSignedBLSToE
     case True{}: (l16_SignedBLSToExecutionChange_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l16_SignedBLSToExecutionChange_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l16_SignedBLSToExecutionChange_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32) -> l16_SignedBLSToExecutionChange_Cached & Bool:
+  (arr, +sc) = pair
+  l16_SignedBLSToExecutionChange_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l16_SignedBLSToExecutionChange_capp(c: l16_SignedBLSToExecutionChange_Cached, v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange) -> l16_SignedBLSToExecutionChange_Cached & Bool:
   match c:
-    case l16_SignedBLSToExecutionChange_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedBLSToExecutionChange_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
+    case l16_SignedBLSToExecutionChange_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_SignedBLSToExecutionChange_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr))
 
 def l16_SignedBLSToExecutionChange_ts_store(ts: l16_SignedBLSToExecutionChange_TS, +k: U32, +dg: D.Digest) -> l16_SignedBLSToExecutionChange_TS:
   match ts:

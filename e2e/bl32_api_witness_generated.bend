@@ -16,8 +16,8 @@ def bl32_api_set_rejected_witness() -> {Fulu_bytelist_32_d.bl32_set(W_src_obj.Wo
 def bl32_api_get_outside_witness() -> {Fulu_bytelist_32_d.bl32_get(W_src_obj.Words{Array.new(U32, 6n, 0), 4}, 4) == (W_src_obj.Words{Array.new(U32, 6n, 0), 4}, None{}) : W_src_obj.Words & Maybe<&1, U32>}:
   W_proofs_obj_coll_api_2.bl32_api_get_outside(Array.new(U32, 6n, 0), 4, 4, {==})
 
-def bl32_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_bytelist_32_d.bl32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(U32.is_lt((U32.div(0, 1)), 32), U32.is_le(1, 255)) : Bool}:
-  W_proofs_obj_coll_api_2.bl32_api_append_flag(Array.new(U32, 6n, 0), 0, 1)
+def bl32_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_bytelist_32_d.bl32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 1)) == Bool.and(Bool.and(U32.is_lt((U32.div(0, 1)), 32), U32.is_le(1, 255)), U32.is_le(U32.shrn((((U32.div(0, 1)) * 1 : U32) + 3 : U32), 2n), 64)) : Bool}:
+  W_proofs_obj_coll_api_2.bl32_api_append_flag(Array.new(U32, 6n, 0), 0, 64, {==}, 1)
 
-def bl32_api_append_rejected_witness() -> {Fulu_bytelist_32_d.bl32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, 256) == (W_src_obj.Words{Array.new(U32, 6n, 0), 0}, False{}) : W_src_obj.Words & Bool}:
-  W_proofs_obj_coll_api_2.bl32_api_append_rejected(Array.new(U32, 6n, 0), 0, 256, {==})
+def bl32_api_append_rejected_witness() -> {Fulu_bytelist_32_d.bl32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 32}, 1) == (W_src_obj.Words{Array.new(U32, 6n, 0), 32}, False{}) : W_src_obj.Words & Bool}:
+  W_proofs_obj_coll_api_2.bl32_api_append_rejected(Array.new(U32, 6n, 0), 32, 64, {==}, 1, {==})

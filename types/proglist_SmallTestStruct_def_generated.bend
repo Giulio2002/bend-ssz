@@ -30,14 +30,20 @@ def pl_SmallTestStruct_fo_fin(+n: U32, pair: Array<SmallTestStruct_d.SmallTestSt
   (arr, +x) = pair
   (pl_SmallTestStruct_Seq{arr, n}, x)
 
-def pl_SmallTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<SmallTestStruct_d.SmallTestStruct>) -> pl_SmallTestStruct_Seq & U32:
+def pl_SmallTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<SmallTestStruct_d.SmallTestStruct>) -> pl_SmallTestStruct_Seq & U32:
   match empty:
     case True{}: (pl_SmallTestStruct_Seq{arr, n}, 0)
-    case False{}: pl_SmallTestStruct_fo_fin(n, pl_SmallTestStruct_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(SmallTestStruct_d.SmallTestStruct, arr, 0)))
+    case False{}: pl_SmallTestStruct_fo_fin(n, pl_SmallTestStruct_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(SmallTestStruct_d.SmallTestStruct, arr, 0)))
+
+def pl_SmallTestStruct_fo_m(+n: U32, +m: U32, arr: Array<SmallTestStruct_d.SmallTestStruct>) -> pl_SmallTestStruct_Seq & U32: pl_SmallTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def pl_SmallTestStruct_fo_sz(+n: U32, pair: Array<SmallTestStruct_d.SmallTestStruct> & U32) -> pl_SmallTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  pl_SmallTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def pl_SmallTestStruct_force(o: pl_SmallTestStruct_Seq) -> pl_SmallTestStruct_Seq & U32:
   match o:
-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_fo_sz(n, Array.size(SmallTestStruct_d.SmallTestStruct, arr))
 
 def pl_SmallTestStruct_du_took(t: +List<U32>, pair: Array<SmallTestStruct_d.SmallTestStruct> & SmallTestStruct_d.SmallTestStruct) -> Array<SmallTestStruct_d.SmallTestStruct> & +List<U32>:
   (arr, +v) = pair
@@ -54,9 +60,15 @@ def pl_SmallTestStruct_du_fin(+n: U32, st: Array<SmallTestStruct_d.SmallTestStru
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def pl_SmallTestStruct_du_m(+n: U32, +m: U32, st: Array<SmallTestStruct_d.SmallTestStruct> & +List<U32>) -> +List<U32>: pl_SmallTestStruct_du_fin(n, pl_SmallTestStruct_du(U32.to_nat(m), m, st))
+
+def pl_SmallTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<SmallTestStruct_d.SmallTestStruct> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  pl_SmallTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def pl_SmallTestStruct_dump(o: pl_SmallTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_du_fin(n, pl_SmallTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_du_sz(n, t, Array.size(SmallTestStruct_d.SmallTestStruct, arr))
 
 def pl_SmallTestStruct_len(o: pl_SmallTestStruct_Seq) -> pl_SmallTestStruct_Seq & U32:
   match o:
@@ -116,6 +128,10 @@ def pl_SmallTestStruct_app_in(ok: Bool, arr: Array<SmallTestStruct_d.SmallTestSt
     case True{}: (pl_SmallTestStruct_Seq{Array.set(SmallTestStruct_d.SmallTestStruct, pl_SmallTestStruct_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (pl_SmallTestStruct_Seq{arr, n}, False{})
 
+def pl_SmallTestStruct_app_sz(+n: U32, v: SmallTestStruct_d.SmallTestStruct, pair: Array<SmallTestStruct_d.SmallTestStruct> & U32) -> pl_SmallTestStruct_Seq & Bool:
+  (arr, +sc) = pair
+  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 536870911), U32.is_le(n, sc)), arr, n, v)
+
 def pl_SmallTestStruct_append(o: pl_SmallTestStruct_Seq, v: SmallTestStruct_d.SmallTestStruct) -> pl_SmallTestStruct_Seq & Bool:
   match o:
-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
+    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_app_sz(n, v, Array.size(SmallTestStruct_d.SmallTestStruct, arr))

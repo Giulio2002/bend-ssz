@@ -52,8 +52,12 @@ def l123_u16_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
     case True{}: l123_u16_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2 : U32)), ((n + 1 : U32) * 2 : U32)), n, v)
     case False{}: (o, False{})
 
+def l123_u16_app_c(+v: U32, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  l123_u16_grow(Bool.and(Bool.and(U32.is_lt(n, 123), U32.is_le(v, 65535)), U32.is_le(U32.shrn(((n * 2 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def l123_u16_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l123_u16_grow(Bool.and(U32.is_lt(n, 123), U32.is_le(v, 65535)), o, n, v)
+  l123_u16_app_c(v, n, O.words_cap(o))
 
 def l123_u16_append(o: O.Words, +v: U32) -> O.Words & Bool: l123_u16_app_n(v, l123_u16_len(o))

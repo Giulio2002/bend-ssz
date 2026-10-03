@@ -30,14 +30,20 @@ def v4_FixedTestStruct_fo_fin(+n: U32, pair: Array<FixedTestStruct_d.FixedTestSt
   (arr, +x) = pair
   (v4_FixedTestStruct_Seq{arr, n}, x)
 
-def v4_FixedTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> v4_FixedTestStruct_Seq & U32:
+def v4_FixedTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> v4_FixedTestStruct_Seq & U32:
   match empty:
     case True{}: (v4_FixedTestStruct_Seq{arr, n}, 0)
-    case False{}: v4_FixedTestStruct_fo_fin(n, v4_FixedTestStruct_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FixedTestStruct_d.FixedTestStruct, arr, 0)))
+    case False{}: v4_FixedTestStruct_fo_fin(n, v4_FixedTestStruct_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FixedTestStruct_d.FixedTestStruct, arr, 0)))
+
+def v4_FixedTestStruct_fo_m(+n: U32, +m: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> v4_FixedTestStruct_Seq & U32: v4_FixedTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def v4_FixedTestStruct_fo_sz(+n: U32, pair: Array<FixedTestStruct_d.FixedTestStruct> & U32) -> v4_FixedTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  v4_FixedTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def v4_FixedTestStruct_force(o: v4_FixedTestStruct_Seq) -> v4_FixedTestStruct_Seq & U32:
   match o:
-    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_fo_sz(n, Array.size(FixedTestStruct_d.FixedTestStruct, arr))
 
 def v4_FixedTestStruct_du_took(t: +List<U32>, pair: Array<FixedTestStruct_d.FixedTestStruct> & FixedTestStruct_d.FixedTestStruct) -> Array<FixedTestStruct_d.FixedTestStruct> & +List<U32>:
   (arr, +v) = pair
@@ -54,9 +60,15 @@ def v4_FixedTestStruct_du_fin(+n: U32, st: Array<FixedTestStruct_d.FixedTestStru
   (arr, t) = st
   t
 
+def v4_FixedTestStruct_du_m(+n: U32, +m: U32, st: Array<FixedTestStruct_d.FixedTestStruct> & +List<U32>) -> +List<U32>: v4_FixedTestStruct_du_fin(n, v4_FixedTestStruct_du(U32.to_nat(m), m, st))
+
+def v4_FixedTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<FixedTestStruct_d.FixedTestStruct> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  v4_FixedTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def v4_FixedTestStruct_dump(o: v4_FixedTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_du_fin(n, v4_FixedTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_du_sz(n, t, Array.size(FixedTestStruct_d.FixedTestStruct, arr))
 
 def v4_FixedTestStruct_len(o: v4_FixedTestStruct_Seq) -> v4_FixedTestStruct_Seq & U32:
   match o:

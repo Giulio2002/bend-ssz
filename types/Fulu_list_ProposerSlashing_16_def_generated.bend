@@ -40,12 +40,18 @@ def l16_ProposerSlashing_fo_fin(+n: U32, pair: Array<O.Boxed<FuluProposerSlashin
   (arr, +x) = pair
   (l16_ProposerSlashing_Seq{arr, n}, x)
 
-def l16_ProposerSlashing_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>) -> l16_ProposerSlashing_Seq & U32:
-  l16_ProposerSlashing_fo_fin(n, l16_ProposerSlashing_fo(U32.to_nat(n), 0, (arr, 0)))
+def l16_ProposerSlashing_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>) -> l16_ProposerSlashing_Seq & U32:
+  l16_ProposerSlashing_fo_fin(n, l16_ProposerSlashing_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def l16_ProposerSlashing_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>) -> l16_ProposerSlashing_Seq & U32: l16_ProposerSlashing_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l16_ProposerSlashing_fo_sz(+n: U32, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> l16_ProposerSlashing_Seq & U32:
+  (arr, +sc) = pair
+  l16_ProposerSlashing_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l16_ProposerSlashing_force(o: l16_ProposerSlashing_Seq) -> l16_ProposerSlashing_Seq & U32:
   match o:
-    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_fo_sz(n, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr))
 
 def l16_ProposerSlashing_du_took(t: +List<U32>, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>) -> Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & +List<U32>:
   (arr, v) = pair
@@ -62,9 +68,15 @@ def l16_ProposerSlashing_du_fin(+n: U32, st: Array<O.Boxed<FuluProposerSlashing_
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l16_ProposerSlashing_du_m(+n: U32, +m: U32, st: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & +List<U32>) -> +List<U32>: l16_ProposerSlashing_du_fin(n, l16_ProposerSlashing_du(U32.to_nat(m), m, st))
+
+def l16_ProposerSlashing_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l16_ProposerSlashing_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l16_ProposerSlashing_dump(o: l16_ProposerSlashing_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_du_fin(n, l16_ProposerSlashing_du(U32.to_nat(n), n, (arr, t)))
+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_du_sz(n, t, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr))
 
 def l16_ProposerSlashing_len(o: l16_ProposerSlashing_Seq) -> l16_ProposerSlashing_Seq & U32:
   match o:
@@ -82,7 +94,7 @@ def l16_ProposerSlashing_get_in(inside: Bool, arr: Array<O.Boxed<FuluProposerSla
     case True{}: l16_ProposerSlashing_at(arr, n, i)
     case False{}: (l16_ProposerSlashing_Seq{arr, n}, None{})
 
-def l16_ProposerSlashing_get(o: l16_ProposerSlashing_Seq, +i: U32) -> l16_ProposerSlashing_Seq & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
+def l16_ProposerSlashing_take(o: l16_ProposerSlashing_Seq, +i: U32) -> l16_ProposerSlashing_Seq & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   match o:
     case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -124,9 +136,13 @@ def l16_ProposerSlashing_app_in(ok: Bool, arr: Array<O.Boxed<FuluProposerSlashin
     case True{}: (l16_ProposerSlashing_Seq{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, l16_ProposerSlashing_room(arr, n), n, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (l16_ProposerSlashing_Seq{arr, n}, False{})
 
+def l16_ProposerSlashing_app_sz(+n: U32, v: FuluProposerSlashing_d.ProposerSlashing, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> l16_ProposerSlashing_Seq & Bool:
+  (arr, +sc) = pair
+  l16_ProposerSlashing_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
+
 def l16_ProposerSlashing_append(o: l16_ProposerSlashing_Seq, v: FuluProposerSlashing_d.ProposerSlashing) -> l16_ProposerSlashing_Seq & Bool:
   match o:
-    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_in(U32.is_lt(n, 16), arr, n, v)
+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_sz(n, v, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr))
 
 type l16_ProposerSlashing_Cached is Type:
   l16_ProposerSlashing_Cached{items: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -157,16 +173,16 @@ def l16_ProposerSlashing_clen(c: l16_ProposerSlashing_Cached) -> l16_ProposerSla
   match c:
     case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, n)
 
-def l16_ProposerSlashing_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>) -> l16_ProposerSlashing_Cached & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
+def l16_ProposerSlashing_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>) -> l16_ProposerSlashing_Cached & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   (arr, v) = pair
-  (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, Some{FuluProposerSlashing_d.ProposerSlashing_bx_unbox(v)})
+  (l16_ProposerSlashing_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluProposerSlashing_d.ProposerSlashing_bx_unbox(v)})
 
 def l16_ProposerSlashing_cget_in(inside: Bool, arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> l16_ProposerSlashing_Cached & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   match inside:
-    case True{}: l16_ProposerSlashing_ctook(n, d, nodes, lo, hi, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, O.BNone{}))
+    case True{}: l16_ProposerSlashing_ctook(n, d, nodes, lo, hi, i, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, O.BNone{}))
     case False{}: (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, None{})
 
-def l16_ProposerSlashing_cget(c: l16_ProposerSlashing_Cached, +i: U32) -> l16_ProposerSlashing_Cached & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
+def l16_ProposerSlashing_ctake(c: l16_ProposerSlashing_Cached, +i: U32) -> l16_ProposerSlashing_Cached & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   match c:
     case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
 
@@ -189,9 +205,13 @@ def l16_ProposerSlashing_capp_in(ok: Bool, arr: Array<O.Boxed<FuluProposerSlashi
     case True{}: (l16_ProposerSlashing_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l16_ProposerSlashing_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluProposerSlashing_d.ProposerSlashing, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> l16_ProposerSlashing_Cached & Bool:
+  (arr, +sc) = pair
+  l16_ProposerSlashing_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l16_ProposerSlashing_capp(c: l16_ProposerSlashing_Cached, v: FuluProposerSlashing_d.ProposerSlashing) -> l16_ProposerSlashing_Cached & Bool:
   match c:
-    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
+    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_sz(n, d, nodes, lo, hi, v, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr))
 
 def l16_ProposerSlashing_ts_store(ts: l16_ProposerSlashing_TS, +k: U32, +dg: D.Digest) -> l16_ProposerSlashing_TS:
   match ts:

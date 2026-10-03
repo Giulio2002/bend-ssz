@@ -52,8 +52,12 @@ def pl_u8_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
     case True{}: pl_u8_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
     case False{}: (o, False{})
 
+def pl_u8_app_c(+v: U32, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  pl_u8_grow(Bool.and(Bool.and(U32.is_lt(n, 4294967264), U32.is_le(v, 255)), U32.is_le(U32.shrn(((n * 1 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def pl_u8_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_u8_grow(Bool.and(U32.is_lt(n, 4294967264), U32.is_le(v, 255)), o, n, v)
+  pl_u8_app_c(v, n, O.words_cap(o))
 
 def pl_u8_append(o: O.Words, +v: U32) -> O.Words & Bool: pl_u8_app_n(v, pl_u8_len(o))

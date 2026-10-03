@@ -112,3 +112,32 @@ bytevec_32_16777216,bytevec_48_4096,bytevec_2048_4096}_def_generated.bend`, `pro
 and the seven witnesses `e2e/l{1099511627776_u64,1099511627776_u8,128_u64,131072_u64,16777216_b32,4096_b2048,4096_b48}_api_witness_generated.bend`.
 `tools/verify_frozen.py` without `--update` names exactly these and no other file. src/obj.bend (the roots, `words_zero`, the checked decoder) and the encode types
 (the size pass of boxes, CH-12) are not reached by a frozen statement.
+
+## Fourth pass (agent/crash-fix4): R3-01, R3-02, R3-03 (append bound)
+
+Compared: `e2e/STATEMENTS.txt` at origin/main f683ee2c6 against the tip of `agent/crash-fix4` (`docs/crash_hunt_statement_diff_full_pass4.txt` is the `git diff` of that
+file). 199 statements change, none is added or removed: the 28 collections that have collection API laws (`coll_api_*`, `coll_seq`, `coll_bits`, `coll_bytes`) and
+their witnesses. No spec, schema, END_TO_END, ROOT_DOMAIN, PROOF or HASH_PROOF text changed; `frozen.lock.json` moved only in `statement_defs`.
+
+| family (statement suffix) | changed | relation | why |
+|---|---|---|---|
+| `api_append_flag`, `api_append_rejected`, `api_append_length` (+ witnesses) | 28 + 28 + 17 (+ 28 + 7) | stronger | R3-02: the guard also tests the storage (`U32.is_le(n, sc)`, `U32.is_le(ceil(n * es / 4), sc)` for packed lists, `U32.is_le(ceil(ceil(k / 8) / 4), sc)` for bit lists) |
+| `api_read_append`, `api_read_append_grow`, `api_view_append`, `api_view_append_grow` | 27 + 10 + 27 + 7 | stronger premise `ha` | the same guard is their hypothesis |
+| `api_get_outside`, `api_read_set`, `api_other_set` (+ witnesses) | 5 + 5 + 5 (+ 5) | rename | R3-01: the getter of the five boxed kinds with API laws is `X_take` (the statements said that the element is taken out of its slot already) |
+| guard bound of the append of `Fulu_list_Validator_1099511627776`, `Fulu_list_PendingDeposit_134217728`, `Fulu_list_PendingPartialWithdrawal_134217728` | 3 lists (their flag / rejected / length / read / view laws) | stronger | R3-03: `n < 4294967295` becomes `n < 17747798`; `n < 134217728` becomes `n < 11184810` and `n < 89478485` |
+
+The storage parameter: the laws over a raw array take it as a new parameter `sc` with the premise `esc: {Array.size(arr) == (arr, sc)}` (the cell laws took `vc` and `es` in
+the third pass): every array has a size, so `forall arr. P(Array.size(arr))` and `forall arr sc. esc -> P(sc)` are equivalent. The laws over the perfect tree `thaw(t)` of depth d write the size
+`F.u32__pow2u(d)` (`F.array__size_thaw`), and the generic boxed-list laws `TA.sz(arr)`. For every object the proofs represent (n <= 2^d) the storage test is true, so for them the stronger
+premise `ha` is the old one; the laws no longer speak about an object that claims more than its storage holds (the append is now refused there, which is the fix) and, for the three lists above,
+about a list of 17,747,798 / 11,184,810 / 89,478,485 or more elements, whose encoding is 2^31 bytes or more (`_serialize` refuses what the API can build; the hand-built wrap of R3-03 is not
+fixed, docs/CRASH_HUNT.md 8.3). This is the same kind of change as R2-01 (the guard states the exact count the runtime accepts) and narrows no premise of a frozen END_TO_END, ROOT_DOMAIN,
+PROOF or HASH_PROOF theorem; it is listed here so that it can be refused.
+
+The witnesses (`e2e/<collection>_api_witness_generated.bend`) supply `sc` (the 2^d slots of the concrete array) and prove `esc` by computation; the premise-satisfiability count is unchanged
+(374 collection statements and 7 root statements, `e2e/COLL_WITNESS.txt` identical to main).
+
+`frozen.lock.json`: `statement_defs` of 67 files change (and nothing else): `src/obj.bend` (`dump_bytes`, reached by the dump statements: it clamps to the storage, equal for every represented object);
+the 28 witnesses `e2e/<collection>_api_witness_generated.bend`; the 10 collection API modules `proofs/obj/coll_api_0..6.bend`, `coll_bits.bend`, `coll_bytes.bend`, `coll_seq.bend`; and the 28
+collection types `types/<list or bit list>_def_generated.bend` whose append text changed (the lists of composites, the cell list, the byte and bit lists and the transactions list that a frozen
+statement reaches). `tools/verify_frozen.py` (without `--update`) on the regenerated tree named exactly these 67 files and nothing else; the lock was refreshed once after that check, and it passes without `--update` on the tip.

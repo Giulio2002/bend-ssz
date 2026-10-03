@@ -46,8 +46,12 @@ def bits511_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
     case True{}: (O.bits_push(o, v), True{})
     case False{}: (o, False{})
 
+def bits511_app_c(v: Bool, +n: U32, pair: O.Bits & U32) -> O.Bits & Bool:
+  (o, +sc) = pair
+  bits511_push(Bool.and(U32.is_lt(n, 511), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
+
 def bits511_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits511_push(U32.is_lt(n, 511), o, v)
+  bits511_app_c(v, n, O.bits_cap(o))
 
 def bits511_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits511_app_n(v, O.bits_len(o))

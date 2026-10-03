@@ -53,8 +53,12 @@ def l4096_b48_grow(ok: Bool, o: O.Words, +n: U32, +v: FuluBytes48_d.Bytes48) -> 
     case True{}: l4096_b48_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 48 : U32)), ((n + 1 : U32) * 48 : U32)), n, v)
     case False{}: (o, False{})
 
+def l4096_b48_app_c(+v: FuluBytes48_d.Bytes48, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  l4096_b48_grow(Bool.and(U32.is_lt(n, 4096), U32.is_le(U32.shrn(((n * 48 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def l4096_b48_app_n(+v: FuluBytes48_d.Bytes48, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l4096_b48_grow(U32.is_lt(n, 4096), o, n, v)
+  l4096_b48_app_c(v, n, O.words_cap(o))
 
 def l4096_b48_append(o: O.Words, +v: FuluBytes48_d.Bytes48) -> O.Words & Bool: l4096_b48_app_n(v, l4096_b48_len(o))

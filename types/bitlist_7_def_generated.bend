@@ -46,8 +46,12 @@ def bits7_push(ok: Bool, o: O.Bits, v: Bool) -> O.Bits & Bool:
     case True{}: (O.bits_push(o, v), True{})
     case False{}: (o, False{})
 
+def bits7_app_c(v: Bool, +n: U32, pair: O.Bits & U32) -> O.Bits & Bool:
+  (o, +sc) = pair
+  bits7_push(Bool.and(U32.is_lt(n, 7), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
+
 def bits7_app_n(v: Bool, pair: O.Bits & U32) -> O.Bits & Bool:
   (o, +n) = pair
-  bits7_push(U32.is_lt(n, 7), o, v)
+  bits7_app_c(v, n, O.bits_cap(o))
 
 def bits7_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits7_app_n(v, O.bits_len(o))

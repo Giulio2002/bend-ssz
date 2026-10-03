@@ -31,14 +31,20 @@ def l16_WithdrawalRequest_fo_fin(+n: U32, pair: Array<FuluWithdrawalRequest_d.Wi
   (arr, +x) = pair
   (l16_WithdrawalRequest_Seq{arr, n}, x)
 
-def l16_WithdrawalRequest_fo_nz(empty: Bool, +n: U32, arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>) -> l16_WithdrawalRequest_Seq & U32:
+def l16_WithdrawalRequest_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>) -> l16_WithdrawalRequest_Seq & U32:
   match empty:
     case True{}: (l16_WithdrawalRequest_Seq{arr, n}, 0)
-    case False{}: l16_WithdrawalRequest_fo_fin(n, l16_WithdrawalRequest_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, 0)))
+    case False{}: l16_WithdrawalRequest_fo_fin(n, l16_WithdrawalRequest_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluWithdrawalRequest_d.WithdrawalRequest, arr, 0)))
+
+def l16_WithdrawalRequest_fo_m(+n: U32, +m: U32, arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>) -> l16_WithdrawalRequest_Seq & U32: l16_WithdrawalRequest_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l16_WithdrawalRequest_fo_sz(+n: U32, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32) -> l16_WithdrawalRequest_Seq & U32:
+  (arr, +sc) = pair
+  l16_WithdrawalRequest_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l16_WithdrawalRequest_force(o: l16_WithdrawalRequest_Seq) -> l16_WithdrawalRequest_Seq & U32:
   match o:
-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_fo_sz(n, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
 
 def l16_WithdrawalRequest_du_took(t: +List<U32>, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & FuluWithdrawalRequest_d.WithdrawalRequest) -> Array<FuluWithdrawalRequest_d.WithdrawalRequest> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l16_WithdrawalRequest_du_fin(+n: U32, st: Array<FuluWithdrawalRequest_d.With
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l16_WithdrawalRequest_du_m(+n: U32, +m: U32, st: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & +List<U32>) -> +List<U32>: l16_WithdrawalRequest_du_fin(n, l16_WithdrawalRequest_du(U32.to_nat(m), m, st))
+
+def l16_WithdrawalRequest_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l16_WithdrawalRequest_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l16_WithdrawalRequest_dump(o: l16_WithdrawalRequest_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_du_fin(n, l16_WithdrawalRequest_du(U32.to_nat(n), n, (arr, t)))
+    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_du_sz(n, t, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
 
 def l16_WithdrawalRequest_len(o: l16_WithdrawalRequest_Seq) -> l16_WithdrawalRequest_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l16_WithdrawalRequest_app_in(ok: Bool, arr: Array<FuluWithdrawalRequest_d.Wi
     case True{}: (l16_WithdrawalRequest_Seq{Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, l16_WithdrawalRequest_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l16_WithdrawalRequest_Seq{arr, n}, False{})
 
+def l16_WithdrawalRequest_app_sz(+n: U32, v: FuluWithdrawalRequest_d.WithdrawalRequest, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32) -> l16_WithdrawalRequest_Seq & Bool:
+  (arr, +sc) = pair
+  l16_WithdrawalRequest_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
+
 def l16_WithdrawalRequest_append(o: l16_WithdrawalRequest_Seq, v: FuluWithdrawalRequest_d.WithdrawalRequest) -> l16_WithdrawalRequest_Seq & Bool:
   match o:
-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_in(U32.is_lt(n, 16), arr, n, v)
+    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_app_sz(n, v, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
 
 type l16_WithdrawalRequest_Cached is Type:
   l16_WithdrawalRequest_Cached{items: Array<FuluWithdrawalRequest_d.WithdrawalRequest>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l16_WithdrawalRequest_capp_in(ok: Bool, arr: Array<FuluWithdrawalRequest_d.W
     case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l16_WithdrawalRequest_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l16_WithdrawalRequest_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluWithdrawalRequest_d.WithdrawalRequest, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32) -> l16_WithdrawalRequest_Cached & Bool:
+  (arr, +sc) = pair
+  l16_WithdrawalRequest_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l16_WithdrawalRequest_capp(c: l16_WithdrawalRequest_Cached, v: FuluWithdrawalRequest_d.WithdrawalRequest) -> l16_WithdrawalRequest_Cached & Bool:
   match c:
-    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
+    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
 
 def l16_WithdrawalRequest_ts_store(ts: l16_WithdrawalRequest_TS, +k: U32, +dg: D.Digest) -> l16_WithdrawalRequest_TS:
   match ts:

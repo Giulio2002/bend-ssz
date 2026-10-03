@@ -53,8 +53,12 @@ def pl_u128_grow(ok: Bool, o: O.Words, +n: U32, +v: uint128_d.Uint128) -> O.Word
     case True{}: pl_u128_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n + 1 : U32) * 16 : U32)), n, v)
     case False{}: (o, False{})
 
+def pl_u128_app_c(+v: uint128_d.Uint128, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  pl_u128_grow(Bool.and(U32.is_lt(n, 268435454), U32.is_le(U32.shrn(((n * 16 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def pl_u128_app_n(+v: uint128_d.Uint128, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_u128_grow(U32.is_lt(n, 268435454), o, n, v)
+  pl_u128_app_c(v, n, O.words_cap(o))
 
 def pl_u128_append(o: O.Words, +v: uint128_d.Uint128) -> O.Words & Bool: pl_u128_app_n(v, pl_u128_len(o))

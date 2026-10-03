@@ -64,16 +64,20 @@ def l4096_b2048_grow(ok: Bool, o: O.Words, +n: U32, v: O.Words) -> O.Words & Boo
     case True{}: l4096_b2048_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2048 : U32)), ((n + 1 : U32) * 2048 : U32)), n, v)
     case False{}: (o, False{})
 
-def l4096_b2048_app_w(o: O.Words, +n: U32, +vn: U32, pair: Array<U32> & U32) -> O.Words & Bool:
+def l4096_b2048_app_w(o: O.Words, +n: U32, +sc: U32, +vn: U32, pair: Array<U32> & U32) -> O.Words & Bool:
   (vws, +vc) = pair
-  l4096_b2048_grow(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
+  l4096_b2048_grow(Bool.and(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_le(U32.shrn(((n * 2048 : U32) + 3 : U32), 2n), sc)), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
 
-def l4096_b2048_app_v(o: O.Words, +n: U32, v: O.Words) -> O.Words & Bool:
+def l4096_b2048_app_v(o: O.Words, +n: U32, +sc: U32, v: O.Words) -> O.Words & Bool:
   match v:
-    case O.Words{vws, +vn}: l4096_b2048_app_w(o, n, vn, Array.size(U32, vws))
+    case O.Words{vws, +vn}: l4096_b2048_app_w(o, n, sc, vn, Array.size(U32, vws))
+
+def l4096_b2048_app_c(v: O.Words, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  l4096_b2048_app_v(o, n, sc, v)
 
 def l4096_b2048_app_n(v: O.Words, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l4096_b2048_app_v(o, n, v)
+  l4096_b2048_app_c(v, n, O.words_cap(o))
 
 def l4096_b2048_append(o: O.Words, v: O.Words) -> O.Words & Bool: l4096_b2048_app_n(v, l4096_b2048_len(o))

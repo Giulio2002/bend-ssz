@@ -31,14 +31,20 @@ def l1099511627776_Validator_fo_fin(+n: U32, pair: Array<FuluValidator_d.Validat
   (arr, +x) = pair
   (l1099511627776_Validator_Seq{arr, n}, x)
 
-def l1099511627776_Validator_fo_nz(empty: Bool, +n: U32, arr: Array<FuluValidator_d.Validator>) -> l1099511627776_Validator_Seq & U32:
+def l1099511627776_Validator_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluValidator_d.Validator>) -> l1099511627776_Validator_Seq & U32:
   match empty:
     case True{}: (l1099511627776_Validator_Seq{arr, n}, 0)
-    case False{}: l1099511627776_Validator_fo_fin(n, l1099511627776_Validator_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluValidator_d.Validator, arr, 0)))
+    case False{}: l1099511627776_Validator_fo_fin(n, l1099511627776_Validator_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluValidator_d.Validator, arr, 0)))
+
+def l1099511627776_Validator_fo_m(+n: U32, +m: U32, arr: Array<FuluValidator_d.Validator>) -> l1099511627776_Validator_Seq & U32: l1099511627776_Validator_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l1099511627776_Validator_fo_sz(+n: U32, pair: Array<FuluValidator_d.Validator> & U32) -> l1099511627776_Validator_Seq & U32:
+  (arr, +sc) = pair
+  l1099511627776_Validator_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l1099511627776_Validator_force(o: l1099511627776_Validator_Seq) -> l1099511627776_Validator_Seq & U32:
   match o:
-    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_fo_sz(n, Array.size(FuluValidator_d.Validator, arr))
 
 def l1099511627776_Validator_du_took(t: +List<U32>, pair: Array<FuluValidator_d.Validator> & FuluValidator_d.Validator) -> Array<FuluValidator_d.Validator> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l1099511627776_Validator_du_fin(+n: U32, st: Array<FuluValidator_d.Validator
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l1099511627776_Validator_du_m(+n: U32, +m: U32, st: Array<FuluValidator_d.Validator> & +List<U32>) -> +List<U32>: l1099511627776_Validator_du_fin(n, l1099511627776_Validator_du(U32.to_nat(m), m, st))
+
+def l1099511627776_Validator_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluValidator_d.Validator> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l1099511627776_Validator_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l1099511627776_Validator_dump(o: l1099511627776_Validator_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_du_fin(n, l1099511627776_Validator_du(U32.to_nat(n), n, (arr, t)))
+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_du_sz(n, t, Array.size(FuluValidator_d.Validator, arr))
 
 def l1099511627776_Validator_len(o: l1099511627776_Validator_Seq) -> l1099511627776_Validator_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l1099511627776_Validator_app_in(ok: Bool, arr: Array<FuluValidator_d.Validat
     case True{}: (l1099511627776_Validator_Seq{Array.set(FuluValidator_d.Validator, l1099511627776_Validator_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l1099511627776_Validator_Seq{arr, n}, False{})
 
+def l1099511627776_Validator_app_sz(+n: U32, v: FuluValidator_d.Validator, pair: Array<FuluValidator_d.Validator> & U32) -> l1099511627776_Validator_Seq & Bool:
+  (arr, +sc) = pair
+  l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 17747798), U32.is_le(n, sc)), arr, n, v)
+
 def l1099511627776_Validator_append(o: l1099511627776_Validator_Seq, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Seq & Bool:
   match o:
-    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_in(U32.is_lt(n, 4294967295), arr, n, v)
+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_sz(n, v, Array.size(FuluValidator_d.Validator, arr))
 
 type l1099511627776_Validator_Cached is Type:
   l1099511627776_Validator_Cached{items: Array<FuluValidator_d.Validator>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l1099511627776_Validator_capp_in(ok: Bool, arr: Array<FuluValidator_d.Valida
     case True{}: (l1099511627776_Validator_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l1099511627776_Validator_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l1099511627776_Validator_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluValidator_d.Validator, pair: Array<FuluValidator_d.Validator> & U32) -> l1099511627776_Validator_Cached & Bool:
+  (arr, +sc) = pair
+  l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 17747798), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l1099511627776_Validator_capp(c: l1099511627776_Validator_Cached, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Cached & Bool:
   match c:
-    case l1099511627776_Validator_Cached{arr, +n, +d, nodes, +lo, +hi}: l1099511627776_Validator_capp_in(U32.is_lt(n, 4294967295), arr, n, d, nodes, lo, hi, v)
+    case l1099511627776_Validator_Cached{arr, +n, +d, nodes, +lo, +hi}: l1099511627776_Validator_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluValidator_d.Validator, arr))
 
 def l1099511627776_Validator_ts_store(ts: l1099511627776_Validator_TS, +k: U32, +dg: D.Digest) -> l1099511627776_Validator_TS:
   match ts:

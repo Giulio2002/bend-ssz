@@ -40,12 +40,18 @@ def l1_AttesterSlashing_fo_fin(+n: U32, pair: Array<O.Boxed<FuluAttesterSlashing
   (arr, +x) = pair
   (l1_AttesterSlashing_Seq{arr, n}, x)
 
-def l1_AttesterSlashing_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>) -> l1_AttesterSlashing_Seq & U32:
-  l1_AttesterSlashing_fo_fin(n, l1_AttesterSlashing_fo(U32.to_nat(n), 0, (arr, 0)))
+def l1_AttesterSlashing_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>) -> l1_AttesterSlashing_Seq & U32:
+  l1_AttesterSlashing_fo_fin(n, l1_AttesterSlashing_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def l1_AttesterSlashing_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>) -> l1_AttesterSlashing_Seq & U32: l1_AttesterSlashing_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l1_AttesterSlashing_fo_sz(+n: U32, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> l1_AttesterSlashing_Seq & U32:
+  (arr, +sc) = pair
+  l1_AttesterSlashing_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l1_AttesterSlashing_force(o: l1_AttesterSlashing_Seq) -> l1_AttesterSlashing_Seq & U32:
   match o:
-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_fo_sz(n, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr))
 
 def l1_AttesterSlashing_du_took(t: +List<U32>, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) -> Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & +List<U32>:
   (arr, v) = pair
@@ -62,9 +68,15 @@ def l1_AttesterSlashing_du_fin(+n: U32, st: Array<O.Boxed<FuluAttesterSlashing_d
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l1_AttesterSlashing_du_m(+n: U32, +m: U32, st: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & +List<U32>) -> +List<U32>: l1_AttesterSlashing_du_fin(n, l1_AttesterSlashing_du(U32.to_nat(m), m, st))
+
+def l1_AttesterSlashing_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l1_AttesterSlashing_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l1_AttesterSlashing_dump(o: l1_AttesterSlashing_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_du_fin(n, l1_AttesterSlashing_du(U32.to_nat(n), n, (arr, t)))
+    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_du_sz(n, t, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr))
 
 def l1_AttesterSlashing_len(o: l1_AttesterSlashing_Seq) -> l1_AttesterSlashing_Seq & U32:
   match o:
@@ -82,7 +94,7 @@ def l1_AttesterSlashing_get_in(inside: Bool, arr: Array<O.Boxed<FuluAttesterSlas
     case True{}: l1_AttesterSlashing_at(arr, n, i)
     case False{}: (l1_AttesterSlashing_Seq{arr, n}, None{})
 
-def l1_AttesterSlashing_get(o: l1_AttesterSlashing_Seq, +i: U32) -> l1_AttesterSlashing_Seq & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
+def l1_AttesterSlashing_take(o: l1_AttesterSlashing_Seq, +i: U32) -> l1_AttesterSlashing_Seq & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
   match o:
     case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -124,9 +136,13 @@ def l1_AttesterSlashing_app_in(ok: Bool, arr: Array<O.Boxed<FuluAttesterSlashing
     case True{}: (l1_AttesterSlashing_Seq{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, l1_AttesterSlashing_room(arr, n), n, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (l1_AttesterSlashing_Seq{arr, n}, False{})
 
+def l1_AttesterSlashing_app_sz(+n: U32, v: FuluAttesterSlashing_d.AttesterSlashing, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> l1_AttesterSlashing_Seq & Bool:
+  (arr, +sc) = pair
+  l1_AttesterSlashing_app_in(Bool.and(U32.is_lt(n, 1), U32.is_le(n, sc)), arr, n, v)
+
 def l1_AttesterSlashing_append(o: l1_AttesterSlashing_Seq, v: FuluAttesterSlashing_d.AttesterSlashing) -> l1_AttesterSlashing_Seq & Bool:
   match o:
-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_app_in(U32.is_lt(n, 1), arr, n, v)
+    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_app_sz(n, v, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr))
 
 type l1_AttesterSlashing_Cached is Type:
   l1_AttesterSlashing_Cached{items: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -157,16 +173,16 @@ def l1_AttesterSlashing_clen(c: l1_AttesterSlashing_Cached) -> l1_AttesterSlashi
   match c:
     case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: (l1_AttesterSlashing_Cached{arr, n, d, nodes, lo, hi}, n)
 
-def l1_AttesterSlashing_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) -> l1_AttesterSlashing_Cached & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
+def l1_AttesterSlashing_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) -> l1_AttesterSlashing_Cached & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
   (arr, v) = pair
-  (l1_AttesterSlashing_Cached{arr, n, d, nodes, lo, hi}, Some{FuluAttesterSlashing_d.AttesterSlashing_bx_unbox(v)})
+  (l1_AttesterSlashing_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluAttesterSlashing_d.AttesterSlashing_bx_unbox(v)})
 
 def l1_AttesterSlashing_cget_in(inside: Bool, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> l1_AttesterSlashing_Cached & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
   match inside:
-    case True{}: l1_AttesterSlashing_ctook(n, d, nodes, lo, hi, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, i, O.BNone{}))
+    case True{}: l1_AttesterSlashing_ctook(n, d, nodes, lo, hi, i, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, i, O.BNone{}))
     case False{}: (l1_AttesterSlashing_Cached{arr, n, d, nodes, lo, hi}, None{})
 
-def l1_AttesterSlashing_cget(c: l1_AttesterSlashing_Cached, +i: U32) -> l1_AttesterSlashing_Cached & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
+def l1_AttesterSlashing_ctake(c: l1_AttesterSlashing_Cached, +i: U32) -> l1_AttesterSlashing_Cached & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
   match c:
     case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l1_AttesterSlashing_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
 
@@ -189,9 +205,13 @@ def l1_AttesterSlashing_capp_in(ok: Bool, arr: Array<O.Boxed<FuluAttesterSlashin
     case True{}: (l1_AttesterSlashing_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l1_AttesterSlashing_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l1_AttesterSlashing_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluAttesterSlashing_d.AttesterSlashing, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> l1_AttesterSlashing_Cached & Bool:
+  (arr, +sc) = pair
+  l1_AttesterSlashing_capp_in(Bool.and(U32.is_lt(n, 1), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l1_AttesterSlashing_capp(c: l1_AttesterSlashing_Cached, v: FuluAttesterSlashing_d.AttesterSlashing) -> l1_AttesterSlashing_Cached & Bool:
   match c:
-    case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l1_AttesterSlashing_capp_in(U32.is_lt(n, 1), arr, n, d, nodes, lo, hi, v)
+    case l1_AttesterSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l1_AttesterSlashing_capp_sz(n, d, nodes, lo, hi, v, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr))
 
 def l1_AttesterSlashing_ts_store(ts: l1_AttesterSlashing_TS, +k: U32, +dg: D.Digest) -> l1_AttesterSlashing_TS:
   match ts:

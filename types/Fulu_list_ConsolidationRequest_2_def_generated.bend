@@ -31,14 +31,20 @@ def l2_ConsolidationRequest_fo_fin(+n: U32, pair: Array<FuluConsolidationRequest
   (arr, +x) = pair
   (l2_ConsolidationRequest_Seq{arr, n}, x)
 
-def l2_ConsolidationRequest_fo_nz(empty: Bool, +n: U32, arr: Array<FuluConsolidationRequest_d.ConsolidationRequest>) -> l2_ConsolidationRequest_Seq & U32:
+def l2_ConsolidationRequest_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluConsolidationRequest_d.ConsolidationRequest>) -> l2_ConsolidationRequest_Seq & U32:
   match empty:
     case True{}: (l2_ConsolidationRequest_Seq{arr, n}, 0)
-    case False{}: l2_ConsolidationRequest_fo_fin(n, l2_ConsolidationRequest_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluConsolidationRequest_d.ConsolidationRequest, arr, 0)))
+    case False{}: l2_ConsolidationRequest_fo_fin(n, l2_ConsolidationRequest_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluConsolidationRequest_d.ConsolidationRequest, arr, 0)))
+
+def l2_ConsolidationRequest_fo_m(+n: U32, +m: U32, arr: Array<FuluConsolidationRequest_d.ConsolidationRequest>) -> l2_ConsolidationRequest_Seq & U32: l2_ConsolidationRequest_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l2_ConsolidationRequest_fo_sz(+n: U32, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> l2_ConsolidationRequest_Seq & U32:
+  (arr, +sc) = pair
+  l2_ConsolidationRequest_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l2_ConsolidationRequest_force(o: l2_ConsolidationRequest_Seq) -> l2_ConsolidationRequest_Seq & U32:
   match o:
-    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_fo_sz(n, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, arr))
 
 def l2_ConsolidationRequest_du_took(t: +List<U32>, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & FuluConsolidationRequest_d.ConsolidationRequest) -> Array<FuluConsolidationRequest_d.ConsolidationRequest> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l2_ConsolidationRequest_du_fin(+n: U32, st: Array<FuluConsolidationRequest_d
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l2_ConsolidationRequest_du_m(+n: U32, +m: U32, st: Array<FuluConsolidationRequest_d.ConsolidationRequest> & +List<U32>) -> +List<U32>: l2_ConsolidationRequest_du_fin(n, l2_ConsolidationRequest_du(U32.to_nat(m), m, st))
+
+def l2_ConsolidationRequest_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l2_ConsolidationRequest_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l2_ConsolidationRequest_dump(o: l2_ConsolidationRequest_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_du_fin(n, l2_ConsolidationRequest_du(U32.to_nat(n), n, (arr, t)))
+    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_du_sz(n, t, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, arr))
 
 def l2_ConsolidationRequest_len(o: l2_ConsolidationRequest_Seq) -> l2_ConsolidationRequest_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l2_ConsolidationRequest_app_in(ok: Bool, arr: Array<FuluConsolidationRequest
     case True{}: (l2_ConsolidationRequest_Seq{Array.set(FuluConsolidationRequest_d.ConsolidationRequest, l2_ConsolidationRequest_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l2_ConsolidationRequest_Seq{arr, n}, False{})
 
+def l2_ConsolidationRequest_app_sz(+n: U32, v: FuluConsolidationRequest_d.ConsolidationRequest, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> l2_ConsolidationRequest_Seq & Bool:
+  (arr, +sc) = pair
+  l2_ConsolidationRequest_app_in(Bool.and(U32.is_lt(n, 2), U32.is_le(n, sc)), arr, n, v)
+
 def l2_ConsolidationRequest_append(o: l2_ConsolidationRequest_Seq, v: FuluConsolidationRequest_d.ConsolidationRequest) -> l2_ConsolidationRequest_Seq & Bool:
   match o:
-    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_app_in(U32.is_lt(n, 2), arr, n, v)
+    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_app_sz(n, v, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, arr))
 
 type l2_ConsolidationRequest_Cached is Type:
   l2_ConsolidationRequest_Cached{items: Array<FuluConsolidationRequest_d.ConsolidationRequest>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l2_ConsolidationRequest_capp_in(ok: Bool, arr: Array<FuluConsolidationReques
     case True{}: (l2_ConsolidationRequest_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l2_ConsolidationRequest_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l2_ConsolidationRequest_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluConsolidationRequest_d.ConsolidationRequest, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> l2_ConsolidationRequest_Cached & Bool:
+  (arr, +sc) = pair
+  l2_ConsolidationRequest_capp_in(Bool.and(U32.is_lt(n, 2), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l2_ConsolidationRequest_capp(c: l2_ConsolidationRequest_Cached, v: FuluConsolidationRequest_d.ConsolidationRequest) -> l2_ConsolidationRequest_Cached & Bool:
   match c:
-    case l2_ConsolidationRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l2_ConsolidationRequest_capp_in(U32.is_lt(n, 2), arr, n, d, nodes, lo, hi, v)
+    case l2_ConsolidationRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l2_ConsolidationRequest_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, arr))
 
 def l2_ConsolidationRequest_ts_store(ts: l2_ConsolidationRequest_TS, +k: U32, +dg: D.Digest) -> l2_ConsolidationRequest_TS:
   match ts:

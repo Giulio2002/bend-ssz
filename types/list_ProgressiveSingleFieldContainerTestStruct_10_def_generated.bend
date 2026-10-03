@@ -31,14 +31,20 @@ def l10_ProgressiveSingleFieldContainerTestStruct_fo_fin(+n: U32, pair: Array<Pr
   (arr, +x) = pair
   (l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, x)
 
-def l10_ProgressiveSingleFieldContainerTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
+def l10_ProgressiveSingleFieldContainerTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
   match empty:
     case True{}: (l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, 0)
-    case False{}: l10_ProgressiveSingleFieldContainerTestStruct_fo_fin(n, l10_ProgressiveSingleFieldContainerTestStruct_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, 0)))
+    case False{}: l10_ProgressiveSingleFieldContainerTestStruct_fo_fin(n, l10_ProgressiveSingleFieldContainerTestStruct_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, 0)))
+
+def l10_ProgressiveSingleFieldContainerTestStruct_fo_m(+n: U32, +m: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32: l10_ProgressiveSingleFieldContainerTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l10_ProgressiveSingleFieldContainerTestStruct_fo_sz(+n: U32, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l10_ProgressiveSingleFieldContainerTestStruct_force(o: l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
   match o:
-    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_fo_sz(n, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_du_took(t: +List<U32>, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l10_ProgressiveSingleFieldContainerTestStruct_du_fin(+n: U32, st: Array<Prog
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l10_ProgressiveSingleFieldContainerTestStruct_du_m(+n: U32, +m: U32, st: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & +List<U32>) -> +List<U32>: l10_ProgressiveSingleFieldContainerTestStruct_du_fin(n, l10_ProgressiveSingleFieldContainerTestStruct_du(U32.to_nat(m), m, st))
+
+def l10_ProgressiveSingleFieldContainerTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l10_ProgressiveSingleFieldContainerTestStruct_dump(o: l10_ProgressiveSingleFieldContainerTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_du_fin(n, l10_ProgressiveSingleFieldContainerTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_du_sz(n, t, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_len(o: l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l10_ProgressiveSingleFieldContainerTestStruct_app_in(ok: Bool, arr: Array<Pr
     case True{}: (l10_ProgressiveSingleFieldContainerTestStruct_Seq{Array.set(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, l10_ProgressiveSingleFieldContainerTestStruct_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, False{})
 
+def l10_ProgressiveSingleFieldContainerTestStruct_app_sz(+n: U32, v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & Bool:
+  (arr, +sc) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_app_in(Bool.and(U32.is_lt(n, 10), U32.is_le(n, sc)), arr, n, v)
+
 def l10_ProgressiveSingleFieldContainerTestStruct_append(o: l10_ProgressiveSingleFieldContainerTestStruct_Seq, v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> l10_ProgressiveSingleFieldContainerTestStruct_Seq & Bool:
   match o:
-    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_app_in(U32.is_lt(n, 10), arr, n, v)
+    case l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_app_sz(n, v, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))
 
 type l10_ProgressiveSingleFieldContainerTestStruct_Cached is Type:
   l10_ProgressiveSingleFieldContainerTestStruct_Cached{items: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l10_ProgressiveSingleFieldContainerTestStruct_capp_in(ok: Bool, arr: Array<P
     case True{}: (l10_ProgressiveSingleFieldContainerTestStruct_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l10_ProgressiveSingleFieldContainerTestStruct_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached & Bool:
+  (arr, +sc) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_capp_in(Bool.and(U32.is_lt(n, 10), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l10_ProgressiveSingleFieldContainerTestStruct_capp(c: l10_ProgressiveSingleFieldContainerTestStruct_Cached, v: ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached & Bool:
   match c:
-    case l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, +n, +d, nodes, +lo, +hi}: l10_ProgressiveSingleFieldContainerTestStruct_capp_in(U32.is_lt(n, 10), arr, n, d, nodes, lo, hi, v)
+    case l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, +n, +d, nodes, +lo, +hi}: l10_ProgressiveSingleFieldContainerTestStruct_capp_sz(n, d, nodes, lo, hi, v, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_ts_store(ts: l10_ProgressiveSingleFieldContainerTestStruct_TS, +k: U32, +dg: D.Digest) -> l10_ProgressiveSingleFieldContainerTestStruct_TS:
   match ts:

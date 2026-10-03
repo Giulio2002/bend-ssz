@@ -14,17 +14,17 @@ def l16_Deposit_api_set_flag_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_D
 def l16_Deposit_api_set_rejected_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_set(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, 4, FuluDeposit_d.Deposit_default()) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, False{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}:
   W_proofs_obj_coll_api_5.l16_Deposit_api_set_rejected(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4, 4, FuluDeposit_d.Deposit_default(), {==})
 
-def l16_Deposit_api_get_outside_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_get(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, 4) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, None{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Maybe<&1, FuluDeposit_d.Deposit>}:
+def l16_Deposit_api_get_outside_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_take(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, 4) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, None{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Maybe<&1, FuluDeposit_d.Deposit>}:
   W_proofs_obj_coll_api_5.l16_Deposit_api_get_outside(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4, 4, {==})
 
-def l16_Deposit_api_append_flag_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0}, FuluDeposit_d.Deposit_default())) == U32.is_lt(0, 16) : Bool}:
-  W_proofs_obj_coll_api_5.l16_Deposit_api_append_flag(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0, FuluDeposit_d.Deposit_default())
+def l16_Deposit_api_append_flag_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0}, FuluDeposit_d.Deposit_default())) == Bool.and(U32.is_lt(0, 16), U32.is_le(0, 64)) : Bool}:
+  W_proofs_obj_coll_api_5.l16_Deposit_api_append_flag(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0, 64, {==}, FuluDeposit_d.Deposit_default())
 
 def l16_Deposit_api_append_rejected_witness() -> {Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16}, FuluDeposit_d.Deposit_default()) == (Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16}, False{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}:
-  W_proofs_obj_coll_api_5.l16_Deposit_api_append_rejected(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16, FuluDeposit_d.Deposit_default(), {==})
+  W_proofs_obj_coll_api_5.l16_Deposit_api_append_rejected(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 16, 64, {==}, FuluDeposit_d.Deposit_default(), {==})
 
 def l16_Deposit_api_set_length_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, U32, Fulu_list_Deposit_16_d.l16_Deposit_len(Pair.fst(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_set(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4}, 0, FuluDeposit_d.Deposit_default())))) == 4 : U32}:
   W_proofs_obj_coll_api_5.l16_Deposit_api_set_length(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 4, 0, FuluDeposit_d.Deposit_default(), {==})
 
 def l16_Deposit_api_append_length_witness() -> {Pair.snd(Fulu_list_Deposit_16_d.l16_Deposit_Seq, U32, Fulu_list_Deposit_16_d.l16_Deposit_len(Pair.fst(Fulu_list_Deposit_16_d.l16_Deposit_Seq, Bool, Fulu_list_Deposit_16_d.l16_Deposit_append(Fulu_list_Deposit_16_d.l16_Deposit_Seq{Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0}, FuluDeposit_d.Deposit_default())))) == (0 + 1 : U32) : U32}:
-  W_proofs_obj_coll_api_5.l16_Deposit_api_append_length(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0, FuluDeposit_d.Deposit_default(), {==})
+  W_proofs_obj_coll_api_5.l16_Deposit_api_append_length(Fulu_list_Deposit_16_d.l16_Deposit_fill(6n), 0, 64, {==}, FuluDeposit_d.Deposit_default(), {==})

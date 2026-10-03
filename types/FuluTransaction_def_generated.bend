@@ -52,9 +52,13 @@ def bl1073741824_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
     case True{}: bl1073741824_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
     case False{}: (o, False{})
 
+def bl1073741824_app_c(+v: U32, +n: U32, pair: O.Words & U32) -> O.Words & Bool:
+  (o, +sc) = pair
+  bl1073741824_grow(Bool.and(Bool.and(U32.is_lt(n, 1073741824), U32.is_le(v, 255)), U32.is_le(U32.shrn(((n * 1 : U32) + 3 : U32), 2n), sc)), o, n, v)
+
 def bl1073741824_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  bl1073741824_grow(Bool.and(U32.is_lt(n, 1073741824), U32.is_le(v, 255)), o, n, v)
+  bl1073741824_app_c(v, n, O.words_cap(o))
 
 def bl1073741824_append(o: O.Words, +v: U32) -> O.Words & Bool: bl1073741824_app_n(v, bl1073741824_len(o))
 

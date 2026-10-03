@@ -31,14 +31,20 @@ def l2048_Eth1Data_fo_fin(+n: U32, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -
   (arr, +x) = pair
   (l2048_Eth1Data_Seq{arr, n}, x)
 
-def l2048_Eth1Data_fo_nz(empty: Bool, +n: U32, arr: Array<FuluEth1Data_d.Eth1Data>) -> l2048_Eth1Data_Seq & U32:
+def l2048_Eth1Data_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluEth1Data_d.Eth1Data>) -> l2048_Eth1Data_Seq & U32:
   match empty:
     case True{}: (l2048_Eth1Data_Seq{arr, n}, 0)
-    case False{}: l2048_Eth1Data_fo_fin(n, l2048_Eth1Data_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluEth1Data_d.Eth1Data, arr, 0)))
+    case False{}: l2048_Eth1Data_fo_fin(n, l2048_Eth1Data_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluEth1Data_d.Eth1Data, arr, 0)))
+
+def l2048_Eth1Data_fo_m(+n: U32, +m: U32, arr: Array<FuluEth1Data_d.Eth1Data>) -> l2048_Eth1Data_Seq & U32: l2048_Eth1Data_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l2048_Eth1Data_fo_sz(+n: U32, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> l2048_Eth1Data_Seq & U32:
+  (arr, +sc) = pair
+  l2048_Eth1Data_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l2048_Eth1Data_force(o: l2048_Eth1Data_Seq) -> l2048_Eth1Data_Seq & U32:
   match o:
-    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_fo_sz(n, Array.size(FuluEth1Data_d.Eth1Data, arr))
 
 def l2048_Eth1Data_du_took(t: +List<U32>, pair: Array<FuluEth1Data_d.Eth1Data> & FuluEth1Data_d.Eth1Data) -> Array<FuluEth1Data_d.Eth1Data> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l2048_Eth1Data_du_fin(+n: U32, st: Array<FuluEth1Data_d.Eth1Data> & +List<U3
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l2048_Eth1Data_du_m(+n: U32, +m: U32, st: Array<FuluEth1Data_d.Eth1Data> & +List<U32>) -> +List<U32>: l2048_Eth1Data_du_fin(n, l2048_Eth1Data_du(U32.to_nat(m), m, st))
+
+def l2048_Eth1Data_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l2048_Eth1Data_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l2048_Eth1Data_dump(o: l2048_Eth1Data_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_du_fin(n, l2048_Eth1Data_du(U32.to_nat(n), n, (arr, t)))
+    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_du_sz(n, t, Array.size(FuluEth1Data_d.Eth1Data, arr))
 
 def l2048_Eth1Data_len(o: l2048_Eth1Data_Seq) -> l2048_Eth1Data_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l2048_Eth1Data_app_in(ok: Bool, arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32
     case True{}: (l2048_Eth1Data_Seq{Array.set(FuluEth1Data_d.Eth1Data, l2048_Eth1Data_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l2048_Eth1Data_Seq{arr, n}, False{})
 
+def l2048_Eth1Data_app_sz(+n: U32, v: FuluEth1Data_d.Eth1Data, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> l2048_Eth1Data_Seq & Bool:
+  (arr, +sc) = pair
+  l2048_Eth1Data_app_in(Bool.and(U32.is_lt(n, 2048), U32.is_le(n, sc)), arr, n, v)
+
 def l2048_Eth1Data_append(o: l2048_Eth1Data_Seq, v: FuluEth1Data_d.Eth1Data) -> l2048_Eth1Data_Seq & Bool:
   match o:
-    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_app_in(U32.is_lt(n, 2048), arr, n, v)
+    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_app_sz(n, v, Array.size(FuluEth1Data_d.Eth1Data, arr))
 
 type l2048_Eth1Data_Cached is Type:
   l2048_Eth1Data_Cached{items: Array<FuluEth1Data_d.Eth1Data>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l2048_Eth1Data_capp_in(ok: Bool, arr: Array<FuluEth1Data_d.Eth1Data>, +n: U3
     case True{}: (l2048_Eth1Data_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l2048_Eth1Data_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l2048_Eth1Data_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluEth1Data_d.Eth1Data, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> l2048_Eth1Data_Cached & Bool:
+  (arr, +sc) = pair
+  l2048_Eth1Data_capp_in(Bool.and(U32.is_lt(n, 2048), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l2048_Eth1Data_capp(c: l2048_Eth1Data_Cached, v: FuluEth1Data_d.Eth1Data) -> l2048_Eth1Data_Cached & Bool:
   match c:
-    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_capp_in(U32.is_lt(n, 2048), arr, n, d, nodes, lo, hi, v)
+    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluEth1Data_d.Eth1Data, arr))
 
 def l2048_Eth1Data_ts_store(ts: l2048_Eth1Data_TS, +k: U32, +dg: D.Digest) -> l2048_Eth1Data_TS:
   match ts:

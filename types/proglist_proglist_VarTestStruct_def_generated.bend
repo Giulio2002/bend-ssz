@@ -39,12 +39,18 @@ def pl_pl_VarTestStruct_fo_fin(+n: U32, pair: Array<O.Boxed<proglist_VarTestStru
   (arr, +x) = pair
   (pl_pl_VarTestStruct_Seq{arr, n}, x)
 
-def pl_pl_VarTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>) -> pl_pl_VarTestStruct_Seq & U32:
-  pl_pl_VarTestStruct_fo_fin(n, pl_pl_VarTestStruct_fo(U32.to_nat(n), 0, (arr, 0)))
+def pl_pl_VarTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>) -> pl_pl_VarTestStruct_Seq & U32:
+  pl_pl_VarTestStruct_fo_fin(n, pl_pl_VarTestStruct_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def pl_pl_VarTestStruct_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>) -> pl_pl_VarTestStruct_Seq & U32: pl_pl_VarTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def pl_pl_VarTestStruct_fo_sz(+n: U32, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & U32) -> pl_pl_VarTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  pl_pl_VarTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def pl_pl_VarTestStruct_force(o: pl_pl_VarTestStruct_Seq) -> pl_pl_VarTestStruct_Seq & U32:
   match o:
-    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_fo_sz(n, Array.size(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, arr))
 
 def pl_pl_VarTestStruct_du_took(t: +List<U32>, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>) -> Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & +List<U32>:
   (arr, v) = pair
@@ -61,9 +67,15 @@ def pl_pl_VarTestStruct_du_fin(+n: U32, st: Array<O.Boxed<proglist_VarTestStruct
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def pl_pl_VarTestStruct_du_m(+n: U32, +m: U32, st: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & +List<U32>) -> +List<U32>: pl_pl_VarTestStruct_du_fin(n, pl_pl_VarTestStruct_du(U32.to_nat(m), m, st))
+
+def pl_pl_VarTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  pl_pl_VarTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def pl_pl_VarTestStruct_dump(o: pl_pl_VarTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_du_fin(n, pl_pl_VarTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_du_sz(n, t, Array.size(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, arr))
 
 def pl_pl_VarTestStruct_len(o: pl_pl_VarTestStruct_Seq) -> pl_pl_VarTestStruct_Seq & U32:
   match o:
@@ -81,7 +93,7 @@ def pl_pl_VarTestStruct_get_in(inside: Bool, arr: Array<O.Boxed<proglist_VarTest
     case True{}: pl_pl_VarTestStruct_at(arr, n, i)
     case False{}: (pl_pl_VarTestStruct_Seq{arr, n}, None{})
 
-def pl_pl_VarTestStruct_get(o: pl_pl_VarTestStruct_Seq, +i: U32) -> pl_pl_VarTestStruct_Seq & Maybe<&1, proglist_VarTestStruct_d.pl_VarTestStruct_Seq>:
+def pl_pl_VarTestStruct_take(o: pl_pl_VarTestStruct_Seq, +i: U32) -> pl_pl_VarTestStruct_Seq & Maybe<&1, proglist_VarTestStruct_d.pl_VarTestStruct_Seq>:
   match o:
     case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -123,6 +135,10 @@ def pl_pl_VarTestStruct_app_in(ok: Bool, arr: Array<O.Boxed<proglist_VarTestStru
     case True{}: (pl_pl_VarTestStruct_Seq{Array.set(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, pl_pl_VarTestStruct_room(arr, n), n, proglist_VarTestStruct_d.pl_VarTestStruct_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (pl_pl_VarTestStruct_Seq{arr, n}, False{})
 
+def pl_pl_VarTestStruct_app_sz(+n: U32, v: proglist_VarTestStruct_d.pl_VarTestStruct_Seq, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & U32) -> pl_pl_VarTestStruct_Seq & Bool:
+  (arr, +sc) = pair
+  pl_pl_VarTestStruct_app_in(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(n, sc)), arr, n, v)
+
 def pl_pl_VarTestStruct_append(o: pl_pl_VarTestStruct_Seq, v: proglist_VarTestStruct_d.pl_VarTestStruct_Seq) -> pl_pl_VarTestStruct_Seq & Bool:
   match o:
-    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
+    case pl_pl_VarTestStruct_Seq{arr, +n}: pl_pl_VarTestStruct_app_sz(n, v, Array.size(O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, arr))

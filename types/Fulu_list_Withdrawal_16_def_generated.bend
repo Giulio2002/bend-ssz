@@ -31,14 +31,20 @@ def l16_Withdrawal_fo_fin(+n: U32, pair: Array<FuluWithdrawal_d.Withdrawal> & U3
   (arr, +x) = pair
   (l16_Withdrawal_Seq{arr, n}, x)
 
-def l16_Withdrawal_fo_nz(empty: Bool, +n: U32, arr: Array<FuluWithdrawal_d.Withdrawal>) -> l16_Withdrawal_Seq & U32:
+def l16_Withdrawal_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<FuluWithdrawal_d.Withdrawal>) -> l16_Withdrawal_Seq & U32:
   match empty:
     case True{}: (l16_Withdrawal_Seq{arr, n}, 0)
-    case False{}: l16_Withdrawal_fo_fin(n, l16_Withdrawal_fo(U32.to_nat((n - 1 : U32)), 0, 0, Array.get(FuluWithdrawal_d.Withdrawal, arr, 0)))
+    case False{}: l16_Withdrawal_fo_fin(n, l16_Withdrawal_fo(U32.to_nat((m - 1 : U32)), 0, 0, Array.get(FuluWithdrawal_d.Withdrawal, arr, 0)))
+
+def l16_Withdrawal_fo_m(+n: U32, +m: U32, arr: Array<FuluWithdrawal_d.Withdrawal>) -> l16_Withdrawal_Seq & U32: l16_Withdrawal_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l16_Withdrawal_fo_sz(+n: U32, pair: Array<FuluWithdrawal_d.Withdrawal> & U32) -> l16_Withdrawal_Seq & U32:
+  (arr, +sc) = pair
+  l16_Withdrawal_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l16_Withdrawal_force(o: l16_Withdrawal_Seq) -> l16_Withdrawal_Seq & U32:
   match o:
-    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_fo_sz(n, Array.size(FuluWithdrawal_d.Withdrawal, arr))
 
 def l16_Withdrawal_du_took(t: +List<U32>, pair: Array<FuluWithdrawal_d.Withdrawal> & FuluWithdrawal_d.Withdrawal) -> Array<FuluWithdrawal_d.Withdrawal> & +List<U32>:
   (arr, +v) = pair
@@ -55,9 +61,15 @@ def l16_Withdrawal_du_fin(+n: U32, st: Array<FuluWithdrawal_d.Withdrawal> & +Lis
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l16_Withdrawal_du_m(+n: U32, +m: U32, st: Array<FuluWithdrawal_d.Withdrawal> & +List<U32>) -> +List<U32>: l16_Withdrawal_du_fin(n, l16_Withdrawal_du(U32.to_nat(m), m, st))
+
+def l16_Withdrawal_du_sz(+n: U32, t: +List<U32>, pair: Array<FuluWithdrawal_d.Withdrawal> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l16_Withdrawal_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l16_Withdrawal_dump(o: l16_Withdrawal_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_du_fin(n, l16_Withdrawal_du(U32.to_nat(n), n, (arr, t)))
+    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_du_sz(n, t, Array.size(FuluWithdrawal_d.Withdrawal, arr))
 
 def l16_Withdrawal_len(o: l16_Withdrawal_Seq) -> l16_Withdrawal_Seq & U32:
   match o:
@@ -117,9 +129,13 @@ def l16_Withdrawal_app_in(ok: Bool, arr: Array<FuluWithdrawal_d.Withdrawal>, +n:
     case True{}: (l16_Withdrawal_Seq{Array.set(FuluWithdrawal_d.Withdrawal, l16_Withdrawal_room(arr, n), n, v), (n + 1 : U32)}, True{})
     case False{}: (l16_Withdrawal_Seq{arr, n}, False{})
 
+def l16_Withdrawal_app_sz(+n: U32, v: FuluWithdrawal_d.Withdrawal, pair: Array<FuluWithdrawal_d.Withdrawal> & U32) -> l16_Withdrawal_Seq & Bool:
+  (arr, +sc) = pair
+  l16_Withdrawal_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
+
 def l16_Withdrawal_append(o: l16_Withdrawal_Seq, v: FuluWithdrawal_d.Withdrawal) -> l16_Withdrawal_Seq & Bool:
   match o:
-    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_app_in(U32.is_lt(n, 16), arr, n, v)
+    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_app_sz(n, v, Array.size(FuluWithdrawal_d.Withdrawal, arr))
 
 type l16_Withdrawal_Cached is Type:
   l16_Withdrawal_Cached{items: Array<FuluWithdrawal_d.Withdrawal>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -182,9 +198,13 @@ def l16_Withdrawal_capp_in(ok: Bool, arr: Array<FuluWithdrawal_d.Withdrawal>, +n
     case True{}: (l16_Withdrawal_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l16_Withdrawal_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l16_Withdrawal_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluWithdrawal_d.Withdrawal, pair: Array<FuluWithdrawal_d.Withdrawal> & U32) -> l16_Withdrawal_Cached & Bool:
+  (arr, +sc) = pair
+  l16_Withdrawal_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l16_Withdrawal_capp(c: l16_Withdrawal_Cached, v: FuluWithdrawal_d.Withdrawal) -> l16_Withdrawal_Cached & Bool:
   match c:
-    case l16_Withdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Withdrawal_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
+    case l16_Withdrawal_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Withdrawal_capp_sz(n, d, nodes, lo, hi, v, Array.size(FuluWithdrawal_d.Withdrawal, arr))
 
 def l16_Withdrawal_ts_store(ts: l16_Withdrawal_TS, +k: U32, +dg: D.Digest) -> l16_Withdrawal_TS:
   match ts:

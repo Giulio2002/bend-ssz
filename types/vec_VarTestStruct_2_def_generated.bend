@@ -44,12 +44,18 @@ def v2_VarTestStruct_fo_fin(+n: U32, pair: Array<O.Boxed<VarTestStruct_d.VarTest
   (arr, +x) = pair
   (v2_VarTestStruct_Seq{arr, n}, x)
 
-def v2_VarTestStruct_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> v2_VarTestStruct_Seq & U32:
-  v2_VarTestStruct_fo_fin(n, v2_VarTestStruct_fo(U32.to_nat(n), 0, (arr, 0)))
+def v2_VarTestStruct_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> v2_VarTestStruct_Seq & U32:
+  v2_VarTestStruct_fo_fin(n, v2_VarTestStruct_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def v2_VarTestStruct_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> v2_VarTestStruct_Seq & U32: v2_VarTestStruct_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def v2_VarTestStruct_fo_sz(+n: U32, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32) -> v2_VarTestStruct_Seq & U32:
+  (arr, +sc) = pair
+  v2_VarTestStruct_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def v2_VarTestStruct_force(o: v2_VarTestStruct_Seq) -> v2_VarTestStruct_Seq & U32:
   match o:
-    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_fo_nz(U32.is_eq(n, 0), n, arr)
+    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_fo_sz(n, Array.size(O.Boxed<VarTestStruct_d.VarTestStruct>, arr))
 
 def v2_VarTestStruct_du_took(t: +List<U32>, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & O.Boxed<VarTestStruct_d.VarTestStruct>) -> Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & +List<U32>:
   (arr, v) = pair
@@ -66,9 +72,15 @@ def v2_VarTestStruct_du_fin(+n: U32, st: Array<O.Boxed<VarTestStruct_d.VarTestSt
   (arr, t) = st
   t
 
+def v2_VarTestStruct_du_m(+n: U32, +m: U32, st: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & +List<U32>) -> +List<U32>: v2_VarTestStruct_du_fin(n, v2_VarTestStruct_du(U32.to_nat(m), m, st))
+
+def v2_VarTestStruct_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  v2_VarTestStruct_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def v2_VarTestStruct_dump(o: v2_VarTestStruct_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_du_fin(n, v2_VarTestStruct_du(U32.to_nat(n), n, (arr, t)))
+    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_du_sz(n, t, Array.size(O.Boxed<VarTestStruct_d.VarTestStruct>, arr))
 
 def v2_VarTestStruct_len(o: v2_VarTestStruct_Seq) -> v2_VarTestStruct_Seq & U32:
   match o:
@@ -86,7 +98,7 @@ def v2_VarTestStruct_get_in(inside: Bool, arr: Array<O.Boxed<VarTestStruct_d.Var
     case True{}: v2_VarTestStruct_at(arr, n, i)
     case False{}: (v2_VarTestStruct_Seq{arr, n}, None{})
 
-def v2_VarTestStruct_get(o: v2_VarTestStruct_Seq, +i: U32) -> v2_VarTestStruct_Seq & Maybe<&1, VarTestStruct_d.VarTestStruct>:
+def v2_VarTestStruct_take(o: v2_VarTestStruct_Seq, +i: U32) -> v2_VarTestStruct_Seq & Maybe<&1, VarTestStruct_d.VarTestStruct>:
   match o:
     case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
 

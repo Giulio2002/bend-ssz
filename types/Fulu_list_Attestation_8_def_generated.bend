@@ -40,12 +40,18 @@ def l8_Attestation_fo_fin(+n: U32, pair: Array<O.Boxed<FuluAttestation_d.Attesta
   (arr, +x) = pair
   (l8_Attestation_Seq{arr, n}, x)
 
-def l8_Attestation_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>) -> l8_Attestation_Seq & U32:
-  l8_Attestation_fo_fin(n, l8_Attestation_fo(U32.to_nat(n), 0, (arr, 0)))
+def l8_Attestation_fo_nz(empty: Bool, +n: U32, +m: U32, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>) -> l8_Attestation_Seq & U32:
+  l8_Attestation_fo_fin(n, l8_Attestation_fo(U32.to_nat(m), 0, (arr, 0)))
+
+def l8_Attestation_fo_m(+n: U32, +m: U32, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>) -> l8_Attestation_Seq & U32: l8_Attestation_fo_nz(U32.is_eq(m, 0), n, m, arr)
+
+def l8_Attestation_fo_sz(+n: U32, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> l8_Attestation_Seq & U32:
+  (arr, +sc) = pair
+  l8_Attestation_fo_m(n, O.pick(U32.is_le(n, sc), n, sc), arr)
 
 def l8_Attestation_force(o: l8_Attestation_Seq) -> l8_Attestation_Seq & U32:
   match o:
-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_fo_nz(U32.is_eq(n, 0), n, arr)
+    case l8_Attestation_Seq{arr, +n}: l8_Attestation_fo_sz(n, Array.size(O.Boxed<FuluAttestation_d.Attestation>, arr))
 
 def l8_Attestation_du_took(t: +List<U32>, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>) -> Array<O.Boxed<FuluAttestation_d.Attestation>> & +List<U32>:
   (arr, v) = pair
@@ -62,9 +68,15 @@ def l8_Attestation_du_fin(+n: U32, st: Array<O.Boxed<FuluAttestation_d.Attestati
   (arr, t) = st
   O.dump_le(n, 4, t)
 
+def l8_Attestation_du_m(+n: U32, +m: U32, st: Array<O.Boxed<FuluAttestation_d.Attestation>> & +List<U32>) -> +List<U32>: l8_Attestation_du_fin(n, l8_Attestation_du(U32.to_nat(m), m, st))
+
+def l8_Attestation_du_sz(+n: U32, t: +List<U32>, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> +List<U32>:
+  (arr, +sc) = pair
+  l8_Attestation_du_m(n, O.pick(U32.is_le(n, sc), n, sc), (arr, t))
+
 def l8_Attestation_dump(o: l8_Attestation_Seq, t: +List<U32>) -> +List<U32>:
   match o:
-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_du_fin(n, l8_Attestation_du(U32.to_nat(n), n, (arr, t)))
+    case l8_Attestation_Seq{arr, +n}: l8_Attestation_du_sz(n, t, Array.size(O.Boxed<FuluAttestation_d.Attestation>, arr))
 
 def l8_Attestation_len(o: l8_Attestation_Seq) -> l8_Attestation_Seq & U32:
   match o:
@@ -82,7 +94,7 @@ def l8_Attestation_get_in(inside: Bool, arr: Array<O.Boxed<FuluAttestation_d.Att
     case True{}: l8_Attestation_at(arr, n, i)
     case False{}: (l8_Attestation_Seq{arr, n}, None{})
 
-def l8_Attestation_get(o: l8_Attestation_Seq, +i: U32) -> l8_Attestation_Seq & Maybe<&1, FuluAttestation_d.Attestation>:
+def l8_Attestation_take(o: l8_Attestation_Seq, +i: U32) -> l8_Attestation_Seq & Maybe<&1, FuluAttestation_d.Attestation>:
   match o:
     case l8_Attestation_Seq{arr, +n}: l8_Attestation_get_in(U32.is_lt(i, n), arr, n, i)
 
@@ -124,9 +136,13 @@ def l8_Attestation_app_in(ok: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attesta
     case True{}: (l8_Attestation_Seq{Array.set(O.Boxed<FuluAttestation_d.Attestation>, l8_Attestation_room(arr, n), n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (l8_Attestation_Seq{arr, n}, False{})
 
+def l8_Attestation_app_sz(+n: U32, v: FuluAttestation_d.Attestation, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> l8_Attestation_Seq & Bool:
+  (arr, +sc) = pair
+  l8_Attestation_app_in(Bool.and(U32.is_lt(n, 8), U32.is_le(n, sc)), arr, n, v)
+
 def l8_Attestation_append(o: l8_Attestation_Seq, v: FuluAttestation_d.Attestation) -> l8_Attestation_Seq & Bool:
   match o:
-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_app_in(U32.is_lt(n, 8), arr, n, v)
+    case l8_Attestation_Seq{arr, +n}: l8_Attestation_app_sz(n, v, Array.size(O.Boxed<FuluAttestation_d.Attestation>, arr))
 
 type l8_Attestation_Cached is Type:
   l8_Attestation_Cached{items: Array<O.Boxed<FuluAttestation_d.Attestation>>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}
@@ -157,16 +173,16 @@ def l8_Attestation_clen(c: l8_Attestation_Cached) -> l8_Attestation_Cached & U32
   match c:
     case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: (l8_Attestation_Cached{arr, n, d, nodes, lo, hi}, n)
 
-def l8_Attestation_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>) -> l8_Attestation_Cached & Maybe<&1, FuluAttestation_d.Attestation>:
+def l8_Attestation_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & O.Boxed<FuluAttestation_d.Attestation>) -> l8_Attestation_Cached & Maybe<&1, FuluAttestation_d.Attestation>:
   (arr, v) = pair
-  (l8_Attestation_Cached{arr, n, d, nodes, lo, hi}, Some{FuluAttestation_d.Attestation_bx_unbox(v)})
+  (l8_Attestation_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluAttestation_d.Attestation_bx_unbox(v)})
 
 def l8_Attestation_cget_in(inside: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> l8_Attestation_Cached & Maybe<&1, FuluAttestation_d.Attestation>:
   match inside:
-    case True{}: l8_Attestation_ctook(n, d, nodes, lo, hi, Array.swap(O.Boxed<FuluAttestation_d.Attestation>, arr, i, O.BNone{}))
+    case True{}: l8_Attestation_ctook(n, d, nodes, lo, hi, i, Array.swap(O.Boxed<FuluAttestation_d.Attestation>, arr, i, O.BNone{}))
     case False{}: (l8_Attestation_Cached{arr, n, d, nodes, lo, hi}, None{})
 
-def l8_Attestation_cget(c: l8_Attestation_Cached, +i: U32) -> l8_Attestation_Cached & Maybe<&1, FuluAttestation_d.Attestation>:
+def l8_Attestation_ctake(c: l8_Attestation_Cached, +i: U32) -> l8_Attestation_Cached & Maybe<&1, FuluAttestation_d.Attestation>:
   match c:
     case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: l8_Attestation_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
 
@@ -189,9 +205,13 @@ def l8_Attestation_capp_in(ok: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attest
     case True{}: (l8_Attestation_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
     case False{}: (l8_Attestation_Cached{arr, n, d, nodes, lo, hi}, False{})
 
+def l8_Attestation_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluAttestation_d.Attestation, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> l8_Attestation_Cached & Bool:
+  (arr, +sc) = pair
+  l8_Attestation_capp_in(Bool.and(U32.is_lt(n, 8), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+
 def l8_Attestation_capp(c: l8_Attestation_Cached, v: FuluAttestation_d.Attestation) -> l8_Attestation_Cached & Bool:
   match c:
-    case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: l8_Attestation_capp_in(U32.is_lt(n, 8), arr, n, d, nodes, lo, hi, v)
+    case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}: l8_Attestation_capp_sz(n, d, nodes, lo, hi, v, Array.size(O.Boxed<FuluAttestation_d.Attestation>, arr))
 
 def l8_Attestation_ts_store(ts: l8_Attestation_TS, +k: U32, +dg: D.Digest) -> l8_Attestation_TS:
   match ts:
