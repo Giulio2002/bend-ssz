@@ -85,14 +85,14 @@ def c7(+n: U32) -> IO(Unit):
     ser_line("pl_u8", P8E.proglist_uint8_serialize(wbig(False{}, n)))
     enc_line("pl_u8", P8E.proglist_uint8_encode(wbig(False{}, n)))
 
-def app_ser(label: String, pair: O.Words & Bool) -> IO(Unit):
+def app_ser(pair: O.Words & Bool) -> IO(Unit):
   (o, ok) = pair
   match o:
     case O.Words{ws, +n}:
       do IO<Unit>:
-        IO.print(label ++ " append_ok=" ++ O.pick_str(ok) ++ " len_after=" ++ U32.show(n))
-        ser_line(label, P8E.proglist_uint8_serialize(O.Words{ws, n}))
-def c8(+n: U32) -> IO(Unit): app_ser("pl_u8", P8.pl_u8_append(wbig(False{}, n), 7))
+        IO.print("pl_u8 append_ok=" ++ O.pick_str(ok) ++ " len_after=" ++ U32.show(n))
+        ser_line("pl_u8", P8E.proglist_uint8_serialize(O.Words{ws, n}))
+def c8(+n: U32) -> IO(Unit): app_ser(P8.pl_u8_append(wbig(False{}, n), 7))
 
 def app_line(label: String, pair: O.Words & Bool) -> IO(Unit):
   (o, ok) = pair
