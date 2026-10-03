@@ -1,218 +1,456 @@
 {
-  "audit": "crash-hunt",
-  "branch": "agent/crash-hunt",
-  "base": "origin/main b1764b5a8",
-  "counts": {"total": 9, "CRASH": 3, "WRONG": 5, "INFO": 1, "OK_suites": 5},
-  "fix_status": {
-    "branch": "agent/crash-fix",
-    "regression": "tools/crash_hunt/regress.sh (cases 1-14 of tools/crash_hunt/pf_fixed.bend), proofs/slop/crash/crash_fix_laws_generated.bend",
-    "CH-01": "fixed (statements and lock moved, docs/crash_hunt_statement_diff.md)",
-    "CH-02": "not fixed: a guard falsifies a frozen e2e encode theorem for sizes 2^31..2^32-32 (docs/CRASH_HUNT.md section 6); _serialize is the checked entry",
-    "CH-03": "fixed: roots clamp the chunk count to the storage (O.cap_cnt), proved equal for valid objects",
-    "CH-04": "fixed (statements and lock moved)",
-    "CH-05": "fixed in X_decode_checked (window below 2^31)",
-    "CH-06": "fixed in X_decode_checked (window inside the buffer); _decode itself not changed: 2569 proof files, 14687 sites (docs/CRASH_HUNT.md section 6)",
-    "CH-07": "documented: the 2^31 byte size limit",
-    "CH-08": "documented: no error channel, precondition X_valid",
-    "CH-09": "documented: _build and _read are unchecked by design",
-    "CH-10": "fixed: the default of a vector of variable-size elements holds present elements; new finding (WRONG), see docs/CRASH_HUNT.md",
-    "CH-11": "fixed on agent/crash-fix3: a valid object of tight storage has the root of the same bytes in roomy storage (R2-02 c)",
-    "CH-12": "fixed on agent/crash-fix3: the size pass keeps an absent box absent, serialize refuses it (docs/CRASH_HUNT.md section 7.1)"
+ "audit": "crash-hunt",
+ "branch": "agent/crash-hunt",
+ "base": "origin/main b1764b5a8",
+ "counts": {
+  "total": 9,
+  "CRASH": 3,
+  "WRONG": 5,
+  "INFO": 1,
+  "OK_suites": 5
+ },
+ "fix_status": {
+  "branch": "agent/crash-fix",
+  "regression": "tools/crash_hunt/regress.sh (cases 1-14 of tools/crash_hunt/pf_fixed.bend), proofs/slop/crash/crash_fix_laws_generated.bend",
+  "CH-01": "fixed (statements and lock moved, docs/crash_hunt_statement_diff.md)",
+  "CH-02": "not fixed: a guard falsifies a frozen e2e encode theorem for sizes 2^31..2^32-32 (docs/CRASH_HUNT.md section 6); _serialize is the checked entry",
+  "CH-03": "fixed: roots clamp the chunk count to the storage (O.cap_cnt), proved equal for valid objects",
+  "CH-04": "fixed (statements and lock moved)",
+  "CH-05": "fixed in X_decode_checked (window below 2^31)",
+  "CH-06": "fixed in X_decode_checked (window inside the buffer); _decode itself not changed: 2569 proof files, 14687 sites (docs/CRASH_HUNT.md section 6)",
+  "CH-07": "documented: the 2^31 byte size limit",
+  "CH-08": "documented: no error channel, precondition X_valid",
+  "CH-09": "documented: _build and _read are unchecked by design",
+  "CH-10": "fixed: the default of a vector of variable-size elements holds present elements; new finding (WRONG), see docs/CRASH_HUNT.md",
+  "CH-11": "fixed on agent/crash-fix3: a valid object of tight storage has the root of the same bytes in roomy storage (R2-02 c)",
+  "CH-12": "fixed on agent/crash-fix3: the size pass keeps an absent box absent, serialize refuses it (docs/CRASH_HUNT.md section 7.1)"
+ },
+ "ok_suites": [
+  {
+   "id": "OK-1",
+   "what": "hostile _decode, 240 names, byte-level mutators",
+   "runs": 40508,
+   "crash": 0,
+   "wrong": 0
+  },
+  {
+   "id": "OK-2",
+   "what": "mutation driver (set_elem/append/set_field) with extreme indices and seeds",
+   "runs": 10656,
+   "crash": 0,
+   "wrong": 0
+  },
+  {
+   "id": "OK-3",
+   "what": "large and wide inputs, count bomb of 2^20 empty transactions",
+   "runs": 25,
+   "crash": 0,
+   "wrong": 0
+  },
+  {
+   "id": "OK-4",
+   "what": "cached root vs plain root, boundaries and index 2^32-1",
+   "runs": 30,
+   "crash": 0,
+   "wrong": 0
+  },
+  {
+   "id": "OK-5",
+   "what": "serialize refuses objects whose storage is smaller than the length (uint8 300, 2^32-1 claims)",
+   "runs": 4,
+   "crash": 0,
+   "wrong": 0
+  }
+ ],
+ "findings": [
+  {
+   "id": "CH-01",
+   "severity": "high",
+   "class": "WRONG",
+   "entry_point": "Fulu_list_bytevec_2048_4096: l4096_b2048_set(o, i, v) and l4096_b2048_append(o, v) (DataColumnSidecar.column)",
+   "input": "v : O.Words of length 0, 64 or 4096 bytes into a List[Cell, 4096] whose storage is 4096 bytes",
+   "repro": "SSZ_CASE=1 (v.n=0), 2 (v.n=4096 at index 1), 3 (v.n=64), 4 (append v.n=0) of build/ch/pa from tools/crash_hunt/pa_objects.bend; observed: set_ok=1 in all four; case 1 and 4 loop 2^32 times (3 s); case 2 corrupts element 0 (cell_w0=4294967295)",
+   "call_chain": "l4096_b2048_set -> set_n -> put_at (types/Fulu_list_bytevec_2048_4096_def_generated.bend:43) -> O.words_blit (src/obj.bend:1354) -> bl_go count ((n+3)>>2)-1 underflows for n=0; copies by the length of v, not of the element",
+   "why": "the setter guards only i < len; words_blit trusts the source length and underflows its loop count at 0",
+   "fix_proposal": "generator codegen/impl/typed_object_runtime.py:703-704,737: guard put_at with Bool.and(U32.is_lt(i,n), U32.is_eq(words_len(v), es)); harden O.words_blit to copy exactly es/4 words (constant count, no n-1)",
+   "proof_impact": "guard text of set/append of the bytevec_2048_4096 collection is stated by generated coll_api laws (public statements in e2e/STATEMENTS.txt): regenerate and refresh the lock for that collection only; words_blit hardening alone changes no statement",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-02",
+   "severity": "medium",
+   "class": "CRASH",
+   "entry_point": "<Name>_encode(o) of every variable-size name without a literal output depth (e.g. proglist_uint8_encode)",
+   "input": "O.Words{Array.new(U32,2n,0), 1000} (16-byte storage, length 1000) and O.Words{..., 4294967295}",
+   "repro": "SSZ_CASE=7 SSZ_ARG=1000 / 4294967295 build/ch/pa: encode_size=2147483648 (a 2 GiB allocation, 1 s) / encode_size=4294967295 over a one-word array",
+   "call_chain": "X_encode -> X_enc_sized(X_size(o)) -> O.out_new(n) (src/obj.bend:690) -> B.zeros_bytes (src/buffer.bend:401): the size pass returns poison 2^31 and the plain (non-serialize) path allocates it; (n+3)>>2 wraps for n >= 2^32-3",
+   "why": "only the serialize variant tests O.is_poisoned(n) before allocating",
+   "fix_proposal": "typed_object_runtime.py:3098-3128 plain enc_sized: test O.is_poisoned(n) first and return an empty buffer; or document _encode as requiring X_valid(o)",
+   "proof_impact": "_e2e_encode bridges are stated under rep and lack the bound size < 2^31; an added branch needs it (medium to high); the documentation option has none",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-03",
+   "severity": "medium",
+   "class": "CRASH",
+   "entry_point": "<Name>_hash_tree_root(h, o) of every name holding O.Words or O.Bits",
+   "input": "O.Words{Array.new(U32,2n,0), n} with n = 2^30 / 2^32-1; O.Bits{..., 2^32-1}",
+   "repro": "SSZ_CASE=6 SSZ_ARG=1073741824 (19 s), 4294967295 (75 s) build/ch/pa; SSZ_CASE=11 SSZ_ARG=4294967295 (10 s, bit list)",
+   "call_chain": "X_hash_tree_root -> X_root -> O.words_root (src/obj.bend:897) / O.bits_root (1012) -> mtree over chunks_of(n) leaves reading masked words",
+   "why": "the chunk count comes from the claimed length; the storage capacity is never consulted",
+   "fix_proposal": "clamp the chunk count in words_root, words_root_prog, bits_root, bits_root_prog, elems_root, elems_root_prog to the storage capacity (min(chunks_of(n), cap_words/8)); the value for every valid object is unchanged",
+   "proof_impact": "root laws assume rep (capacity >= chunks): the clamp equals chunks_of(n) under rep; one extra equation per law family, no statement changes",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-04",
+   "severity": "medium",
+   "class": "WRONG",
+   "entry_point": "progbitlist_append (pbits_append); bitsN_append guard n+1 <= N; pl_u8_append",
+   "input": "a valid 536870912-byte progressive bit list (decodes to 4294967295 bits), then append; Bitlist[2048] object claiming 4294967295 bits",
+   "repro": "SSZ_CASE=3 SSZ_ARG=536870912 SSZ_DEPTH=27 SSZ_FILL=2155905152 build/ch/pc (tools/crash_hunt/pc_bigdecode.bend): append_ok=1 bits_after=0; SSZ_CASE=8 and 9 of build/ch/pa; SSZ_CASE=14 SSZ_ARG=4294967295",
+   "call_chain": "pbits_append -> pbits_app_n (guard True{}) -> pbits_push -> O.bits_push (src/obj.bend:1303): (k + 1 : U32) wraps to 0",
+   "why": "append guards compute (n + 1 : U32) without overflow protection",
+   "fix_proposal": "generator typed_object_runtime.py:739,796,870,1980 (within('(n + 1 : U32)', limit)): finite limit U32.is_lt(n, N); no limit Bool.not(U32.is_eq(n, 4294967295)); same for (n+1)*es in grow",
+   "proof_impact": "the stated guard of C_append changes form (equivalent below 2^32-1); coll_api append laws are regenerated; one lemma n+1<=N <=> n<N without wrap",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-05",
+   "severity": "low",
+   "class": "WRONG",
+   "entry_point": "X_decode of big byte or packed lists (proglist_*, Fulu_list_uint8_1099511627776, ...) at sizes 2^32-31 .. 2^32-1; O.words_new(n); B.alloc(n)",
+   "input": "4294967295 and 4294967280 bytes",
+   "repro": "SSZ_CASE=1 SSZ_ARG=4294967295|4294967280 SSZ_DEPTH=30 SSZ_FILL=1431655765 build/ch/pc: decode=some len=<n> with an 8-word storage",
+   "call_chain": "X_decode -> X_ok (no upper bound for big lists) -> X_read -> O.copy_in -> O.zeros_for/depth_for (src/obj.bend:50-56): (n+31) and (n+3) wrap; also B.capacity/zeros_bytes/alloc (src/buffer.bend:209,401,522)",
+   "why": "ceil computations in U32 wrap near 2^32",
+   "fix_proposal": "wrap-free ceilings as bits_nbytes does; or add U32.is_le(len, 4294967264) to _ok of big lists",
+   "proof_impact": "ceiling lemmas are stated under n < 2^31 and hold for the wrap-free form; the _ok conjunct changes l*_ok statements of the 6 big-list names",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-06",
+   "severity": "low",
+   "class": "WRONG",
+   "entry_point": "<Name>_decode(buf, size)",
+   "input": "B.empty() (one-word array) with size 40 for Checkpoint",
+   "repro": "SSZ_CASE=1 build/ch/pb (tools/crash_hunt/pb_api.bend): decode_empty_buf_size40=some",
+   "call_chain": "X_decode (typed_object_runtime.py:3041) -> X_ok(buf, 0, size): reads past the buffer wrap through the Array.get mask",
+   "why": "size is a second, unchecked copy of B.size(buf)",
+   "fix_proposal": "X_decode adds U32.is_le(size, B.size(buf)) and returns None otherwise",
+   "proof_impact": "decode witnesses use alloc(n) with size n (n <= n holds); general decode bridges need the premise n <= size(buf)",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-07",
+   "severity": "low",
+   "class": "WRONG",
+   "entry_point": "<Name>_serialize(o) for objects of 2^31 bytes or more; composite lists with n*es >= 2^32",
+   "input": "a valid 2147483648-byte progressive byte list; (reasoned) 35,495,598 Validators",
+   "repro": "SSZ_CASE=15 SSZ_ARG=2147483647 -> ok=1; SSZ_ARG=2147483648 -> ok=0 (build/ch/pa)",
+   "call_chain": "X_serialize -> X_size (O.words_sizek / l*_szf) -> padd/is_poisoned: bit 31 of a size is the invalid marker; n*es wraps without it",
+   "why": "size and invalid flag share one U32",
+   "fix_proposal": "separate flag or wider size; fail closed for n*es >= 2^32 (is_le(n, 2^32/es))",
+   "proof_impact": "the writer-size bound is an open item already (docs/PREMISES.md section 1); the fix states it; low for proofs",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-08",
+   "severity": "info",
+   "class": "INFO",
+   "entry_point": "<Name>_hash_tree_root(h, o) on objects outside their type",
+   "input": "SmallTestStruct{70000, 5} (uint16 field); ContributionAndProof with O.BNone{} box",
+   "repro": "SSZ_CASE=2,3,6,7 build/ch/pb: root(70000) != root(4464); root(box BNone) != root(default box); SSZ_CASE=4: serialize refuses",
+   "call_chain": "X_hash_tree_root -> X_root -> u32_chunk / bx_root (BNone -> D.zero())",
+   "why": "no error channel; the checked entry is _serialize/_valid",
+   "fix_proposal": "document the precondition X_valid(o), or add _hash_tree_root_checked returning Maybe",
+   "proof_impact": "none (new symbol) or documentation",
+   "status": "reported, not fixed"
+  },
+  {
+   "id": "CH-09",
+   "severity": "low",
+   "class": "CRASH",
+   "entry_point": "<Name>_build(buf, size) and <Name>_read(buf, off, len) (unchecked reader, public symbols)",
+   "input": "4 bytes: first offset word 4096 (count 1024) .. 0xFFFFFFFC for List[Attestation, 8] read without _ok",
+   "repro": "SSZ_ARG=4096|4294967292 build/ch/pe (tools/crash_hunt/pe_build.bend): bend: out of memory after 11..33 s",
+   "call_chain": "l8_Attestation_read -> rv_count (count = first >> 2 unchecked) -> fill(cap(n)) and per-element reads over unvalidated windows",
+   "why": "precondition X_ok not enforced; the symbol is exported",
+   "fix_proposal": "rename to X_unchecked_build/X_unchecked_read in the generator, or document the precondition",
+   "proof_impact": "none for a rename: the e2e statements call _decode",
+   "status": "reported, not fixed"
+  }
+ ],
+ "round2": {
+  "branch": "agent/crash-hunt-r2",
+  "base": "origin/main d21616e2b",
+  "also_checked": "agent/crash-fix2 29af0ebcc (CH-03 clamp O.cap_cnt)",
+  "counts": {
+   "total": 6,
+   "CRASH": 2,
+   "WRONG": 4,
+   "high": 0,
+   "medium": 3,
+   "low": 3
+  },
+  "verified_fixes": {
+   "CH-01": "cell setter/append refuse lengths 0, 64, 4096 (regress.sh cases 1-5 pass on main); hole R2-05",
+   "CH-04": "bit lists, u8/bool lists and every finite list refuse at the limit / 2^32-1 (regress cases 6-8); hole R2-01 for six no-limit packed lists",
+   "CH-05_CH-06": "decode_checked refuses size > B.size(buf) and >= 2^31 (cases 9-11); hole R2-04 (trusts Buf.len)",
+   "CH-10": "serialize(default()) and hash_tree_root(default()) equal the reference zero value for 206 of 206 named types (bytes and root); the 34 scalar aliases have no own default",
+   "CH-03_on_crash-fix2": "Words/Bits claiming 2^32-1 now hash in 0.11 s (75 s on main); composite lists not covered (R2-03); changes the root of valid small-storage objects (R2-02 c)"
   },
   "ok_suites": [
-    {"id": "OK-1", "what": "hostile _decode, 240 names, byte-level mutators", "runs": 40508, "crash": 0, "wrong": 0},
-    {"id": "OK-2", "what": "mutation driver (set_elem/append/set_field) with extreme indices and seeds", "runs": 10656, "crash": 0, "wrong": 0},
-    {"id": "OK-3", "what": "large and wide inputs, count bomb of 2^20 empty transactions", "runs": 25, "crash": 0, "wrong": 0},
-    {"id": "OK-4", "what": "cached root vs plain root, boundaries and index 2^32-1", "runs": 30, "crash": 0, "wrong": 0},
-    {"id": "OK-5", "what": "serialize refuses objects whose storage is smaller than the length (uint8 300, 2^32-1 claims)", "runs": 4, "crash": 0, "wrong": 0}
+   {
+    "id": "R2-OK-1",
+    "what": "default fills vs reference zero value, 206 named types",
+    "runs": 412,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R2-OK-2",
+    "what": "SignedBeaconBlock / BeaconState built through setters vs decode_checked(serialize(o)) roots",
+    "runs": 15,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R2-OK-3",
+    "what": "cached root vs plain root, mixed capp/cset sequences up to 30000 steps",
+    "runs": 5,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R2-OK-4",
+    "what": "repeated appends 10^7 bytes / 10^7 bits / 10^6 composites, honest large progressive roots to 10^9 bytes at ulimit -s 16384",
+    "runs": 8,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R2-OK-5",
+    "what": "Attestation_ok with offsets that wrap 2^32",
+    "runs": 5,
+    "crash": 0,
+    "wrong": 0
+   }
   ],
   "findings": [
-    {
-      "id": "CH-01", "severity": "high", "class": "WRONG",
-      "entry_point": "Fulu_list_bytevec_2048_4096: l4096_b2048_set(o, i, v) and l4096_b2048_append(o, v) (DataColumnSidecar.column)",
-      "input": "v : O.Words of length 0, 64 or 4096 bytes into a List[Cell, 4096] whose storage is 4096 bytes",
-      "repro": "SSZ_CASE=1 (v.n=0), 2 (v.n=4096 at index 1), 3 (v.n=64), 4 (append v.n=0) of build/ch/pa from tools/crash_hunt/pa_objects.bend; observed: set_ok=1 in all four; case 1 and 4 loop 2^32 times (3 s); case 2 corrupts element 0 (cell_w0=4294967295)",
-      "call_chain": "l4096_b2048_set -> set_n -> put_at (types/Fulu_list_bytevec_2048_4096_def_generated.bend:43) -> O.words_blit (src/obj.bend:1354) -> bl_go count ((n+3)>>2)-1 underflows for n=0; copies by the length of v, not of the element",
-      "why": "the setter guards only i < len; words_blit trusts the source length and underflows its loop count at 0",
-      "fix_proposal": "generator codegen/impl/typed_object_runtime.py:703-704,737: guard put_at with Bool.and(U32.is_lt(i,n), U32.is_eq(words_len(v), es)); harden O.words_blit to copy exactly es/4 words (constant count, no n-1)",
-      "proof_impact": "guard text of set/append of the bytevec_2048_4096 collection is stated by generated coll_api laws (public statements in e2e/STATEMENTS.txt): regenerate and refresh the lock for that collection only; words_blit hardening alone changes no statement",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-02", "severity": "medium", "class": "CRASH",
-      "entry_point": "<Name>_encode(o) of every variable-size name without a literal output depth (e.g. proglist_uint8_encode)",
-      "input": "O.Words{Array.new(U32,2n,0), 1000} (16-byte storage, length 1000) and O.Words{..., 4294967295}",
-      "repro": "SSZ_CASE=7 SSZ_ARG=1000 / 4294967295 build/ch/pa: encode_size=2147483648 (a 2 GiB allocation, 1 s) / encode_size=4294967295 over a one-word array",
-      "call_chain": "X_encode -> X_enc_sized(X_size(o)) -> O.out_new(n) (src/obj.bend:690) -> B.zeros_bytes (src/buffer.bend:401): the size pass returns poison 2^31 and the plain (non-serialize) path allocates it; (n+3)>>2 wraps for n >= 2^32-3",
-      "why": "only the serialize variant tests O.is_poisoned(n) before allocating",
-      "fix_proposal": "typed_object_runtime.py:3098-3128 plain enc_sized: test O.is_poisoned(n) first and return an empty buffer; or document _encode as requiring X_valid(o)",
-      "proof_impact": "_e2e_encode bridges are stated under rep and lack the bound size < 2^31; an added branch needs it (medium to high); the documentation option has none",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-03", "severity": "medium", "class": "CRASH",
-      "entry_point": "<Name>_hash_tree_root(h, o) of every name holding O.Words or O.Bits",
-      "input": "O.Words{Array.new(U32,2n,0), n} with n = 2^30 / 2^32-1; O.Bits{..., 2^32-1}",
-      "repro": "SSZ_CASE=6 SSZ_ARG=1073741824 (19 s), 4294967295 (75 s) build/ch/pa; SSZ_CASE=11 SSZ_ARG=4294967295 (10 s, bit list)",
-      "call_chain": "X_hash_tree_root -> X_root -> O.words_root (src/obj.bend:897) / O.bits_root (1012) -> mtree over chunks_of(n) leaves reading masked words",
-      "why": "the chunk count comes from the claimed length; the storage capacity is never consulted",
-      "fix_proposal": "clamp the chunk count in words_root, words_root_prog, bits_root, bits_root_prog, elems_root, elems_root_prog to the storage capacity (min(chunks_of(n), cap_words/8)); the value for every valid object is unchanged",
-      "proof_impact": "root laws assume rep (capacity >= chunks): the clamp equals chunks_of(n) under rep; one extra equation per law family, no statement changes",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-04", "severity": "medium", "class": "WRONG",
-      "entry_point": "progbitlist_append (pbits_append); bitsN_append guard n+1 <= N; pl_u8_append",
-      "input": "a valid 536870912-byte progressive bit list (decodes to 4294967295 bits), then append; Bitlist[2048] object claiming 4294967295 bits",
-      "repro": "SSZ_CASE=3 SSZ_ARG=536870912 SSZ_DEPTH=27 SSZ_FILL=2155905152 build/ch/pc (tools/crash_hunt/pc_bigdecode.bend): append_ok=1 bits_after=0; SSZ_CASE=8 and 9 of build/ch/pa; SSZ_CASE=14 SSZ_ARG=4294967295",
-      "call_chain": "pbits_append -> pbits_app_n (guard True{}) -> pbits_push -> O.bits_push (src/obj.bend:1303): (k + 1 : U32) wraps to 0",
-      "why": "append guards compute (n + 1 : U32) without overflow protection",
-      "fix_proposal": "generator typed_object_runtime.py:739,796,870,1980 (within('(n + 1 : U32)', limit)): finite limit U32.is_lt(n, N); no limit Bool.not(U32.is_eq(n, 4294967295)); same for (n+1)*es in grow",
-      "proof_impact": "the stated guard of C_append changes form (equivalent below 2^32-1); coll_api append laws are regenerated; one lemma n+1<=N <=> n<N without wrap",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-05", "severity": "low", "class": "WRONG",
-      "entry_point": "X_decode of big byte or packed lists (proglist_*, Fulu_list_uint8_1099511627776, ...) at sizes 2^32-31 .. 2^32-1; O.words_new(n); B.alloc(n)",
-      "input": "4294967295 and 4294967280 bytes",
-      "repro": "SSZ_CASE=1 SSZ_ARG=4294967295|4294967280 SSZ_DEPTH=30 SSZ_FILL=1431655765 build/ch/pc: decode=some len=<n> with an 8-word storage",
-      "call_chain": "X_decode -> X_ok (no upper bound for big lists) -> X_read -> O.copy_in -> O.zeros_for/depth_for (src/obj.bend:50-56): (n+31) and (n+3) wrap; also B.capacity/zeros_bytes/alloc (src/buffer.bend:209,401,522)",
-      "why": "ceil computations in U32 wrap near 2^32",
-      "fix_proposal": "wrap-free ceilings as bits_nbytes does; or add U32.is_le(len, 4294967264) to _ok of big lists",
-      "proof_impact": "ceiling lemmas are stated under n < 2^31 and hold for the wrap-free form; the _ok conjunct changes l*_ok statements of the 6 big-list names",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-06", "severity": "low", "class": "WRONG",
-      "entry_point": "<Name>_decode(buf, size)",
-      "input": "B.empty() (one-word array) with size 40 for Checkpoint",
-      "repro": "SSZ_CASE=1 build/ch/pb (tools/crash_hunt/pb_api.bend): decode_empty_buf_size40=some",
-      "call_chain": "X_decode (typed_object_runtime.py:3041) -> X_ok(buf, 0, size): reads past the buffer wrap through the Array.get mask",
-      "why": "size is a second, unchecked copy of B.size(buf)",
-      "fix_proposal": "X_decode adds U32.is_le(size, B.size(buf)) and returns None otherwise",
-      "proof_impact": "decode witnesses use alloc(n) with size n (n <= n holds); general decode bridges need the premise n <= size(buf)",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-07", "severity": "low", "class": "WRONG",
-      "entry_point": "<Name>_serialize(o) for objects of 2^31 bytes or more; composite lists with n*es >= 2^32",
-      "input": "a valid 2147483648-byte progressive byte list; (reasoned) 35,495,598 Validators",
-      "repro": "SSZ_CASE=15 SSZ_ARG=2147483647 -> ok=1; SSZ_ARG=2147483648 -> ok=0 (build/ch/pa)",
-      "call_chain": "X_serialize -> X_size (O.words_sizek / l*_szf) -> padd/is_poisoned: bit 31 of a size is the invalid marker; n*es wraps without it",
-      "why": "size and invalid flag share one U32",
-      "fix_proposal": "separate flag or wider size; fail closed for n*es >= 2^32 (is_le(n, 2^32/es))",
-      "proof_impact": "the writer-size bound is an open item already (docs/PREMISES.md section 1); the fix states it; low for proofs",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-08", "severity": "info", "class": "INFO",
-      "entry_point": "<Name>_hash_tree_root(h, o) on objects outside their type",
-      "input": "SmallTestStruct{70000, 5} (uint16 field); ContributionAndProof with O.BNone{} box",
-      "repro": "SSZ_CASE=2,3,6,7 build/ch/pb: root(70000) != root(4464); root(box BNone) != root(default box); SSZ_CASE=4: serialize refuses",
-      "call_chain": "X_hash_tree_root -> X_root -> u32_chunk / bx_root (BNone -> D.zero())",
-      "why": "no error channel; the checked entry is _serialize/_valid",
-      "fix_proposal": "document the precondition X_valid(o), or add _hash_tree_root_checked returning Maybe",
-      "proof_impact": "none (new symbol) or documentation",
-      "status": "reported, not fixed"
-    },
-    {
-      "id": "CH-09", "severity": "low", "class": "CRASH",
-      "entry_point": "<Name>_build(buf, size) and <Name>_read(buf, off, len) (unchecked reader, public symbols)",
-      "input": "4 bytes: first offset word 4096 (count 1024) .. 0xFFFFFFFC for List[Attestation, 8] read without _ok",
-      "repro": "SSZ_ARG=4096|4294967292 build/ch/pe (tools/crash_hunt/pe_build.bend): bend: out of memory after 11..33 s",
-      "call_chain": "l8_Attestation_read -> rv_count (count = first >> 2 unchecked) -> fill(cap(n)) and per-element reads over unvalidated windows",
-      "why": "precondition X_ok not enforced; the symbol is exported",
-      "fix_proposal": "rename to X_unchecked_build/X_unchecked_read in the generator, or document the precondition",
-      "proof_impact": "none for a rename: the e2e statements call _decode",
-      "status": "reported, not fixed"
-    }
+   {
+    "id": "R2-02",
+    "severity": "medium",
+    "class": "WRONG",
+    "entry_point": "X_valid of every packed collection (O.words_ok, O.bits_ok); consumers: X_hash_tree_root precondition (docs/API_CONTRACTS.md), crash-fix2 O.cap_cnt",
+    "input": "(a) Words{4-word storage, 4294967295} on a list without limit; (b) Words{8-word storage [1,2,0,0,0,0,0xdeadbeef,0], 8}; (c) Words{2- or 4-word storage, 8}",
+    "repro": "build/ph SSZ_CASE=1 SSZ_ARG=<0..6> SSZ_N=8|4294967295 (tools/crash_hunt/ph_r2.bend); valid=1 in every case; variants 5 and 6 print different roots for the same 8 bytes; (a) root takes tens of seconds on main",
+    "call_chain": "words_ok -> wk_cap: ((n+3)>>2) <= cap wraps for n >= 2^32-3 (src/obj.bend:1485); only the last partial word is checked for zeros; capacity needs ceil(n/4) words while mt_words reads 8*ceil(n/32)",
+    "why": "valid is weaker than the representation invariant the root assumes (whole-chunk storage, zero bytes through the end of the last chunk); the documented guard 'X_valid first bounds the work / makes the root right' is false",
+    "fix_proposal": "strengthen words_ok/bits_ok: wrap-free ceil, capacity >= 8*ceil(n/32) words, words up to the chunk end zero (<= 7 reads); or mask chunk reads by length in mt_words",
+    "proof_impact": "valid laws of every packed collection and the serialize bridge gain a conjunct; lock refresh for those statements; medium",
+    "status": "(b) and (c) fixed on agent/crash-fix3 (the root checks the last chunk is clean and hashes a clean copy otherwise; docs/CRASH_HUNT.md section 7); (a) the wrap of valid stays, the root is bounded and serialize refuses"
+   },
+   {
+    "id": "R2-01",
+    "severity": "medium",
+    "class": "WRONG",
+    "entry_point": "Fulu_list_uint64_1099511627776_append (BeaconState balances, inactivity_scores), proglist_uint16/32/64/128/256_append",
+    "input": "Words{16-word storage, 4294967288 (u64), 4294967294 (u16), 4294967292 (u32), 4294967280 (u128), 4294967264 (u256)} and one element",
+    "repro": "build/pg SSZ_CASE=1..6 SSZ_ARG=<bytes> (tools/crash_hunt/pg_r2.bend): append_ok=1 len_after=0; one byte fewer: correct length",
+    "call_chain": "<kind>_append -> app_n (guard True{}) -> grow -> words_resize(words_fit(o,(n+1)*es),(n+1)*es): (n+1)*es = 2^32 wraps to 0",
+    "why": "CH-04 fixed lists whose limit is an element count; these six have no limit and the guard stayed True; a valid 4 GiB-8 byte list decodes (CH-05) and is emptied by one append, flag 1",
+    "fix_proposal": "guard U32.is_lt(n, floor((2^32-1)/es)): 2147483647 (u16), 1073741823 (u32), 536870911 (u64), 268435455 (u128), 134217727 (u256), min'ed with N for List[uint64,2^40]",
+    "proof_impact": "same as CH-04: stated append guard of these collections regenerates; equivalent below the bound",
+    "status": "fixed on agent/crash-fix3: every list kind guards its append with n < min(limit, floor((2^32 - 32) / es)); test_append_guards.py"
+   },
+   {
+    "id": "R2-03",
+    "severity": "medium",
+    "class": "CRASH",
+    "entry_point": "<List>_root and <List>_cache / <List>_cache_at of every list of composites (Seq{items, n}); not covered by crash-fix2's cap_cnt",
+    "input": "Seq{one-leaf array, n} with n = 10^6 .. 2^32-1; cache_at(arr, 8, d) with d = 26 .. 40",
+    "repro": "build/pg SSZ_CASE=12 (PendingDeposit root: n=10^6 7.9 s, 10^7 61 s, same on crash-fix2), 13 (cache: n=10^8 8.4 GB), 14 (cache_at d=26 4 GB)",
+    "call_chain": "X_root -> leaves (is_lt(i, n) only) -> bx_root of BNone = default element per claimed index; X_cache -> cache_at -> dfill(1n+d) = 2^(d+1) digests",
+    "why": "the count is the claimed n, never bounded by Array.size(items); X_valid refuses n > capacity but the unchecked entries do not call it",
+    "fix_proposal": "use min(n, Array.size(items)) as the count in root and cache; clamp or hide cache_at",
+    "proof_impact": "list root laws assume rep (n <= capacity): the clamp is the identity; one equation per law family",
+    "status": "fixed on agent/crash-fix3: the root of a list of composites hashes min(n, storage) elements, X_cache_at clamps the depth (O.cache_dok)"
+   },
+   {
+    "id": "R2-04",
+    "severity": "low",
+    "class": "CRASH",
+    "entry_point": "X_decode_checked(buf, size) with a hand-built B.Buf",
+    "input": "B.Buf{1-word array, 2147483647} and size 2147483647",
+    "repro": "build/pi SSZ_CASE=3 (proglist_uint8: some, 4 GB, 2.7 s), 4 (proglist_bool: some, 4 GB, 6.1 s) (tools/crash_hunt/pi_r2.bend)",
+    "call_chain": "X_decode_checked -> dchk(size, B.size(buf)): B.size is the claimed len field, not the storage",
+    "why": "the CH-06 fix trusts Buf.len, which a caller can set to anything",
+    "fix_proposal": "dchk also tests size <= 4*Array.size(ws)",
+    "proof_impact": "slop laws of _decode_checked only",
+    "status": "fixed on agent/crash-fix3: decode_checked compares the window with the words of the buffer's array (B.stored)"
+   },
+   {
+    "id": "R2-05",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "l4096_b2048_set / l4096_b2048_append (List[Cell, 4096])",
+    "input": "v = Words{1-word array, 2048}",
+    "repro": "build/pg SSZ_CASE=9, 10: flag 1, the cell holds the one word repeated (aliased)",
+    "call_chain": "set/append guard v.n == 2048 -> O.words_blit copies 512 words through the index mask",
+    "why": "CH-01 guard checks the claimed length of v, not its storage",
+    "fix_proposal": "guard with words_ok(v, 2048, 2048, False, 1) or Array.size(vws) >= 512",
+    "proof_impact": "as CH-01: stated guard of this one collection",
+    "status": "fixed on agent/crash-fix3: the cell guard also tests the storage of the argument"
+   },
+   {
+    "id": "R2-06",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "<byte list>_append at claimed length 2^32-32 .. 2^32-2 (O.words_fit)",
+    "input": "Words{16-word storage, 4294967264}",
+    "repro": "build/pg SSZ_CASE=7 SSZ_ARG=4294967264: append_ok=1 len_after=4294967265 in 0.1 s (no growth); 4294967263 grows to 4 GB",
+    "call_chain": "pl_u8_grow -> words_fit -> fit_sized: (want + 31 >> 5) * 8 + 8 wraps for want >= 2^32-30, so the array looks roomy",
+    "why": "CH-05 family: ceilings computed with a wrapping + 31",
+    "fix_proposal": "wrap-free ceil (n >> 5) + ((n & 31) + 31 >> 5) in fit_sized, depth_for, zeros_for, mask_last",
+    "proof_impact": "as CH-05",
+    "status": "fixed on agent/crash-fix3 through the append guard bound (the chunk rounding cannot wrap)"
+   }
+  ]
+ },
+ "round3": {
+  "branch": "agent/crash-hunt-r3",
+  "base": "origin/main b1e3c20ee",
+  "counts": {
+   "total": 4,
+   "CRASH": 1,
+   "WRONG": 3,
+   "high": 0,
+   "medium": 3,
+   "low": 1
+  },
+  "verified_fixes": {
+   "regress.sh": "30 of 30 cases pass on b1e3c20ee",
+   "CH-01_R2-05": "cell list refuses lengths 0, 64, 4096 and a one-word storage",
+   "CH-04_R2-01": "append refused at the claimed limit and at 2^32-1 by every packed kind (progressive bit list: k < 2^32-1 by design)",
+   "CH-12": "valid = 0 for an absent element of every list kind of boxed elements (9 of 9)"
+  },
+  "ok_suites": [
+   {
+    "id": "R3-OK-1",
+    "what": "batch hostile decode, real Fulu containers (BeaconState 221,520; BeaconBlockBody 349,834; SignedBeaconBlock 348,939 mutants): offset slots, swaps, equal offsets, flips, truncations; verdicts against the reference port, canonical re-encode of every accepted mutant",
+    "runs": 920293,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-2",
+    "what": "batch hostile decode, ten variable-size generic types, every verdict against the reference port",
+    "runs": 1150970,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-3",
+    "what": "102 packed collections built by append/set only vs the reference (bytes, root, valid, length, one append past the limit)",
+    "runs": 5748,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-4",
+    "what": "cached root vs plain root vs reference, 18 lists of composites, n up to limit+2, sets",
+    "runs": 426,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-5",
+    "what": "lying objects into valid/root/serialize/append/set/get/len of 102 packed collections, 9 claims each over 8 words of storage",
+    "runs": 7608,
+    "crash": 0,
+    "wrong": 0,
+    "note": "18 runs allocate 4 GB (R3-02); set/get alias (R3-04)"
+   },
+   {
+    "id": "R3-OK-6",
+    "what": "hostile hasher buffer into _hash_tree_root",
+    "runs": 13,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-8",
+    "what": "containers built through setters only (71 names, 183 fields) vs reference bytes and root",
+    "runs": 213,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-9",
+    "what": "decode_checked of a lying B.Buf into ten names",
+    "runs": 22,
+    "crash": 0,
+    "wrong": 0
+   },
+   {
+    "id": "R3-OK-7",
+    "what": "repeated cset + cached_root cycles, n = 1e3 .. 2e5",
+    "runs": 6,
+    "crash": 0,
+    "wrong": 0
+   }
   ],
-  "round2": {
-    "branch": "agent/crash-hunt-r2",
-    "base": "origin/main d21616e2b",
-    "also_checked": "agent/crash-fix2 29af0ebcc (CH-03 clamp O.cap_cnt)",
-    "counts": {"total": 6, "CRASH": 2, "WRONG": 4, "high": 0, "medium": 3, "low": 3},
-    "verified_fixes": {
-      "CH-01": "cell setter/append refuse lengths 0, 64, 4096 (regress.sh cases 1-5 pass on main); hole R2-05",
-      "CH-04": "bit lists, u8/bool lists and every finite list refuse at the limit / 2^32-1 (regress cases 6-8); hole R2-01 for six no-limit packed lists",
-      "CH-05_CH-06": "decode_checked refuses size > B.size(buf) and >= 2^31 (cases 9-11); hole R2-04 (trusts Buf.len)",
-      "CH-10": "serialize(default()) and hash_tree_root(default()) equal the reference zero value for 206 of 206 named types (bytes and root); the 34 scalar aliases have no own default",
-      "CH-03_on_crash-fix2": "Words/Bits claiming 2^32-1 now hash in 0.11 s (75 s on main); composite lists not covered (R2-03); changes the root of valid small-storage objects (R2-02 c)"
-    },
-    "ok_suites": [
-      {"id": "R2-OK-1", "what": "default fills vs reference zero value, 206 named types", "runs": 412, "crash": 0, "wrong": 0},
-      {"id": "R2-OK-2", "what": "SignedBeaconBlock / BeaconState built through setters vs decode_checked(serialize(o)) roots", "runs": 15, "crash": 0, "wrong": 0},
-      {"id": "R2-OK-3", "what": "cached root vs plain root, mixed capp/cset sequences up to 30000 steps", "runs": 5, "crash": 0, "wrong": 0},
-      {"id": "R2-OK-4", "what": "repeated appends 10^7 bytes / 10^7 bits / 10^6 composites, honest large progressive roots to 10^9 bytes at ulimit -s 16384", "runs": 8, "crash": 0, "wrong": 0},
-      {"id": "R2-OK-5", "what": "Attestation_ok with offsets that wrap 2^32", "runs": 5, "crash": 0, "wrong": 0}
-    ],
-    "findings": [
-      {
-        "id": "R2-02", "severity": "medium", "class": "WRONG",
-        "entry_point": "X_valid of every packed collection (O.words_ok, O.bits_ok); consumers: X_hash_tree_root precondition (docs/API_CONTRACTS.md), crash-fix2 O.cap_cnt",
-        "input": "(a) Words{4-word storage, 4294967295} on a list without limit; (b) Words{8-word storage [1,2,0,0,0,0,0xdeadbeef,0], 8}; (c) Words{2- or 4-word storage, 8}",
-        "repro": "build/ph SSZ_CASE=1 SSZ_ARG=<0..6> SSZ_N=8|4294967295 (tools/crash_hunt/ph_r2.bend); valid=1 in every case; variants 5 and 6 print different roots for the same 8 bytes; (a) root takes tens of seconds on main",
-        "call_chain": "words_ok -> wk_cap: ((n+3)>>2) <= cap wraps for n >= 2^32-3 (src/obj.bend:1485); only the last partial word is checked for zeros; capacity needs ceil(n/4) words while mt_words reads 8*ceil(n/32)",
-        "why": "valid is weaker than the representation invariant the root assumes (whole-chunk storage, zero bytes through the end of the last chunk); the documented guard 'X_valid first bounds the work / makes the root right' is false",
-        "fix_proposal": "strengthen words_ok/bits_ok: wrap-free ceil, capacity >= 8*ceil(n/32) words, words up to the chunk end zero (<= 7 reads); or mask chunk reads by length in mt_words",
-        "proof_impact": "valid laws of every packed collection and the serialize bridge gain a conjunct; lock refresh for those statements; medium",
-        "status": "(b) and (c) fixed on agent/crash-fix3 (the root checks the last chunk is clean and hashes a clean copy otherwise; docs/CRASH_HUNT.md section 7); (a) the wrap of valid stays, the root is bounded and serialize refuses"
-      },
-      {
-        "id": "R2-01", "severity": "medium", "class": "WRONG",
-        "entry_point": "Fulu_list_uint64_1099511627776_append (BeaconState balances, inactivity_scores), proglist_uint16/32/64/128/256_append",
-        "input": "Words{16-word storage, 4294967288 (u64), 4294967294 (u16), 4294967292 (u32), 4294967280 (u128), 4294967264 (u256)} and one element",
-        "repro": "build/pg SSZ_CASE=1..6 SSZ_ARG=<bytes> (tools/crash_hunt/pg_r2.bend): append_ok=1 len_after=0; one byte fewer: correct length",
-        "call_chain": "<kind>_append -> app_n (guard True{}) -> grow -> words_resize(words_fit(o,(n+1)*es),(n+1)*es): (n+1)*es = 2^32 wraps to 0",
-        "why": "CH-04 fixed lists whose limit is an element count; these six have no limit and the guard stayed True; a valid 4 GiB-8 byte list decodes (CH-05) and is emptied by one append, flag 1",
-        "fix_proposal": "guard U32.is_lt(n, floor((2^32-1)/es)): 2147483647 (u16), 1073741823 (u32), 536870911 (u64), 268435455 (u128), 134217727 (u256), min'ed with N for List[uint64,2^40]",
-        "proof_impact": "same as CH-04: stated append guard of these collections regenerates; equivalent below the bound",
-        "status": "fixed on agent/crash-fix3: every list kind guards its append with n < min(limit, floor((2^32 - 32) / es)); test_append_guards.py"
-      },
-      {
-        "id": "R2-03", "severity": "medium", "class": "CRASH",
-        "entry_point": "<List>_root and <List>_cache / <List>_cache_at of every list of composites (Seq{items, n}); not covered by crash-fix2's cap_cnt",
-        "input": "Seq{one-leaf array, n} with n = 10^6 .. 2^32-1; cache_at(arr, 8, d) with d = 26 .. 40",
-        "repro": "build/pg SSZ_CASE=12 (PendingDeposit root: n=10^6 7.9 s, 10^7 61 s, same on crash-fix2), 13 (cache: n=10^8 8.4 GB), 14 (cache_at d=26 4 GB)",
-        "call_chain": "X_root -> leaves (is_lt(i, n) only) -> bx_root of BNone = default element per claimed index; X_cache -> cache_at -> dfill(1n+d) = 2^(d+1) digests",
-        "why": "the count is the claimed n, never bounded by Array.size(items); X_valid refuses n > capacity but the unchecked entries do not call it",
-        "fix_proposal": "use min(n, Array.size(items)) as the count in root and cache; clamp or hide cache_at",
-        "proof_impact": "list root laws assume rep (n <= capacity): the clamp is the identity; one equation per law family",
-        "status": "fixed on agent/crash-fix3: the root of a list of composites hashes min(n, storage) elements, X_cache_at clamps the depth (O.cache_dok)"
-      },
-      {
-        "id": "R2-04", "severity": "low", "class": "CRASH",
-        "entry_point": "X_decode_checked(buf, size) with a hand-built B.Buf",
-        "input": "B.Buf{1-word array, 2147483647} and size 2147483647",
-        "repro": "build/pi SSZ_CASE=3 (proglist_uint8: some, 4 GB, 2.7 s), 4 (proglist_bool: some, 4 GB, 6.1 s) (tools/crash_hunt/pi_r2.bend)",
-        "call_chain": "X_decode_checked -> dchk(size, B.size(buf)): B.size is the claimed len field, not the storage",
-        "why": "the CH-06 fix trusts Buf.len, which a caller can set to anything",
-        "fix_proposal": "dchk also tests size <= 4*Array.size(ws)",
-        "proof_impact": "slop laws of _decode_checked only",
-        "status": "fixed on agent/crash-fix3: decode_checked compares the window with the words of the buffer's array (B.stored)"
-      },
-      {
-        "id": "R2-05", "severity": "low", "class": "WRONG",
-        "entry_point": "l4096_b2048_set / l4096_b2048_append (List[Cell, 4096])",
-        "input": "v = Words{1-word array, 2048}",
-        "repro": "build/pg SSZ_CASE=9, 10: flag 1, the cell holds the one word repeated (aliased)",
-        "call_chain": "set/append guard v.n == 2048 -> O.words_blit copies 512 words through the index mask",
-        "why": "CH-01 guard checks the claimed length of v, not its storage",
-        "fix_proposal": "guard with words_ok(v, 2048, 2048, False, 1) or Array.size(vws) >= 512",
-        "proof_impact": "as CH-01: stated guard of this one collection",
-        "status": "fixed on agent/crash-fix3: the cell guard also tests the storage of the argument"
-      },
-      {
-        "id": "R2-06", "severity": "low", "class": "WRONG",
-        "entry_point": "<byte list>_append at claimed length 2^32-32 .. 2^32-2 (O.words_fit)",
-        "input": "Words{16-word storage, 4294967264}",
-        "repro": "build/pg SSZ_CASE=7 SSZ_ARG=4294967264: append_ok=1 len_after=4294967265 in 0.1 s (no growth); 4294967263 grows to 4 GB",
-        "call_chain": "pl_u8_grow -> words_fit -> fit_sized: (want + 31 >> 5) * 8 + 8 wraps for want >= 2^32-30, so the array looks roomy",
-        "why": "CH-05 family: ceilings computed with a wrapping + 31",
-        "fix_proposal": "wrap-free ceil (n >> 5) + ((n & 31) + 31 >> 5) in fit_sized, depth_for, zeros_for, mask_last",
-        "proof_impact": "as CH-05",
-        "status": "fixed on agent/crash-fix3 through the append guard bound (the chunk rounding cannot wrap)"
-      }
-    ]
-  }
+  "findings": [
+   {
+    "id": "R3-01",
+    "severity": "medium",
+    "class": "WRONG",
+    "entry_point": "_get(o, i) and _cget(c, i) of the nine list/vector kinds with boxed (non-copyable) elements: Fulu_list_Attestation_8, Fulu_list_Deposit_16, Fulu_list_AttesterSlashing_1, Fulu_list_ProposerSlashing_16, Fulu_list_bytelist_1073741824_1048576 (ExecutionPayload.transactions), proglist_VarTestStruct, proglist_ProgressiveVarTestStruct, proglist_proglist_VarTestStruct, vec_VarTestStruct_2",
+    "input": "a valid list; get(o, 0) then valid / serialize / root of the returned list",
+    "repro": "tools/crash_hunt/pl_r3.bend SSZ_CASE=1 (attestations), 4 (vec_VarTestStruct_2), 5 (transactions); pm_r3.bend SSZ_CASE=13 (cached)",
+    "observed": "get answers Some, valid of the returned list is 0, the root changes, a second get answers Some{default}; after _cget the cached root is the old one while the plain root of uncache(c) differs",
+    "call_chain": "X_get -> get_in -> at(arr, n, i) = took(n, Array.swap(arr, i, O.BNone{})) -> (Seq{arr', n}, Some{bx_unbox(v)})",
+    "why": "the element is moved out, not copied (a non-copyable value cannot be both returned and kept); the returned list holds the empty box at i, which valid refuses (CH-12)",
+    "fix": "rename the boxed variants _take/_ctake (documented hole until _set; _ctake marks the slot dirty), keep _get for unboxed kinds",
+    "proof_impact": "the get_outside laws of the nine kinds move to the new name (statement text + lock entry); no law states that get leaves a boxed list unchanged"
+   },
+   {
+    "id": "R3-02",
+    "severity": "medium",
+    "class": "CRASH",
+    "entry_point": "_append / _capp of every list; _force; _dump (hand-built Seq / Words / Bits whose claim exceeds the storage)",
+    "input": "Fulu_list_Validator_1099511627776_append(Seq{one slot, 67108864}, default) -> 'bend: an array past the deepest block class 31', exit 1 (PendingDeposit: 33554432); 67108863 -> flag 1 with 8.4 GB; pl_u8_append(Words{8 words, 2^31-1}, 7) -> 4.2 GB; l8_Attestation_force(Seq{1 slot, 1e8}) 4.4 s; pl_u8_dump(Words{2 words, 1e8}) 1.5 GB",
+    "repro": "tools/crash_hunt/pm_r3.bend SSZ_CASE=1,2,6 (SSZ_ARG = claim), 4, 11, 12; gen_lie.py op 4 (18 runs over 3 GB)",
+    "call_chain": "X_append -> app_in(ok = n < limit) -> room -> copy(n, ..) + fill(cap(n + 1)); packed: app_n -> grow -> words_fit -> grow_to(zeros_for(want))",
+    "why": "the append guards bound the claim by the limit (R2-01), never by the storage; R2-03 clamped roots and caches but not append / force / dump",
+    "fix": "append guards also test n <= Array.size (composite), wrap-free ceil(n/es) <= capacity (packed), (k>>5)+1 <= capacity (bits); fixed-size composites also n < floor((2^31-1)/es) = 17,747,798 (Validator), 11,184,810 (PendingDeposit); fo/du/dump_bytes take min(n, storage)",
+    "proof_impact": "append guard text of every list (api_append_flag / api_append_rejected), regenerated; identity for represented objects; statements and lock move as in R2-01; the abort-only part (n < floor((2^31-1)/es)) changes two lists"
+   },
+   {
+    "id": "R3-03",
+    "severity": "medium",
+    "class": "WRONG",
+    "entry_point": "l134217728_PendingDeposit_size/_valid/_putk and l1099511627776_Validator_* (BeaconState_serialize through pending_deposits / validators); variant of CH-07",
+    "input": "a valid Seq{fill(25n), 22400000} of default PendingDeposit (n <= storage, n <= limit)",
+    "repro": "tools/crash_hunt/pm_r3.bend SSZ_CASE=7 (size=5832704 for 22400000, true 4300800000), 8 (valid=1), 9 (BeaconState_serialize ok=1 size=8570513, true 4303537809); needs 8.4 GB",
+    "call_chain": "szf(n, c) = pick(n <= c, (n * 192 : U32), 2^31); ptn_fin (n * 192 : U32); pt positions pos + i * 192, all U32",
+    "why": "n * element size wraps; the wrapped size is below 2^31 so the poison marker is not set; reachable for Validator at n >= 35,495,597 and PendingDeposit at n >= 22,369,621",
+    "fix": "refuse n > floor((2^31-1)/es) next to the capacity test in szf / va_cap / putn (same bound as R3-02)",
+    "proof_impact": "szf and va_cap text of two list encoders; BeaconState e2e encode theorems carry hM; as R2-01"
+   },
+   {
+    "id": "R3-04",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "_set / _get of every packed collection on an object claiming more than its storage; <List>_cache_at(arr, n, d) with d inconsistent with n",
+    "input": "O.Words{8 words, claim} / O.Bits (claims 33 .. 2^32-1); cache_at with n = 7 and d = 0, 1, 2, 4",
+    "repro": "gen_lie.py ops 5, 6 (set_last=1, get=some); pm_r3.bend SSZ_CASE=10",
+    "observed": "flag 1 / Some through the index mask (the write corrupts another element); cache_at answers a root that differs with d, no error; valid = 0 and serialize refuses for the lying objects",
+    "why": "the setter tests i < claim, not the storage (R2-05 did it for the cell list only); cache_at takes d as a parameter",
+    "fix": "setters test i against the storage; cache_at derives d from n (or documentation)",
+    "proof_impact": "guard text as R2-05; cache_at is stated with d symbolic in the cache laws (larger change), so documentation is the cheap option"
+   }
+  ]
+ }
 }

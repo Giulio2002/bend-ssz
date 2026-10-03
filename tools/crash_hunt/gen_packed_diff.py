@@ -339,6 +339,14 @@ def scenarios(s):
     ns = {0, 1, 2, 3, 4, 5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 1000, 1023, 1024, 1025}
     if lim is None:
         ns |= {4095, 4096, 4097, 20000, 65536}
+        # progressive trees change shape at 1, 5, 21, 85, 341, 1365 chunks: test the chunk counts around each boundary
+        epc = {'u8': 32, 'bool': 32, 'u16': 16, 'u32': 8, 'u64': 4, 'u128': 2, 'u256': 1, 'bit': 256}.get(s['kind'], 1)
+        for c in (1, 2, 4, 5, 6, 20, 21, 22, 84, 85, 86, 340, 341, 342, 1364, 1365, 1366):
+            for d in (0, 1):
+                if c * epc + d <= 400000:
+                    ns.add(c * epc + d)
+            if epc > 1:
+                ns.add(c * epc - 1)
     else:
         for d in (-2, -1, 0, 1, 2):
             if 0 <= lim + d <= 140000:

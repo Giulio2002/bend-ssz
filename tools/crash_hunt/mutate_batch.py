@@ -228,7 +228,11 @@ def main():
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     ref = Ref(a.cs)
-    t = ref.type_of(a.name)
+    try:
+        t = ref.type_of(a.name)
+    except Exception:
+        from constants import ref_generic
+        t = ref_generic(a.cs)[a.name][0]
     prog = os.path.join(a.repo, 'build', 'ch', 'mb_' + a.name)
     rng = random.Random('%s/%s' % (a.rng, a.name))
     seeds = []

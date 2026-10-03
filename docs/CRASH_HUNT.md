@@ -7,8 +7,8 @@ frozen files (`spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN, PROOF, HASH_PROOF, `
 Machine-readable list: `docs/crash_hunt_findings.json`. Raw outputs: `docs/crash_hunt_evidence/`. Probes and runners: `tools/crash_hunt/`.
 
 
-Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3) and
-section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12) update the table below.
+Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3),
+section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12) and the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04, last section) update the table below.
 
 ## 0. Status after the fix series (agent/crash-fix)
 
@@ -306,3 +306,119 @@ boxes hold fixed-size content, which `valid` already refused). The size answer o
   and an OKT conjunct to about 20 encoder-law generators. The wrap of (a) is in the text of `wk_cap`, which about 60 encoder proof files unfold.
 * `_encode` of an invalid object still allocates the marker (CH-02, section 6): a guard would falsify the e2e encode theorems for 2^31 .. 2^32 - 32 bytes.
 * `_decode` itself (CH-06, section 6).
+
+
+# Round 3 (agent/crash-hunt-r3, off origin/main b1e3c20ee)
+
+Fresh auditor, same rule. Exclusions: CH-01 .. CH-12 and R2-01 .. R2-06 (CH-02, CH-06 and R2-02 (a) are documented contracts; variants are reported). Machine-readable:
+the `round3` key of `docs/crash_hunt_findings.json`. No library file was changed. Everything ran on the server under `agents/crashhunt-r3/`, nice 19, at most 4
+programs at a time, stack 16384 KB, 120 s timeout per run, `df` 18 GB free at the end. Probes and generators: `tools/crash_hunt/` (the files named below).
+
+## R3.1 Result in one page
+
+| | |
+|---|---|
+| New findings | **4** (0 high, 3 medium, 1 low) |
+| CRASH (abort / OOM-class allocation / hang from a few words of input) | **1** (R3-02) |
+| WRONG (accepts, or answers silently wrong) | **3** (R3-01, R3-03, R3-04) |
+| Regression of the earlier fixes (`regress.sh`, 30 cases, on b1e3c20ee) | **30 of 30 pass** |
+| Hostile decode at scale, real Fulu containers (`mutate_batch.py`, offset slots set to edge values / neighbours / copies, swaps, equal offsets, two-slot combos, byte flips, truncation at every byte of the first 4096 bytes and at every offset target, sizes past the buffer) | SignedBeaconBlock **348,939**, BeaconBlockBody **349,834**, BeaconState **221,520** mutants: **0 crashes, 0 wrong** (every verdict of the two block types is compared with the reference port; 6,200 BeaconState verdicts; every accepted mutant is re-serialized and must equal its input) |
+| Same, the ten variable-size generic types (BitsStruct, CompatibleUnionA / BC / ABCA, ComplexTestStruct, ProgressiveComplexTestStruct, ProgressiveSingleListContainerTestStruct, ProgressiveTestStruct, ProgressiveVarTestStruct, VarTestStruct) | **1,150,970** mutants, every verdict compared with the reference: **0 crashes, 0 wrong** |
+| Differential test of 102 packed collections built by `_append` / `_set` only (all bit lists, progressive lists, byte lists, lists and vectors of uint8..uint256, bool, Bytes32, Bytes48, cells; n = 0 .. limit + 2, one append past the limit, 0 / 7 sets, and for the progressive lists the chunk counts 1, 2, 4, 5, 6, 20 .. 22, 84 .. 86, 340 .. 342, 1364 .. 1366 around the shape changes of the progressive tree): serialize bytes, root, `valid`, length against the reference port | **5,748 scenario runs (4,068 + 1,680 progressive boundaries), 0 mismatches** |
+| Cached root against plain root against the reference, every one of the 18 lists of composites (`_cache`, `_capp`, `_cset`, n = 0 .. limit + 2, sets) | **426 scenarios, 0 mismatches** |
+| Containers built through setters only (71 named containers incl. BeaconState, BeaconBlockBody, ExecutionPayload(Header); 183 scalar / byte-vector / bitvector fields set from an LCG, 3 seeds), serialize bytes and root against the reference | **213 scenarios, 0 mismatches** |
+| Lying objects into every entry point (`_valid`, `_root`, `_serialize`, `_append`, `_set`, `_get`, `_len`) of the same 102 collections, claims 33, 100, limit, limit + 1, 2^31 - 1, 2^31, 2^32 - 32, 2^32 - 5, 2^32 - 1 over 8 words of storage | **7,608 runs: no abort, no hang; 18 runs allocate 4 GB (R3-02), set / get alias (R3-04)** |
+| Absent boxes as list elements (`Seq{fill, n}`, 11 list and vector kinds) | `valid = 0` for all 9 kinds of boxed elements (the 2 others hold no box) |
+
+The decoder side is again clean at a scale of two million mutants. The three medium findings are on the object side: a **getter that removes the element it
+returns** (R3-01), an **append whose allocation follows the claimed length** and aborts the process (R3-02), and a **U32 wrap of `n * element size`** that a
+valid object reaches (R3-03, a variant of CH-07).
+
+## R3.2 Findings, ranked
+
+### R3-01 (MEDIUM, WRONG): `_get` / `_cget` of a list of boxed elements MOVES the element out of the list
+Entry points: `_get(o, i)` and the cached `_cget(c, i)` of the nine list and vector kinds whose elements are boxed (`O.Boxed<..>`, non-copyable): `Fulu_list_Attestation_8`
+(`BeaconBlockBody.attestations`), `Fulu_list_Deposit_16`, `Fulu_list_AttesterSlashing_1`, `Fulu_list_ProposerSlashing_16`, `Fulu_list_bytelist_1073741824_1048576`
+(`ExecutionPayload.transactions`), `proglist_VarTestStruct`, `proglist_ProgressiveVarTestStruct`, `proglist_proglist_VarTestStruct`, `vec_VarTestStruct_2`
+(`ComplexTestStruct`; `_cget` exists for the first five).
+Repro (`tools/crash_hunt/pl_r3.bend`, `pm_r3.bend`; server, `SSZ_CASE`): a list of two default attestations, case 1:
+`valid0=1 get0=some valid_after_get=0 root_after_get=<other root> get0_again=some`; case 4 (vector of two `VarTestStruct`): `vec_get0=some valid_after_get=0`;
+case 5 (transactions list with one empty transaction): `tx_get0=some valid_after_get=0`; `pm_r3` case 13 (cached list, `_cget(0)`): `cached_root_after_cget`
+is the old root while the plain root of `uncache(c)` is another one.
+Chain: `X_get` -> `get_in` -> `at(arr, n, i) = took(n, Array.swap(arr, i, O.BNone{}))`, `took` returns `(Seq{arr', n}, Some{bx_unbox(v)})`. The returned list has the empty box
+at index `i`, the element lives only in the `Some`.
+Why it matters: `X_valid` of the returned list is 0 (an absent box is invalid, CH-12), so `_serialize` of any container that holds it answers `ok = 0`; the root is another one;
+a second `_get` of the same index returns `Some{default element}` instead of `None` or the element. A caller that reads an element and then serializes loses the data silently.
+`_cget` does not even mark the slot dirty: the cached root stays the old one while the list holds a hole.
+No law states that `_get` leaves a boxed list unchanged: the generated laws of these kinds are `api_get_outside`, `api_set_flag`, `api_append_flag` and friends (the read-after-write laws
+`api_read_append` / `api_other_set` exist only for the unboxed kinds, e.g. `SignedVoluntaryExit`), so the statements are consistent with the behaviour; the name and the `Maybe` result are not.
+Fix (generator, `emit_collection`, the boxed `at` / `took` / `ctook`): a non-copyable element cannot be both returned and kept, so rename the boxed variants `_take` / `_ctake`
+(documented: the list has a hole until `_set` puts an element back; `_ctake` marks the slot dirty), keep `_get` for the unboxed kinds. Proof impact: the `get_outside` laws of the nine kinds
+move to the new name (statement text and lock entry), no semantic change; nothing else mentions the boxed `get`.
+
+### R3-02 (MEDIUM, CRASH): `_append` allocates and copies in proportion to the CLAIMED length: an abort from a hand-built object, `_force` / `_dump` likewise
+Entry points: `_append` / `_capp` of every list, `_force`, `_dump`.
+* **Composite lists, abort.** `Fulu_list_Validator_1099511627776_append(Seq{fill(0n), 67108864}, default)` prints `bend: an array past the deepest block class 31` and exits 1 after 0.1 s
+  (`pm_r3.bend` case 1, `SSZ_ARG=67108864`). The same for `Fulu_list_PendingDeposit_134217728` at 33,554,432 (case 2), and for the cached `_capp` (case 6). One element below the abort the call
+  succeeds with flag 1 and **8.4 GB** resident (case 1 at 67,108,863: 5.8 s; at 10^7: 2.1 GB, 1.5 s). The object has one slot of storage and is a few words.
+  Chain: `X_append` -> `app_in(ok = n < 4294967295)` -> `room` -> `room_pick(is_lt(n, Array.size))` false -> `copy(n, ..)` and `fill(cap(n + 1))`: a tree of `2^ceil(log2(n + 1))` elements.
+  An honest list reaches it too: 2^26 validators (8 GB of records) or 2^25 pending deposits, and the next `_append` aborts (both are above the documented 2^31 byte limit, which `_append` does not test).
+* **Packed lists, 4 GB.** `pl_u8_append(O.Words{8 words, 2147483647}, 7)` and the same for the other 8 packed kinds without a usable limit (`proglist_bool`, `proglist_uint16 .. 256`, `Fulu_list_uint64_2^40`, `Fulu_list_uint8_2^40`)
+  allocate 4.2 GB for an object of 32 bytes (18 runs of `gen_lie.py`: 9 kinds, claims 2^31 - 1 and 2^31; 2.6 to 3.3 s, flag 1, claimed length + 1). R2-06 documented the aliasing at the end of this range; the allocation
+  of the whole claim is the same cause.
+* **`_force` / `_dump`.** `l8_Attestation_force(Seq{one slot, 10^8})` loops 10^8 times (4.4 s, 2^32 - 1 would take 3 minutes); `pl_u8_dump(O.Words{2 words, 10^8}, Nil)` builds a list of 10^8 entries
+  (1.4 s, 1.5 GB; 2^32 - 1 is an out-of-memory abort). Both are the test-oracle helpers, public symbols (`pm_r3.bend` cases 11, 12).
+Why: the append guards bound the claim by the LIMIT (R2-01) but never compare it with the STORAGE, so a claim the storage cannot hold makes `room` / `grow` allocate for the claim. R2-03 clamped
+the roots and the cache for exactly this reason; the append, `force` and `dump` paths were not.
+Fix (generator, the append guards of R2-01): add the storage test `n <= Array.size(arr)` (composite lists), `ceil(n / es) <= capacity` in the wrap-free form (packed lists) and
+`(k >> 5) + 1 <= capacity` (bit lists) to `ok` of `app_in` / `app_n` / `push`, so the allocation is at most twice what exists; for the fixed-size composites also `n < floor((2^31 - 1) / es)`
+(17,747,798 validators, 11,184,810 pending deposits, the same bound as R3-03); `fo` / `du` / `dump_bytes` take `min(n, storage)` like `O.cap_cnt`.
+Proof impact: the append guard text of every list changes (`api_append_flag`, `api_append_rejected`: "flag = `is_lt(n, N)`" becomes "flag = `is_lt(n, N)` and the storage test"; for a
+representable object the storage test is the identity, `n <= size`), regenerated from the generator text, statements move in `e2e/STATEMENTS.txt` and the lock as in R2-01. The cheap part
+(abort only) is the `n < floor((2^31 - 1) / es)` bound, which changes the guard of two lists.
+
+### R3-03 (MEDIUM, WRONG, variant of CH-07): `n * element size` wraps for a VALID list of fixed-size composites, and `_serialize` answers ok with a wrong, short encoding
+Entry points: `l134217728_PendingDeposit_size` / `_valid` / `_putk` and `l1099511627776_Validator_*` (so `BeaconState_serialize` through `pending_deposits` and `validators`); 192-byte and
+121-byte elements.
+Repro (`pm_r3.bend`, server, 8.4 GB for the storage of 2^25 slots): the size pass of `Seq{fill(25n), n}` (default pending deposits, `n <= storage`, `n <= limit`: a valid object) prints
+`size=1920000000` for n = 10^7 (right), `size=5832704` for n = 22,400,000 (true size 4,300,800,000: wrapped), `size=2041032704` for n = 33,000,000 (true 6.3 GB, looks encodable); `_valid` is 1 for 22,400,000.
+`BeaconState_serialize(BeaconState_set_pending_deposits(BeaconState_default(), that list))` (case 9) prints **`ok=1 size=8570513`** (= 2,737,809 + 5,832,704) where the true encoding is 4,303,537,809 bytes.
+Chain: `szf(n, c) = pick(n <= c, (n * 192 : U32), 2^31)`, `ptn_fin` `(n * 192 : U32)`, `pt` writes at `pos + i * 192` in U32: every term wraps; the size is below 2^31, so the marker is not set.
+CH-07 documented that an object of 2^31 bytes or more is refused and named this wrap; the contract as written ("no object of 2^31 bytes or more is encodable") is not what the code does for a list
+of fixed-size composites whose product is in [2^32, 2^32 + 2^31): it is accepted and truncated. Rule: the library must never silently wrap 32-bit arithmetic.
+Only the two lists with an element above 2^31 / limit bytes can reach it (`Validator` at n >= 35,495,597, `PendingDeposit` at n >= 22,369,621; `PendingPartialWithdrawal` is capped by its limit below 2^32).
+Fix (generator, `szf` / `va_cap` / `putn`): refuse `n > floor((2^31 - 1) / es)` (the marker answer) next to the capacity test, i.e. the bound of R3-02. Proof impact: `szf` and `va_cap` of two list
+encoders (text of their size / validity laws, the BeaconState e2e encode theorems carry the hypothesis `hM`), as the R2-01 regeneration.
+
+### R3-04 (LOW, WRONG, lying objects only): `_set` / `_get` / `cache_at` answer from aliased storage for a claim the storage does not hold
+For every one of the 102 packed collections, an object that claims more than its storage holds (`O.Words{8 words, claim}`) answers `set_last = 1` (index `claim - 1`) and `get = some`: the write lands
+in the word that the index mask selects, so it corrupts another element; `_valid` is 0 and `_serialize` refuses (`gen_lie.py`, ops 5, 6; hand-checked with `bitlist_9` at claims 100 .. 2^32 - 1).
+`<List>_cache_at(arr, n, d)` with a depth `d` that does not match `n` (`pm_r3.bend` case 10: n = 7, d = 0, 1, 2, 4) answers roots that differ from `d = 3`, with no error (d = 4 is clamped to 0 by `O.cache_dok`).
+No crash and no way for an honest object to get there; the index mask is documented in `src/buffer.bend`. Fix: the setters test `i < ceil(claim)` against the storage (the R2-05 storage test) and
+`cache_at` derives `d` from `n` instead of taking it. Proof impact as R2-05 for the guard text; `cache_at` is stated with `d` symbolic in the cache laws (a larger change), so the documentation option is the cheap one.
+
+## R3.3 Not findings (checked, behaves)
+* Hostile hasher argument: `_hash_tree_root(h, o)` with `h` = `B.empty()`, `B.alloc(0)`, `B.alloc(100000)` or a `B.Buf` claiming 2^32 - 1 bytes gives the same root as `O.hasher()` (`ph3_r3.bend`, 13 runs).
+* Absent boxes: `_valid` is 0 for an absent element of every list kind of boxed elements (`pa3_r3.bend`, 9 of 9), CH-12 holds for fields.
+* Every fix of rounds 1 and 2 holds on b1e3c20ee for every list kind (not only the ones named): the append at the claimed limit and at 2^32 - 1 is refused for all 102 packed kinds; the cell list refuses lengths 0, 64,
+  4096 and a one-word storage; `_valid` / `_serialize` / `_root` of all 102 kinds on claims 2^31 .. 2^32 - 1 return a value in under 8 s (none slower; most take 0.1 s), so no packed kind needs the R2-03 clamp more than the ones named; the append at claims 2^32 - 32, 2^32 - 5, 2^32 - 1 is refused by every kind but the progressive bit list, whose limit is `k < 2^32 - 1` by design (R2).
+* Cached root = plain root = reference for all 18 composite lists, including the progressive list, up to the limit and one past it (refused by both).
+* `X_decode_checked` of a hand-built `B.Buf` claiming 16 .. 2^32 - 1 bytes over a one-word array (window = claim and claim - 1), ten names (BeaconState, BeaconBlockBody, SignedBeaconBlock, ExecutionPayload, DataColumnSidecar, LightClientUpdate, ProgressiveTestStruct, CompatibleUnionABCA, Checkpoint, Validator): `None` in all 22 answers (`pd3_r3.bend`); the R2-04 fix is in the shared `dchk`.
+* Truncation of a valid BeaconState at every byte of its first 4096 bytes, at every offset target +-{0,1,4} and 600 random sizes: `None` in all cases except the full length (also `None` for every size beyond `B.size(buf)`).
+* Repeated `_cset` + `_cached_root` cycles: 50 us per cycle for 10^3, 65,536 and 2 x 10^5 elements (`pr_r3.bend`): no quadratic behaviour.
+
+## R3.4 What was run
+
+| run | size | result |
+|---|---|---|
+| `tools/crash_hunt/regress.sh` | 30 cases | 30 of 30 pass on b1e3c20ee |
+| `mutate_batch.py` + `gen_mutbatch.py` (one process per chunk of 5000 mutants, `decode_checked` -> `serialize` -> root every k-th accepted) | BeaconState, BeaconBlockBody, SignedBeaconBlock: 920,293 mutants; ten generic types: 1,150,970 | 0 CRASH, 0 WRONG (accept / reject equal to the reference port on every verdict that was compared; canonical re-encoding on every accepted mutant) |
+| `gen_packed_diff.py` (102 programs `pd_*`) | 5,748 scenario runs | 0 mismatches |
+| `gen_cache_diff.py` (18 programs `cd_*`) | 426 scenarios | 0 mismatches |
+| `gen_setters.py` (71 programs `st_*`) | 213 scenarios | 0 mismatches |
+| `gen_lie.py` (102 programs `lie_*`) | 7,608 runs | R3-02 (18 runs over 3 GB), R3-04; the other runs return a value in 0.1 s |
+| hand probes `pl_r3` (get), `pm_r3` (claims, size wrap, force / dump, cache_at, cget), `pa3_r3` (absent elements), `ph3_r3` (hasher), `pr_r3` (repeated cset + cached_root: 50 us per cycle for n = 10^3 .. 2 x 10^5, no growth with n) | about 80 runs | R3-01 .. R3-04 |
+
+Not run: honest objects of 2^31 bytes or more (the wrap of R3-03 was reached by a valid object of 2^25 slots, which needs 8.4 GB, not by 22 million separate appends); the 240 names one by one through
+the batch mutation driver (the three real containers and the ten variable-size generic types were; the 102 packed collections went through the differential and lying-object sweeps instead); the union selectors of the 200 other names (round 1 swept them).
+Generated programs are not committed: `gen_*.py` rebuild them (`gen ... --out tools/crash_hunt/<dir>`; compile with the pinned toolchain, one program per name).
