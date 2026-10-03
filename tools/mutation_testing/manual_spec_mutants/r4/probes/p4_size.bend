@@ -31,6 +31,9 @@ import ../../../../../types/Fulu_list_Deposit_16_hashtreeroot_generated.bend as 
 import ../../../../../types/FuluEth1Data_def_generated.bend as EdD
 import ../../../../../types/Fulu_list_Eth1Data_2048_def_generated.bend as LeD
 import ../../../../../types/Fulu_list_Eth1Data_2048_hashtreeroot_generated.bend as LeH
+import ../../../../../types/bitvector_2_def_generated.bend as Bv2D
+import ../../../../../types/BitsStruct_def_generated.bend as BsD
+import ../../../../../types/BitsStruct_encode_ssz_generated.bend as BsE
 import ../../../../../benchmarks/compact/objio.bend as IOx
 
 # Round-4 probe: the public object API on values whose size pass, checked writers, decode window and caches carry the round-4 faults.
@@ -50,6 +53,7 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 # 18 Deposit list: append 2, cache, ctake(2) (index = length)
 # 19 Eth1Data list: append 3 seeds, cache, root, capp 1, cached root vs plain root
 # 20 Eth1Data list: cache of 0, capp x 5 (growth), cached root vs plain root
+# 21 BitsStruct with f_B = Bitvector2{4} (a bit past the 2 bits)   22 ComplexTestStruct with f_A = 65536 (uint16 out of range, built with the record constructor)
 
 def ck(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> Array<U32> & U32:
   match k:
@@ -202,6 +206,18 @@ def c18() -> IO(Unit): dtake_after_root("dep_take_n", 2, dcroot(LdD.l16_Deposit_
 def c19() -> IO(Unit): eapp_after_root("eth_capp", ecroot(LeD.l2048_Eth1Data_cache(ebuild(3n, 0, LeD.l2048_Eth1Data_default()))))
 def c20() -> IO(Unit): ecmp("eth_grow", ecroot(ecapps(5n, 0, LeD.l2048_Eth1Data_cache(LeD.l2048_Eth1Data_default()))))
 
+def bs_bad() -> BsD.BitsStruct:
+  match BsD.BitsStruct_default():
+    case BsD.BitsStruct{a, +b, +c, d, +e}: BsD.BitsStruct{a, Bv2D.Bitvector2{4}, c, d, e}
+def ser_bs(label: String, pair: BsD.BitsStruct & O.Encoded) -> IO(Unit):
+  (o, e) = pair
+  show(label, e)
+def ct_badA() -> CtD.ComplexTestStruct:
+  match CtD.ComplexTestStruct_default():
+    case CtD.ComplexTestStruct{+a, b, +c, d, e, f, g}: CtD.ComplexTestStruct{65536, b, c, d, e, f, g}
+def c21() -> IO(Unit): ser_bs("bs_bad_B", BsE.BitsStruct_serialize(bs_bad()))
+def c22() -> IO(Unit): ser_ct("cts_bad_A", CtE.ComplexTestStruct_serialize(ct_badA()))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: c1()
@@ -223,7 +239,9 @@ def dispatch(+c: U32) -> IO(Unit):
     case 17: c17()
     case 18: c18()
     case 19: c19()
-    case _: c20()
+    case 20: c20()
+    case 21: c21()
+    case _: c22()
 
 def main() -> IO(Unit):
   do IO<Unit>:
