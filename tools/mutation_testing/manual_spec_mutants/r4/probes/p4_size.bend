@@ -34,6 +34,9 @@ import ../../../../../types/Fulu_list_Eth1Data_2048_hashtreeroot_generated.bend 
 import ../../../../../types/bitvector_2_def_generated.bend as Bv2D
 import ../../../../../types/BitsStruct_def_generated.bend as BsD
 import ../../../../../types/BitsStruct_encode_ssz_generated.bend as BsE
+import ../../../../../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as LtD
+import ../../../../../types/FuluExecutionPayload_def_generated.bend as EpD
+import ../../../../../types/FuluExecutionPayload_encode_ssz_generated.bend as EpE
 import ../../../../../benchmarks/compact/objio.bend as IOx
 
 # Round-4 probe: the public object API on values whose size pass, checked writers, decode window and caches carry the round-4 faults.
@@ -53,6 +56,7 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 # 18 Deposit list: append 2, cache, ctake(2) (index = length)
 # 19 Eth1Data list: append 3 seeds, cache, root, capp 1, cached root vs plain root
 # 20 Eth1Data list: cache of 0, capp x 5 (growth), cached root vs plain root
+# 23 ExecutionPayload with one transaction Words{[0xFFFFFFFF], 1} (junk past its 1-byte length: invalid)  24 ExecutionPayload default (control)
 # 21 BitsStruct with f_B = Bitvector2{4} (a bit past the 2 bits)   22 ComplexTestStruct with f_A = 65536 (uint16 out of range, built with the record constructor)
 
 def ck(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> Array<U32> & U32:
@@ -218,6 +222,13 @@ def ct_badA() -> CtD.ComplexTestStruct:
 def c21() -> IO(Unit): ser_bs("bs_bad_B", BsE.BitsStruct_serialize(bs_bad()))
 def c22() -> IO(Unit): ser_ct("cts_bad_A", CtE.ComplexTestStruct_serialize(ct_badA()))
 
+def bad_txs() -> LtD.l1048576_bl1073741824_Seq: LtD.l1048576_bl1073741824_Seq{Array.new(O.Boxed<O.Words>, 0n, O.BSome{O.Words{Array.new(U32, 0n, 4294967295), 1}, O.BNone{}}), 1}
+def ser_ep(label: String, pair: EpD.ExecutionPayload & O.Encoded) -> IO(Unit):
+  (o, e) = pair
+  show(label, e)
+def c23() -> IO(Unit): ser_ep("ep_bad_tx", EpE.ExecutionPayload_serialize(EpD.ExecutionPayload_set_transactions(EpD.ExecutionPayload_default(), bad_txs())))
+def c24() -> IO(Unit): ser_ep("ep_default", EpE.ExecutionPayload_serialize(EpD.ExecutionPayload_default()))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: c1()
@@ -241,7 +252,9 @@ def dispatch(+c: U32) -> IO(Unit):
     case 19: c19()
     case 20: c20()
     case 21: c21()
-    case _: c22()
+    case 22: c22()
+    case 23: c23()
+    case _: c24()
 
 def main() -> IO(Unit):
   do IO<Unit>:
