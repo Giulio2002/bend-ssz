@@ -74,6 +74,12 @@ def FuluBlob__decode_input__Blob_spec_input(+t: P1_F.array__Tree<U32>, +pt: {P1_
 def FuluBlob__decode_offsets__Blob_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.Blob_decode_vchecked_limit()
 
+def FuluBlob__decode_offsets__Blob_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluBlob_r.Blob_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.Blob_decode_vchecked_nmax_wrap(buf)
+
+def FuluBlob__decode_offsets__Blob_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluBlob_r.Blob_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.Blob_decode_vchecked_nmax_above(buf)
+
 def FuluBlob__decode_offsets__Blob_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.Blob_decode_vchecked_window()
 

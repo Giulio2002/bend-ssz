@@ -101,6 +101,12 @@ def FuluIndexedAttestation__decode_none__decode_none(+d: Nat, +t: P3_F.array__Tr
 def FuluIndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   P4_PRV.IndexedAttestation_decode_vchecked_limit()
 
+def FuluIndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {FuluIndexedAttestation_r.IndexedAttestation_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
+  P4_PRV.IndexedAttestation_decode_vchecked_nmax_wrap(buf)
+
+def FuluIndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {FuluIndexedAttestation_r.IndexedAttestation_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
+  P4_PRV.IndexedAttestation_decode_vchecked_nmax_above(buf)
+
 def FuluIndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_dchw(228, 228, (P4_B.Buf{Array.set(U32, Array.new(U32, 6n, 0), 0, 228), 228}, 57))), Pair.snd(P4_B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 6n, 0), 0, 228), 228}, 228))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.IndexedAttestation_decode_vchecked_accept()
 

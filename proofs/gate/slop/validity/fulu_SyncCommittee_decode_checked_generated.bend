@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_SyncCommittee_decode_checked_generated.bend a
 def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   PRV.SyncCommittee_decode_vchecked_limit()
 
+def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluSyncCommittee_r.SyncCommittee_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  PRV.SyncCommittee_decode_vchecked_nmax_above(buf)
+
+def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluSyncCommittee_r.SyncCommittee_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  PRV.SyncCommittee_decode_vchecked_nmax_wrap(buf)
+
 def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   PRV.SyncCommittee_decode_vchecked_real()
 

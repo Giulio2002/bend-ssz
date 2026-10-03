@@ -106,6 +106,12 @@ def FuluEther__decode_input__Ether_ms_dec() -> {(FuluEther_r.Ether_decode(P6_B.B
 def FuluEther__decode_offsets__Ether_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluEther_r.Ether_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.Ether_decode_vchecked_limit()
 
+def FuluEther__decode_offsets__Ether_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluEther_r.Ether_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.Ether_decode_vchecked_nmax_wrap(buf)
+
+def FuluEther__decode_offsets__Ether_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluEther_r.Ether_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.Ether_decode_vchecked_nmax_above(buf)
+
 def FuluEther__decode_offsets__Ether_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluEther_r.Ether_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluEther_r.Ether_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.Ether_decode_vchecked_accept()
 

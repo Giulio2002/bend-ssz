@@ -14,6 +14,12 @@ def G1Point__decode_offsets__G1Point_decode_vchecked_accept() -> {PRV.is_some(Pa
 def G1Point__decode_offsets__G1Point_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.G1Point_decode_vchecked_limit()
 
+def G1Point__decode_offsets__G1Point_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluG1Point_r.G1Point_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.G1Point_decode_vchecked_nmax_above(buf)
+
+def G1Point__decode_offsets__G1Point_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluG1Point_r.G1Point_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.G1Point_decode_vchecked_nmax_wrap(buf)
+
 def G1Point__decode_offsets__G1Point_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_decode_checked(B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.G1Point_decode_vchecked_real()
 

@@ -79,6 +79,12 @@ def FuluSyncCommittee__decode_input__SyncCommittee_spec_input(+x0: U32, +q0: P1_
 def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   P3_PRV.SyncCommittee_decode_vchecked_limit()
 
+def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluSyncCommittee_r.SyncCommittee_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  P3_PRV.SyncCommittee_decode_vchecked_nmax_wrap(buf)
+
+def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluSyncCommittee_r.SyncCommittee_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  P3_PRV.SyncCommittee_decode_vchecked_nmax_above(buf)
+
 def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   P3_PRV.SyncCommittee_decode_vchecked_window()
 

@@ -18,6 +18,14 @@ def ComplexTestStruct_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   {==}
 
+def ComplexTestStruct_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {ComplexTestStruct_r.ComplexTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  {==}
+
+def ComplexTestStruct_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {ComplexTestStruct_r.ComplexTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  {==}
+
 def ComplexTestStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 25))), Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 100))) == (True{}, True{}) : Bool & Bool}:
   {==}

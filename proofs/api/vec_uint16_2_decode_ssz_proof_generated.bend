@@ -70,6 +70,12 @@ def vec_uint16_2__decode_none__vec_uint16_2_spec_reject(buf: P1_B.Buf, +m: U32, 
 def vec_uint16_2__decode_offsets__vec_uint16_2_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_uint16_2_r.vec_uint16_2_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.vec_uint16_2_decode_vchecked_limit()
 
+def vec_uint16_2__decode_offsets__vec_uint16_2_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {vec_uint16_2_r.vec_uint16_2_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.vec_uint16_2_decode_vchecked_nmax_wrap(buf)
+
+def vec_uint16_2__decode_offsets__vec_uint16_2_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {vec_uint16_2_r.vec_uint16_2_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.vec_uint16_2_decode_vchecked_nmax_above(buf)
+
 def vec_uint16_2__decode_offsets__vec_uint16_2_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_uint16_2_r.vec_uint16_2_dchw(4, 4, (P3_B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_uint16_2_r.vec_uint16_2_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.vec_uint16_2_decode_vchecked_accept()
 

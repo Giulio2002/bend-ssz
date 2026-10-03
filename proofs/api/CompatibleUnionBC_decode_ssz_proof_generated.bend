@@ -115,6 +115,12 @@ def CompatibleUnionBC__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tree<U
 def CompatibleUnionBC__decode_offsets__CompatibleUnionBC_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>, CompatibleUnionBC_r.CompatibleUnionBC_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
   P3_PRV.CompatibleUnionBC_decode_vchecked_limit()
 
+def CompatibleUnionBC__decode_offsets__CompatibleUnionBC_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {CompatibleUnionBC_r.CompatibleUnionBC_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
+  P3_PRV.CompatibleUnionBC_decode_vchecked_nmax_wrap(buf)
+
+def CompatibleUnionBC__decode_offsets__CompatibleUnionBC_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {CompatibleUnionBC_r.CompatibleUnionBC_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
+  P3_PRV.CompatibleUnionBC_decode_vchecked_nmax_above(buf)
+
 def CompatibleUnionBC__decode_offsets__CompatibleUnionBC_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>, CompatibleUnionBC_r.CompatibleUnionBC_dchw(6, 6, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 1026), 1, 256), 6}, 2))), Pair.snd(P3_B.Buf, Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>, CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 1026), 1, 256), 6}, 6))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.CompatibleUnionBC_decode_vchecked_accept()
 

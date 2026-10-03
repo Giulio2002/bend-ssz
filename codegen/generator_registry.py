@@ -76,6 +76,7 @@ GENERATORS = (
     Gen('small_type_predicates', 'proofs/slop'),
     Gen('decode_checked_laws', 'proofs/slop'),
     Gen('append_guard_bounds', 'proofs/slop'),
+    Gen('writer_poison_laws', 'proofs/slop'),
     Gen('word_positions', 'proofs/slop'),
     Gen('decoder_offsets', 'proofs/slop'),
     Gen('validity_checks', 'proofs/slop'),

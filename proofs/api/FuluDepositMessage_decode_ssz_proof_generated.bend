@@ -109,6 +109,12 @@ def FuluDepositMessage__decode_input__DepositMessage_ms_dec() -> {(FuluDepositMe
 def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   P7_PRV.DepositMessage_decode_vchecked_limit()
 
+def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluDepositMessage_r.DepositMessage_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  P7_PRV.DepositMessage_decode_vchecked_nmax_wrap(buf)
+
+def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluDepositMessage_r.DepositMessage_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  P7_PRV.DepositMessage_decode_vchecked_nmax_above(buf)
+
 def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_dchw(88, 88, (P7_B.Buf{Array.new(U32, 5n, 0), 88}, 22))), Pair.snd(P7_B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 88}, 88))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.DepositMessage_decode_vchecked_accept()
 

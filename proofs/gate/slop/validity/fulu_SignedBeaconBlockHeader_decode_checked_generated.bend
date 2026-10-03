@@ -14,6 +14,12 @@ def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vche
 def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
   PRV.SignedBeaconBlockHeader_decode_vchecked_limit()
 
+def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
+  PRV.SignedBeaconBlockHeader_decode_vchecked_nmax_above(buf)
+
+def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
+  PRV.SignedBeaconBlockHeader_decode_vchecked_nmax_wrap(buf)
+
 def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 0n, 0), 208}, 208)) == None{} : Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
   PRV.SignedBeaconBlockHeader_decode_vchecked_real()
 

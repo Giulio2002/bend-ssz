@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_MatrixEntry_decode_checked_generated.bend as 
 def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   PRV.MatrixEntry_decode_vchecked_limit()
 
+def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  PRV.MatrixEntry_decode_vchecked_nmax_above(buf)
+
+def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  PRV.MatrixEntry_decode_vchecked_nmax_wrap(buf)
+
 def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   PRV.MatrixEntry_decode_vchecked_real()
 

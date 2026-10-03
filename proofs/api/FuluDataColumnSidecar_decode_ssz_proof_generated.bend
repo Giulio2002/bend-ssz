@@ -136,6 +136,12 @@ def FuluDataColumnSidecar__decode_none__decode_none(+d: Nat, +t: P4_FD.array__Tr
 def FuluDataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   P5_PRV.DataColumnSidecar_decode_vchecked_limit()
 
+def FuluDataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluDataColumnSidecar_r.DataColumnSidecar_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  P5_PRV.DataColumnSidecar_decode_vchecked_nmax_wrap(buf)
+
+def FuluDataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluDataColumnSidecar_r.DataColumnSidecar_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  P5_PRV.DataColumnSidecar_decode_vchecked_nmax_above(buf)
+
 def FuluDataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 356, (P5_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 89))), Pair.snd(P5_B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(P5_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 356))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.DataColumnSidecar_decode_vchecked_accept()
 

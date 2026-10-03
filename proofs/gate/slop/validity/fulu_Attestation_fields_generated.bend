@@ -16,6 +16,12 @@ def Attestation__serialize_valid__Attestation_serialize_vpoison_bx_invalid() -> 
 def Attestation__serialize_valid__Attestation_serialize_vpoison_bx_ok() -> {O.is_poisoned(Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttestation_d.Attestation> & U32, FuluAttestation_e.Attestation_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_default()))))) == False{} : Bool}:
   PRV.Attestation_serialize_vpoison_bx_ok()
 
+def Attestation__serialize_valid__Attestation_serialize_vrefuse_bad_flag() -> {Pair.snd(FuluAttestation_d.Attestation, O.Encoded, FuluAttestation_e.Attestation_senc_go(True{}, 0, FuluAttestation_d.Attestation_default())) == O.refused() : O.Encoded}:
+  PRV.Attestation_serialize_vrefuse_bad_flag()
+
+def Attestation__serialize_valid__Attestation_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluAttestation_d.Attestation, O.Encoded, FuluAttestation_e.Attestation_senc_sized((FuluAttestation_d.Attestation_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.Attestation_serialize_vrefuse_poisoned_size()
+
 def Attestation__serialize_valid__Attestation_serialize_vreject_aggregation_bits() -> {Pair.snd(FuluAttestation_d.Attestation, Bool, FuluAttestation_e.Attestation_valid(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   PRV.Attestation_serialize_vreject_aggregation_bits()
 

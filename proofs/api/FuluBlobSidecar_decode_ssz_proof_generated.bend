@@ -89,6 +89,12 @@ def FuluBlobSidecar__decode_input__BlobSidecar_spec_input(+x0: U32, +x1: U32, +m
 def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   P3_PRV.BlobSidecar_decode_vchecked_limit()
 
+def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluBlobSidecar_r.BlobSidecar_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  P3_PRV.BlobSidecar_decode_vchecked_nmax_wrap(buf)
+
+def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluBlobSidecar_r.BlobSidecar_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  P3_PRV.BlobSidecar_decode_vchecked_nmax_above(buf)
+
 def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   P3_PRV.BlobSidecar_decode_vchecked_window()
 

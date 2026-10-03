@@ -18,6 +18,14 @@ def ExecutionPayload_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   {==}
 
+def ExecutionPayload_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  {==}
+
 def ExecutionPayload_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(528, 528, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 132))), Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
   {==}

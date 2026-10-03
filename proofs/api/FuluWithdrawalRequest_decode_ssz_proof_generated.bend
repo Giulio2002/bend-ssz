@@ -109,6 +109,12 @@ def FuluWithdrawalRequest__decode_input__WithdrawalRequest_ms_dec() -> {(FuluWit
 def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
   P7_PRV.WithdrawalRequest_decode_vchecked_limit()
 
+def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluWithdrawalRequest_r.WithdrawalRequest_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
+  P7_PRV.WithdrawalRequest_decode_vchecked_nmax_wrap(buf)
+
+def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluWithdrawalRequest_r.WithdrawalRequest_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
+  P7_PRV.WithdrawalRequest_decode_vchecked_nmax_above(buf)
+
 def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(76, 76, (P7_B.Buf{Array.new(U32, 5n, 0), 76}, 19))), Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.WithdrawalRequest_decode_vchecked_accept()
 

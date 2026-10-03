@@ -102,6 +102,12 @@ def FuluLightClientOptimisticUpdate__decode_none__decode_none(+d: Nat, +t: P2_F.
 def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   P3_PRV.LightClientOptimisticUpdate_decode_vchecked_limit()
 
+def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  P3_PRV.LightClientOptimisticUpdate_decode_vchecked_nmax_wrap(buf)
+
+def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  P3_PRV.LightClientOptimisticUpdate_decode_vchecked_nmax_above(buf)
+
 def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 250))), Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 1000))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.LightClientOptimisticUpdate_decode_vchecked_accept()
 

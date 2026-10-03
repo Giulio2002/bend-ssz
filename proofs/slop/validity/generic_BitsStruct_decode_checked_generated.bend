@@ -18,6 +18,14 @@ def BitsStruct_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   {==}
 
+def BitsStruct_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {BitsStruct_r.BitsStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  {==}
+
+def BitsStruct_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {BitsStruct_r.BitsStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  {==}
+
 def BitsStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(13, 13, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 4))), Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 13))) == (True{}, True{}) : Bool & Bool}:
   {==}

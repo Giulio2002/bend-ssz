@@ -28,11 +28,17 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_false_flag()
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_true_flag() -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
   PRV.VarTestStruct_serialize_vpoison_true_flag()
 
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_bad_flag() -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_go(True{}, 0, VarTestStruct_d.VarTestStruct_default())) == O.refused() : O.Encoded}:
+  PRV.VarTestStruct_serialize_vrefuse_bad_flag()
+
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_f_A() -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_serialize(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), 65536))) == O.refused() : O.Encoded}:
   PRV.VarTestStruct_serialize_vrefuse_f_A()
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_f_C() -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_serialize(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_default(), 256))) == O.refused() : O.Encoded}:
   PRV.VarTestStruct_serialize_vrefuse_f_C()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_poisoned_size() -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_sized((VarTestStruct_d.VarTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.VarTestStruct_serialize_vrefuse_poisoned_size()
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_size() -> {VarTestStruct_e.VarTestStruct_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<VarTestStruct_d.VarTestStruct> & U32}:
   PRV.VarTestStruct_serialize_vreject_bx_size()

@@ -84,6 +84,12 @@ def FuluCurrentSyncCommitteeBranch__decode_input__CurrentSyncCommitteeBranch_spe
 def FuluCurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, P5_O.Words>}:
   P5_PRV.CurrentSyncCommitteeBranch_decode_vchecked_limit()
 
+def FuluCurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.CurrentSyncCommitteeBranch_decode_vchecked_nmax_wrap(buf)
+
+def FuluCurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.CurrentSyncCommitteeBranch_decode_vchecked_nmax_above(buf)
+
 def FuluCurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(192, 192, (P5_B.Buf{Array.new(U32, 6n, 0), 192}, 48))), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(P5_B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.CurrentSyncCommitteeBranch_decode_vchecked_accept()
 

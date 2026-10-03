@@ -18,6 +18,14 @@ def FixedTestStruct_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
   {==}
 
+def FixedTestStruct_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FixedTestStruct_r.FixedTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
+  {==}
+
+def FixedTestStruct_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FixedTestStruct_r.FixedTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
+  {==}
+
 def FixedTestStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_dchw(13, 13, (B.Buf{Array.new(U32, 2n, 0), 13}, 4))), Pair.snd(B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_decode_checked(B.Buf{Array.new(U32, 2n, 0), 13}, 13))) == (True{}, True{}) : Bool & Bool}:
   {==}

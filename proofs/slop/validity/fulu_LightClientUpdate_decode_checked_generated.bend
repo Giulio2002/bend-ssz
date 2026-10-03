@@ -18,6 +18,14 @@ def LightClientUpdate_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   {==}
 
+def LightClientUpdate_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  {==}
+
+def LightClientUpdate_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  {==}
+
 def LightClientUpdate_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   {==}

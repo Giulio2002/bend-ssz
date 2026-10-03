@@ -14,6 +14,12 @@ def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_a
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_limit()
 
+def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluPendingConsolidation_r.PendingConsolidation_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
+  PRV.PendingConsolidation_decode_vchecked_nmax_above(buf)
+
+def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluPendingConsolidation_r.PendingConsolidation_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
+  PRV.PendingConsolidation_decode_vchecked_nmax_wrap(buf)
+
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_decode_checked(B.Buf{Array.new(U32, 0n, 0), 16}, 16)) == None{} : Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_real()
 

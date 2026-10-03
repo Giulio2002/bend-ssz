@@ -106,6 +106,12 @@ def FuluVersionedHash__decode_input__VersionedHash_ms_dec() -> {(FuluVersionedHa
 def FuluVersionedHash__decode_offsets__VersionedHash_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   P7_PRV.VersionedHash_decode_vchecked_limit()
 
+def FuluVersionedHash__decode_offsets__VersionedHash_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P7_PRV.VersionedHash_decode_vchecked_nmax_wrap(buf)
+
+def FuluVersionedHash__decode_offsets__VersionedHash_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P7_PRV.VersionedHash_decode_vchecked_nmax_above(buf)
+
 def FuluVersionedHash__decode_offsets__VersionedHash_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(32, 32, (P7_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.VersionedHash_decode_vchecked_accept()
 

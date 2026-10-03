@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend
 def HistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   PRV.HistoricalBatch_decode_vchecked_limit()
 
+def HistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  PRV.HistoricalBatch_decode_vchecked_nmax_above(buf)
+
+def HistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  PRV.HistoricalBatch_decode_vchecked_nmax_wrap(buf)
+
 def HistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   PRV.HistoricalBatch_decode_vchecked_real()
 

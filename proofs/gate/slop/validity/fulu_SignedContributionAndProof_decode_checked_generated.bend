@@ -14,6 +14,12 @@ def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decod
 def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   PRV.SignedContributionAndProof_decode_vchecked_limit()
 
+def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  PRV.SignedContributionAndProof_decode_vchecked_nmax_above(buf)
+
+def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  PRV.SignedContributionAndProof_decode_vchecked_nmax_wrap(buf)
+
 def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 360}, 360)) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   PRV.SignedContributionAndProof_decode_vchecked_real()
 

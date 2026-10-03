@@ -14,6 +14,12 @@ def bitvector_4__decode_offsets__bitvector_4_decode_vchecked_accept() -> {PRV.is
 def bitvector_4__decode_offsets__bitvector_4_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_4_d.Bitvector4>, bitvector_4_r.bitvector_4_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
   PRV.bitvector_4_decode_vchecked_limit()
 
+def bitvector_4__decode_offsets__bitvector_4_decode_vchecked_nmax_above(buf: B.Buf) -> {bitvector_4_r.bitvector_4_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
+  PRV.bitvector_4_decode_vchecked_nmax_above(buf)
+
+def bitvector_4__decode_offsets__bitvector_4_decode_vchecked_nmax_wrap(buf: B.Buf) -> {bitvector_4_r.bitvector_4_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
+  PRV.bitvector_4_decode_vchecked_nmax_wrap(buf)
+
 def bitvector_4__decode_offsets__bitvector_4_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_4_d.Bitvector4>, bitvector_4_r.bitvector_4_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
   PRV.bitvector_4_decode_vchecked_short()
 

@@ -28,8 +28,14 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_true_flag() -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vpoison_true_flag()
 
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vrefuse_bad_flag() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Encoded, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_senc_go(True{}, 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default())) == O.refused() : O.Encoded}:
+  PRV.ProgressiveVarTestStruct_serialize_vrefuse_bad_flag()
+
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vrefuse_f_A() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Encoded, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_serialize(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 256))) == O.refused() : O.Encoded}:
   PRV.ProgressiveVarTestStruct_serialize_vrefuse_f_A()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vrefuse_poisoned_size() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Encoded, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_senc_sized((ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.ProgressiveVarTestStruct_serialize_vrefuse_poisoned_size()
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_size() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32}:
   PRV.ProgressiveVarTestStruct_serialize_vreject_bx_size()

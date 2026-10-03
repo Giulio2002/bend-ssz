@@ -79,6 +79,12 @@ def FuluAggregateAndProof__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tr
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   P2_PRV.AggregateAndProof_decode_vchecked_limit()
 
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_nmax_wrap(buf)
+
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_nmax_above(buf)
+
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 87))), Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 345))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.AggregateAndProof_decode_vchecked_accept()
 

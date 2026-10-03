@@ -15,6 +15,12 @@ def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vpoison_bx_abs
 def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vpoison_bx_ok() -> {O.is_poisoned(Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 4n, 0), 0, FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload_default()))))) == False{} : Bool}:
   PRV.ExecutionPayload_serialize_vpoison_bx_ok()
 
+def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vrefuse_bad_flag() -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_senc_go(True{}, 0, FuluExecutionPayload_d.ExecutionPayload_default())) == O.refused() : O.Encoded}:
+  PRV.ExecutionPayload_serialize_vrefuse_bad_flag()
+
+def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_senc_sized((FuluExecutionPayload_d.ExecutionPayload_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.ExecutionPayload_serialize_vrefuse_poisoned_size()
+
 def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vrefuse_withdrawals_limit() -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_serialize(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_default(), FuluExecutionPayload_d.ExecutionPayload_g1_set_withdrawals(FuluExecutionPayload_d.ExecutionPayload_g1_default(), Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{Fulu_list_Withdrawal_16_d.l16_Withdrawal_fill(5n), 17}), FuluExecutionPayload_d.ExecutionPayload_g2_default()})) == O.refused() : O.Encoded}:
   PRV.ExecutionPayload_serialize_vrefuse_withdrawals_limit()
 

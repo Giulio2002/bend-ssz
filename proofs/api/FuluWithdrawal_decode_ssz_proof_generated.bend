@@ -107,6 +107,12 @@ def FuluWithdrawal__decode_input__Withdrawal_ms_dec() -> {(FuluWithdrawal_r.With
 def FuluWithdrawal__decode_offsets__Withdrawal_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
   P7_PRV.Withdrawal_decode_vchecked_limit()
 
+def FuluWithdrawal__decode_offsets__Withdrawal_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluWithdrawal_r.Withdrawal_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  P7_PRV.Withdrawal_decode_vchecked_nmax_wrap(buf)
+
+def FuluWithdrawal__decode_offsets__Withdrawal_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluWithdrawal_r.Withdrawal_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  P7_PRV.Withdrawal_decode_vchecked_nmax_above(buf)
+
 def FuluWithdrawal__decode_offsets__Withdrawal_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(44, 44, (P7_B.Buf{Array.new(U32, 4n, 0), 44}, 11))), Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 44}, 44))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.Withdrawal_decode_vchecked_accept()
 

@@ -18,6 +18,14 @@ def DomainType_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluDomainType_r.DomainType_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   {==}
 
+def DomainType_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluDomainType_r.DomainType_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  {==}
+
+def DomainType_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluDomainType_r.DomainType_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  {==}
+
 def DomainType_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluDomainType_r.DomainType_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluDomainType_r.DomainType_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   {==}

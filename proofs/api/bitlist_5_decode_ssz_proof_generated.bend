@@ -108,6 +108,12 @@ def bitlist_5__decode_offsets__bitlist_5_decode_vbits_clear_63() -> {Pair.snd(P3
 def bitlist_5__decode_offsets__bitlist_5_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Bits>, bitlist_5_r.bitlist_5_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, P4_O.Bits>}:
   P4_PRV.bitlist_5_decode_vchecked_limit()
 
+def bitlist_5__decode_offsets__bitlist_5_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {bitlist_5_r.bitlist_5_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
+  P4_PRV.bitlist_5_decode_vchecked_nmax_wrap(buf)
+
+def bitlist_5__decode_offsets__bitlist_5_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {bitlist_5_r.bitlist_5_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
+  P4_PRV.bitlist_5_decode_vchecked_nmax_above(buf)
+
 def bitlist_5__decode_offsets__bitlist_5_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Bits>, bitlist_5_r.bitlist_5_dchw(1, 1, (P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Bits>, bitlist_5_r.bitlist_5_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.bitlist_5_decode_vchecked_accept()
 

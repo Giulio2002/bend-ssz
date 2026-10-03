@@ -14,6 +14,12 @@ def Hash32__decode_offsets__Hash32_decode_vchecked_accept() -> {PRV.is_some(Pair
 def Hash32__decode_offsets__Hash32_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Hash32_decode_vchecked_limit()
 
+def Hash32__decode_offsets__Hash32_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluHash32_r.Hash32_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Hash32_decode_vchecked_nmax_above(buf)
+
+def Hash32__decode_offsets__Hash32_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluHash32_r.Hash32_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Hash32_decode_vchecked_nmax_wrap(buf)
+
 def Hash32__decode_offsets__Hash32_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_decode_checked(B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Hash32_decode_vchecked_real()
 

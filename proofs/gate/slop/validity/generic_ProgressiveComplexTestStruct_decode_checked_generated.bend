@@ -14,6 +14,12 @@ def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_d
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   PRV.ProgressiveComplexTestStruct_decode_vchecked_limit()
 
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_nmax_above(buf: B.Buf) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  PRV.ProgressiveComplexTestStruct_decode_vchecked_nmax_above(buf)
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_nmax_wrap(buf: B.Buf) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  PRV.ProgressiveComplexTestStruct_decode_vchecked_nmax_wrap(buf)
+
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 7424), 30}, 30)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   PRV.ProgressiveComplexTestStruct_decode_vchecked_real()
 

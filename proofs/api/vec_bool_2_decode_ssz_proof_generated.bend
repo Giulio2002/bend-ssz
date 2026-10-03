@@ -87,6 +87,12 @@ def vec_bool_2__decode_offsets__vec_bool_2_decode_vand_pair() -> {(Pair.snd(P3_B
 def vec_bool_2__decode_offsets__vec_bool_2_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Words>, vec_bool_2_r.vec_bool_2_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, P4_O.Words>}:
   P4_PRV.vec_bool_2_decode_vchecked_limit()
 
+def vec_bool_2__decode_offsets__vec_bool_2_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {vec_bool_2_r.vec_bool_2_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Words>}:
+  P4_PRV.vec_bool_2_decode_vchecked_nmax_wrap(buf)
+
+def vec_bool_2__decode_offsets__vec_bool_2_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {vec_bool_2_r.vec_bool_2_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Words>}:
+  P4_PRV.vec_bool_2_decode_vchecked_nmax_above(buf)
+
 def vec_bool_2__decode_offsets__vec_bool_2_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Words>, vec_bool_2_r.vec_bool_2_dchw(2, 2, (P4_B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Words>, vec_bool_2_r.vec_bool_2_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.vec_bool_2_decode_vchecked_accept()
 

@@ -95,6 +95,12 @@ def FuluSignedContributionAndProof__decode_input__SignedContributionAndProof_spe
 def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   P5_PRV.SignedContributionAndProof_decode_vchecked_limit()
 
+def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  P5_PRV.SignedContributionAndProof_decode_vchecked_nmax_wrap(buf)
+
+def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  P5_PRV.SignedContributionAndProof_decode_vchecked_nmax_above(buf)
+
 def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(360, 360, (P5_B.Buf{Array.new(U32, 7n, 0), 360}, 90))), Pair.snd(P5_B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_decode_checked(P5_B.Buf{Array.new(U32, 7n, 0), 360}, 360))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.SignedContributionAndProof_decode_vchecked_accept()
 

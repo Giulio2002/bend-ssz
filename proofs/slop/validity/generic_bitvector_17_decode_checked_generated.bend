@@ -18,6 +18,14 @@ def bitvector_17_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   {==}
 
+def bitvector_17_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {bitvector_17_r.bitvector_17_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  {==}
+
+def bitvector_17_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {bitvector_17_r.bitvector_17_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  {==}
+
 def bitvector_17_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(3, 3, (B.Buf{Array.new(U32, 0n, 0), 3}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 3))) == (True{}, True{}) : Bool & Bool}:
   {==}

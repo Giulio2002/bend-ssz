@@ -66,6 +66,12 @@ def FuluExecutionRequests__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tr
 def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_limit() -> {Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(4294967265, 4294967265, (P1_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   P1_PRV.ExecutionRequests_decode_vchecked_limit()
 
+def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_nmax_wrap(buf: P1_B.Buf) -> {FuluExecutionRequests_r.ExecutionRequests_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P1_B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  P1_PRV.ExecutionRequests_decode_vchecked_nmax_wrap(buf)
+
+def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_nmax_above(buf: P1_B.Buf) -> {FuluExecutionRequests_r.ExecutionRequests_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P1_B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  P1_PRV.ExecutionRequests_decode_vchecked_nmax_above(buf)
+
 def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_accept() -> {P1_PRV.is_some(Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (P1_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 3))), Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(P1_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 12))) == (True{}, True{}) : Bool & Bool}:
   P1_PRV.ExecutionRequests_decode_vchecked_accept()
 

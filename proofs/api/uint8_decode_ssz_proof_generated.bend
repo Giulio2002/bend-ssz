@@ -93,6 +93,12 @@ def uint8__decode_input__uint8_ms_dec() -> {(uint8_r.uint8_decode(P4_B.Buf{uint8
 def uint8__decode_offsets__uint8_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   P5_PRV.uint8_decode_vchecked_limit()
 
+def uint8__decode_offsets__uint8_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {uint8_r.uint8_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.uint8_decode_vchecked_nmax_wrap(buf)
+
+def uint8__decode_offsets__uint8_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {uint8_r.uint8_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.uint8_decode_vchecked_nmax_above(buf)
+
 def uint8__decode_offsets__uint8_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_dchw(1, 1, (P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.uint8_decode_vchecked_accept()
 

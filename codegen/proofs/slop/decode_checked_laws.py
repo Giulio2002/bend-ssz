@@ -107,6 +107,10 @@ def laws_of(X, V, win):
     def law(tag, stmt):
         out.append(f'def {X}_decode_vchecked_{tag}()\n    -> {{{stmt}}}:\n  {{==}}')
     law('limit', f'{snd(f"T.{X}_dchw(4294967265, 4294967265, (B.empty(), 1073741824))")} == None{{}} : {M}')
+    # above NMAX whatever the validator would say: the buffer is a variable, so only the refusal itself reduces (a decode of a symbolic buffer is stuck);
+    # 2^32 - 1 is the size whose storage need (size + 3) >> 2 wraps to 0, NMAX + 1 the first size above the limit (round 4: a14)
+    for tag, size, c in (('nmax_wrap', 4294967295, 0), ('nmax_above', 4294967265, 1073741824)):
+        out.append(f'def {X}_decode_vchecked_{tag}(buf: B.Buf)\n    -> {{T.{X}_dchw({size}, 4294967295, (buf, {c})) == (buf, None{{}}) : B.Buf & {M}}}:\n  {{==}}')
     if win is None:
         # no known valid window: only what is refused whatever the type decodes
         law('window', f'{snd(f"T.{X}_dchw(5, 4, (B.empty(), 8))")} == None{{}} : {M}')

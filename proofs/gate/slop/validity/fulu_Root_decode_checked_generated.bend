@@ -14,6 +14,12 @@ def Root__decode_offsets__Root_decode_vchecked_accept() -> {PRV.is_some(Pair.snd
 def Root__decode_offsets__Root_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluRoot_r.Root_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Root_decode_vchecked_limit()
 
+def Root__decode_offsets__Root_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluRoot_r.Root_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Root_decode_vchecked_nmax_above(buf)
+
+def Root__decode_offsets__Root_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluRoot_r.Root_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Root_decode_vchecked_nmax_wrap(buf)
+
 def Root__decode_offsets__Root_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluRoot_r.Root_decode_checked(B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Root_decode_vchecked_real()
 

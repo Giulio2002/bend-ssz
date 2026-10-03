@@ -14,6 +14,12 @@ def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleL
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_limit()
 
+def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf: B.Buf) -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf)
+
+def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_wrap(buf: B.Buf) -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_wrap(buf)
+
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 4), 5}, 5)) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_real()
 

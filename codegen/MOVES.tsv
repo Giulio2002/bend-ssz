@@ -2231,3 +2231,4 @@ codegen/small_type_predicates.py	codegen/proofs/slop/small_type_predicates.py
 codegen/decode_checked_laws.py	codegen/proofs/slop/decode_checked_laws.py
 codegen/append_guard_bounds.py	codegen/proofs/slop/append_guard_bounds.py
 codegen/decode_window_laws.py	codegen/proofs/laws/decode_window_laws.py
+codegen/writer_poison_laws.py	codegen/proofs/slop/writer_poison_laws.py

@@ -18,6 +18,14 @@ def bitvector_5_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, bitvector_5_d.Bitvector5>, bitvector_5_r.bitvector_5_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_5_d.Bitvector5>}:
   {==}
 
+def bitvector_5_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {bitvector_5_r.bitvector_5_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>}:
+  {==}
+
+def bitvector_5_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {bitvector_5_r.bitvector_5_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>}:
+  {==}
+
 def bitvector_5_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_5_d.Bitvector5>, bitvector_5_r.bitvector_5_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_5_d.Bitvector5>, bitvector_5_r.bitvector_5_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   {==}

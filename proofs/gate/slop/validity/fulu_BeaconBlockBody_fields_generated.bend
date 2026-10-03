@@ -25,6 +25,9 @@ def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_attestat
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_attester_slashings_limit() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_attester_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(1n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})) == O.refused() : O.Encoded}:
   PRV.BeaconBlockBody_serialize_vrefuse_attester_slashings_limit()
 
+def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_bad_flag() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_senc_go(True{}, 0, FuluBeaconBlockBody_d.BeaconBlockBody_default())) == O.refused() : O.Encoded}:
+  PRV.BeaconBlockBody_serialize_vrefuse_bad_flag()
+
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_bls_to_execution_changes_limit() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), FuluBeaconBlockBody_d.BeaconBlockBody_g1_set_bls_to_execution_changes(FuluBeaconBlockBody_d.BeaconBlockBody_g1_default(), Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_fill(5n), 17})})) == O.refused() : O.Encoded}:
   PRV.BeaconBlockBody_serialize_vrefuse_bls_to_execution_changes_limit()
 
@@ -33,6 +36,9 @@ def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_deposits
 
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_execution_payload() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), FuluBeaconBlockBody_d.BeaconBlockBody_g1_set_execution_payload(FuluBeaconBlockBody_d.BeaconBlockBody_g1_default(), O.BNone{})})) == O.refused() : O.Encoded}:
   PRV.BeaconBlockBody_serialize_vrefuse_execution_payload()
+
+def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_senc_sized((FuluBeaconBlockBody_d.BeaconBlockBody_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.BeaconBlockBody_serialize_vrefuse_poisoned_size()
 
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vrefuse_proposer_slashings_limit() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_serialize(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(5n), 17}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})) == O.refused() : O.Encoded}:
   PRV.BeaconBlockBody_serialize_vrefuse_proposer_slashings_limit()

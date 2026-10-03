@@ -108,6 +108,12 @@ def FuluConsolidationRequest__decode_input__ConsolidationRequest_ms_dec() -> {(F
 def FuluConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
   P7_PRV.ConsolidationRequest_decode_vchecked_limit()
 
+def FuluConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluConsolidationRequest_r.ConsolidationRequest_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
+  P7_PRV.ConsolidationRequest_decode_vchecked_nmax_wrap(buf)
+
+def FuluConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluConsolidationRequest_r.ConsolidationRequest_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
+  P7_PRV.ConsolidationRequest_decode_vchecked_nmax_above(buf)
+
 def FuluConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_dchw(116, 116, (P7_B.Buf{Array.new(U32, 5n, 0), 116}, 29))), Pair.snd(P7_B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 116}, 116))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.ConsolidationRequest_decode_vchecked_accept()
 

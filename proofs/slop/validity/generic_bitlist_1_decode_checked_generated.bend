@@ -17,6 +17,14 @@ def bitlist_1_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_1_r.bitlist_1_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Bits>}:
   {==}
 
+def bitlist_1_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {bitlist_1_r.bitlist_1_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
+def bitlist_1_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {bitlist_1_r.bitlist_1_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
 def bitlist_1_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_1_r.bitlist_1_dchw(1, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_1_r.bitlist_1_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   {==}

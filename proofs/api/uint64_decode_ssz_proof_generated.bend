@@ -104,6 +104,12 @@ def uint64__decode_input__uint64_ms_dec() -> {(uint64_r.uint64_decode(P6_B.Buf{u
 def uint64__decode_offsets__uint64_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, uint64_r.uint64_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.uint64_decode_vchecked_limit()
 
+def uint64__decode_offsets__uint64_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {uint64_r.uint64_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.uint64_decode_vchecked_nmax_wrap(buf)
+
+def uint64__decode_offsets__uint64_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {uint64_r.uint64_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.uint64_decode_vchecked_nmax_above(buf)
+
 def uint64__decode_offsets__uint64_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, uint64_r.uint64_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, uint64_r.uint64_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.uint64_decode_vchecked_accept()
 

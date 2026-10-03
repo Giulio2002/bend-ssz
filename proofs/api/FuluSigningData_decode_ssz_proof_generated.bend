@@ -106,6 +106,12 @@ def FuluSigningData__decode_input__SigningData_ms_dec() -> {(FuluSigningData_r.S
 def FuluSigningData__decode_offsets__SigningData_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:
   P7_PRV.SigningData_decode_vchecked_limit()
 
+def FuluSigningData__decode_offsets__SigningData_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluSigningData_r.SigningData_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
+  P7_PRV.SigningData_decode_vchecked_nmax_wrap(buf)
+
+def FuluSigningData__decode_offsets__SigningData_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSigningData_r.SigningData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
+  P7_PRV.SigningData_decode_vchecked_nmax_above(buf)
+
 def FuluSigningData__decode_offsets__SigningData_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_dchw(64, 64, (P7_B.Buf{Array.new(U32, 4n, 0), 64}, 16))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SigningData_decode_vchecked_accept()
 

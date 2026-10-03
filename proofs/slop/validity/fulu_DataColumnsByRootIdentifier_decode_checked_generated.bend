@@ -18,6 +18,14 @@ def DataColumnsByRootIdentifier_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   {==}
 
+def DataColumnsByRootIdentifier_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  {==}
+
+def DataColumnsByRootIdentifier_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  {==}
+
 def DataColumnsByRootIdentifier_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 36, (B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 9))), Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 36))) == (True{}, True{}) : Bool & Bool}:
   {==}

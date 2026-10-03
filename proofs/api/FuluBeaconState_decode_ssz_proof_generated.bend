@@ -77,6 +77,12 @@ def FuluBeaconState__decode_offsets__BeaconState_decode_vand_pair() -> {(Pair.sn
 def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   P3_PRV.BeaconState_decode_vchecked_limit()
 
+def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluBeaconState_r.BeaconState_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  P3_PRV.BeaconState_decode_vchecked_nmax_wrap(buf)
+
+def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  P3_PRV.BeaconState_decode_vchecked_nmax_above(buf)
+
 def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   P3_PRV.BeaconState_decode_vchecked_window()
 

@@ -13,6 +13,12 @@ def CellIndex__decode_offsets__CellIndex_decode_vchecked_accept() -> {PRV.is_som
 def CellIndex__decode_offsets__CellIndex_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluCellIndex_r.CellIndex_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   PRV.CellIndex_decode_vchecked_limit()
 
+def CellIndex__decode_offsets__CellIndex_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluCellIndex_r.CellIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.CellIndex_decode_vchecked_nmax_above(buf)
+
+def CellIndex__decode_offsets__CellIndex_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluCellIndex_r.CellIndex_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.CellIndex_decode_vchecked_nmax_wrap(buf)
+
 def CellIndex__decode_offsets__CellIndex_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluCellIndex_r.CellIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   PRV.CellIndex_decode_vchecked_real()
 

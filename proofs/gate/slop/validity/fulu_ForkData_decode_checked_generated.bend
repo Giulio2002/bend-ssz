@@ -14,6 +14,12 @@ def ForkData__decode_offsets__ForkData_decode_vchecked_accept() -> {PRV.is_some(
 def ForkData__decode_offsets__ForkData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
   PRV.ForkData_decode_vchecked_limit()
 
+def ForkData__decode_offsets__ForkData_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluForkData_r.ForkData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
+  PRV.ForkData_decode_vchecked_nmax_above(buf)
+
+def ForkData__decode_offsets__ForkData_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluForkData_r.ForkData_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
+  PRV.ForkData_decode_vchecked_nmax_wrap(buf)
+
 def ForkData__decode_offsets__ForkData_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 36}, 36)) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
   PRV.ForkData_decode_vchecked_real()
 

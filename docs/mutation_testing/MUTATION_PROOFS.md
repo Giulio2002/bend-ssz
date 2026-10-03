@@ -322,3 +322,35 @@ Base: main ead59a144 (crash-fix 3: every append guard is `n < min(N, bound)` AND
 **Stale mutant patches.** After crash-fix 3 (and the changes of this branch's base) 63 of the 846 patches under `tools/mutation_testing/manual_spec_mutants/patches` no longer applied (a guard moved into `*_app_c`, `*_app_sz`, `*_capp_sz`, `*_app_w`, the boxed getters were renamed). `python3 tools/mutation_testing/manual_spec_mutants/rederive.py --write` re-derives them: for each stale patch the removed and added lines are compared token by token, every differing run is one replacement `old -> new` with its context, and the replacement is searched in the current file (inside the definitions of the header's `# sym:` line, their `_`-suffixed helpers, then anywhere; the context shrinks until the place is unique; a line like the removed one, aligned token by token, is the fallback). 54 patches were re-derived that way and 9 by hand (`OVERRIDES` in the script: the guards that moved; each `old` must be unique in its definitions). All 846 patches now apply by `patch -p1` (the header gets `# re-derived against ead59a144`); none is listed as not re-derivable. The 63 ids: `docs/mutation_testing/rederived_patch_ids.txt`. A re-derived patch is the same fault in the new text, not the same line: it is validated by the kill runs above (the ones that name a law) and needs a new auditor's replay for the others.
 
 Facade level (the mutant applied by exact patch, `tools/check.sh` on the facade that imports the module): killed for d01/02, 03, 04 (uint256 decode), d01/05 (bitvector_9 decode), g01/03 (proglist_uint32), g01/05, 06 (proglist_bool), g01/14 (progbitlist), g01/01, 02, 10 (BeaconState encode, 25 s), g01/15 (BeaconBlockBody encode), g02/11 (BeaconBlockBody root). The facades of the 329 new modules check in the same time as before (the heaviest decode facade of a changed name is unchanged within noise); a `check_fast.sh --files` run over the 1035 changed `.bend` files (8 umbrellas, every importer with its imports) passes, `tools/test_codegen.sh` is green (144/144 generators up to date, unit tests OK), `verify_frozen` passes without `--update`.
+
+## Manual spec-mutation audit, round 4 (stale markers of the checked writers, the poison marker, refusals, NMAX in the checked decoder)
+
+Base: main 506290081 (the marker is 2^32 - 1, NMAX = 2^32 - 32, `O.is_poisoned(m)` is `NMAX < m`). New generator `codegen/proofs/slop/writer_poison_laws.py`; extended
+`decode_checked_laws.py` and `cached_list_roots.py`; the gate files `senc_go / senc_sized / senc_out` statements under serialize_valid (the round-3 `vrefuse_bad_flag`
+and `vrefuse_poisoned_size` laws were checked as modules but not filed to their facades).
+
+* **Every checked writer** (157, found in the generated code as the `P_pk` whose False branch answers `(out, (o, poison))`; the generator stops on any other shape):
+  `<X>_serialize_vpoison_pk_<P>`: the invalid branch reports a poisoned size (`O.is_poisoned(..) == True`), one module per writer filed with the smallest name that
+  uses it (a list of lists is reached through the outer list).
+* **Every checked serializer** (142 `X_senc_out`, both shapes: `(out, o, m)` and the fixed-size `(out, (o, flag))`): `vrefuse_writer_marker`, `_above` (NMAX + 1) are
+  refused, `vrefuse_writer_ok` answers ok with the buffer of `out` and the type's size.
+* **The marker itself**, once per runtime: `O.pz(False) == 2^32 - 1`, `O.pz(True) == 0`, `O.refused() == O.Encoded{False, B.empty()}`, `O.is_poisoned` at 0, 2^31,
+  NMAX, NMAX + 1, 2^32 - 2, 2^32 - 1 and `O.padd` below, at and across the marker and across the wrap, all on closed literals: a mutant of `padd` or `is_poisoned`
+  is killed by this 1 s file (round 4 had them unjudged: the mutated checker overflowed its stack on every big file first).
+* **The checked decoder above NMAX, whatever the validator says**: `<X>_decode_vchecked_nmax_wrap(buf)` and `_nmax_above(buf)` for all 240 names, with `buf` a
+  variable: `X_dchw(2^32 - 1, 2^32 - 1, (buf, 0)) == (buf, None)` (the storage need wraps to 0 there) and `X_dchw(NMAX + 1, 2^32 - 1, (buf, 2^30)) == (buf, None)`.
+  Only the refusal reduces on a symbolic buffer; a decode of it is a stuck term, so a mutant that lets the size through fails the statement.
+* **Cached trees**: `cache_app_clean`, a clean tree of three elements and an append that fits (the dirty range must reach the new slot), for every cached kind (Deposit included).
+
+| faults | law | module | facade |
+|---|---|---|---|
+| a07/01..35, 37..40 (the invalid branch of each checked writer reports 2^31 or NMAX) | `vpoison_pk_<P>` | killed (39) | killed (38; /24 and /34 reach ProgressiveTestStruct through `proglist_pl_VarTestStruct`) |
+| a07/36 | designed equivalent | survives | survives |
+| a02/01, a02/02 (`O.pz(False)` is NMAX or 2^31) | `vpoison_pz_false`, `vpoison_marks` | killed | killed |
+| a06/02 (`O.refused()` answers ok) | `vpoison_refused` | killed | killed |
+| a12/10 (ExecutionPayloadHeader: the final poison test dropped) | `vrefuse_writer_marker`, `_above` | killed | killed |
+| a14/01, 04, 05 (the NMAX test of the checked decoder dropped or at 2^32 - 1) | `decode_vchecked_nmax_wrap`, `_nmax_above` | killed | killed |
+| a14/02, 03 | gap / over-strict as judged | survive | not run |
+| c01/05 (List[Deposit, 16]: a fitting capp does not raise hi) | `cache_app_clean` | killed | killed (BeaconBlockBody root) |
+| a01/06, a03/01, a03/06 (padd at NMAX, is_poisoned only at the marker, threshold off by 31: unjudged in round 4) | `vpoison_padd`, `vpoison_marks` | killed (a 1 s file) | killed |
+| a01/04, a01/07 | designed equivalent | survive | not run |

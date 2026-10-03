@@ -14,6 +14,12 @@ def KZGProof__decode_offsets__KZGProof_decode_vchecked_accept() -> {PRV.is_some(
 def KZGProof__decode_offsets__KZGProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.KZGProof_decode_vchecked_limit()
 
+def KZGProof__decode_offsets__KZGProof_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluKZGProof_r.KZGProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.KZGProof_decode_vchecked_nmax_above(buf)
+
+def KZGProof__decode_offsets__KZGProof_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluKZGProof_r.KZGProof_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.KZGProof_decode_vchecked_nmax_wrap(buf)
+
 def KZGProof__decode_offsets__KZGProof_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.KZGProof_decode_vchecked_real()
 

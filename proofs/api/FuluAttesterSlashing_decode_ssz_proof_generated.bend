@@ -102,6 +102,12 @@ def FuluAttesterSlashing__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tre
 def FuluAttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   P3_PRV.AttesterSlashing_decode_vchecked_limit()
 
+def FuluAttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  P3_PRV.AttesterSlashing_decode_vchecked_nmax_wrap(buf)
+
+def FuluAttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  P3_PRV.AttesterSlashing_decode_vchecked_nmax_above(buf)
+
 def FuluAttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 116))), Pair.snd(P3_B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.AttesterSlashing_decode_vchecked_accept()
 

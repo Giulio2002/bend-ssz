@@ -18,6 +18,14 @@ def SignedBLSToExecutionChange_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
   {==}
 
+def SignedBLSToExecutionChange_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
+  {==}
+
+def SignedBLSToExecutionChange_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
+  {==}
+
 def SignedBLSToExecutionChange_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(172, 172, (B.Buf{Array.new(U32, 6n, 0), 172}, 43))), Pair.snd(B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_decode_checked(B.Buf{Array.new(U32, 6n, 0), 172}, 172))) == (True{}, True{}) : Bool & Bool}:
   {==}

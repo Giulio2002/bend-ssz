@@ -23,11 +23,17 @@ def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_true_flag() -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
   PRV.ProgressiveComplexTestStruct_serialize_vpoison_true_flag()
 
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vrefuse_bad_flag() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_go(True{}, 0, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) == O.refused() : O.Encoded}:
+  PRV.ProgressiveComplexTestStruct_serialize_vrefuse_bad_flag()
+
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vrefuse_f_A() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 256))) == O.refused() : O.Encoded}:
   PRV.ProgressiveComplexTestStruct_serialize_vrefuse_f_A()
 
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vrefuse_f_G_limit() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_fill(4n), 11}))) == O.refused() : O.Encoded}:
   PRV.ProgressiveComplexTestStruct_serialize_vrefuse_f_G_limit()
+
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vrefuse_poisoned_size() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_sized((ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.ProgressiveComplexTestStruct_serialize_vrefuse_poisoned_size()
 
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vreject_default_valid() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) == True{} : Bool}:
   PRV.ProgressiveComplexTestStruct_serialize_vreject_default_valid()

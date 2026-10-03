@@ -71,6 +71,12 @@ def FuluSignedBeaconBlock__decode_none__decode_none(+d: Nat, +t: P1_FD.array__Tr
 def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>, FuluSignedBeaconBlock_r.SignedBeaconBlock_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
   P2_PRV.SignedBeaconBlock_decode_vchecked_limit()
 
+def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
+  P2_PRV.SignedBeaconBlock_decode_vchecked_nmax_wrap(buf)
+
+def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
+  P2_PRV.SignedBeaconBlock_decode_vchecked_nmax_above(buf)
+
 def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>, FuluSignedBeaconBlock_r.SignedBeaconBlock_dchw(1120, 1120, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 9n, 0), 0, 100), 45, 84), 96, 396), 97, 396), 98, 396), 99, 396), 100, 396), 141, 396), 142, 924), 143, 924), 144, 924), 254, 528), 271, 528), 272, 528), 277, 12), 278, 12), 279, 12), 1120}, 280))), Pair.snd(P2_B.Buf, Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>, FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 9n, 0), 0, 100), 45, 84), 96, 396), 97, 396), 98, 396), 99, 396), 100, 396), 141, 396), 142, 924), 143, 924), 144, 924), 254, 528), 271, 528), 272, 528), 277, 12), 278, 12), 279, 12), 1120}, 1120))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.SignedBeaconBlock_decode_vchecked_accept()
 

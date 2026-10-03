@@ -17,6 +17,14 @@ def vec_uint8_512_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_512_r.vec_uint8_512_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   {==}
 
+def vec_uint8_512_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {vec_uint8_512_r.vec_uint8_512_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def vec_uint8_512_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {vec_uint8_512_r.vec_uint8_512_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def vec_uint8_512_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_512_r.vec_uint8_512_dchw(512, 512, (B.Buf{Array.new(U32, 7n, 0), 512}, 128))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_512_r.vec_uint8_512_decode_checked(B.Buf{Array.new(U32, 7n, 0), 512}, 512))) == (True{}, True{}) : Bool & Bool}:
   {==}

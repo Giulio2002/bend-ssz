@@ -14,6 +14,12 @@ def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_accept() 
 def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   PRV.ProposerSlashing_decode_vchecked_limit()
 
+def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluProposerSlashing_r.ProposerSlashing_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  PRV.ProposerSlashing_decode_vchecked_nmax_above(buf)
+
+def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluProposerSlashing_r.ProposerSlashing_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  PRV.ProposerSlashing_decode_vchecked_nmax_wrap(buf)
+
 def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode_checked(B.Buf{Array.new(U32, 0n, 0), 416}, 416)) == None{} : Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   PRV.ProposerSlashing_decode_vchecked_real()
 

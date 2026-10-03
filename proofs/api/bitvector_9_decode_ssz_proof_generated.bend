@@ -101,6 +101,12 @@ def bitvector_9__decode_input__bitvector_9_ms_dec() -> {(bitvector_9_r.bitvector
 def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, bitvector_9_d.Bitvector9>, bitvector_9_r.bitvector_9_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_9_d.Bitvector9>}:
   P4_PRV.bitvector_9_decode_vchecked_limit()
 
+def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {bitvector_9_r.bitvector_9_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>}:
+  P4_PRV.bitvector_9_decode_vchecked_nmax_wrap(buf)
+
+def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {bitvector_9_r.bitvector_9_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>}:
+  P4_PRV.bitvector_9_decode_vchecked_nmax_above(buf)
+
 def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, bitvector_9_d.Bitvector9>, bitvector_9_r.bitvector_9_dchw(2, 2, (P4_B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, bitvector_9_d.Bitvector9>, bitvector_9_r.bitvector_9_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.bitvector_9_decode_vchecked_accept()
 

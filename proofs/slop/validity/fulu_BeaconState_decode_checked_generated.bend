@@ -18,6 +18,14 @@ def BeaconState_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}
 
+def BeaconState_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluBeaconState_r.BeaconState_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  {==}
+
+def BeaconState_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  {==}
+
 def BeaconState_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}

@@ -101,6 +101,12 @@ def bitvector_33__decode_input__bitvector_33_ms_dec() -> {(bitvector_33_r.bitvec
 def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
   P4_PRV.bitvector_33_decode_vchecked_limit()
 
+def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {bitvector_33_r.bitvector_33_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>}:
+  P4_PRV.bitvector_33_decode_vchecked_nmax_wrap(buf)
+
+def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {bitvector_33_r.bitvector_33_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>}:
+  P4_PRV.bitvector_33_decode_vchecked_nmax_above(buf)
+
 def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(5, 5, (P4_B.Buf{Array.new(U32, 1n, 0), 5}, 2))), Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(P4_B.Buf{Array.new(U32, 1n, 0), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.bitvector_33_decode_vchecked_accept()
 

@@ -18,6 +18,14 @@ def HistoricalSummary_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   {==}
 
+def HistoricalSummary_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluHistoricalSummary_r.HistoricalSummary_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  {==}
+
+def HistoricalSummary_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluHistoricalSummary_r.HistoricalSummary_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  {==}
+
 def HistoricalSummary_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 64, (B.Buf{Array.new(U32, 4n, 0), 64}, 16))), Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
   {==}

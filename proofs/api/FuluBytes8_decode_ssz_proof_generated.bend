@@ -110,6 +110,12 @@ def FuluBytes8__decode_input__Bytes8_ms_dec() -> {(FuluBytes8_r.Bytes8_decode(P7
 def FuluBytes8__decode_offsets__Bytes8_decode_vchecked_limit() -> {Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_dchw(4294967265, 4294967265, (P8_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
   P8_PRV.Bytes8_decode_vchecked_limit()
 
+def FuluBytes8__decode_offsets__Bytes8_decode_vchecked_nmax_wrap(buf: P8_B.Buf) -> {FuluBytes8_r.Bytes8_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P8_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  P8_PRV.Bytes8_decode_vchecked_nmax_wrap(buf)
+
+def FuluBytes8__decode_offsets__Bytes8_decode_vchecked_nmax_above(buf: P8_B.Buf) -> {FuluBytes8_r.Bytes8_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P8_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  P8_PRV.Bytes8_decode_vchecked_nmax_above(buf)
+
 def FuluBytes8__decode_offsets__Bytes8_decode_vchecked_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_dchw(8, 8, (P8_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode_checked(P8_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P8_PRV.Bytes8_decode_vchecked_accept()
 

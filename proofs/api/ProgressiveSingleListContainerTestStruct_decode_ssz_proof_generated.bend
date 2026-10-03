@@ -80,6 +80,12 @@ def ProgressiveSingleListContainerTestStruct__decode_none__decode_none(+d: Nat, 
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   P2_PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_limit()
 
+def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  P2_PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_wrap(buf)
+
+def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  P2_PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf)
+
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 2))), Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_accept()
 

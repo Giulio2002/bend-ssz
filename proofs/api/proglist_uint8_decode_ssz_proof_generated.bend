@@ -78,6 +78,12 @@ def proglist_uint8__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tree<U32>
 def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, proglist_uint8_r.proglist_uint8_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, P2_O.Words>}:
   P2_PRV.proglist_uint8_decode_vchecked_limit()
 
+def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {proglist_uint8_r.proglist_uint8_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
+  P2_PRV.proglist_uint8_decode_vchecked_nmax_wrap(buf)
+
+def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {proglist_uint8_r.proglist_uint8_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
+  P2_PRV.proglist_uint8_decode_vchecked_nmax_above(buf)
+
 def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_window() -> {Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, proglist_uint8_r.proglist_uint8_dchw(5, 4, (P2_B.empty(), 8))) == None{} : Maybe<&1, P2_O.Words>}:
   P2_PRV.proglist_uint8_decode_vchecked_window()
 

@@ -18,6 +18,14 @@ def BLSPubkey_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   {==}
 
+def BLSPubkey_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluBLSPubkey_r.BLSPubkey_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  {==}
+
+def BLSPubkey_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluBLSPubkey_r.BLSPubkey_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  {==}
+
 def BLSPubkey_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked(B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
   {==}

@@ -106,6 +106,12 @@ def FuluNodeID__decode_input__NodeID_ms_dec() -> {(FuluNodeID_r.NodeID_decode(P6
 def FuluNodeID__decode_offsets__NodeID_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, uint256_d.Uint256>}:
   P7_PRV.NodeID_decode_vchecked_limit()
 
+def FuluNodeID__decode_offsets__NodeID_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluNodeID_r.NodeID_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  P7_PRV.NodeID_decode_vchecked_nmax_wrap(buf)
+
+def FuluNodeID__decode_offsets__NodeID_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluNodeID_r.NodeID_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  P7_PRV.NodeID_decode_vchecked_nmax_above(buf)
+
 def FuluNodeID__decode_offsets__NodeID_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_dchw(32, 32, (P7_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.NodeID_decode_vchecked_accept()
 

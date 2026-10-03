@@ -14,6 +14,12 @@ def AggregateAndProof__serialize_valid__AggregateAndProof_serialize_vrefuse_aggr
 def AggregateAndProof__serialize_valid__AggregateAndProof_serialize_vrefuse_aggregate_aggregation_bits() -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))))) == O.refused() : O.Encoded}:
   PRV.AggregateAndProof_serialize_vrefuse_aggregate_aggregation_bits()
 
+def AggregateAndProof__serialize_valid__AggregateAndProof_serialize_vrefuse_bad_flag() -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_senc_go(True{}, 0, FuluAggregateAndProof_d.AggregateAndProof_default())) == O.refused() : O.Encoded}:
+  PRV.AggregateAndProof_serialize_vrefuse_bad_flag()
+
+def AggregateAndProof__serialize_valid__AggregateAndProof_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_senc_sized((FuluAggregateAndProof_d.AggregateAndProof_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.AggregateAndProof_serialize_vrefuse_poisoned_size()
+
 def AggregateAndProof__serialize_valid__AggregateAndProof_serialize_vreject_aggregate() -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, Bool, FuluAggregateAndProof_e.AggregateAndProof_valid(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), O.BNone{}))) == False{} : Bool}:
   PRV.AggregateAndProof_serialize_vreject_aggregate()
 

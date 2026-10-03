@@ -14,6 +14,12 @@ def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   PRV.ProgressiveBitsStruct_decode_vchecked_limit()
 
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_nmax_above(buf: B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  PRV.ProgressiveBitsStruct_decode_vchecked_nmax_above(buf)
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_nmax_wrap(buf: B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  PRV.ProgressiveBitsStruct_decode_vchecked_nmax_wrap(buf)
+
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 426}, 426)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   PRV.ProgressiveBitsStruct_decode_vchecked_real()
 

@@ -110,6 +110,12 @@ def CompatibleUnionA__decode_input__CompatibleUnionA_ms_arm0() -> {CompatibleUni
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   P4_PRV.CompatibleUnionA_decode_vchecked_limit()
 
+def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {CompatibleUnionA_r.CompatibleUnionA_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  P4_PRV.CompatibleUnionA_decode_vchecked_nmax_wrap(buf)
+
+def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {CompatibleUnionA_r.CompatibleUnionA_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  P4_PRV.CompatibleUnionA_decode_vchecked_nmax_above(buf)
+
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_dchw(2, 2, (P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.CompatibleUnionA_decode_vchecked_accept()
 

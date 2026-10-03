@@ -105,6 +105,12 @@ def FuluValidator__decode_input__Validator_ms_dec() -> {(FuluValidator_r.Validat
 def FuluValidator__decode_offsets__Validator_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, FuluValidator_d.Validator>, FuluValidator_r.Validator_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluValidator_d.Validator>}:
   P4_PRV.Validator_decode_vchecked_limit()
 
+def FuluValidator__decode_offsets__Validator_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {FuluValidator_r.Validator_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluValidator_d.Validator>}:
+  P4_PRV.Validator_decode_vchecked_nmax_wrap(buf)
+
+def FuluValidator__decode_offsets__Validator_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {FuluValidator_r.Validator_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluValidator_d.Validator>}:
+  P4_PRV.Validator_decode_vchecked_nmax_above(buf)
+
 def FuluValidator__decode_offsets__Validator_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FuluValidator_d.Validator>, FuluValidator_r.Validator_dchw(121, 121, (P4_B.Buf{Array.new(U32, 5n, 0), 121}, 31))), Pair.snd(P4_B.Buf, Maybe<&1, FuluValidator_d.Validator>, FuluValidator_r.Validator_decode_checked(P4_B.Buf{Array.new(U32, 5n, 0), 121}, 121))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.Validator_decode_vchecked_accept()
 

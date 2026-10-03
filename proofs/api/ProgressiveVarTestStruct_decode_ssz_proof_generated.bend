@@ -80,6 +80,12 @@ def ProgressiveVarTestStruct__decode_none__decode_none(+d: Nat, +t: P0_FD.array_
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
   P2_PRV.ProgressiveVarTestStruct_decode_vchecked_limit()
 
+def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  P2_PRV.ProgressiveVarTestStruct_decode_vchecked_nmax_wrap(buf)
+
+def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  P2_PRV.ProgressiveVarTestStruct_decode_vchecked_nmax_above(buf)
+
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(10, 10, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 256), 10}, 3))), Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 256), 10}, 10))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.ProgressiveVarTestStruct_decode_vchecked_accept()
 

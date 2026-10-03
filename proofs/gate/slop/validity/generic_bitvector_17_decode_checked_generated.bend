@@ -14,6 +14,12 @@ def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_accept() -> {PRV.
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   PRV.bitvector_17_decode_vchecked_limit()
 
+def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_nmax_above(buf: B.Buf) -> {bitvector_17_r.bitvector_17_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  PRV.bitvector_17_decode_vchecked_nmax_above(buf)
+
+def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_nmax_wrap(buf: B.Buf) -> {bitvector_17_r.bitvector_17_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  PRV.bitvector_17_decode_vchecked_nmax_wrap(buf)
+
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2}, 3)) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   PRV.bitvector_17_decode_vchecked_short()
 

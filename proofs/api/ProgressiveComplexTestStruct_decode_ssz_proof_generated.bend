@@ -81,6 +81,12 @@ def ProgressiveComplexTestStruct__decode_none__decode_none(+d: Nat, +t: P0_FD.ar
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_limit() -> {Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967265, (P2_B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_limit()
 
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_nmax_wrap(buf: P2_B.Buf) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_nmax_wrap(buf)
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_nmax_above(buf)
+
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(30, 30, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 8))), Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_accept()
 

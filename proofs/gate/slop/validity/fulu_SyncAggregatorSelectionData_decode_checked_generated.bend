@@ -14,6 +14,12 @@ def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_dec
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_limit()
 
+def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  PRV.SyncAggregatorSelectionData_decode_vchecked_nmax_above(buf)
+
+def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  PRV.SyncAggregatorSelectionData_decode_vchecked_nmax_wrap(buf)
+
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 16}, 16)) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_real()
 

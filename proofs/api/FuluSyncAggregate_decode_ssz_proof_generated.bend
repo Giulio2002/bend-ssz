@@ -108,6 +108,12 @@ def FuluSyncAggregate__decode_input__SyncAggregate_ms_dec() -> {(FuluSyncAggrega
 def FuluSyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   P7_PRV.SyncAggregate_decode_vchecked_limit()
 
+def FuluSyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluSyncAggregate_r.SyncAggregate_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+  P7_PRV.SyncAggregate_decode_vchecked_nmax_wrap(buf)
+
+def FuluSyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSyncAggregate_r.SyncAggregate_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+  P7_PRV.SyncAggregate_decode_vchecked_nmax_above(buf)
+
 def FuluSyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(160, 160, (P7_B.Buf{Array.new(U32, 6n, 0), 160}, 40))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_decode_checked(P7_B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SyncAggregate_decode_vchecked_accept()
 

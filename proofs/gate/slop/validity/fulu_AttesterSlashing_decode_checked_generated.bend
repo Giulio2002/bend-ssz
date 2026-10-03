@@ -14,6 +14,12 @@ def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_accept() 
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   PRV.AttesterSlashing_decode_vchecked_limit()
 
+def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  PRV.AttesterSlashing_decode_vchecked_nmax_above(buf)
+
+def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  PRV.AttesterSlashing_decode_vchecked_nmax_wrap(buf)
+
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 8), 464}, 464)) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   PRV.AttesterSlashing_decode_vchecked_real()
 

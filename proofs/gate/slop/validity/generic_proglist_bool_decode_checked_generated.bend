@@ -10,6 +10,12 @@ import ../../../slop/validity/generic_proglist_bool_decode_checked_generated.ben
 def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_bool_r.proglist_bool_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.proglist_bool_decode_vchecked_limit()
 
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_nmax_above(buf: B.Buf) -> {proglist_bool_r.proglist_bool_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.proglist_bool_decode_vchecked_nmax_above(buf)
+
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_nmax_wrap(buf: B.Buf) -> {proglist_bool_r.proglist_bool_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.proglist_bool_decode_vchecked_nmax_wrap(buf)
+
 def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_bool_r.proglist_bool_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.Words>}:
   PRV.proglist_bool_decode_vchecked_real()
 

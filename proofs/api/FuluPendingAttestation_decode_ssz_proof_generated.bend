@@ -135,6 +135,12 @@ def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vbits_clea
 def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   P5_PRV.PendingAttestation_decode_vchecked_limit()
 
+def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluPendingAttestation_r.PendingAttestation_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+  P5_PRV.PendingAttestation_decode_vchecked_nmax_wrap(buf)
+
+def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluPendingAttestation_r.PendingAttestation_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+  P5_PRV.PendingAttestation_decode_vchecked_nmax_above(buf)
+
 def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 38))), Pair.snd(P5_B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode_checked(P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 149))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.PendingAttestation_decode_vchecked_accept()
 

@@ -107,6 +107,12 @@ def FuluLightClientHeader__decode_none__decode_none(+d: Nat, +t: P3_F.array__Tre
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_limit() -> {Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(4294967265, 4294967265, (P4_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   P4_PRV.LightClientHeader_decode_vchecked_limit()
 
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_vchecked_nmax_wrap(buf)
+
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_vchecked_nmax_above(buf)
+
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(828, 828, (P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 207))), Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.LightClientHeader_decode_vchecked_accept()
 

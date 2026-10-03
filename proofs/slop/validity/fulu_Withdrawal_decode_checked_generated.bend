@@ -18,6 +18,14 @@ def Withdrawal_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
   {==}
 
+def Withdrawal_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {FuluWithdrawal_r.Withdrawal_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  {==}
+
+def Withdrawal_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {FuluWithdrawal_r.Withdrawal_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  {==}
+
 def Withdrawal_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(44, 44, (B.Buf{Array.new(U32, 4n, 0), 44}, 11))), Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked(B.Buf{Array.new(U32, 4n, 0), 44}, 44))) == (True{}, True{}) : Bool & Bool}:
   {==}

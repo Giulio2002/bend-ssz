@@ -104,6 +104,12 @@ def FuluLightClientBootstrap__decode_none__decode_none(+d: Nat, +t: P2_F.array__
 def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P3_PRV.LightClientBootstrap_decode_vchecked_limit()
 
+def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  P3_PRV.LightClientBootstrap_decode_vchecked_nmax_wrap(buf)
+
+def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  P3_PRV.LightClientBootstrap_decode_vchecked_nmax_above(buf)
+
 def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P3_PRV.LightClientBootstrap_decode_vchecked_window()
 

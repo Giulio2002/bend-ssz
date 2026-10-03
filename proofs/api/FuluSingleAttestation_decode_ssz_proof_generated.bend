@@ -111,6 +111,12 @@ def FuluSingleAttestation__decode_input__SingleAttestation_ms_dec() -> {(FuluSin
 def FuluSingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
   P7_PRV.SingleAttestation_decode_vchecked_limit()
 
+def FuluSingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluSingleAttestation_r.SingleAttestation_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  P7_PRV.SingleAttestation_decode_vchecked_nmax_wrap(buf)
+
+def FuluSingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSingleAttestation_r.SingleAttestation_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  P7_PRV.SingleAttestation_decode_vchecked_nmax_above(buf)
+
 def FuluSingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_dchw(240, 240, (P7_B.Buf{Array.new(U32, 6n, 0), 240}, 60))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked(P7_B.Buf{Array.new(U32, 6n, 0), 240}, 240))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SingleAttestation_decode_vchecked_accept()
 

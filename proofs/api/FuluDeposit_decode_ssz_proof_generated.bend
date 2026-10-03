@@ -95,6 +95,12 @@ def FuluDeposit__decode_input__Deposit_spec_input(+x0: U32, +x1: U32, +x2: U32, 
 def FuluDeposit__decode_offsets__Deposit_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
   P5_PRV.Deposit_decode_vchecked_limit()
 
+def FuluDeposit__decode_offsets__Deposit_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluDeposit_r.Deposit_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
+  P5_PRV.Deposit_decode_vchecked_nmax_wrap(buf)
+
+def FuluDeposit__decode_offsets__Deposit_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluDeposit_r.Deposit_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
+  P5_PRV.Deposit_decode_vchecked_nmax_above(buf)
+
 def FuluDeposit__decode_offsets__Deposit_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_dchw(1240, 1240, (P5_B.Buf{Array.new(U32, 9n, 0), 1240}, 310))), Pair.snd(P5_B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(P5_B.Buf{Array.new(U32, 9n, 0), 1240}, 1240))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.Deposit_decode_vchecked_accept()
 

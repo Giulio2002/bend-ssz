@@ -94,6 +94,12 @@ def FuluParticipationFlags__decode_input__ParticipationFlags_ms_dec() -> {(FuluP
 def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   P5_PRV.ParticipationFlags_decode_vchecked_limit()
 
+def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {FuluParticipationFlags_r.ParticipationFlags_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.ParticipationFlags_decode_vchecked_nmax_wrap(buf)
+
+def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluParticipationFlags_r.ParticipationFlags_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.ParticipationFlags_decode_vchecked_nmax_above(buf)
+
 def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(1, 1, (P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.ParticipationFlags_decode_vchecked_accept()
 

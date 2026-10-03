@@ -77,6 +77,12 @@ def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vand_pair() ->
 def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   P3_PRV.ExecutionPayload_decode_vchecked_limit()
 
+def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  P3_PRV.ExecutionPayload_decode_vchecked_nmax_wrap(buf)
+
+def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  P3_PRV.ExecutionPayload_decode_vchecked_nmax_above(buf)
+
 def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(528, 528, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 132))), Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.ExecutionPayload_decode_vchecked_accept()
 

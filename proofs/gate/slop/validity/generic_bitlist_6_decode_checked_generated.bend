@@ -13,6 +13,12 @@ def bitlist_6__decode_offsets__bitlist_6_decode_vchecked_accept() -> {PRV.is_som
 def bitlist_6__decode_offsets__bitlist_6_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_6_r.bitlist_6_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_6_decode_vchecked_limit()
 
+def bitlist_6__decode_offsets__bitlist_6_decode_vchecked_nmax_above(buf: B.Buf) -> {bitlist_6_r.bitlist_6_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  PRV.bitlist_6_decode_vchecked_nmax_above(buf)
+
+def bitlist_6__decode_offsets__bitlist_6_decode_vchecked_nmax_wrap(buf: B.Buf) -> {bitlist_6_r.bitlist_6_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  PRV.bitlist_6_decode_vchecked_nmax_wrap(buf)
+
 def bitlist_6__decode_offsets__bitlist_6_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_6_r.bitlist_6_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_6_decode_vchecked_short()
 

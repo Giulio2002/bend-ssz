@@ -13,6 +13,12 @@ def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_accept() -> {PRV.is
 def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   PRV.ColumnIndex_decode_vchecked_limit()
 
+def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluColumnIndex_r.ColumnIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.ColumnIndex_decode_vchecked_nmax_above(buf)
+
+def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluColumnIndex_r.ColumnIndex_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.ColumnIndex_decode_vchecked_nmax_wrap(buf)
+
 def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   PRV.ColumnIndex_decode_vchecked_real()
 

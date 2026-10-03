@@ -18,6 +18,7 @@ exactly when the same leaves are hashed in the same tree), with a, b two differe
   <X>_vroot_<kp>_cache_set_3      the tree [a b a b] once rooted (clean), cset 3 then the root = the plain root of the set list (the dirty range reaches the last leaf)
   <X>_vroot_<kp>_cache_set_0      ... cset 0
   <X>_vroot_<kp>_cache_set_1_3    ... cset 1 then cset 3 (both ends of the dirty range move)
+  <X>_vroot_<kp>_cache_app_clean  a clean tree of [a b a], then capp b (it fits): the root of [a b a b]
   <X>_vroot_<kp>_cache_end        cget at the length is None, cget inside is some; cset at the length is refused, inside accepted
   <X>_vroot_<kp>_cache_limit      (limit <= 16) capp at limit - 1 elements is accepted, at the limit refused
   <X>_vroot_<kp>_cache_dok        `O.cache_dok`: a depth of 32 or more is never accepted, a depth needs 2^d slots
@@ -136,6 +137,8 @@ def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget'):
         clean = f'rc(hl, {T}_cache({base}))'
         law('set_3', '+hl: Nat', f'{R(f"cs({clean}, 3, {a})")} == {P(f"ss({base}, 3, {a})")} : D.Digest')
         law('set_0', '+hl: Nat', f'{R(f"cs({clean}, 0, {b})")} == {P(f"ss({base}, 0, {b})")} : D.Digest')
+        # a clean tree of 3 elements (depth 2, room for 4), then an append that fits: the dirty range must reach the new slot (round 4: c01/05)
+        law('app_clean', '+hl: Nat', f'{R(f"ca(rc(hl, {T}_cache({seq(3)})), {els[3]})")} == {P(seq(4))} : D.Digest')
         law('set_1_3', '+hl: Nat', f'{R(f"cs(cs({clean}, 1, {a}), 3, {a})")} == {P(f"ss(ss({base}, 1, {a}), 3, {a})")} : D.Digest')
     c3 = cached(min(3, Lm))
     k3 = min(3, Lm)

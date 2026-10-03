@@ -107,6 +107,12 @@ def FuluEth1Data__decode_input__Eth1Data_ms_dec() -> {(FuluEth1Data_r.Eth1Data_d
 def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
   P7_PRV.Eth1Data_decode_vchecked_limit()
 
+def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluEth1Data_r.Eth1Data_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
+  P7_PRV.Eth1Data_decode_vchecked_nmax_wrap(buf)
+
+def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluEth1Data_r.Eth1Data_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
+  P7_PRV.Eth1Data_decode_vchecked_nmax_above(buf)
+
 def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(72, 72, (P7_B.Buf{Array.new(U32, 5n, 0), 72}, 18))), Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 72}, 72))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.Eth1Data_decode_vchecked_accept()
 

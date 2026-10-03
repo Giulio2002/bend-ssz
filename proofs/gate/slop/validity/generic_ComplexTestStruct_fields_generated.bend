@@ -21,11 +21,17 @@ def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_fals
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_true_flag() -> {O.is_poisoned(O.pz(True{})) == False{} : Bool}:
   PRV.ComplexTestStruct_serialize_vpoison_true_flag()
 
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vrefuse_bad_flag() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_senc_go(True{}, 0, ComplexTestStruct_d.ComplexTestStruct_default())) == O.refused() : O.Encoded}:
+  PRV.ComplexTestStruct_serialize_vrefuse_bad_flag()
+
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vrefuse_f_A() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_serialize(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), 65536))) == O.refused() : O.Encoded}:
   PRV.ComplexTestStruct_serialize_vrefuse_f_A()
 
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vrefuse_f_C() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_serialize(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_default(), 256))) == O.refused() : O.Encoded}:
   PRV.ComplexTestStruct_serialize_vrefuse_f_C()
+
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vrefuse_poisoned_size() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_senc_sized((ComplexTestStruct_d.ComplexTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
+  PRV.ComplexTestStruct_serialize_vrefuse_poisoned_size()
 
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_default_valid() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_default())) == True{} : Bool}:
   PRV.ComplexTestStruct_serialize_vreject_default_valid()

@@ -106,6 +106,12 @@ def FuluBLSSignature__decode_input__BLSSignature_ms_dec() -> {(FuluBLSSignature_
 def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.BLSSignature_decode_vchecked_limit()
 
+def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluBLSSignature_r.BLSSignature_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  P7_PRV.BLSSignature_decode_vchecked_nmax_wrap(buf)
+
+def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluBLSSignature_r.BLSSignature_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  P7_PRV.BLSSignature_decode_vchecked_nmax_above(buf)
+
 def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_dchw(96, 96, (P7_B.Buf{Array.new(U32, 5n, 0), 96}, 24))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 96}, 96))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.BLSSignature_decode_vchecked_accept()
 

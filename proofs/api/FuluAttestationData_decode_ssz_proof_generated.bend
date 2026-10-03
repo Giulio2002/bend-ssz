@@ -109,6 +109,12 @@ def FuluAttestationData__decode_input__AttestationData_ms_dec() -> {(FuluAttesta
 def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   P7_PRV.AttestationData_decode_vchecked_limit()
 
+def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_nmax_wrap(buf: P7_B.Buf) -> {FuluAttestationData_r.AttestationData_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>}:
+  P7_PRV.AttestationData_decode_vchecked_nmax_wrap(buf)
+
+def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluAttestationData_r.AttestationData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>}:
+  P7_PRV.AttestationData_decode_vchecked_nmax_above(buf)
+
 def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(128, 128, (P7_B.Buf{Array.new(U32, 5n, 0), 128}, 32))), Pair.snd(P7_B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 128}, 128))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.AttestationData_decode_vchecked_accept()
 

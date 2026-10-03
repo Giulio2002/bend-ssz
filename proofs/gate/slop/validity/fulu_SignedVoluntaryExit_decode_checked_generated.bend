@@ -14,6 +14,12 @@ def SignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_acc
 def SignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
   PRV.SignedVoluntaryExit_decode_vchecked_limit()
 
+def SignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
+  PRV.SignedVoluntaryExit_decode_vchecked_nmax_above(buf)
+
+def SignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
+  PRV.SignedVoluntaryExit_decode_vchecked_nmax_wrap(buf)
+
 def SignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(B.Buf{Array.new(U32, 0n, 0), 112}, 112)) == None{} : Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
   PRV.SignedVoluntaryExit_decode_vchecked_real()
 

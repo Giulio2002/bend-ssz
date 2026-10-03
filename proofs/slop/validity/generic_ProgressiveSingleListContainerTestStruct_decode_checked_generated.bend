@@ -18,6 +18,14 @@ def ProgressiveSingleListContainerTestStruct_decode_vchecked_limit()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   {==}
 
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_wrap(buf: B.Buf)
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf: B.Buf)
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 2))), Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   {==}

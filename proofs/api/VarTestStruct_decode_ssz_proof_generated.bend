@@ -84,6 +84,12 @@ def VarTestStruct__decode_none__decode_none(+d: Nat, +t: P1_FD.array__Tree<U32>,
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   P3_PRV.VarTestStruct_decode_vchecked_limit()
 
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_nmax_wrap(buf: P3_B.Buf) -> {VarTestStruct_r.VarTestStruct_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  P3_PRV.VarTestStruct_decode_vchecked_nmax_wrap(buf)
+
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {VarTestStruct_r.VarTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  P3_PRV.VarTestStruct_decode_vchecked_nmax_above(buf)
+
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(7, 7, (P3_B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 2))), Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.VarTestStruct_decode_vchecked_accept()
 
