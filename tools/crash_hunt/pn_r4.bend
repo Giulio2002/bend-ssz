@@ -24,6 +24,7 @@ import ../../types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend as 
 import ../../types/CompatibleUnionBC_def_generated.bend as UB
 import ../../types/CompatibleUnionBC_encode_ssz_generated.bend as UBE
 import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as PSL
+import ../../types/proglist_ProgressiveVarTestStruct_def_generated.bend as PH
 import ../../benchmarks/compact/objio.bend as IOx
 
 # Crash hunt round 4, probe N: the new size arithmetic (objects of 2^31 .. NMAX = 4294967264 bytes) and the decode window.
@@ -42,6 +43,7 @@ import ../../benchmarks/compact/objio.bend as IOx
 #  16   ProgressiveComplexTestStruct serialize with f_F = 2^SSZ_DEPTH honest empty inner lists (one build)
 #  17   CompatibleUnionBC c0 whose payload bit list claims ARG bits in 2^SSZ_DEPTH words: size, valid, serialize, encode
 #  18   ProgressiveComplexTestStruct decode_checked of a valid encoding whose f_F holds ARG empty inner lists (30 + 4 ARG bytes)
+#  19   ProgressiveComplexTestStruct decode_checked of a valid encoding whose f_H holds ARG default ProgressiveVarTestStructs (30 + 14 ARG bytes)
 #  15   proglist_uint8 decode_checked / decode of an honest 4 GiB buffer whose size field is ARG
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
@@ -237,6 +239,26 @@ def ff_dec(pair: B.Buf & Maybe<&1, PC.ProgressiveComplexTestStruct>) -> IO(Unit)
     case None{}: IO.print("pcts decode=none")
 def c18(+n: U32) -> IO(Unit): ff_dec(PCR.ProgressiveComplexTestStruct_decode_checked(B.Buf{ff_buf(n), (30 + n * 4 : U32)}, (30 + n * 4 : U32)))
 
+# ProgressiveComplexTestStruct whose f_H holds n default ProgressiveVarTestStructs (10 bytes each: f_A, two offsets 9, the bit-list delimiter) after an offset table of n words
+def fh_elems(k: Nat, +i: U32, +base: U32, +n: U32, out: Array<U32>) -> Array<U32>:
+  match k:
+    case 0n: out
+    case 1n+q: fh_elems(q, (i + 1 : U32), base, n, O.w8(O.w32(O.w32(O.w32(out, (base + i * 4 : U32), (n * 4 + i * 10 : U32)), (base + n * 4 + i * 10 + 1 : U32), 9), (base + n * 4 + i * 10 + 5 : U32), 9), (base + n * 4 + i * 10 + 9 : U32), 1))
+def fh_buf(+n: U32) -> Array<U32>:
+  fh_elems(U32.to_nat(n), 0, 30, n, O.w8(O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(big(), 1, 29), 5, 29), 9, 30), 13, 30), 17, 30), 21, 30), 25, 30), 29, 1))
+def fh_len(f: PH.pl_ProgressiveVarTestStruct_Seq) -> IO(Unit):
+  match f:
+    case PH.pl_ProgressiveVarTestStruct_Seq{arr, +n}: IO.print("pcts decode=some f_H_len=" ++ U32.show(n))
+def fh_some(v: PC.ProgressiveComplexTestStruct) -> IO(Unit):
+  match v:
+    case PC.ProgressiveComplexTestStruct{+a, b, c, d, e, f, g, h}: fh_len(h)
+def fh_dec(pair: B.Buf & Maybe<&1, PC.ProgressiveComplexTestStruct>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: fh_some(v)
+    case None{}: IO.print("pcts decode=none")
+def c19(+n: U32) -> IO(Unit): fh_dec(PCR.ProgressiveComplexTestStruct_decode_checked(B.Buf{fh_buf(n), (30 + n * 14 : U32)}, (30 + n * 14 : U32)))
+
 def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
   match c:
     case 1: c1(True{}, n)
@@ -257,6 +279,7 @@ def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
     case 16: c16(dep)
     case 17: c17(n, dep)
     case 18: c18(n)
+    case 19: c19(n)
     case _: IO.print("NOCASE")
 
 def main() -> IO(Unit):
