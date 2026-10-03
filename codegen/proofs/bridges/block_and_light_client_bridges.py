@@ -4642,7 +4642,7 @@ def venc_ep(R, X, mode='enc'):
     okt = _band(_re.search(r'^def OKTW\(.*?\) -> Bool: (.*)$', it, _re.M).group(1))
     assert len(okt) == 7, okt
     # the OKW laws: the encoding below 2^31 bytes (ENDC's sum, a strict bound; no 4 * 2^28 premise)
-    bnd = 'Nat.is_lt(' + _re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', it, _re.M).group(1) + ', VB.pw(31n))'
+    bnd = 'Nat.is_le(' + _re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', it, _re.M).group(1) + ', U32.to_nat(VB.NMAX()))'
     assert bnd.startswith('Nat.is_lt(Nat.add(') and 'ENDC' not in bnd
     szok = (bnd.replace('LY.LN(EB.ENC(m_extra_data))', f'U32.to_nat(WO.len({pj(10)}))')
                .replace('LY.LN(ET.ENCL(t_transactions, N_transactions))', f'TX.TXL({pj(13)})')
@@ -4724,7 +4724,7 @@ def venc_ep(R, X, mode='enc'):
     subn = lambda s_: _re.sub(r'(?<![\w.])(' + '|'.join(rn) + r')(?![\w])', lambda mm: rn[mm.group(1)], s_)
     okc = [subn(c) for c in okt]
     mwargs_ = ['x0', 'x1', 'x2', 'x3', 'dw', 'T', 'x5', 'x6', 'x7', 'x8', 'x9', 'mB', 'x11', 'x12', 'tT', 'NT', 'AW', 'NW', 'x15', 'x16']
-    okc[6] = f'Nat.is_lt(CI.ENDC({", ".join(mwargs_)}), VB.pw(31n))'   # OKTW's last conjunct, at the record's fields
+    okc[6] = f'Nat.is_le(CI.ENDC({", ".join(mwargs_)}), U32.to_nat(VB.NMAX()))'   # OKTW's last conjunct, at the record's fields
     t10 = f'U32.to_nat(WO.len({pj(10)}))'
     t13 = f'TX.TXL({pj(13)})'
     t14 = f'TX.WLL({pj(14)})'
@@ -4736,8 +4736,8 @@ def venc_ep(R, X, mode='enc'):
             r_ = r_.replace(tl[i], 'z' if i == k_ else (ll[i] if i < k_ else tl[i]))
         return r_
     ok = _andc(okc, ['pf', 'hd', 'hr', 'okB', 'okT', 'okW', 'b3'])
-    assert szok.startswith('Nat.is_lt(') and szok.endswith(', VB.pw(31n))'), szok
-    SUM = szok[len('Nat.is_lt('):-len(', VB.pw(31n))')]
+    assert szok.startswith('Nat.is_le(') and szok.endswith(', U32.to_nat(VB.NMAX()))'), szok
+    SUM = szok[len('Nat.is_le('):-len(', U32.to_nat(VB.NMAX()))')]
     sm = lambda a_, b_, c_: SUM.replace(t10, '\x00').replace(t13, '\x01').replace(t14, '\x02').replace('\x00', a_).replace('\x01', b_).replace('\x02', c_)
     mwargs = ['x0', 'x1', 'x2', 'x3', 'dw', 'T', 'x5', 'x6', 'x7', 'x8', 'x9', 'mB', 'x11', 'x12', 'tT', 'NT', 'AW', 'NW', 'x15', 'x16']
     vzargs = []
@@ -6151,17 +6151,17 @@ def mwd_text():
     rep('BL.sdk(RT.pj_ExecutionPayloadHeader_10(o), 28n)', 'BL.sdk(RT.pj_ExecutionPayloadHeader_10(o), 31n)')
     a = t.index('def bndB(')
     b = t.index('# ---- the byte list (encx_bl32) ----')
-    t = t[:a] + """def bndB(+m: IB.MW, +ok: {IBD.OK(m) == True{} : Bool}) -> {Nat.is_lt(Nat.add(584n, LY.LN(IB.ENC(m))), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(Nat.add(584n, LY.LN(IB.ENC(m))), Nat.add(584n, 32n), VB.pw(31n), Order.add_left(584n, LY.LN(IB.ENC(m)), 32n, IBD.maxx(m, ok)),
-    FD.nat__lt_le_trans(Nat.add(584n, 32n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==})))
-def bndE(+m: IE.MW, +ok: {IE.OKW(m) == True{} : Bool}) -> {Nat.is_lt(Nat.add(244n, LY.LN(IE.ENC(m))), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(Nat.add(244n, LY.LN(IE.ENC(m))), Nat.add(244n, 616n), VB.pw(31n), Order.add_left(244n, LY.LN(IE.ENC(m)), 616n, IE.maxxO(m, ok)),
-    FD.nat__lt_le_trans(Nat.add(244n, 616n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==})))
+    t = t[:a] + """def bndB(+m: IB.MW, +ok: {IBD.OK(m) == True{} : Bool}) -> {Nat.is_le(Nat.add(584n, LY.LN(IB.ENC(m))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(Nat.add(584n, LY.LN(IB.ENC(m))), Nat.add(584n, 32n), U32.to_nat(VB.NMAX()), Order.add_left(584n, LY.LN(IB.ENC(m)), 32n, IBD.maxx(m, ok)),
+    VB.le_pw31_nmax(Nat.add(584n, 32n), FD.nat__lt_le_trans(Nat.add(584n, 32n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==}))))
+def bndE(+m: IE.MW, +ok: {IE.OKW(m) == True{} : Bool}) -> {Nat.is_le(Nat.add(244n, LY.LN(IE.ENC(m))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(Nat.add(244n, LY.LN(IE.ENC(m))), Nat.add(244n, 616n), U32.to_nat(VB.NMAX()), Order.add_left(244n, LY.LN(IE.ENC(m)), 616n, IE.maxxO(m, ok)),
+    VB.le_pw31_nmax(Nat.add(244n, 616n), FD.nat__lt_le_trans(Nat.add(244n, 616n), VB.pw(10n), VB.pw(31n), {==}, VBG.pw_mono(10n, 31n, {==}))))
 
 """ + t[b:]
     rep('IB.OK(', 'IBD.OK(')
-    rep('Nat.is_le(Nat.add(584n, LY.LN(IB.ENC(mB))), A.quad(VB.pw(28n)))', 'Nat.is_lt(Nat.add(584n, LY.LN(IB.ENC(mB))), VB.pw(31n))')
-    rep('Nat.is_le(Nat.add(244n, LY.LN(IE.ENC(mE))), A.quad(VB.pw(28n)))', 'Nat.is_lt(Nat.add(244n, LY.LN(IE.ENC(mE))), VB.pw(31n))')
+    rep('Nat.is_le(Nat.add(584n, LY.LN(IB.ENC(mB))), A.quad(VB.pw(28n)))', 'Nat.is_le(Nat.add(584n, LY.LN(IB.ENC(mB))), U32.to_nat(VB.NMAX()))')
+    rep('Nat.is_le(Nat.add(244n, LY.LN(IE.ENC(mE))), A.quad(VB.pw(28n)))', 'Nat.is_le(Nat.add(244n, LY.LN(IE.ENC(mE))), U32.to_nat(VB.NMAX()))')
     rep('IE.OK(', 'IE.OKW(')
     rep('IL.OK(', 'IL.OKW(')
     rep('# (i) through the encode records:', '# The D form (the OKW laws; the extra data at storage depth below 31): (i) through the encode records:')
@@ -6188,16 +6188,16 @@ def _lcd(t, X, K, P, prem):
     rep('CI.maxx(m, hok)', 'CI.maxxO(m, hok)')
     rep('IL.OK(', 'IL.OKW(')
     SUM = f'Nat.add(Nat.add({K}n, LY.LN(IL.ENC(mA))), LY.LN(IL.ENC(mF)))'
-    rep(f'Nat.is_le({SUM}, A.quad(VB.pw(28n)))', f'Nat.is_lt({SUM}, VB.pw(31n))')
+    rep(f'Nat.is_le({SUM}, A.quad(VB.pw(28n)))', f'Nat.is_le({SUM}, U32.to_nat(VB.NMAX()))')
     a = t.index('def bnd(')
     b = t.index("# the view of the record's object")
     new = f"""def bnd(+mA: IL.MW, +mF: IL.MW, +okA: {{IL.OKW(mA) == True{{}} : Bool}}, +okF: {{IL.OKW(mF) == True{{}} : Bool}})
-    -> {{Nat.is_lt({SUM}, VB.pw(31n)) == True{{}} : Bool}}:
+    -> {{Nat.is_le({SUM}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:
   +h1 = Order.add_right(Nat.add({K}n, LY.LN(IL.ENC(mA))), Nat.add({K}n, 860n), LY.LN(IL.ENC(mF)), Order.add_left({K}n, LY.LN(IL.ENC(mA)), 860n, IL.maxxO(mA, okA)))
   +h2 = Order.add_left(Nat.add({K}n, 860n), LY.LN(IL.ENC(mF)), 860n, IL.maxxO(mF, okF))
-  FD.nat__le_lt_trans({SUM}, Nat.add(Nat.add({K}n, 860n), 860n), VB.pw(31n),
+  FD.nat__le_trans({SUM}, Nat.add(Nat.add({K}n, 860n), 860n), U32.to_nat(VB.NMAX()),
     FD.nat__le_trans({SUM}, Nat.add(Nat.add({K}n, 860n), LY.LN(IL.ENC(mF))), Nat.add(Nat.add({K}n, 860n), 860n), h1, h2),
-    FD.nat__lt_le_trans(Nat.add(Nat.add({K}n, 860n), 860n), VB.pw({P}n), VB.pw(31n), {{==}}, VBG.pw_mono({P}n, 31n, {{==}})))
+    VB.le_pw31_nmax(Nat.add(Nat.add({K}n, 860n), 860n), FD.nat__lt_le_trans(Nat.add(Nat.add({K}n, 860n), 860n), VB.pw({P}n), VB.pw(31n), {{==}}, VBG.pw_mono({P}n, 31n, {{==}}))))
 
 """
     t = t[:a] + new + t[b:]
@@ -6520,11 +6520,11 @@ def _crec_byte_bound(parts, MWN, it, okt, POS, PT):
     # the bound: the conjuncts are the parts' facts (in order), then the byte bound
     # the OKW laws: the container's encoding below 2^31 bytes (OKTW's last conjunct, ENDC's sum), no 4 * 2^28 bound
     bnd = okt[-1]
-    assert bnd.startswith('Nat.is_lt(ENDC(') and bnd.endswith(', VB.pw(31n))'), bnd[-80:]
-    okt[-1] = bnd.replace('Nat.is_lt(ENDC(', 'Nat.is_lt(CI.ENDC(', 1)
+    assert bnd.startswith('Nat.is_le(ENDC(') and bnd.endswith(', U32.to_nat(VB.NMAX()))'), bnd[-80:]
+    okt[-1] = bnd.replace('Nat.is_le(ENDC(', 'Nat.is_le(CI.ENDC(', 1)
     SUML = _re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', it, _re.M).group(1)
-    BQ = 'VB.pw(31n)'
-    BND = lambda z_: f'Nat.is_lt({z_}, {BQ})'
+    BQ = 'U32.to_nat(VB.NMAX())'
+    BND = lambda z_: f'Nat.is_le({z_}, {BQ})'
     terms = _sum_terms(SUML)
     assert _sum_of(terms) == SUML
     assert len(terms) == 1 + len(PT) and len(okt) == 1 + len(PT), (len(terms), len(okt), len(PT))
@@ -6970,7 +6970,7 @@ def _venc_crec_top(R, X, rmod, al, extra_imports, premise_note, it, fn, AA):
            f"  +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENO.HDW(m), {H3}, g))\n"
            f"  +hl0 = FD.logic__subst(Nat, z => {{Nat.is_le(WD.NWN(z), VB.pw({DO})) == True{{}} : Bool}}, List.length(&2, U32, CI.ENC(m)), U32.to_nat({SZ}),\n"
            f"    Equal.sym(Nat, U32.to_nat({SZ}), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), hl)\n"
-           f"  +h31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, List.length(&2, U32, CI.ENC(m)), U32.to_nat({SZ}),\n"
+           f"  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, List.length(&2, U32, CI.ENC(m)), U32.to_nat({SZ}),\n"
            f"    Equal.sym(Nat, U32.to_nat({SZ}), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CIo.bndxO(m, hok))\n"
            f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ}))\n"
            f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ}), WD.PADB(0n, U32.to_nat({SZ}))), A.quad(WD.NWN(U32.to_nat({SZ}))), ep,\n"

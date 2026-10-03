@@ -171,9 +171,9 @@ def hlx(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hl: {N
 def hlx32(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, VE2.LEN(ENCL(t, N)))), F.spec_common__pow2(32n)) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL(t, N))), F.spec_common__pow2(32n)) == True{} : Bool}:
   F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), F.spec_common__pow2(32n)) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hl32)
-def hlx31(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hs31: {Nat.is_lt(VE2.LEN(ENCL(t, N)), VB.pw(31n)) == True{} : Bool})
-    -> {Nat.is_lt(LL(t, N), VB.pw(31n)) == True{} : Bool}:
-  F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hs31)
+def hlx31(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hs31: {Nat.is_le(VE2.LEN(ENCL(t, N)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hs31)
 def hzx(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +D: F.array__Tree<U32>,
     +hz: {VS.bt(Nat.add(VE2.LEN(ENCL(t, N)), WD.PADB(r, VE2.LEN(ENCL(t, N)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(VE2.LEN(ENCL(t, N)), WD.PADB(r, VE2.LEN(ENCL(t, N))))) : +List<U32>})
     -> {VS.bt(Nat.add(LL(t, N), WD.PADB(r, LL(t, N))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(LL(t, N), WD.PADB(r, LL(t, N)))) : +List<U32>}:

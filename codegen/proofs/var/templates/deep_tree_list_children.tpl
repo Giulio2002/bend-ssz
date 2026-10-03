@@ -5,8 +5,8 @@ def lsucD(+x: Nat, +k: Nat, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {N
   F.nat__lt_le(x, VB.pw(k), h)
 def t31D(+x: Nat, +k: Nat, +ek: {k == 31n : Nat}, +h: {Nat.is_le(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_le(x, VB.pw(31n)) == True{} : Bool}:
   F.logic__subst(Nat, z => {Nat.is_le(x, VB.pw(z)) == True{} : Bool}, k, 31n, ek, h)
-def t31sD(+x: Nat, +k: Nat, +ek: {k == 31n : Nat}, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
-  F.logic__subst(Nat, z => {Nat.is_lt(x, VB.pw(z)) == True{} : Bool}, k, 31n, ek, h)
+def t31sD(+x: Nat, +k: Nat, +ek: {k == 31n : Nat}, +h: {Nat.is_lt(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  VB.le_pw31_nmax(x, F.logic__subst(Nat, z => {Nat.is_lt(x, VB.pw(z)) == True{} : Bool}, k, 31n, ek, h))
 
 @@ VL_OKB @@
 def ok_bk(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +k: Nat, +ek: {k == 31n : Nat}, +h: {OKT(t, N) == True{} : Bool}) -> {Nat.is_lt(LL(t, N), VB.pw(k)) == True{} : Bool}:

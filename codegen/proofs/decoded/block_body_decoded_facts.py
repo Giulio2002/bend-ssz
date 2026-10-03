@@ -21,7 +21,7 @@ O = lambda i: f'W.O{i}(t, x)' if i < NW else 'n'
 L = lambda i: f'W.LJ{i}(t, x)' if i < NW - 1 else f'W.LJ{NW - 1}(t, x, n)'
 TN = lambda x: f'U32.to_nat({x})'
 HS = '+hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}'
-H31 = '+h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}'
+H31 = '+h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 HC = '+hchk: {W.CHKw(t, x, off, n) == True{} : Bool}'
 TP = '+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32'
 OBJ = 'W.OBJw(d, t, x, off, n)'
@@ -83,8 +83,8 @@ def u2n(+a: U32, +b: U32, +h: {U32.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(
     t += (f'\n# the nested payload window\'s length facts\n'
           f'def n2u(+a: U32, +b: U32, +h: {{Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True{{}} : Bool}}) -> {{U32.is_le(a, b) == True{{}} : Bool}}:\n'
           f'  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(a), U32.to_nat(b)), U32.is_le(a, b), Equal.sym(Bool, U32.is_le(a, b), Nat.is_le(U32.to_nat(a), U32.to_nat(b)), VB.le_u32n(a, b)), h)\n'
-          f'def pay_h31({TP}, {H31}, {HC}) -> {{Nat.is_lt({TN(L(5))}, VB.pw(31n)) == True{{}} : Bool}}:\n'
-          f'  FD.nat__le_lt_trans({TN(L(5))}, U32.to_nat(n), VB.pw(31n), lwn5(t, x, off, n, hchk), h31)\n'
+          f'def pay_h31({TP}, {H31}, {HC}) -> {{Nat.is_le({TN(L(5))}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+          f'  FD.nat__le_trans({TN(L(5))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn5(t, x, off, n, hchk), h31)\n'
           f'def pay_hSN({TP}, {HS}, {HC}) -> {{Nat.is_le({TN(L(5))}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
           f'  FD.nat__le_trans({TN(L(5))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn5(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))\n'
           f'def pay_hS({TP}, {HS}, {HC}) -> {{U32.is_le({L(5)}, VB.NMAX()) == True{{}} : Bool}}:\n'
@@ -110,7 +110,7 @@ def u2n(+a: U32, +b: U32, +h: {U32.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(
     tup = ''
     comps = [L(i) for i in range(NW)]
     comps = [lens[i] for i in range(NW)] + [(f'Equal.sym(Nat, {sub_o(parts[i])}, {lens[i]}, e{FIELD[i]})' if FIELD[i] in FLIP else f'e{FIELD[i]}') for i in range(NW)]
-    bound = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(n), {SZ}, Equal.sym(Nat, {SZ}, U32.to_nat(n), tot(t, x, off, n, hchk)), h31)')
+    bound = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, U32.to_nat(n), {SZ}, Equal.sym(Nat, {SZ}, U32.to_nat(n), tot(t, x, off, n, hchk)), h31)')
     r = bound
     for c in reversed(comps):
         r = f'({c}, {r})'

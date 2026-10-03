@@ -83,7 +83,7 @@ def list_btwins(t):
         if m and f'def {name}B(' not in t:
             X = m.group(1)
             nb = blk.replace(f'def {name}(', f'def {name}B(', 1)
-            nb = nb.replace(m.group(0), '+B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},\n    +hL: {Nat.is_le(' + X + ', B) == True{} : Bool})', 1)
+            nb = nb.replace(m.group(0), '+B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool},\n    +hL: {Nat.is_le(' + X + ', B) == True{} : Bool})', 1)
             nb = _rewrite_calls(nb, 'VBZ.fitq', lambda g: f'VBZ.fitsB({g[1]}, B, hL, hB)' if g[0] == 'dx' else None)
             assert not re.search(r'\bdx\b|\bhdx\b', nb), (name, [l for l in nb.split('\n') if re.search(r'\bdx\b', l)][:2])
             out.append('\n' + nb.rstrip('\n') + '\n')
@@ -173,7 +173,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
 
     def bound(s):
         # the bytes' bound: ENDC <= 4 2^28 becomes ENDC < 2^31 (ENDC by name)
-        return s.replace(f'Nat.is_le({ENDX}, A.quad(VB.pw(28n)))', f'Nat.is_lt({ENDC}, VB.pw(31n))')
+        return s.replace(f'Nat.is_le({ENDX}, A.quad(VB.pw(28n)))', f'Nat.is_le({ENDC}, U32.to_nat(VB.NMAX()))')
     body = bound(list_d_swap(child_ok(m.group(2)), ld))
     oktw_body = body
     new = [f'\n# ---- OKW: the encoding below 2^31 bytes (the object API\'s limit: O.padd\'s poison bit), the children OKW ----\n'
@@ -230,7 +230,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         for al in set(re.findall(r'(?<![\w.])(\w+)\.szx\(', s)):
             def szs(g, al=al):
                 if len(g) == 6 and g[3] == '2n+k' and g[4] == 'CS.ek2(k, ek)':
-                    return (f'{al}.szxS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_lt_trans({al}.LL({g[0]}, {g[1]}), {ENDC}, VB.pw(31n), {g[5]}, '
+                    return (f'{al}.szxS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_trans({al}.LL({g[0]}, {g[1]}), {ENDC}, U32.to_nat(VB.NMAX()), {g[5]}, '
                             f'ok_bndW({OAS}, h)))')
                 return None
             s = _rewrite_calls(s, al + '.szx', szs)
@@ -298,7 +298,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
                 body = re.sub(r'(?<![\w.])K\.putxW\(', 'K.putxO(', body)
             elif ld:   # (its list children in D form: the writer's putxWD)
                 body = re.sub(r'(?<![\w.])K\.putxW\(', 'K.putxWD(', body)
-            hs = (f'  +hs31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {X}, '
+            hs = (f'  +hs31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDC}, {X}, '
                   f'Equal.sym(Nat, {X}, {ENDC}, lenEW({OAS}, h)), ok_bndW({OAS}, h))\n')
             t = t[:b] + '\n' + (hdr + hs + body).rstrip('\n') + '\n' + t[b:]
         else:
@@ -361,17 +361,17 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         L = ml.group(1) if ml else f'List.length(&2, U32, K.ENCC({OAS}))'   # (lenEW's own form of the length)
         if 'def szxEO(' in t:   # (U32 mode: through a helper over a variable list, as szxEO: the big ENCC is never compared)
             t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\n'
-                                  f'def bndxEO(+m: MW, +hok: {{OKW(m) == True{{}} : Bool}}, +EE: +List<U32>, +eE: {{ENC(m) == EE : +List<U32>}}) -> {{Nat.is_lt(VCN.LN(EE), VB.pw(31n)) == True{{}} : Bool}}:\n'
-                                  f'  match m:\n    case MW{{{pat}}}: FD.logic__subst(+List<U32>, zq => {{Nat.is_lt(VCN.LN(zq), VB.pw(31n)) == True{{}} : Bool}}, K.ENCC({OAS}), EE, '
+                                  f'def bndxEO(+m: MW, +hok: {{OKW(m) == True{{}} : Bool}}, +EE: +List<U32>, +eE: {{ENC(m) == EE : +List<U32>}}) -> {{Nat.is_le(VCN.LN(EE), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+                                  f'  match m:\n    case MW{{{pat}}}: FD.logic__subst(+List<U32>, zq => {{Nat.is_le(VCN.LN(zq), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, K.ENCC({OAS}), EE, '
                                   f'Equal.sym(+List<U32>, EE, K.ENCC({OAS}), Equal.trans(+List<U32>, EE, ENC(MW{{{OAS}}}), K.ENCC({OAS}), Equal.sym(+List<U32>, ENC(MW{{{OAS}}}), EE, eE), {{==}})), '
-                                  f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {L}, Equal.sym(Nat, {L}, {ENDC}, lenEW({OAS}, hok)), ok_bndW({OAS}, hok)))\n'
+                                  f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDC}, {L}, Equal.sym(Nat, {L}, {ENDC}, lenEW({OAS}, hok)), ok_bndW({OAS}, hok)))\n'
                                   f'\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
-                                  f'  {{Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{{}} : Bool}}\n'
+                                  f'  {{Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}\n'
                                   f'def bndxO(m, hok):\n  bndxEO(m, hok, ENC(m), {{==}})\n')
         else:
           t = t.rstrip('\n') + (f'\n\n# The bytes below 2^31 (OKW).\nlaw bndxO:\n  for +m: MW\n  for +hok: {{OKW(m) == True{{}} : Bool}}\n'
-                              f'  {{Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{{}} : Bool}}\n'
-                              f'def bndxO(m, hok):\n  match m:\n    case MW{{{pat}}}: FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {L}, '
+                              f'  {{Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}\n'
+                              f'def bndxO(m, hok):\n  match m:\n    case MW{{{pat}}}: FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDC}, {L}, '
                               f'Equal.sym(Nat, {L}, {ENDC}, lenEW({OAS}, hok)), ok_bndW({OAS}, hok))\n')
     # only the twins the O laws reach
     created = {'OKTW'} | {n + 'W' for n in ext + chain + cons}
@@ -507,17 +507,17 @@ def okw_size(t, child_okw, es_aliases, endc_def=None, dchild=False):
         s = re.sub(r'\n  \+hk = FD\.logic__subst\(Nat, z => \{Nat\.is_lt\(z, 29n\) == True\{\} : Bool\}, 28n, k, Equal\.sym\(Nat, k, 28n, ek\), \{==\}\)', '', s)
         s = s.replace('A.quad(VB.pw(k))', B)
         # O.padd below 2^31
-        s = _rewrite_calls(s, 'VCN.padd_dd', lambda g: (f'VCN.padd_ddW({g[0]}, {g[1]}, 0n, {{==}}, FD.nat__le_lt_trans(Nat.add(U32.to_nat({g[0]}), U32.to_nat({g[1]})), '
-                                                        f'{B}, VB.pw(31n), {g[4]}, {BND}))') if g[2:4] == ['k', 'hk'] else None)
+        s = _rewrite_calls(s, 'VCN.padd_dd', lambda g: (f'VCN.padd_ddW({g[0]}, {g[1]}, 0n, {{==}}, FD.nat__le_trans(Nat.add(U32.to_nat({g[0]}), U32.to_nat({g[1]})), '
+                                                        f'{B}, U32.to_nat(VB.NMAX()), {g[4]}, {BND}))') if g[2:4] == ['k', 'hk'] else None)
         # a record list's bytes (i * RS): below 2^32
         s = _rewrite_calls(s, 'VRX.mulq', lambda g: (f'VRX.mulqW({", ".join(g[1:7])}, CS.lt32B(A.quad(Nat.mul({g[2]}, {g[4]})), {B}, {g[8]}, {BND}))')
                            if g[0] == 'k' and g[7] == 'hk' else None)
         # the lists' sizes: szs / szx at 2 + k (their strict S forms), szx_<p> at k (szxB_<p>)
         for mm in set(re.findall(r'(?<![\w.])(\w+)\.szs\(', s)):
-            s = _rewrite_calls(s, mm + '.szs', lambda g, mm=mm: (f'{mm}.szsS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_lt_trans({mm}.LL({g[0]}, {g[1]}), {B}, VB.pw(31n), {g[5]}, {BND}))')
+            s = _rewrite_calls(s, mm + '.szs', lambda g, mm=mm: (f'{mm}.szsS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_trans({mm}.LL({g[0]}, {g[1]}), {B}, U32.to_nat(VB.NMAX()), {g[5]}, {BND}))')
                                if len(g) == 6 and g[3] == 'Nat.add(2n, k)' else None)
         for mm in set(re.findall(r'(?<![\w.])(\w+)\.szx\(', s)):
-            s = _rewrite_calls(s, mm + '.szx', lambda g, mm=mm: (f'{mm}.szxS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_lt_trans({mm}.LL({g[0]}, {g[1]}), {B}, VB.pw(31n), {g[5]}, {BND}))')
+            s = _rewrite_calls(s, mm + '.szx', lambda g, mm=mm: (f'{mm}.szxS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_trans({mm}.LL({g[0]}, {g[1]}), {B}, U32.to_nat(VB.NMAX()), {g[5]}, {BND}))')
                                if len(g) == 6 and g[3] in ('2n+k', 'Nat.add(2n, k)') else None)
         for mm in set(re.findall(r'(?<![\w.])(\w+\.szx_\w+)\(', s)):
             def szb(g, mm=mm):
@@ -627,9 +627,9 @@ def _room_o(blk, SZ, S, OAS, LLx, extra_hs31):
     es_eq = f'Equal.sym(Nat, {S}, {L}, es)' if ENDC is None else f'Equal.sym(Nat, {S}, {ENDC}, es)'
     if ENDC is None:
         h31 = f'CI.bndxO(m, hok)'
-        h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {L}, {S}, {es_eq}, {h31})\n')
+        h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {L}, {S}, {es_eq}, {h31})\n')
     else:
-        h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {ENDC}, {S}, {es_eq}, CI.ok_bndW({OAS}, h))\n')
+        h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDC}, {S}, {es_eq}, CI.ok_bndW({OAS}, h))\n')
     hS = (f'  +e31 = Equal.sym(Nat, Nat.add(2n, k), 31n, Equal.trans(Nat, Nat.add(2n, k), Nat.add(2n, 29n), 31n, Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 29n, ek), {{==}}))\n'
           f'  +hS = VCN.le_qk({S}, k, FD.logic__subst(Nat, z => {{Nat.is_lt({S}, VB.pw(z)) == True{{}} : Bool}}, 31n, Nat.add(2n, k), e31, h31))\n')
     import re as _re
@@ -709,7 +709,7 @@ def top_o(t, putxK):
         blk = re.sub(r'(?<![\w.])CI\.encx_spec\(', 'CI.encx_specO(', blk)
         if n == 'putx0':
             blk = _room_o(blk, SZ, S, OAS, LLx, True)
-            blk = blk.replace('  +pf0 = ', f'  +hs31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {S}, {LLx}, Equal.sym(Nat, {LLx}, {S}, eLS), h31)\n'
+            blk = blk.replace('  +pf0 = ', f'  +hs31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {S}, {LLx}, Equal.sym(Nat, {LLx}, {S}, eLS), h31)\n'
                               f'  +hl32 = {hl32_of(LLx).replace("h31)", "hs31)")}\n  +pf0 = ', 1)
             # (the writer's putxO / putxW: hs31 and hl32 after hl)
             blk = _rewrite_calls(blk, 'K.putx', lambda g: f'K.{putxK}(' + ', '.join(g[:-2] + ['hs31', 'hl32'] + g[-2:]) + ')')

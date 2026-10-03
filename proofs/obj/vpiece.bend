@@ -179,5 +179,5 @@ def proom32(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: 
 # proom's piece of m bytes (a + m <= L): m < 2^31.
 def proom31(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
     +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool}, +hm: {Nat.is_le(1n, m) == True{} : Bool},
-    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(m, L, VB.pw(31n), FD.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)
+    +hs31: {Nat.is_le(L, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(m, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(m, L, U32.to_nat(VB.NMAX()), FD.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)

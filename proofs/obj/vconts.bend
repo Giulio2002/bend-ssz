@@ -96,7 +96,7 @@ def q30(+dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}) -> {Nat.is_le(A.qu
   FD.nat__pow2_mono(2n+dd, 30n, FD.nat__lt_succ_le(dd, 28n, hd))
 def bsuc(+x: Nat, +k: Nat, +h: {Nat.is_le(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(1n+k)) == True{} : Bool}:
   FD.nat__le_lt_trans(x, VB.pw(k), VB.pw(1n+k), h, FD.nat__pow2_lt_succ(k))
-def b31n(+x: Nat, +h: {Nat.is_le(x, VB.pw(30n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}: bsuc(x, 30n, h)
+def b31n(+x: Nat, +h: {Nat.is_le(x, VB.pw(30n)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}: VB.le_pw30_nmax(x, h)
 
 # The runtime's X is U32.from_nat(4 q + r) when the L bytes there fit the tree.
 def exqW(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
@@ -112,32 +112,26 @@ def exq(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.
 # ---- the bound B < 2^31 (the OKW twins: an encoding below 2^31 bytes, O.padd's poison bit) ----
 
 # pstep under a bound B < 2^31 (any bound: no power of two is compared).
-def pstepB(+a: U32, +b: U32, +o: Nat, +L: Nat, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+def pstepB(+a: U32, +b: U32, +o: Nat, +L: Nat, +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool},
     +ea: {U32.to_nat(a) == o : Nat}, +eb: {U32.to_nat(b) == L : Nat}, +hb: {Nat.is_le(Nat.add(o, L), B) == True{} : Bool})
     -> {U32.to_nat(O.padd(a, b)) == Nat.add(o, L) : Nat}:
   +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(o, U32.to_nat(b)), Nat.add(o, L),
     Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(b)), U32.to_nat(a), o, ea), Equal.cong(Nat, Nat, z => Nat.add(o, z), U32.to_nat(b), L, eb))
   Equal.trans(Nat, U32.to_nat(O.padd(a, b)), Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(o, L),
-    VCN.padd_ddW(a, b, 0n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, Nat.add(o, L), Nat.add(U32.to_nat(a), U32.to_nat(b)), Equal.sym(Nat, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(o, L), e1),
-      FD.nat__le_lt_trans(Nat.add(o, L), B, VB.pw(31n), hb, hB))),
+    VCN.padd_ddW(a, b, 0n, {==}, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(o, L), Nat.add(U32.to_nat(a), U32.to_nat(b)), Equal.sym(Nat, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(o, L), e1),
+      FD.nat__le_trans(Nat.add(o, L), B, U32.to_nat(VB.NMAX()), hb, hB))),
     e1)
 
 # x <= B < 2^a, a < 32: x fits four bytes (the exponent symbolic).
-def fitsBa(+x: Nat, +B: Nat, +a: Nat, +ha: {Nat.is_lt(a, 32n) == True{} : Bool}, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(a)) == True{} : Bool})
-    -> {N.fits(4n, x) == True{} : Bool}:
-  VFT.fits4(a, x, FD.nat__le_trans(x, B, VB.pw(a), hx, FD.nat__lt_le(B, VB.pw(a), hB)), ha)
-def fitsB(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
-  fitsBa(x, B, 31n, {==}, hx, hB)
+def fitsB(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
+  VFT.fits4lt(x, VB.nmax_lt32(x, FD.nat__le_trans(x, B, U32.to_nat(VB.NMAX()), hx, hB)))
 
 # fitc under a bound B < 2^31.
-def fitcB(+FS: Nat, +PAY: +List<U32>, +E: Nat, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +eE: {Nat.add(FS, List.length(&2, U32, PAY)) == E : Nat},
+def fitcB(+FS: Nat, +PAY: +List<U32>, +E: Nat, +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +eE: {Nat.add(FS, List.length(&2, U32, PAY)) == E : Nat},
     +hb: {Nat.is_le(E, B) == True{} : Bool}) -> {N.fits(4n, Nat.add(FS, List.length(&2, U32, PAY))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, E, Nat.add(FS, List.length(&2, U32, PAY)), Equal.sym(Nat, Nat.add(FS, List.length(&2, U32, PAY)), E, eE),
     fitsB(E, B, hb, hB))
 
 # x <= B < 2^a (a < 32): x < 2^32 (the exponent symbolic in lt32Ba).
-def lt32Ba(+x: Nat, +B: Nat, +a: Nat, +ha: {Nat.is_le(a, 32n) == True{} : Bool}, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(a)) == True{} : Bool})
-    -> {Nat.is_lt(x, FD.spec_common__pow2(32n)) == True{} : Bool}:
-  FD.nat__lt_le_trans(x, VB.pw(a), FD.spec_common__pow2(32n), FD.nat__le_lt_trans(x, B, VB.pw(a), hx, hB), FD.nat__pow2_mono(a, 32n, ha))
-def lt32B(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(x, FD.spec_common__pow2(32n)) == True{} : Bool}:
-  lt32Ba(x, B, 31n, {==}, hx, hB)
+def lt32B(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_lt(x, FD.spec_common__pow2(32n)) == True{} : Bool}:
+  VB.nmax_lt32(x, FD.nat__le_trans(x, B, U32.to_nat(VB.NMAX()), hx, hB))

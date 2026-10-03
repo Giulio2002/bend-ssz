@@ -738,6 +738,39 @@ def nmax_lt(+n: U32, +hN: {U32.is_le(n, NMAX()) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(31n, U32.to_nat(n)), F.spec_common__pow2(32n)) == True{} : Bool}:
   umax_lt(Nat.add(31n, U32.to_nat(n)), le_nmax(n, hN))
 
+# Bounds below 2^31 / 2^30 are within NMAX. le_gen keeps the closed values (a power of two, NMAX) out of every declared statement: a statement
+# with a closed value on both sides is unfolded in unary by the checker.
+def le_gen(+a: U32, +b: U32, +P: Nat, +Q: Nat, +ea: {U32.to_nat(a) == P : Nat}, +eb: {U32.to_nat(b) == Q : Nat}, +h: {U32.is_le(a, b) == True{} : Bool})
+    -> {Nat.is_le(P, Q) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(P, z) == True{} : Bool}, U32.to_nat(b), Q, eb,
+    F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(b)) == True{} : Bool}, U32.to_nat(a), P, ea,
+      F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(a, b), Nat.is_le(U32.to_nat(a), U32.to_nat(b)), le_u32n(a, b), h)))
+
+def le_pw31_nmax(+x: Nat, +h: {Nat.is_lt(x, pw(31n)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool}:
+  F.nat__le_trans(x, pw(31n), U32.to_nat(NMAX()), F.nat__lt_le(x, pw(31n), h),
+    le_gen(F.u32__pow2u(31n), NMAX(), pw(31n), U32.to_nat(NMAX()), F.u32__pow2u_value(31n, {==}), {==}, {==}))
+
+def le_pw30_nmax(+x: Nat, +h: {Nat.is_le(x, pw(30n)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool}:
+  F.nat__le_trans(x, pw(30n), U32.to_nat(NMAX()), h,
+    le_gen(F.u32__pow2u(30n), NMAX(), pw(30n), U32.to_nat(NMAX()), F.u32__pow2u_value(30n, {==}), {==}, {==}))
+
+# Nat-form bounds from x <= NMAX (as le_nmax, nmax_lt, without the U32 comparison).
+def le_nmaxn(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(31n, x), U32.to_nat(UMAX())) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, x), z) == True{} : Bool}, Nat.add(31n, U32.to_nat(NMAX())), U32.to_nat(UMAX()), e_umax(),
+    Order.add_left(31n, x, U32.to_nat(NMAX()), h))
+
+def nmax_ltn(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(31n, x), F.spec_common__pow2(32n)) == True{} : Bool}:
+  umax_lt(Nat.add(31n, x), le_nmaxn(x, h))
+
+def nmax_lt3(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(U32.to_nat(3), x), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(Nat.add(U32.to_nat(3), x), Nat.add(31n, x), F.spec_common__pow2(32n), Order.add_right(U32.to_nat(3), 31n, x, {==}), nmax_ltn(x, h))
+
+def nmax_lt32(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool}) -> {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, Nat.add(31n, x), F.spec_common__pow2(32n), Order.left_below_sum(31n, x), nmax_ltn(x, h))
+
 # 2^(2 + d) <= 2^32 for d < 31.
 def pw2d32(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_le(pw(2n+d), F.spec_common__pow2(32n)) == True{} : Bool}:
   F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(32n)) == True{} : Bool}, F.spec_common__pow2(2n+d), pw(2n+d), {==},

@@ -172,7 +172,7 @@ def _dvp_header_and_eqe(c, P, H31, H31E, H31T, WSIG, X, ELT, VD_, vl):
             A_('def bbq() -> {VB.pw(31n) == A.quad(VB.pw(29n)) : Nat}:\n'
                '  %Equal.sym(Nat, 31n, 2n+29n, {==}) : {VB.pw(_) == A.quad(VB.pw(29n)) : Nat}\n'
                '  {==}\n\n'
-               'def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}:\n'
+               'def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
                '  FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(len), z) == True{} : Bool}, A.quad(VB.pw(29n)), VB.pw(31n), Equal.sym(Nat, VB.pw(31n), A.quad(VB.pw(29n)), bbq()),\n'
                '    FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(29n), A.quad(VB.pw(29n)), h, A.quad_ge(VB.pw(29n))))')
             A_('')
@@ -404,14 +404,14 @@ def _dvp_root_laws(c, P, WSIG, WARG, H31U, H31S, H31A, X, SEQ, LNF, PRV, PM, A_,
        f'    -> {PM}({RR}, V.NN(t, x)):\n'
        f'  +hc = hc_of(t, x, off, len, ec, hchk)\n'
        f'  (FD.logic__subst(Nat, z => {{Nat.is_lt(z, 31n) == True{{}} : Bool}}, {WD}, ER.LDEP(RT.MB<RT.M_{X}>, {RR}), Equal.sym(Nat, ER.LDEP(RT.MB<RT.M_{X}>, {RR}), {WD}, ER.pdep(RT.MB<RT.M_{X}>, {WD}, {RR}, {PFR})), {DWL}),\n'
-       f'    (FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(len), W8.LL({TM}({RR}), V.NN(t, x)), Equal.sym(Nat, W8.LL({TM}({RR}), V.NN(t, x)), U32.to_nat(len), llw(d, t, x, off, len, ec, {WARG}, hchk)), {H31U}),\n'
+       f'    (FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, U32.to_nat(len), W8.LL({TM}({RR}), V.NN(t, x)), Equal.sym(Nat, W8.LL({TM}({RR}), V.NN(t, x)), U32.to_nat(len), llw(d, t, x, off, len, ec, {WARG}, hchk)), {H31U}),\n'
        f'      rv_sdks({K0}, 0, V.NN(t, x), {WD}, d, t, x, off, len, {TREP}, V.W0(t, x), V.B1(t, x, len), {hdw}, FD.array__trep_perfect(RT.MB<RT.M_{X}>, {WD}, RT.MNone{{}}),\n'
        f'        {DWC}, inv0(t, x, len, hc), {WARG}, ee0_of(t, x, off, len, ec, hchk), ev0_of(t, x, off, len, ec, hchk), {{==}})))')
     A_('')
     A_(f'def sd_c(+c: Bool, {WINS}, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {WSIG}, {HCK}{H31S})\n'
        f'    -> {PRV}(V.RZ(c, d, t, x, off, len)):\n'
        f'  match c:\n'
-       f'    case True{{}}: ({{==}}, (FD.logic__subst(U32, z => {{Nat.is_lt(U32.to_nat(z), VB.pw(31n)) == True{{}} : Bool}}, len, 0, FD.u32alg__eq_of(len, 0, ec), {H31U}), {{==}}))\n'
+       f'    case True{{}}: ({{==}}, (FD.logic__subst(U32, z => {{Nat.is_le(U32.to_nat(z), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, len, 0, FD.u32alg__eq_of(len, 0, ec), {H31U}), {{==}}))\n'
        f'    case False{{}}:\n'
        f'      %Equal.sym({SEQ}, V.RZ(False{{}}, d, t, x, off, len), {SEQ}{{RT.am_{c}({RR}), V.NN(t, x)}}, obj_eq(d, t, x, off, len, ec, hchk, {WARG})) : {PRV}(_)\n'
        f'      FD.logic__subst(FD.array__Tree<RT.MB<RT.M_{X}>>, z => {PM}(z, V.NN(t, x)), {RR}, RT.tfz_{c}(RT.am_{c}({RR})), Equal.sym(FD.array__Tree<RT.MB<RT.M_{X}>>, RT.tfz_{c}(RT.am_{c}({RR})), {RR}, RT.tfzam_{c}({RR})), pm_f(d, t, x, off, len, ec, {WARG}, hchk{H31A}))')

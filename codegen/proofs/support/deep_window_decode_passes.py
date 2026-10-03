@@ -1073,7 +1073,7 @@ def hs31_decl(ty):
     a, _ = _args(inner + ')', 0)
     m = re.match(r'(\w+)\.NWN\(Nat\.add\(', a[1])
     b, _ = _args(a[1], m.end())
-    return '{Nat.is_lt(' + b[1] + ', VB.pw(31n)) == True{} : Bool}'
+    return '{Nat.is_le(' + b[1] + ', U32.to_nat(VB.NMAX())) == True{} : Bool}'
 
 
 def hs31_pass(vrx='VRX', derive=None, needed_only=True, seeds=()):

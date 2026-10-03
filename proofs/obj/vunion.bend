@@ -197,5 +197,5 @@ def aroom32(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{
 
 # aroom's arm of E bytes (the union's 1 + E below 2^31).
 def aroom31(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hs31: {Nat.is_lt(1n+E, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(E, VB.pw(31n)) == True{} : Bool}:
-  FD.nat__lt_trans(E, 1n+E, VB.pw(31n), FD.nat__lt_succ(E), hs31)
+    +hs31: {Nat.is_le(1n+E, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(E, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(E, 1n+E, U32.to_nat(VB.NMAX()), FD.nat__lt_le(E, 1n+E, FD.nat__lt_succ(E)), hs31)

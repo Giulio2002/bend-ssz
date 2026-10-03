@@ -207,7 +207,7 @@ def %(c)s_written(+t: F.array__Tree<%(EL)s>, +N: U32, +i: U32, +m: %(EL)s, +h: {
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def %(c)s_api_encode_set(+t: F.array__Tree<%(EL)s>, +N: U32, +i: U32, +m: %(EL)s, +h: {%(OKL)s(t, N) == True{} : Bool},
     +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +em: {E.EOK(m) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(%(LL)s(F.array__upd(%(EL)s, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(%(LL)s(F.array__upd(%(EL)s, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(%(VALL)s(t, N), U32.to_nat(i), %(V)s(m)), %(schema)s) == Some{[S.Variable{%(ENCL)s(F.array__upd(%(EL)s, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}:
   %%%(c)s_vall_set(t, N, i, m, h, hs) :
     {Codec.parts(_, %(schema)s) == Some{[S.Variable{%(ENCL)s(F.array__upd(%(EL)s, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}
@@ -307,7 +307,7 @@ def %(c)s_written(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.
 
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def %(c)s_api_encode_set(+A: F.array__Tree<%(R)s>, +N: U32, +i: U32, +v: %(R)s, +h: {E.OKL_%(c)s(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(E.LL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(E.VALL_%(c)s(A, N), U32.to_nat(i), E.%(rvw)s(v)), %(schema)s) == Some{[S.Variable{E.ENCL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}:
   %%%(c)s_vall_set(A, N, i, v, h, hs) :
     {Codec.parts(_, %(schema)s) == Some{[S.Variable{E.ENCL_%(c)s(F.array__upd(%(R)s, E.TDM_%(c)s(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}

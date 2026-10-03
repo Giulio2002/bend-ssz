@@ -199,8 +199,8 @@ def totP(+R: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(R, 1n), P) == True{} : Bool})
 
 # the same at P = 2^29, the bound 2^31 written as the spec's power
 def tot29(+R: Nat, +q: Nat, +hq: {q == Nat.add(VB.pw(29n), 1n) : Nat}, +h: {Nat.is_lt(Nat.add(R, 1n), VB.pw(29n)) == True{} : Bool})
-    -> {Nat.is_lt(Nat.add(R, q), VB.pw(31n)) == True{} : Bool}:
-  %Equal.sym(Nat, q, Nat.add(VB.pw(29n), 1n), hq) : {Nat.is_lt(Nat.add(R, _), VB.pw(31n)) == True{} : Bool}
+    -> {Nat.is_le(Nat.add(R, q), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  %Equal.sym(Nat, q, Nat.add(VB.pw(29n), 1n), hq) : {Nat.is_le(Nat.add(R, _), U32.to_nat(VB.NMAX())) == True{} : Bool}
   totP(R, VB.pw(29n), h)
 
 # 2x + 2k = 2(x + k), by x's structure (a big sum rewritten into doublings the checker compares level by level)
@@ -1128,7 +1128,7 @@ class Synth:
         return f'WT.lbig{"" if k == 32 else k}({o}, {n}, {{==}}, {nm}({bsa}))'
 
     def tot_qp(self, q):
-        """{Nat.is_lt(S, pw(31n)) == True} for a left-nested sum S with one progressive bit list's term QP(..) = 2^29 + 1:
+        """{Nat.is_le(S, U32.to_nat(VB.NMAX())) == True} for a left-nested sum S with one progressive bit list's term QP(..) = 2^29 + 1:
         QP moved last (WT.swapq, one step per later term), then WT.tot29 with the rest compared in unary (small)"""
         m = re.match(r'^\{Nat\.is_lt\((.*), ([\w.]+)\.pw\(31n\)\) == True\{\} : Bool\}$', q, re.S)
         terms, cur = [], m.group(1)
@@ -1249,7 +1249,7 @@ class Synth:
 # ---------------------------------------------------------------- one name
 
 def szr_term(syn, mod, pt, at_d):
-    """the total-size premise {Nat.is_lt(SZR(U32.to_nat(F), t0, ..), pw(31n)) == True} with a large fixed part F:
+    """the total-size premise {Nat.is_le(SZR(U32.to_nat(F), t0, ..), U32.to_nat(VB.NMAX())) == True} with a large fixed part F:
     SZR adds on its first argument, so evaluating it walks F once per term; a lemma reassociates the sum to
     t0 + .. + tn + F first (F stays a U32 in the proof term)"""
     m = re.match(r'\{Nat\.is_lt\(SZR\((.*)\), VB\.pw\(31n\)\) == True\{\} : Bool\}$', pt, re.S)
@@ -1282,10 +1282,10 @@ def szr_term(syn, mod, pt, at_d):
     syn.lemmas['x000_' + nm] = (f'# SZR(F, t0, .., tn) = F + (t0 + .. + tn)\n'
                                 f'def {nm}(+x: U32, {params}) -> {{BR.SZR({F}, {", ".join(ts)}) == Nat.add({F}, {S}) : Nat}}:\n'
                                 + '\n'.join(lines) + '\n  {==}')
-    syn.lemmas['x001_szr_lt'] = (f'def szr_lt(+x: U32, {params}, +h: {{Nat.is_lt(Nat.add({S}, {F}), VB.pw(31n)) == True{{}} : Bool}})\n'
-                                 f'    -> {{Nat.is_lt(BR.SZR({F}, {", ".join(ts)}), VB.pw(31n)) == True{{}} : Bool}}:\n'
-                                 f'  %Equal.sym(Nat, BR.SZR({F}, {", ".join(ts)}), Nat.add({F}, {S}), {nm}(x, {", ".join(ts)})) : {{Nat.is_lt(_, VB.pw(31n)) == True{{}} : Bool}}\n'
-                                 f'  %Equal.sym(Nat, Nat.add({F}, {S}), Nat.add({S}, {F}), FD.nat__add_comm({F}, {S})) : {{Nat.is_lt(_, VB.pw(31n)) == True{{}} : Bool}}\n'
+    syn.lemmas['x001_szr_lt'] = (f'def szr_lt(+x: U32, {params}, +h: {{Nat.is_le(Nat.add({S}, {F}), U32.to_nat(VB.NMAX())) == True{{}} : Bool}})\n'
+                                 f'    -> {{Nat.is_le(BR.SZR({F}, {", ".join(ts)}), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+                                 f'  %Equal.sym(Nat, BR.SZR({F}, {", ".join(ts)}), Nat.add({F}, {S}), {nm}(x, {", ".join(ts)})) : {{Nat.is_le(_, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}\n'
+                                 f'  %Equal.sym(Nat, Nat.add({F}, {S}), Nat.add({S}, {F}), FD.nat__add_comm({F}, {S})) : {{Nat.is_le(_, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}\n'
                                  f'  h')
     syn.ctx.alias(ROOT / 'proofs/obj/vbuf.bend')
     return f'szr_lt({mf.group(1)}, ' + ', '.join(at_d(a) for a in args[1:]) + ', {==})'

@@ -306,7 +306,7 @@ def vlist_widen(text):
     fam = ''.join(new[n].rstrip('\n') + '\n\n' for n in VL_FAM)
     out = text[:first] + VL_HELP + '\n' + fam + text[first:]
     B28 = 'Nat.is_le(LL(t, N), A.quad(VB.pw(28n)))'
-    B31 = 'Nat.is_lt(LL(t, N), VB.pw(31n))'
+    B31 = 'Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX()))'
     for n in ('OKT', 'ok_l', 'ok_b'):
         a = out.index(f'\ndef {n}(') + 1
         e = out.find('\ndef ', a + 5)

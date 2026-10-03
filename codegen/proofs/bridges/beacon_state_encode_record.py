@@ -684,7 +684,7 @@ def _ok_d(name, EX, sig_extra, convs, proofs):
     """the D validity (EX_D.OK: the base chain at depth below 31 and the object API's NMAX) of a byte list's record from its storage facts."""
     L = 'U.LDEP(U32, tt)'
     t0, p0 = _and_chain([c.replace('@L@', L) for c in convs], proofs)
-    return (f"def {name}(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n){sig_extra}, +hM: {{Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{{}} : Bool}})\n"
+    return (f"def {name}(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n){sig_extra}, +hM: {{Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{{}} : Bool}})\n"
             f"    -> {{{EX}D.OK({EX}.MW{{{L}, tt, n}}) == True{{}} : Bool}}:\n"
             f"  (+pf, +s1) = sf\n  (+hdw, +s2) = s1\n  (+hN, +htz) = s2\n"
             f"  FD.logic__and_intro({t0}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), {p0},\n    nmaxD(n, hM))\n")
@@ -704,9 +704,9 @@ BSL_OK = {
              'Nat.is_le(U32.to_nat(n), U32.to_nat(536870912))', 'U32.is_eq(U32.and(n, 31), 0)', 'WH.CHKw(tt, 0n, 0, n)'],
             ['pf', 'hdw', 'hN', 'htz', 'hB29(n, c, eN, hc)', 'FD.u32alg__eq_true(U32.and(n, 31), 0, and31_x32(n, c, emul))', 'VU.whole_i(n, 32, 16777216, WH.vR(), {==}, {==}, {==}, c, emul, hc)']),
 }
-HM = '{Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}'
+HM = '{Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 NMAXD = ('# n below 2^31 is within the object API\'s limit NMAX\n'
-         'def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
+         'def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
          '  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))\n\n')
 
 
@@ -728,22 +728,22 @@ def _bsl_body_d():
         assert b.count(old) >= 1, old[:80]
         b = b.replace(old, new, cnt)
     # u64 list
-    sub("+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}) -> R_U(po):", "+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_U(po):")
+    sub("+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}) -> R_U(po):", "+emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_U(po):")
     sub("+hok = okU(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul)", "+hok = okU(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul, hM)")
     sub("def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}) -> R_U(po):",
         f"def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {{U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}}, +hM: {HM}) -> R_U(po):")
-    sub("  kU2(po, tt, n, ew, sf, c, ex8, emul)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kU2(po, tt, n, ew, sf, c, ex8, emul, hM2)")
+    sub("  kU2(po, tt, n, ew, sf, c, ex8, emul)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kU2(po, tt, n, ew, sf, c, ex8, emul, hM2)")
     sub("+hs: U.sdk(po, 31n)) -> R_U(po):", f"+hs: U.sdk(po, 31n), +hM: {HM}) -> R_U(po):")
     sub("kU(po, cws(po, 31n, hs), eN)", "kU(po, cws(po, 31n, hs), eN, hM)")
     # u8 list
     sub("def kB8(-po: O.Words, +cw: CWS(po, 31n)) -> R_B8(po):", f"def kB8(-po: O.Words, +cw: CWS(po, 31n), +hM: {HM}) -> R_B8(po):")
-    sub("  +hok = ok8(tt, n, sf)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  +hok = ok8(tt, n, sf, hM2)")
+    sub("  +hok = ok8(tt, n, sf)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  +hok = ok8(tt, n, sf, hM2)")
     sub("def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n)) -> R_B8(po):\n  kB8(po, cws(po, 31n, hs))", f"def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n), +hM: {HM}) -> R_B8(po):\n  kB8(po, cws(po, 31n, hs), hM)")
     # b32 list
-    sub("+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}) -> R_H(po):", "+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_H(po):")
+    sub("+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}) -> R_H(po):", "+hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_H(po):")
     sub("+hok = okH(tt, n, (pf, (hdw, (hN, htz))), c, eN, emul, hc)", "+hok = okH(tt, n, (pf, (hdw, (hN, htz))), c, eN, emul, hc, hM)")
     sub("+hl: {Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{} : Bool}) -> R_H(po):", f"+hl: {{Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{{}} : Bool}}, +hM: {HM}) -> R_H(po):")
-    sub("  kH2(po, tt, n, ew, sf, eN2, hl2)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kH2(po, tt, n, ew, sf, eN2, hl2, hM2)")
+    sub("  kH2(po, tt, n, ew, sf, eN2, hl2)", "  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)\n  kH2(po, tt, n, ew, sf, eN2, hl2, hM2)")
     sub("+hs: U.sdk(po, 31n)) -> R_H(po):", f"+hs: U.sdk(po, 31n), +hM: {HM}) -> R_H(po):")
     sub("SH.ListOf_limit(s), U32.to_nat(16777216), el, hl))", "SH.ListOf_limit(s), U32.to_nat(16777216), el, hl), hM)")
     return NMAXD + b
@@ -1099,7 +1099,7 @@ def _vs_sizes_okw(it, Kt, ito, KWN, fnames, PT, out):
     out.append(f'# the encoding\'s byte count: the fixed part F and the parts\' counts\ndef SZR(+F: Nat, {ts}) -> Nat: {_sumf(["F"] + [f"t{i}" for i in range(12)])}\n')
     # the encode law's size bound on the object (a decoded-object gap: its bytes within 4 * 2^28), stated as the record's
     # bound is (SZR over the parts' counts), so no closed count is evaluated
-    SZO = f'Nat.is_lt(SZR(U32.to_nat(2737225), {", ".join(objterm(j) for j in tj)}), VB.pw(31n))'
+    SZO = f'Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(objterm(j) for j in tj)}), U32.to_nat(VB.NMAX()))'
     KWargs = ', '.join(KWN)
     KWparams = ', '.join(f'+{n}: {t.strip()}' for n, t in (x.split(':', 1) for x in _split(re.search(r'^type KW is Data:\n  KW\{(.*)\}$', Kt, re.M).group(1))))
     out.append(f'def endq({KWparams}, +F: Nat) -> {{CI.ENDCs(K.KW{{{KWargs}}}, F) == SZR(F, {", ".join(lnt)}) : Nat}}: {{==}}\n')
@@ -1180,10 +1180,10 @@ def _vs_ks(OT, pj, fnames, views, FIX, fty, objt, PT, lnt, tj, objterm, SZO, KWa
     prev = 'hZ'
     for i, j in enumerate(tj):
         a_ = objterm(j); b_ = lnt[i]
-        body.append(f'  +b{i} = FD.logic__subst(Nat, z => {{Nat.is_lt(SZR(U32.to_nat(2737225), {", ".join(mix(i, "z"))}), VB.pw(31n)) == True{{}} : Bool}}, {a_}, {b_}, Equal.sym(Nat, {b_}, {a_}, l{j}), {prev})')
+        body.append(f'  +b{i} = FD.logic__subst(Nat, z => {{Nat.is_le(SZR(U32.to_nat(2737225), {", ".join(mix(i, "z"))}), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {a_}, {b_}, Equal.sym(Nat, {b_}, {a_}, l{j}), {prev})')
         prev = f'b{i}'
     SZL = f'SZR(U32.to_nat(2737225), {", ".join(lnt)})'
-    body.append(f'  +hB = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, {SZL}, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), '
+    body.append(f'  +hB = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {SZL}, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), '
                 f'Equal.sym(Nat, CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), {SZL}, endq({KWargs}, U32.to_nat(2737225))), {prev})')
     body.append(f'  +hok = okw({KWargs}, {", ".join(fact)})')
     eqargs = ', '.join([pj(j) if j in PT else xs[j] for j in range(38)] + [f'{TH[j]}, e{j}' for j in PT])
@@ -1223,7 +1223,7 @@ def _vs_ks(OT, pj, fnames, views, FIX, fty, objt, PT, lnt, tj, objterm, SZO, KWa
     rest = [l for l in clines if l not in bl]
     bndz = (f"# the record's byte bound from the object's (hZ) through the parts' counts\n"
             f"def bndz(-o: {OT}, {KWparams}, {', '.join(f'+{n}: {FT[n]}' for n in ln_)}, +hZ: {hz_t})\n"
-            f"    -> {{Nat.is_lt(CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), VB.pw(31n)) == True{{}} : Bool}}:\n" + '\n'.join(bl) + '\n  hB\n')
+            f"    -> {{Nat.is_le(CI.ENDCs(K.KW{{{KWargs}}}, U32.to_nat(2737225)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n" + '\n'.join(bl) + '\n  hB\n')
     finp = [f'-o: {OT}', KWparams, kp[len(xs) + 1], kp[len(xs) + 2]] + [f'+{n}: {FT[n]}' for n in fnm] + [f'+hZ: {hz_t}']
     fin = (f"def fin({', '.join(finp)}) -> @G@:\n"
            + '\n'.join([rest[0], rest[1], f'  +hB = bndz(o, {KWargs}, {", ".join(ln_)}, hZ)'] + rest[2:]) + '\n')
@@ -1243,7 +1243,7 @@ def _vs_mk(R, OT, SC, sch, pj, PT, SZO, xs):
             mkc[j] = (f'PX.mk_{"PV" if k_ == "pv" else "V2"}({pj(j)}, {s_}, r{j}, hs{j}, {K_}, {L_}, {e_}n, {p_}n, {r_}n, {sx_}n, ' + ', '.join(['{==}'] * 10) + ')')
         elif j in BYTEL:
             top_p.append((f'hs{j}', f'U.sdk({pj(j)}, 31n)'))
-            top_p.append((f'hm{j}', f'{{Nat.is_lt(U32.to_nat(WO_L.len({pj(j)})), VB.pw(31n)) == True{{}} : Bool}}'))
+            top_p.append((f'hm{j}', f'{{Nat.is_le(U32.to_nat(WO_L.len({pj(j)})), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}'))
             if BYTEL[j] == 'H': mkc[j] = f'PL.mk_H({pj(j)}, {s_}, {{==}}, r{j}, hs{j}, hm{j})'
             elif BYTEL[j] == 'U': mkc[j] = f'PL.mk_U({pj(j)}, {s_}, r{j}, hs{j}, hm{j})'
             else: mkc[j] = f'PL.mk_B8({pj(j)}, hs{j}, hm{j})'

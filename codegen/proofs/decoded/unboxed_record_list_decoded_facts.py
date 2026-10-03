@@ -49,7 +49,7 @@ def text(stem):
     K0 = 'U32.to_nat(U32.sub(W.NN(len), 1))'
     TT = f'W.RT({K0}, 0n, {WD}, {D0}, t, x)'
     KB = 29 if KIND == 'pl' else 4
-    H31 = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}, ' if KIND == 'pl' else ''
+    H31 = '+h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}, ' if KIND == 'pl' else ''
     ES = f'+es: {{SH.ListOf_limit(s) == U32.to_nat({LIM}) : Nat}}, ' if KIND == 'l' else ''
     HCHK = '+hchk: {W.CHKw(t, x, off, len) == True{} : Bool}'
     WIN = '+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32'
@@ -134,9 +134,9 @@ def text(stem):
         A_('def BBQ() -> {VB.pw(31n) == A.quad(VB.pw(29n)) : Nat}:\n  %Equal.sym(Nat, 31n, 2n+29n, {==}) : {VB.pw(_) == A.quad(VB.pw(29n)) : Nat}\n  {==}')
         A_('')
         A_('# the record count of a window shorter than 2^31 bytes is at most 2^29\n'
-           'def CC29(+len: U32, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 4n) : Nat}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool})\n'
+           'def CC29(+len: U32, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 4n) : Nat}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool})\n'
            '    -> {Nat.is_le(W.CC(len), O.pow2n(29n)) == True{} : Bool}:\n'
-           '  +hq = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, U32.to_nat(len), A.quad(W.CC(len)), Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 4n), A.quad(W.CC(len)), e, VC.quad_mul(W.CC(len))), h31)\n'
+           '  +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(len), A.quad(W.CC(len)), Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 4n), A.quad(W.CC(len)), e, VC.quad_mul(W.CC(len))), h31)\n'
            '  +hp = FD.logic__subst(Nat, z => {Nat.is_lt(A.quad(W.CC(len)), z) == True{} : Bool}, VB.pw(31n), A.quad(VB.pw(29n)), BBQ(), hq)\n'
            '  FD.logic__subst(Nat, z => {Nat.is_le(W.CC(len), z) == True{} : Bool}, VB.pw(29n), O.pow2n(29n), VD.s_pow2_eq(29n), VC.quad_inv(W.CC(len), VB.pw(29n), FD.nat__lt_le(A.quad(W.CC(len)), A.quad(VB.pw(29n)), hp)))')
     else:
@@ -167,18 +167,18 @@ def text(stem):
     # PRL
     A_('# ---- the encode premise ----')
     if KIND == 'pl':
-        prl_true = '({==}, FD.logic__subst(U32, z => {Nat.is_lt(Nat.mul(W.CC(z), 4n), VB.pw(31n)) == True{} : Bool}, len, 0, FD.u32alg__eq_of(len, 0, ec), hl))'
+        prl_true = '({==}, FD.logic__subst(U32, z => {Nat.is_le(Nat.mul(W.CC(z), 4n), U32.to_nat(VB.NMAX())) == True{} : Bool}, len, 0, FD.u32alg__eq_of(len, 0, ec), hl))'
         prl_false = (f'(FD.logic__subst(Nat, z => {{Nat.is_lt(z, 30n) == True{{}} : Bool}}, {WD}, ER.LDEP({T}, FD.array__freeze({T}, FD.array__thaw({T}, {TT}))), '
                      f'Equal.sym(Nat, ER.LDEP({T}, FD.array__freeze({T}, FD.array__thaw({T}, {TT}))), {WD}, PDW(len, t, x)), FD.nat__le_lt_trans({WD}, {KB}n, 30n, VD.wd_min(W.NN(len), {KB}n, hb), {{==}})), hl)')
         A_(f'def PDW(+len: U32, +t: FD.array__Tree<U32>, +x: Nat) -> {{ER.LDEP({T}, FD.array__freeze({T}, FD.array__thaw({T}, {TT}))) == {WD} : Nat}}:\n'
            f'  %Equal.sym(FD.array__Tree<{T}>, FD.array__freeze({T}, FD.array__thaw({T}, {TT})), {TT}, FD.array__freeze_thaw({T}, {TT})) : {{ER.LDEP({T}, _) == {WD} : Nat}}\n'
            f'  ER.pdep({T}, {WD}, {TT}, rtp({K0}, 0n, {WD}, {D0}, t, x, FD.array__trep_perfect({T}, {WD}, {DEF})))')
         A_('')
-        A_(f'def lg(+c: Bool, +len: U32, +t: FD.array__Tree<U32>, +x: Nat, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {HB}, +hl: {{Nat.is_lt(Nat.mul(W.CC(len), 4n), VB.pw(31n)) == True{{}} : Bool}}) -> {prl}(W.LOBJ(c, t, x, len)):\n'
+        A_(f'def lg(+c: Bool, +len: U32, +t: FD.array__Tree<U32>, +x: Nat, +ec: {{U32.is_eq(len, 0) == c : Bool}}, {HB}, +hl: {{Nat.is_le(Nat.mul(W.CC(len), 4n), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}) -> {prl}(W.LOBJ(c, t, x, len)):\n'
            f'  match c:\n    case True{{}}: {prl_true}\n    case False{{}}: {prl_false}')
         A_('')
         A_(f'def sdl({WIN}, {H31}{HCHK}) -> {prl}(W.OBJw(d, t, x, off, len)):\n'
-           f'  lg(U32.is_eq(len, 0), len, t, x, {{==}}, CC29(len, W.ecw(len, hchk), h31), FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(len), Nat.mul(W.CC(len), 4n), W.ecw(len, hchk), h31))')
+           f'  lg(U32.is_eq(len, 0), len, t, x, {{==}}, CC29(len, W.ecw(len, hchk), h31), FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, U32.to_nat(len), Nat.mul(W.CC(len), 4n), W.ecw(len, hchk), h31))')
         A_('')
         A_(f'def rep({WIN}, +s: S.Schema, {H31}{HCHK}) -> {REP}(W.OBJw(d, t, x, off, len), s):\n  lr(U32.is_eq(len, 0), len, t, x, s, CC29(len, W.ecw(len, hchk), h31))')
         A_('')

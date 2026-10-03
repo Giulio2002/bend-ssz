@@ -1444,7 +1444,7 @@ def venc_mw(R, X):
             f'import ../proofs/obj/{ci} as CI', f'import ../proofs/obj/{en} as EN'] + ([f'import ../proofs/obj/{en.replace(".bend", "_o.bend")} as ENo', f'import ../proofs/obj/{ci.replace(".bend", "_o.bend")} as CIo'] if om else []) + [ f'import ../types/{tpath} as {tmod}', f'import ../types/{dpath} as {dmod}',
             'import ./e2e_support.bend as E', 'import ./e2e_emit.bend as EM'] + pimps
     FIN = (f'  EM.ob({dep}, EN.OUTE(m), CI.SZ(m), CI.pfx(m, {dep}, VC.ZT({dep}), 0n, 0n, FD.array__trep_perfect(U32, {dep}, 0)), hd, hn)' if not om else
-           f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, L, U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), L, CI.szxO(m, hok)), CIo.bndxO(m, hok))\n'
+           f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, L, U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), L, CI.szxO(m, hok)), CIo.bndxO(m, hok))\n'
            f'  EM.obD({dep}, EN.OUTE(m), CI.SZ(m), CI.pfx(m, {dep}, VC.ZT({dep}), 0n, 0n, FD.array__trep_perfect(U32, {dep}, 0)), hd, h31, hn)')
     return '\n'.join(dict.fromkeys(imps)) + f'''
 
@@ -2342,7 +2342,7 @@ def _encr_vartest_names(dm, WL):
     MOT = lambda a, b, c: f'{{{VIEW("a0", VW, "a2")} == {VIEW(a, b, c)} : S.Value}}'  # noqa: E731
     BND = f'Nat.is_le(Nat.add({FIX}n, LY.LN(Xl1024.ENC(mB))), A.quad(VB.pw({KB}n)))'
     if dm:   # (OKW's bytes bound: the container's encoding below 2^31)
-        BND = 'Nat.is_lt(EM.ENDC(a0, mB, a2), VB.pw(31n))'
+        BND = 'Nat.is_le(EM.ENDC(a0, mB, a2), U32.to_nat(VB.NMAX()))'
     PW = 1
     while 4 * 2 ** PW < EB:
         PW += 1
@@ -2415,8 +2415,8 @@ def vtb(-v: {VT}, +rep: RT.rep_VarTestStruct(v, Spec.VarTestStruct()), +hs: BL.s
     if dm:
         HB0 = (f"+hb = FD.nat__le_trans(Nat.add({FIX}n, LY.LN(Xl1024.ENC({MB}))), {EB}n, A.quad(VB.pw({KB}n)), FD.nat__le_add_left(LY.LN(Xl1024.ENC({MB})), {M2}n, {FIX}n, hL),\n"
                f"    FD.nat__le_trans({EB}n, A.quad(VB.pw({PW}n)), A.quad(VB.pw({KB}n)), {{==}}, C.q4(VB.pw({PW}n), VB.pw({KB}n), VBG.pw_mono({PW}n, {KB}n, {{==}}))))")
-        HB1 = (f"+hb = FD.nat__le_lt_trans(Nat.add({FIX}n, LY.LN(Xl1024.ENC({MB}))), {EB}n, VB.pw(31n), FD.nat__le_add_left(LY.LN(Xl1024.ENC({MB})), {M2}n, {FIX}n, hL),\n"
-               f"    FD.nat__lt_le_trans({EB}n, VB.pw(12n), VB.pw(31n), {{==}}, VBG.pw_mono(12n, 31n, {{==}})))")
+        HB1 = (f"+hb = FD.nat__le_trans(Nat.add({FIX}n, LY.LN(Xl1024.ENC({MB}))), {EB}n, U32.to_nat(VB.NMAX()), FD.nat__le_add_left(LY.LN(Xl1024.ENC({MB})), {M2}n, {FIX}n, hL),\n"
+               f"    VB.le_pw31_nmax({EB}n, FD.nat__lt_le_trans({EB}n, VB.pw(12n), VB.pw(31n), {{==}}, VBG.pw_mono(12n, 31n, {{==}}))))")
         assert HB0 in vtx
         assert EB < 4096, EB
         vtx = vtx.replace(HB0, HB1).replace('Xl1024.OK(mB)', 'XDl1024.OK(mB)').replace('EM.OK(', 'EM.OKW(').replace('EM.lenE(', 'EM.lenEW(')
@@ -3047,12 +3047,12 @@ def mwp_complex(R, X, D):
         return v, p, f'{v}n'
     TV, BP, TS = bound(SUM)
     P = _pw_above(TV)
-    BLEAF = f'Nat.is_lt({ENDCC}, VB.pw(31n))' if om else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
+    BLEAF = f'Nat.is_le({ENDCC}, U32.to_nat(VB.NMAX()))' if om else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
     BPROOF = (f'FD.nat__le_trans({SUM}, {TS}, A.quad(VB.pw({KQ}n)), {BP},\n    FD.nat__le_trans({TS}, A.quad(VB.pw({P}n)), A.quad(VB.pw({KQ}n)), {{==}}, '
               f'C.q4(VB.pw({P}n), VB.pw({KQ}n), VBG.pw_mono({P}n, {KQ}n, {{==}}))))')
     if om:
-        BPROOF = (f'FD.nat__le_lt_trans({SUM}, {TS}, VB.pw(31n), {BP},\n    FD.nat__le_lt_trans({TS}, A.quad(VB.pw({P}n)), VB.pw(31n), {{==}}, '
-                  f'FD.nat__lt_le_trans(A.quad(VB.pw({P}n)), VB.pw(1n+(2n+{P}n)), VB.pw(31n), FD.nat__pow2_lt_succ(2n+{P}n), VBG.pw_mono(1n+(2n+{P}n), 31n, {{==}}))))')
+        BPROOF = (f'FD.nat__le_trans({SUM}, {TS}, U32.to_nat(VB.NMAX()), {BP},\n    FD.nat__le_trans({TS}, A.quad(VB.pw({P}n)), U32.to_nat(VB.NMAX()), {{==}}, '
+                  f'VB.le_pw31_nmax(A.quad(VB.pw({P}n)), FD.nat__lt_le_trans(A.quad(VB.pw({P}n)), VB.pw(1n+(2n+{P}n)), VB.pw(31n), FD.nat__pow2_lt_succ(2n+{P}n), VBG.pw_mono(1n+(2n+{P}n), 31n, {{==}})))))')
     leaf = {'EX_l128_u16.OK(mB)': 'oB', 'EX_bl256.OK(mD)': 'oD', 'EX_VarTestStruct.OK(mE)': 'oE', 'RV_v4_FixedTestStruct.OK(mF)': 'oF',
             'EX_v2_VarTestStruct.OK(mG)': 'oG', 'uint16_e.u16_valid(x0)': 'GW.u16v(x0, h0)', 'uint8_e.u8_valid(x2)': 'h8', BLEAF: 'hb'}
     if om:
@@ -5794,21 +5794,21 @@ def prog_q(X, D, dm=False):
     assert lens[b][0] is None, (X, 'the bit list is the sum\'s last term')
     va, pa, sa = closed(a)
     hc = (f'FD.nat__le_trans(Nat.add({va}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
-    BLEAF = f'Nat.is_lt({ENDCC}, VB.pw(31n))' if dm else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
+    BLEAF = f'Nat.is_le({ENDCC}, U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
     BPROOF = (f'FD.nat__le_trans({SUM}, Nat.add({va}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
               f'    EP.bnd({va}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc}))')
     if dm:
-        BPROOF = (f'FD.nat__le_lt_trans({SUM}, Nat.add({va}n, {b}), VB.pw(31n), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
+        BPROOF = (f'FD.nat__le_trans({SUM}, Nat.add({va}n, {b}), U32.to_nat(VB.NMAX()), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
                   f'    EP.bndL({va}n, {b}, {P27}n, {lens[b][1]}, {hc}))')
     hc1 = (f'FD.nat__le_trans(Nat.add({va + 1}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
     BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
                f'    EP.bnd({va + 1}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc1}))')
     if dm:
-        BPROOF1 = (f'FD.nat__le_lt_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), VB.pw(31n), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
+        BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), U32.to_nat(VB.NMAX()), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
                    f'    EP.bndL({va + 1}n, {b}, {P27}n, {lens[b][1]}, {hc1}))')
     FARGS = ', '.join(ren[n] for n in names)
-    LBP = 'Nat.is_lt(1n+z, VB.pw(31n)) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
-    LBT = f'Nat.is_lt(1n+LY.LN(CI_{X}.ENC(m)), VB.pw(31n))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'
+    LBP = 'Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
+    LBT = f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'
     leaf = {BLEAF: 'hb'}
     for k, f in enumerate(fs):
         mod = fmods[names[k]].split('.')[0] if f[0] != 'u8' else None
@@ -5952,7 +5952,7 @@ def _c1_split(X, D, defs, MW, fs, fmods, names, vwv, lbt, dm=False, tot=None):
     lp = ', '.join(f'+l{k}: {{Nat.is_le(LY.LN({mod[k]}.ENC(m{k})), {lbt[k]}) == True{{}} : Bool}}' for k in vs)
     fa = ', '.join([f'x{k}' for k in us] + [f'm{k}' for k in vs])
     OKN = 'OKW' if dm else 'OK'
-    CFB = f'Nat.is_lt(1n+LY.LN(CI_{X}.ENC({MW})), VB.pw(31n))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), A.quad(VB.pw(28n)))'
+    CFB = f'Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC({MW})), A.quad(VB.pw(28n)))'
     CF = f'CF_{X}({fa})'
     htm = f', +ht: {tot["htm"]}' if tot else ''
     cfp = ''.join(f'+x{k}: U32, ' for k in us) + ''.join(f'+m{k}: {fmods[names[k]]}, ' for k in vs)
@@ -6168,8 +6168,8 @@ def prog_q2(X, D, dm=False):
             q_ = qk[k_](f'{mod[k_]}.TH(m{k_})')
             CHB.append(f'  +hc{i_ + 1} = ER.addle({prevS}, {t_}, {prevB}, {q_}, hc{i_}, l{k_})')
             prevS, prevB = f'Nat.add({prevS}, {t_})', f'Nat.add({prevB}, {q_})'
-        CHB.append(f'  +hc = FD.nat__le_lt_trans({prevS}, {prevB}, VB.pw(31n), hc{len(terms)}, ht)')
-        CHB.append(f'  +hb = FD.nat__lt_trans({SUM}, 1n+{SUM}, VB.pw(31n), FD.nat__lt_succ({SUM}), hc)')
+        CHB.append(f'  +hc = FD.nat__le_trans({prevS}, {prevB}, U32.to_nat(VB.NMAX()), hc{len(terms)}, ht)')
+        CHB.append(f'  +hb = FD.nat__le_trans({SUM}, 1n+{SUM}, U32.to_nat(VB.NMAX()), FD.nat__lt_le({SUM}, 1n+{SUM}, FD.nat__lt_succ({SUM})), hc)')
         CHC = []
         cur = {k: PJ(k) for k in varfield}
         pre, prevh = [], 'ht'
@@ -6177,7 +6177,7 @@ def prog_q2(X, D, dm=False):
             cur2 = dict(cur)
             cur2[k] = 'z'
             mot = TBx(lambda j: cur2[j] if j in cur2 else PJ(j))
-            pre.append(f'  +ht{k} = FD.logic__subst({FT[k]}, z => {{Nat.is_lt({mot}, VB.pw(31n)) == True{{}} : Bool}}, {PJ(k)}, {mod[k]}.TH(m{k}), e{k}, {prevh})')
+            pre.append(f'  +ht{k} = FD.logic__subst({FT[k]}, z => {{Nat.is_le({mot}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {PJ(k)}, {mod[k]}.TH(m{k}), e{k}, {prevh})')
             cur[k] = f'{mod[k]}.TH(m{k})'
             prevh = f'ht{k}'
         lrep = {}
@@ -6185,7 +6185,7 @@ def prog_q2(X, D, dm=False):
             if fs[k][0] == 'pb':
                 lrep[k] = f'l{k}q'
                 pre.append(f'  +l{k}q = FD.logic__subst(Nat, z => {{Nat.is_le(LY.LN({mod[k]}.ENC(m{k})), z) == True{{}} : Bool}}, Nat.add(VB.pw(29n), 1n), QP({mod[k]}.TH(m{k})), Equal.sym(Nat, QP({mod[k]}.TH(m{k})), Nat.add(VB.pw(29n), 1n), qpm(m{k})), l{k})')
-        TOTX = dict(lrep=lrep, htm=f'{{Nat.is_lt({TBM}, VB.pw(31n)) == True{{}} : Bool}}', pre=pre, arg=prevh)
+        TOTX = dict(lrep=lrep, htm=f'{{Nat.is_le({TBM}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}', pre=pre, arg=prevh)
 
     def chain(start, name):
         out = []
@@ -6210,7 +6210,7 @@ def prog_q2(X, D, dm=False):
             return out
         out.append(f'  +{name} = EL.fin({prev}, {c}, {kk}n, {P}, {name}{len(terms)}, FD.nat__le_trans({c}, VB.pw(9n), {P}, {{==}}, VBG.pw_mono(9n, 27n, {{==}})), {{==}})')
         return out
-    BLEAF = f'Nat.is_lt({ENDCC}, VB.pw(31n))' if dm else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
+    BLEAF = f'Nat.is_le({ENDCC}, U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le({SUM}, A.quad(VB.pw({KQ}n)))'
     leaf = {BLEAF: 'hb'}
     for k, f in enumerate(fs):
         if f[0] == 'u8':
@@ -6221,7 +6221,7 @@ def prog_q2(X, D, dm=False):
     if dm:
         HOK = HOK.replace(ENDCC, f'CI_{X}.{ENDCC}')
     FARGS = ', '.join(ren[n] for n in names)
-    LBP0 = 'Nat.is_lt(1n+z, VB.pw(31n)) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
+    LBP0 = 'Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
     SUM1 = SUM.replace(f'Nat.add({c0}n,', f'Nat.add({c0 + 1}n,', 1)
     unp, cps, unpr = [], [], []
     BUND = {'l': lambda f: f'ER.LR_{f[1]}', 'pb': lambda f: 'EP.PBR', 'pu8': lambda f: 'EL.LR_pu8', 'pu64': lambda f: 'EL.LR_pu64',
@@ -6314,8 +6314,8 @@ def c1_{X}(-o: {D}, {xparams}+eo: {{o == {E0} : {D}}}, {hparams}{", ".join(cps)}
     PREM = prems[-1]
     for q in reversed(prems[:-1]):
         PREM = f'DK.P2({q}, {PREM})'
-    LBT = f'Nat.is_lt(1n+LY.LN(CI_{X}.ENC(m)), VB.pw(31n))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'
-    TOTDEF = f'def TOT_{X}(v: {D}) -> Data: {{Nat.is_lt({TBO.replace("(o)", "(v)")}, VB.pw(31n)) == True{{}} : Bool}}\n' if dm else ''
+    LBT = f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'
+    TOTDEF = f'def TOT_{X}(v: {D}) -> Data: {{Nat.is_le({TBO.replace("(o)", "(v)")}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}\n' if dm else ''
     head = f"""# ---- {X} ----
 {TOTDEF}def PREM_{X}(v: {D}) -> Data: {PREM}
 
@@ -6577,7 +6577,7 @@ def _total_form(t):
     t = re.sub(r'p1lt\(((?:[^()]|\([^()]*\))*), (\w+)\)', r'\2', t)
     t = re.sub(r'^# x within P1 bytes is below 2\^31[^\n]*\ndef p1lt\([^\n]*\n', '', t, flags=re.M)
     t = re.sub(r'^def P1\(\)[^\n]*\n', '', t, flags=re.M)
-    t = re.sub(r'Nat\.is_le\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*?), P1\(\)\)', r'Nat.is_lt(\1, VB.pw(31n))', t)
+    t = re.sub(r'Nat\.is_le\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*?), P1\(\)\)', r'Nat.is_le(\1, U32.to_nat(VB.NMAX()))', t)
     # (4) the measures of the objects (before their first use)
     def ins(t, before, text):
         k = t.index(before)
@@ -6637,8 +6637,8 @@ def p1ltk(+x: Nat, +k: Nat, +hl: {Nat.is_le(x, Nat.add(VB.pw(k), 1n)) == True{} 
   +h2 = FD.nat__le_trans(x, Nat.add(1n, VB.pw(k)), Nat.double(VB.pw(k)), h1, FD.nat__double_succ_le(VB.pw(k), FD.nat__pow2_pos(k)))
   FD.nat__le_lt_trans(x, VB.pw(1n+k), VB.pw(3n+k), h2, FD.nat__lt_le_trans(VB.pw(1n+k), VB.pw(2n+k), VB.pw(3n+k), FD.nat__pow2_lt_succ(1n+k), FD.nat__pow2_mono(2n+k, 3n+k, FD.nat__lt_le(2n+k, 3n+k, FD.nat__lt_succ(2n+k)))))
 # x within P1 bytes is below 2^31 (and within the object API's limit)
-def p1lt(+x: Nat, +hl: {Nat.is_le(x, P1()) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}: p1ltk(x, 28n, hl)
-def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+def p1lt(+x: Nat, +hl: {Nat.is_le(x, P1()) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}: p1ltk(x, 28n, hl)
+def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))""", 1)
     t = t.replace('import ./e2e_encr', 'import ./e2e_emit.bend as EMT\nimport ./e2e_encr', 1)
     # (c2) the total at a strict 2^(3 + e) = 8 P: c + 1 <= P, at most 7 unbounded terms (a bit list's bytes count as two)
@@ -6695,7 +6695,7 @@ def pbd(+x: Nat, +e: Nat, +hx: {Nat.is_le(x, Nat.add(VB.pw(1n+e), 1n)) == True{}
     t = t.replace('+hok = ok_pu64(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul)', '+hok = ok_pu64(tt, n, (pf, (hdw, (hN, htz))), c, ex8, emul, hl2)')
     # (e) the lists of variable-size elements: the bound LL < 2^31
     t = re.sub(r'Nat\.is_le\((X[ABC])\.LL\(T2, N\), A\.quad\(VB\.pw\(28n\)\)\), okl, llq\(X[ABC]\.LL\(T2, N\), VB\.pw\(27n\), hll, [^\n]*\{==\}\)\)\)\)',
-               lambda m: f'Nat.is_lt({m.group(1)}.LL(T2, N), VB.pw(31n)), okl, p1lt({m.group(1)}.LL(T2, N), hll))', t)
+               lambda m: f'Nat.is_le({m.group(1)}.LL(T2, N), U32.to_nat(VB.NMAX())), okl, p1lt({m.group(1)}.LL(T2, N), hll))', t)
     # (f) the bit list: kb = 32 (no 31 + K + 1 <= 2^30 premise)
     t = t.replace(', 31n, 30n}', ', 32n, 30n}')
     t = t.replace('  (+hK8, +s7) = s6\n  (+hKY, +s8) = s7\n  (+hroom, +hbz) = s8\n', '  (+hK8, +s7) = s6\n  (+hroom, +hbz) = s7\n')

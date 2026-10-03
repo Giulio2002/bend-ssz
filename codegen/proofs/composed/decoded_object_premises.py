@@ -235,7 +235,7 @@ def execution_requests(lf):
                           lets, None, 'proofs/obj/var_codec_ExecutionRequests.bend')
 
 
-H31 = '{Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}'
+H31 = '{Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 WINDOW = set()   # names whose premises are stated on the window reader OBJw(d, t, x, off, n): the composed call passes x = 0n, off = 0
 HEAVY = {}   # name -> the explicit hypothesis on the input length its composed theorems take (n < 2^31)
 

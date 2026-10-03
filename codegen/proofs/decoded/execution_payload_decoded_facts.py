@@ -21,7 +21,7 @@ O = lambda i: f'W.O{i}(t, x)' if i < NW else 'n'
 L = lambda i: f'W.L{i}(t, x)' if i < NW - 1 else f'W.L{NW - 1}(t, x, n)'
 TN = lambda x: f'U32.to_nat({x})'
 HS = '+hS: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}'
-H31 = '+h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}'
+H31 = '+h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 HC = '+hchk: {W.CHKw(t, x, off, n) == True{} : Bool}'
 TP = '+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32'
 OBJ = 'W.OBJw(d, t, x, off, n)'
@@ -111,8 +111,8 @@ def qmul(n, k):
               f'def hy{i}({TP}, {HS}, {HC}) -> {{Nat.is_le(VC.YL({L(i)}), U32.to_nat(VB.UMAX())) == True{{}} : Bool}}:\n'
               f'  VC.hyW({TN(O(i))}, {L(i)}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {TN(O(i + 1))}, Nat.add({TN(O(i))}, {TN(L(i))}), Equal.sym(Nat, Nat.add({TN(O(i))}, {TN(L(i))}), {TN(O(i + 1))}, lsum{i}(t, x, off, n, hchk)),\n'
               f'    FD.nat__le_trans({TN(O(i + 1))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {topi}, hS)))\n'
-              f'def hm{i}({TP}, {H31}, {HC}) -> {{Nat.is_lt({TN(L(i))}, VB.pw(31n)) == True{{}} : Bool}}:\n'
-              f'  FD.nat__le_lt_trans({TN(L(i))}, U32.to_nat(n), VB.pw(31n), lwn{i}(t, x, off, n, hchk), h31)\n')
+              f'def hm{i}({TP}, {H31}, {HC}) -> {{Nat.is_le({TN(L(i))}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+              f'  FD.nat__le_trans({TN(L(i))}, U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn{i}(t, x, off, n, hchk), h31)\n')
     t += (f'\ndef hl0({TP}, {HC}) -> {{Nat.is_le({TN(L(0))}, 32n) == True{{}} : Bool}}: C0.hB(t, W.X0(t, x), W.F0(off, t, x), {L(0)}, ce0(t, x, off, n, hchk))\n')
     ts = [TN(f'WO_L.len({PJ(10)})'), f'TX.TXL({PJ(13)})', f'TX.WLL({PJ(14)})']
     lens = [TN(L(i)) for i in range(NW)]
@@ -137,8 +137,8 @@ def qmul(n, k):
     t += (f'\n# 528 and the windows\' encodings add up to n\n'
           f'def szr(+d: Nat, {TP}, {etxT}, {HC}) -> {{{SZ} == U32.to_nat(n) : Nat}}:\n' + '\n'.join(lines) + '\n'
           f'\n# the size premise hZ (RC.SZOK), from n < 2^31\n'
-          f'def hz(+d: Nat, {TP}, {etxT}, {H31}, {HC}) -> {{Nat.is_lt({SZ}, VB.pw(31n)) == True{{}} : Bool}}:\n'
-          f'  FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(n), {SZ}, Equal.sym(Nat, {SZ}, U32.to_nat(n), szr(d, t, x, off, n, etx, hchk)), h31)\n')
+          f'def hz(+d: Nat, {TP}, {etxT}, {H31}, {HC}) -> {{Nat.is_le({SZ}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+          f'  FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, U32.to_nat(n), {SZ}, Equal.sym(Nat, {SZ}, U32.to_nat(n), szr(d, t, x, off, n, etx, hchk)), h31)\n')
     return t
 
 

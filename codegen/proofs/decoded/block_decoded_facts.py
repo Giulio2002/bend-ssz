@@ -69,8 +69,8 @@ def {pre}_lsum({TP}, {hc}) -> {{Nat.add({TN(O0)}, {TN(L0)}) == U32.to_nat(n) : N
     FD.nat__sub_add(U32.to_nat(n), {TN(O0)}, {mod}.r10(t, x, off, n, hchk)))
 def {pre}_lwn({TP}, {hc}) -> {{Nat.is_le({TN(L0)}, U32.to_nat(n)) == True{{}} : Bool}}:
   FD.logic__subst(Nat, z => {{Nat.is_le({TN(L0)}, z) == True{{}} : Bool}}, Nat.add({TN(O0)}, {TN(L0)}), U32.to_nat(n), {pre}_lsum(t, x, off, n, hchk), A.le_skip({TN(O0)}, {TN(L0)}))
-def {pre}_h31({TP}, {H31}, {hc}) -> {{Nat.is_lt({TN(L0)}, VB.pw(31n)) == True{{}} : Bool}}:
-  FD.nat__le_lt_trans({TN(L0)}, U32.to_nat(n), VB.pw(31n), {pre}_lwn(t, x, off, n, hchk), h31)
+def {pre}_h31({TP}, {H31}, {hc}) -> {{Nat.is_le({TN(L0)}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:
+  FD.nat__le_trans({TN(L0)}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {pre}_lwn(t, x, off, n, hchk), h31)
 def {pre}_hSN({TP}, {HS}, {hc}) -> {{Nat.is_le({TN(L0)}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:
   FD.nat__le_trans({TN(L0)}, U32.to_nat(n), U32.to_nat(VB.NMAX()), {pre}_lwn(t, x, off, n, hchk), DBB.u2n(n, VB.NMAX(), hS))
 def {pre}_hS({TP}, {HS}, {hc}) -> {{U32.is_le({L0}, VB.NMAX()) == True{{}} : Bool}}:
@@ -114,7 +114,7 @@ def sb_tot({TP}, +hchk: {{WS.CHKw(t, x, off, n) == True{{}} : Bool}}) -> {{Nat.a
         fixed = f'Nat.add(84n, {SZb[pre]})' if pre == 'bk' else f'Nat.add(100n, Nat.add(84n, {SZb[pre]}))'
         # the record's SZW pairs each witness with its equality, then the total below 2^31
         comps = list(lens) + [(f'Equal.sym(Nat, {sub(parts[i])}, {lens[i]}, e{FIELD[i]})' if FIELD[i] in FLIP else f'e{FIELD[i]}') for i in range(NW)]
-        r = f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, U32.to_nat(n), {fixed}, Equal.sym(Nat, {fixed}, U32.to_nat(n), {pre}_tot(t, x, off, n, hchk)), h31)'
+        r = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, U32.to_nat(n), {fixed}, Equal.sym(Nat, {fixed}, U32.to_nat(n), {pre}_tot(t, x, off, n, hchk)), h31)'
         for c in reversed(comps):
             r = f'({c}, {r})'
         hc = f'+hchk: {{{mod}.CHKw(t, x, off, n) == True{{}} : Bool}}'

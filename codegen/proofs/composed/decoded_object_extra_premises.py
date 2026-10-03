@@ -92,7 +92,7 @@ def prog_test_struct(lf):
     (the size bound TOT_ProgressiveTestStruct: 17 + the four windows' lengths = 1 + n)."""
     from codegen.proofs.composed import decoded_object_premises as DR
     name = 'ProgressiveTestStruct'
-    h = '{Nat.is_lt(Nat.add(1n, U32.to_nat(n)), VB.pw(31n)) == True{} : Bool}'
+    h = '{Nat.is_le(Nat.add(1n, U32.to_nat(n)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
     DR.BUF.depth_first.add(name)
     DR.HEAVY[name] = h
     ps = DR.buf_ps(h)
@@ -107,12 +107,12 @@ def prog_test_struct(lf):
         L = lambda j: f'{BW}.LJ{j}(t, 0n)' if j < 3 else f'{BW}.LJ3(t, 0n, n)'  # noqa: E731
         hc = lambda j: f'{BW}.itD{j}(t, 0n, 0, n, hchk)'  # noqa: E731
         com = f'd, t, n, 0n, 0, n, {{==}}, hd, hn, {DR.HWN_TOP}, pf, hchk'
-        out = ['+hn31 = FD.nat__lt_trans(U32.to_nat(n), Nat.add(1n, U32.to_nat(n)), VB.pw(31n), FD.nat__lt_succ(U32.to_nat(n)), h31)']
+        out = ['+hn31 = FD.nat__le_trans(U32.to_nat(n), Nat.add(1n, U32.to_nat(n)), U32.to_nat(VB.NMAX()), FD.nat__lt_le(U32.to_nat(n), Nat.add(1n, U32.to_nat(n)), FD.nat__lt_succ(U32.to_nat(n))), h31)']
         for k in range(4):
             Ok, Ek = f'{BW}.O{k}(t, 0n)', (f'{BW}.O{k + 1}(t, 0n)' if k < 3 else 'n')
             out += [f'+lw{k} = {DPQ}.lwd({Ok}, {Ek}, n, {BW}.r1{k}(t, 0n, 0, n, hchk), {BW}.r2{k}(t, 0n, 0, n, hchk))',
                     f'+hy{k} = VC.hyW(0n, {L(k)}, FD.nat__le_trans(U32.to_nat({L(k)}), U32.to_nat(n), U32.to_nat(VB.NMAX()), lw{k}, {DR.HWN_TOP}))',
-                    f'+hl{k} = FD.nat__le_lt_trans(U32.to_nat({L(k)}), U32.to_nat(n), VB.pw(31n), lw{k}, hn31)']
+                    f'+hl{k} = FD.nat__le_trans(U32.to_nat({L(k)}), U32.to_nat(n), U32.to_nat(VB.NMAX()), lw{k}, hn31)']
         WF = lambda j: f'{BW}.eoJ{j}D({com}), hd, {BW}.hwJ{j}D({com}), {BW}.hwJ{j}_32({com}), pf'  # noqa: E731
         DPT, EL_ = al('e2e/e2e_dpt.bend'), al('e2e/e2e_encld.bend')
         CH2, CH3 = al('proofs/obj/var_winx_pl_SmallTestStruct.bend'), al('proofs/obj/vvl_pl_pl_VarTestStruct.bend')
@@ -120,15 +120,15 @@ def prog_test_struct(lf):
         QR2 = f'{EL_}.QR_pl_SmallTestStruct({CH2}.OBJw(d, t, {X(2)}, {F(2)}, {L(2)}))'
         QV3 = f'{EL_}.QV_pl_pl_VarTestStruct({CH3}.OBJw(d, t, {X(3)}, {F(3)}, {L(3)}))'
         tot = f'{DPT}.tot(t, 0n, 0, n, hchk)'
-        H0 = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, Nat.add(1n, U32.to_nat(n)), {sumL}, '
+        H0 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, Nat.add(1n, U32.to_nat(n)), {sumL}, '
               f'Equal.sym(Nat, {sumL}, Nat.add(1n, U32.to_nat(n)), {tot}), h31)')
         a, b, c = (f'Nat.add(Nat.add(Nat.add(17n, U32.to_nat({L(0)})), U32.to_nat({L(1)})), ', f'U32.to_nat({L(2)})', f'U32.to_nat({L(3)})')
         OBJ3 = f'{CH3}.OBJw(d, t, {X(3)}, {F(3)}, {L(3)})'
         DVP_LNQ = f'{DVP}.LNQ({OBJ3})'
         sz3 = f'{DVP}.szl(d, t, {X(3)}, {F(3)}, {L(3)}, {WF(3)}, hl3, {hc(3)})'
         sz2 = f'{DFL}.szl(d, t, {X(2)}, {F(2)}, {L(2)}, {hc(2)})'
-        H1 = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add({a}{b}), z), VB.pw(31n)) == True{{}} : Bool}}, {c}, {QV3}, Equal.sym(Nat, {QV3}, {c}, Equal.trans(Nat, {QV3}, {DVP_LNQ}, {c}, {DPT}.qvl({OBJ3}), {sz3})), {H0})')
-        H2 = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add({a}z), {QV3}), VB.pw(31n)) == True{{}} : Bool}}, {b}, {QR2}, Equal.sym(Nat, {QR2}, {b}, {sz2}), {H1})')
+        H1 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({a}{b}), z), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {c}, {QV3}, Equal.sym(Nat, {QV3}, {c}, Equal.trans(Nat, {QV3}, {DVP_LNQ}, {c}, {DPT}.qvl({OBJ3}), {sz3})), {H0})')
+        H2 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({a}z), {QV3}), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {b}, {QR2}, Equal.sym(Nat, {QR2}, {b}, {sz2}), {H1})')
         return locals()
 
     def lets(al):
@@ -301,9 +301,9 @@ def prog_complex_test_struct(lf):
     le3 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(258n, U32.to_nat(n))) == True{{}} : Bool}}, Nat.add(1n, {Wr}), Nat.add({Wr}, 1n), FD.nat__add_comm(1n, {Wr}), {le2})')
     hrw = f'FD.nat__le_lt_trans(Nat.add({Wr}, 1n), Nat.add(258n, U32.to_nat(n)), VB.pw(29n), {le3}, h31)'
     P0 = f'{WT}.tot29({Wr}, {Q}, {{==}}, {hrw})'
-    P1 = (f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, VB.pw(31n)) == True{{}} : Bool}}, Nat.add({Wr}, {Q}), {S_(Q, l2, l3, l4, l6)}, '
+    P1 = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, Nat.add({Wr}, {Q}), {S_(Q, l2, l3, l4, l6)}, '
           f'Equal.sym(Nat, {S_(Q, l2, l3, l4, l6)}, Nat.add({Wr}, {Q}), {pf}), {P0})')
-    mt = lambda q, a, b, c, d_: f'{{Nat.is_lt({S_(q, a, b, c, d_)}, VB.pw(31n)) == True{{}} : Bool}}'  # noqa: E731
+    mt = lambda q, a, b, c, d_: f'{{Nat.is_le({S_(q, a, b, c, d_)}, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}'  # noqa: E731
     qp_eq = 'qp_eq(' + f'{CH1}.OBJw(d, t, {X(1)}, {F(1)}, {L(1)}))'
     P2 = f'FD.logic__subst(Nat, z => {mt("z", l2, l3, l4, l6)}, {Q}, {QPt}, Equal.sym(Nat, {QPt}, {Q}, {qp_eq}), {P1})'
     sz3 = f'{DFL}.szl(d, t, {X(3)}, {F(3)}, {L(3)}, {hc(3)})'

@@ -530,14 +530,11 @@ def len_wtk(k, W, h):
 
 # O.padd adds when the sum is below 2^31 (a valid encoding's length, any output depth).
 def padd_ddW(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
-    +h: {Nat.is_lt(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n)) == True{} : Bool})
+    +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {U32.to_nat(O.padd(a, b)) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}:
-  +ha = F.nat__le_lt_trans(U32.to_nat(a), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), Order.below_sum(U32.to_nat(a), U32.to_nat(b)), h)
-  +hb = F.nat__le_lt_trans(U32.to_nat(b), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), Order.left_below_sum(U32.to_nat(a), U32.to_nat(b)), h)
-  %Equal.sym(U32, O.padd(a, b), U32.add(a, b), VE.padd_ok(a, b, VE.winit(31n, VE.bits32(a)), VE.winit(31n, VE.bits32(b)), VE.small_pad(a, 31n, {==}, ha), VE.small_pad(b, 31n, {==}, hb))) :
+  %Equal.sym(U32, O.padd(a, b), U32.add(a, b), VE.padd_le(a, b, h)) :
     {U32.to_nat(_) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}
-  A.add_le(a, b, F.u32__pow2u(31n), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), z) == True{} : Bool}, VB.pw(31n), U32.to_nat(F.u32__pow2u(31n)),
-    Equal.sym(Nat, U32.to_nat(F.u32__pow2u(31n)), VB.pw(31n), F.u32__pow2u_value(31n, {==})), F.nat__lt_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), h)))
+  A.add_le(a, b, VB.UMAX(), F.nat__le_trans(Nat.add(U32.to_nat(a), U32.to_nat(b)), U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX()), h, VE.nmax_le_umax()))
 
 def padd_dd(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), A.quad(VB.pw(dd))) == True{} : Bool})
@@ -556,12 +553,12 @@ def padd_dd(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Boo
 # The cursor after a variable piece of k bytes: F + SUM(ks ++ [k]).
 def cnextW(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +ec: {U32.to_nat(cur) == Nat.add(F0, SUM(ks)) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
-    +hb: {Nat.is_lt(Nat.add(Nat.add(F0, SUM(ks)), k), VB.pw(31n)) == True{} : Bool})
+    +hb: {Nat.is_le(Nat.add(Nat.add(F0, SUM(ks)), k), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(F0, SUM(APPN(ks, [k]))) : Nat}:
   +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k),
     Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(F0, SUM(ks)), ec),
     Equal.cong(Nat, Nat, z => Nat.add(Nat.add(F0, SUM(ks)), z), U32.to_nat(sz), k, es))
-  +hb2 = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
     Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), e1), hb)
   Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(F0, SUM(APPN(ks, [k]))), padd_ddW(cur, sz, dd, hd, hb2),
     Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(F0, SUM(APPN(ks, [k]))), e1, sum_snoc(F0, ks, k)))
@@ -627,20 +624,18 @@ def le_qk(+S: Nat, +k: Nat, +h: {Nat.is_lt(S, VB.pw(Nat.add(2n, k))) == True{} :
 def hl32za(+L: Nat, +a: Nat, +ha: {Nat.is_le(a, 32n) == True{} : Bool}, +h: {Nat.is_lt(L, VB.pw(a)) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(A.quad(0n), Nat.add(0n, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
   F.nat__lt_le_trans(Nat.add(A.quad(0n), Nat.add(0n, L)), VB.pw(a), F.spec_common__pow2(32n), h, F.nat__pow2_mono(a, 32n, ha))
-def hl32z(+L: Nat, +h: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool})
+def hl32z(+L: Nat, +h: {Nat.is_le(L, U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {Nat.is_lt(Nat.add(A.quad(0n), Nat.add(0n, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
-  hl32za(L, 31n, {==}, h)
+  VB.nmax_lt32(L, h)
 
 # x <= 4 2^k with k < 29 is below 2^31.
 def lt31q(+x: Nat, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(x, A.quad(VB.pw(k))) == True{} : Bool})
-    -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
-  F.nat__le_lt_trans(x, VB.pw(Nat.add(2n, k)), VB.pw(31n), F.logic__subst(Nat, z => {Nat.is_le(x, z) == True{} : Bool}, A.quad(VB.pw(k)), VB.pw(Nat.add(2n, k)), UW.qpw(k), h),
-    F.nat__lt_le_trans(VB.pw(Nat.add(2n, k)), VB.pw(Nat.add(3n, k)), VB.pw(31n), F.nat__pow2_lt_succ(Nat.add(2n, k)), F.nat__pow2_mono(Nat.add(3n, k), 31n, Order.add_left(3n, k, 28n, F.nat__lt_succ_le(k, 28n, hk)))))
+    -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  VB.le_pw30_nmax(x, F.nat__le_trans(x, VB.pw(Nat.add(2n, k)), VB.pw(30n), F.logic__subst(Nat, z => {Nat.is_le(x, z) == True{} : Bool}, A.quad(VB.pw(k)), VB.pw(Nat.add(2n, k)), UW.qpw(k), h), F.nat__pow2_mono(Nat.add(2n, k), 30n, Order.add_left(2n, k, 28n, F.nat__lt_succ_le(k, 28n, hk)))))
 
 # The word count of a length below 2^31 (L + 3 stays below 2^32: any output depth).
-def nw_nat31(+L: U32, +h: {Nat.is_lt(U32.to_nat(L), VB.pw(31n)) == True{} : Bool}) -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
-  +hc = F.nat__le_trans(U32.to_nat(3), VB.pw(2n), VB.pw(31n), {==}, F.nat__pow2_mono(2n, 31n, {==}))
-  +e2 = VB.add_lt32(L, 3, U32.to_nat(L), {==}, lt_ca(U32.to_nat(3), U32.to_nat(L), 31n, hc, h))
+def nw_nat31(+L: U32, +h: {Nat.is_le(U32.to_nat(L), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
+  +e2 = VB.add_lt32(L, 3, U32.to_nat(L), {==}, VB.nmax_lt3(U32.to_nat(L), h))
   Equal.trans(Nat, VC.NW(L), VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), WD.NWN(U32.to_nat(L)), VD.shrk(2n, U32.add(L, 3)),
     Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), e2))
 
@@ -715,12 +710,12 @@ def pc_after_r(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +P:
 # cnext, F0 last.
 def cnext_rW(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +ec: {U32.to_nat(cur) == Nat.add(SUM(ks), F0) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
-    +hb: {Nat.is_lt(Nat.add(Nat.add(SUM(ks), F0), k), VB.pw(31n)) == True{} : Bool})
+    +hb: {Nat.is_le(Nat.add(Nat.add(SUM(ks), F0), k), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(SUM(APPN(ks, [k])), F0) : Nat}:
   +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k),
     Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(SUM(ks), F0), ec),
     Equal.cong(Nat, Nat, z => Nat.add(Nat.add(SUM(ks), F0), z), U32.to_nat(sz), k, es))
-  +hb2 = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
     Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), e1), hb)
   Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(SUM(APPN(ks, [k])), F0), padd_ddW(cur, sz, dd, hd, hb2),
     Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(SUM(APPN(ks, [k])), F0), e1, sum_snoc_r(F0, ks, k)))
@@ -785,10 +780,10 @@ def croom32(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
 # croom's piece of m bytes (a + m <= L): m < 2^31.
 def croom31(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
     +epos: {U32.to_nat(Xc) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool},
-    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
-  F.nat__le_lt_trans(m, L, VB.pw(31n), F.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)
+    +hs31: {Nat.is_le(L, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(m, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  F.nat__le_trans(m, L, U32.to_nat(VB.NMAX()), F.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)
 
 # pc_end below 2^31 (a cursor within the region, the region below 2^31: O.padd's poison bit).
 def pc_end31(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +x: Nat, +h: {Nat.is_le(x, L) == True{} : Bool},
-    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
-  F.nat__le_lt_trans(x, L, VB.pw(31n), h, hs31)
+    +hs31: {Nat.is_le(L, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  F.nat__le_trans(x, L, U32.to_nat(VB.NMAX()), h, hs31)

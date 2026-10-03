@@ -113,8 +113,5 @@ def win1_slot(+X: List<&2, U32>, +Y: List<&2, U32>, +k: Nat, +hx: {Nat.is_lt(k, 
       Equal.trans(List<&2, U32>, VF.WIN(1n, k, X), VF.WIN(1n, k, Y), Con{FD.flat__nthc(Y, k), VS.wtake(0n, VB.wdr(1n+k, Y))}, h, VB.wt_eta(0n, k, Y, hy))))
 
 # x <= B < 2^31: x fits four bytes (the OKW twins' bound; the exponent symbolic in fitsBa).
-def fitsBa(+x: Nat, +B: Nat, +a: Nat, +ha: {Nat.is_lt(a, 32n) == True{} : Bool}, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(a)) == True{} : Bool})
-    -> {N.fits(4n, x) == True{} : Bool}:
-  VFT.fits4(a, x, FD.nat__le_trans(x, B, VB.pw(a), hx, FD.nat__lt_le(B, VB.pw(a), hB)), ha)
-def fitsB(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
-  fitsBa(x, B, 31n, {==}, hx, hB)
+def fitsB(+x: Nat, +B: Nat, +hx: {Nat.is_le(x, B) == True{} : Bool}, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
+  VFT.fits4lt(x, VB.nmax_lt32(x, FD.nat__le_trans(x, B, U32.to_nat(VB.NMAX()), hx, hB)))

@@ -75,7 +75,7 @@ def build(name, elem, depth):
     for alias in ('CL2.', 'CL.', 'L2.', 'L3.', 'CS.', 'CM.', 'CA.', 'CG.'):
         text = re.sub(r'(?<![A-Za-z0-9_])' + re.escape(alias), '', text)
     guard = app_guard_cached(name)
-    text = text.replace('def guard(+n: U32) -> Bool: U32.is_lt(n, 17747798)', f'def guard(+n: U32) -> Bool: U32.is_lt(n, {guard})')
+    text = text.replace('def guard(+n: U32) -> Bool: U32.is_lt(n, 35495597)', f'def guard(+n: U32) -> Bool: U32.is_lt(n, {guard})')
     text = text.replace(T_LIST, name)
     text = text.replace(f'T.{T_ELEM}_default()', f'T.{elem}_default()').replace(f'T.{T_ELEM}_root(', f'T.{elem}_root(')
     text = text.replace(f'RN.d_{T_ELEM}(', f'RN.d_{elem}(').replace(f'RN.st_{T_ELEM}(', f'RN.st_{elem}(')

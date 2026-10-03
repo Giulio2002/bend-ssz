@@ -127,6 +127,32 @@ def padd_ok(+a: U32, +b: U32, +av: Word(31n), +bv: Word(31n), +ea: {a == U32{Wor
   %Equal.sym(Bool, Bool.and(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison())), True{}, F.logic__and_intro(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison()), les_lem(a, b, ha, hb), lts_lem(a, b, ha, hb))) : {O.pick(_, U32.add(a, b), O.poison()) == U32.add(a, b) : U32}
   {==}
 
+# ---- O.padd of two lengths whose sum is at most NMAX is their sum (no 31-bit hypothesis) -------------------------
+
+# NMAX < 31 + NMAX = UMAX, proved for a variable N (a statement that shares the closed NMAX on both sides is unfolded in unary).
+def lt_gen(+N: Nat, +U: Nat, +e: {Nat.add(31n, N) == U : Nat}) -> {Nat.is_lt(N, U) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(N, z) == True{} : Bool}, Nat.add(31n, N), U, e,
+    F.nat__lt_le_trans(N, Nat.add(1n, N), Nat.add(31n, N), F.nat__lt_succ(N), Order.add_right(1n, 31n, N, {==})))
+def nmax_lt_umax() -> {Nat.is_lt(U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX())) == True{} : Bool}:
+  lt_gen(U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX()), VB.e_umax())
+def nmax_le_umax() -> {Nat.is_le(U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX())) == True{} : Bool}:
+  F.nat__lt_le(U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX()), nmax_lt_umax())
+def poison_umax() -> {O.poison() == VB.UMAX() : U32}: {==}
+def padd_le(+a: U32, +b: U32, +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {O.padd(a, b) == U32.add(a, b) : U32}:
+  +hc = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), F.nat__add_comm(U32.to_nat(a), U32.to_nat(b)), h)
+  +e = VB.add_nw(a, b, U32.to_nat(a), {==}, F.nat__le_trans(Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX()), hc, nmax_le_umax()))
+  +hlt = F.nat__le_lt_trans(Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(VB.NMAX()), U32.to_nat(VB.UMAX()), hc, nmax_lt_umax())
+  +hl = F.logic__subst(Nat, z => {Nat.is_lt(z, U32.to_nat(VB.UMAX())) == True{} : Bool}, Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(U32.add(a, b)), Equal.sym(Nat, U32.to_nat(U32.add(a, b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), e), hlt)
+  +hp = F.logic__subst(U32, z => {Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(z)) == True{} : Bool}, VB.UMAX(), O.poison(), Equal.sym(U32, O.poison(), VB.UMAX(), poison_umax()), hl)
+  +hlts = F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(O.poison())), U32.is_lt(U32.add(a, b), O.poison()),
+    Equal.sym(Bool, U32.is_lt(U32.add(a, b), O.poison()), Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(O.poison())), F.u32__is_lt_nat(U32.add(a, b), O.poison())), hp)
+  +hles = F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(a), U32.to_nat(U32.add(a, b))), U32.is_le(a, U32.add(a, b)),
+    Equal.sym(Bool, U32.is_le(a, U32.add(a, b)), Nat.is_le(U32.to_nat(a), U32.to_nat(U32.add(a, b))), VU.le_u32(a, U32.add(a, b))),
+    F.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(a), z) == True{} : Bool}, Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(U32.add(a, b)), Equal.sym(Nat, U32.to_nat(U32.add(a, b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), e), Order.left_below_sum(U32.to_nat(b), U32.to_nat(a))))
+  %Equal.sym(Bool, Bool.and(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison())), True{}, F.logic__and_intro(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison()), hles, hlts)) : {O.pick(_, U32.add(a, b), O.poison()) == U32.add(a, b) : U32}
+  {==}
+
 # ---- a value below 2^k (k <= 31) has a clear top bit ------------------------------------------
 
 def winit(n: Nat, w: Word(1n+n)) -> Word(n):
