@@ -24,7 +24,7 @@ from codegen.proofs.decoded import variable_vector_decoded_facts as DV2
 ROOT = Path(__file__).resolve().parents[3]
 E2E = ROOT / 'e2e'
 WIN = DV2.WIN
-H31T = '+h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}'
+H31T = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}'
 WF_SIG = DV2.WF_SIG + ', ' + H31T
 WF_ARG = DV2.WF_ARG
 

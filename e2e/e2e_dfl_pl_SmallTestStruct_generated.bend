@@ -122,9 +122,9 @@ def BBQ() -> {VB.pw(31n) == A.quad(VB.pw(29n)) : Nat}:
   {==}
 
 # the record count of a window shorter than 2^31 bytes is at most 2^29
-def CC29(+len: U32, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 4n) : Nat}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool})
+def CC29(+len: U32, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 4n) : Nat}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool})
     -> {Nat.is_le(W.CC(len), O.pow2n(29n)) == True{} : Bool}:
-  +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(len), A.quad(W.CC(len)), Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 4n), A.quad(W.CC(len)), e, VC.quad_mul(W.CC(len))), h31)
+  +hq = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, U32.to_nat(len), A.quad(W.CC(len)), Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), 4n), A.quad(W.CC(len)), e, VC.quad_mul(W.CC(len))), h31)
   +hp = FD.logic__subst(Nat, z => {Nat.is_lt(A.quad(W.CC(len)), z) == True{} : Bool}, VB.pw(31n), A.quad(VB.pw(29n)), BBQ(), hq)
   FD.logic__subst(Nat, z => {Nat.is_le(W.CC(len), z) == True{} : Bool}, VB.pw(29n), O.pow2n(29n), VD.s_pow2_eq(29n), VC.quad_inv(W.CC(len), VB.pw(29n), FD.nat__lt_le(A.quad(W.CC(len)), A.quad(VB.pw(29n)), hp)))
 
@@ -152,10 +152,10 @@ def lg(+c: Bool, +len: U32, +t: FD.array__Tree<U32>, +x: Nat, +ec: {U32.is_eq(le
     case True{}: ({==}, FD.logic__subst(U32, z => {Nat.is_le(Nat.mul(W.CC(z), 4n), U32.to_nat(VB.NMAX())) == True{} : Bool}, len, 0, FD.u32alg__eq_of(len, 0, ec), hl))
     case False{}: (FD.logic__subst(Nat, z => {Nat.is_lt(z, 30n) == True{} : Bool}, B.words_depth(W.NN(len)), ER.LDEP(SmallTestStruct_d.SmallTestStruct, FD.array__freeze(SmallTestStruct_d.SmallTestStruct, FD.array__thaw(SmallTestStruct_d.SmallTestStruct, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(SmallTestStruct_d.SmallTestStruct, B.words_depth(W.NN(len)), SmallTestStruct_d.SmallTestStruct_default()), t, x)))), Equal.sym(Nat, ER.LDEP(SmallTestStruct_d.SmallTestStruct, FD.array__freeze(SmallTestStruct_d.SmallTestStruct, FD.array__thaw(SmallTestStruct_d.SmallTestStruct, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(SmallTestStruct_d.SmallTestStruct, B.words_depth(W.NN(len)), SmallTestStruct_d.SmallTestStruct_default()), t, x)))), B.words_depth(W.NN(len)), PDW(len, t, x)), FD.nat__le_lt_trans(B.words_depth(W.NN(len)), 29n, 30n, VD.wd_min(W.NN(len), 29n, hb), {==})), hl)
 
-def sdl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool}) -> EL.PRL_pl_SmallTestStruct(W.OBJw(d, t, x, off, len)):
-  lg(U32.is_eq(len, 0), len, t, x, {==}, CC29(len, W.ecw(len, hchk), h31), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(len), Nat.mul(W.CC(len), 4n), W.ecw(len, hchk), h31))
+def sdl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool}) -> EL.PRL_pl_SmallTestStruct(W.OBJw(d, t, x, off, len)):
+  lg(U32.is_eq(len, 0), len, t, x, {==}, CC29(len, W.ecw(len, hchk), h31), VB.le_pw31_nmax(Nat.mul(W.CC(len), 4n), FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, U32.to_nat(len), Nat.mul(W.CC(len), 4n), W.ecw(len, hchk), h31)))
 
-def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: S.Schema, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool}) -> RTL.rep_pl_SmallTestStruct(W.OBJw(d, t, x, off, len), s):
+def rep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +s: S.Schema, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool}) -> RTL.rep_pl_SmallTestStruct(W.OBJw(d, t, x, off, len), s):
   lr(U32.is_eq(len, 0), len, t, x, s, CC29(len, W.ecw(len, hchk), h31))
 
 def lq(+c: Bool, +len: U32, +t: FD.array__Tree<U32>, +x: Nat, +ec: {U32.is_eq(len, 0) == c : Bool}, +e: {U32.to_nat(len) == Nat.mul(W.CC(len), 4n) : Nat})

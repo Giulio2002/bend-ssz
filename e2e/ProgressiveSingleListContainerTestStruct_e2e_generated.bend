@@ -35,7 +35,7 @@ import ./e2e_encqd_generated.bend as EQ
 
 # the encoder's buffer: its bytes (the tree is perfect at its depth, the size within it)
 def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
-  +g = ENo.roomO(m, hok, 29n, {==})
+  +g = ENo.roomO(m, hok, 30n, {==})
   +hd = CI.PA(ENo.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g)
   +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENo.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g))
   +L = List.length(&2, U32, CI.ENC(m))

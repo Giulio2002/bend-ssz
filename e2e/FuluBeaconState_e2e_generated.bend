@@ -128,7 +128,7 @@ import ../proofs/obj/packed_obj_light_generated.bend as PK
 # object the root law represents (rep) whose storage is as its encode record asks, through the encode record (CI.MW).
 
 # the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 31, the size (below 2^31) within it
-def obC(+wR: K.KW, +h: {CIo.OKTW(wR) == True{} : Bool}, +k: Nat, +ek: {k == 29n : Nat})
+def obC(+wR: K.KW, +h: {CIo.OKTW(wR) == True{} : Bool}, +k: Nat, +ek: {k == 30n : Nat})
     -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTC(wR)), Z.SZS(wR)}) == VSP.bt(U32.to_nat(Z.SZS(wR)), SF.limbs(FD.array__slots(U32, EN.OUTC(wR)))) : +List<U32>}:
   +es = Zo.szSW(wR, h)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, CI.ENDCs(wR, U32.to_nat(2737225)), U32.to_nat(Z.SZS(wR)), Equal.sym(Nat, U32.to_nat(Z.SZS(wR)), CI.ENDCs(wR, U32.to_nat(2737225)), es), CIo.ok_bndW(wR, h))
@@ -152,7 +152,7 @@ def obC(+wR: K.KW, +h: {CIo.OKTW(wR) == True{} : Bool}, +k: Nat, +ek: {k == 29n 
 
 def obM(+m: CI.MW, +hok: {CIo.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
   match m:
-    case CI.MW{+wR}: obC(wR, hok, 29n, {==})
+    case CI.MW{+wR}: obC(wR, hok, 30n, {==})
 
 # (i) on a record
 def enc_m(+m: CI.MW, +hok: {CIo.OKW(m) == True{} : Bool}) -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(CI.TH(m))))} == API.serialize(Spec.BeaconState(), CI.VAL(m)) : Maybe<&2, +List<U32>>}:

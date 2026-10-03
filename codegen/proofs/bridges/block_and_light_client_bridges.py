@@ -6800,10 +6800,10 @@ def _crec_mk_call(parts, pj, sch, PT, po, NEST, WIT, boxa, heada, sa, HZN, hZf, 
 def _crec_assemble(X, extra_imports, note, it, views, fxk, RX, SZWd, vz, sa, kx, out_defs, mk):
     """the module text: imports, helper lemmas, the definitions in order"""
     helpers = ('# a part of a sum is below the sum\'s strict bound\n'
-               'def pre_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_lt(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_lt(a, c) == True{} : Bool}:\n'
-               '  FD.nat__le_lt_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)\n'
-               'def sub_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_lt(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_lt(b, c) == True{} : Bool}:\n'
-               '  FD.nat__le_lt_trans(b, Nat.add(a, b), c, FD.logic__subst(Nat, z => {Nat.is_le(b, z) == True{} : Bool}, Nat.add(b, a), Nat.add(a, b), FD.nat__add_comm(b, a), FD.nat__le_add_right(b, a)), h)\n')
+               'def pre_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(a, c) == True{} : Bool}:\n'
+               '  FD.nat__le_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)\n'
+               'def sub_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(b, c) == True{} : Bool}:\n'
+               '  FD.nat__le_trans(b, Nat.add(a, b), c, FD.logic__subst(Nat, z => {Nat.is_le(b, z) == True{} : Bool}, Nat.add(b, a), Nat.add(a, b), FD.nat__add_comm(b, a), FD.nat__le_add_right(b, a)), h)\n')
     lvs = ''.join(_lv_lemma(k, views[j].split('.')[0]) + '\n' for k, j in sorted({k_: j_ for j_, k_ in fxk.items()}.items()))
     imps = ([*import_list('Base O S Spec=fulu_schemas DK RN=root_names RN_L RT=root_types SH E48'),
              f'import ../proofs/obj/encx_{X}_iface.bend as CI', f'import ../types/Fulu{X}_def_generated.bend as Fulu{X}_d']

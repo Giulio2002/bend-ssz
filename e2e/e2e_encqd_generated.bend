@@ -53,11 +53,11 @@ def CF_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB) -> Data:
 
 def c1f_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB, +v0: {S.BitsValue{BO.bview(EX_pbits.TH(m0))} == EX_pbits.VAL(m0) : S.Value}, +o0: {EX_pbits.OK(m0) == True{} : Bool}, +l0: {Nat.is_le(LY.LN(EX_pbits.ENC(m0)), Nat.add(VB.pw(29n), 1n)) == True{} : Bool}) -> CF_ProgressiveSingleListContainerTestStruct(m0):
   +hb = FD.nat__le_trans(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), U32.to_nat(VB.NMAX()), Order.add_right(4n, 4n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
-    EP.bndL(4n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(4n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
+    VB.le_pw31_nmax(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), EP.bndL(4n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(4n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==})))))
   +hok = FD.logic__and_intro(EX_pbits.OK(m0), Nat.is_le(CI_ProgressiveSingleListContainerTestStruct.ENDC(m0), U32.to_nat(VB.NMAX())), o0,
     hb)
   +hb1 = FD.nat__le_trans(Nat.add(1n+4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(5n, LY.LN(EX_pbits.ENC(m0))), U32.to_nat(VB.NMAX()), Order.add_right(1n+4n, 5n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
-    EP.bndL(5n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(5n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
+    VB.le_pw31_nmax(Nat.add(5n, LY.LN(EX_pbits.ENC(m0))), EP.bndL(5n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(5n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==})))))
   +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), List.length(&2, U32, K_ProgressiveSingleListContainerTestStruct.ENCC(m0)),
     Equal.sym(Nat, List.length(&2, U32, K_ProgressiveSingleListContainerTestStruct.ENCC(m0)), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), CI_ProgressiveSingleListContainerTestStruct.lenEW(m0, hok)), hb1)
   (vw_ProgressiveSingleListContainerTestStruct(m0, v0), (hok, lb))
@@ -106,13 +106,13 @@ def c1f_ProgressiveVarTestStruct(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB
   +h8_0 = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), U32.is_le(x0, 255),
     Equal.sym(Bool, U32.is_le(x0, 255), Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), VU.le_u32(x0, 255)), LB.small(x0, h0))
   +hb = FD.nat__le_trans(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(255n, LY.LN(EX_pbits.ENC(m2))), U32.to_nat(VB.NMAX()), Order.add_right(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 255n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
-    EP.bndL(255n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(255n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
+    VB.le_pw31_nmax(Nat.add(255n, LY.LN(EX_pbits.ENC(m2))), EP.bndL(255n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(255n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==})))))
   +hok = FD.logic__and_intro(EX_l123_u16_D.OK(m1), Bool.and(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX())))), o1,
     FD.logic__and_intro(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX()))), o2,
     FD.logic__and_intro(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX())), h8_0,
     hb)))
   +hb1 = FD.nat__le_trans(Nat.add(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(256n, LY.LN(EX_pbits.ENC(m2))), U32.to_nat(VB.NMAX()), Order.add_right(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 256n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
-    EP.bndL(256n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(256n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
+    VB.le_pw31_nmax(Nat.add(256n, LY.LN(EX_pbits.ENC(m2))), EP.bndL(256n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(256n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==})))))
   +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), List.length(&2, U32, K_ProgressiveVarTestStruct.ENCC(x0, m1, m2)),
     Equal.sym(Nat, List.length(&2, U32, K_ProgressiveVarTestStruct.ENCC(x0, m1, m2)), Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), CI_ProgressiveVarTestStruct.lenEW(x0, m1, m2, hok)), hb1)
   (vw_ProgressiveVarTestStruct(x0, m1, m2, h0, v1, v2), (hok, lb))

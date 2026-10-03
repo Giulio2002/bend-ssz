@@ -73,7 +73,7 @@ import ../proofs/obj/encx_BeaconBlock_iface_generated.bend as EC_BeaconBlock
 
 # the encoder's buffer's bytes on the OKW laws (the encoding below 2^31 bytes): the output tree is perfect at depth DO(size) < 31 (ENO.roomO), the size within it
 def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}:
-  +g = ENO.roomO(m, hok, 29n, {==})
+  +g = ENO.roomO(m, hok, 30n, {==})
   +hd = CI.PA(ENO.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g)
   +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENO.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g))
   +hl0 = FD.logic__subst(Nat, z => {Nat.is_le(WD.NWN(z), VB.pw(VL.DO(CI.SZ(m)))) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),

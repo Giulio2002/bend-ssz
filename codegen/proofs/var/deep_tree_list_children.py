@@ -281,39 +281,15 @@ def _all_blocks(text):
 
 
 # ---- the variable-element lists: the size lemmas at a strict 2^31 bound (their 2^30 cursor bound, kx == 30, widened) ----
-VL_FAM = ('mul4k', 'sza_val', 'szwb_val', 'szl', 'szsb_val', 'szs')
-VL_HELP = TPL.text('VL_HELP')
 VL_OKB = TPL.text('VL_OKB')
-
-
-def _is_lt_pw(text, ks):
-    """Nat.is_le(.., VB.pw(k)) -> Nat.is_lt(.., VB.pw(k)) for k in ks (paren-aware)."""
-    from codegen.proofs.support import encode_size_limit_twins as okw
-    for k in ks:
-        text = okw._rewrite_calls(text, 'Nat.is_le', lambda g, k=k: 'Nat.is_lt(' + ', '.join(g) + ')' if g[-1] == f'VB.pw({k})' else None)
-        text = okw._rewrite_calls(text, 'F.nat__le_trans', lambda g, k=k: 'F.nat__le_lt_trans(' + ', '.join(g) + ')' if len(g) == 5 and g[2] == f'VB.pw({k})' else None)
-    return text
+VL_SPECK = TPL.text('VL_SPECK')
 
 
 def vlist_widen(text):
-    """The base text with the size lemmas' strict-2^31 twins (D-named) and the bound of OKT at 2^31 - 1."""
-    bl = _all_blocks(text)
-    blk = {n: text[a:b] for k, n, a, b in bl}
-    new = {}
-    first = bl[[n for k, n, a, b in bl].index('mul4k')][2]
-    for n in VL_FAM:
-        b = blk[n]
-        for m in VL_FAM:
-            b = re.sub(r'(?<![\w.])' + m + r'(?=[({ :])', m + 'D', b)   # (the def name and the calls)
-        b = re.sub(r'\{(kx|k) == 30n : Nat\}', lambda m: '{' + m.group(1) + ' == 31n : Nat}', b)
-        b = _is_lt_pw(b, ('kx', 'k'))
-        for h in ('bsuc', 't31s', 't31', 'lsuc'):
-            b = re.sub(r'(?<![\w.])' + h + r'\(', h + 'D(', b)
-        new[n] = b
-    fam = ''.join(new[n].rstrip('\n') + '\n\n' for n in VL_FAM)
-    out = text[:first] + VL_HELP + '\n' + fam + text[first:]
+    """The base text with the bound of OKT lifted to NMAX (the size lemmas are the base szsS/szlS/speclB)."""
+    out = text   # (the strict twins are gone: the base size lemmas szsS/szlS/speclB take the NMAX bound)
     B28 = 'Nat.is_le(LL(t, N), A.quad(VB.pw(28n)))'
-    B31 = 'Nat.is_lt(LL(t, N), VB.pw(31n))'
+    B31 = 'Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX()))'
     for n in ('OKT', 'ok_l', 'ok_b'):
         a = out.index(f'\ndef {n}(') + 1
         e = out.find('\ndef ', a + 5)
@@ -321,7 +297,15 @@ def vlist_widen(text):
     sret = re.search(r'^def speck\(.*?\)\n    -> (\{.*\}):\n', text, re.M).group(1)   # (its statement, as it is)
     a = out.index('\ndef ok_bk(') + 1
     e = out.index('\n# The returned size of the writer', a) if '\n# The returned size of the writer' in out[a:] else out.index('\ndef eqsz(', a)
-    out = out[:a] + VL_OKB.replace('@SPECRET@', sret) + out[e:]
+    out = out[:a] + VL_OKB.rstrip('\n') + '\n' + VL_SPECK.replace('@SPECRET@', sret).rstrip('\n') + '\n' + out[e:]
+    # (speclB before speck: a def is usable only below its definition)
+    sb = [(x, y) for k, n, x, y in _all_blocks(out) if n == 'speclB' and k == 'def']
+    if sb:
+        x, y = sb[0]
+        blk = out[x:y]
+        out = out[:x] + out[y:]
+        a = out.index('\ndef speck(') + 1
+        out = out[:a] + blk.rstrip('\n') + '\n' + out[a:]
     # the call sites: k == 28 -> 31 (the sizes) / 29 (the spec's dx)
     out = re.sub(r'(szsk|szwk)\(t, N, 28n, \{==\}', r'\1(t, N, 31n, {==}', out)
     out = re.sub(r'speck\(t, N, 28n, \{==\}', 'speck(t, N, 29n, {==}', out)

@@ -60,10 +60,10 @@ import ./e2e_rec_BeaconBlockBody_generated.bend as RB
 # record's value (VAL), the record's facts (OK), its byte count from the object alone. Used by its (i) and by SignedBeaconBlock's.
 
 # a part of a sum is below the sum's strict bound
-def pre_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_lt(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_lt(a, c) == True{} : Bool}:
-  FD.nat__le_lt_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)
-def sub_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_lt(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_lt(b, c) == True{} : Bool}:
-  FD.nat__le_lt_trans(b, Nat.add(a, b), c, FD.logic__subst(Nat, z => {Nat.is_le(b, z) == True{} : Bool}, Nat.add(b, a), Nat.add(a, b), FD.nat__add_comm(b, a), FD.nat__le_add_right(b, a)), h)
+def pre_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(a, c) == True{} : Bool}:
+  FD.nat__le_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)
+def sub_lt(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(b, c) == True{} : Bool}:
+  FD.nat__le_trans(b, Nat.add(a, b), c, FD.logic__subst(Nat, z => {Nat.is_le(b, z) == True{} : Bool}, Nat.add(b, a), Nat.add(a, b), FD.nat__add_comm(b, a), FD.nat__le_add_right(b, a)), h)
 
 def lv_b32(+o: FuluBytes32_d.Bytes32) -> {RN.v_b32(o) == CI.LV_b32(o) : S.Value}:
   match o:

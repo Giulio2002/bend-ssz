@@ -83,7 +83,7 @@ def _dvp_config(c):
     H31T = '+h31: {Nat.is_lt(U32.to_nat(len), VB.pw(%dn)) == True{} : Bool}' % H31E
     WSIG = WF_SIG + (', ' + H31T if H31 else '')
     WARG = WF_ARG + (', h31' if H31 else '')
-    H31U = 'h31' if H31E == 31 else 'lt31(len, h31)'   # the encode premise's bound from the window facts'
+    H31U = 'VB.le_pw31_nmax(U32.to_nat(len), h31)' if H31E == 31 else 'lt31(len, h31)'   # the encode premise's bound from the window facts'
     H31S = '' if H31 else ', ' + H31T   # a separate h31 argument after the window facts
     H31A = '' if H31 else ', h31'
     X, ELT, LST = P['X'], P['ELT'], P['LST']
