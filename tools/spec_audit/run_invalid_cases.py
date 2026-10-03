@@ -13,6 +13,7 @@ The program is compiled in a private hard-linked copy of its import closure unde
 Server only (the Bend runtime compiler, the 2.0.34 release): nothing here runs on a laptop.
 """
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -367,7 +368,7 @@ def main():
     if a.compile_only:
         print('compiled', len(cases), 'cases')
         return 0
-    tmp = tempfile.mkdtemp(prefix='rawobj-', dir=a.work)
+    tmp = tempfile.mkdtemp(prefix='rawobj-', dir=os.environ.get('RT_TMP', a.work))     # RT_TMP: where the outputs of the cases go (a branch that accepts an invalid object writes GiB)
     with ThreadPoolExecutor(a.jobs) as ex:
         res = list(ex.map(lambda i: run_case(prog, i, tmp), range(len(cases))))
     bad, tally = [], {}
@@ -388,7 +389,7 @@ def main():
             k = (c['class'], 'AGREE' if kind is None else 'DISAGREE')
         tally[k] = tally.get(k, 0) + 1
         if kind:
-            bad.append({'id': c['id'], 'class': c['class'], 'kind': kind, 'want': want, 'bend': r})
+            bad.append({'id': c['id'], 'class': c['class'], 'kind': kind, 'want': want, 'bend': {k: (v if k != 'hex' else {'len': len(v) // 2, 'sha256': hashlib.sha256(bytes.fromhex(v)).hexdigest()}) for k, v in r.items()}})
     summary = {'cases': len(cases), 'disagreements': len(bad), 'by_class': {'%s/%s' % k: v for k, v in sorted(tally.items())}, 'bad': bad}
     if a.out:
         json.dump(summary, open(a.out, 'w'), indent=1)
