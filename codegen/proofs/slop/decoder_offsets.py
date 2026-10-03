@@ -51,7 +51,7 @@ BUILD = re.compile(r'^def (\w+)_build\(buf: B\.Buf, \+size: U32\) -> B\.Buf & ([
 SIZE = re.compile(r'^def (\w+)_size\(o: [^\n]+?\) -> [^\n]*?: \(o, (\d+)\)$', re.M)
 BXM = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+?)>\) -> [^\n]*:\n  match o:\n'
                  r'    case O\.BSome\{v, rest\}: \w+_bx_size_back\(\w+_size\(v\)\)\n'
-                 r'    case O\.BNone\{\}: \(\w+_bx_default\(\), 0\)$', re.M)
+                 r'    case O\.BNone\{\}: \((?:\w+_bx_default\(\)|O\.BNone\{\}), 0\)$', re.M)
 
 
 def header(tmod, what):

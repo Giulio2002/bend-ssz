@@ -36,6 +36,8 @@ from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E4
 from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 
 SIZE_MAX = 4096   # bytes: the default object of a `_ms_size` law is computed
+# the empty-box case of a boxed size pass: the absent box is kept (O.BNone{}) since CH-12, it was the default element before
+BX_NONE_ZERO = re.compile(r"case O\.BNone\{\}: \((?:[\w.()]+|O\.BNone\{\}), 0\)\$")
 
 
 def depth_for_bytes(n):
@@ -158,7 +160,7 @@ def laws_of(tx, X, syms):
                      f'def {X}_ms_size()\n    -> {{Pair.snd({QR}, U32, T.{X}_size(T.{X}_default())) == {ms} : U32}}:\n  {{==}}'))
     for nm in sorted(tx.blk):
         m = re.fullmatch(r'(\w+)_bx_size', nm)
-        if m and here(nm) and re.search(r'case O\.BNone\{\}: \([\w.()]+, 0\)$', tx.blk[nm]):
+        if m and here(nm) and BX_NONE_ZERO.search(tx.blk[nm]):
             sg = tx.get(nm)
             Bx = MC.ptype(sg[0][0])
             QB = 'O.Boxed<' + qual(Bx[len('O.Boxed<'):-1]) + '>'
