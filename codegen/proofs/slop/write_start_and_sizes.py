@@ -37,7 +37,7 @@ from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 
 SIZE_MAX = 4096   # bytes: the default object of a `_ms_size` law is computed
 # the empty-box case of a boxed size pass: the absent box is kept (O.BNone{}) since CH-12, it was the default element before
-BX_NONE_ZERO = re.compile(r"case O\.BNone\{\}: \((?:[\w.()]+|O\.BNone\{\}), 0\)\$")
+BX_NONE_ZERO = re.compile(r"case O\.BNone\{\}: \((?:[\w.()]+|O\.BNone\{\}), 0\)$")
 
 
 def depth_for_bytes(n):

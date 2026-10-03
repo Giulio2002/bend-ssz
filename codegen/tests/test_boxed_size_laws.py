@@ -24,7 +24,7 @@ class BoxedSizeLawsTest(unittest.TestCase):
         found = list(passes())
         self.assertGreaterEqual(len(found), 3, 'no computed boxed size pass found: the pattern in this test is stale')
         for name, text in found:
-            self.assertRegex(text, decoder_offsets.BXM.pattern, f'{name}: decoder_offsets.BXM does not read this boxed size pass')
+            self.assertTrue(decoder_offsets.BXM.search(text), f'{name}: decoder_offsets.BXM does not read this boxed size pass')
             last = text.split('\n')[-1]
             self.assertTrue(write_start_and_sizes.BX_NONE_ZERO.search(last), f'{name}: write_start_and_sizes does not read {last}')
 
