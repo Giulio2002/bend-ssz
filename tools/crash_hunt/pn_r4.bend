@@ -41,6 +41,7 @@ import ../../benchmarks/compact/objio.bend as IOx
 #  14   proglist_proglist_VarTestStruct of 2^SSZ_DEPTH honest empty inner lists: size, valid, then PCTS serialize with it as f_F
 #  16   ProgressiveComplexTestStruct serialize with f_F = 2^SSZ_DEPTH honest empty inner lists (one build)
 #  17   CompatibleUnionBC c0 whose payload bit list claims ARG bits in 2^SSZ_DEPTH words: size, valid, serialize, encode
+#  18   ProgressiveComplexTestStruct decode_checked of a valid encoding whose f_F holds ARG empty inner lists (30 + 4 ARG bytes)
 #  15   proglist_uint8 decode_checked / decode of an honest 4 GiB buffer whose size field is ARG
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
@@ -216,6 +217,26 @@ def c17(+k: U32, +d: U32) -> IO(Unit):
     ub_ser(UBE.CompatibleUnionBC_serialize(ub_mk(k, d)))
     ub_enc(UBE.CompatibleUnionBC_encode(ub_mk(k, d)))
 
+# ProgressiveComplexTestStruct whose f_F holds n EMPTY inner lists (offset table of n words, every offset 4n): a valid encoding of 30 + 4n bytes
+def ff_offs(k: Nat, +p: U32, +v: U32, out: Array<U32>) -> Array<U32>:
+  match k:
+    case 0n: out
+    case 1n+q: ff_offs(q, (p + 4 : U32), v, O.w32(out, p, v))
+def ff_buf(+n: U32) -> Array<U32>:
+  ff_offs(U32.to_nat(n), 30, (n * 4 : U32), O.w8(O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(big(), 1, 29), 5, 29), 9, 30), 13, 30), 17, 30), 21, (30 + n * 4 : U32)), 25, (30 + n * 4 : U32)), 29, 1))
+def ff_len(f: PP.pl_pl_VarTestStruct_Seq) -> IO(Unit):
+  match f:
+    case PP.pl_pl_VarTestStruct_Seq{arr, +n}: IO.print("pcts decode=some f_F_len=" ++ U32.show(n))
+def ff_some(v: PC.ProgressiveComplexTestStruct) -> IO(Unit):
+  match v:
+    case PC.ProgressiveComplexTestStruct{+a, b, c, d, e, f, g, h}: ff_len(f)
+def ff_dec(pair: B.Buf & Maybe<&1, PC.ProgressiveComplexTestStruct>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: ff_some(v)
+    case None{}: IO.print("pcts decode=none")
+def c18(+n: U32) -> IO(Unit): ff_dec(PCR.ProgressiveComplexTestStruct_decode_checked(B.Buf{ff_buf(n), (30 + n * 4 : U32)}, (30 + n * 4 : U32)))
+
 def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
   match c:
     case 1: c1(True{}, n)
@@ -235,6 +256,7 @@ def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
     case 15: c15(n)
     case 16: c16(dep)
     case 17: c17(n, dep)
+    case 18: c18(n)
     case _: IO.print("NOCASE")
 
 def main() -> IO(Unit):
