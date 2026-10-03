@@ -1743,17 +1743,17 @@ def bitvec_tail(+k: U32, pair: Words & Bool) -> Words & Bool:
 # bit 31 set when the value it wrote was invalid, and the running cursors keep
 # it set (`padd`), so the final length says whether the whole value was valid.
 # A valid encoding is shorter than 2^31 bytes there by construction.
-def poison() -> U32: 2147483648
+def poison() -> U32: 4294967295
 
 def pz(ok: Bool) -> U32:
   match ok:
     case True{}: 0
-    case False{}: 2147483648
+    case False{}: 4294967295
 
 # Add two counts, keeping bit 31 if either had it.
-def padd(+a: U32, +b: U32) -> U32: ((a + b : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
+def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
 
-def is_poisoned(+m: U32) -> Bool: U32.is_le(2147483648, m)
+def is_poisoned(+m: U32) -> Bool: U32.is_eq(m, 4294967295)
 
 def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
   match o:
@@ -1786,7 +1786,7 @@ def ser_done(bad: Bool, +m: U32, out: Array<U32>) -> Encoded:
 # cannot hold its length (so nothing that large is ever allocated for it).
 def wsz_pick(+n: U32, pair: Array<U32> & U32) -> Words & U32:
   (ws, +c) = pair
-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
 
 def words_sizek(o: Words) -> Words & U32:
   match o:
@@ -1794,7 +1794,7 @@ def words_sizek(o: Words) -> Words & U32:
 
 def bsz_pick(+k: U32, pair: Array<U32> & U32) -> Bits & U32:
   (ws, +c) = pair
-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
+  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
 
 def bits_sizek(o: Bits) -> Bits & U32:
   match o:

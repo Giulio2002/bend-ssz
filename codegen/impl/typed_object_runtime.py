@@ -1346,7 +1346,7 @@ def emit_putk(s, w):
             w(f'    case O.BSome{{+v, rest}}: ({i.p}_put(out, pos, v), (O.BSome{{v, O.BNone{{}}}}, O.pz({i.p}_valid(v))))')
         else:
             w(f'    case O.BSome{{v, rest}}: {p}_pk_back({i.p}_putk(out, pos, v))')
-        w('    case O.BNone{}: (out, (O.BNone{}, 2147483648))')
+        w('    case O.BNone{}: (out, (O.BNone{}, 4294967295))')
         return
     variable = not s.fixed
     w(f'def {p}_pk(out: Array<U32>, +pos: U32, pair: {R} & Bool) -> Array<U32> & ({R} & U32):')
@@ -1356,7 +1356,7 @@ def emit_putk(s, w):
         w(f'    case True{{}}: {p}_putn(out, pos, o)')
     else:
         w(f'    case True{{}}: {p}_pk_ok({p}_put(out, pos, o))')
-    w('    case False{}: (out, (o, 2147483648))')
+    w('    case False{}: (out, (o, 4294967295))')
     if not variable:
         w(f'def {p}_pk_ok(pair: Array<U32> & {R}) -> Array<U32> & ({R} & U32):')
         w('  (out, o) = pair')
@@ -1682,7 +1682,7 @@ def _seq_size_put(w, p, e, R, E, S):
         # the size of storage that does not hold n elements is refused (bit 31)
         w(f'def {p}_szf(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
         w('  (arr, +c) = pair')
-        w(f'  ({S}{{arr, n}}, O.pick(U32.is_le(n, c), (n * {es} : U32), 2147483648))')
+        w(f'  ({S}{{arr, n}}, O.pick(Bool.and(U32.is_le(n, c), U32.is_le(n, {((1 << 32) - 2) // es})), (n * {es} : U32), 4294967295))')
         if e.data:
             w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & Array<{R}>:')
             w('  match k:')
@@ -1763,7 +1763,7 @@ def _seq_size_put(w, p, e, R, E, S):
         w(f'def {p}_sz_ok(ok: Bool, arr: Array<{R}>, +n: U32) -> {S} & U32:')
         w('  match ok:')
         w(f'    case True{{}}: {p}_sz_nz(U32.is_eq(n, 0), arr, n)')
-        w(f'    case False{{}}: ({S}{{arr, n}}, 2147483648)')
+        w(f'    case False{{}}: ({S}{{arr, n}}, 4294967295)')
         w(f'def {p}_sz_cap(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
         w('  (arr, +c) = pair')
         w(f'  {p}_sz_ok(U32.is_le(n, c), arr, n)')
@@ -2958,7 +2958,7 @@ def emit_wide(s, w, groups, hoff, fixed_part):
                 x = f'Bool.and({y}, {x})'
             voff = f'({voff} .|. O.pz({x}) : U32)'
         if not variable:
-            voff = f'({voff} .&. 2147483648 : U32)'
+            voff = f'({voff} .&. 4294967295 : U32)'
         return f'({expr}, ({rec}, {voff}))'
 
     for j in range(len(lin) - 1, -1, -1):
@@ -3162,7 +3162,7 @@ def emit_api(g, name, s, w):
     w('    case False{}: (buf, None{})')
     w(f'def {name}_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, {R}>:')
     w('  (buf, +c) = pair')
-    w(f'  {name}_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)')
+    w(f'  {name}_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)')
     w(f'def {name}_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, {R}>:')
     w('  (buf, +n) = pair')
     w(f'  {name}_dchw(size, n, B.stored(buf))')
