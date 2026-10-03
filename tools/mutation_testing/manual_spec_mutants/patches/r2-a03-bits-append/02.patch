@@ -6,10 +6,11 @@
 # why: limit minus one
 # file: types/bitlist_9_def_generated.bend
 # sym: bits9_append,bits9_app_n,bits9_push
+# re-derived against ead59a144
 --- a/types/bitlist_9_def_generated.bend
 +++ b/types/bitlist_9_def_generated.bend
 @@ -50,3 +50,3 @@
-   (o, +n) = pair
--  bits9_push(U32.is_lt(n, 9), o, v)
-+  bits9_push(U32.is_lt(n, 8), o, v)
+   (o, +sc) = pair
+-  bits9_push(Bool.and(U32.is_lt(n, 9), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
++  bits9_push(Bool.and(U32.is_lt(n, 8), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
  

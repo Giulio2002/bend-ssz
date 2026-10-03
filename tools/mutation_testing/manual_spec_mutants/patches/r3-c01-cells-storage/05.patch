@@ -6,10 +6,11 @@
 # why: conjunct dropped
 # file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
 # sym: l4096_b2048_app_w,l4096_b2048_append,l4096_b2048_grow
+# re-derived against ead59a144
 --- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
 +++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
 @@ -68,3 +68,3 @@
    (vws, +vc) = pair
--  l4096_b2048_grow(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
-+  l4096_b2048_grow(Bool.and(U32.is_eq(vn, 2048), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
+-  l4096_b2048_grow(Bool.and(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_le(U32.shrn(((n * 2048 : U32) + 3 : U32), 2n), sc)), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
++  l4096_b2048_grow(Bool.and(Bool.and(U32.is_le(U32.shrn(((n * 2048 : U32) + 3 : U32), 2n), sc)), U32.is_eq(vn, 2048), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
  

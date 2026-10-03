@@ -6,10 +6,11 @@
 # why: guard boundary
 # file: types/proglist_bool_def_generated.bend
 # sym: pl_bool_append,pl_bool_grow
+# re-derived against ead59a144
 --- a/types/proglist_bool_def_generated.bend
 +++ b/types/proglist_bool_def_generated.bend
 @@ -60,3 +60,3 @@
-   (o, +n) = pair
--  pl_bool_grow(U32.is_lt(n, 4294967264), o, n, v)
-+  pl_bool_grow(U32.is_le(n, 4294967264), o, n, v)
+   (o, +sc) = pair
+-  pl_bool_grow(Bool.and(U32.is_lt(n, 4294967264), U32.is_le(U32.shrn(((n * 1 : U32) + 3 : U32), 2n), sc)), o, n, v)
++  pl_bool_grow(Bool.and(U32.is_le(n, 4294967264), U32.is_le(U32.shrn(((n * 1 : U32) + 3 : U32), 2n), sc)), o, n, v)
  

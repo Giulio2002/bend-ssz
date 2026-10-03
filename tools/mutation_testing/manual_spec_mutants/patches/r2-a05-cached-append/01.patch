@@ -6,10 +6,11 @@
 # why: off-by-one between count and bound
 # file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
 # sym: l16_WithdrawalRequest_capp,l16_WithdrawalRequest_capp_in,l16_WithdrawalRequest_capp_fit
+# re-derived against ead59a144
 --- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
 +++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
-@@ -180,3 +180,3 @@
-   match c:
--    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
-+    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_capp_in(U32.is_le(n, 16), arr, n, d, nodes, lo, hi, v)
- 
+@@ -197,3 +197,3 @@
+   match ok:
+-    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
++    case True{}: (l16_WithdrawalRequest_capp_fit(U32.is_le(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
+     case False{}: (l16_WithdrawalRequest_Cached{arr, n, d, nodes, lo, hi}, False{})

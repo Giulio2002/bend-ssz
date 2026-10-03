@@ -6,10 +6,11 @@
 # why: unbounded list, comparison written with <=
 # file: types/progbitlist_def_generated.bend
 # sym: pbits_append,pbits_app_n
+# re-derived against ead59a144
 --- a/types/progbitlist_def_generated.bend
 +++ b/types/progbitlist_def_generated.bend
 @@ -50,3 +50,3 @@
-   (o, +n) = pair
--  pbits_push(U32.is_lt(n, 4294967295), o, v)
-+  pbits_push(U32.is_le(n, 4294967295), o, v)
+   (o, +sc) = pair
+-  pbits_push(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
++  pbits_push(Bool.and(U32.is_le(n, 4294967295), U32.is_le(U32.shrn((O.bits_nbytes(n) + 3 : U32), 2n), sc)), o, v)
  

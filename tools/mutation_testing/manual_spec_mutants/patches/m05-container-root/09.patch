@@ -5,10 +5,11 @@
 # fault: depth 3 (padded to 8 leaves)
 # why: depth = log2(N) + 1
 # file: types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
+# re-derived against ead59a144
 --- a/types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
 +++ b/types/vec_FixedTestStruct_4_hashtreeroot_generated.bend
-@@ -79,3 +79,3 @@
-   match o:
--    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
-+    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(3n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+@@ -77,3 +77,3 @@
+ 
+-def v4_FixedTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest): v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
++def v4_FixedTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest): v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(3n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
  

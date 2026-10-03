@@ -6,10 +6,11 @@
 # why: only the buffer test kept
 # file: types/FuluCheckpoint_decode_ssz_generated.bend
 # sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
+# re-derived against ead59a144
 --- a/types/FuluCheckpoint_decode_ssz_generated.bend
 +++ b/types/FuluCheckpoint_decode_ssz_generated.bend
 @@ -54,3 +54,3 @@
-   (buf, +n) = pair
--  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
-+  Checkpoint_dgo(U32.is_le(size, n), buf, size)
+   (buf, +c) = pair
+-  Checkpoint_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  Checkpoint_dgo(Bool.and(U32.is_le(size, n), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
  

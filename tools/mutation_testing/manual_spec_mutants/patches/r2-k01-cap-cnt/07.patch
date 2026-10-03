@@ -8,10 +8,11 @@
 # sym: wr_size,cap_cnt,words_root
 # proofs: proofs/obj/words_cap.bend
 # base: 29af0ebcc
+# re-derived against ead59a144
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -913,3 +913,3 @@
+@@ -1042,3 +1042,3 @@
    (ws, +sz) = pair
--  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
-+  wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), chunks_of(n), 8n, U32.to_nat(sz)))
+-  wr_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++  wr_cap(Nat.is_le(chunks_of(n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
  

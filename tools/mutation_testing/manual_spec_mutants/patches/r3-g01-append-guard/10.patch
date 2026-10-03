@@ -4,12 +4,13 @@
 # spec: n + 1 must not wrap: n < 2^32 - 1
 # fault: the append guard is n <= 2^32 - 1 (the count wraps to 0 at n = 2^32 - 1)
 # why: guard boundary
-# file: types/Fulu_list_Validator_1099511627776_def_generated.bend
 # sym: l1099511627776_Validator_append,l1099511627776_Validator_app_in
+# file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+# re-derived against ead59a144 (by hand: the guard moved)
 --- a/types/Fulu_list_Validator_1099511627776_def_generated.bend
 +++ b/types/Fulu_list_Validator_1099511627776_def_generated.bend
-@@ -121,3 +121,3 @@
-   match o:
--    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_in(U32.is_lt(n, 4294967295), arr, n, v)
-+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_app_in(U32.is_le(n, 4294967295), arr, n, v)
+@@ -133,3 +133,3 @@
+   (arr, +sc) = pair
+-  l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 17747798), U32.is_le(n, sc)), arr, n, v)
++  l1099511627776_Validator_app_in(Bool.and(U32.is_le(n, 17747798), U32.is_le(n, sc)), arr, n, v)
  

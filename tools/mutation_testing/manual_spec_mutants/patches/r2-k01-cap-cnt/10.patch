@@ -4,14 +4,15 @@
 # spec: roots hash the object chunks bounded by the storage: cap_cnt(k, m, u, w) = k when the object's m words fit the storage w (every valid object the API builds), else w / u items (branch of invalid objects); base is the crash-fix2 tip
 # fault: the progressive packed-bytes root is bounded by the storage (CH-03)
 # why: the clamp is dropped on the progressive path (CH-03 reintroduced there)
-# file: src/obj.bend
 # sym: wrp_size,words_root_prog,cap_cnt
 # proofs: proofs/obj/words_cap.bend
 # base: 29af0ebcc
+# file: src/obj.bend
+# re-derived against ead59a144 (by hand: the guard moved)
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -952,3 +952,3 @@
-   (ws, +sz) = pair
--  mt_words(n, prog_root(hl, LWords{}, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)), h, ws))
-+  mt_words(n, prog_root(hl, LWords{}, chunks_of(n), h, ws))
+@@ -1089,3 +1089,3 @@
+     case True{}: wrp_clean(hl, h, n, words_copy(n, ws))
+-    case False{}: wrp_cnt(hl, h, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case False{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
  

@@ -6,10 +6,11 @@
 # why: Bool.and written as Bool.or
 # file: types/bytelist_256_def_generated.bend
 # sym: bl256_append,bl256_app_n,bl256_grow
+# re-derived against ead59a144
 --- a/types/bytelist_256_def_generated.bend
 +++ b/types/bytelist_256_def_generated.bend
-@@ -56,3 +56,3 @@
+@@ -45,3 +45,3 @@
    (o, +n) = pair
--  bl256_grow(Bool.and(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
-+  bl256_grow(Bool.or(U32.is_lt(n, 256), U32.is_le(v, 255)), o, n, v)
+-  bl256_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bl256_put_at(Bool.or(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
  

@@ -6,10 +6,11 @@
 # why: only the 2^31 bound kept
 # file: types/bitlist_9_decode_ssz_generated.bend
 # sym: bitlist_9_decode_checked,bitlist_9_dchk,bitlist_9_dgo
+# re-derived against ead59a144
 --- a/types/bitlist_9_decode_ssz_generated.bend
 +++ b/types/bitlist_9_decode_ssz_generated.bend
 @@ -35,3 +35,3 @@
-   (buf, +n) = pair
--  bitlist_9_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
-+  bitlist_9_dgo(U32.is_lt(size, 2147483648), buf, size)
+   (buf, +c) = pair
+-  bitlist_9_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  bitlist_9_dgo(Bool.and(U32.is_lt(size, 2147483648), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
  

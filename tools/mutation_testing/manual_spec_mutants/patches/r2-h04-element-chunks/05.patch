@@ -4,12 +4,13 @@
 # spec: the element count is words / (4 ew) bytes
 # fault: the element count divides by 4 ew + 4
 # why: divisor mistyped
-# file: src/obj.bend
 # sym: elems_root
+# file: src/obj.bend
+# re-derived against ead59a144 (by hand: the guard moved)
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1078,3 +1078,3 @@
-     case Words{ws, +n}:
--      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew : U32)))), hl,
-+      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew + 4 : U32)))), hl,
-         LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+@@ -1258,3 +1258,3 @@
+   (ws, +sz) = pair
+-  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
++  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew + 4 : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew + 4 : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
+ 

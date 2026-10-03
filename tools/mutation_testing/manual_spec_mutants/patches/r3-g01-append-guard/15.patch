@@ -4,12 +4,13 @@
 # spec: a List[ProposerSlashing, 16] holds at most 16
 # fault: the guard is n <= 16
 # why: guard boundary
-# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
 # sym: l16_ProposerSlashing_append,l16_ProposerSlashing_app_in
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# re-derived against ead59a144 (by hand: the guard moved)
 --- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
 +++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
-@@ -128,3 +128,3 @@
-   match o:
--    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_in(U32.is_lt(n, 16), arr, n, v)
-+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_app_in(U32.is_le(n, 16), arr, n, v)
+@@ -140,3 +140,3 @@
+   (arr, +sc) = pair
+-  l16_ProposerSlashing_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
++  l16_ProposerSlashing_app_in(Bool.and(U32.is_le(n, 16), U32.is_le(n, sc)), arr, n, v)
  

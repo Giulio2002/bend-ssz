@@ -6,10 +6,11 @@
 # why: guard off by one
 # file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
 # sym: l16_ProposerSlashing_capp,l16_ProposerSlashing_capp_in
+# re-derived against ead59a144
 --- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
 +++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
-@@ -193,3 +193,3 @@
-   match c:
--    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
-+    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 15), arr, n, d, nodes, lo, hi, v)
+@@ -209,3 +209,3 @@
+   (arr, +sc) = pair
+-  l16_ProposerSlashing_capp_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
++  l16_ProposerSlashing_capp_in(Bool.and(U32.is_lt(n, 15), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
  

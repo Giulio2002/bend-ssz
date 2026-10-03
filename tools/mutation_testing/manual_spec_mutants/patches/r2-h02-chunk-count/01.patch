@@ -6,10 +6,11 @@
 # why: strict comparison lost
 # file: src/obj.bend
 # sym: words_root
+# re-derived against ead59a144
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -899,3 +899,3 @@
-     case Words{ws, +n}:
--      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
-+      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
-         chunks_of(n), (h, (ws, D.zero()))))
+@@ -919,3 +919,3 @@
+ def wr_cnt(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+ 
