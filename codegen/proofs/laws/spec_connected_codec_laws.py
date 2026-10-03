@@ -345,7 +345,7 @@ def tree(leaves):
 
 
 def okname(obj_src, n):
-    head = f'def {n}_decode(buf: B.Buf, +size: U32)'
+    head = f'def {n}_decode_in(buf: B.Buf, +size: U32)'
     i = obj_src.index(head)
     body = obj_src[i:obj_src.index('\n\n', i)]
     want = f'{n}_built(size, '

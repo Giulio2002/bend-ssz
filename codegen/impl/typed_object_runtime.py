@@ -3138,8 +3138,19 @@ def emit_api(g, name, s, w):
     w(f'  (buf, {"+" if s.data else ""}v) = pair')
     w('  (buf, Some{v})')
     # reorder: some before built
-    w(f'def {name}_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
+    # `_decode_in` is the decoder of a window that lies inside the buffer; `_decode` refuses (None) a window that does not
+    # (size > B.size(buf), docs/CRASH_HUNT.md CH-06). The decode laws state their results on `_decode_in` or, with the premise
+    # `size <= B.size(buf)`, on `_decode`.
+    w(f'def {name}_decode_in(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
     w(f'  {name}_built(size, {p}_ok(buf, 0, size))')
+    w(f'def {name}_dwgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
+    w('  match ok:')
+    w(f'    case True{{}}: {name}_decode_in(buf, size)')
+    w('    case False{}: (buf, None{})')
+    w(f'def {name}_dwin(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, {R}>:')
+    w('  (buf, +n) = pair')
+    w(f'  {name}_dwgo(U32.is_le(size, n), buf, size)')
+    w(f'def {name}_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dwin(size, B.size(buf))')
     w(f'def {name}_build(buf: B.Buf, +size: U32) -> B.Buf & {R}: {p}_read(buf, 0, size)')
     # The checked entry (docs/CRASH_HUNT.md CH-05, CH-06, R2-04): `_decode` takes the window size from the caller and trusts that it
     # lies inside the buffer and below the 2^31 byte limit of every size in this library; the checked one verifies both, and that

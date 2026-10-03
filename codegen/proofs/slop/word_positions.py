@@ -149,7 +149,7 @@ def name_laws(runtime):
         if L:
             out[X] = L
     # ---- decoders of multi-word byte vectors ----
-    for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  (\w+)\(size, (\w+)_ok\(buf, 0, size\)\)', text, re.M):
+    for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  (\w+)\(size, (\w+)_ok\(buf, 0, size\)\)', text, re.M):
         X, P = m.group(1), m.group(3)
         if not re.search(rf'^def {P}_r0\(', text, re.M) or X not in tab:
             continue

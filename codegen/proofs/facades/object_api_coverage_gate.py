@@ -122,7 +122,7 @@ def validators():
     out = {}
     for f in ('fulu', 'generic'):
         src = RR.mono_text(f)
-        for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
+        for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             out[m.group(1)] = m.group(2)
     return out
 

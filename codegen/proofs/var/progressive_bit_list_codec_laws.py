@@ -32,7 +32,7 @@ def names():
     src = RR.mono_text('generic')
     for m in re.finditer(r'^def (\w+)\(\) -> S\.Schema: S\.ProgressiveBits\{\}$', specs, re.M):
         X = m.group(1)
-        d = re.search(rf'^def {X}_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M)
+        d = re.search(rf'^def {X}_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M)
         p = d.group(1)
         assert f'def {p}_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 0, True{{}})' in src
         out.append((X, p))

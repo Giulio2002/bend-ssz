@@ -38,7 +38,7 @@ def rows():
     out = []
     for f, tag in (('fulu', 'f'), ('generic', 'g')):
         src = RR.mono_text(f)
-        for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
+        for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             X, p = m.group(1), m.group(2)
             if X not in fulu and X not in gen:
                 continue

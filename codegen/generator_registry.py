@@ -53,6 +53,7 @@ GENERATORS = (
     Gen('length_only_reject_laws', 'proofs/laws'),
     Gen('byte_checked_reject_laws', 'proofs/laws'),
     Gen('padding_bits_reject_laws', 'proofs/laws'),
+    Gen('decode_window_laws', 'proofs/laws'),
     Gen('reported_size_and_vector_bound', 'proofs/slop'),
     Gen('buffer_capacity', 'proofs/slop'),
     Gen('length_check_refusal', 'proofs/slop'),

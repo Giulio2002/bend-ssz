@@ -31,7 +31,7 @@ from codegen.impl import runtime_file_split as RR  # noqa: E402
 def name_laws(runtime):
     text = RR.mono_text(runtime)
     out = {}
-    for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', text, re.M):
+    for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', text, re.M):
         X, P = m.group(1), m.group(2)
         ok = re.search(rf'^def {P}_ok\(buf: B\.Buf, \+off: U32, \+len: U32\)[^\n]*$', text, re.M)
         ol = re.search(rf'^def {P}_ok_len\(ok: Bool, buf: B\.Buf, \+off: U32, \+len: U32\) -> B\.Buf & Bool:\n  match ok:\n    case True\{{\}}: [^\n]*\n    case False\{{\}}: \(buf, False\{{\}}\)$', text, re.M)

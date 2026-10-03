@@ -33,7 +33,7 @@ def rows():
     src = RR.mono_text('generic')
     specs = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
     out = []
-    for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
+    for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
         X, p = m.groups()
         if X not in gen:
             continue

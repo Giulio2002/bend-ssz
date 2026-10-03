@@ -46,7 +46,7 @@ from codegen.proofs.collections.object_field_access_laws import qual  # noqa: E4
 from codegen.proofs.laws import generic_form_root_laws as RG  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 
-DEC = re.compile(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\) -> [^\n]*\n  \1_built\(size, (\w+)_ok\(buf, 0, size\)\)$', re.M)
+DEC = re.compile(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\) -> [^\n]*\n  \1_built\(size, (\w+)_ok\(buf, 0, size\)\)$', re.M)
 BUILD = re.compile(r'^def (\w+)_build\(buf: B\.Buf, \+size: U32\) -> B\.Buf & ([^\n]+?): (\w+)_read\(buf, 0, size\)$', re.M)
 SIZE = re.compile(r'^def (\w+)_size\(o: [^\n]+?\) -> [^\n]*?: \(o, (\d+)\)$', re.M)
 BXM = re.compile(r'^def (\w+)_bx_size\(o: O\.Boxed<([^\n]+?)>\) -> [^\n]*:\n  match o:\n'

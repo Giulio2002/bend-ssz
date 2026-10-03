@@ -68,7 +68,7 @@ TO_SPLIT = './'
 TO_ROOT = '../'
 LETTER = {'def': 'd', 'encode_ssz': 'e', 'decode_ssz': 'r', 'hashtreeroot': 'h'}
 ROOTS = {
-    'decode_ssz': ['decode', 'ok', 'read', 'build', 'decode_checked'],
+    'decode_ssz': ['decode', 'decode_in', 'ok', 'read', 'build', 'decode_checked'],
     'encode_ssz': ['encode', 'serialize', 'putk', 'putn', 'put', 'putv', 'size', 'valid'],
     'hashtreeroot': ['hash_tree_root', 'root'],
 }
@@ -429,7 +429,9 @@ BARE = ('T', 'TG')
 def rewire(text, missing=None):
     """_rewire, then codegen/proofs/support/light_definition_modules.py's light(): imports pointed at light definition companions,
     unused heavy imports dropped."""
+    from codegen.proofs.support import decode_window as DW
     from codegen.proofs.support import light_definition_modules as LS
+    text = DW.wrap(text, decode_names())
     return LS.light(_rewire(text, missing))
 
 
@@ -487,11 +489,11 @@ def _rewire(text, missing=None):
 
 def use_index(json_text):
     """Rewire against this index text (typed_object_runtime.py: the one it is about to write) instead of INDEX's."""
-    global _IX, _AL, _GEN
+    global _IX, _AL, _GEN, _DN
     import json
     d = json.loads(json_text)
     _IX = ([tuple(k) for k in d['files']], d['symbols'], d['monoliths'])
-    _AL = _GEN = None
+    _AL = _GEN = _DN = None
     unwire.cache_clear()
     mono_text.cache_clear()
 
@@ -505,6 +507,17 @@ def _aliases():
         _AL = {alias(k) for k in index()[0]}
     return _AL
 
+
+_DN = None
+
+
+def decode_names():
+    """{X: file name of the split file of its decoder} for every X with an X_decode (codegen/proofs/support/decode_window.py)"""
+    global _DN
+    if _DN is None:
+        files, syms, _ = index()
+        _DN = {s[:-7]: files[k][0] for s, k in syms.items() if s.endswith('_decode') and files[k][1] == 'decode_ssz'}
+    return _DN
 
 def rewire_out(out):
     """A generator's outputs ({path: text} or [(path, text)]) with every Bend module rewired."""

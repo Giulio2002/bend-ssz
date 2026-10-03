@@ -107,7 +107,7 @@ def runtime_fixed():
     out = {}
     for f, tag in (('fulu', 'f'), ('generic', 'g')):
         src = RR.mono_text(f)
-        for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
+        for m in re.finditer(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             X, P = m.group(1), m.group(2)
             ok = re.search(rf'^def {P}_ok\(buf: B\.Buf, \+off: U32, \+len: U32\) -> B\.Buf & Bool: {P}_ok_len\(U32\.is_eq\(len, (\d+)\), buf, off\)$', src, re.M)
             at = re.search(rf'^def {P}_ok_at\(buf: B\.Buf, \+off: U32\) -> B\.Buf & Bool: \(buf, True\{{\}}\)$', src, re.M)
