@@ -114,10 +114,14 @@ def pr(label: String, d: D.Digest) -> IO(Unit):
     case D.D{+a, +b1, +c, +d1, +e, +f, +g, +h}:
       IO.print(label ++ " root=" ++ U32.show(a) ++ "," ++ U32.show(b1) ++ "," ++ U32.show(c) ++ "," ++ U32.show(d1) ++ "," ++ U32.show(e) ++ "," ++ U32.show(f) ++ "," ++ U32.show(g) ++ "," ++ U32.show(h))
 
+def rs(d: D.Digest) -> String:
+  match d:
+    case D.D{+a, +b1, +c, +d1, +e, +f, +g, +h}: U32.show(a) ++ "," ++ U32.show(b1) ++ "," ++ U32.show(c) ++ "," ++ U32.show(d1) ++ "," ++ U32.show(e) ++ "," ++ U32.show(f) ++ "," ++ U32.show(g) ++ "," ++ U32.show(h)
+
 # ---- values ----
 def bad_fixed() -> FxD.FixedTestStruct: FxD.FixedTestStruct{256, O.U64{0, 0}, 0}
 def bad_f() -> V4D.v4_FixedTestStruct_Seq: Pair.fst(V4D.v4_FixedTestStruct_Seq, Bool, V4D.v4_FixedTestStruct_set(V4D.v4_FixedTestStruct_default(), 0, bad_fixed()))
-def bad_g() -> V2D.v2_VarTestStruct_Seq: V2D.v2_VarTestStruct_Seq{Array.new(O.Boxed<VtD.VarTestStruct>, 1n, O.BNone{}), 2}
+def bad_g() -> V2D.v2_VarTestStruct_Seq: V2D.v2_VarTestStruct_Seq{V2D.v2_VarTestStruct_fill(1n), 2}
 def bad_b() -> O.Words: O.Words{Array.new(U32, 7n, 0), 258}
 def bad_c() -> PsD.pl_SmallTestStruct_Seq: PsD.pl_SmallTestStruct_Seq{Array.new(SmD.SmallTestStruct, 0n, SmD.SmallTestStruct{65536, 0}), 1}
 def bad_bits() -> O.Bits: O.Bits{Array.new(U32, 13n, 0), 131073}
@@ -144,7 +148,7 @@ def show_cp(label: String, pair: B.Buf & Maybe<&1, CpD.Checkpoint>) -> IO(Unit):
     case Some{+v}: IO.print(label ++ " decoded=some")
     case None{}: IO.print(label ++ " decoded=none")
 
-def cp_bytes() -> B.Buf: O.ser_out(Pair.snd(CpD.Checkpoint, O.Encoded, CpE.Checkpoint_serialize(CpD.Checkpoint_default())))
+def cp_bytes() -> B.Buf: O.ser_out(CpE.Checkpoint_serialize(CpD.Checkpoint_default()))
 
 # ---- caches ----
 def dep(+x: U32) -> DpD.Deposit: DpD.Deposit_set_data(DpD.Deposit_default(), DdD.DepositData_bx_wrap(DdD.DepositData_seed(x)))
@@ -156,14 +160,12 @@ def dbuild(+k: Nat, +i: U32, o: LdD.l16_Deposit_Seq) -> LdD.l16_Deposit_Seq:
 def dcroot(c: LdD.l16_Deposit_Cached) -> LdD.l16_Deposit_Cached & D.Digest: Pair.snd(B.Buf, LdD.l16_Deposit_Cached & D.Digest, LdD.l16_Deposit_cached_root(64n, O.hasher(), c, 0))
 def dproot(o: LdD.l16_Deposit_Seq) -> D.Digest: Pair.snd(LdD.l16_Deposit_Seq, D.Digest, Pair.snd(B.Buf, LdD.l16_Deposit_Seq & D.Digest, LdH.l16_Deposit_root(64n, O.hasher(), o, 0)))
 
+def dcmp(label: String, pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
+  (c, +r) = pair
+  IO.print(label ++ " cached=" ++ rs(r) ++ " plain=" ++ rs(dproot(LdD.l16_Deposit_uncache(c))))
 def dtake_fin(label: String, pair: LdD.l16_Deposit_Cached & Maybe<&1, DpD.Deposit>) -> IO(Unit):
   (c, m) = pair
   dcmp(label, dcroot(c))
-def dcmp(label: String, pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
-  (c, +r) = pair
-  do IO<Unit>:
-    pr(label ++ " cached", r)
-    pr(label ++ " plain", dproot(LdD.l16_Deposit_uncache(c)))
 def dtake_after_root(label: String, +i: U32, pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
   (c, +r) = pair
   dtake_fin(label, LdD.l16_Deposit_ctake(c, i))
@@ -177,9 +179,7 @@ def ecroot(c: LeD.l2048_Eth1Data_Cached) -> LeD.l2048_Eth1Data_Cached & D.Digest
 def eproot(o: LeD.l2048_Eth1Data_Seq) -> D.Digest: Pair.snd(LeD.l2048_Eth1Data_Seq, D.Digest, Pair.snd(B.Buf, LeD.l2048_Eth1Data_Seq & D.Digest, LeH.l2048_Eth1Data_root(64n, O.hasher(), o, 0)))
 def ecmp(label: String, pair: LeD.l2048_Eth1Data_Cached & D.Digest) -> IO(Unit):
   (c, +r) = pair
-  do IO<Unit>:
-    pr(label ++ " cached", r)
-    pr(label ++ " plain", eproot(LeD.l2048_Eth1Data_uncache(c)))
+  IO.print(label ++ " cached=" ++ rs(r) ++ " plain=" ++ rs(eproot(LeD.l2048_Eth1Data_uncache(c))))
 def ecapp(c: LeD.l2048_Eth1Data_Cached, +x: U32) -> LeD.l2048_Eth1Data_Cached: Pair.fst(LeD.l2048_Eth1Data_Cached, Bool, LeD.l2048_Eth1Data_capp(c, eth(x)))
 def eapp_after_root(label: String, pair: LeD.l2048_Eth1Data_Cached & D.Digest) -> IO(Unit):
   (c, +r) = pair
@@ -210,21 +210,21 @@ def c18() -> IO(Unit): dtake_after_root("dep_take_n", 2, dcroot(LdD.l16_Deposit_
 def c19() -> IO(Unit): eapp_after_root("eth_capp", ecroot(LeD.l2048_Eth1Data_cache(ebuild(3n, 0, LeD.l2048_Eth1Data_default()))))
 def c20() -> IO(Unit): ecmp("eth_grow", ecroot(ecapps(5n, 0, LeD.l2048_Eth1Data_cache(LeD.l2048_Eth1Data_default()))))
 
-def bs_bad() -> BsD.BitsStruct: bs_badf(BsD.BitsStruct_default())
 def bs_badf(o: BsD.BitsStruct) -> BsD.BitsStruct:
   match o:
     case BsD.BitsStruct{a, +b, +c, d, +e}: BsD.BitsStruct{a, Bv2D.Bitvector2{4}, c, d, e}
+def bs_bad() -> BsD.BitsStruct: bs_badf(BsD.BitsStruct_default())
 def ser_bs(label: String, pair: BsD.BitsStruct & O.Encoded) -> IO(Unit):
   (o, e) = pair
   show(label, e)
-def ct_badA() -> CtD.ComplexTestStruct: ct_badAf(CtD.ComplexTestStruct_default())
 def ct_badAf(o: CtD.ComplexTestStruct) -> CtD.ComplexTestStruct:
   match o:
     case CtD.ComplexTestStruct{+a, b, +c, d, e, f, g}: CtD.ComplexTestStruct{65536, b, c, d, e, f, g}
+def ct_badA() -> CtD.ComplexTestStruct: ct_badAf(CtD.ComplexTestStruct_default())
 def c21() -> IO(Unit): ser_bs("bs_bad_B", BsE.BitsStruct_serialize(bs_bad()))
 def c22() -> IO(Unit): ser_ct("cts_bad_A", CtE.ComplexTestStruct_serialize(ct_badA()))
 
-def bad_txs() -> LtD.l1048576_bl1073741824_Seq: LtD.l1048576_bl1073741824_Seq{Array.new(O.Boxed<O.Words>, 0n, O.BSome{O.Words{Array.new(U32, 0n, 4294967295), 1}, O.BNone{}}), 1}
+def bad_txs() -> LtD.l1048576_bl1073741824_Seq: LtD.l1048576_bl1073741824_Seq{ALeaf{O.BSome{O.Words{Array.new(U32, 0n, 4294967295), 1}, O.BNone{}}}, 1}
 def ser_ep(label: String, pair: EpD.ExecutionPayload & O.Encoded) -> IO(Unit):
   (o, e) = pair
   show(label, e)
