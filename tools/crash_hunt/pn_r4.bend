@@ -40,7 +40,7 @@ import ../../benchmarks/compact/objio.bend as IOx
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
 def dirty() -> Array<U32>: Array.set(U32, big(), 1073741823, 2864434397)
-def wbig(d: Bool, +n: U32) -> O.Words:
+def wbig(+d: Bool, +n: U32) -> O.Words:
   match d:
     case True{}: O.Words{dirty(), n}
     case False{}: O.Words{big(), n}
@@ -54,15 +54,15 @@ def rline(label: String, pair: B.Buf & (O.Words & D.Digest)) -> IO(Unit):
   (o, d) = r
   IO.print(label ++ " root=" ++ IOx.words(d))
 
-def c1(d: Bool, +n: U32) -> IO(Unit):
+def c1(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
     vline("pl_u8", P8E.pl_u8_valid(wbig(d, n)))
     rline("pl_u8", P8H.proglist_uint8_hash_tree_root(O.hasher(), wbig(d, n)))
-def c3(d: Bool, +n: U32) -> IO(Unit):
+def c3(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
     vline("pl_u64", P64E.pl_u64_valid(wbig(d, n)))
     rline("pl_u64", P64H.proglist_uint64_hash_tree_root(O.hasher(), wbig(d, n)))
-def c5(d: Bool, +n: U32) -> IO(Unit):
+def c5(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
     vline("l2^40_u8", F8E.l1099511627776_u8_valid(wbig(d, n)))
     rline("l2^40_u8", F8H.l1099511627776_u8_root(64n, O.hasher(), wbig(d, n), 0))
