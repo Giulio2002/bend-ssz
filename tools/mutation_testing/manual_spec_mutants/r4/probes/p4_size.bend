@@ -210,14 +210,16 @@ def c18() -> IO(Unit): dtake_after_root("dep_take_n", 2, dcroot(LdD.l16_Deposit_
 def c19() -> IO(Unit): eapp_after_root("eth_capp", ecroot(LeD.l2048_Eth1Data_cache(ebuild(3n, 0, LeD.l2048_Eth1Data_default()))))
 def c20() -> IO(Unit): ecmp("eth_grow", ecroot(ecapps(5n, 0, LeD.l2048_Eth1Data_cache(LeD.l2048_Eth1Data_default()))))
 
-def bs_bad() -> BsD.BitsStruct:
-  match BsD.BitsStruct_default():
+def bs_bad() -> BsD.BitsStruct: bs_badf(BsD.BitsStruct_default())
+def bs_badf(o: BsD.BitsStruct) -> BsD.BitsStruct:
+  match o:
     case BsD.BitsStruct{a, +b, +c, d, +e}: BsD.BitsStruct{a, Bv2D.Bitvector2{4}, c, d, e}
 def ser_bs(label: String, pair: BsD.BitsStruct & O.Encoded) -> IO(Unit):
   (o, e) = pair
   show(label, e)
-def ct_badA() -> CtD.ComplexTestStruct:
-  match CtD.ComplexTestStruct_default():
+def ct_badA() -> CtD.ComplexTestStruct: ct_badAf(CtD.ComplexTestStruct_default())
+def ct_badAf(o: CtD.ComplexTestStruct) -> CtD.ComplexTestStruct:
+  match o:
     case CtD.ComplexTestStruct{+a, b, +c, d, e, f, g}: CtD.ComplexTestStruct{65536, b, c, d, e, f, g}
 def c21() -> IO(Unit): ser_bs("bs_bad_B", BsE.BitsStruct_serialize(bs_bad()))
 def c22() -> IO(Unit): ser_ct("cts_bad_A", CtE.ComplexTestStruct_serialize(ct_badA()))
