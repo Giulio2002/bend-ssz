@@ -103,7 +103,7 @@ See [docs/LAYOUT.md](docs/LAYOUT.md).
     python3 codegen/regenerate_all.py            # regenerate every generated file (idempotent)
     python3 codegen/regenerate_all.py --check    # fail if any generated file is stale
     tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
-                                            # (last recorded run: <!-- fig:check_wall -->11.8<!-- /fig --> min wall at 20 jobs);
+                                            # (last recorded run: <!-- fig:check_wall -->12.2<!-- /fig --> min wall at 20 jobs);
                                             # on failure it bisects and prints the failing files
     tools/check.sh <file.bend>              # one file
 
