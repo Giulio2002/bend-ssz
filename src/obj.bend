@@ -1753,7 +1753,11 @@ def pz(ok: Bool) -> U32:
 # Add two counts, keeping bit 31 if either had it.
 def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
 
-def is_poisoned(+m: U32) -> Bool: U32.is_eq(m, 4294967295)
+# A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
+def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
+
+# n * es for a fixed element size es: the product when it does not wrap and is at most NMAX, else the marker (docs/SIZE_LIMIT_DESIGN.md).
+def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
 
 def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
   match o:
