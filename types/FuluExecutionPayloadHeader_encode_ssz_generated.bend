@@ -117,7 +117,7 @@ def ExecutionPayloadHeader_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<FuluEx
 def ExecutionPayloadHeader_bx_size(o: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>) -> O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32:
   match o:
     case O.BSome{v, rest}: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_size_back(ExecutionPayloadHeader_size(v))
-    case O.BNone{}: (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def ExecutionPayloadHeader_bx_pk_back(pair: Array<U32> & (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32)) -> Array<U32> & (O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32):
   (out, r) = pair

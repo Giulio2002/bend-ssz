@@ -28,8 +28,12 @@ def RowIndex_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
     case True{}: RowIndex_decode(buf, size)
     case False{}: (buf, None{})
 
+def RowIndex_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
+  (buf, +c) = pair
+  RowIndex_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def RowIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   (buf, +n) = pair
-  RowIndex_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  RowIndex_dchw(size, n, B.stored(buf))
 
 def RowIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: RowIndex_dchk(size, B.size(buf))

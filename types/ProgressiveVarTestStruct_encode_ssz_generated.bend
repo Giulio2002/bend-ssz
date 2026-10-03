@@ -73,7 +73,7 @@ def ProgressiveVarTestStruct_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<Prog
 def ProgressiveVarTestStruct_bx_size(o: O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>) -> O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32:
   match o:
     case O.BSome{v, rest}: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_size_back(ProgressiveVarTestStruct_size(v))
-    case O.BNone{}: (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def ProgressiveVarTestStruct_bx_pk_back(pair: Array<U32> & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & U32)) -> Array<U32> & (O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32):
   (out, r) = pair

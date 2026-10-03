@@ -43,8 +43,12 @@ def bitvector_2_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitve
     case True{}: bitvector_2_decode(buf, size)
     case False{}: (buf, None{})
 
+def bitvector_2_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
+  (buf, +c) = pair
+  bitvector_2_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def bitvector_2_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>:
   (buf, +n) = pair
-  bitvector_2_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  bitvector_2_dchw(size, n, B.stored(buf))
 
 def bitvector_2_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_2_d.Bitvector2>: bitvector_2_dchk(size, B.size(buf))

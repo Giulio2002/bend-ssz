@@ -48,8 +48,12 @@ def SyncAggregatorSelectionData_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf &
     case True{}: SyncAggregatorSelectionData_decode(buf, size)
     case False{}: (buf, None{})
 
+def SyncAggregatorSelectionData_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
+  (buf, +c) = pair
+  SyncAggregatorSelectionData_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def SyncAggregatorSelectionData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
   (buf, +n) = pair
-  SyncAggregatorSelectionData_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  SyncAggregatorSelectionData_dchw(size, n, B.stored(buf))
 
 def SyncAggregatorSelectionData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dchk(size, B.size(buf))

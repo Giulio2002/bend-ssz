@@ -84,9 +84,15 @@ def pl_VarTestStruct_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<VarT
   (arr, d) = r
   (h, (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def pl_VarTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> B.Buf & (proglist_VarTestStruct_d.pl_VarTestStruct_Seq & D.Digest): pl_VarTestStruct_rt_fin(hl, n, pl_VarTestStruct_ptr(1n+U32.to_nat(m), Nat.is_lt(0n, U32.to_nat(m)), hl, seg, 0n, 0n, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def pl_VarTestStruct_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32) -> B.Buf & (proglist_VarTestStruct_d.pl_VarTestStruct_Seq & D.Digest):
+  (arr, +c) = pair
+  pl_VarTestStruct_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def pl_VarTestStruct_root(+hl: Nat, h: B.Buf, o: proglist_VarTestStruct_d.pl_VarTestStruct_Seq, +seg: U32) -> B.Buf & (proglist_VarTestStruct_d.pl_VarTestStruct_Seq & D.Digest):
   match o:
-    case proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, +n}: pl_VarTestStruct_rt_fin(hl, n, pl_VarTestStruct_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, +n}: pl_VarTestStruct_rt_sz(hl, n, h, seg, Array.size(O.Boxed<VarTestStruct_d.VarTestStruct>, arr))
 
 def pl_VarTestStruct_bx_rt(pair: B.Buf & (proglist_VarTestStruct_d.pl_VarTestStruct_Seq & D.Digest)) -> B.Buf & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & D.Digest):
   (h, r) = pair

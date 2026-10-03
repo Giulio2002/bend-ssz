@@ -136,8 +136,14 @@ type l1_AttesterSlashing_TS is Type:
 
 def l1_AttesterSlashing_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l1_AttesterSlashing_cache_at(arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32, +d: Nat) -> l1_AttesterSlashing_Cached:
+def l1_AttesterSlashing_cache_fin(arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32, +d: Nat) -> l1_AttesterSlashing_Cached:
   l1_AttesterSlashing_Cached{arr, n, d, l1_AttesterSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l1_AttesterSlashing_cache_sz(+n: U32, +d: Nat, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> l1_AttesterSlashing_Cached:
+  (arr, +c) = pair
+  l1_AttesterSlashing_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l1_AttesterSlashing_cache_at(arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32, +d: Nat) -> l1_AttesterSlashing_Cached: l1_AttesterSlashing_cache_sz(n, d, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr))
 
 def l1_AttesterSlashing_cache(o: l1_AttesterSlashing_Seq) -> l1_AttesterSlashing_Cached:
   match o:

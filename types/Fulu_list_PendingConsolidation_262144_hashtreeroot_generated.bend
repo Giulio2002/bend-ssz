@@ -75,6 +75,12 @@ def l262144_PendingConsolidation_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<
   (arr, d) = r
   (h, (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l262144_PendingConsolidation_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluPendingConsolidation_d.PendingConsolidation>) -> B.Buf & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & D.Digest): l262144_PendingConsolidation_rt_fin(hl, n, l262144_PendingConsolidation_mt0(18n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l262144_PendingConsolidation_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> B.Buf & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & D.Digest):
+  (arr, +c) = pair
+  l262144_PendingConsolidation_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l262144_PendingConsolidation_root(+hl: Nat, h: B.Buf, o: Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, +seg: U32) -> B.Buf & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & D.Digest):
   match o:
-    case Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_rt_fin(hl, n, l262144_PendingConsolidation_mt0(18n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_rt_sz(hl, n, h, seg, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))

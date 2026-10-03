@@ -55,6 +55,6 @@ def pl_u128_grow(ok: Bool, o: O.Words, +n: U32, +v: uint128_d.Uint128) -> O.Word
 
 def pl_u128_app_n(+v: uint128_d.Uint128, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_u128_grow(True{}, o, n, v)
+  pl_u128_grow(U32.is_lt(n, 268435454), o, n, v)
 
 def pl_u128_append(o: O.Words, +v: uint128_d.Uint128) -> O.Words & Bool: pl_u128_app_n(v, pl_u128_len(o))

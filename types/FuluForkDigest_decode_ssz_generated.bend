@@ -29,8 +29,12 @@ def ForkDigest_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBy
     case True{}: ForkDigest_decode(buf, size)
     case False{}: (buf, None{})
 
+def ForkDigest_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  (buf, +c) = pair
+  ForkDigest_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def ForkDigest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
   (buf, +n) = pair
-  ForkDigest_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  ForkDigest_dchw(size, n, B.stored(buf))
 
 def ForkDigest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: ForkDigest_dchk(size, B.size(buf))

@@ -40,8 +40,12 @@ def Transaction_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Wor
     case True{}: Transaction_decode(buf, size)
     case False{}: (buf, None{})
 
+def Transaction_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +c) = pair
+  Transaction_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def Transaction_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
   (buf, +n) = pair
-  Transaction_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  Transaction_dchw(size, n, B.stored(buf))
 
 def Transaction_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dchk(size, B.size(buf))

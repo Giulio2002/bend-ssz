@@ -66,7 +66,7 @@ def IndexedAttestation_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<FuluIndexe
 def IndexedAttestation_bx_size(o: O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>) -> O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32:
   match o:
     case O.BSome{v, rest}: FuluIndexedAttestation_d.IndexedAttestation_bx_size_back(IndexedAttestation_size(v))
-    case O.BNone{}: (FuluIndexedAttestation_d.IndexedAttestation_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def IndexedAttestation_bx_pk_back(pair: Array<U32> & (FuluIndexedAttestation_d.IndexedAttestation & U32)) -> Array<U32> & (O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32):
   (out, r) = pair

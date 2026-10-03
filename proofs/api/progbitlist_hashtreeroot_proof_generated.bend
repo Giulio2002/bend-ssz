@@ -27,6 +27,7 @@ import ../obj/blist_obj_light_generated.bend as P0_BLI_L
 import ../obj/elems48_light.bend as P0_E48_L
 import ../obj/xlist_support.bend as P0_XS
 import ../obj/mtree_run.bend as P0_MR
+import ../obj/words_cap.bend as P0_WC
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/limits.bend as P0_Lim
 import ../../spec/bit_root.bend as P0_Mix

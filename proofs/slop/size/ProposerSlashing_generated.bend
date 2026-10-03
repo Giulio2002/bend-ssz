@@ -22,7 +22,3 @@ def ProposerSlashing_ms_encout(out: Array<U32>, o: FuluProposerSlashing_d.Propos
 def ProposerSlashing_ms_size()
     -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, U32, FuluProposerSlashing_e.ProposerSlashing_size(FuluProposerSlashing_d.ProposerSlashing_default())) == 416 : U32}:
   {==}
-
-def ProposerSlashing_ms_bxsize_ProposerSlashing()
-    -> {Pair.snd(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, U32, FuluProposerSlashing_e.ProposerSlashing_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

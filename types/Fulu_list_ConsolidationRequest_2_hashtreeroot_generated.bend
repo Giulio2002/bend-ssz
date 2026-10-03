@@ -75,6 +75,12 @@ def l2_ConsolidationRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<FuluC
   (arr, d) = r
   (h, (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l2_ConsolidationRequest_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluConsolidationRequest_d.ConsolidationRequest>) -> B.Buf & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & D.Digest): l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt0(1n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l2_ConsolidationRequest_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> B.Buf & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & D.Digest):
+  (arr, +c) = pair
+  l2_ConsolidationRequest_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l2_ConsolidationRequest_root(+hl: Nat, h: B.Buf, o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +seg: U32) -> B.Buf & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & D.Digest):
   match o:
-    case Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_sz(hl, n, h, seg, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, arr))

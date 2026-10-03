@@ -107,8 +107,12 @@ def CompatibleUnionABCA_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&
     case True{}: CompatibleUnionABCA_decode(buf, size)
     case False{}: (buf, None{})
 
+def CompatibleUnionABCA_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
+  (buf, +c) = pair
+  CompatibleUnionABCA_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def CompatibleUnionABCA_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
   (buf, +n) = pair
-  CompatibleUnionABCA_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  CompatibleUnionABCA_dchw(size, n, B.stored(buf))
 
 def CompatibleUnionABCA_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dchk(size, B.size(buf))

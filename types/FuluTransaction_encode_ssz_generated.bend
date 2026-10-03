@@ -49,7 +49,7 @@ def bl1073741824_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<O.Words>) -> Arr
 def bl1073741824_bx_size(o: O.Boxed<O.Words>) -> O.Boxed<O.Words> & U32:
   match o:
     case O.BSome{v, rest}: FuluTransaction_d.bl1073741824_bx_size_back(bl1073741824_size(v))
-    case O.BNone{}: (FuluTransaction_d.bl1073741824_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def bl1073741824_bx_pk_back(pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Boxed<O.Words> & U32):
   (out, r) = pair

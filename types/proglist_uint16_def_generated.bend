@@ -54,6 +54,6 @@ def pl_u16_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
 
 def pl_u16_app_n(+v: U32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_u16_grow(Bool.and(True{}, U32.is_le(v, 65535)), o, n, v)
+  pl_u16_grow(Bool.and(U32.is_lt(n, 2147483632), U32.is_le(v, 65535)), o, n, v)
 
 def pl_u16_append(o: O.Words, +v: U32) -> O.Words & Bool: pl_u16_app_n(v, pl_u16_len(o))

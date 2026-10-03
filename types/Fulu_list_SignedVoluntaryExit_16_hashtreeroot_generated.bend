@@ -75,6 +75,12 @@ def l16_SignedVoluntaryExit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<FuluS
   (arr, d) = r
   (h, (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l16_SignedVoluntaryExit_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>) -> B.Buf & (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & D.Digest): l16_SignedVoluntaryExit_rt_fin(hl, n, l16_SignedVoluntaryExit_mt0(4n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l16_SignedVoluntaryExit_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> B.Buf & (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & D.Digest):
+  (arr, +c) = pair
+  l16_SignedVoluntaryExit_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l16_SignedVoluntaryExit_root(+hl: Nat, h: B.Buf, o: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, +seg: U32) -> B.Buf & (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & D.Digest):
   match o:
-    case Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_rt_fin(hl, n, l16_SignedVoluntaryExit_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_rt_sz(hl, n, h, seg, Array.size(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, arr))

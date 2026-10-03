@@ -22,6 +22,7 @@ import ./root_gnames_light_generated.bend as RN
 import ./blist_obj_light_generated.bend as BLI
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR
+import ./words_cap.bend as WC
 import ../../spec/codec.bend as Codec
 import ../../spec/limits.bend as Lim
 import ../../spec/bit_root.bend as Mix

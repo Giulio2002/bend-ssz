@@ -22,7 +22,7 @@ def l128_u64_api_set_rejected_witness() -> {Fulu_list_uint64_128_d.l128_u64_set(
 def l128_u64_api_get_outside_witness() -> {Fulu_list_uint64_128_d.l128_u64_get(W_src_obj.Words{Array.new(U32, 6n, 0), 32}, 32) == (W_src_obj.Words{Array.new(U32, 6n, 0), 32}, None{}) : W_src_obj.Words & Maybe<&1, W_src_obj.U64>}:
   W_proofs_obj_coll_api_6.l128_u64_api_get_outside(Array.new(U32, 6n, 0), 32, 32, {==})
 
-def l128_u64_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, W_src_obj.U64{0, 0})) == U32.is_le(((U32.div(0, 8)) + 1 : U32), 128) : Bool}:
+def l128_u64_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, W_src_obj.U64{0, 0})) == U32.is_lt((U32.div(0, 8)), 128) : Bool}:
   W_proofs_obj_coll_api_6.l128_u64_api_append_flag(Array.new(U32, 6n, 0), 0, W_src_obj.U64{0, 0})
 
 def l128_u64_api_append_rejected_witness() -> {Fulu_list_uint64_128_d.l128_u64_append(W_src_obj.Words{Array.new(U32, 6n, 0), 1024}, W_src_obj.U64{0, 0}) == (W_src_obj.Words{Array.new(U32, 6n, 0), 1024}, False{}) : W_src_obj.Words & Bool}:

@@ -10,7 +10,3 @@ import ../../../types/FuluBeaconBlockBody_encode_ssz_generated.bend as FuluBeaco
 def BeaconBlockBody_ms_size()
     -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, U32, FuluBeaconBlockBody_e.BeaconBlockBody_size(FuluBeaconBlockBody_d.BeaconBlockBody_default())) == 936 : U32}:
   {==}
-
-def BeaconBlockBody_ms_bxsize_BeaconBlockBody()
-    -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

@@ -48,8 +48,12 @@ def PendingConsolidation_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<
     case True{}: PendingConsolidation_decode(buf, size)
     case False{}: (buf, None{})
 
+def PendingConsolidation_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
+  (buf, +c) = pair
+  PendingConsolidation_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def PendingConsolidation_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
   (buf, +n) = pair
-  PendingConsolidation_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  PendingConsolidation_dchw(size, n, B.stored(buf))
 
 def PendingConsolidation_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>: PendingConsolidation_dchk(size, B.size(buf))

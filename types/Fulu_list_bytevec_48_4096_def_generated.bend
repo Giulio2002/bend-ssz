@@ -55,6 +55,6 @@ def l4096_b48_grow(ok: Bool, o: O.Words, +n: U32, +v: FuluBytes48_d.Bytes48) -> 
 
 def l4096_b48_app_n(+v: FuluBytes48_d.Bytes48, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l4096_b48_grow(U32.is_le((n + 1 : U32), 4096), o, n, v)
+  l4096_b48_grow(U32.is_lt(n, 4096), o, n, v)
 
 def l4096_b48_append(o: O.Words, +v: FuluBytes48_d.Bytes48) -> O.Words & Bool: l4096_b48_app_n(v, l4096_b48_len(o))

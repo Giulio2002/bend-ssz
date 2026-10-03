@@ -55,6 +55,6 @@ def pl_u256_grow(ok: Bool, o: O.Words, +n: U32, +v: uint256_d.Uint256) -> O.Word
 
 def pl_u256_app_n(+v: uint256_d.Uint256, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_u256_grow(True{}, o, n, v)
+  pl_u256_grow(U32.is_lt(n, 134217727), o, n, v)
 
 def pl_u256_append(o: O.Words, +v: uint256_d.Uint256) -> O.Words & Bool: pl_u256_app_n(v, pl_u256_len(o))

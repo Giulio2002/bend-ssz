@@ -47,8 +47,12 @@ def bitvector_33_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitv
     case True{}: bitvector_33_decode(buf, size)
     case False{}: (buf, None{})
 
+def bitvector_33_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
+  (buf, +c) = pair
+  bitvector_33_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def bitvector_33_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>:
   (buf, +n) = pair
-  bitvector_33_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  bitvector_33_dchw(size, n, B.stored(buf))
 
 def bitvector_33_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>: bitvector_33_dchk(size, B.size(buf))

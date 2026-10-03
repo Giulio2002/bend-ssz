@@ -71,6 +71,7 @@ import ../obj/ulist_obj_light.bend as UL_L
 import ../obj/elems48_light.bend as E48_L
 import ../obj/xlist_support.bend as XS
 import ../obj/mtree_run.bend as MR
+import ../obj/words_cap.bend as WC
 import ../../spec/codec.bend as Codec
 import ../../spec/limits.bend as Lim
 import ../../spec/bit_root.bend as Mix

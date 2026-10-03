@@ -136,8 +136,14 @@ type l8_Attestation_TS is Type:
 
 def l8_Attestation_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l8_Attestation_cache_at(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat) -> l8_Attestation_Cached:
+def l8_Attestation_cache_fin(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat) -> l8_Attestation_Cached:
   l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l8_Attestation_cache_sz(+n: U32, +d: Nat, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> l8_Attestation_Cached:
+  (arr, +c) = pair
+  l8_Attestation_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l8_Attestation_cache_at(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat) -> l8_Attestation_Cached: l8_Attestation_cache_sz(n, d, Array.size(O.Boxed<FuluAttestation_d.Attestation>, arr))
 
 def l8_Attestation_cache(o: l8_Attestation_Seq) -> l8_Attestation_Cached:
   match o:

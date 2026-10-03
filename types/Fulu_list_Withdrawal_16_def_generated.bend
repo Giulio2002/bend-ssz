@@ -129,8 +129,14 @@ type l16_Withdrawal_TS is Type:
 
 def l16_Withdrawal_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l16_Withdrawal_cache_at(arr: Array<FuluWithdrawal_d.Withdrawal>, +n: U32, +d: Nat) -> l16_Withdrawal_Cached:
+def l16_Withdrawal_cache_fin(arr: Array<FuluWithdrawal_d.Withdrawal>, +n: U32, +d: Nat) -> l16_Withdrawal_Cached:
   l16_Withdrawal_Cached{arr, n, d, l16_Withdrawal_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l16_Withdrawal_cache_sz(+n: U32, +d: Nat, pair: Array<FuluWithdrawal_d.Withdrawal> & U32) -> l16_Withdrawal_Cached:
+  (arr, +c) = pair
+  l16_Withdrawal_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l16_Withdrawal_cache_at(arr: Array<FuluWithdrawal_d.Withdrawal>, +n: U32, +d: Nat) -> l16_Withdrawal_Cached: l16_Withdrawal_cache_sz(n, d, Array.size(FuluWithdrawal_d.Withdrawal, arr))
 
 def l16_Withdrawal_cache(o: l16_Withdrawal_Seq) -> l16_Withdrawal_Cached:
   match o:

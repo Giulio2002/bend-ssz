@@ -127,8 +127,12 @@ def BitsStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsSt
     case True{}: BitsStruct_decode(buf, size)
     case False{}: (buf, None{})
 
+def BitsStruct_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
+  (buf, +c) = pair
+  BitsStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def BitsStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>:
   (buf, +n) = pair
-  BitsStruct_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  BitsStruct_dchw(size, n, B.stored(buf))
 
 def BitsStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>: BitsStruct_dchk(size, B.size(buf))

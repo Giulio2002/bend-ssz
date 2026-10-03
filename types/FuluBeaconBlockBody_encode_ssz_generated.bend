@@ -203,7 +203,7 @@ def BeaconBlockBody_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<FuluBeaconBlo
 def BeaconBlockBody_bx_size(o: O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>) -> O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32:
   match o:
     case O.BSome{v, rest}: FuluBeaconBlockBody_d.BeaconBlockBody_bx_size_back(BeaconBlockBody_size(v))
-    case O.BNone{}: (FuluBeaconBlockBody_d.BeaconBlockBody_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def BeaconBlockBody_bx_pk_back(pair: Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32)) -> Array<U32> & (O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32):
   (out, r) = pair

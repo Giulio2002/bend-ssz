@@ -129,8 +129,14 @@ type l2048_Eth1Data_TS is Type:
 
 def l2048_Eth1Data_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l2048_Eth1Data_cache_at(arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32, +d: Nat) -> l2048_Eth1Data_Cached:
+def l2048_Eth1Data_cache_fin(arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32, +d: Nat) -> l2048_Eth1Data_Cached:
   l2048_Eth1Data_Cached{arr, n, d, l2048_Eth1Data_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l2048_Eth1Data_cache_sz(+n: U32, +d: Nat, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> l2048_Eth1Data_Cached:
+  (arr, +c) = pair
+  l2048_Eth1Data_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l2048_Eth1Data_cache_at(arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32, +d: Nat) -> l2048_Eth1Data_Cached: l2048_Eth1Data_cache_sz(n, d, Array.size(FuluEth1Data_d.Eth1Data, arr))
 
 def l2048_Eth1Data_cache(o: l2048_Eth1Data_Seq) -> l2048_Eth1Data_Cached:
   match o:

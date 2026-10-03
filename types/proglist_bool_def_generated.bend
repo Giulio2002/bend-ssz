@@ -58,6 +58,6 @@ def pl_bool_grow(ok: Bool, o: O.Words, +n: U32, +v: Bool) -> O.Words & Bool:
 
 def pl_bool_app_n(+v: Bool, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  pl_bool_grow(U32.is_lt(n, 4294967295), o, n, v)
+  pl_bool_grow(U32.is_lt(n, 4294967264), o, n, v)
 
 def pl_bool_append(o: O.Words, +v: Bool) -> O.Words & Bool: pl_bool_app_n(v, pl_bool_len(o))

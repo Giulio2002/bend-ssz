@@ -75,6 +75,12 @@ def l2048_Eth1Data_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<FuluEth1Data_d
   (arr, d) = r
   (h, (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l2048_Eth1Data_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluEth1Data_d.Eth1Data>) -> B.Buf & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & D.Digest): l2048_Eth1Data_rt_fin(hl, n, l2048_Eth1Data_mt0(11n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l2048_Eth1Data_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> B.Buf & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & D.Digest):
+  (arr, +c) = pair
+  l2048_Eth1Data_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l2048_Eth1Data_root(+hl: Nat, h: B.Buf, o: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, +seg: U32) -> B.Buf & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & D.Digest):
   match o:
-    case Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_rt_fin(hl, n, l2048_Eth1Data_mt0(11n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_rt_sz(hl, n, h, seg, Array.size(FuluEth1Data_d.Eth1Data, arr))

@@ -129,8 +129,14 @@ type l8192_DepositRequest_TS is Type:
 
 def l8192_DepositRequest_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l8192_DepositRequest_cache_at(arr: Array<FuluDepositRequest_d.DepositRequest>, +n: U32, +d: Nat) -> l8192_DepositRequest_Cached:
+def l8192_DepositRequest_cache_fin(arr: Array<FuluDepositRequest_d.DepositRequest>, +n: U32, +d: Nat) -> l8192_DepositRequest_Cached:
   l8192_DepositRequest_Cached{arr, n, d, l8192_DepositRequest_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l8192_DepositRequest_cache_sz(+n: U32, +d: Nat, pair: Array<FuluDepositRequest_d.DepositRequest> & U32) -> l8192_DepositRequest_Cached:
+  (arr, +c) = pair
+  l8192_DepositRequest_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l8192_DepositRequest_cache_at(arr: Array<FuluDepositRequest_d.DepositRequest>, +n: U32, +d: Nat) -> l8192_DepositRequest_Cached: l8192_DepositRequest_cache_sz(n, d, Array.size(FuluDepositRequest_d.DepositRequest, arr))
 
 def l8192_DepositRequest_cache(o: l8192_DepositRequest_Seq) -> l8192_DepositRequest_Cached:
   match o:

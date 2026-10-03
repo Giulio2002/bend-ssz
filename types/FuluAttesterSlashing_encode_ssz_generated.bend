@@ -72,7 +72,7 @@ def AttesterSlashing_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<FuluAttester
 def AttesterSlashing_bx_size(o: O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) -> O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32:
   match o:
     case O.BSome{v, rest}: FuluAttesterSlashing_d.AttesterSlashing_bx_size_back(AttesterSlashing_size(v))
-    case O.BNone{}: (FuluAttesterSlashing_d.AttesterSlashing_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def AttesterSlashing_bx_pk_back(pair: Array<U32> & (FuluAttesterSlashing_d.AttesterSlashing & U32)) -> Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32):
   (out, r) = pair

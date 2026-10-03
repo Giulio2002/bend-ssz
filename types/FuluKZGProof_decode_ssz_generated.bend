@@ -29,8 +29,12 @@ def KZGProof_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluByte
     case True{}: KZGProof_decode(buf, size)
     case False{}: (buf, None{})
 
+def KZGProof_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +c) = pair
+  KZGProof_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def KZGProof_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   (buf, +n) = pair
-  KZGProof_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  KZGProof_dchw(size, n, B.stored(buf))
 
 def KZGProof_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dchk(size, B.size(buf))

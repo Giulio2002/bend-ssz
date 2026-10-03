@@ -75,6 +75,12 @@ def l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(+hl: Nat, +n: U32, pair
   (arr, d) = r
   (h, (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l10_ProgressiveSingleFieldContainerTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> B.Buf & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & D.Digest): l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(4n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l10_ProgressiveSingleFieldContainerTestStruct_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> B.Buf & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & D.Digest):
+  (arr, +c) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l10_ProgressiveSingleFieldContainerTestStruct_root(+hl: Nat, h: B.Buf, o: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq, +seg: U32) -> B.Buf & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & D.Digest):
   match o:
-    case list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, +n}: l10_ProgressiveSingleFieldContainerTestStruct_rt_sz(hl, n, h, seg, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))

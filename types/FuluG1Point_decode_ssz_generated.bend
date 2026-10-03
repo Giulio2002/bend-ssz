@@ -29,8 +29,12 @@ def G1Point_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: G1Point_decode(buf, size)
     case False{}: (buf, None{})
 
+def G1Point_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  (buf, +c) = pair
+  G1Point_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def G1Point_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   (buf, +n) = pair
-  G1Point_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  G1Point_dchw(size, n, B.stored(buf))
 
 def G1Point_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dchk(size, B.size(buf))

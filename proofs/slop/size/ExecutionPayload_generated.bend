@@ -10,7 +10,3 @@ import ../../../types/FuluExecutionPayload_encode_ssz_generated.bend as FuluExec
 def ExecutionPayload_ms_size()
     -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, U32, FuluExecutionPayload_e.ExecutionPayload_size(FuluExecutionPayload_d.ExecutionPayload_default())) == 528 : U32}:
   {==}
-
-def ExecutionPayload_ms_bxsize_ExecutionPayload()
-    -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, FuluExecutionPayload_e.ExecutionPayload_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

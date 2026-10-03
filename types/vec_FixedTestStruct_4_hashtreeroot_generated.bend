@@ -75,6 +75,12 @@ def v4_FixedTestStruct_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<FixedTestS
   (arr, d) = r
   (h, (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, n}, d))
 
+def v4_FixedTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FixedTestStruct_d.FixedTestStruct>) -> B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest): v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def v4_FixedTestStruct_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FixedTestStruct_d.FixedTestStruct> & U32) -> B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest):
+  (arr, +c) = pair
+  v4_FixedTestStruct_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def v4_FixedTestStruct_root(+hl: Nat, h: B.Buf, o: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, +seg: U32) -> B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest):
   match o:
-    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_fin(hl, n, v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_rt_sz(hl, n, h, seg, Array.size(FixedTestStruct_d.FixedTestStruct, arr))

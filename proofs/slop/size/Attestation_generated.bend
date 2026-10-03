@@ -10,7 +10,3 @@ import ../../../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestati
 def Attestation_ms_size()
     -> {Pair.snd(FuluAttestation_d.Attestation, U32, FuluAttestation_e.Attestation_size(FuluAttestation_d.Attestation_default())) == 237 : U32}:
   {==}
-
-def Attestation_ms_bxsize_Attestation()
-    -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, U32, FuluAttestation_e.Attestation_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

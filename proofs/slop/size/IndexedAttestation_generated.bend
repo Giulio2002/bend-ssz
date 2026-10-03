@@ -10,7 +10,3 @@ import ../../../types/FuluIndexedAttestation_encode_ssz_generated.bend as FuluIn
 def IndexedAttestation_ms_size()
     -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, U32, FuluIndexedAttestation_e.IndexedAttestation_size(FuluIndexedAttestation_d.IndexedAttestation_default())) == 228 : U32}:
   {==}
-
-def IndexedAttestation_ms_bxsize_IndexedAttestation()
-    -> {Pair.snd(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, FuluIndexedAttestation_e.IndexedAttestation_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

@@ -75,6 +75,12 @@ def l1099511627776_Validator_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Fulu
   (arr, d) = r
   (h, (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l1099511627776_Validator_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluValidator_d.Validator>) -> B.Buf & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & D.Digest): l1099511627776_Validator_rt_fin(hl, n, l1099511627776_Validator_mt0(40n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l1099511627776_Validator_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluValidator_d.Validator> & U32) -> B.Buf & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & D.Digest):
+  (arr, +c) = pair
+  l1099511627776_Validator_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l1099511627776_Validator_root(+hl: Nat, h: B.Buf, o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, +seg: U32) -> B.Buf & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & D.Digest):
   match o:
-    case Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_rt_fin(hl, n, l1099511627776_Validator_mt0(40n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_rt_sz(hl, n, h, seg, Array.size(FuluValidator_d.Validator, arr))

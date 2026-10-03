@@ -55,6 +55,6 @@ def l16777216_b32_grow(ok: Bool, o: O.Words, +n: U32, +v: FuluBytes32_d.Bytes32)
 
 def l16777216_b32_app_n(+v: FuluBytes32_d.Bytes32, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l16777216_b32_grow(U32.is_le((n + 1 : U32), 16777216), o, n, v)
+  l16777216_b32_grow(U32.is_lt(n, 16777216), o, n, v)
 
 def l16777216_b32_append(o: O.Words, +v: FuluBytes32_d.Bytes32) -> O.Words & Bool: l16777216_b32_app_n(v, l16777216_b32_len(o))

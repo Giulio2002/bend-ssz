@@ -129,8 +129,14 @@ type l16777216_HistoricalSummary_TS is Type:
 
 def l16777216_HistoricalSummary_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l16777216_HistoricalSummary_cache_at(arr: Array<FuluHistoricalSummary_d.HistoricalSummary>, +n: U32, +d: Nat) -> l16777216_HistoricalSummary_Cached:
+def l16777216_HistoricalSummary_cache_fin(arr: Array<FuluHistoricalSummary_d.HistoricalSummary>, +n: U32, +d: Nat) -> l16777216_HistoricalSummary_Cached:
   l16777216_HistoricalSummary_Cached{arr, n, d, l16777216_HistoricalSummary_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l16777216_HistoricalSummary_cache_sz(+n: U32, +d: Nat, pair: Array<FuluHistoricalSummary_d.HistoricalSummary> & U32) -> l16777216_HistoricalSummary_Cached:
+  (arr, +c) = pair
+  l16777216_HistoricalSummary_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l16777216_HistoricalSummary_cache_at(arr: Array<FuluHistoricalSummary_d.HistoricalSummary>, +n: U32, +d: Nat) -> l16777216_HistoricalSummary_Cached: l16777216_HistoricalSummary_cache_sz(n, d, Array.size(FuluHistoricalSummary_d.HistoricalSummary, arr))
 
 def l16777216_HistoricalSummary_cache(o: l16777216_HistoricalSummary_Seq) -> l16777216_HistoricalSummary_Cached:
   match o:

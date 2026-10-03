@@ -129,8 +129,14 @@ type l262144_PendingConsolidation_TS is Type:
 
 def l262144_PendingConsolidation_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l262144_PendingConsolidation_cache_at(arr: Array<FuluPendingConsolidation_d.PendingConsolidation>, +n: U32, +d: Nat) -> l262144_PendingConsolidation_Cached:
+def l262144_PendingConsolidation_cache_fin(arr: Array<FuluPendingConsolidation_d.PendingConsolidation>, +n: U32, +d: Nat) -> l262144_PendingConsolidation_Cached:
   l262144_PendingConsolidation_Cached{arr, n, d, l262144_PendingConsolidation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l262144_PendingConsolidation_cache_sz(+n: U32, +d: Nat, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> l262144_PendingConsolidation_Cached:
+  (arr, +c) = pair
+  l262144_PendingConsolidation_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l262144_PendingConsolidation_cache_at(arr: Array<FuluPendingConsolidation_d.PendingConsolidation>, +n: U32, +d: Nat) -> l262144_PendingConsolidation_Cached: l262144_PendingConsolidation_cache_sz(n, d, Array.size(FuluPendingConsolidation_d.PendingConsolidation, arr))
 
 def l262144_PendingConsolidation_cache(o: l262144_PendingConsolidation_Seq) -> l262144_PendingConsolidation_Cached:
   match o:

@@ -23,7 +23,7 @@ def l16777216_b32_api_set_rejected_witness() -> {Fulu_list_bytevec_32_16777216_d
 def l16777216_b32_api_get_outside_witness() -> {Fulu_list_bytevec_32_16777216_d.l16777216_b32_get(W_src_obj.Words{Array.new(U32, 6n, 0), 128}, 128) == (W_src_obj.Words{Array.new(U32, 6n, 0), 128}, None{}) : W_src_obj.Words & Maybe<&1, FuluBytes32_d.Bytes32>}:
   W_proofs_obj_coll_api_2.l16777216_b32_api_get_outside(Array.new(U32, 6n, 0), 128, 128, {==})
 
-def l16777216_b32_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_bytevec_32_16777216_d.l16777216_b32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, FuluBytes32_d.b32_default())) == U32.is_le(((U32.div(0, 32)) + 1 : U32), 16777216) : Bool}:
+def l16777216_b32_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_bytevec_32_16777216_d.l16777216_b32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, FuluBytes32_d.b32_default())) == U32.is_lt((U32.div(0, 32)), 16777216) : Bool}:
   W_proofs_obj_coll_api_2.l16777216_b32_api_append_flag(Array.new(U32, 6n, 0), 0, FuluBytes32_d.b32_default())
 
 def l16777216_b32_api_append_rejected_witness() -> {Fulu_list_bytevec_32_16777216_d.l16777216_b32_append(W_src_obj.Words{Array.new(U32, 6n, 0), 536870912}, FuluBytes32_d.b32_default()) == (W_src_obj.Words{Array.new(U32, 6n, 0), 536870912}, False{}) : W_src_obj.Words & Bool}:

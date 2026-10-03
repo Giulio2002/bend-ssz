@@ -38,8 +38,12 @@ def Cell_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
     case True{}: Cell_decode(buf, size)
     case False{}: (buf, None{})
 
+def Cell_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
+  (buf, +c) = pair
+  Cell_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def Cell_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
   (buf, +n) = pair
-  Cell_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  Cell_dchw(size, n, B.stored(buf))
 
 def Cell_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Cell_dchk(size, B.size(buf))

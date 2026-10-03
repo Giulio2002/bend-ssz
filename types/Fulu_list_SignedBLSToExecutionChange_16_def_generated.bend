@@ -129,8 +129,14 @@ type l16_SignedBLSToExecutionChange_TS is Type:
 
 def l16_SignedBLSToExecutionChange_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l16_SignedBLSToExecutionChange_cache_at(arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +n: U32, +d: Nat) -> l16_SignedBLSToExecutionChange_Cached:
+def l16_SignedBLSToExecutionChange_cache_fin(arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +n: U32, +d: Nat) -> l16_SignedBLSToExecutionChange_Cached:
   l16_SignedBLSToExecutionChange_Cached{arr, n, d, l16_SignedBLSToExecutionChange_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l16_SignedBLSToExecutionChange_cache_sz(+n: U32, +d: Nat, pair: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32) -> l16_SignedBLSToExecutionChange_Cached:
+  (arr, +c) = pair
+  l16_SignedBLSToExecutionChange_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l16_SignedBLSToExecutionChange_cache_at(arr: Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +n: U32, +d: Nat) -> l16_SignedBLSToExecutionChange_Cached: l16_SignedBLSToExecutionChange_cache_sz(n, d, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, arr))
 
 def l16_SignedBLSToExecutionChange_cache(o: l16_SignedBLSToExecutionChange_Seq) -> l16_SignedBLSToExecutionChange_Cached:
   match o:

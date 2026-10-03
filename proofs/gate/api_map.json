@@ -6041,12 +6041,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "slop/offsets/ProposerSlashing_reported_size_generated.bend",
-     "law": "ProposerSlashing_encoded_size"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -6097,10 +6092,6 @@
     {
      "file": "slop/size/ProposerSlashing_generated.bend",
      "law": "ProposerSlashing_ms_size"
-    },
-    {
-     "file": "slop/size/ProposerSlashing_generated.bend",
-     "law": "ProposerSlashing_ms_bxsize_ProposerSlashing"
     },
     {
      "file": "slop/constants/ProposerSlashing_generated.bend",
@@ -6862,10 +6853,6 @@
      "law": "Attestation_ms_size"
     },
     {
-     "file": "slop/size/Attestation_generated.bend",
-     "law": "Attestation_ms_bxsize_Attestation"
-    },
-    {
      "file": "slop/constants/Attestation_generated.bend",
      "law": "Attestation_mc_bxpoison_Attestation"
     },
@@ -7269,10 +7256,6 @@
      "law": "IndexedAttestation_ms_size"
     },
     {
-     "file": "slop/size/IndexedAttestation_generated.bend",
-     "law": "IndexedAttestation_ms_bxsize_IndexedAttestation"
-    },
-    {
      "file": "slop/constants/IndexedAttestation_generated.bend",
      "law": "IndexedAttestation_mc_bxpoison_IndexedAttestation"
     },
@@ -7375,10 +7358,6 @@
     {
      "file": "slop/size/AttesterSlashing_generated.bend",
      "law": "AttesterSlashing_ms_size"
-    },
-    {
-     "file": "slop/size/AttesterSlashing_generated.bend",
-     "law": "AttesterSlashing_ms_bxsize_AttesterSlashing"
     },
     {
      "file": "slop/constants/AttesterSlashing_generated.bend",
@@ -8681,12 +8660,7 @@
     }
    ],
    "roundtrip": [],
-   "encoded_size": [
-    {
-     "file": "slop/offsets/Deposit_reported_size_generated.bend",
-     "law": "Deposit_encoded_size"
-    }
-   ],
+   "encoded_size": [],
    "reject_short": [],
    "reject_long": [],
    "decode_tree": [
@@ -8737,10 +8711,6 @@
     {
      "file": "slop/size/Deposit_generated.bend",
      "law": "Deposit_ms_size"
-    },
-    {
-     "file": "slop/size/Deposit_generated.bend",
-     "law": "Deposit_ms_bxsize_Deposit"
     },
     {
      "file": "slop/constants/Deposit_generated.bend",
@@ -9869,10 +9839,6 @@
      "law": "Transaction_serialize_vcoll_bl1073741824_set_write"
     },
     {
-     "file": "slop/size/Transaction_generated.bend",
-     "law": "Transaction_ms_bxsize_bl1073741824"
-    },
-    {
      "file": "slop/constants/Transaction_generated.bend",
      "law": "Transaction_mc_bxpoison_bl1073741824"
     },
@@ -10784,10 +10750,6 @@
      "law": "ExecutionPayloadHeader_ms_size"
     },
     {
-     "file": "slop/size/ExecutionPayloadHeader_generated.bend",
-     "law": "ExecutionPayloadHeader_ms_bxsize_ExecutionPayloadHeader"
-    },
-    {
      "file": "slop/constants/ExecutionPayloadHeader_generated.bend",
      "law": "ExecutionPayloadHeader_mc_bxpoison_ExecutionPayloadHeader"
     },
@@ -11320,10 +11282,6 @@
     {
      "file": "slop/size/ExecutionPayload_generated.bend",
      "law": "ExecutionPayload_ms_size"
-    },
-    {
-     "file": "slop/size/ExecutionPayload_generated.bend",
-     "law": "ExecutionPayload_ms_bxsize_ExecutionPayload"
     },
     {
      "file": "slop/constants/ExecutionPayload_generated.bend",
@@ -12760,10 +12718,6 @@
     {
      "file": "slop/size/BeaconBlockBody_generated.bend",
      "law": "BeaconBlockBody_ms_size"
-    },
-    {
-     "file": "slop/size/BeaconBlockBody_generated.bend",
-     "law": "BeaconBlockBody_ms_bxsize_BeaconBlockBody"
     },
     {
      "file": "slop/constants/BeaconBlockBody_generated.bend",
@@ -14932,10 +14886,6 @@
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
      "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4"
-    },
-    {
-     "file": "slop/size/ProgressiveVarTestStruct_generated.bend",
-     "law": "ProgressiveVarTestStruct_ms_bxsize_ProgressiveVarTestStruct"
     },
     {
      "file": "slop/constants/ProgressiveVarTestStruct_generated.bend",
@@ -26742,10 +26692,6 @@
     {
      "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
      "law": "VarTestStruct_serialize_vunit_l1024_u16_accept_4"
-    },
-    {
-     "file": "slop/size/VarTestStruct_generated.bend",
-     "law": "VarTestStruct_ms_bxsize_VarTestStruct"
     },
     {
      "file": "slop/constants/VarTestStruct_generated.bend",

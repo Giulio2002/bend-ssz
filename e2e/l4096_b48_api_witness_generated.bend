@@ -23,7 +23,7 @@ def l4096_b48_api_set_rejected_witness() -> {Fulu_list_bytevec_48_4096_d.l4096_b
 def l4096_b48_api_get_outside_witness() -> {Fulu_list_bytevec_48_4096_d.l4096_b48_get(W_src_obj.Words{Array.new(U32, 6n, 0), 192}, 192) == (W_src_obj.Words{Array.new(U32, 6n, 0), 192}, None{}) : W_src_obj.Words & Maybe<&1, FuluBytes48_d.Bytes48>}:
   W_proofs_obj_coll_api_5.l4096_b48_api_get_outside(Array.new(U32, 6n, 0), 192, 192, {==})
 
-def l4096_b48_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_bytevec_48_4096_d.l4096_b48_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, FuluBytes48_d.b48_default())) == U32.is_le(((U32.div(0, 48)) + 1 : U32), 4096) : Bool}:
+def l4096_b48_api_append_flag_witness() -> {Pair.snd(W_src_obj.Words, Bool, Fulu_list_bytevec_48_4096_d.l4096_b48_append(W_src_obj.Words{Array.new(U32, 6n, 0), 0}, FuluBytes48_d.b48_default())) == U32.is_lt((U32.div(0, 48)), 4096) : Bool}:
   W_proofs_obj_coll_api_5.l4096_b48_api_append_flag(Array.new(U32, 6n, 0), 0, FuluBytes48_d.b48_default())
 
 def l4096_b48_api_append_rejected_witness() -> {Fulu_list_bytevec_48_4096_d.l4096_b48_append(W_src_obj.Words{Array.new(U32, 6n, 0), 196608}, FuluBytes48_d.b48_default()) == (W_src_obj.Words{Array.new(U32, 6n, 0), 196608}, False{}) : W_src_obj.Words & Bool}:

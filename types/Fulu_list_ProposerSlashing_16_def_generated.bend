@@ -136,8 +136,14 @@ type l16_ProposerSlashing_TS is Type:
 
 def l16_ProposerSlashing_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l16_ProposerSlashing_cache_at(arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +d: Nat) -> l16_ProposerSlashing_Cached:
+def l16_ProposerSlashing_cache_fin(arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +d: Nat) -> l16_ProposerSlashing_Cached:
   l16_ProposerSlashing_Cached{arr, n, d, l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l16_ProposerSlashing_cache_sz(+n: U32, +d: Nat, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> l16_ProposerSlashing_Cached:
+  (arr, +c) = pair
+  l16_ProposerSlashing_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l16_ProposerSlashing_cache_at(arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +d: Nat) -> l16_ProposerSlashing_Cached: l16_ProposerSlashing_cache_sz(n, d, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr))
 
 def l16_ProposerSlashing_cache(o: l16_ProposerSlashing_Seq) -> l16_ProposerSlashing_Cached:
   match o:

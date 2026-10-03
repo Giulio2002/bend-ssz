@@ -129,8 +129,14 @@ type l134217728_PendingDeposit_TS is Type:
 
 def l134217728_PendingDeposit_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l134217728_PendingDeposit_cache_at(arr: Array<FuluPendingDeposit_d.PendingDeposit>, +n: U32, +d: Nat) -> l134217728_PendingDeposit_Cached:
+def l134217728_PendingDeposit_cache_fin(arr: Array<FuluPendingDeposit_d.PendingDeposit>, +n: U32, +d: Nat) -> l134217728_PendingDeposit_Cached:
   l134217728_PendingDeposit_Cached{arr, n, d, l134217728_PendingDeposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l134217728_PendingDeposit_cache_sz(+n: U32, +d: Nat, pair: Array<FuluPendingDeposit_d.PendingDeposit> & U32) -> l134217728_PendingDeposit_Cached:
+  (arr, +c) = pair
+  l134217728_PendingDeposit_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l134217728_PendingDeposit_cache_at(arr: Array<FuluPendingDeposit_d.PendingDeposit>, +n: U32, +d: Nat) -> l134217728_PendingDeposit_Cached: l134217728_PendingDeposit_cache_sz(n, d, Array.size(FuluPendingDeposit_d.PendingDeposit, arr))
 
 def l134217728_PendingDeposit_cache(o: l134217728_PendingDeposit_Seq) -> l134217728_PendingDeposit_Cached:
   match o:

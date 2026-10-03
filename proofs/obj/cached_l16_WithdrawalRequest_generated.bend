@@ -1829,17 +1829,47 @@ def pw_le_dw(+n: U32, +dw: Nat, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__po
   %CT.pow2_eq(dw) : {Nat.is_le(U32.to_nat(n), _) == True{} : Bool}
   hn
 
-# cache(Seq{thaw ta, n}): the fresh cache at depth words_depth(n), every leaf dirty.
-def cache_eq(+ta: F.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +n: U32)
+def pu_eq(+d: Nat) -> {O.pow2u(d) == F.u32__pow2u(d) : U32}:
+  match d:
+    case 0n: {==}
+    case 1n+ +p:
+      %pu_eq(p) : {U32.shl(O.pow2u(p)) == U32.shl(_) : U32}
+      {==}
+
+# The depth of the fresh cache is one the array holds: the depth words_depth(n) <= dw of a list that fits its storage (O.cache_dok).
+def dok_true(+d: Nat, +dw: Nat, +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool}, +hle: {Nat.is_le(d, dw) == True{} : Bool})
+    -> {O.cache_dok(Nat.is_lt(d, 32n), d, F.u32__pow2u(dw)) == True{} : Bool}:
+  +hd = F.nat__le_lt_trans(d, dw, 32n, hle, hdw)
+  +hm = CT.pow2_mono(d, dw, hle)
+  +hm2 = F.nat__eq_le(F.spec_common__pow2(d), O.pow2n(d), CT.pow2_eq(d))
+  +hm3 = F.nat__le_trans(F.spec_common__pow2(d), O.pow2n(d), F.spec_common__pow2(dw), hm2, CT.rw_le(O.pow2n(dw), F.spec_common__pow2(dw), O.pow2n(d), Equal.sym(Nat, F.spec_common__pow2(dw), O.pow2n(dw), CT.pow2_eq(dw)), hm))
+  %Equal.sym(Bool, Nat.is_lt(d, 32n), True{}, hd) : {O.cache_dok(_, d, F.u32__pow2u(dw)) == True{} : Bool}
+  %Equal.sym(U32, O.pow2u(d), F.u32__pow2u(d), pu_eq(d)) : {U32.is_le(_, F.u32__pow2u(dw)) == True{} : Bool}
+  %Equal.sym(Cmp, U32.cmp(F.u32__pow2u(d), F.u32__pow2u(dw)), Nat.cmp(U32.to_nat(F.u32__pow2u(d)), U32.to_nat(F.u32__pow2u(dw))), F.u32__u32_cmp(F.u32__pow2u(d), F.u32__pow2u(dw))) : {Cmp.is_le(_) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(d)), F.spec_common__pow2(d), F.u32__pow2u_value(d, hd)) : {Cmp.is_le(Nat.cmp(_, U32.to_nat(F.u32__pow2u(dw)))) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(dw)), F.spec_common__pow2(dw), F.u32__pow2u_value(dw, hdw)) : {Cmp.is_le(Nat.cmp(F.spec_common__pow2(d), _)) == True{} : Bool}
+  hm3
+
+# cache(Seq{thaw ta, n}) of a list that fits its storage (n <= 2^dw, ta perfect of depth dw): the fresh cache at depth words_depth(n), every leaf dirty.
+def cache_eq(+ta: F.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +dw: Nat, +n: U32, +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, dw, ta) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool})
     -> {Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_cache(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, ta), n})
         == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
         : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Cached}:
+  +hdd = WS2.wd_min(n, dw, pw_le_dw(n, dw, hn))
+  %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, ta)), (F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, ta), F.u32__pow2u(dw)), F.array__size_thaw(FuluWithdrawalRequest_d.WithdrawalRequest, dw, ta, pfa)) :
+    {Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_cache_sz(n, B.words_depth(n), _)
+     == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
+     : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Cached}
+  %Equal.sym(Bool, O.cache_dok(Nat.is_lt(B.words_depth(n), 32n), B.words_depth(n), F.u32__pow2u(dw)), True{}, dok_true(B.words_depth(n), dw, hdw, hdd)) :
+    {Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_cache_fin(F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, ta), n, O.npick(_, B.words_depth(n), 0n))
+     == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
+     : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Cached}
   %Equal.sym(Array<D.Digest>, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_dfill(1n+B.words_depth(n)), F.array__thaw(D.Digest, dnew(B.words_depth(n))), fresh_nodes(B.words_depth(n))) :
     {Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Cached{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, ta), n, B.words_depth(n), _, 0, (O.pow2u(B.words_depth(n)) - 1 : U32)}
      == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
      : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Cached}
   {==}
-
 def hi_lt(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat((O.pow2u(d) - 1 : U32)), O.pow2n(d)) == True{} : Bool}:
   %Equal.sym(Nat, U32.to_nat((O.pow2u(d) - 1 : U32)), Nat.sub(O.pow2n(d), 1n), hi_fresh(d, hd)) : {Nat.is_lt(_, O.pow2n(d)) == True{} : Bool}
   WS2.sub1_lt(O.pow2n(d), CT.pow2_pos(d))

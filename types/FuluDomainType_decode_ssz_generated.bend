@@ -29,8 +29,12 @@ def DomainType_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBy
     case True{}: DomainType_decode(buf, size)
     case False{}: (buf, None{})
 
+def DomainType_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  (buf, +c) = pair
+  DomainType_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def DomainType_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
   (buf, +n) = pair
-  DomainType_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  DomainType_dchw(size, n, B.stored(buf))
 
 def DomainType_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: DomainType_dchk(size, B.size(buf))

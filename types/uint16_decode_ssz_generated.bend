@@ -38,8 +38,12 @@ def uint16_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
     case True{}: uint16_decode(buf, size)
     case False{}: (buf, None{})
 
+def uint16_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
+  (buf, +c) = pair
+  uint16_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def uint16_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
   (buf, +n) = pair
-  uint16_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  uint16_dchw(size, n, B.stored(buf))
 
 def uint16_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint16_dchk(size, B.size(buf))

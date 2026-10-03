@@ -173,7 +173,7 @@ def pl_VarTestStruct_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<proglist_Var
 def pl_VarTestStruct_bx_size(o: O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>) -> O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & U32:
   match o:
     case O.BSome{v, rest}: proglist_VarTestStruct_d.pl_VarTestStruct_bx_size_back(pl_VarTestStruct_size(v))
-    case O.BNone{}: (proglist_VarTestStruct_d.pl_VarTestStruct_bx_default(), 0)
+    case O.BNone{}: (O.BNone{}, 0)
 
 def pl_VarTestStruct_bx_pk_back(pair: Array<U32> & (proglist_VarTestStruct_d.pl_VarTestStruct_Seq & U32)) -> Array<U32> & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & U32):
   (out, r) = pair

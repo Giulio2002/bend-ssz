@@ -54,6 +54,6 @@ def l131072_u64_grow(ok: Bool, o: O.Words, +n: U32, +v: O.U64) -> O.Words & Bool
 
 def l131072_u64_app_n(+v: O.U64, pair: O.Words & U32) -> O.Words & Bool:
   (o, +n) = pair
-  l131072_u64_grow(U32.is_le((n + 1 : U32), 131072), o, n, v)
+  l131072_u64_grow(U32.is_lt(n, 131072), o, n, v)
 
 def l131072_u64_append(o: O.Words, +v: O.U64) -> O.Words & Bool: l131072_u64_app_n(v, l131072_u64_len(o))

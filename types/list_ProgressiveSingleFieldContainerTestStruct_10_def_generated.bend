@@ -129,8 +129,14 @@ type l10_ProgressiveSingleFieldContainerTestStruct_TS is Type:
 
 def l10_ProgressiveSingleFieldContainerTestStruct_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l10_ProgressiveSingleFieldContainerTestStruct_cache_at(arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>, +n: U32, +d: Nat) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached:
+def l10_ProgressiveSingleFieldContainerTestStruct_cache_fin(arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>, +n: U32, +d: Nat) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached:
   l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, l10_ProgressiveSingleFieldContainerTestStruct_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l10_ProgressiveSingleFieldContainerTestStruct_cache_sz(+n: U32, +d: Nat, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached:
+  (arr, +c) = pair
+  l10_ProgressiveSingleFieldContainerTestStruct_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l10_ProgressiveSingleFieldContainerTestStruct_cache_at(arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>, +n: U32, +d: Nat) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached: l10_ProgressiveSingleFieldContainerTestStruct_cache_sz(n, d, Array.size(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_cache(o: l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> l10_ProgressiveSingleFieldContainerTestStruct_Cached:
   match o:

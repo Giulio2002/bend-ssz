@@ -54,8 +54,12 @@ def Eth1Data_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1
     case True{}: Eth1Data_decode(buf, size)
     case False{}: (buf, None{})
 
+def Eth1Data_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
+  (buf, +c) = pair
+  Eth1Data_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def Eth1Data_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
   (buf, +n) = pair
-  Eth1Data_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  Eth1Data_dchw(size, n, B.stored(buf))
 
 def Eth1Data_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dchk(size, B.size(buf))

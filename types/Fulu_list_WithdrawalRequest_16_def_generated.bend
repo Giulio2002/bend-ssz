@@ -129,8 +129,14 @@ type l16_WithdrawalRequest_TS is Type:
 
 def l16_WithdrawalRequest_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l16_WithdrawalRequest_cache_at(arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>, +n: U32, +d: Nat) -> l16_WithdrawalRequest_Cached:
+def l16_WithdrawalRequest_cache_fin(arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>, +n: U32, +d: Nat) -> l16_WithdrawalRequest_Cached:
   l16_WithdrawalRequest_Cached{arr, n, d, l16_WithdrawalRequest_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l16_WithdrawalRequest_cache_sz(+n: U32, +d: Nat, pair: Array<FuluWithdrawalRequest_d.WithdrawalRequest> & U32) -> l16_WithdrawalRequest_Cached:
+  (arr, +c) = pair
+  l16_WithdrawalRequest_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l16_WithdrawalRequest_cache_at(arr: Array<FuluWithdrawalRequest_d.WithdrawalRequest>, +n: U32, +d: Nat) -> l16_WithdrawalRequest_Cached: l16_WithdrawalRequest_cache_sz(n, d, Array.size(FuluWithdrawalRequest_d.WithdrawalRequest, arr))
 
 def l16_WithdrawalRequest_cache(o: l16_WithdrawalRequest_Seq) -> l16_WithdrawalRequest_Cached:
   match o:

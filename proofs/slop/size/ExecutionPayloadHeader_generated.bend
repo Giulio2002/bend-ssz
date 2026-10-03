@@ -14,7 +14,3 @@ def ExecutionPayloadHeader_ms_serdepth(o: FuluExecutionPayloadHeader_d.Execution
 def ExecutionPayloadHeader_ms_size()
     -> {Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_size(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default())) == 584 : U32}:
   {==}
-
-def ExecutionPayloadHeader_ms_bxsize_ExecutionPayloadHeader()
-    -> {Pair.snd(O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_size(O.BNone{})) == 0 : U32}:
-  {==}

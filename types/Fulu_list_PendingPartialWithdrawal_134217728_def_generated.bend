@@ -129,8 +129,14 @@ type l134217728_PendingPartialWithdrawal_TS is Type:
 
 def l134217728_PendingPartialWithdrawal_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l134217728_PendingPartialWithdrawal_cache_at(arr: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +n: U32, +d: Nat) -> l134217728_PendingPartialWithdrawal_Cached:
+def l134217728_PendingPartialWithdrawal_cache_fin(arr: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +n: U32, +d: Nat) -> l134217728_PendingPartialWithdrawal_Cached:
   l134217728_PendingPartialWithdrawal_Cached{arr, n, d, l134217728_PendingPartialWithdrawal_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l134217728_PendingPartialWithdrawal_cache_sz(+n: U32, +d: Nat, pair: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal> & U32) -> l134217728_PendingPartialWithdrawal_Cached:
+  (arr, +c) = pair
+  l134217728_PendingPartialWithdrawal_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l134217728_PendingPartialWithdrawal_cache_at(arr: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, +n: U32, +d: Nat) -> l134217728_PendingPartialWithdrawal_Cached: l134217728_PendingPartialWithdrawal_cache_sz(n, d, Array.size(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, arr))
 
 def l134217728_PendingPartialWithdrawal_cache(o: l134217728_PendingPartialWithdrawal_Seq) -> l134217728_PendingPartialWithdrawal_Cached:
   match o:

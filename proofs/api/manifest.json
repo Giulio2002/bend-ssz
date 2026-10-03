@@ -1563,7 +1563,6 @@
     "spec_codec_ProposerSlashing.bend",
     "slop/capacity/ProposerSlashing_symbolic_generated.bend",
     "slop/alignment/ProposerSlashing_flag_generated.bend",
-    "slop/offsets/ProposerSlashing_reported_size_generated.bend",
     "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
     "slop/capacity/ProposerSlashing_generated.bend",
     "slop/size/ProposerSlashing_generated.bend",
@@ -2295,7 +2294,6 @@
     "spec_codec_Deposit.bend",
     "slop/capacity/Deposit_symbolic_generated.bend",
     "slop/alignment/Deposit_flag_generated.bend",
-    "slop/offsets/Deposit_reported_size_generated.bend",
     "slop/validity/fulu_Deposit_fields_generated.bend",
     "slop/capacity/Deposit_generated.bend",
     "slop/size/Deposit_generated.bend",
@@ -2616,7 +2614,6 @@
     "var_codec_Transaction_enc.bend",
     "slop/validity/fulu_Transaction_generated.bend",
     "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
-    "slop/size/Transaction_generated.bend",
     "slop/constants/Transaction_generated.bend"
    ]
   },
@@ -3929,7 +3926,6 @@
     "slop/validity/generic_ProgressiveVarTestStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
-    "slop/size/ProgressiveVarTestStruct_generated.bend",
     "slop/constants/ProgressiveVarTestStruct_generated.bend"
    ]
   },
@@ -6905,7 +6901,6 @@
     "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
     "slop/validity/generic_VarTestStruct_fields_generated.bend",
     "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
-    "slop/size/VarTestStruct_generated.bend",
     "slop/constants/VarTestStruct_generated.bend"
    ]
   },

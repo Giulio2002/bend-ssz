@@ -136,8 +136,14 @@ type l1048576_bl1073741824_TS is Type:
 
 def l1048576_bl1073741824_dfill(+d: Nat) -> Array<D.Digest>: Array.new(D.Digest, d, D.zero())
 
-def l1048576_bl1073741824_cache_at(arr: Array<O.Boxed<O.Words>>, +n: U32, +d: Nat) -> l1048576_bl1073741824_Cached:
+def l1048576_bl1073741824_cache_fin(arr: Array<O.Boxed<O.Words>>, +n: U32, +d: Nat) -> l1048576_bl1073741824_Cached:
   l1048576_bl1073741824_Cached{arr, n, d, l1048576_bl1073741824_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
+
+def l1048576_bl1073741824_cache_sz(+n: U32, +d: Nat, pair: Array<O.Boxed<O.Words>> & U32) -> l1048576_bl1073741824_Cached:
+  (arr, +c) = pair
+  l1048576_bl1073741824_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
+
+def l1048576_bl1073741824_cache_at(arr: Array<O.Boxed<O.Words>>, +n: U32, +d: Nat) -> l1048576_bl1073741824_Cached: l1048576_bl1073741824_cache_sz(n, d, Array.size(O.Boxed<O.Words>, arr))
 
 def l1048576_bl1073741824_cache(o: l1048576_bl1073741824_Seq) -> l1048576_bl1073741824_Cached:
   match o:

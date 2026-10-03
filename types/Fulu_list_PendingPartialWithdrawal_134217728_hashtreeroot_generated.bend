@@ -75,6 +75,12 @@ def l134217728_PendingPartialWithdrawal_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & 
   (arr, d) = r
   (h, (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{arr, n}, O.mix_len(hl, d, n)))
 
+def l134217728_PendingPartialWithdrawal_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>) -> B.Buf & (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & D.Digest): l134217728_PendingPartialWithdrawal_rt_fin(hl, n, l134217728_PendingPartialWithdrawal_mt0(27n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+
+def l134217728_PendingPartialWithdrawal_rt_sz(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, pair: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal> & U32) -> B.Buf & (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & D.Digest):
+  (arr, +c) = pair
+  l134217728_PendingPartialWithdrawal_rt_ct(hl, n, h, seg, O.pick(U32.is_le(n, c), n, c), arr)
+
 def l134217728_PendingPartialWithdrawal_root(+hl: Nat, h: B.Buf, o: Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, +seg: U32) -> B.Buf & (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & D.Digest):
   match o:
-    case Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_rt_fin(hl, n, l134217728_PendingPartialWithdrawal_mt0(27n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
+    case Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_rt_sz(hl, n, h, seg, Array.size(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, arr))

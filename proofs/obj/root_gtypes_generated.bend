@@ -149,6 +149,7 @@ import ./elems48.bend as E48
 import ./elems48_light.bend as E48_L
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR
+import ./words_cap.bend as WC
 import ../../spec/codec.bend as Codec
 import ../../spec/limits.bend as Lim
 import ../../spec/bit_root.bend as Mix
@@ -493,6 +494,10 @@ def st_v4_FixedTestStruct(+hl: Nat, -h: B.Buf, -o: vec_FixedTestStruct_4_d.v4_Fi
   (+hn, +er) = w6
   %Equal.sym(vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq, o, vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}, eo) :
     {vec_FixedTestStruct_4_h.v4_FixedTestStruct_root(hl, h, _, seg) == (h, (_, xd_v4_FixedTestStruct(hl, _))) : B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest)}
+  %Equal.sym(Array<FixedTestStruct_d.FixedTestStruct> & U32, Array.size(FixedTestStruct_d.FixedTestStruct, F.array__thaw(FixedTestStruct_d.FixedTestStruct, t)), (F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), F.u32__pow2u(dw)), F.array__size_thaw(FixedTestStruct_d.FixedTestStruct, dw, t, pf)) :
+    {vec_FixedTestStruct_4_h.v4_FixedTestStruct_rt_sz(hl, N, h, seg, _) == (h, (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}, xd_v4_FixedTestStruct(hl, vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}))) : B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest)}
+  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{}, WC.le_u32_pow2(N, dw, hd, hn)) :
+    {vec_FixedTestStruct_4_h.v4_FixedTestStruct_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), F.array__thaw(FixedTestStruct_d.FixedTestStruct, t)) == (h, (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}, xd_v4_FixedTestStruct(hl, vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}))) : B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest)}
   %Equal.sym(B.Buf & (Array<FixedTestStruct_d.FixedTestStruct> & D.Digest), vec_FixedTestStruct_4_h.v4_FixedTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, U32.to_nat(N), (h, (F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), D.zero()))), (h, (F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), MD.rtree(2n, Nat.is_lt(0n, U32.to_nat(N)), hl, xl_v4_FixedTestStruct(U32.to_nat(N), F.array__slots(FixedTestStruct_d.FixedTestStruct, t), 0n, hl), 0n))),
       xmt0_v4_FixedTestStruct(2n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, dw, t, U32.to_nat(N), h, D.zero(), {==}, hd, pf, hn)) :
     {vec_FixedTestStruct_4_h.v4_FixedTestStruct_rt_fin(hl, N, _) == (h, (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}, xd_v4_FixedTestStruct(hl, vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{F.array__thaw(FixedTestStruct_d.FixedTestStruct, t), N}))) : B.Buf & (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & D.Digest)}
@@ -758,6 +763,10 @@ def st_v2_VarTestStruct(+hl: Nat, -h: B.Buf, -o: vec_VarTestStruct_2_d.v2_VarTes
   (+hn, +er) = w6
   %Equal.sym(vec_VarTestStruct_2_d.v2_VarTestStruct_Seq, o, vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}, eo) :
     {vec_VarTestStruct_2_h.v2_VarTestStruct_root(hl, h, _, seg) == (h, (_, xd_v2_VarTestStruct(hl, _))) : B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest)}
+  %Equal.sym(Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32, Array.size(O.Boxed<VarTestStruct_d.VarTestStruct>, LV.am_v2_VarTestStruct(t)), (LV.am_v2_VarTestStruct(t), F.u32__pow2u(dw)), LV.amsize_v2_VarTestStruct(dw, t, pf)) :
+    {vec_VarTestStruct_2_h.v2_VarTestStruct_rt_sz(hl, N, h, seg, _) == (h, (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}, xd_v2_VarTestStruct(hl, vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}))) : B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest)}
+  %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(dw)), True{}, WC.le_u32_pow2(N, dw, hd, hn)) :
+    {vec_VarTestStruct_2_h.v2_VarTestStruct_rt_ct(hl, N, h, seg, O.pick(_, N, F.u32__pow2u(dw)), LV.am_v2_VarTestStruct(t)) == (h, (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}, xd_v2_VarTestStruct(hl, vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}))) : B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest)}
   %Equal.sym(B.Buf & (Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & D.Digest), vec_VarTestStruct_2_h.v2_VarTestStruct_mt0(1n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, U32.to_nat(N), (h, (LV.am_v2_VarTestStruct(t), D.zero()))), (h, (LV.am_v2_VarTestStruct(t), MD.rtree(1n, Nat.is_lt(0n, U32.to_nat(N)), hl, xl_v2_VarTestStruct(U32.to_nat(N), F.array__slots(LV.MB<LV.M_VarTestStruct>, t), 0n, hl), 0n))),
       xmt0_v2_VarTestStruct(1n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, dw, t, U32.to_nat(N), h, D.zero(), {==}, hd, pf, hn, SH.Vector_element(s), er)) :
     {vec_VarTestStruct_2_h.v2_VarTestStruct_rt_fin(hl, N, _) == (h, (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}, xd_v2_VarTestStruct(hl, vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_VarTestStruct(t), N}))) : B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest)}

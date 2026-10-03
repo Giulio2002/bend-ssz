@@ -31,8 +31,12 @@ def bitlist_4_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>
     case True{}: bitlist_4_decode(buf, size)
     case False{}: (buf, None{})
 
+def bitlist_4_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
+  (buf, +c) = pair
+  bitlist_4_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+
 def bitlist_4_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
   (buf, +n) = pair
-  bitlist_4_dgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+  bitlist_4_dchw(size, n, B.stored(buf))
 
 def bitlist_4_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_4_dchk(size, B.size(buf))
