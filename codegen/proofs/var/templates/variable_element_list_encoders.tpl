@@ -156,7 +156,7 @@ def exq(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.
   +E = A.quad(Nat.add(q, WD.NWN(Nat.add(r, L))))
   +h1 = F.logic__subst(Nat, z => {Nat.is_le(X0, z) == True{} : Bool}, Nat.add(X0, Nat.add(L, WD.PADB(r, L))), E, e_end(q, r, L), Order.below_sum(X0, Nat.add(L, WD.PADB(r, L))))
   +h2 = F.nat__le_trans(X0, E, VB.pw(30n), h1, F.nat__le_trans(E, A.quad(VB.pw(dd)), VB.pw(30n), UW.quad_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd), hl), q30(dd, hd)))
-  F.u32__injective(X, XQ(q, r), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(XQ(q, r)), e, Equal.sym(Nat, U32.to_nat(XQ(q, r)), X0, F.u32__to_nat_from_nat(X0, 31n, {==}, b31n(X0, h2)))))
+  F.u32__injective(X, XQ(q, r), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(XQ(q, r)), e, Equal.sym(Nat, U32.to_nat(XQ(q, r)), X0, F.u32__to_nat_from_nat(X0, 32n, {==}, VB.nmax_lt32(X0, b31n(X0, h2))))))
 
 # exq at any output depth dd < 31: X0 = to_nat X is below 2^32 anyway.
 def exqW(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},

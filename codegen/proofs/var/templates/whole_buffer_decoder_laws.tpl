@@ -78,6 +78,8 @@ def encode_eval(dw, T, N, pfT, hdw, hn, hN):
     {T.Transaction_enc_sized(O.wsz_pick(N, _)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hroom)) :
     {T.Transaction_enc_sized((OW(T, N), O.pick(_, N, 4294967295))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(N), False{}, VBE.np_nmax(N, VCN.lt31q(U32.to_nat(N), dw, FD.nat__lt_trans(dw, 28n, 29n, hdw, {==}), hn))) :
+    {T.Transaction_enc_go(_, N, OW(T, N)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, D, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), D, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
     {T.Transaction_enc_put(N, T.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}

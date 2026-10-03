@@ -3190,7 +3190,7 @@ def emit_api(g, name, s, w):
             if lit is not None and not s.fixed:
                 w(f'def {name}_{x}enc_out(out: Array<U32>, o: {R}, +m: U32) -> {R} & {Bt}:')
                 if x == '':
-                    w('  (o, O.out_done((m .&. 2147483647 : U32), out))')
+                    w('  (o, O.out_donem(m, out))')
                 else:
                     # the writer's length carries bit 31 when the value is invalid
                     w('  (o, O.ser_done(O.is_poisoned(m), m, out))')
@@ -3221,9 +3221,14 @@ def emit_api(g, name, s, w):
                 w('  (o, m) = r')
                 w(f'  {name}_{x}enc_out(n, out, o, m)')
                 if x == '':
+                    # a size above NMAX (the marker of an invalid value, or storage that cannot hold it) is refused before anything is allocated
+                    w(f'def {name}_{x}enc_go(bad: Bool, +n: U32, o: {R}) -> {R} & {Bt}:')
+                    w('  match bad:')
+                    w(f'    case True{{}}: (o, B.empty())')
+                    w(f'    case False{{}}: {name}_{x}enc_put(n, {p}_putn(O.out_new(n), 0, o))')
                     w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
                     w('  (o, +n) = pair')
-                    w(f'  {name}_{x}enc_put(n, {p}_putn(O.out_new(n), 0, o))')
+                    w(f'  {name}_{x}enc_go(O.is_poisoned(n), n, o)')
                 else:
                     # a size with bit 31 (storage that cannot hold the value)
                     # is refused before anything is allocated

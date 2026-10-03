@@ -176,6 +176,8 @@ def encode_eval({ALLP})
   +RHS = ({OE}, B.Buf{{{TH("D9")}, {S3}}})
   %Equal.sym(T.{X} & U32, T.{X}_size({OE}), ({OE}, {S3}), size_eval({ALLA})) :
     {{T.{X}_enc_sized(_) == RHS : T.{X} & B.Buf}}
+  %Equal.sym(Bool, O.is_poisoned({S3}), False{{}}, npS3({NH})) :
+    {{T.{X}_enc_go(_, {S3}, {OE}) == RHS : T.{X} & B.Buf}}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu({S3}))), Array.new(U32, {DOe}, 0), VZ.zat(B.words_depth_u(VC.nwu({S3})), {DOe}, VD.wdu(VC.nwu({S3})), hDO({NH}))) :
     {{T.{X}_enc_put({S3}, T.{X}_putn(_, 0, {OE})) == RHS : T.{X} & B.Buf}}
   %Equal.sym(Array<U32>, Array.new(U32, {DOe}, 0), FD.array__thaw(U32, VC.ZT({DOe})), FD.array__new(U32, {DOe}, 0)) :

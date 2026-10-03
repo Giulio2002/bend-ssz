@@ -38,6 +38,10 @@ def padd(${NC}) -> {O.padd(${FS}, CO.NK(K)) == SFS(K) : U32}:
   VE.padd_ok(${FS}, CO.NK(K), VE.winit(31n, VE.bits32(${FS})), VE.winit(31n, VE.bits32(CO.NK(K))), {==},
     VE.small_pad(CO.NK(K), ${PB}n, {==}, FD.nat__le_lt_trans(U32.to_nat(CO.NK(K)), Nat.add(${N}n, 1n), FD.spec_common__pow2(${PB}n), eNK(${NCa}), {==})))
 
+def npS(${NC}) -> {O.is_poisoned(SFS(K)) == False{} : Bool}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(${FS}n, Nat.add(${N}n, 1n))) == True{} : Bool}, Nat.add(${FS}n, U32.to_nat(CO.NK(K))), U32.to_nat(SFS(K)), Equal.sym(Nat, U32.to_nat(SFS(K)), Nat.add(${FS}n, U32.to_nat(CO.NK(K))), eS(${NCa})), Order.add_left(${FS}n, U32.to_nat(CO.NK(K)), Nat.add(${N}n, 1n), eNK(${NCa})))
+  VBE.np31(SFS(K), ${kb2}n, {==}, FD.nat__le_lt_trans(U32.to_nat(SFS(K)), Nat.add(${FS}n, Nat.add(${N}n, 1n)), FD.spec_common__pow2(${kb2}n), hl, {==}))
+
 # The encoding's words: the header's ${H}, then the bit list's q + 1.
 def nwS(${NC}) -> {VC.NW(SFS(K)) == Nat.add(${H}n, Nat.add(${q}, 1n)) : Nat}:
 ${CF}
@@ -358,14 +362,16 @@ def cr(${PS}) -> CO.CR(${DO}, T, K):
   %Equal.sym(${PN}, O.put_bits_n(${ZT}, 0, ${OBJ}), (F.array__thaw(U32, OUT(T, K)), (${OBJ}, CO.NK(K))), ${EV}) :
     {T.${X}_enc_put(_) == ${RE} : O.Bits & B.Buf}
 @@ name_module_lines_7 @@
-  %Equal.sym(U32, U32.and(CO.NK(K), 2147483647), CO.NK(K), VBE.and31(CO.NK(K), ${KS}n, {==}, ${HL})) :
-    {(${OBJ}, O.out_done(_, F.array__thaw(U32, OUT(T, K)))) == ${RE} : O.Bits & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, VBE.np31(CO.NK(K), ${KS}n, {==}, ${HL})) :
+    {(${OBJ}, O.out_donep(_, CO.NK(K), F.array__thaw(U32, OUT(T, K)))) == ${RE} : O.Bits & B.Buf}
   {==}
 @@ name_module_lines_8 @@
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
     {T.${X}_enc_sized(O.bsz_pick(K, _)) == ${RE} : O.Bits & B.Buf}
   %Equal.sym(Bool, ${CAP}, True{}, CO.capT(K, dw, hdw, hcap)) :
     {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295))) == ${RE} : O.Bits & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, CO.np_nk(K)) :
+    {T.${X}_enc_go(_, CO.NK(K), ${OBJ}) == ${RE} : O.Bits & B.Buf}
 @@ name_module_lines_9 @@
   %Equal.sym(Array<U32>, ${ZB}, ${ZT},
       Equal.trans(Array<U32>, ${ZB}, Array.new(U32, CO.DOK(K), 0), ${ZT},
@@ -422,6 +428,8 @@ def encode_eval(${ALLa}):
   +hN = ${HN}
   %Equal.sym(${Tn} & U32, ${Tn}_size(${OBJ}), ${RS}, size_eval(${ALLa})) :
     {${Tn}_enc_sized(_) == ${RE} : ${TE}}
+  %Equal.sym(Bool, O.is_poisoned(SFS(K)), False{}, npS(${NCa})) :
+    {${Tn}_enc_go(_, SFS(K), ${OBJ}) == ${RE} : ${TE}}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), FD.array__thaw(U32, VC.ZT(DO(K))),
       Equal.trans(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(K)))), Array.new(U32, DO(K), 0), FD.array__thaw(U32, VC.ZT(DO(K))),
         zeros_at(B.words_depth_u(VC.nwu(SFS(K))), DO(K), VD.wdu(VC.nwu(SFS(K))), hDOK(${NCa})), FD.array__new(U32, DO(K), 0))) :

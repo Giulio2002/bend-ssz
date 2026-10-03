@@ -382,6 +382,8 @@ def _top_putx_law(C, P, OA, OAS, OBJ, w, ENDC):
 def top_text(C, generic=False):
     pfacts = plain_tot = None  # bound only on some paths below; the helpers take them
     pfacts, plain_tot, K, P, OA, imps, OAS, FIX, p, fnames, OBJF, groups, gobj, OBJ, plain_steps, lin, var_of = _top_container(C, generic, pfacts, plain_tot)
+    if not any(i.endswith(' as VBE') for i in imps):
+        imps = imps + ['import ./vbenc.bend as VBE']
     steps, facts, tot = _top_steps(K, FIX, p, fnames, OBJF, groups, gobj, plain_steps, pfacts, plain_tot, lin, var_of)
     L, w, ENDC, Ls, SZt, Q = _top_header_laws(C, P, OAS, FIX, p, OBJ, steps, facts, tot)
     if plain_steps is not None:
@@ -819,11 +821,17 @@ def gtop_text(C):
         j0 = body.index("# the writer's hypotheses at X = 0")
         j1 = body.index('\n# the fixed depth')
         body = body[:j0] + body[j1 + 1:].replace('@EVALF\n', evalf)
+        # the size-depth bound (bndx, 2^28) is not used at a fixed depth: no npz (the size is bounded by CI.maxx: a31)
+        k0 = body.index('def npz(')
+        k1 = body.index('\ndef ', k0)
+        body = body[:k0] + body[k1 + 1:]
         # the fixed encoder has no size pass: its eval is eval_go above; the sized one is dropped
         i0 = body.index('def eval_go_sized(')
         i1 = body.index('# The output\'s first bytes')
         body = body[:i0] + body[i1:]
         body = body.replace('room(m, hok, 28n, {==})', 'roomf(m, hok)')
+        imps = imps + ['import ./vbenc.bend as VBE']
+    if not any(i.endswith(' as VBE') for i in imps):
         imps = imps + ['import ./vbenc.bend as VBE']
     tsrc = src if RR.runtime_of(txt) == 'generic' else RR.mono_text('fulu')
     pk = re.search(rf'^def {C}_putk\(out: Array<U32>, \+pos: U32, o: {C}\) -> .*: (.*)$', tsrc, re.M).group(1)

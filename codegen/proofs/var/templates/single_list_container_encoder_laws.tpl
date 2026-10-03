@@ -20,6 +20,9 @@ def hyS(${NC}) -> {Nat.is_le(VC.YL(SFS(N)), VB.pw(${P2}n)) == True{} : Bool}:
   FD.nat__le_trans(Nat.add(31n, Nat.add(${FS}n, ${toN})), Nat.add(31n, Nat.add(${FS}n, VS.x8(${LIMN}))), VB.pw(${P2}n),
     Order.add_left(31n, Nat.add(${FS}n, ${toN}), Nat.add(${FS}n, VS.x8(${LIMN})), Order.add_left(${FS}n, ${toN}, VS.x8(${LIMN}), leN(${NCa}))), ${K_YS})
 
+def npS(${NC}) -> {O.is_poisoned(SFS(N)) == False{} : Bool}:
+  VBE.np31y(SFS(N), ${P2}n, {==}, hyS(${NCa}))
+
 def nwN(${NC}) -> {VC.NW(N) == Nat.double(c) : Nat}:
   %Equal.sym(Nat, VC.NW(N), VD.s_rng(2n, 3n+${toN}), VC.eNW(N, ${P2}n, {==}, hyN(${NCa}))) : {_ == Nat.double(c) : Nat}
   %Equal.sym(Nat, ${toN}, VS.x8(c), ec) : {VD.s_rng(2n, 3n+_) == Nat.double(c) : Nat}
@@ -86,6 +89,8 @@ def encode_eval(${ALLP})
     -> {${Tn}_encode(${OBJ}) == ${RE} : ${TE}}:
   %Equal.sym(${Tn} & U32, ${Tn}_size(${OBJ}), ${RS}, size_eval(${ALLa})) :
     {${Tn}_enc_sized(_) == ${RE} : ${TE}}
+  %Equal.sym(Bool, O.is_poisoned(SFS(N)), False{}, npS(${NCa})) :
+    {${Tn}_enc_go(_, SFS(N), ${OBJ}) == ${RE} : ${TE}}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(SFS(N)))), Array.new(U32, DO(N), 0),
       DC.zeros_at(B.words_depth_u(VC.nwu(SFS(N))), DO(N), VD.wdu(VC.nwu(SFS(N))), FD.nat__le_trans(DO(N), ${KO}n, ${KK}n, hDOK(${NCa}), {==}))) :
     {${Tn}_enc_put(SFS(N), ${Tn}_putn(_, 0, ${OBJ})) == ${RE} : ${TE}}

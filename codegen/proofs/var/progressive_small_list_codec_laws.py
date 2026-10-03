@@ -196,6 +196,7 @@ def enc_deep(body):
            'VB.le_u32n(N, VB.NMAX()), hM)')
     reps = [
         ('FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})', 'hdw'),
+        ('VCN.lt31q(U32.to_nat(N), dw, FD.nat__lt_trans(dw, 28n, 29n, hdw, {==}), hN)', HWN),
         ('FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==})', 'FD.nat__le_trans(dw, 31n, 32n, FD.nat__lt_le(dw, 31n, hdw), {==})'),
         ('UW.hsx(dw, 0, 0n, N, {==}, hdw, hN)', f'UW.hsxBU(dw, 0, 0n, N, {{==}}, {HY}, hN)'),
         ('VBE.put_words_any(DO, dw, VC.ZT(DO), T, 0, 0n, N, VLS.KK(dw), FD.array__trep_perfect(U32, DO, 0), pfT,',
@@ -260,7 +261,7 @@ def encx_text(k):
     body = ENCX.replace('@PRE', kd.get('PRE', '')).replace('@VALID', kd['VALID']).replace('@EXTRA', kd['EXTRA']).replace('@OKDOC', kd['OKDOC']).replace('@CHK', kd['CHK'])
     body = body.replace('@X(', f'{X}(').replace('@p_', f'{p}_')
     L = generic(VW.HEADX) + ['import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbytes.bend as VYS', 'import ./vua.bend as UA',
-                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD',
+                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD', 'import ./vcont.bend as VCN',
                              f'import ./{win_fname(k).name} as W', '', HDR,
                              f'# {X} (T.{p}_*) in the encoder-window interface: the list written at any byte position',
                              '# X = 4 q + r of a perfect tree D of depth dd < 29 (vuwd.putw_any / putw_any_bytes).', '']
@@ -292,7 +293,7 @@ def l16_text(N):
     body = body.replace('Spec.@X()', f'S.ListOf{{S.Unsigned{{P.U16{{}}}}, {N}n}}').replace('@p_', f'{p}_')
     assert '@' not in body.replace('&2', ''), [l for l in body.split('\n') if '@' in l.replace('&2', '')][:3]
     L = generic(VW.HEADX) + ['import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbytes.bend as VYS', 'import ./vua.bend as UA',
-                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD',
+                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD', 'import ./vcont.bend as VCN',
                              f'import ./var_winx_{p}.bend as W', '', HDR,
                              f'# List[uint16, {N}] (T.{p}_*) in the encoder-window interface: the list written at any byte position',
                              '# X = 4 q + r of a perfect tree D of depth dd < 29 (vuwd.putw_any / putw_any_bytes).', '']
@@ -502,7 +503,7 @@ def plu64x_text():
     body = ENCX.replace('@PRE', '').replace('@VALID', kd['VALID']).replace('@EXTRA', kd['EXTRA']).replace('@OKDOC', kd['OKDOC']).replace('@CHK', kd['CHK'])
     body = body.replace('@X(', 'proglist_uint64(').replace('@p_', 'pl_u64_')
     L = generic(VW.HEADX) + ['import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbytes.bend as VYS', 'import ./vua.bend as UA',
-                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD',
+                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD', 'import ./vcont.bend as VCN',
                              f'import ./{PLU64_FNAME.name} as W', '', HDR,
                              '# proglist_uint64 (T.pl_u64_*) in the encoder-window interface: the list written at any byte position',
                              '# X = 4 q + r of a perfect tree D of depth dd < 29 (vuwd.putw_any / putw_any_bytes).', '']

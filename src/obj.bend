@@ -1756,6 +1756,14 @@ def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U3
 # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
 def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
 
+# The buffer of an unchecked encoder from its final length: a poisoned length (an invalid value) is the empty buffer, never a claimed size past the written storage.
+def out_donep(bad: Bool, +m: U32, out: Array<U32>) -> B.Buf:
+  match bad:
+    case True{}: B.empty()
+    case False{}: B.Buf{out, m}
+
+def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(is_poisoned(m), m, out)
+
 # n * es for a fixed element size es: the product when it does not wrap and is at most NMAX, else the marker (docs/SIZE_LIMIT_DESIGN.md).
 def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
 

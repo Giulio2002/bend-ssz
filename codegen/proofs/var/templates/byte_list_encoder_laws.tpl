@@ -109,8 +109,8 @@ def encode_eval(${E.AH}):
       putw(${A0}, ${', '.join(E.hargs)}, 0, {==}, {==}, FD.array__trep_perfect(U32, ${DO}n, 0), ${HD0},
         VBE.slot_zt(${DO}n, Nat.add(VY.QL(N), ${H}n)))) :
     {${Tn}_enc_put(_) == ${RE} : ${Tn} & B.Buf}
-  %Equal.sym(U32, U32.and(SFS(N), 2147483647), SFS(N), VBE.and31(SFS(N), ${KS}n, {==}, hS(N, hN))) :
-    {(${OBJ}, O.out_done(_, FD.array__thaw(U32, ${T0}))) == ${RE} : ${Tn} & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(SFS(N)), False{}, VBE.np31(SFS(N), ${KS}n, {==}, hS(N, hN))) :
+    {(${OBJ}, O.out_donep(_, SFS(N), FD.array__thaw(U32, ${T0}))) == ${RE} : ${Tn} & B.Buf}
   {==}
 
 @@ own @@

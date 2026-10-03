@@ -42,12 +42,19 @@ def putx0(${P}, +h: {CI.OKT(${OAS}) == ${TRUE}}, +k: Nat, +ek: {k == 28n : Nat})
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(${Dd})), UW.ZB(A.quad(VB.pw(${Dd}))), UWB.zt_bytes(${Dd})), VE2.bt_zb_le(m, A.quad(VB.pw(${Dd})), hm))
   K.putx(${OAS}, ${HAC}, ${Dd}, VC.ZT(${Dd}), 0, 0n, 0n, {==}, {==}, hd, hl, pf0, hz)
 
+def npS(${P}, +h: {CI.OKT(${OAS}) == ${TRUE}}, +k: Nat, +ek: {k == 28n : Nat}) -> {O.is_poisoned(${S}) == False{} : Bool}:
+  +es = szS(${OAS}, h, k, ek)
+  +hS = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == ${TRUE}}, ${ENDC}, U32.to_nat(${S}), Equal.sym(Nat, U32.to_nat(${S}), ${ENDC}, es), CI.okbk(${OAS}, h, k, ek))
+  VBE.np_nmax(${S}, VCN.lt31q(U32.to_nat(${S}), k, FD.logic__subst(Nat, z => {Nat.is_lt(z, 29n) == ${TRUE}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), hS))
+
 def eval_go(${P}, +h: {CI.OKT(${OAS}) == ${TRUE}})
     -> {T.${C}_encode(${OBJ}) == (${OBJ}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}:
   +g = putx0(${OAS}, h, 28n, {==})
   +rt = CI.PA(K.RTC(${MA0}), DK.P2(K.BYC(${MA0}), DK.P2(K.PFC(${MA0}), K.SZXC(${MA0}))), g)
   %Equal.sym(T.${C} & U32, T.${C}_size(${OBJ}), (${OBJ}, ${S}), sizeC(${OAS}, h)) :
     {T.${C}_enc_sized(_) == (${OBJ}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(${S}), False{}, npS(${OAS}, h, 28n, {==})) :
+    {T.${C}_enc_go(_, ${S}, ${OBJ}) == (${OBJ}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(${S}))), Array.new(U32, ${Dd}, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(${S}))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(${S}))), ${Dd}, VD.wdu(VC.nwu(${S})), VZG.zg(B.words_depth_u(VC.nwu(${S}))))) :
     {T.${C}_enc_put(${S}, T.${C}_putn(_, 0, ${OBJ})) == (${OBJ}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
@@ -213,12 +220,18 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   CI.putx_bytes(m, ${Dd}, VC.ZT(${Dd}), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, ${Dd}, 0), hl, hz, hok)
 
+def npz(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}) -> {O.is_poisoned(${S}) == False{} : Bool}:
+  +hS = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(28n))) == ${TRUE}}, ${L}, U32.to_nat(${S}), Equal.sym(Nat, U32.to_nat(${S}), ${L}, CI.szx(m, hok)), CI.bndx(m, hok, 28n, {==}))
+  VBE.np_nmax(${S}, VCN.lt31q(U32.to_nat(${S}), 28n, {==}, hS))
+
 @EVALF
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})
     -> {T.${C}_encode(${TH}) == (${TH}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}:
   +rt = rt0(m, hok, room(m, hok, 28n, {==}))
   %Equal.sym(T.${C} & U32, T.${C}_size(${TH}), (${TH}, ${S}), ${SZX}(m, hok)) :
     {T.${C}_enc_sized(_) == (${TH}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(${S}), False{}, npz(m, hok)) :
+    {T.${C}_enc_go(_, ${S}, ${TH}) == (${TH}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(${S}))), Array.new(U32, ${Dd}, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(${S}))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(${S}))), ${Dd}, VD.wdu(VC.nwu(${S})), VZG.zg(B.words_depth_u(VC.nwu(${S}))))) :
     {T.${C}_enc_put(${S}, T.${C}_putn(_, 0, ${TH})) == (${TH}, B.Buf{FD.array__thaw(U32, ${OUT}), ${S}}) : T.${C} & B.Buf}
@@ -273,9 +286,9 @@ def roomf(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}) -> DK.P2(HD(m), DK.P2(HL(m), H
 @@ evalf @@
 
 # the size under the mask 0x7fffffff: below 2^${kb} (CI.szx, CI.maxx)
-def a31(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}) -> {U32.and(${S}, 2147483647) == ${S} : U32}:
+def a31(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}) -> {O.is_poisoned(${S}) == False{} : Bool}:
   +hs = FD.logic__subst(Nat, z => {Nat.is_le(z, ${MX}n) == ${TRUE}}, ${L_}, U32.to_nat(${S}), Equal.sym(Nat, U32.to_nat(${S}), ${L_}, CI.szx(m, hok)), CI.maxx(m, hok))
-  VBE.and31(${S}, ${kb}n, {==}, FD.nat__le_lt_trans(U32.to_nat(${S}), ${MX}n, FD.spec_common__pow2(${kb}n), hs, {==}))
+  VBE.np31(${S}, ${kb}n, {==}, FD.nat__le_lt_trans(U32.to_nat(${S}), ${MX}n, FD.spec_common__pow2(${kb}n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})
     -> {T.${C}_encode(${TH}) == (${TH}, ${OUTB}) : T.${C} & B.Buf}:
@@ -284,8 +297,8 @@ def eval_go(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})
     {T.${C}_enc_put(T.${C}_putn(_, 0, ${TH})) == (${TH}, ${OUTB}) : T.${C} & B.Buf}
   %Equal.sym(${RTT}, T.${C}_putk(FD.array__thaw(U32, VC.ZT(${Dd})), 0, ${TH}), (FD.array__thaw(U32, ${OUT}), (${TH}, ${S})), rt) :
     {T.${C}_enc_put(_) == (${TH}, ${OUTB}) : T.${C} & B.Buf}
-  %Equal.sym(U32, U32.and(${S}, 2147483647), ${S}, a31(m, hok)) :
-    {(${TH}, B.Buf{FD.array__thaw(U32, ${OUT}), _}) == (${TH}, ${OUTB}) : T.${C} & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(${S}), False{}, a31(m, hok)) :
+    {(${TH}, O.out_donep(_, ${S}, FD.array__thaw(U32, ${OUT}))) == (${TH}, ${OUTB}) : T.${C} & B.Buf}
   {==}
 
 def eval_go_sized(+m: CI.MW, +hok: {CI.OK(m) == ${TRUE}})

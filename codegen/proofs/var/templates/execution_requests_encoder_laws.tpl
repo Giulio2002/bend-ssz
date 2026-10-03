@@ -312,6 +312,9 @@ def pd2(${NP}) -> {O.padd(S1(n0), N1(n1)) == S2(n0, n1) : U32}:
 def pd3(${NP}) -> {O.padd(S2(n0, n1), N2(n2)) == S3(n0, n1, n2) : U32}:
   VE.padd_ok(S2(n0, n1), N2(n2), VE.winit(31n, VE.bits32(S2(n0, n1))), VE.winit(31n, VE.bits32(N2(n2))), ltN(${NA}, S2(n0, n1), Q2(n0, n1), eS2(${NA}), Order.below_sum(Q2(n0, n1), M2(n2))), ltN(${NA}, N2(n2), M2(n2), eN2(${NA}), lM2N(n0, n1, n2)))
 
+def npS3(${NP}) -> {O.is_poisoned(S3(n0, n1, n2)) == False{} : Bool}:
+  VBE.np31(S3(n0, n1, n2), 24n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(24n)) == ${TRUE}}, A.quad(QN(n0, n1, n2)), U32.to_nat(S3(n0, n1, n2)), Equal.sym(Nat, U32.to_nat(S3(n0, n1, n2)), A.quad(QN(n0, n1, n2)), eS3(${NA})), qlt(${NA}, QN(n0, n1, n2), FD.nat__le_refl(QN(n0, n1, n2)))))
+
 # ---- the output trees ---------------------------------------------------------------------------
 
 def ZD(${DP}) -> ${TR}: VC.ZT(${DOe})
@@ -389,6 +392,8 @@ def encode_eval(${ALLP})
   +RHS = (${OE}, B.Buf{${TH('D6')}, S3(n0, n1, n2)})
   %Equal.sym(${SZ}, T.${X}_size(${OE}), (${OE}, S3(n0, n1, n2)), size_eval(${ALLA})) :
     {T.${X}_enc_sized(_) == RHS : T.${X} & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(S3(n0, n1, n2)), False{}, npS3(${NA})) :
+    {T.${X}_enc_go(_, S3(n0, n1, n2), ${OE}) == RHS : T.${X} & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(S3(n0, n1, n2)))), Array.new(U32, ${DOe}, 0), VZ.zat(B.words_depth_u(VC.nwu(S3(n0, n1, n2))), ${DOe}, VD.wdu(VC.nwu(S3(n0, n1, n2))), hDO(${NA}))) :
     {T.${X}_enc_put(S3(n0, n1, n2), T.${X}_putn(_, 0, ${OE})) == RHS : T.${X} & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, ${DOe}, 0), FD.array__thaw(U32, VC.ZT(${DOe})), FD.array__new(U32, ${DOe}, 0)) :

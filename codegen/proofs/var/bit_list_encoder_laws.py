@@ -251,9 +251,9 @@ def name_module(X, N, p, src):
     assert small != sized, X
     if sized:
         assert f'def {p}_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)' in src, X
-        assert f'  {X}_enc_put(n, {p}_putn(O.out_new(n), 0, o))' in src, X
+        assert f'    case False{{}}: {X}_enc_put(n, {p}_putn(O.out_new(n), 0, o))' in src, X
     else:
-        assert N <= 31 and f'  (o, O.out_done((m .&. 2147483647 : U32), out))' in src, X
+        assert N <= 31 and f'  (o, O.out_donem(m, out))' in src, X
     assert f'def {p}_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)' in src, X
     kb = lg(N + 8)
     KY = lg(32 + N)
@@ -306,7 +306,9 @@ def name_module(X, N, p, src):
             w(line)
     else:
         CAP = 'U32.is_le(U32.add(U32.shrn(K, 5n), 1), F.u32__pow2u(dw))'
-        for line in TPL.render('name_module_lines_8', CAP=CAP, OBJ=OBJ, RE=RE, X=X).split('\n'):
+        HL8 = (f'F.nat__le_lt_trans(U32.to_nat(CO.NK(K)), {N + 1}n, F.spec_common__pow2({kb}n), '
+               f'CO.nk_le(K, {kb}n, {N}n, {{==}}, VR.rep_N(T, K, {N}n, rep), {{==}}), {{==}})')
+        for line in TPL.render('name_module_lines_8', CAP=CAP, OBJ=OBJ, RE=RE, X=X, HL=HL8, KS=kb).split('\n'):
             w(line)
         ZB = 'B.zeros(B.words_depth_u(VC.nwu(CO.NK(K))))'
         for line in TPL.render('name_module_lines_9', EV=EV, KO=KO, N=N, OBJ=OBJ, PN=PN, RE=RE, X=X, ZB=ZB, ZT=ZT, kb=kb, p=p).split('\n'):

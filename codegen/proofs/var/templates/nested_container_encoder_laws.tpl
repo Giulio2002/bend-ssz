@@ -82,6 +82,10 @@ def paddC2(${NCP}) -> {O.padd(${C1}, ${S2}) == ${C2} : U32}:
     VE.small_pad(${C1}, ${PB}n, {==}, FD.nat__le_lt_trans(U32.to_nat(${C1}), Nat.add(8n, ${XL}), VB.pw(${PB}n), leC1(N1, c1, ec1, hc1), ${K_P8})),
     VE.small_pad(${S2}, ${PB}n, {==}, FD.nat__le_lt_trans(U32.to_nat(${S2}), ${XL}, VB.pw(${PB}n), sB(N2, c2, ec2, hc2), ${K_P1})))
 
+def npC2(${NCP}) -> {O.is_poisoned(${C2}) == False{} : Bool}:
+  VBE.np31y(${C2}, ${P3}n, {==}, FD.nat__le_trans(Nat.add(31n, U32.to_nat(${C2})), Nat.add(31n, Nat.add(Nat.add(8n, ${XL}), ${XL})), VB.pw(${P3}n),
+    Order.add_left(31n, U32.to_nat(${C2}), Nat.add(Nat.add(8n, ${XL}), ${XL}), leC2(${NCa})), ${K_Y2}))
+
 def eQ(${NCP}) -> {A.quad(${Q}) == U32.to_nat(${C2}) : Nat}:
   %Equal.sym(Nat, U32.to_nat(${C2}), Nat.add(U32.to_nat(${C1}), U32.to_nat(${S2})), eC2(${NCa})) : {A.quad(${Q}) == _ : Nat}
   %Equal.sym(Nat, U32.to_nat(${C1}), Nat.add(8n, U32.to_nat(${S1})), eC1(N1, c1, ec1, hc1)) : {A.quad(${Q}) == Nat.add(_, U32.to_nat(${S2})) : Nat}
@@ -176,6 +180,8 @@ def encode_eval(${ALLP})
     -> {${Tp}_encode(${OBJ}) == ${RE} : ${TE}}:
   %Equal.sym(${Tp} & U32, ${Tp}_size(${OBJ}), ${RS}, size_eval(${ALLa})) :
     {${Tp}_enc_sized(_) == ${RE} : ${TE}}
+  %Equal.sym(Bool, O.is_poisoned(${C2}), False{}, npC2(${NCa})) :
+    {${Tp}_enc_go(_, ${C2}, ${OBJ}) == ${RE} : ${TE}}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(${C2}))), Array.new(U32, ${DO}, 0),
       zeros_at(B.words_depth_u(VC.nwu(${C2})), ${DO}, VD.wdu(VC.nwu(${C2})), hDO(${NCa}))) :
     {${Tp}_enc_put(${C2}, ${Tp}_putn(_, 0, ${OBJ})) == ${RE} : ${TE}}

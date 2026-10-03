@@ -64,6 +64,24 @@ def and31(+x: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +h: {Nat.
   %Equal.sym(Word(31n), Word.and(31n, a, ones(31n)), a, and_ones(31n, a)) : {U32{Word.shr.pad(31n, _)} == U32{Word.shr.pad(31n, a)} : U32}
   {==}
 
+# A length at most NMAX is not poisoned (the size pass's marker and every size past NMAX are).
+def np_nmax(+x: U32, +h: {Nat.is_le(U32.to_nat(x), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  F.logic__subst(Bool, z => {z == False{} : Bool}, Nat.is_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x)), O.is_poisoned(x),
+    Equal.sym(Bool, O.is_poisoned(x), Nat.is_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x)), F.u32__is_lt_nat(VB.NMAX(), x)),
+    F.nat__le_not_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x), h))
+
+# A value below 2^k (k <= 31) is not poisoned.
+def np31(+x: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +h: {Nat.is_lt(U32.to_nat(x), F.spec_common__pow2(k)) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  np_nmax(x, VB.le_pw31_nmax(U32.to_nat(x), F.nat__lt_le_trans(U32.to_nat(x), F.spec_common__pow2(k), F.spec_common__pow2(31n), h, F.nat__pow2_mono(k, 31n, hk))))
+
+# x < 31 + x (31 + x within 2^k bounds x by 2^k).
+def lt_31x(+x: Nat) -> {Nat.is_lt(x, Nat.add(31n, x)) == True{} : Bool}:
+  F.nat__lt_le_trans(x, Nat.add(1n, x), Nat.add(31n, x), F.nat__lt_succ(x), Order.add_right(1n, 31n, x, {==}))
+
+# Not poisoned from the word-count window's bound 31 + x <= 2^k (k <= 31).
+def np31y(+x: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(Nat.add(31n, U32.to_nat(x)), F.spec_common__pow2(k)) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  np31(x, k, hk, F.nat__lt_le_trans(U32.to_nat(x), Nat.add(31n, U32.to_nat(x)), F.spec_common__pow2(k), lt_31x(U32.to_nat(x)), hy))
+
 # ---- slots -----------------------------------------------------------------------------------
 
 def slot_zt(+d: Nat, +k: Nat) -> {VB.slot(VC.ZT(d), k) == 0 : U32}:

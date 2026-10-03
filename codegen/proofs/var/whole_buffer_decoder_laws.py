@@ -101,6 +101,8 @@ def tx_enc_deep(text, LIM='1073741824'):
     HY = f'VB.le_nmax(N, VB.u32le_trans(N, {LIM}, VB.NMAX(), hN, {{==}}))'
     reps = [
         ('VBR.nwle(dw, N, hdw, hn)', f'VBR.nwleU(dw, N, {HY}, hn)'),
+        ('VCN.lt31q(U32.to_nat(N), dw, FD.nat__lt_trans(dw, 28n, 29n, hdw, {==}), hn)',
+         f'FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX()), VB.u32le_trans(N, {LIM}, VB.NMAX(), hN, {{==}}))'),
         ('FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn)), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}))',
          'FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn, hN)), hdw)'),
         ('FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==})', 'FD.nat__le_trans(dw, 31n, 32n, FD.nat__lt_le(dw, 31n, hdw), {==})'),
@@ -123,6 +125,9 @@ def tx_enc_deep(text, LIM='1073741824'):
     text = text.replace(HNd, HNd.replace('Bool})', 'Bool}, ' + HN + ')'))
     text = text.replace('import ./vbsize.bend as VBZ\n', 'import ./vbsize.bend as VBZ\nimport ./vfits.bend as VFT\n', 1)
     assert 'as VFT' in text
+    for imp in ('import ./vbenc.bend as VBE', 'import ./vcont.bend as VCN'):
+        if imp not in text:
+            text = text.replace('import ./vfits.bend as VFT\n', 'import ./vfits.bend as VFT\n' + imp + '\n', 1)
     for f in ('nwp', 'hDO', 'hdst', 'obytes'):
         text = _re.sub(r'(?<![\w.])%s\((dw, (?:T, )?N, (?:pfT, )?hdw, hn)\)' % f, r'%s(\1, hN)' % f, text)
     assert '28n' not in text, [l for l in text.split('\n') if '28n' in l][:3]

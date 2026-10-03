@@ -24,6 +24,24 @@ import ../../src/buffer.bend as B
 # tree pack the object's bits and the delimiter.
 
 def NK(+K: U32) -> U32: U32.add(U32.shrn(K, 3n), 1)
+
+# K >> 3 is below 2^29 for every U32 K.
+def shr3_lt(+K: U32) -> {Nat.is_lt(VD.s_rng(3n, U32.to_nat(K)), O.pow2n(29n)) == True{} : Bool}:
+  +hX = F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(K), z) == True{} : Bool}, F.spec_common__pow2(32n), O.pow2n(32n), VD.s_pow2_eq(32n), VB.u32_lt(K))
+  +h1 = VD.small_rng(32n, U32.to_nat(K), hX)
+  +h2 = F.logic__subst(Nat, z => {Nat.is_lt(z, 1n) == True{} : Bool}, VD.s_rng(32n, U32.to_nat(K)), VD.s_rng(29n, VD.s_rng(3n, U32.to_nat(K))), VD.rng_comp2(3n, 29n, U32.to_nat(K)), h1)
+  VD.small_inv(29n, VD.s_rng(3n, U32.to_nat(K)), h2)
+
+# The size of a bit list of K bits (K / 8 + 1 bytes) is at most 2^29 for every U32 K: never poisoned.
+def np_nk(+K: U32) -> {O.is_poisoned(NK(K)) == False{} : Bool}:
+  +Y = VD.s_rng(3n, U32.to_nat(K))
+  +hY1 = F.nat__lt_succ_le_succ(Y, O.pow2n(29n), shr3_lt(K))
+  +hY2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, Y), z) == True{} : Bool}, O.pow2n(29n), F.spec_common__pow2(29n), Equal.sym(Nat, F.spec_common__pow2(29n), O.pow2n(29n), VD.s_pow2_eq(29n)), hY1)
+  +h30 = F.nat__le_lt_trans(Nat.add(1n, Y), F.spec_common__pow2(29n), F.spec_common__pow2(1n+29n), hY2, F.nat__pow2_lt_succ(29n))
+  +h32 = F.nat__lt_le_trans(Nat.add(1n, Y), F.spec_common__pow2(30n), F.spec_common__pow2(32n), h30, F.nat__pow2_mono(30n, 32n, {==}))
+  +e = VB.add_lt32(U32.shrn(K, 3n), 1, Y, VD.shrk(3n, K), h32)
+  +hn = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(30n)) == True{} : Bool}, Nat.add(1n, Y), U32.to_nat(NK(K)), Equal.sym(Nat, U32.to_nat(NK(K)), Nat.add(1n, Y), e), h30)
+  VBE.np31(NK(K), 30n, {==}, hn)
 def BITS(+T: F.array__Tree<U32>, +K: U32) -> +List<Bool>: BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, T)))
 
 def cwle(+r: Nat) -> {Nat.is_le(BW.CWr(r), 1n) == True{} : Bool}:
