@@ -26,6 +26,7 @@
     "codec_0.bend",
     "spec_repr_small.bend",
     "slop/size/boolean_generated.bend",
+    "slop/validity/fulu_boolean_decode_checked_generated.bend",
     "slop/offsets/boolean_generated.bend"
    ]
   },
@@ -58,6 +59,7 @@
     "spec_unique_small.bend",
     "spec_repr_small.bend",
     "slop/size/uint8_generated.bend",
+    "slop/validity/fulu_uint8_decode_checked_generated.bend",
     "slop/offsets/uint8_generated.bend"
    ]
   },
@@ -93,6 +95,7 @@
     "spec_repr_uint32.bend",
     "spec_input_uint32.bend",
     "slop/size/uint32_generated.bend",
+    "slop/validity/fulu_uint32_decode_checked_generated.bend",
     "slop/offsets/uint32_generated.bend"
    ]
   },
@@ -128,6 +131,7 @@
     "spec_repr_uint64.bend",
     "spec_input_uint64.bend",
     "slop/size/uint64_generated.bend",
+    "slop/validity/fulu_uint64_decode_checked_generated.bend",
     "slop/offsets/uint64_generated.bend"
    ]
   },
@@ -166,6 +170,7 @@
     "spec_repr_uint256.bend",
     "spec_input_uint256.bend",
     "slop/size/uint256_generated.bend",
+    "slop/validity/fulu_uint256_decode_checked_generated.bend",
     "slop/offsets/uint256_generated.bend"
    ]
   },
@@ -201,6 +206,7 @@
     "spec_unique_small.bend",
     "spec_repr_small.bend",
     "slop/size/Bytes1_generated.bend",
+    "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
     "slop/offsets/Bytes1_generated.bend"
    ]
   },
@@ -239,6 +245,7 @@
     "spec_repr_Bytes4.bend",
     "spec_input_Bytes4.bend",
     "slop/size/Bytes4_generated.bend",
+    "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
     "slop/offsets/Bytes4_generated.bend"
    ]
   },
@@ -278,6 +285,7 @@
     "spec_repr_Bytes32.bend",
     "spec_input_Bytes32.bend",
     "slop/size/Bytes32_generated.bend",
+    "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
     "slop/offsets/Bytes32_generated.bend"
    ]
   },
@@ -317,6 +325,7 @@
     "spec_repr_Bytes48.bend",
     "spec_input_Bytes48.bend",
     "slop/size/Bytes48_generated.bend",
+    "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
     "slop/offsets/Bytes48_generated.bend"
    ]
   },
@@ -355,6 +364,7 @@
     "spec_repr_Bytes96.bend",
     "spec_input_Bytes96.bend",
     "slop/size/Bytes96_generated.bend",
+    "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
     "slop/offsets/Bytes96_generated.bend"
    ]
   },
@@ -394,6 +404,7 @@
     "spec_repr_Bytes8.bend",
     "spec_input_Bytes8.bend",
     "slop/size/Bytes8_generated.bend",
+    "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
     "slop/offsets/Bytes8_generated.bend"
    ]
   },
@@ -433,6 +444,7 @@
     "spec_repr_Bytes20.bend",
     "spec_input_Bytes20.bend",
     "slop/size/Bytes20_generated.bend",
+    "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
     "slop/offsets/Bytes20_generated.bend"
    ]
   },
@@ -468,6 +480,7 @@
     "spec_repr_Slot.bend",
     "spec_input_Slot.bend",
     "slop/size/Slot_generated.bend",
+    "slop/validity/fulu_Slot_decode_checked_generated.bend",
     "slop/offsets/Slot_generated.bend"
    ]
   },
@@ -503,6 +516,7 @@
     "spec_repr_Epoch.bend",
     "spec_input_Epoch.bend",
     "slop/size/Epoch_generated.bend",
+    "slop/validity/fulu_Epoch_decode_checked_generated.bend",
     "slop/offsets/Epoch_generated.bend"
    ]
   },
@@ -538,6 +552,7 @@
     "spec_repr_Gwei.bend",
     "spec_input_Gwei.bend",
     "slop/size/Gwei_generated.bend",
+    "slop/validity/fulu_Gwei_decode_checked_generated.bend",
     "slop/offsets/Gwei_generated.bend"
    ]
   },
@@ -576,6 +591,7 @@
     "spec_repr_Hash32.bend",
     "spec_input_Hash32.bend",
     "slop/size/Hash32_generated.bend",
+    "slop/validity/fulu_Hash32_decode_checked_generated.bend",
     "slop/offsets/Hash32_generated.bend"
    ]
   },
@@ -614,6 +630,7 @@
     "spec_repr_Version.bend",
     "spec_input_Version.bend",
     "slop/size/Version_generated.bend",
+    "slop/validity/fulu_Version_decode_checked_generated.bend",
     "slop/offsets/Version_generated.bend"
    ]
   },
@@ -652,6 +669,7 @@
     "spec_repr_DomainType.bend",
     "spec_input_DomainType.bend",
     "slop/size/DomainType_generated.bend",
+    "slop/validity/fulu_DomainType_decode_checked_generated.bend",
     "slop/offsets/DomainType_generated.bend"
    ]
   },
@@ -690,6 +708,7 @@
     "spec_repr_BLSSignature.bend",
     "spec_input_BLSSignature.bend",
     "slop/size/BLSSignature_generated.bend",
+    "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
     "slop/offsets/BLSSignature_generated.bend"
    ]
   },
@@ -728,6 +747,7 @@
     "spec_unique_FinalityBranch.bend",
     "spec_repr_FinalityBranch.bend",
     "spec_input_FinalityBranch.bend",
+    "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
     "slop/offsets/FinalityBranch_generated.bend"
    ]
   },
@@ -767,6 +787,7 @@
     "spec_repr_VersionedHash.bend",
     "spec_input_VersionedHash.bend",
     "slop/size/VersionedHash_generated.bend",
+    "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
     "slop/offsets/VersionedHash_generated.bend"
    ]
   },
@@ -805,6 +826,7 @@
     "spec_repr_G1Point.bend",
     "spec_input_G1Point.bend",
     "slop/size/G1Point_generated.bend",
+    "slop/validity/fulu_G1Point_decode_checked_generated.bend",
     "slop/offsets/G1Point_generated.bend"
    ]
   },
@@ -843,6 +865,7 @@
     "spec_repr_G2Point.bend",
     "spec_input_G2Point.bend",
     "slop/size/G2Point_generated.bend",
+    "slop/validity/fulu_G2Point_decode_checked_generated.bend",
     "slop/offsets/G2Point_generated.bend"
    ]
   },
@@ -880,6 +903,7 @@
     "spec_repr_Fork.bend",
     "spec_input_Fork.bend",
     "slop/size/Fork_generated.bend",
+    "slop/validity/fulu_Fork_decode_checked_generated.bend",
     "slop/offsets/Fork_generated.bend"
    ]
   },
@@ -919,6 +943,7 @@
     "spec_repr_SyncAggregate.bend",
     "spec_input_SyncAggregate.bend",
     "slop/size/SyncAggregate_generated.bend",
+    "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
     "slop/offsets/SyncAggregate_generated.bend"
    ]
   },
@@ -956,6 +981,7 @@
     "spec_repr_SyncAggregatorSelectionData.bend",
     "spec_input_SyncAggregatorSelectionData.bend",
     "slop/size/SyncAggregatorSelectionData_generated.bend",
+    "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
     "slop/offsets/SyncAggregatorSelectionData_generated.bend"
    ]
   },
@@ -993,6 +1019,7 @@
     "spec_repr_PowBlock.bend",
     "spec_input_PowBlock.bend",
     "slop/size/PowBlock_generated.bend",
+    "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
     "slop/offsets/PowBlock_generated.bend"
    ]
   },
@@ -1028,6 +1055,7 @@
     "spec_repr_CommitteeIndex.bend",
     "spec_input_CommitteeIndex.bend",
     "slop/size/CommitteeIndex_generated.bend",
+    "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
     "slop/offsets/CommitteeIndex_generated.bend"
    ]
   },
@@ -1063,6 +1091,7 @@
     "spec_repr_ValidatorIndex.bend",
     "spec_input_ValidatorIndex.bend",
     "slop/size/ValidatorIndex_generated.bend",
+    "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
     "slop/offsets/ValidatorIndex_generated.bend"
    ]
   },
@@ -1100,6 +1129,7 @@
     "spec_repr_PendingConsolidation.bend",
     "spec_input_PendingConsolidation.bend",
     "slop/size/PendingConsolidation_generated.bend",
+    "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
     "slop/offsets/PendingConsolidation_generated.bend"
    ]
   },
@@ -1137,6 +1167,7 @@
     "spec_repr_PendingPartialWithdrawal.bend",
     "spec_input_PendingPartialWithdrawal.bend",
     "slop/size/PendingPartialWithdrawal_generated.bend",
+    "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
     "slop/offsets/PendingPartialWithdrawal_generated.bend"
    ]
   },
@@ -1174,6 +1205,7 @@
     "spec_repr_VoluntaryExit.bend",
     "spec_input_VoluntaryExit.bend",
     "slop/size/VoluntaryExit_generated.bend",
+    "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
     "slop/offsets/VoluntaryExit_generated.bend"
    ]
   },
@@ -1211,6 +1243,7 @@
     "spec_repr_SignedVoluntaryExit.bend",
     "spec_input_SignedVoluntaryExit.bend",
     "slop/size/SignedVoluntaryExit_generated.bend",
+    "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
     "slop/offsets/SignedVoluntaryExit_generated.bend"
    ]
   },
@@ -1249,6 +1282,7 @@
     "spec_repr_Root.bend",
     "spec_input_Root.bend",
     "slop/size/Root_generated.bend",
+    "slop/validity/fulu_Root_decode_checked_generated.bend",
     "slop/offsets/Root_generated.bend"
    ]
   },
@@ -1286,6 +1320,7 @@
     "spec_repr_HistoricalSummary.bend",
     "spec_input_HistoricalSummary.bend",
     "slop/size/HistoricalSummary_generated.bend",
+    "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
     "slop/offsets/HistoricalSummary_generated.bend"
    ]
   },
@@ -1325,6 +1360,7 @@
     "spec_repr_SyncCommitteeContribution.bend",
     "spec_input_SyncCommitteeContribution.bend",
     "slop/size/SyncCommitteeContribution_generated.bend",
+    "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
     "slop/offsets/SyncCommitteeContribution_generated.bend"
    ]
   },
@@ -1360,6 +1396,7 @@
     "spec_unique_ContributionAndProof.bend",
     "spec_repr_ContributionAndProof.bend",
     "spec_input_ContributionAndProof.bend",
+    "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
     "slop/offsets/ContributionAndProof_generated.bend"
    ]
   },
@@ -1395,6 +1432,7 @@
     "spec_unique_SignedContributionAndProof.bend",
     "spec_repr_SignedContributionAndProof.bend",
     "spec_input_SignedContributionAndProof.bend",
+    "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
     "slop/offsets/SignedContributionAndProof_generated.bend"
    ]
   },
@@ -1432,6 +1470,7 @@
     "spec_repr_SyncCommitteeMessage.bend",
     "spec_input_SyncCommitteeMessage.bend",
     "slop/size/SyncCommitteeMessage_generated.bend",
+    "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
     "slop/offsets/SyncCommitteeMessage_generated.bend"
    ]
   },
@@ -1469,6 +1508,7 @@
     "spec_repr_Eth1Block.bend",
     "spec_input_Eth1Block.bend",
     "slop/size/Eth1Block_generated.bend",
+    "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
     "slop/offsets/Eth1Block_generated.bend"
    ]
   },
@@ -1506,6 +1546,7 @@
     "spec_repr_BeaconBlockHeader.bend",
     "spec_input_BeaconBlockHeader.bend",
     "slop/size/BeaconBlockHeader_generated.bend",
+    "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
     "slop/offsets/BeaconBlockHeader_generated.bend"
    ]
   },
@@ -1545,6 +1586,7 @@
     "spec_repr_SignedBeaconBlockHeader.bend",
     "spec_input_SignedBeaconBlockHeader.bend",
     "slop/size/SignedBeaconBlockHeader_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
     "slop/offsets/SignedBeaconBlockHeader_generated.bend"
    ]
   },
@@ -1581,6 +1623,7 @@
     "spec_unique_ProposerSlashing.bend",
     "spec_repr_ProposerSlashing.bend",
     "spec_input_ProposerSlashing.bend",
+    "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
     "slop/offsets/ProposerSlashing_generated.bend"
    ]
   },
@@ -1613,6 +1656,7 @@
     "fixrej_HistoricalBatch.bend",
     "spec_arr_HistoricalBatch.bend",
     "spec_arr_unique_HistoricalBatch.bend",
+    "slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend",
     "slop/offsets/HistoricalBatch_generated.bend"
    ]
   },
@@ -1650,6 +1694,7 @@
     "spec_repr_Eth1Data.bend",
     "spec_input_Eth1Data.bend",
     "slop/size/Eth1Data_generated.bend",
+    "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
     "slop/offsets/Eth1Data_generated.bend"
    ]
   },
@@ -1687,6 +1732,7 @@
     "spec_repr_Checkpoint.bend",
     "spec_input_Checkpoint.bend",
     "slop/size/Checkpoint_generated.bend",
+    "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
     "slop/offsets/Checkpoint_generated.bend"
    ]
   },
@@ -1724,6 +1770,7 @@
     "spec_repr_AttestationData.bend",
     "spec_input_AttestationData.bend",
     "slop/size/AttestationData_generated.bend",
+    "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
     "slop/offsets/AttestationData_generated.bend"
    ]
   },
@@ -1761,6 +1808,7 @@
     "spec_repr_SingleAttestation.bend",
     "spec_input_SingleAttestation.bend",
     "slop/size/SingleAttestation_generated.bend",
+    "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
     "slop/offsets/SingleAttestation_generated.bend"
    ]
   },
@@ -1778,6 +1826,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bitc_enc_Attestation.bend",
+    "slop/validity/fulu_Attestation_appb_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_fields_generated.bend",
@@ -1795,6 +1844,7 @@
     "var_bitc_Attestation_unique.bend",
     "var_bitc_Attestation_rej.bend",
     "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+    "slop/validity/fulu_Attestation_decode_checked_generated.bend",
     "slop/offsets/Attestation_generated.bend"
    ]
   },
@@ -1824,6 +1874,7 @@
    "files": [
     "var_win_AggregateAndProof_top.bend",
     "var_win_AggregateAndProof_unique.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
     "slop/offsets/AggregateAndProof_generated.bend"
    ]
   },
@@ -1854,6 +1905,7 @@
     "slop/offsets/fulu_SignedAggregateAndProof_first_offset_generated.bend",
     "var_win_SignedAggregateAndProof_top.bend",
     "var_win_SignedAggregateAndProof_unique.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
     "slop/offsets/SignedAggregateAndProof_generated.bend"
    ]
   },
@@ -1871,6 +1923,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bitc_enc_PendingAttestation.bend",
+    "slop/validity/fulu_PendingAttestation_appb_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_fields_generated.bend",
@@ -1888,6 +1941,7 @@
     "var_bitc_PendingAttestation_unique.bend",
     "var_bitc_PendingAttestation_rej.bend",
     "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
     "slop/offsets/PendingAttestation_generated.bend"
    ]
   },
@@ -1905,6 +1959,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_IndexedAttestation_enc.bend",
+    "slop/validity/fulu_IndexedAttestation_appb_l131072_u64_generated.bend",
     "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
     "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
     "slop/size/IndexedAttestation_generated.bend",
@@ -1920,6 +1975,7 @@
     "var_codec_IndexedAttestation.bend",
     "var_codec_IndexedAttestation_unique.bend",
     "var_codec_IndexedAttestation_rej.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
     "slop/offsets/IndexedAttestation_generated.bend"
    ]
   },
@@ -1950,6 +2006,7 @@
     "var_codec_AttesterSlashing.bend",
     "var_codec_AttesterSlashing_unique.bend",
     "var_codec_AttesterSlashing_rej.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
     "slop/offsets/AttesterSlashing_generated.bend"
    ]
   },
@@ -1987,6 +2044,7 @@
     "spec_repr_ForkData.bend",
     "spec_input_ForkData.bend",
     "slop/size/ForkData_generated.bend",
+    "slop/validity/fulu_ForkData_decode_checked_generated.bend",
     "slop/offsets/ForkData_generated.bend"
    ]
   },
@@ -2025,6 +2083,7 @@
     "spec_repr_ForkDigest.bend",
     "spec_input_ForkDigest.bend",
     "slop/size/ForkDigest_generated.bend",
+    "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
     "slop/offsets/ForkDigest_generated.bend"
    ]
   },
@@ -2063,6 +2122,7 @@
     "spec_repr_Domain.bend",
     "spec_input_Domain.bend",
     "slop/size/Domain_generated.bend",
+    "slop/validity/fulu_Domain_decode_checked_generated.bend",
     "slop/offsets/Domain_generated.bend"
    ]
   },
@@ -2100,6 +2160,7 @@
     "spec_repr_SigningData.bend",
     "spec_input_SigningData.bend",
     "slop/size/SigningData_generated.bend",
+    "slop/validity/fulu_SigningData_decode_checked_generated.bend",
     "slop/offsets/SigningData_generated.bend"
    ]
   },
@@ -2138,6 +2199,7 @@
     "spec_repr_BLSPubkey.bend",
     "spec_input_BLSPubkey.bend",
     "slop/size/BLSPubkey_generated.bend",
+    "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
     "slop/offsets/BLSPubkey_generated.bend"
    ]
   },
@@ -2175,6 +2237,7 @@
     "spec_repr_DepositRequest.bend",
     "spec_input_DepositRequest.bend",
     "slop/size/DepositRequest_generated.bend",
+    "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
     "slop/offsets/DepositRequest_generated.bend"
    ]
   },
@@ -2212,6 +2275,7 @@
     "spec_repr_PendingDeposit.bend",
     "spec_input_PendingDeposit.bend",
     "slop/size/PendingDeposit_generated.bend",
+    "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
     "slop/offsets/PendingDeposit_generated.bend"
    ]
   },
@@ -2244,6 +2308,7 @@
     "fixrej_SyncCommittee.bend",
     "spec_arr_SyncCommittee.bend",
     "spec_arr_unique_SyncCommittee.bend",
+    "slop/validity/fulu_SyncCommittee_decode_checked_generated.bend",
     "slop/offsets/SyncCommittee_generated.bend"
    ]
   },
@@ -2283,6 +2348,7 @@
     "spec_repr_DepositData.bend",
     "spec_input_DepositData.bend",
     "slop/size/DepositData_generated.bend",
+    "slop/validity/fulu_DepositData_decode_checked_generated.bend",
     "slop/offsets/DepositData_generated.bend"
    ]
   },
@@ -2320,6 +2386,7 @@
     "spec_unique_Deposit.bend",
     "spec_repr_Deposit.bend",
     "spec_input_Deposit.bend",
+    "slop/validity/fulu_Deposit_decode_checked_generated.bend",
     "slop/offsets/Deposit_generated.bend"
    ]
   },
@@ -2357,6 +2424,7 @@
     "spec_repr_DepositMessage.bend",
     "spec_input_DepositMessage.bend",
     "slop/size/DepositMessage_generated.bend",
+    "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
     "slop/offsets/DepositMessage_generated.bend"
    ]
   },
@@ -2389,6 +2457,7 @@
     "spec_rec_Validator.bend",
     "spec_rec_unique_Validator.bend",
     "slop/size/Validator_generated.bend",
+    "slop/validity/fulu_Validator_decode_checked_generated.bend",
     "slop/offsets/Validator_generated.bend"
    ]
   },
@@ -2427,6 +2496,7 @@
     "spec_repr_NodeID.bend",
     "spec_input_NodeID.bend",
     "slop/size/NodeID_generated.bend",
+    "slop/validity/fulu_NodeID_decode_checked_generated.bend",
     "slop/offsets/NodeID_generated.bend"
    ]
   },
@@ -2462,6 +2532,7 @@
     "spec_repr_SubnetID.bend",
     "spec_input_SubnetID.bend",
     "slop/size/SubnetID_generated.bend",
+    "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
     "slop/offsets/SubnetID_generated.bend"
    ]
   },
@@ -2497,6 +2568,7 @@
     "spec_repr_Ether.bend",
     "spec_input_Ether.bend",
     "slop/size/Ether_generated.bend",
+    "slop/validity/fulu_Ether_decode_checked_generated.bend",
     "slop/offsets/Ether_generated.bend"
    ]
   },
@@ -2529,6 +2601,7 @@
     "spec_unique_small.bend",
     "spec_repr_small.bend",
     "slop/size/ParticipationFlags_generated.bend",
+    "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
     "slop/offsets/ParticipationFlags_generated.bend"
    ]
   },
@@ -2567,6 +2640,7 @@
     "spec_unique_CurrentSyncCommitteeBranch.bend",
     "spec_repr_CurrentSyncCommitteeBranch.bend",
     "spec_input_CurrentSyncCommitteeBranch.bend",
+    "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
     "slop/offsets/CurrentSyncCommitteeBranch_generated.bend"
    ]
   },
@@ -2606,6 +2680,7 @@
     "spec_unique_NextSyncCommitteeBranch.bend",
     "spec_repr_NextSyncCommitteeBranch.bend",
     "spec_input_NextSyncCommitteeBranch.bend",
+    "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
     "slop/offsets/NextSyncCommitteeBranch_generated.bend"
    ]
   },
@@ -2625,6 +2700,7 @@
    "files": [
     "var_codec_Transaction_enc.bend",
     "slop/validity/fulu_Transaction_generated.bend",
+    "slop/validity/fulu_Transaction_appb_bl1073741824_generated.bend",
     "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
     "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
     "slop/size/Transaction_generated.bend",
@@ -2637,6 +2713,7 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_Transaction.bend",
+    "slop/validity/fulu_Transaction_decode_checked_generated.bend",
     "slop/offsets/Transaction_generated.bend"
    ]
   },
@@ -2675,6 +2752,7 @@
     "spec_repr_ExecutionAddress.bend",
     "spec_input_ExecutionAddress.bend",
     "slop/size/ExecutionAddress_generated.bend",
+    "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
     "slop/offsets/ExecutionAddress_generated.bend"
    ]
   },
@@ -2712,6 +2790,7 @@
     "spec_repr_ConsolidationRequest.bend",
     "spec_input_ConsolidationRequest.bend",
     "slop/size/ConsolidationRequest_generated.bend",
+    "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
     "slop/offsets/ConsolidationRequest_generated.bend"
    ]
   },
@@ -2749,6 +2828,7 @@
     "spec_repr_WithdrawalRequest.bend",
     "spec_input_WithdrawalRequest.bend",
     "slop/size/WithdrawalRequest_generated.bend",
+    "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
     "slop/offsets/WithdrawalRequest_generated.bend"
    ]
   },
@@ -2766,6 +2846,9 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ExecutionRequests_enc.bend",
+    "slop/validity/fulu_ExecutionRequests_appb_l16_WithdrawalRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_appb_l2_ConsolidationRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_appb_l8192_DepositRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
     "slop/size/ExecutionRequests_generated.bend",
     "slop/constants/ExecutionRequests_generated.bend"
@@ -2777,6 +2860,7 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_ExecutionRequests.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
     "slop/offsets/ExecutionRequests_generated.bend"
    ]
   },
@@ -2833,6 +2917,7 @@
     "spec_repr_BLSToExecutionChange.bend",
     "spec_input_BLSToExecutionChange.bend",
     "slop/size/BLSToExecutionChange_generated.bend",
+    "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
     "slop/offsets/BLSToExecutionChange_generated.bend"
    ]
   },
@@ -2870,6 +2955,7 @@
     "spec_repr_SignedBLSToExecutionChange.bend",
     "spec_input_SignedBLSToExecutionChange.bend",
     "slop/size/SignedBLSToExecutionChange_generated.bend",
+    "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
     "slop/offsets/SignedBLSToExecutionChange_generated.bend"
    ]
   },
@@ -2888,6 +2974,7 @@
    "files": [
     "var_bytes_ExecutionPayloadHeader_enc.bend",
     "slop/capacity/ExecutionPayloadHeader_symbolic_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_appb_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
@@ -2905,6 +2992,7 @@
     "var_bytes_ExecutionPayloadHeader.bend",
     "var_bytes_ExecutionPayloadHeader_unique.bend",
     "var_bytes_ExecutionPayloadHeader_rej.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
     "slop/offsets/ExecutionPayloadHeader_generated.bend"
    ]
   },
@@ -2944,6 +3032,7 @@
     "spec_repr_PayloadId.bend",
     "spec_input_PayloadId.bend",
     "slop/size/PayloadId_generated.bend",
+    "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
     "slop/offsets/PayloadId_generated.bend"
    ]
   },
@@ -2979,6 +3068,7 @@
     "spec_repr_WithdrawalIndex.bend",
     "spec_input_WithdrawalIndex.bend",
     "slop/size/WithdrawalIndex_generated.bend",
+    "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
     "slop/offsets/WithdrawalIndex_generated.bend"
    ]
   },
@@ -3016,6 +3106,7 @@
     "spec_repr_Withdrawal.bend",
     "spec_input_Withdrawal.bend",
     "slop/size/Withdrawal_generated.bend",
+    "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
     "slop/offsets/Withdrawal_generated.bend"
    ]
   },
@@ -3033,6 +3124,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ExecutionPayload_enc.bend",
+    "slop/validity/fulu_ExecutionPayload_appb_bl32_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_appb_l16_Withdrawal_generated.bend",
     "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
     "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend",
@@ -3048,6 +3141,7 @@
     "slop/offsets/fulu_ExecutionPayload_first_offset_generated.bend",
     "var_codec_ExecutionPayload.bend",
     "slop/validity/fulu_ExecutionPayload_and_pair_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
     "slop/offsets/ExecutionPayload_generated.bend"
    ]
   },
@@ -3075,6 +3169,14 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BeaconState_enc.bend",
+    "slop/validity/fulu_BeaconState_appb_l1099511627776_Validator_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l1099511627776_u64_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l1099511627776_u8_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l134217728_PendingDeposit_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l134217728_PendingPartialWithdrawal_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l16777216_HistoricalSummary_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l2048_Eth1Data_generated.bend",
+    "slop/validity/fulu_BeaconState_appb_l262144_PendingConsolidation_generated.bend",
     "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_fields_generated.bend",
     "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
@@ -3096,6 +3198,7 @@
     "slop/offsets/fulu_BeaconState_first_offset_generated.bend",
     "var_codec_BeaconState.bend",
     "slop/validity/fulu_BeaconState_and_pair_generated.bend",
+    "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
     "slop/offsets/BeaconState_generated.bend"
    ]
   },
@@ -3105,18 +3208,30 @@
    "op": "hashtreeroot",
    "files": [
     "root_BeaconState.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_4_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_fold_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_dok_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_end_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_4_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_dok_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_end_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_4_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_dok_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end_generated.bend",
@@ -3132,6 +3247,10 @@
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_4_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_dok_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_end_generated.bend",
@@ -3167,6 +3286,7 @@
     "spec_unique_ExecutionBranch.bend",
     "spec_repr_ExecutionBranch.bend",
     "spec_input_ExecutionBranch.bend",
+    "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
     "slop/offsets/ExecutionBranch_generated.bend"
    ]
   },
@@ -3202,6 +3322,7 @@
     "var_bytes_LightClientHeader.bend",
     "var_bytes_LightClientHeader_unique.bend",
     "var_bytes_LightClientHeader_rej.bend",
+    "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
     "slop/offsets/LightClientHeader_generated.bend"
    ]
   },
@@ -3234,6 +3355,7 @@
     "var_bytes_LightClientOptimisticUpdate.bend",
     "var_bytes_LightClientOptimisticUpdate_unique.bend",
     "var_bytes_LightClientOptimisticUpdate_rej.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
     "slop/offsets/LightClientOptimisticUpdate_generated.bend"
    ]
   },
@@ -3265,6 +3387,7 @@
    "op": "decode_ssz",
    "files": [
     "var_bytesx_LightClientFinalityUpdate_dec.bend",
+    "slop/validity/fulu_LightClientFinalityUpdate_decode_checked_generated.bend",
     "slop/offsets/LightClientFinalityUpdate_generated.bend"
    ]
   },
@@ -3295,6 +3418,7 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_LightClientUpdate.bend",
+    "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
     "slop/offsets/LightClientUpdate_generated.bend"
    ]
   },
@@ -3326,6 +3450,7 @@
     "var_bytes_LightClientBootstrap.bend",
     "var_bytes_LightClientBootstrap_unique.bend",
     "var_bytes_LightClientBootstrap_rej.bend",
+    "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
     "slop/offsets/LightClientBootstrap_generated.bend"
    ]
   },
@@ -3361,6 +3486,7 @@
     "spec_repr_BlobIndex.bend",
     "spec_input_BlobIndex.bend",
     "slop/size/BlobIndex_generated.bend",
+    "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
     "slop/offsets/BlobIndex_generated.bend"
    ]
   },
@@ -3398,6 +3524,7 @@
     "spec_repr_BlobIdentifier.bend",
     "spec_input_BlobIdentifier.bend",
     "slop/size/BlobIdentifier_generated.bend",
+    "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
     "slop/offsets/BlobIdentifier_generated.bend"
    ]
   },
@@ -3436,6 +3563,7 @@
     "spec_repr_KZGCommitment.bend",
     "spec_input_KZGCommitment.bend",
     "slop/size/KZGCommitment_generated.bend",
+    "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
     "slop/offsets/KZGCommitment_generated.bend"
    ]
   },
@@ -3453,6 +3581,12 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BeaconBlockBody_enc.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l16_Deposit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l16_ProposerSlashing_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l16_SignedBLSToExecutionChange_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l16_SignedVoluntaryExit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l1_AttesterSlashing_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_appb_l8_Attestation_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc_generated.bend",
@@ -3470,6 +3604,7 @@
     "slop/offsets/fulu_BeaconBlockBody_first_offset_generated.bend",
     "var_codec_BeaconBlockBody.bend",
     "slop/validity/fulu_BeaconBlockBody_and_pair_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
     "slop/offsets/BeaconBlockBody_generated.bend"
    ]
   },
@@ -3552,6 +3687,7 @@
    "op": "decode_ssz",
    "files": [
     "var_codec_BeaconBlock.bend",
+    "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
     "slop/offsets/BeaconBlock_generated.bend"
    ]
   },
@@ -3581,6 +3717,7 @@
    "files": [
     "slop/offsets/fulu_SignedBeaconBlock_first_offset_generated.bend",
     "var_codec_SignedBeaconBlock.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
     "slop/offsets/SignedBeaconBlock_generated.bend"
    ]
   },
@@ -3619,6 +3756,7 @@
     "spec_repr_KZGProof.bend",
     "spec_input_KZGProof.bend",
     "slop/size/KZGProof_generated.bend",
+    "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
     "slop/offsets/KZGProof_generated.bend"
    ]
   },
@@ -3653,6 +3791,7 @@
     "fixrej_Blob.bend",
     "spec_arr_Blob.bend",
     "spec_arr_unique_Blob.bend",
+    "slop/validity/fulu_Blob_decode_checked_generated.bend",
     "slop/offsets/Blob_generated.bend"
    ]
   },
@@ -3686,6 +3825,7 @@
     "fixrej_BlobSidecar.bend",
     "spec_arr_BlobSidecar.bend",
     "spec_arr_unique_BlobSidecar.bend",
+    "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
     "slop/offsets/BlobSidecar_generated.bend"
    ]
   },
@@ -3723,6 +3863,7 @@
     "spec_unique_Cell.bend",
     "spec_repr_Cell.bend",
     "spec_input_Cell.bend",
+    "slop/validity/fulu_Cell_decode_checked_generated.bend",
     "slop/offsets/Cell_generated.bend"
    ]
   },
@@ -3760,6 +3901,7 @@
     "spec_repr_CellIndex.bend",
     "spec_input_CellIndex.bend",
     "slop/size/CellIndex_generated.bend",
+    "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
     "slop/offsets/CellIndex_generated.bend"
    ]
   },
@@ -3795,6 +3937,7 @@
     "spec_repr_CommitmentIndex.bend",
     "spec_input_CommitmentIndex.bend",
     "slop/size/CommitmentIndex_generated.bend",
+    "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
     "slop/offsets/CommitmentIndex_generated.bend"
    ]
   },
@@ -3830,6 +3973,7 @@
     "spec_repr_RowIndex.bend",
     "spec_input_RowIndex.bend",
     "slop/size/RowIndex_generated.bend",
+    "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
     "slop/offsets/RowIndex_generated.bend"
    ]
   },
@@ -3865,6 +4009,7 @@
     "spec_repr_ColumnIndex.bend",
     "spec_input_ColumnIndex.bend",
     "slop/size/ColumnIndex_generated.bend",
+    "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
     "slop/offsets/ColumnIndex_generated.bend"
    ]
   },
@@ -3882,6 +4027,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_DataColumnsByRootIdentifier_enc.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_appb_l128_u64_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_fields_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
     "slop/size/DataColumnsByRootIdentifier_generated.bend",
@@ -3896,6 +4042,7 @@
     "var_codec_DataColumnsByRootIdentifier.bend",
     "var_codec_DataColumnsByRootIdentifier_unique.bend",
     "var_codec_DataColumnsByRootIdentifier_rej.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
     "slop/offsets/DataColumnsByRootIdentifier_generated.bend"
    ]
   },
@@ -3931,6 +4078,7 @@
     "spec_unique_MatrixEntry.bend",
     "spec_repr_MatrixEntry.bend",
     "spec_input_MatrixEntry.bend",
+    "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
     "slop/offsets/MatrixEntry_generated.bend"
    ]
   },
@@ -3948,6 +4096,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_DataColumnSidecar_enc.bend",
+    "slop/validity/fulu_DataColumnSidecar_appb_l4096_b2048_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_blit_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_get_0_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_get_1_generated.bend",
@@ -3981,6 +4130,7 @@
     "var_codec_DataColumnSidecar_acc.bend",
     "var_codec_DataColumnSidecar_unique.bend",
     "var_codec_DataColumnSidecar_rej.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
     "slop/offsets/DataColumnSidecar_generated.bend"
    ]
   },
@@ -4016,6 +4166,7 @@
     "spec_repr_CustodyIndex.bend",
     "spec_input_CustodyIndex.bend",
     "slop/size/CustodyIndex_generated.bend",
+    "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
     "slop/offsets/CustodyIndex_generated.bend"
    ]
   },
@@ -4033,6 +4184,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveSingleListContainerTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_appb_pbits_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_fields_generated.bend",
     "slop/constants/ProgressiveSingleListContainerTestStruct_generated.bend"
@@ -4045,6 +4197,7 @@
    "files": [
     "var_codec_ProgressiveSingleListContainerTestStruct.bend",
     "var_codec_ProgressiveSingleListContainerTestStruct_unique.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveSingleListContainerTestStruct_generated.bend"
    ]
   },
@@ -4062,6 +4215,12 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveComplexTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_l123_u16_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_pbits_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_ProgressiveVarTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_SmallTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_u64_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_collection_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
@@ -4077,6 +4236,7 @@
    "files": [
     "var_codec_ProgressiveComplexTestStruct.bend",
     "var_codec_ProgressiveComplexTestStruct_unique.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveComplexTestStruct_generated.bend"
    ]
   },
@@ -4094,6 +4254,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveVarTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_appb_l123_u16_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_appb_pbits_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_collection_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
@@ -4109,6 +4271,7 @@
    "files": [
     "var_codec_ProgressiveVarTestStruct.bend",
     "var_codec_ProgressiveVarTestStruct_unique.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveVarTestStruct_generated.bend"
    ]
   },
@@ -4139,6 +4302,7 @@
     "sub_ProgressiveSingleFieldContainerTestStruct.bend",
     "sub_unique_ProgressiveSingleFieldContainerTestStruct.bend",
     "slop/size/ProgressiveSingleFieldContainerTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveSingleFieldContainerTestStruct_generated.bend"
    ]
   },
@@ -4157,6 +4321,7 @@
    "files": [
     "var_plist_proglist_bool_enc.bend",
     "slop/validity/generic_proglist_bool_generated.bend",
+    "slop/validity/generic_proglist_bool_appb_pl_bool_generated.bend",
     "slop/validity/generic_proglist_bool_booleans_generated.bend",
     "slop/validity/generic_proglist_bool_unit_pl_bool_generated.bend",
     "slop/constants/proglist_bool_generated.bend"
@@ -4170,6 +4335,7 @@
     "var_plist_proglist_bool_top.bend",
     "slop/validity/proglist_bool_length_refusal_generated.bend",
     "var_plist_proglist_bool_top_unique.bend",
+    "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
     "slop/offsets/proglist_bool_generated.bend"
    ]
   },
@@ -4208,6 +4374,7 @@
     "sub_vec_bool_16.bend",
     "sub_unique_vec_bool_16.bend",
     "slop/validity/generic_vec_bool_16_and_pair_generated.bend",
+    "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
     "slop/offsets/vec_bool_16_generated.bend"
    ]
   },
@@ -4245,6 +4412,7 @@
     "sub_vec_bool_1.bend",
     "sub_unique_vec_bool_1.bend",
     "slop/validity/generic_vec_bool_1_and_pair_generated.bend",
+    "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
     "slop/offsets/vec_bool_1_generated.bend"
    ]
   },
@@ -4282,6 +4450,7 @@
     "sub_vec_bool_2.bend",
     "sub_unique_vec_bool_2.bend",
     "slop/validity/generic_vec_bool_2_and_pair_generated.bend",
+    "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
     "slop/offsets/vec_bool_2_generated.bend"
    ]
   },
@@ -4318,6 +4487,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_31.bend",
     "sub_unique_vec_bool_31.bend",
+    "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
     "slop/offsets/vec_bool_31_generated.bend"
    ]
   },
@@ -4354,6 +4524,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_3.bend",
     "sub_unique_vec_bool_3.bend",
+    "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
     "slop/offsets/vec_bool_3_generated.bend"
    ]
   },
@@ -4392,6 +4563,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_4.bend",
     "sub_unique_vec_bool_4.bend",
+    "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
     "slop/offsets/vec_bool_4_generated.bend"
    ]
   },
@@ -4428,6 +4600,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_512.bend",
     "sub_unique_vec_bool_512.bend",
+    "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
     "slop/offsets/vec_bool_512_generated.bend"
    ]
   },
@@ -4464,6 +4637,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_513.bend",
     "sub_unique_vec_bool_513.bend",
+    "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
     "slop/offsets/vec_bool_513_generated.bend"
    ]
   },
@@ -4500,6 +4674,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_5.bend",
     "sub_unique_vec_bool_5.bend",
+    "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
     "slop/offsets/vec_bool_5_generated.bend"
    ]
   },
@@ -4538,6 +4713,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_8.bend",
     "sub_unique_vec_bool_8.bend",
+    "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
     "slop/offsets/vec_bool_8_generated.bend"
    ]
   },
@@ -4569,6 +4745,7 @@
     "var_plist_proglist_uint128.bend",
     "var_plist_proglist_uint128_unique.bend",
     "var_plist_proglist_uint128_rej.bend",
+    "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
     "slop/offsets/proglist_uint128_generated.bend"
    ]
   },
@@ -4607,6 +4784,7 @@
     "spec_gunique_vec_uint128_16.bend",
     "spec_grepr_vec_uint128_16.bend",
     "spec_ginput_vec_uint128_16.bend",
+    "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_16_generated.bend"
    ]
   },
@@ -4646,6 +4824,7 @@
     "spec_gunique_vec_uint128_1.bend",
     "spec_grepr_vec_uint128_1.bend",
     "spec_ginput_vec_uint128_1.bend",
+    "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_1_generated.bend"
    ]
   },
@@ -4685,6 +4864,7 @@
     "spec_gunique_vec_uint128_2.bend",
     "spec_grepr_vec_uint128_2.bend",
     "spec_ginput_vec_uint128_2.bend",
+    "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_2_generated.bend"
    ]
   },
@@ -4722,6 +4902,7 @@
     "spec_gunique_vec_uint128_31.bend",
     "spec_grepr_vec_uint128_31.bend",
     "spec_ginput_vec_uint128_31.bend",
+    "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_31_generated.bend"
    ]
   },
@@ -4761,6 +4942,7 @@
     "spec_gunique_vec_uint128_3.bend",
     "spec_grepr_vec_uint128_3.bend",
     "spec_ginput_vec_uint128_3.bend",
+    "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_3_generated.bend"
    ]
   },
@@ -4800,6 +4982,7 @@
     "spec_gunique_vec_uint128_4.bend",
     "spec_grepr_vec_uint128_4.bend",
     "spec_ginput_vec_uint128_4.bend",
+    "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_4_generated.bend"
    ]
   },
@@ -4834,6 +5017,7 @@
     "fixrej_vec_uint128_512.bend",
     "spec_garr_vec_uint128_512.bend",
     "spec_garr_unique_vec_uint128_512.bend",
+    "slop/validity/generic_vec_uint128_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_512_generated.bend"
    ]
   },
@@ -4868,6 +5052,7 @@
     "fixrej_vec_uint128_513.bend",
     "spec_garr_vec_uint128_513.bend",
     "spec_garr_unique_vec_uint128_513.bend",
+    "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_513_generated.bend"
    ]
   },
@@ -4907,6 +5092,7 @@
     "spec_gunique_vec_uint128_5.bend",
     "spec_grepr_vec_uint128_5.bend",
     "spec_ginput_vec_uint128_5.bend",
+    "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_5_generated.bend"
    ]
   },
@@ -4946,6 +5132,7 @@
     "spec_gunique_vec_uint128_8.bend",
     "spec_grepr_vec_uint128_8.bend",
     "spec_ginput_vec_uint128_8.bend",
+    "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint128_8_generated.bend"
    ]
   },
@@ -4965,6 +5152,7 @@
    "files": [
     "var_plist_proglist_uint8_enc.bend",
     "slop/validity/generic_proglist_uint8_generated.bend",
+    "slop/validity/generic_proglist_uint8_appb_pl_u8_generated.bend",
     "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
     "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
     "slop/constants/proglist_uint8_generated.bend"
@@ -4977,6 +5165,7 @@
    "files": [
     "var_plist_proglist_uint8_top.bend",
     "var_plist_proglist_uint8_top_unique.bend",
+    "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
     "slop/offsets/proglist_uint8_generated.bend"
    ]
   },
@@ -5015,6 +5204,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_16.bend",
     "sub_unique_vec_uint8_16.bend",
+    "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_16_generated.bend"
    ]
   },
@@ -5051,6 +5241,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_1.bend",
     "sub_unique_vec_uint8_1.bend",
+    "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_1_generated.bend"
    ]
   },
@@ -5087,6 +5278,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_2.bend",
     "sub_unique_vec_uint8_2.bend",
+    "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_2_generated.bend"
    ]
   },
@@ -5123,6 +5315,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_31.bend",
     "sub_unique_vec_uint8_31.bend",
+    "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_31_generated.bend"
    ]
   },
@@ -5159,6 +5352,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_3.bend",
     "sub_unique_vec_uint8_3.bend",
+    "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_3_generated.bend"
    ]
   },
@@ -5197,6 +5391,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_4.bend",
     "sub_unique_vec_uint8_4.bend",
+    "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_4_generated.bend"
    ]
   },
@@ -5233,6 +5428,7 @@
     "fixrej_g0.bend",
     "sub_vec_uint8_512.bend",
     "sub_unique_vec_uint8_512.bend",
+    "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_512_generated.bend"
    ]
   },
@@ -5269,6 +5465,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint8_513.bend",
     "sub_unique_vec_uint8_513.bend",
+    "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_513_generated.bend"
    ]
   },
@@ -5305,6 +5502,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint8_5.bend",
     "sub_unique_vec_uint8_5.bend",
+    "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_5_generated.bend"
    ]
   },
@@ -5343,6 +5541,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint8_8.bend",
     "sub_unique_vec_uint8_8.bend",
+    "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint8_8_generated.bend"
    ]
   },
@@ -5362,6 +5561,7 @@
    "files": [
     "var_plist_proglist_uint16_enc.bend",
     "slop/validity/generic_proglist_uint16_generated.bend",
+    "slop/validity/generic_proglist_uint16_appb_pl_u16_generated.bend",
     "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
     "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
     "slop/constants/proglist_uint16_generated.bend"
@@ -5374,6 +5574,7 @@
    "files": [
     "var_plist_proglist_uint16_top.bend",
     "var_plist_proglist_uint16_top_unique.bend",
+    "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
     "slop/offsets/proglist_uint16_generated.bend"
    ]
   },
@@ -5410,6 +5611,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_16.bend",
     "sub_unique_vec_uint16_16.bend",
+    "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_16_generated.bend"
    ]
   },
@@ -5445,6 +5647,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_1.bend",
     "sub_unique_vec_uint16_1.bend",
+    "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_1_generated.bend"
    ]
   },
@@ -5482,6 +5685,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_2.bend",
     "sub_unique_vec_uint16_2.bend",
+    "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_2_generated.bend"
    ]
   },
@@ -5517,6 +5721,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_31.bend",
     "sub_unique_vec_uint16_31.bend",
+    "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_31_generated.bend"
    ]
   },
@@ -5552,6 +5757,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_3.bend",
     "sub_unique_vec_uint16_3.bend",
+    "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_3_generated.bend"
    ]
   },
@@ -5589,6 +5795,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_4.bend",
     "sub_unique_vec_uint16_4.bend",
+    "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_4_generated.bend"
    ]
   },
@@ -5624,6 +5831,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_512.bend",
     "sub_unique_vec_uint16_512.bend",
+    "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_512_generated.bend"
    ]
   },
@@ -5659,6 +5867,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_513.bend",
     "sub_unique_vec_uint16_513.bend",
+    "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_513_generated.bend"
    ]
   },
@@ -5694,6 +5903,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_5.bend",
     "sub_unique_vec_uint16_5.bend",
+    "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_5_generated.bend"
    ]
   },
@@ -5731,6 +5941,7 @@
     "fixrej_g1.bend",
     "sub_vec_uint16_8.bend",
     "sub_unique_vec_uint16_8.bend",
+    "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint16_8_generated.bend"
    ]
   },
@@ -5762,6 +5973,7 @@
     "var_plist_proglist_uint256.bend",
     "var_plist_proglist_uint256_unique.bend",
     "var_plist_proglist_uint256_rej.bend",
+    "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
     "slop/offsets/proglist_uint256_generated.bend"
    ]
   },
@@ -5798,6 +6010,7 @@
     "spec_gunique_vec_uint256_16.bend",
     "spec_grepr_vec_uint256_16.bend",
     "spec_ginput_vec_uint256_16.bend",
+    "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_16_generated.bend"
    ]
   },
@@ -5837,6 +6050,7 @@
     "spec_gunique_vec_uint256_1.bend",
     "spec_grepr_vec_uint256_1.bend",
     "spec_ginput_vec_uint256_1.bend",
+    "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_1_generated.bend"
    ]
   },
@@ -5876,6 +6090,7 @@
     "spec_gunique_vec_uint256_2.bend",
     "spec_grepr_vec_uint256_2.bend",
     "spec_ginput_vec_uint256_2.bend",
+    "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_2_generated.bend"
    ]
   },
@@ -5913,6 +6128,7 @@
     "spec_gunique_vec_uint256_31.bend",
     "spec_grepr_vec_uint256_31.bend",
     "spec_ginput_vec_uint256_31.bend",
+    "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_31_generated.bend"
    ]
   },
@@ -5952,6 +6168,7 @@
     "spec_gunique_vec_uint256_3.bend",
     "spec_grepr_vec_uint256_3.bend",
     "spec_ginput_vec_uint256_3.bend",
+    "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_3_generated.bend"
    ]
   },
@@ -5991,6 +6208,7 @@
     "spec_gunique_vec_uint256_4.bend",
     "spec_grepr_vec_uint256_4.bend",
     "spec_ginput_vec_uint256_4.bend",
+    "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_4_generated.bend"
    ]
   },
@@ -6025,6 +6243,7 @@
     "fixrej_vec_uint256_512.bend",
     "spec_garr_vec_uint256_512.bend",
     "spec_garr_unique_vec_uint256_512.bend",
+    "slop/validity/generic_vec_uint256_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_512_generated.bend"
    ]
   },
@@ -6059,6 +6278,7 @@
     "fixrej_vec_uint256_513.bend",
     "spec_garr_vec_uint256_513.bend",
     "spec_garr_unique_vec_uint256_513.bend",
+    "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_513_generated.bend"
    ]
   },
@@ -6098,6 +6318,7 @@
     "spec_gunique_vec_uint256_5.bend",
     "spec_grepr_vec_uint256_5.bend",
     "spec_ginput_vec_uint256_5.bend",
+    "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_5_generated.bend"
    ]
   },
@@ -6137,6 +6358,7 @@
     "spec_gunique_vec_uint256_8.bend",
     "spec_grepr_vec_uint256_8.bend",
     "spec_ginput_vec_uint256_8.bend",
+    "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint256_8_generated.bend"
    ]
   },
@@ -6156,6 +6378,7 @@
    "files": [
     "var_plist_proglist_uint32_enc.bend",
     "slop/validity/generic_proglist_uint32_generated.bend",
+    "slop/validity/generic_proglist_uint32_appb_pl_u32_generated.bend",
     "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
     "slop/constants/proglist_uint32_generated.bend"
    ]
@@ -6168,6 +6391,7 @@
     "var_plist_proglist_uint32.bend",
     "var_plist_proglist_uint32_unique.bend",
     "var_plist_proglist_uint32_rej.bend",
+    "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
     "slop/offsets/proglist_uint32_generated.bend"
    ]
   },
@@ -6206,6 +6430,7 @@
     "spec_gunique_vec_uint32_16.bend",
     "spec_grepr_vec_uint32_16.bend",
     "spec_ginput_vec_uint32_16.bend",
+    "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_16_generated.bend"
    ]
   },
@@ -6245,6 +6470,7 @@
     "spec_gunique_vec_uint32_1.bend",
     "spec_grepr_vec_uint32_1.bend",
     "spec_ginput_vec_uint32_1.bend",
+    "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_1_generated.bend"
    ]
   },
@@ -6284,6 +6510,7 @@
     "spec_gunique_vec_uint32_2.bend",
     "spec_grepr_vec_uint32_2.bend",
     "spec_ginput_vec_uint32_2.bend",
+    "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_2_generated.bend"
    ]
   },
@@ -6323,6 +6550,7 @@
     "spec_gunique_vec_uint32_31.bend",
     "spec_grepr_vec_uint32_31.bend",
     "spec_ginput_vec_uint32_31.bend",
+    "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_31_generated.bend"
    ]
   },
@@ -6362,6 +6590,7 @@
     "spec_gunique_vec_uint32_3.bend",
     "spec_grepr_vec_uint32_3.bend",
     "spec_ginput_vec_uint32_3.bend",
+    "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_3_generated.bend"
    ]
   },
@@ -6401,6 +6630,7 @@
     "spec_gunique_vec_uint32_4.bend",
     "spec_grepr_vec_uint32_4.bend",
     "spec_ginput_vec_uint32_4.bend",
+    "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_4_generated.bend"
    ]
   },
@@ -6436,6 +6666,7 @@
     "fixrej_g2.bend",
     "spec_garr_vec_uint32_512.bend",
     "spec_garr_unique_vec_uint32_512.bend",
+    "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_512_generated.bend"
    ]
   },
@@ -6471,6 +6702,7 @@
     "fixrej_g2.bend",
     "spec_garr_vec_uint32_513.bend",
     "spec_garr_unique_vec_uint32_513.bend",
+    "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_513_generated.bend"
    ]
   },
@@ -6510,6 +6742,7 @@
     "spec_gunique_vec_uint32_5.bend",
     "spec_grepr_vec_uint32_5.bend",
     "spec_ginput_vec_uint32_5.bend",
+    "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_5_generated.bend"
    ]
   },
@@ -6549,6 +6782,7 @@
     "spec_gunique_vec_uint32_8.bend",
     "spec_grepr_vec_uint32_8.bend",
     "spec_ginput_vec_uint32_8.bend",
+    "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint32_8_generated.bend"
    ]
   },
@@ -6568,6 +6802,7 @@
    "files": [
     "var_plist_proglist_uint64_enc.bend",
     "slop/validity/generic_proglist_uint64_generated.bend",
+    "slop/validity/generic_proglist_uint64_appb_pl_u64_generated.bend",
     "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
     "slop/constants/proglist_uint64_generated.bend"
    ]
@@ -6580,6 +6815,7 @@
     "var_plist_proglist_uint64.bend",
     "var_plist_proglist_uint64_unique.bend",
     "var_plist_proglist_uint64_rej.bend",
+    "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
     "slop/offsets/proglist_uint64_generated.bend"
    ]
   },
@@ -6618,6 +6854,7 @@
     "spec_gunique_vec_uint64_16.bend",
     "spec_grepr_vec_uint64_16.bend",
     "spec_ginput_vec_uint64_16.bend",
+    "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_16_generated.bend"
    ]
   },
@@ -6657,6 +6894,7 @@
     "spec_gunique_vec_uint64_1.bend",
     "spec_grepr_vec_uint64_1.bend",
     "spec_ginput_vec_uint64_1.bend",
+    "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_1_generated.bend"
    ]
   },
@@ -6696,6 +6934,7 @@
     "spec_gunique_vec_uint64_2.bend",
     "spec_grepr_vec_uint64_2.bend",
     "spec_ginput_vec_uint64_2.bend",
+    "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_2_generated.bend"
    ]
   },
@@ -6735,6 +6974,7 @@
     "spec_gunique_vec_uint64_31.bend",
     "spec_grepr_vec_uint64_31.bend",
     "spec_ginput_vec_uint64_31.bend",
+    "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_31_generated.bend"
    ]
   },
@@ -6774,6 +7014,7 @@
     "spec_gunique_vec_uint64_3.bend",
     "spec_grepr_vec_uint64_3.bend",
     "spec_ginput_vec_uint64_3.bend",
+    "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_3_generated.bend"
    ]
   },
@@ -6813,6 +7054,7 @@
     "spec_gunique_vec_uint64_4.bend",
     "spec_grepr_vec_uint64_4.bend",
     "spec_ginput_vec_uint64_4.bend",
+    "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_4_generated.bend"
    ]
   },
@@ -6848,6 +7090,7 @@
     "fixrej_g3.bend",
     "spec_garr_vec_uint64_512.bend",
     "spec_garr_unique_vec_uint64_512.bend",
+    "slop/validity/generic_vec_uint64_512_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_512_generated.bend"
    ]
   },
@@ -6882,6 +7125,7 @@
     "fixrej_g3.bend",
     "spec_garr_vec_uint64_513.bend",
     "spec_garr_unique_vec_uint64_513.bend",
+    "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_513_generated.bend"
    ]
   },
@@ -6921,6 +7165,7 @@
     "spec_gunique_vec_uint64_5.bend",
     "spec_grepr_vec_uint64_5.bend",
     "spec_ginput_vec_uint64_5.bend",
+    "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_5_generated.bend"
    ]
   },
@@ -6960,6 +7205,7 @@
     "spec_gunique_vec_uint64_8.bend",
     "spec_grepr_vec_uint64_8.bend",
     "spec_ginput_vec_uint64_8.bend",
+    "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
     "slop/offsets/vec_uint64_8_generated.bend"
    ]
   },
@@ -6978,6 +7224,9 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveTestStruct_appb_pl_SmallTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_appb_pl_u64_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_appb_pl_u8_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
@@ -6992,6 +7241,7 @@
     "slop/offsets/generic_ProgressiveTestStruct_first_offset_generated.bend",
     "var_codec_ProgressiveTestStruct.bend",
     "var_codec_ProgressiveTestStruct_unique.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveTestStruct_generated.bend"
    ]
   },
@@ -7010,6 +7260,8 @@
    "files": [
     "var_codec_BitsStruct_enc.bend",
     "slop/capacity/BitsStruct_symbolic_generated.bend",
+    "slop/validity/generic_BitsStruct_appb_bits5_generated.bend",
+    "slop/validity/generic_BitsStruct_appb_bits6_generated.bend",
     "slop/validity/generic_BitsStruct_collection_bits5_generated.bend",
     "slop/validity/generic_BitsStruct_collection_bits6_generated.bend",
     "slop/validity/generic_BitsStruct_fields_generated.bend",
@@ -7025,6 +7277,7 @@
     "slop/offsets/generic_BitsStruct_first_offset_generated.bend",
     "var_codec_BitsStruct.bend",
     "var_codec_BitsStruct_unique.bend",
+    "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
     "slop/offsets/BitsStruct_generated.bend"
    ]
   },
@@ -7042,6 +7295,11 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveBitsStruct_enc.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_appb_bits1280_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_appb_bits1281_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_appb_bits256_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_appb_bits257_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_appb_pbits_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
@@ -7068,6 +7326,7 @@
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
     "slop/offsets/ProgressiveBitsStruct_generated.bend"
    ]
   },
@@ -7099,6 +7358,7 @@
     "sub_FixedTestStruct.bend",
     "sub_unique_FixedTestStruct.bend",
     "slop/size/FixedTestStruct_generated.bend",
+    "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
     "slop/offsets/FixedTestStruct_generated.bend"
    ]
   },
@@ -7129,6 +7389,7 @@
     "sub_SingleFieldTestStruct.bend",
     "sub_unique_SingleFieldTestStruct.bend",
     "slop/size/SingleFieldTestStruct_generated.bend",
+    "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
     "slop/offsets/SingleFieldTestStruct_generated.bend"
    ]
   },
@@ -7146,6 +7407,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_VarTestStruct_enc.bend",
+    "slop/validity/generic_VarTestStruct_appb_l1024_u16_generated.bend",
     "slop/validity/generic_VarTestStruct_collection_l1024_u16_generated.bend",
     "slop/validity/generic_VarTestStruct_fields_generated.bend",
     "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
@@ -7161,6 +7423,7 @@
     "slop/offsets/generic_VarTestStruct_first_offset_generated.bend",
     "var_codec_VarTestStruct.bend",
     "var_codec_VarTestStruct_unique.bend",
+    "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
     "slop/offsets/VarTestStruct_generated.bend"
    ]
   },
@@ -7178,6 +7441,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ComplexTestStruct_enc.bend",
+    "slop/validity/generic_ComplexTestStruct_appb_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_appb_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
@@ -7194,6 +7459,7 @@
     "slop/offsets/generic_ComplexTestStruct_first_offset_generated.bend",
     "var_codec_ComplexTestStruct.bend",
     "var_codec_ComplexTestStruct_unique.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
     "slop/offsets/ComplexTestStruct_generated.bend"
    ]
   },
@@ -7226,6 +7492,7 @@
     "sub_SmallTestStruct.bend",
     "sub_unique_SmallTestStruct.bend",
     "slop/size/SmallTestStruct_generated.bend",
+    "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
     "slop/offsets/SmallTestStruct_generated.bend"
    ]
   },
@@ -7245,6 +7512,7 @@
     "var_bits_enc_bitlist_15.bend",
     "slop/capacity/bitlist_15_symbolic_generated.bend",
     "slop/validity/generic_bitlist_15_generated.bend",
+    "slop/validity/generic_bitlist_15_appb_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_bits_generated.bend",
     "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
@@ -7261,6 +7529,7 @@
     "var_bits_bitlist_15_unique.bend",
     "var_bits_bitlist_15_rej.bend",
     "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+    "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
     "slop/offsets/bitlist_15_generated.bend"
    ]
   },
@@ -7282,6 +7551,7 @@
     "var_bits_enc_bitlist_16.bend",
     "slop/capacity/bitlist_16_symbolic_generated.bend",
     "slop/validity/generic_bitlist_16_generated.bend",
+    "slop/validity/generic_bitlist_16_appb_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_bits_generated.bend",
     "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
@@ -7298,6 +7568,7 @@
     "var_bits_bitlist_16_unique.bend",
     "var_bits_bitlist_16_rej.bend",
     "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+    "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
     "slop/offsets/bitlist_16_generated.bend"
    ]
   },
@@ -7319,6 +7590,7 @@
     "var_bits_enc_bitlist_17.bend",
     "slop/capacity/bitlist_17_symbolic_generated.bend",
     "slop/validity/generic_bitlist_17_generated.bend",
+    "slop/validity/generic_bitlist_17_appb_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_bits_generated.bend",
     "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
@@ -7335,6 +7607,7 @@
     "var_bits_bitlist_17_unique.bend",
     "var_bits_bitlist_17_rej.bend",
     "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+    "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
     "slop/offsets/bitlist_17_generated.bend"
    ]
   },
@@ -7356,6 +7629,7 @@
     "var_bits_enc_bitlist_1.bend",
     "slop/capacity/bitlist_1_symbolic_generated.bend",
     "slop/validity/generic_bitlist_1_generated.bend",
+    "slop/validity/generic_bitlist_1_appb_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_bits_generated.bend",
     "slop/validity/generic_bitlist_1_collection_bits1_generated.bend",
@@ -7372,6 +7646,7 @@
     "var_bits_bitlist_1_unique.bend",
     "var_bits_bitlist_1_rej.bend",
     "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+    "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
     "slop/offsets/bitlist_1_generated.bend"
    ]
   },
@@ -7393,6 +7668,7 @@
     "var_bits_enc_bitlist_2.bend",
     "slop/capacity/bitlist_2_symbolic_generated.bend",
     "slop/validity/generic_bitlist_2_generated.bend",
+    "slop/validity/generic_bitlist_2_appb_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_bits_generated.bend",
     "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
@@ -7409,6 +7685,7 @@
     "var_bits_bitlist_2_unique.bend",
     "var_bits_bitlist_2_rej.bend",
     "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+    "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
     "slop/offsets/bitlist_2_generated.bend"
    ]
   },
@@ -7430,6 +7707,7 @@
     "var_bits_enc_bitlist_31.bend",
     "slop/capacity/bitlist_31_symbolic_generated.bend",
     "slop/validity/generic_bitlist_31_generated.bend",
+    "slop/validity/generic_bitlist_31_appb_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_bits_generated.bend",
     "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
@@ -7446,6 +7724,7 @@
     "var_bits_bitlist_31_unique.bend",
     "var_bits_bitlist_31_rej.bend",
     "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+    "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
     "slop/offsets/bitlist_31_generated.bend"
    ]
   },
@@ -7466,6 +7745,7 @@
    "files": [
     "var_bits_enc_bitlist_32.bend",
     "slop/validity/generic_bitlist_32_generated.bend",
+    "slop/validity/generic_bitlist_32_appb_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_bits_generated.bend",
     "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
@@ -7481,6 +7761,7 @@
     "var_bits_bitlist_32_unique.bend",
     "var_bits_bitlist_32_rej.bend",
     "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+    "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
     "slop/offsets/bitlist_32_generated.bend"
    ]
   },
@@ -7501,6 +7782,7 @@
    "files": [
     "var_bits_enc_bitlist_33.bend",
     "slop/validity/generic_bitlist_33_generated.bend",
+    "slop/validity/generic_bitlist_33_appb_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_bits_generated.bend",
     "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
@@ -7516,6 +7798,7 @@
     "var_bits_bitlist_33_unique.bend",
     "var_bits_bitlist_33_rej.bend",
     "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+    "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
     "slop/offsets/bitlist_33_generated.bend"
    ]
   },
@@ -7537,6 +7820,7 @@
     "var_bits_enc_bitlist_3.bend",
     "slop/capacity/bitlist_3_symbolic_generated.bend",
     "slop/validity/generic_bitlist_3_generated.bend",
+    "slop/validity/generic_bitlist_3_appb_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_bits_generated.bend",
     "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
@@ -7553,6 +7837,7 @@
     "var_bits_bitlist_3_unique.bend",
     "var_bits_bitlist_3_rej.bend",
     "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+    "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
     "slop/offsets/bitlist_3_generated.bend"
    ]
   },
@@ -7574,6 +7859,7 @@
     "var_bits_enc_bitlist_4.bend",
     "slop/capacity/bitlist_4_symbolic_generated.bend",
     "slop/validity/generic_bitlist_4_generated.bend",
+    "slop/validity/generic_bitlist_4_appb_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_bits_generated.bend",
     "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
@@ -7590,6 +7876,7 @@
     "var_bits_bitlist_4_unique.bend",
     "var_bits_bitlist_4_rej.bend",
     "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+    "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
     "slop/offsets/bitlist_4_generated.bend"
    ]
   },
@@ -7610,6 +7897,7 @@
    "files": [
     "var_bits_enc_bitlist_511.bend",
     "slop/validity/generic_bitlist_511_generated.bend",
+    "slop/validity/generic_bitlist_511_appb_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_bits_generated.bend",
     "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
@@ -7625,6 +7913,7 @@
     "var_bits_bitlist_511_unique.bend",
     "var_bits_bitlist_511_rej.bend",
     "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+    "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
     "slop/offsets/bitlist_511_generated.bend"
    ]
   },
@@ -7645,6 +7934,7 @@
    "files": [
     "var_bits_enc_bitlist_512.bend",
     "slop/validity/generic_bitlist_512_generated.bend",
+    "slop/validity/generic_bitlist_512_appb_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_bits_generated.bend",
     "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
@@ -7660,6 +7950,7 @@
     "var_bits_bitlist_512_unique.bend",
     "var_bits_bitlist_512_rej.bend",
     "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+    "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
     "slop/offsets/bitlist_512_generated.bend"
    ]
   },
@@ -7680,6 +7971,7 @@
    "files": [
     "var_bits_enc_bitlist_513.bend",
     "slop/validity/generic_bitlist_513_generated.bend",
+    "slop/validity/generic_bitlist_513_appb_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_bits_generated.bend",
     "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
@@ -7695,6 +7987,7 @@
     "var_bits_bitlist_513_unique.bend",
     "var_bits_bitlist_513_rej.bend",
     "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+    "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
     "slop/offsets/bitlist_513_generated.bend"
    ]
   },
@@ -7716,6 +8009,7 @@
     "var_bits_enc_bitlist_5.bend",
     "slop/capacity/bitlist_5_symbolic_generated.bend",
     "slop/validity/generic_bitlist_5_generated.bend",
+    "slop/validity/generic_bitlist_5_appb_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_bits_generated.bend",
     "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
@@ -7732,6 +8026,7 @@
     "var_bits_bitlist_5_unique.bend",
     "var_bits_bitlist_5_rej.bend",
     "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+    "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
     "slop/offsets/bitlist_5_generated.bend"
    ]
   },
@@ -7753,6 +8048,7 @@
     "var_bits_enc_bitlist_6.bend",
     "slop/capacity/bitlist_6_symbolic_generated.bend",
     "slop/validity/generic_bitlist_6_generated.bend",
+    "slop/validity/generic_bitlist_6_appb_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_bits_generated.bend",
     "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
@@ -7769,6 +8065,7 @@
     "var_bits_bitlist_6_unique.bend",
     "var_bits_bitlist_6_rej.bend",
     "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+    "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
     "slop/offsets/bitlist_6_generated.bend"
    ]
   },
@@ -7790,6 +8087,7 @@
     "var_bits_enc_bitlist_7.bend",
     "slop/capacity/bitlist_7_symbolic_generated.bend",
     "slop/validity/generic_bitlist_7_generated.bend",
+    "slop/validity/generic_bitlist_7_appb_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_bits_generated.bend",
     "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
@@ -7806,6 +8104,7 @@
     "var_bits_bitlist_7_unique.bend",
     "var_bits_bitlist_7_rej.bend",
     "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+    "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
     "slop/offsets/bitlist_7_generated.bend"
    ]
   },
@@ -7827,6 +8126,7 @@
     "var_bits_enc_bitlist_8.bend",
     "slop/capacity/bitlist_8_symbolic_generated.bend",
     "slop/validity/generic_bitlist_8_generated.bend",
+    "slop/validity/generic_bitlist_8_appb_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_bits_generated.bend",
     "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
@@ -7843,6 +8143,7 @@
     "var_bits_bitlist_8_unique.bend",
     "var_bits_bitlist_8_rej.bend",
     "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+    "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
     "slop/offsets/bitlist_8_generated.bend"
    ]
   },
@@ -7864,6 +8165,7 @@
     "var_bits_enc_bitlist_9.bend",
     "slop/capacity/bitlist_9_symbolic_generated.bend",
     "slop/validity/generic_bitlist_9_generated.bend",
+    "slop/validity/generic_bitlist_9_appb_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_bits_generated.bend",
     "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
@@ -7880,6 +8182,7 @@
     "var_bits_bitlist_9_unique.bend",
     "var_bits_bitlist_9_rej.bend",
     "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+    "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
     "slop/offsets/bitlist_9_generated.bend"
    ]
   },
@@ -7915,6 +8218,7 @@
     "sub_bitvector_15.bend",
     "sub_unique_bitvector_15.bend",
     "slop/size/bitvector_15_generated.bend",
+    "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
     "slop/offsets/bitvector_15_generated.bend"
    ]
   },
@@ -7948,6 +8252,7 @@
     "sub_bitvector_16.bend",
     "sub_unique_bitvector_16.bend",
     "slop/size/bitvector_16_generated.bend",
+    "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
     "slop/offsets/bitvector_16_generated.bend"
    ]
   },
@@ -7981,6 +8286,7 @@
     "sub_bitvector_17.bend",
     "sub_unique_bitvector_17.bend",
     "slop/size/bitvector_17_generated.bend",
+    "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
     "slop/offsets/bitvector_17_generated.bend"
    ]
   },
@@ -8014,6 +8320,7 @@
     "sub_bitvector_1.bend",
     "sub_unique_bitvector_1.bend",
     "slop/size/bitvector_1_generated.bend",
+    "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
     "slop/offsets/bitvector_1_generated.bend"
    ]
   },
@@ -8047,6 +8354,7 @@
     "sub_bitvector_2.bend",
     "sub_unique_bitvector_2.bend",
     "slop/size/bitvector_2_generated.bend",
+    "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
     "slop/offsets/bitvector_2_generated.bend"
    ]
   },
@@ -8080,6 +8388,7 @@
     "sub_bitvector_31.bend",
     "sub_unique_bitvector_31.bend",
     "slop/size/bitvector_31_generated.bend",
+    "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
     "slop/offsets/bitvector_31_generated.bend"
    ]
   },
@@ -8117,6 +8426,7 @@
     "spec_grepr_bitvector_32.bend",
     "spec_ginput_bitvector_32.bend",
     "slop/size/bitvector_32_generated.bend",
+    "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
     "slop/offsets/bitvector_32_generated.bend"
    ]
   },
@@ -8150,6 +8460,7 @@
     "sub_bitvector_33.bend",
     "sub_unique_bitvector_33.bend",
     "slop/size/bitvector_33_generated.bend",
+    "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
     "slop/offsets/bitvector_33_generated.bend"
    ]
   },
@@ -8183,6 +8494,7 @@
     "sub_bitvector_3.bend",
     "sub_unique_bitvector_3.bend",
     "slop/size/bitvector_3_generated.bend",
+    "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
     "slop/offsets/bitvector_3_generated.bend"
    ]
   },
@@ -8216,6 +8528,7 @@
     "sub_bitvector_4.bend",
     "sub_unique_bitvector_4.bend",
     "slop/size/bitvector_4_generated.bend",
+    "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
     "slop/offsets/bitvector_4_generated.bend"
    ]
   },
@@ -8249,6 +8562,7 @@
     "sub_bitvector_511.bend",
     "sub_unique_bitvector_511.bend",
     "slop/size/bitvector_511_generated.bend",
+    "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
     "slop/offsets/bitvector_511_generated.bend"
    ]
   },
@@ -8286,6 +8600,7 @@
     "spec_grepr_bitvector_512.bend",
     "spec_ginput_bitvector_512.bend",
     "slop/size/bitvector_512_generated.bend",
+    "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
     "slop/offsets/bitvector_512_generated.bend"
    ]
   },
@@ -8319,6 +8634,7 @@
     "sub_bitvector_513.bend",
     "sub_unique_bitvector_513.bend",
     "slop/size/bitvector_513_generated.bend",
+    "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
     "slop/offsets/bitvector_513_generated.bend"
    ]
   },
@@ -8352,6 +8668,7 @@
     "sub_bitvector_5.bend",
     "sub_unique_bitvector_5.bend",
     "slop/size/bitvector_5_generated.bend",
+    "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
     "slop/offsets/bitvector_5_generated.bend"
    ]
   },
@@ -8385,6 +8702,7 @@
     "sub_bitvector_6.bend",
     "sub_unique_bitvector_6.bend",
     "slop/size/bitvector_6_generated.bend",
+    "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
     "slop/offsets/bitvector_6_generated.bend"
    ]
   },
@@ -8418,6 +8736,7 @@
     "sub_bitvector_7.bend",
     "sub_unique_bitvector_7.bend",
     "slop/size/bitvector_7_generated.bend",
+    "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
     "slop/offsets/bitvector_7_generated.bend"
    ]
   },
@@ -8451,6 +8770,7 @@
     "sub_bitvector_8.bend",
     "sub_unique_bitvector_8.bend",
     "slop/size/bitvector_8_generated.bend",
+    "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
     "slop/offsets/bitvector_8_generated.bend"
    ]
   },
@@ -8484,6 +8804,7 @@
     "sub_bitvector_9.bend",
     "sub_unique_bitvector_9.bend",
     "slop/size/bitvector_9_generated.bend",
+    "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
     "slop/offsets/bitvector_9_generated.bend"
    ]
   },
@@ -8513,6 +8834,7 @@
     "var_codec_CompatibleUnionBC.bend",
     "slop/alignment/CompatibleUnionBC_union_arm_generated.bend",
     "var_codec_CompatibleUnionBC_unique.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
     "slop/validity/generic_CompatibleUnionBC_selectors_generated.bend",
     "slop/offsets/CompatibleUnionBC_generated.bend"
    ]
@@ -8544,6 +8866,7 @@
     "slop/alignment/CompatibleUnionABCA_union_arm_generated.bend",
     "var_codec_CompatibleUnionABCA_unique.bend",
     "slop/size/CompatibleUnionABCA_generated.bend",
+    "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
     "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionABCA_generated.bend"
    ]
@@ -8576,6 +8899,7 @@
     "slop/alignment/CompatibleUnionA_union_arm_generated.bend",
     "var_codec_CompatibleUnionA_unique.bend",
     "slop/size/CompatibleUnionA_generated.bend",
+    "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
     "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionA_generated.bend"
    ]
@@ -8595,6 +8919,7 @@
    "files": [
     "var_pbits_progbitlist_enc.bend",
     "slop/validity/generic_progbitlist_generated.bend",
+    "slop/validity/generic_progbitlist_appb_pbits_generated.bend",
     "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
     "slop/validity/generic_progbitlist_bits_generated.bend",
     "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
@@ -8610,6 +8935,7 @@
     "var_pbits_progbitlist_unique.bend",
     "var_pbits_progbitlist_rej.bend",
     "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+    "slop/validity/generic_progbitlist_decode_checked_generated.bend",
     "slop/offsets/progbitlist_generated.bend"
    ]
   },
@@ -8648,6 +8974,7 @@
     "spec_grepr_uint128.bend",
     "spec_ginput_uint128.bend",
     "slop/size/uint128_generated.bend",
+    "slop/validity/generic_uint128_decode_checked_generated.bend",
     "slop/offsets/uint128_generated.bend"
    ]
   },
@@ -8678,6 +9005,7 @@
     "sub_uint16.bend",
     "sub_unique_uint16.bend",
     "slop/size/uint16_generated.bend",
+    "slop/validity/generic_uint16_decode_checked_generated.bend",
     "slop/validity/generic_uint16_read_generated.bend",
     "slop/offsets/uint16_generated.bend"
    ]

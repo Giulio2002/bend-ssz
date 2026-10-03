@@ -73,6 +73,8 @@ GENERATORS = (
     Gen('tight_storage_root', 'proofs/slop'),
     Gen('cached_list_roots', 'proofs/slop'),
     Gen('small_type_predicates', 'proofs/slop'),
+    Gen('decode_checked_laws', 'proofs/slop'),
+    Gen('append_guard_bounds', 'proofs/slop'),
     Gen('word_positions', 'proofs/slop'),
     Gen('decoder_offsets', 'proofs/slop'),
     Gen('validity_checks', 'proofs/slop'),

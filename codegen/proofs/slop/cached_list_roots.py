@@ -123,11 +123,9 @@ def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget'):
     deep = Lm > PLAIN_MAX
     # the reference of a cached root: the plain root of the list (it unfolds a tree of 2^depth chunks: only for the small limits), else a fresh cache of the same list
     P = (lambda s: f'pd(hl, {s})') if not deep else (lambda s: R(f'{T}_cache({s})'))    # noqa: E731
-    if not deep:
-        for k in range(1, min(N_MAX, Lm) + 1):
-            law(f'app_{k}', '+hl: Nat', f'{R(cached(k))} == {P(seq(k))} : D.Digest')
-    elif fold is not None:
-        # one element: its root padded with the zero subtrees of every level up to the limit, then the length mixed in (the deep limits have no plain root to compare with)
+    for k in range(1, min(N_MAX, Lm) + 1):     # the tree grows at 2^d elements: the deep kinds compare with a fresh cache of the same list
+        law(f'app_{k}', '+hl: Nat', f'{R(cached(k))} == {P(seq(k))} : D.Digest')
+    if deep and fold is not None:
         leaf, depth = fold
         r = leaf(a)
         for lvl in range(depth):
