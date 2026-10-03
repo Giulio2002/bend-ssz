@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_SmallTestStruct_decode_checked_generated.b
 def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   PRV.SmallTestStruct_decode_vchecked_accept()
 
-def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
+def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
   PRV.SmallTestStruct_decode_vchecked_limit()
 
 def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:

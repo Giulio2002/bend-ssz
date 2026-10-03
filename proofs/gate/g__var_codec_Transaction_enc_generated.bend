@@ -21,6 +21,7 @@ import ../obj/vbytes.bend as VY
 import ../obj/vlist.bend as VL
 import ../obj/vbsize.bend as VBZ
 import ../obj/vfits.bend as VFT
+import ../obj/vcont.bend as VCN
 import ../obj/vbspec.bend as VZ
 import ../obj/vbrt.bend as VBR
 import ../obj/venc.bend as VE

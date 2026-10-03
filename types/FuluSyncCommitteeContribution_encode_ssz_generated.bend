@@ -28,7 +28,7 @@ def SyncCommitteeContribution_valid(+o: FuluSyncCommitteeContribution_d.SyncComm
 def SyncCommitteeContribution_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>) -> Array<U32> & (O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution> & U32):
   match o:
     case O.BSome{+v, rest}: (SyncCommitteeContribution_put(out, pos, v), (O.BSome{v, O.BNone{}}, O.pz(SyncCommitteeContribution_valid(v))))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def SyncCommitteeContribution_encode(+o: FuluSyncCommitteeContribution_d.SyncCommitteeContribution) -> B.Buf: O.out_done(160, SyncCommitteeContribution_put(O.out_at(6n), 0, o))
 

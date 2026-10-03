@@ -15,7 +15,7 @@ def IndexedAttestation_serialize_vrefuse_bad_flag()
   {==}
 
 def IndexedAttestation_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, O.Encoded, FuluIndexedAttestation_e.IndexedAttestation_senc_sized((FuluIndexedAttestation_d.IndexedAttestation_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, O.Encoded, FuluIndexedAttestation_e.IndexedAttestation_senc_sized((FuluIndexedAttestation_d.IndexedAttestation_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def IndexedAttestation_serialize_vreject_attesting_indices()
@@ -31,7 +31,7 @@ def IndexedAttestation_serialize_vreject_bx_valid()
   {==}
 
 def IndexedAttestation_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def IndexedAttestation_serialize_vpoison_bx_ok()

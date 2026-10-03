@@ -42,6 +42,7 @@ import ./vua.bend as UA
 import ./vuw.bend as UWW
 import ./vuwd.bend as VWD
 import ../compact/reads.bend as RD
+import ./vcont.bend as VCN
 import ./var_winx_l1024_u16_generated.bend as W
 import ./encx_l1024_u16_generated.bend as B0
 
@@ -227,7 +228,7 @@ def sizex(m, hok):
       %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, ok_pf(dw, T, N, hok))) :
         {O.wsz_pick(N, _) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
       %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw, hsrc(dw, N, hy, ok_hN(dw, T, N, hok)))) :
-        {(O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 2147483648)) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
+        {(O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 4294967295)) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
       {==}
 
 law encx_spec:

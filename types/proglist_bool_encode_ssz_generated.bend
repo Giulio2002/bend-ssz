@@ -17,7 +17,7 @@ def pl_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> &
   (o, ok) = pair
   match ok:
     case True{}: pl_bool_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, True{}, 1))
 
@@ -31,9 +31,14 @@ def proglist_bool_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Word
   (o, m) = r
   proglist_bool_enc_out(n, out, o, m)
 
+def proglist_bool_enc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: proglist_bool_enc_put(n, pl_bool_putn(O.out_new(n), 0, o))
+
 def proglist_bool_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  proglist_bool_enc_put(n, pl_bool_putn(O.out_new(n), 0, o))
+  proglist_bool_enc_go(O.is_poisoned(n), n, o)
 
 def proglist_bool_encode(o: O.Words) -> O.Words & B.Buf: proglist_bool_enc_sized(pl_bool_size(o))
 

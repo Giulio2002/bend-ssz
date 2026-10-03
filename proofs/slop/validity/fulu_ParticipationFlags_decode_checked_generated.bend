@@ -14,7 +14,7 @@ def some1(m: Maybe<&1, U32>) -> Bool:
 def is_some(a: Maybe<&1, U32>, b: Maybe<&1, U32>) -> Bool & Bool: (some1(a), some1(b))
 
 def ParticipationFlags_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, U32>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   {==}
 
 def ParticipationFlags_decode_vchecked_accept()

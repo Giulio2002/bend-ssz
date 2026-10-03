@@ -27,7 +27,7 @@ def ExecutionPayloadHeader_serialize_vreject_bx_valid()
   {==}
 
 def ExecutionPayloadHeader_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def ExecutionPayloadHeader_serialize_vpoison_bx_ok()

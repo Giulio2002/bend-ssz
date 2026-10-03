@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_DataColumnSidecar_decode_checked_generated.be
 def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 356, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 89))), Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 356))) == (True{}, True{}) : Bool & Bool}:
   PRV.DataColumnSidecar_decode_vchecked_accept()
 
-def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   PRV.DataColumnSidecar_decode_vchecked_limit()
 
 def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(B.Buf{Array.new(U32, 0n, 0), 356}, 356)) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:

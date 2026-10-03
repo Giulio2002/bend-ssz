@@ -71,7 +71,7 @@ def FuluBlob__decode_none__Blob_spec_reject(buf: P1_B.Buf, +m: U32, e: {U32.is_e
 def FuluBlob__decode_input__Blob_spec_input(+t: P1_F.array__Tree<U32>, +pt: {P1_F.array__perfect(U32, 15n, t) == True{} : Bool}) -> {FuluBlob_r.Blob_decode(P1_B.fill_at(P1_B.alloc(131072), 0, P1_SF.limbs(P1_F.array__slots(U32, t))), 131072) == (P1_B.Buf{P1_F.array__thaw(U32, t), 131072}, Some{P1_O.Words{ANode{P1_F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
   P1_PRV.Blob_spec_input(t, pt)
 
-def FuluBlob__decode_offsets__Blob_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, P3_O.Words>}:
+def FuluBlob__decode_offsets__Blob_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.Blob_decode_vchecked_limit()
 
 def FuluBlob__decode_offsets__Blob_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, P3_O.Words>}:

@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, SmallTestStruct_d.SmallTestStruct>) -> Bool:
 def is_some(a: Maybe<&1, SmallTestStruct_d.SmallTestStruct>, b: Maybe<&1, SmallTestStruct_d.SmallTestStruct>) -> Bool & Bool: (some1(a), some1(b))
 
 def SmallTestStruct_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
   {==}
 
 def SmallTestStruct_decode_vchecked_accept()

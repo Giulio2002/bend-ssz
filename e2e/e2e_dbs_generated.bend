@@ -139,8 +139,8 @@ def lwn0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ0(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O0(t, x)), W.LJ0(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O1(t, x)), Nat.add(U32.to_nat(W.O0(t, x)), U32.to_nat(W.LJ0(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O0(t, x)), U32.to_nat(W.LJ0(t, x))), U32.to_nat(W.O1(t, x)), lsum0(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O1(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top0(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ0(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ0(t, x)), U32.to_nat(n), VB.pw(31n), lwn0(t, x, off, n, hchk), h31)
+def hm0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ0(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ0(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn0(t, x, off, n, hchk), h31)
 def lsum1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O1(t, x)), U32.to_nat(W.LJ1(t, x))) == U32.to_nat(W.O2(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O1(t, x)), U32.to_nat(W.LJ1(t, x))), Nat.add(U32.to_nat(W.O1(t, x)), Nat.sub(U32.to_nat(W.O2(t, x)), U32.to_nat(W.O1(t, x)))), U32.to_nat(W.O2(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O1(t, x)), z), U32.to_nat(W.LJ1(t, x)), Nat.sub(U32.to_nat(W.O2(t, x)), U32.to_nat(W.O1(t, x))), FD.u32__sub_nat(W.O2(t, x), W.O1(t, x), ord1(t, x, off, n, hchk))),
@@ -150,8 +150,8 @@ def lwn1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ1(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O1(t, x)), W.LJ1(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O2(t, x)), Nat.add(U32.to_nat(W.O1(t, x)), U32.to_nat(W.LJ1(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O1(t, x)), U32.to_nat(W.LJ1(t, x))), U32.to_nat(W.O2(t, x)), lsum1(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O2(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top1(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ1(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ1(t, x)), U32.to_nat(n), VB.pw(31n), lwn1(t, x, off, n, hchk), h31)
+def hm1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ1(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ1(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn1(t, x, off, n, hchk), h31)
 def lsum2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O2(t, x)), U32.to_nat(W.LJ2(t, x))) == U32.to_nat(W.O3(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O2(t, x)), U32.to_nat(W.LJ2(t, x))), Nat.add(U32.to_nat(W.O2(t, x)), Nat.sub(U32.to_nat(W.O3(t, x)), U32.to_nat(W.O2(t, x)))), U32.to_nat(W.O3(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O2(t, x)), z), U32.to_nat(W.LJ2(t, x)), Nat.sub(U32.to_nat(W.O3(t, x)), U32.to_nat(W.O2(t, x))), FD.u32__sub_nat(W.O3(t, x), W.O2(t, x), ord2(t, x, off, n, hchk))),
@@ -161,8 +161,8 @@ def lwn2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ2(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O2(t, x)), W.LJ2(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O3(t, x)), Nat.add(U32.to_nat(W.O2(t, x)), U32.to_nat(W.LJ2(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O2(t, x)), U32.to_nat(W.LJ2(t, x))), U32.to_nat(W.O3(t, x)), lsum2(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O3(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top2(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ2(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ2(t, x)), U32.to_nat(n), VB.pw(31n), lwn2(t, x, off, n, hchk), h31)
+def hm2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ2(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ2(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn2(t, x, off, n, hchk), h31)
 def lsum3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O3(t, x)), U32.to_nat(W.LJ3(t, x))) == U32.to_nat(W.O4(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O3(t, x)), U32.to_nat(W.LJ3(t, x))), Nat.add(U32.to_nat(W.O3(t, x)), Nat.sub(U32.to_nat(W.O4(t, x)), U32.to_nat(W.O3(t, x)))), U32.to_nat(W.O4(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O3(t, x)), z), U32.to_nat(W.LJ3(t, x)), Nat.sub(U32.to_nat(W.O4(t, x)), U32.to_nat(W.O3(t, x))), FD.u32__sub_nat(W.O4(t, x), W.O3(t, x), ord3(t, x, off, n, hchk))),
@@ -172,8 +172,8 @@ def lwn3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ3(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O3(t, x)), W.LJ3(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O4(t, x)), Nat.add(U32.to_nat(W.O3(t, x)), U32.to_nat(W.LJ3(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O3(t, x)), U32.to_nat(W.LJ3(t, x))), U32.to_nat(W.O4(t, x)), lsum3(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O4(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top3(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ3(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ3(t, x)), U32.to_nat(n), VB.pw(31n), lwn3(t, x, off, n, hchk), h31)
+def hm3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ3(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ3(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn3(t, x, off, n, hchk), h31)
 def lsum4(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O4(t, x)), U32.to_nat(W.LJ4(t, x))) == U32.to_nat(W.O5(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O4(t, x)), U32.to_nat(W.LJ4(t, x))), Nat.add(U32.to_nat(W.O4(t, x)), Nat.sub(U32.to_nat(W.O5(t, x)), U32.to_nat(W.O4(t, x)))), U32.to_nat(W.O5(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O4(t, x)), z), U32.to_nat(W.LJ4(t, x)), Nat.sub(U32.to_nat(W.O5(t, x)), U32.to_nat(W.O4(t, x))), FD.u32__sub_nat(W.O5(t, x), W.O4(t, x), ord4(t, x, off, n, hchk))),
@@ -183,8 +183,8 @@ def lwn4(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy4(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ4(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O4(t, x)), W.LJ4(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O5(t, x)), Nat.add(U32.to_nat(W.O4(t, x)), U32.to_nat(W.LJ4(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O4(t, x)), U32.to_nat(W.LJ4(t, x))), U32.to_nat(W.O5(t, x)), lsum4(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O5(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top4(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm4(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ4(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ4(t, x)), U32.to_nat(n), VB.pw(31n), lwn4(t, x, off, n, hchk), h31)
+def hm4(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ4(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ4(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn4(t, x, off, n, hchk), h31)
 def lsum5(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O5(t, x)), U32.to_nat(W.LJ5(t, x))) == U32.to_nat(W.O6(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O5(t, x)), U32.to_nat(W.LJ5(t, x))), Nat.add(U32.to_nat(W.O5(t, x)), Nat.sub(U32.to_nat(W.O6(t, x)), U32.to_nat(W.O5(t, x)))), U32.to_nat(W.O6(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O5(t, x)), z), U32.to_nat(W.LJ5(t, x)), Nat.sub(U32.to_nat(W.O6(t, x)), U32.to_nat(W.O5(t, x))), FD.u32__sub_nat(W.O6(t, x), W.O5(t, x), ord5(t, x, off, n, hchk))),
@@ -194,8 +194,8 @@ def lwn5(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy5(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ5(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O5(t, x)), W.LJ5(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O6(t, x)), Nat.add(U32.to_nat(W.O5(t, x)), U32.to_nat(W.LJ5(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O5(t, x)), U32.to_nat(W.LJ5(t, x))), U32.to_nat(W.O6(t, x)), lsum5(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O6(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top5(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm5(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ5(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ5(t, x)), U32.to_nat(n), VB.pw(31n), lwn5(t, x, off, n, hchk), h31)
+def hm5(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ5(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ5(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn5(t, x, off, n, hchk), h31)
 def lsum6(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O6(t, x)), U32.to_nat(W.LJ6(t, x))) == U32.to_nat(W.O7(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O6(t, x)), U32.to_nat(W.LJ6(t, x))), Nat.add(U32.to_nat(W.O6(t, x)), Nat.sub(U32.to_nat(W.O7(t, x)), U32.to_nat(W.O6(t, x)))), U32.to_nat(W.O7(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O6(t, x)), z), U32.to_nat(W.LJ6(t, x)), Nat.sub(U32.to_nat(W.O7(t, x)), U32.to_nat(W.O6(t, x))), FD.u32__sub_nat(W.O7(t, x), W.O6(t, x), ord6(t, x, off, n, hchk))),
@@ -205,8 +205,8 @@ def lwn6(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy6(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ6(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O6(t, x)), W.LJ6(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O7(t, x)), Nat.add(U32.to_nat(W.O6(t, x)), U32.to_nat(W.LJ6(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O6(t, x)), U32.to_nat(W.LJ6(t, x))), U32.to_nat(W.O7(t, x)), lsum6(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O7(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top6(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm6(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ6(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ6(t, x)), U32.to_nat(n), VB.pw(31n), lwn6(t, x, off, n, hchk), h31)
+def hm6(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ6(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ6(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn6(t, x, off, n, hchk), h31)
 def lsum7(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O7(t, x)), U32.to_nat(W.LJ7(t, x))) == U32.to_nat(W.O8(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O7(t, x)), U32.to_nat(W.LJ7(t, x))), Nat.add(U32.to_nat(W.O7(t, x)), Nat.sub(U32.to_nat(W.O8(t, x)), U32.to_nat(W.O7(t, x)))), U32.to_nat(W.O8(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O7(t, x)), z), U32.to_nat(W.LJ7(t, x)), Nat.sub(U32.to_nat(W.O8(t, x)), U32.to_nat(W.O7(t, x))), FD.u32__sub_nat(W.O8(t, x), W.O7(t, x), ord7(t, x, off, n, hchk))),
@@ -216,8 +216,8 @@ def lwn7(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy7(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ7(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O7(t, x)), W.LJ7(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O8(t, x)), Nat.add(U32.to_nat(W.O7(t, x)), U32.to_nat(W.LJ7(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O7(t, x)), U32.to_nat(W.LJ7(t, x))), U32.to_nat(W.O8(t, x)), lsum7(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O8(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top7(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm7(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ7(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ7(t, x)), U32.to_nat(n), VB.pw(31n), lwn7(t, x, off, n, hchk), h31)
+def hm7(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ7(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ7(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn7(t, x, off, n, hchk), h31)
 def lsum8(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O8(t, x)), U32.to_nat(W.LJ8(t, x))) == U32.to_nat(W.O9(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O8(t, x)), U32.to_nat(W.LJ8(t, x))), Nat.add(U32.to_nat(W.O8(t, x)), Nat.sub(U32.to_nat(W.O9(t, x)), U32.to_nat(W.O8(t, x)))), U32.to_nat(W.O9(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O8(t, x)), z), U32.to_nat(W.LJ8(t, x)), Nat.sub(U32.to_nat(W.O9(t, x)), U32.to_nat(W.O8(t, x))), FD.u32__sub_nat(W.O9(t, x), W.O8(t, x), ord8(t, x, off, n, hchk))),
@@ -227,8 +227,8 @@ def lwn8(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy8(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ8(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O8(t, x)), W.LJ8(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O9(t, x)), Nat.add(U32.to_nat(W.O8(t, x)), U32.to_nat(W.LJ8(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O8(t, x)), U32.to_nat(W.LJ8(t, x))), U32.to_nat(W.O9(t, x)), lsum8(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O9(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top8(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm8(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ8(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ8(t, x)), U32.to_nat(n), VB.pw(31n), lwn8(t, x, off, n, hchk), h31)
+def hm8(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ8(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ8(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn8(t, x, off, n, hchk), h31)
 def lsum9(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O9(t, x)), U32.to_nat(W.LJ9(t, x))) == U32.to_nat(W.O10(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O9(t, x)), U32.to_nat(W.LJ9(t, x))), Nat.add(U32.to_nat(W.O9(t, x)), Nat.sub(U32.to_nat(W.O10(t, x)), U32.to_nat(W.O9(t, x)))), U32.to_nat(W.O10(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O9(t, x)), z), U32.to_nat(W.LJ9(t, x)), Nat.sub(U32.to_nat(W.O10(t, x)), U32.to_nat(W.O9(t, x))), FD.u32__sub_nat(W.O10(t, x), W.O9(t, x), ord9(t, x, off, n, hchk))),
@@ -238,8 +238,8 @@ def lwn9(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t,
 def hy9(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ9(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O9(t, x)), W.LJ9(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O10(t, x)), Nat.add(U32.to_nat(W.O9(t, x)), U32.to_nat(W.LJ9(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O9(t, x)), U32.to_nat(W.LJ9(t, x))), U32.to_nat(W.O10(t, x)), lsum9(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O10(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top9(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm9(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ9(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ9(t, x)), U32.to_nat(n), VB.pw(31n), lwn9(t, x, off, n, hchk), h31)
+def hm9(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ9(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ9(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn9(t, x, off, n, hchk), h31)
 def lsum10(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O10(t, x)), U32.to_nat(W.LJ10(t, x))) == U32.to_nat(W.O11(t, x)) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O10(t, x)), U32.to_nat(W.LJ10(t, x))), Nat.add(U32.to_nat(W.O10(t, x)), Nat.sub(U32.to_nat(W.O11(t, x)), U32.to_nat(W.O10(t, x)))), U32.to_nat(W.O11(t, x)),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O10(t, x)), z), U32.to_nat(W.LJ10(t, x)), Nat.sub(U32.to_nat(W.O11(t, x)), U32.to_nat(W.O10(t, x))), FD.u32__sub_nat(W.O11(t, x), W.O10(t, x), ord10(t, x, off, n, hchk))),
@@ -249,8 +249,8 @@ def lwn10(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t
 def hy10(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ10(t, x)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O10(t, x)), W.LJ10(t, x), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(W.O11(t, x)), Nat.add(U32.to_nat(W.O10(t, x)), U32.to_nat(W.LJ10(t, x))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O10(t, x)), U32.to_nat(W.LJ10(t, x))), U32.to_nat(W.O11(t, x)), lsum10(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(W.O11(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), top10(t, x, off, n, hchk), u2n(n, VB.NMAX(), hS))))
-def hm10(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ10(t, x)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ10(t, x)), U32.to_nat(n), VB.pw(31n), lwn10(t, x, off, n, hchk), h31)
+def hm10(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ10(t, x)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ10(t, x)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn10(t, x, off, n, hchk), h31)
 def lsum11(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.add(U32.to_nat(W.O11(t, x)), U32.to_nat(W.LJ11(t, x, n))) == U32.to_nat(n) : Nat}:
   Equal.trans(Nat, Nat.add(U32.to_nat(W.O11(t, x)), U32.to_nat(W.LJ11(t, x, n))), Nat.add(U32.to_nat(W.O11(t, x)), Nat.sub(U32.to_nat(n), U32.to_nat(W.O11(t, x)))), U32.to_nat(n),
     Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(W.O11(t, x)), z), U32.to_nat(W.LJ11(t, x, n)), Nat.sub(U32.to_nat(n), U32.to_nat(W.O11(t, x))), FD.u32__sub_nat(n, W.O11(t, x), top10(t, x, off, n, hchk))),
@@ -260,8 +260,8 @@ def lwn11(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t
 def hy11(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(VC.YL(W.LJ11(t, x, n)), U32.to_nat(VB.UMAX())) == True{} : Bool}:
   VC.hyW(U32.to_nat(W.O11(t, x)), W.LJ11(t, x, n), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, U32.to_nat(n), Nat.add(U32.to_nat(W.O11(t, x)), U32.to_nat(W.LJ11(t, x, n))), Equal.sym(Nat, Nat.add(U32.to_nat(W.O11(t, x)), U32.to_nat(W.LJ11(t, x, n))), U32.to_nat(n), lsum11(t, x, off, n, hchk)),
     FD.nat__le_trans(U32.to_nat(n), U32.to_nat(n), U32.to_nat(VB.NMAX()), FD.nat__le_refl(U32.to_nat(n)), u2n(n, VB.NMAX(), hS))))
-def hm11(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(W.LJ11(t, x, n)), VB.pw(31n)) == True{} : Bool}:
-  FD.nat__le_lt_trans(U32.to_nat(W.LJ11(t, x, n)), U32.to_nat(n), VB.pw(31n), lwn11(t, x, off, n, hchk), h31)
+def hm11(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(W.LJ11(t, x, n)), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(W.LJ11(t, x, n)), U32.to_nat(n), U32.to_nat(VB.NMAX()), lwn11(t, x, off, n, hchk), h31)
 
 # the header window's extra data holds at most 32 bytes
 def ehl(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +n: U32, +hchk: {W.CHKw(t, x, off, n) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(HX.LL(W.LJ7(t, x))), U32.to_nat(32)) == True{} : Bool}:

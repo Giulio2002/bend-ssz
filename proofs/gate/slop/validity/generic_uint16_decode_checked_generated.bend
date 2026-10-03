@@ -10,7 +10,7 @@ import ../../../slop/validity/generic_uint16_decode_checked_generated.bend as PR
 def uint16__decode_offsets__uint16_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.uint16_dchw(2, 2, (B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.uint16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   PRV.uint16_decode_vchecked_accept()
 
-def uint16__decode_offsets__uint16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.uint16_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, U32>}:
+def uint16__decode_offsets__uint16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.uint16_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   PRV.uint16_decode_vchecked_limit()
 
 def uint16__decode_offsets__uint16_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.uint16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 2)) == None{} : Maybe<&1, U32>}:

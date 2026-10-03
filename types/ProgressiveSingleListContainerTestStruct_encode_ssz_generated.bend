@@ -53,9 +53,14 @@ def ProgressiveSingleListContainerTestStruct_enc_put(+n: U32, pair: Array<U32> &
   (o, m) = r
   ProgressiveSingleListContainerTestStruct_enc_out(n, out, o, m)
 
+def ProgressiveSingleListContainerTestStruct_enc_go(bad: Bool, +n: U32, o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct) -> ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ProgressiveSingleListContainerTestStruct_enc_put(n, ProgressiveSingleListContainerTestStruct_putn(O.out_new(n), 0, o))
+
 def ProgressiveSingleListContainerTestStruct_enc_sized(pair: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & U32) -> ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & B.Buf:
   (o, +n) = pair
-  ProgressiveSingleListContainerTestStruct_enc_put(n, ProgressiveSingleListContainerTestStruct_putn(O.out_new(n), 0, o))
+  ProgressiveSingleListContainerTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ProgressiveSingleListContainerTestStruct_encode(o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct) -> ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & B.Buf: ProgressiveSingleListContainerTestStruct_enc_sized(ProgressiveSingleListContainerTestStruct_size(o))
 

@@ -63,7 +63,7 @@ def Checkpoint_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCh
 
 def Checkpoint_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
   (buf, +c) = pair
-  Checkpoint_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  Checkpoint_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def Checkpoint_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
   (buf, +n) = pair

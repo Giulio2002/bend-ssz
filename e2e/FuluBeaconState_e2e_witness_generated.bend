@@ -130,10 +130,10 @@ def szr_sum(+x: U32, +t0: Nat, +t1: Nat, +t2: Nat, +t3: Nat, +t4: Nat, +t5: Nat,
   %Equal.sym(Nat, Nat.add(Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10)), t11), Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)), FD.nat__add_assoc(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)) : {_ == Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)) : Nat}
   {==}
 
-def szr_lt(+x: U32, +t0: Nat, +t1: Nat, +t2: Nat, +t3: Nat, +t4: Nat, +t5: Nat, +t6: Nat, +t7: Nat, +t8: Nat, +t9: Nat, +t10: Nat, +t11: Nat, +h: {Nat.is_lt(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11), U32.to_nat(x)), VB.pw(31n)) == True{} : Bool})
-    -> {Nat.is_lt(BR.SZR(U32.to_nat(x), t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11), VB.pw(31n)) == True{} : Bool}:
-  %Equal.sym(Nat, BR.SZR(U32.to_nat(x), t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11), Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)), szr_sum(x, t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)) : {Nat.is_lt(_, VB.pw(31n)) == True{} : Bool}
-  %Equal.sym(Nat, Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11), U32.to_nat(x)), FD.nat__add_comm(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11))) : {Nat.is_lt(_, VB.pw(31n)) == True{} : Bool}
+def szr_lt(+x: U32, +t0: Nat, +t1: Nat, +t2: Nat, +t3: Nat, +t4: Nat, +t5: Nat, +t6: Nat, +t7: Nat, +t8: Nat, +t9: Nat, +t10: Nat, +t11: Nat, +h: {Nat.is_le(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11), U32.to_nat(x)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {Nat.is_le(BR.SZR(U32.to_nat(x), t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  %Equal.sym(Nat, BR.SZR(U32.to_nat(x), t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11), Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)), szr_sum(x, t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)) : {Nat.is_le(_, U32.to_nat(VB.NMAX())) == True{} : Bool}
+  %Equal.sym(Nat, Nat.add(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11)), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11), U32.to_nat(x)), FD.nat__add_comm(U32.to_nat(x), Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(Nat.add(t0, t1), t2), t3), t4), t5), t6), t7), t8), t9), t10), t11))) : {Nat.is_le(_, U32.to_nat(VB.NMAX())) == True{} : Bool}
   h
 
 def sym_PV_wfv(-o: O.Words, +c: Nat, +b: Nat, +d: Nat, +eb: {Nat.add(5n, c) == b : Nat}, +hb: {Nat.is_lt(b, 32n) == True{} : Bool}, +hd: {Nat.is_le(Nat.add(3n, c), d) == True{} : Bool}, +ew: {o == O.Words{FD.array__thaw(U32, FD.array__trep(U32, d, 0)), FD.u32__pow2u(b)} : O.Words}, +h0: {Nat.is_lt(d, 32n) == True{} : Bool}) -> PV.wfv(o):
@@ -220,7 +220,7 @@ def premise_hs6() -> BL.sdpv(ST.pj_BeaconState_6(FuluBeaconState_d.BeaconState_d
 def premise_hs7() -> U.sdk(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()), 31n):
   Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
 
-def premise_hm7() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hm7() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_hs9() -> RLS.sda_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default()), 31n):
@@ -232,7 +232,7 @@ def premise_hs11() -> RLS.sda_l1099511627776_Validator(ST.pj_BeaconState_11(Fulu
 def premise_hs12() -> U.sdk(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()), 31n):
   Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
 
-def premise_hm12() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hm12() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_hs13() -> BL.sdpv(ST.pj_BeaconState_13(FuluBeaconState_d.BeaconState_default()), 31n):
@@ -244,19 +244,19 @@ def premise_hs14() -> BL.sdk1(ST.pj_BeaconState_14(FuluBeaconState_d.BeaconState
 def premise_hs15() -> U.sdk(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()), 31n):
   Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
 
-def premise_hm15() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hm15() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_hs16() -> U.sdk(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()), 31n):
   Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
 
-def premise_hm16() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hm16() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_hs21() -> U.sdk(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()), 31n):
   Inl{(FD.array__trep(U32, 3n, 0), (3n, (0, (WZ0(), (FD.array__trep_perfect(U32, 3n, 0), ({==}, {==}))))))}
 
-def premise_hm21() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hm21() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_hs22() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(FuluBeaconState_d.BeaconState_default())), 31n):
@@ -283,7 +283,7 @@ def premise_hs36() -> RLS.sda_l262144_PendingConsolidation(ST.pj_BeaconState_36(
 def premise_hs37() -> BL.sdk1(ST.pj_BeaconState_37(FuluBeaconState_d.BeaconState_default()), 31n):
   (FD.array__trep(U32, 8n, 0), (8n, (512, (15n, (32n, (WZ512(), (FD.array__trep_perfect(U32, 8n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
 
-def premise_hZ() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def premise_hZ() -> {Nat.is_le(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   szr_lt(2737225, U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default())), {==})
 
 def FuluBeaconState_e2e_witness() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(FuluBeaconState_d.BeaconState_default())))} == API.serialize(Spec.BeaconState(), ST.v_BeaconState(FuluBeaconState_d.BeaconState_default())) : Maybe<&2, +List<U32>>}:
@@ -306,7 +306,7 @@ def premise_ne_hs6() -> BL.sdpv(ST.pj_BeaconState_6(NE()), 31n):
 def premise_ne_hs7() -> U.sdk(ST.pj_BeaconState_7(NE()), 31n):
   Inr{(FD.array__trep(U32, 4n, 0), (4n, (32, (0n, (32n, (WZ32(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
 
-def premise_ne_hm7() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hm7() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_ne_hs9() -> RLS.sda_l2048_Eth1Data(ST.pj_BeaconState_9(NE()), 31n):
@@ -318,7 +318,7 @@ def premise_ne_hs11() -> RLS.sda_l1099511627776_Validator(ST.pj_BeaconState_11(N
 def premise_ne_hs12() -> U.sdk(ST.pj_BeaconState_12(NE()), 31n):
   Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
 
-def premise_ne_hm12() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hm12() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_ne_hs13() -> BL.sdpv(ST.pj_BeaconState_13(NE()), 31n):
@@ -330,19 +330,19 @@ def premise_ne_hs14() -> BL.sdk1(ST.pj_BeaconState_14(NE()), 31n):
 def premise_ne_hs15() -> U.sdk(ST.pj_BeaconState_15(NE()), 31n):
   Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
 
-def premise_ne_hm15() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hm15() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_ne_hs16() -> U.sdk(ST.pj_BeaconState_16(NE()), 31n):
   Inr{(FD.array__trep(U32, 4n, 0), (4n, (1, (0n, (1n, (WZ1(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
 
-def premise_ne_hm16() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hm16() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_ne_hs21() -> U.sdk(ST.pj_BeaconState_21(NE()), 31n):
   Inr{(FD.array__trep(U32, 4n, 0), (4n, (8, (0n, (8n, (WZ8(), (FD.array__trep_perfect(U32, 4n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))}
 
-def premise_ne_hm21() -> {Nat.is_lt(U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hm21() -> {Nat.is_le(U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   {==}
 
 def premise_ne_hs22() -> EW.sdsc(RT.pj_SyncCommittee_0(ST.pj_BeaconState_22(NE())), 31n):
@@ -369,7 +369,7 @@ def premise_ne_hs36() -> RLS.sda_l262144_PendingConsolidation(ST.pj_BeaconState_
 def premise_ne_hs37() -> BL.sdk1(ST.pj_BeaconState_37(NE()), 31n):
   (FD.array__trep(U32, 8n, 0), (8n, (512, (15n, (32n, (WZ512(), (FD.array__trep_perfect(U32, 8n, 0), ({==}, ({==}, ({==}, ({==}, ({==}, {==}))))))))))))
 
-def premise_ne_hZ() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), VB.pw(31n)) == True{} : Bool}:
+def premise_ne_hZ() -> {Nat.is_le(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   szr_lt(2737225, U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE())), {==})
 
 def FuluBeaconState_e2e_witness_nonempty() -> {Some{E.obytes(Pair.snd(FuluBeaconState_d.BeaconState, B.Buf, FuluBeaconState_e.BeaconState_encode(NE())))} == API.serialize(Spec.BeaconState(), ST.v_BeaconState(NE())) : Maybe<&2, +List<U32>>}:
@@ -379,9 +379,9 @@ def FuluBeaconState_e2e_witness_root_nonempty() -> {Some{D.bytes(Pair.snd(FuluBe
   RB.FuluBeaconState_e2e_root(B.alloc(0), NE(), premise_ne_rep())
 
 # the size premise hZ holds of the default object: its encoding is below 2^31 bytes
-def FuluBeaconState_e2e_witness_size() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default()))), VB.pw(31n)) == True{} : Bool}:
+def FuluBeaconState_e2e_witness_size() -> {Nat.is_le(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(FuluBeaconState_d.BeaconState_default()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(FuluBeaconState_d.BeaconState_default())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(FuluBeaconState_d.BeaconState_default()))), BR.LNEH(ST.pj_BeaconState_24(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(FuluBeaconState_d.BeaconState_default())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(FuluBeaconState_d.BeaconState_default()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   premise_hZ()
 
 # the size premise hZ holds of the non-empty object: its encoding is below 2^31 bytes
-def FuluBeaconState_e2e_witness_size_nonempty() -> {Nat.is_lt(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), VB.pw(31n)) == True{} : Bool}:
+def FuluBeaconState_e2e_witness_size_nonempty() -> {Nat.is_le(BR.SZR(U32.to_nat(2737225), U32.to_nat(WO_L.len(ST.pj_BeaconState_7(NE()))), RLS.WLL_l2048_Eth1Data(ST.pj_BeaconState_9(NE())), RLS.WLL_l1099511627776_Validator(ST.pj_BeaconState_11(NE())), U32.to_nat(WO_L.len(ST.pj_BeaconState_12(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_15(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_16(NE()))), U32.to_nat(WO_L.len(ST.pj_BeaconState_21(NE()))), BR.LNEH(ST.pj_BeaconState_24(NE())), RLS.WLL_l16777216_HistoricalSummary(ST.pj_BeaconState_27(NE())), RLS.WLL_l134217728_PendingDeposit(ST.pj_BeaconState_34(NE())), RLS.WLL_l134217728_PendingPartialWithdrawal(ST.pj_BeaconState_35(NE())), RLS.WLL_l262144_PendingConsolidation(ST.pj_BeaconState_36(NE()))), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   premise_ne_hZ()

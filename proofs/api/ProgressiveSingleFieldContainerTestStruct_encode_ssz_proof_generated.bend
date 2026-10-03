@@ -48,10 +48,10 @@ def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingl
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag() -> {P2_O.is_poisoned(P2_O.pz(True{})) == False{} : Bool}:
   P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_true_flag()
 
-def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(2147483647) == False{} : Bool}:
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(4294967264) == False{} : Bool}:
   P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_below()
 
-def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 2147483648)) == True{} : Bool}:
+def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 4294967295)) == True{} : Bool}:
   P2_PRV.ProgressiveSingleFieldContainerTestStruct_serialize_vpoison_carried()
 
 def ProgressiveSingleFieldContainerTestStruct__serialize_valid__ProgressiveSingleFieldContainerTestStruct_serialize_vreject_f_A() -> {ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_set_f_A_go(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct_default(), 256)) == False{} : Bool}:

@@ -39,6 +39,7 @@ import ../obj/encx_pl_SmallTestStruct_generated.bend as P0_EX_pl_SmallTestStruct
 import ../obj/encx_pl_SmallTestStruct_d_generated.bend as P0_EX_pl_SmallTestStruct_D
 import ../obj/encx_pl_pl_VarTestStruct_generated.bend as P0_EX_pl_pl_VarTestStruct
 import ../obj/encx_pl_pl_VarTestStruct_d_generated.bend as P0_EX_pl_pl_VarTestStruct_D
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -74,13 +75,13 @@ def ProgressiveTestStruct__encode_eval__encode_eval(+m: P0_CI.MW, +hok: {P0_CI.O
 def ProgressiveTestStruct__encode_spec__encode_spec(+m: P0_CI.MW, +hok: {P0_CI.OK(m) == True{} : Bool}) -> P0_Decoding.decodes(P0_Spec.ProgressiveTestStruct(), P0_VS.bt(U32.to_nat(P0_PRV.SZSM(m)), P0_FX.limbs(P0_FD.array__slots(U32, P0_PRV.OUTE(m)))), P0_CI.VAL(m)):
   P0_PRV.encode_spec(m, hok)
 
-def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(29n), 536870910}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741815}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
   P1_PRV.ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below()
 
-def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870911}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741816}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   P1_PRV.ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at()
 
-def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870912}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741817}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   P1_PRV.ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above()
 
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_fit() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(2n), 3}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:

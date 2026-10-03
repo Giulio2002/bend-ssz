@@ -17,7 +17,7 @@ def bits513_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & 
   (o, ok) = pair
   match ok:
     case True{}: bits513_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bits513_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 513, False{})
 
@@ -31,9 +31,14 @@ def bitlist_513_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & 
   (o, m) = r
   bitlist_513_enc_out(n, out, o, m)
 
+def bitlist_513_enc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: bitlist_513_enc_put(n, bits513_putn(O.out_new(n), 0, o))
+
 def bitlist_513_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  bitlist_513_enc_put(n, bits513_putn(O.out_new(n), 0, o))
+  bitlist_513_enc_go(O.is_poisoned(n), n, o)
 
 def bitlist_513_encode(o: O.Bits) -> O.Bits & B.Buf: bitlist_513_enc_sized(bits513_size(o))
 

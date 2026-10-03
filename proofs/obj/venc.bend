@@ -153,6 +153,23 @@ def padd_le(+a: U32, +b: U32, +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b
   %Equal.sym(Bool, Bool.and(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison())), True{}, F.logic__and_intro(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison()), hles, hlts)) : {O.pick(_, U32.add(a, b), O.poison()) == U32.add(a, b) : U32}
   {==}
 
+# A length at most NMAX is not poisoned (the size pass's marker and every size past NMAX are).
+def np_nmax(+x: U32, +h: {Nat.is_le(U32.to_nat(x), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  F.logic__subst(Bool, z => {z == False{} : Bool}, Nat.is_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x)), O.is_poisoned(x),
+    Equal.sym(Bool, O.is_poisoned(x), Nat.is_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x)), F.u32__is_lt_nat(VB.NMAX(), x)),
+    F.nat__le_not_lt(U32.to_nat(VB.NMAX()), U32.to_nat(x), h))
+
+# A value below 2^k (k <= 31) is not poisoned.
+def np31(+x: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +h: {Nat.is_lt(U32.to_nat(x), F.spec_common__pow2(k)) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  np_nmax(x, VB.le_pw31_nmax(U32.to_nat(x), F.nat__lt_le_trans(U32.to_nat(x), F.spec_common__pow2(k), F.spec_common__pow2(31n), h, F.nat__pow2_mono(k, 31n, hk))))
+# x < 31 + x (31 + x within 2^k bounds x by 2^k).
+def lt_31x(+x: Nat) -> {Nat.is_lt(x, Nat.add(31n, x)) == True{} : Bool}:
+  F.nat__lt_le_trans(x, Nat.add(1n, x), Nat.add(31n, x), F.nat__lt_succ(x), Order.add_right(1n, 31n, x, {==}))
+
+# Not poisoned from the word-count window's bound 31 + x <= 2^k (k <= 31).
+def np31y(+x: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(Nat.add(31n, U32.to_nat(x)), F.spec_common__pow2(k)) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  np31(x, k, hk, F.nat__lt_le_trans(U32.to_nat(x), Nat.add(31n, U32.to_nat(x)), F.spec_common__pow2(k), lt_31x(U32.to_nat(x)), hy))
+
 # ---- a value below 2^k (k <= 31) has a clear top bit ------------------------------------------
 
 def winit(n: Nat, w: Word(1n+n)) -> Word(n):
@@ -353,3 +370,74 @@ def words_ok_u64(dw, T, n, hi, c, pfT, hdw, ec, hle, hroom):
   %Equal.sym(U32, U32.and(n, 3), 0, VC.and3_x8(n, c, ec)) :
     {(O.Words{F.array__thaw(U32, T), n}, Bool.and(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, True{})), U32.is_eq(0, 0)), True{}), O.tail_zero(_, RD.wd(T, dw, U32.shrn(n, 2n))))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
   {==}
+
+# ---- the checked product O.mulc (n * es unless it exceeds NMAX, else the marker) ----------------------------------
+
+def mm_le(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(Nat.mul(a, c), Nat.mul(b, c)) == True{} : Bool}:
+  match a b:
+    case 0n _: F.nat__zero_le(Nat.mul(b, c))
+    case 1n+ +p 0n: Empty.absurd({Nat.is_le(Nat.mul(1n+p, c), Nat.mul(0n, c)) == True{} : Bool}, F.logic__false_true(h))
+    case 1n+ +p 1n+ +q: F.nat__le_add_left(Nat.mul(p, c), Nat.mul(q, c), c, mm_le(p, q, c, h))
+
+def le_cancel(+c: Nat, +a: Nat, +b: Nat, +h: {Nat.is_le(Nat.add(c, a), Nat.add(c, b)) == True{} : Bool}) -> {Nat.is_le(a, b) == True{} : Bool}:
+  match c:
+    case 0n: h
+    case 1n+ +p: le_cancel(p, a, b, h)
+
+# n * es <= NMAX gives n <= NMAX / es (the quotient and remainder of NMAX / es as div_u32 states them).
+def le_div_go(+n: U32, +es: U32, +c: Bool, +ec: {Nat.is_le(U32.to_nat(n), U32.to_nat(U32.div(VB.NMAX(), es))) == c : Bool},
+    +ed: {Nat.add(Nat.mul(U32.to_nat(U32.div(VB.NMAX(), es)), U32.to_nat(es)), U32.to_nat(U32.mod(VB.NMAX(), es))) == U32.to_nat(VB.NMAX()) : Nat},
+    +er: {Nat.is_lt(U32.to_nat(U32.mod(VB.NMAX(), es)), U32.to_nat(es)) == True{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.is_le(n, U32.div(VB.NMAX(), es)) == True{} : Bool}:
+  match c:
+    case True{}:
+      F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(U32.div(VB.NMAX(), es))), U32.is_le(n, U32.div(VB.NMAX(), es)),
+        Equal.sym(Bool, U32.is_le(n, U32.div(VB.NMAX(), es)), Nat.is_le(U32.to_nat(n), U32.to_nat(U32.div(VB.NMAX(), es))), VB.le_u32n(n, U32.div(VB.NMAX(), es))), ec)
+    case False{}:
+      +Q = U32.to_nat(U32.div(VB.NMAX(), es))
+      +R = U32.to_nat(U32.mod(VB.NMAX(), es))
+      +E = U32.to_nat(es)
+      +h1 = F.nat__lt_succ_le_succ(Q, U32.to_nat(n), F.nat__not_le_lt(U32.to_nat(n), Q, ec))
+      +h2 = F.nat__le_trans(Nat.add(E, Nat.mul(Q, E)), Nat.mul(U32.to_nat(n), E), U32.to_nat(VB.NMAX()), mm_le(1n+Q, U32.to_nat(n), E, h1), h)
+      +h4 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(E, Nat.mul(Q, E)), z) == True{} : Bool}, U32.to_nat(VB.NMAX()), Nat.add(Nat.mul(Q, E), R), Equal.sym(Nat, Nat.add(Nat.mul(Q, E), R), U32.to_nat(VB.NMAX()), ed), h2)
+      +h5 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(Nat.mul(Q, E), R)) == True{} : Bool}, Nat.add(E, Nat.mul(Q, E)), Nat.add(Nat.mul(Q, E), E), F.nat__add_comm(E, Nat.mul(Q, E)), h4)
+      +h6 = le_cancel(Nat.mul(Q, E), E, R, h5)
+      Empty.absurd({U32.is_le(n, U32.div(VB.NMAX(), es)) == True{} : Bool}, F.nat__lt_ne(R, R, F.nat__lt_le_trans(R, E, R, er, h6), {==}))
+
+def le_div_pair(+n: U32, +es: U32,
+    p: {Nat.add(Nat.mul(U32.to_nat(U32.div(VB.NMAX(), es)), U32.to_nat(es)), U32.to_nat(U32.mod(VB.NMAX(), es))) == U32.to_nat(VB.NMAX()) : Nat} & {Nat.is_lt(U32.to_nat(U32.mod(VB.NMAX(), es)), U32.to_nat(es)) == True{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.is_le(n, U32.div(VB.NMAX(), es)) == True{} : Bool}:
+  (+ed, +er) = p
+  le_div_go(n, es, Nat.is_le(U32.to_nat(n), U32.to_nat(U32.div(VB.NMAX(), es))), {==}, ed, er, h)
+
+def le_div(+n: U32, +es: U32, +v: Word(31n), +eb: {es == U32{Word.shr.pad(31n, v)} : U32}, +hes: {Nat.is_le(1n, U32.to_nat(es)) == True{} : Bool}, +hz: {U32.is_zero(es) == False{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.is_le(n, U32.div(VB.NMAX(), es)) == True{} : Bool}:
+  le_div_pair(n, es, VU.div_u32(VB.NMAX(), es, v, eb, hes, hz), h)
+
+# the checked product is the product when it is at most NMAX.
+def mulc_eq(+n: U32, +es: U32, +hK: {U32.is_le(n, U32.div(VB.NMAX(), es)) == True{} : Bool}) -> {O.mulc(n, es) == U32.mul(n, es) : U32}:
+  %Equal.sym(Bool, U32.is_le(n, U32.div(VB.NMAX(), es)), True{}, hK) : {O.pick(_, U32.mul(n, es), O.poison()) == U32.mul(n, es) : U32}
+  {==}
+
+def mulc_nat(+n: U32, +es: U32, +v: Word(31n), +eb: {es == U32{Word.shr.pad(31n, v)} : U32}, +hes: {Nat.is_le(1n, U32.to_nat(es)) == True{} : Bool}, +hz: {U32.is_zero(es) == False{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.to_nat(O.mulc(n, es)) == Nat.mul(U32.to_nat(n), U32.to_nat(es)) : Nat}:
+  %Equal.sym(U32, O.mulc(n, es), U32.mul(n, es), mulc_eq(n, es, le_div(n, es, v, eb, hes, hz, h))) : {U32.to_nat(_) == Nat.mul(U32.to_nat(n), U32.to_nat(es)) : Nat}
+  VU.mul_le(n, es, VB.NMAX(), h)
+
+# n <= a literal limit lim with lim <= NMAX / es: the checked product is the product.
+def mulc_lim(+n: U32, +es: U32, +lim: U32, +hn: {U32.is_le(n, lim) == True{} : Bool}, +hlk: {U32.is_le(lim, U32.div(VB.NMAX(), es)) == True{} : Bool}) -> {O.mulc(n, es) == U32.mul(n, es) : U32}:
+  mulc_eq(n, es, VB.u32le_trans(n, lim, U32.div(VB.NMAX(), es), hn, hlk))
+
+def mulc_limn(+n: U32, +es: U32, +lim: U32, +hn: {Nat.is_le(U32.to_nat(n), U32.to_nat(lim)) == True{} : Bool}, +hlk: {U32.is_le(lim, U32.div(VB.NMAX(), es)) == True{} : Bool}) -> {O.mulc(n, es) == U32.mul(n, es) : U32}:
+  mulc_lim(n, es, lim, F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(lim)), U32.is_le(n, lim), Equal.sym(Bool, U32.is_le(n, lim), Nat.is_le(U32.to_nat(n), U32.to_nat(lim)), VB.le_u32n(n, lim)), hn), hlk)
+
+# mulc_nat for a small element size es < 2^k (k <= 31): the 31-bit word of es is built here.
+def mulc_nat_k(+n: U32, +es: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(es), F.spec_common__pow2(k)) == True{} : Bool},
+    +hes: {Nat.is_le(1n, U32.to_nat(es)) == True{} : Bool}, +hz: {U32.is_zero(es) == False{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.to_nat(O.mulc(n, es)) == Nat.mul(U32.to_nat(n), U32.to_nat(es)) : Nat}:
+  mulc_nat(n, es, winit(31n, bits32(es)), small_pad(es, k, hk, hlt), hes, hz, h)

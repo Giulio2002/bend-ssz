@@ -75,7 +75,7 @@ def BeaconBlockHeader_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
 
 def BeaconBlockHeader_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
   (buf, +c) = pair
-  BeaconBlockHeader_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  BeaconBlockHeader_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def BeaconBlockHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>:
   (buf, +n) = pair

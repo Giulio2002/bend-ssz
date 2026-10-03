@@ -53,6 +53,7 @@ import ../obj/encx_l10_ProgressiveSingleFieldContainerTestStruct_d_generated.ben
 import ../obj/encx_pl_ProgressiveVarTestStruct_generated.bend as P0_EX_pl_ProgressiveVarTestStruct
 import ../obj/encx_pl_ProgressiveVarTestStruct_d_generated.bend as P0_EX_pl_ProgressiveVarTestStruct_D
 import ../obj/vrecb.bend as P0_VRB
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -146,13 +147,13 @@ def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_ProgressiveVarTestStruct_appb_short() -> {Pair.snd(proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, Bool, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_append(proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(2n), 5}, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default())) == False{} : Bool}:
   P4_PRV.ProgressiveComplexTestStruct_serialize_vcoll_pl_ProgressiveVarTestStruct_appb_short()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(29n), 536870910}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741815}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
   P5_PRV.ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870911}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741816}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   P5_PRV.ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870912}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741817}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   P5_PRV.ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above()
 
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_fit() -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(2n), 3}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
@@ -209,10 +210,10 @@ def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_true_flag() -> {P9_O.is_poisoned(P9_O.pz(True{})) == False{} : Bool}:
   P9_PRV.ProgressiveComplexTestStruct_serialize_vpoison_true_flag()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_below() -> {P9_O.is_poisoned(2147483647) == False{} : Bool}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_below() -> {P9_O.is_poisoned(4294967264) == False{} : Bool}:
   P9_PRV.ProgressiveComplexTestStruct_serialize_vpoison_below()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_carried() -> {P9_O.is_poisoned(P9_O.padd(5, 2147483648)) == True{} : Bool}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vpoison_carried() -> {P9_O.is_poisoned(P9_O.padd(5, 4294967295)) == True{} : Bool}:
   P9_PRV.ProgressiveComplexTestStruct_serialize_vpoison_carried()
 
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vreject_f_A() -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 256))) == False{} : Bool}:
@@ -299,6 +300,6 @@ def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(P11_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P11_O.words_new(0))) == True{} : Bool}:
   P11_PRV.ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_lo_0()
 
-def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_mc_ser() -> {ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574659))) == (Pair.fst(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, P12_B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574659)))), P12_O.encoded(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, P12_B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574659)))))) : ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & P12_O.Encoded}:
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_mc_ser() -> {ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574744))) == (Pair.fst(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, P12_B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574744)))), P12_O.encoded(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, P12_B.Buf, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_encode(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_A_go(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), uint8_d.u8_seed(2271574744)))))) : ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & P12_O.Encoded}:
   P12_PRV.ProgressiveComplexTestStruct_mc_ser()
 

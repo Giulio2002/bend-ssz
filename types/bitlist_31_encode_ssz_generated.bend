@@ -17,14 +17,14 @@ def bits31_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (
   (o, ok) = pair
   match ok:
     case True{}: bits31_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bits31_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 31, False{})
 
 def bits31_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits31_pk(out, pos, bits31_valid(o))
 
 def bitlist_31_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def bitlist_31_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair

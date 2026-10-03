@@ -15,7 +15,7 @@ def PendingAttestation_serialize_vrefuse_bad_flag()
   {==}
 
 def PendingAttestation_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, O.Encoded, FuluPendingAttestation_e.PendingAttestation_senc_sized((FuluPendingAttestation_d.PendingAttestation_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, O.Encoded, FuluPendingAttestation_e.PendingAttestation_senc_sized((FuluPendingAttestation_d.PendingAttestation_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def PendingAttestation_serialize_vreject_aggregation_bits()

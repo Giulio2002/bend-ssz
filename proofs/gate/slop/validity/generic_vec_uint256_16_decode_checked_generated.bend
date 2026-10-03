@@ -10,7 +10,7 @@ import ../../../slop/validity/generic_vec_uint256_16_decode_checked_generated.be
 def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_dchw(512, 512, (B.Buf{Array.new(U32, 7n, 0), 512}, 128))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_decode_checked(B.Buf{Array.new(U32, 7n, 0), 512}, 512))) == (True{}, True{}) : Bool & Bool}:
   PRV.vec_uint256_16_decode_vchecked_accept()
 
-def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_uint256_16_decode_vchecked_limit()
 
 def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_16_r.vec_uint256_16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 512}, 512)) == None{} : Maybe<&1, O.Words>}:

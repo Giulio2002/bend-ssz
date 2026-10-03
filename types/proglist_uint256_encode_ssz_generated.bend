@@ -17,7 +17,7 @@ def pl_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> &
   (o, ok) = pair
   match ok:
     case True{}: pl_u256_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 32)
 
@@ -31,9 +31,14 @@ def proglist_uint256_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.W
   (o, m) = r
   proglist_uint256_enc_out(n, out, o, m)
 
+def proglist_uint256_enc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: proglist_uint256_enc_put(n, pl_u256_putn(O.out_new(n), 0, o))
+
 def proglist_uint256_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  proglist_uint256_enc_put(n, pl_u256_putn(O.out_new(n), 0, o))
+  proglist_uint256_enc_go(O.is_poisoned(n), n, o)
 
 def proglist_uint256_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint256_enc_sized(pl_u256_size(o))
 

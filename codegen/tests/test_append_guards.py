@@ -55,7 +55,7 @@ class AppendGuardTest(unittest.TestCase):
             enc = TYPES / p.name.replace('_def_', '_encode_ssz_')
             if m is None or not enc.exists():
                 continue
-            es = re.search(r'O\.pick\(U32\.is_le\(n, c\), \(n \* (\d+) : U32\), 2147483648\)', enc.read_text())
+            es = re.search(r'O\.pick\(U32\.is_le\(n, c\), O\.mulc\(n, (\d+)\), 4294967295\)', enc.read_text())
             if es is None:
                 continue
             self.assertLessEqual(int(m.group(1)) * int(es.group(1)), 4294967264, f'{p.name}: the guard bound {m.group(1)} lets n * {es.group(1)} exceed NMAX')

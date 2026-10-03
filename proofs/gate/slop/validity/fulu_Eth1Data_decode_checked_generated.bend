@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_Eth1Data_decode_checked_generated.bend as PRV
 def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(72, 72, (B.Buf{Array.new(U32, 5n, 0), 72}, 18))), Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked(B.Buf{Array.new(U32, 5n, 0), 72}, 72))) == (True{}, True{}) : Bool & Bool}:
   PRV.Eth1Data_decode_vchecked_accept()
 
-def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
+def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
   PRV.Eth1Data_decode_vchecked_limit()
 
 def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked(B.Buf{Array.new(U32, 0n, 0), 72}, 72)) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:

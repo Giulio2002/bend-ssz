@@ -21,6 +21,7 @@ import ./vbytes.bend as VY
 import ./vlist.bend as VL
 import ./vbsize.bend as VBZ
 import ./vfits.bend as VFT
+import ./vcont.bend as VCN
 import ./vbspec.bend as VZ
 import ./vbrt.bend as VBR
 import ./venc.bend as VE
@@ -77,7 +78,9 @@ def encode_eval(dw, T, N, pfT, hdw, hn, hN):
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {FuluTransaction_e.Transaction_enc_sized(O.wsz_pick(N, _)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hroom)) :
-    {FuluTransaction_e.Transaction_enc_sized((OW(T, N), O.pick(_, N, 2147483648))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_sized((OW(T, N), O.pick(_, N, 4294967295))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(N), False{}, VE.np_nmax(N, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX()), VB.u32le_trans(N, 1073741824, VB.NMAX(), hN, {==})))) :
+    {FuluTransaction_e.Transaction_enc_go(_, N, OW(T, N)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, D, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), D, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
     {FuluTransaction_e.Transaction_enc_put(N, FuluTransaction_e.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}

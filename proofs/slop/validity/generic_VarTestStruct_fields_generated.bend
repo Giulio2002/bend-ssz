@@ -15,11 +15,11 @@ def VarTestStruct_serialize_vpoison_true_flag()
   {==}
 
 def VarTestStruct_serialize_vpoison_below()
-    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+    -> {O.is_poisoned(4294967264) == False{} : Bool}:
   {==}
 
 def VarTestStruct_serialize_vpoison_carried()
-    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+    -> {O.is_poisoned(O.padd(5, 4294967295)) == True{} : Bool}:
   {==}
 
 def VarTestStruct_serialize_vreject_f_A()
@@ -47,7 +47,7 @@ def VarTestStruct_serialize_vrefuse_bad_flag()
   {==}
 
 def VarTestStruct_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_sized((VarTestStruct_d.VarTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_sized((VarTestStruct_d.VarTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def VarTestStruct_serialize_vreject_f_B()
@@ -63,7 +63,7 @@ def VarTestStruct_serialize_vreject_bx_valid()
   {==}
 
 def VarTestStruct_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def VarTestStruct_serialize_vpoison_bx_ok()

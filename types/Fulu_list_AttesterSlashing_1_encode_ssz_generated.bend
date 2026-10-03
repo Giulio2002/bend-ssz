@@ -43,7 +43,7 @@ def l1_AttesterSlashing_sz_nz(empty: Bool, arr: Array<O.Boxed<FuluAttesterSlashi
 def l1_AttesterSlashing_sz_ok(ok: Bool, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32:
   match ok:
     case True{}: l1_AttesterSlashing_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 2147483648)
+    case False{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 4294967295)
 
 def l1_AttesterSlashing_sz_cap(+n: U32, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def l1_AttesterSlashing_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_AttesterS
   (o, ok) = pair
   match ok:
     case True{}: l1_AttesterSlashing_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l1_AttesterSlashing_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool:
   (arr, b) = pair

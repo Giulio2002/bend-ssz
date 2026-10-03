@@ -130,7 +130,7 @@ def pl_SmallTestStruct_app_in(ok: Bool, arr: Array<SmallTestStruct_d.SmallTestSt
 
 def pl_SmallTestStruct_app_sz(+n: U32, v: SmallTestStruct_d.SmallTestStruct, pair: Array<SmallTestStruct_d.SmallTestStruct> & U32) -> pl_SmallTestStruct_Seq & Bool:
   (arr, +sc) = pair
-  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 536870911), U32.is_le(n, sc)), arr, n, v)
+  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
 
 def pl_SmallTestStruct_append(o: pl_SmallTestStruct_Seq, v: SmallTestStruct_d.SmallTestStruct) -> pl_SmallTestStruct_Seq & Bool:
   match o:

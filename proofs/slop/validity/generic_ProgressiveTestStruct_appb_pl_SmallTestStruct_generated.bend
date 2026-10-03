@@ -7,15 +7,15 @@ import ../../../types/proglist_SmallTestStruct_def_generated.bend as proglist_Sm
 # ProgressiveTestStruct: the boundary of the append guard of pl_SmallTestStruct (manual spec-mutation audit, round 3; docs/mutation_testing/MUTATION_PROOFS.md).
 
 def ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below()
-    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(29n), 536870910}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
+    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741815}, SmallTestStruct_d.SmallTestStruct_default())) == True{} : Bool}:
   {==}
 
 def ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_at()
-    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870911}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741816}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   {==}
 
 def ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_above()
-    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 536870912}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
+    -> {Pair.snd(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, Bool, proglist_SmallTestStruct_d.pl_SmallTestStruct_append(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{proglist_SmallTestStruct_d.pl_SmallTestStruct_fill(30n), 1073741817}, SmallTestStruct_d.SmallTestStruct_default())) == False{} : Bool}:
   {==}
 
 def ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_fit()

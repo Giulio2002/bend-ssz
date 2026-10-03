@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_PowBlock_decode_checked_generated.bend as PRV
 def PowBlock__decode_offsets__PowBlock_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_dchw(96, 96, (B.Buf{Array.new(U32, 5n, 0), 96}, 24))), Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_decode_checked(B.Buf{Array.new(U32, 5n, 0), 96}, 96))) == (True{}, True{}) : Bool & Bool}:
   PRV.PowBlock_decode_vchecked_accept()
 
-def PowBlock__decode_offsets__PowBlock_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluPowBlock_d.PowBlock>}:
+def PowBlock__decode_offsets__PowBlock_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPowBlock_d.PowBlock>}:
   PRV.PowBlock_decode_vchecked_limit()
 
 def PowBlock__decode_offsets__PowBlock_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_decode_checked(B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluPowBlock_d.PowBlock>}:

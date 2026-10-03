@@ -81,7 +81,7 @@ def proglist_bool__decode_reject__decode_reject(+d: Nat, +t: P0_FD.array__Tree<U
 def proglist_bool__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P0_VB.NMAX()) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == False{} : Bool}) -> {proglist_bool_r.proglist_bool_decode(P0_PRV.BF(t, n), n) == (P0_PRV.BF(t, n), None{}) : P0_B.Buf & Maybe<&1, P0_O.Words>}:
   P0_PRV.decode_none(d, t, n, pf, hd, hn, hN, hchk)
 
-def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, P3_O.Words>}:
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_bool_decode_vchecked_limit()
 
 def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, P3_O.Words>}:

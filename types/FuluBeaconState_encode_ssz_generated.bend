@@ -314,9 +314,14 @@ def BeaconState_enc_put(+n: U32, pair: Array<U32> & (FuluBeaconState_d.BeaconSta
   (o, m) = r
   BeaconState_enc_out(n, out, o, m)
 
+def BeaconState_enc_go(bad: Bool, +n: U32, o: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: BeaconState_enc_put(n, BeaconState_putn(O.out_new(n), 0, o))
+
 def BeaconState_enc_sized(pair: FuluBeaconState_d.BeaconState & U32) -> FuluBeaconState_d.BeaconState & B.Buf:
   (o, +n) = pair
-  BeaconState_enc_put(n, BeaconState_putn(O.out_new(n), 0, o))
+  BeaconState_enc_go(O.is_poisoned(n), n, o)
 
 def BeaconState_encode(o: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState & B.Buf: BeaconState_enc_sized(BeaconState_size(o))
 

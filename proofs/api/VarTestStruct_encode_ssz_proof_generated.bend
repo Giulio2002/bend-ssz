@@ -32,6 +32,7 @@ import ../obj/vpiece.bend as P0_VPC
 import ../obj/encx_l1024_u16_generated.bend as P0_EX_l1024_u16
 import ../obj/encx_l1024_u16_d_generated.bend as P0_EX_l1024_u16_D
 import ../obj/vrecb.bend as P0_VRB
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -105,10 +106,10 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_false_flag()
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_true_flag() -> {P3_O.is_poisoned(P3_O.pz(True{})) == False{} : Bool}:
   P3_PRV.VarTestStruct_serialize_vpoison_true_flag()
 
-def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(2147483647) == False{} : Bool}:
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(4294967264) == False{} : Bool}:
   P3_PRV.VarTestStruct_serialize_vpoison_below()
 
-def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 2147483648)) == True{} : Bool}:
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 4294967295)) == True{} : Bool}:
   P3_PRV.VarTestStruct_serialize_vpoison_carried()
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_f_A() -> {Pair.snd(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_e.VarTestStruct_valid(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), 65536))) == False{} : Bool}:
@@ -135,7 +136,7 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_size() ->
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_valid() -> {VarTestStruct_e.VarTestStruct_bx_valid(P3_O.BNone{}) == (P3_O.BNone{}, False{}) : P3_O.Boxed<VarTestStruct_d.VarTestStruct> & Bool}:
   P3_PRV.VarTestStruct_serialize_vreject_bx_valid()
 
-def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P3_O.BNone{}))) == 2147483648 : U32}:
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P3_O.BNone{}))) == 4294967295 : U32}:
   P3_PRV.VarTestStruct_serialize_vpoison_bx_absent()
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_bx_ok() -> {P3_O.is_poisoned(Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_default()))))) == False{} : Bool}:
@@ -174,6 +175,6 @@ def VarTestStruct__serialize_valid__VarTestStruct_mc_bxpoison_VarTestStruct(out:
 def VarTestStruct__serialize_valid__VarTestStruct_mc_bxcount_VarTestStruct(out: Array<U32>, pos: U32) -> {Pair.snd(P6_O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, (P6_O.Boxed<VarTestStruct_d.VarTestStruct> & U32), VarTestStruct_e.VarTestStruct_bx_putn(out, pos, P6_O.BNone{}))) == 0 : U32}:
   P6_PRV.VarTestStruct_mc_bxcount_VarTestStruct(out, pos)
 
-def VarTestStruct__serialize_valid__VarTestStruct_mc_ser() -> {VarTestStruct_e.VarTestStruct_serialize(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582581)), uint8_d.u8_seed(2271582632))) == (Pair.fst(VarTestStruct_d.VarTestStruct, P6_B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582581)), uint8_d.u8_seed(2271582632)))), P6_O.encoded(Pair.snd(VarTestStruct_d.VarTestStruct, P6_B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582581)), uint8_d.u8_seed(2271582632)))))) : VarTestStruct_d.VarTestStruct & P6_O.Encoded}:
+def VarTestStruct__serialize_valid__VarTestStruct_mc_ser() -> {VarTestStruct_e.VarTestStruct_serialize(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582734)), uint8_d.u8_seed(2271582785))) == (Pair.fst(VarTestStruct_d.VarTestStruct, P6_B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582734)), uint8_d.u8_seed(2271582785)))), P6_O.encoded(Pair.snd(VarTestStruct_d.VarTestStruct, P6_B.Buf, VarTestStruct_e.VarTestStruct_encode(VarTestStruct_d.VarTestStruct_set_f_C_go(VarTestStruct_d.VarTestStruct_set_f_A_go(VarTestStruct_d.VarTestStruct_default(), uint8_d.u8_seed(2271582734)), uint8_d.u8_seed(2271582785)))))) : VarTestStruct_d.VarTestStruct & P6_O.Encoded}:
   P6_PRV.VarTestStruct_mc_ser()
 

@@ -239,7 +239,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
                 if len(g) == 7 and g[4] == 'k' and g[5] == 'CS.hk29(k, ek)' and g[6].startswith('VRX.nwn_le('):
                     nw, _ = deep._args(g[6], len('VRX.nwn_le('))
                     al, p = mm.split('.szx_')
-                    return f'{al}.szxB_{p}({g[0]}, {g[1]}, CS.lt32B({nw[0]}, {ENDC}, {nw[2]}, ok_bndW({OAS}, h)))'
+                    return f'{al}.szxB_{p}({g[0]}, {g[1]}, FD.nat__le_trans({nw[0]}, {ENDC}, U32.to_nat(VB.NMAX()), {nw[2]}, ok_bndW({OAS}, h)))'
                 return None
             s = _rewrite_calls(s, mm, szb)
         s = s.replace('A.quad(VB.pw(k))', ENDC)
@@ -512,6 +512,8 @@ def okw_size(t, child_okw, es_aliases, endc_def=None, dchild=False):
         # a record list's bytes (i * RS): below 2^32
         s = _rewrite_calls(s, 'VRX.mulq', lambda g: (f'VRX.mulqW({", ".join(g[1:7])}, CS.lt32B(A.quad(Nat.mul({g[2]}, {g[4]})), {B}, {g[8]}, {BND}))')
                            if g[0] == 'k' and g[7] == 'hk' else None)
+        s = _rewrite_calls(s, 'VRX.mulqc', lambda g: (f'VRX.mulqcW({", ".join(g[1:7])}, FD.nat__le_trans(A.quad(Nat.mul({g[2]}, {g[4]})), {B}, U32.to_nat(VB.NMAX()), {g[8]}, {BND}), {g[9]}, {g[10]}, {g[11]})')
+                           if g[0] == 'k' and g[7] == 'hk' else None)
         # the lists' sizes: szs / szx at 2 + k (their strict S forms), szx_<p> at k (szxB_<p>)
         for mm in set(re.findall(r'(?<![\w.])(\w+)\.szs\(', s)):
             s = _rewrite_calls(s, mm + '.szs', lambda g, mm=mm: (f'{mm}.szsS({g[0]}, {g[1]}, {g[2]}, FD.nat__le_trans({mm}.LL({g[0]}, {g[1]}), {B}, U32.to_nat(VB.NMAX()), {g[5]}, {BND}))')
@@ -524,7 +526,7 @@ def okw_size(t, child_okw, es_aliases, endc_def=None, dchild=False):
                 if len(g) == 7 and g[4] == 'k' and g[5] == 'CS.hk29(k, ek)' and g[6].startswith('VRX.nwn_le('):
                     nw, _ = deep._args(g[6], len('VRX.nwn_le('))
                     al, p = mm.split('.szx_')
-                    return f'{al}.szxB_{p}({g[0]}, {g[1]}, CS.lt32B({nw[0]}, {B}, {nw[2]}, {BND}))'
+                    return f'{al}.szxB_{p}({g[0]}, {g[1]}, FD.nat__le_trans({nw[0]}, {B}, U32.to_nat(VB.NMAX()), {nw[2]}, {BND}))'
                 return None
             s = _rewrite_calls(s, mm, szb)
         return s
@@ -610,13 +612,13 @@ def okw_relink(t, comps):
 
 # ==== the encoder laws' O twins (codegen/proofs/var/container_encoder_top_laws.py: encode_evalO / encode_specO on OKW) ====
 GTN = {'HD': 'HDW', 'mk3': 'mk3W'}
-TTW = ['putx0', 'eval_go', 'obytes', 'spec_go', 'encode_eval', 'encode_spec']
+TTW = ['putx0', 'npS', 'eval_go', 'obytes', 'spec_go', 'encode_eval', 'encode_spec']
 
 
 def _room_o(blk, SZ, S, OAS, LLx, extra_hs31):
     """The room / putx0 derivation on OKW: the bytes below 2^31 (CI.bndxO), the output depth k = 29 kept symbolic
     (the word count VCN.nw_nat31, the size's bound VCN.le_qk), the depth below 31."""
-    blk = blk.replace('+ek: {k == 28n : Nat}', '+ek: {k == 29n : Nat}')
+    blk = blk.replace('+ek: {k == 28n : Nat}', '+ek: {k == 30n : Nat}')
     L = f'List.length(&2, U32, CI.ENC(m))' if 'CI.ENC(m)' in blk else f'List.length(&2, U32, K.ENCC({OAS}))'
     ENDC = f'CI.ENDC({OAS})' if 'CI.ENDC(' in blk else None
     if ENDC is None and 'CI.ENDCs(' in blk:   # (U32 mode: the bound in ENDCs form, as the base's hS states it)
@@ -630,14 +632,14 @@ def _room_o(blk, SZ, S, OAS, LLx, extra_hs31):
         h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {L}, {S}, {es_eq}, {h31})\n')
     else:
         h31d = (f'  +h31 = FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDC}, {S}, {es_eq}, CI.ok_bndW({OAS}, h))\n')
-    hS = (f'  +e31 = Equal.sym(Nat, Nat.add(2n, k), 31n, Equal.trans(Nat, Nat.add(2n, k), Nat.add(2n, 29n), 31n, Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 29n, ek), {{==}}))\n'
-          f'  +hS = VCN.le_qk({S}, k, FD.logic__subst(Nat, z => {{Nat.is_lt({S}, VB.pw(z)) == True{{}} : Bool}}, 31n, Nat.add(2n, k), e31, h31))\n')
+    hS = (f'  +e31 = Equal.sym(Nat, Nat.add(2n, k), 32n, Equal.trans(Nat, Nat.add(2n, k), Nat.add(2n, 30n), 32n, Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 30n, ek), {{==}}))\n'
+          f'  +hS = VCN.le_qk({S}, k, FD.logic__subst(Nat, z => {{Nat.is_lt({S}, VB.pw(z)) == True{{}} : Bool}}, 32n, Nat.add(2n, k), e31, VB.nmax_lt32({S}, h31)))\n')
     import re as _re
     blk, c1 = _re.subn(r'  \+hS = [^\n]*\n', lambda m: h31d + hS, blk, count=1)
     blk, c2 = _re.subn(r'  \+eNW = VCN\.nw_nat\([^\n]*\n', lambda m: f'  +eNW = VCN.nw_nat31({SZ}, h31)\n', blk, count=1)
-    blk = blk.replace('28n, k, Equal.sym(Nat, k, 28n, ek)', '29n, k, Equal.sym(Nat, k, 29n, ek)')
+    blk = blk.replace('28n, k, Equal.sym(Nat, k, 28n, ek)', '30n, k, Equal.sym(Nat, k, 30n, ek)')
     blk = blk.replace(f'FD.nat__le_lt_trans(VL.DO({SZ}), k, 29n,', f'FD.nat__le_lt_trans(VL.DO({SZ}), k, 31n,')
-    blk = blk.replace('{Nat.is_lt(z, 29n) == True{} : Bool}, 29n, k', '{Nat.is_lt(z, 31n) == True{} : Bool}, 29n, k')
+    blk = blk.replace('{Nat.is_lt(z, 29n) == True{} : Bool}, 30n, k', '{Nat.is_lt(z, 31n) == True{} : Bool}, 30n, k')
     if not (c1 and c2) or _re.search(r'28n|okbk\(|nw_nat\(|bndx\(', blk):
         raise SystemExit('okw._room_o: ' + blk[:400])
     return blk
@@ -655,7 +657,7 @@ def gtop_o(t):
     new = []
     L = 'List.length(&2, U32, CI.ENC(m))'
     # (a fixed depth: roomf and a31 in place of room; the bytes within CI.maxx)
-    gtw = [n for n in ('HD', 'mk3', 'room', 'roomf', 'rt0', 'by0', 'a31', 'eval_go', 'obytes', 'encode_eval', 'encode_spec')
+    gtw = [n for n in ('HD', 'mk3', 'room', 'roomf', 'npz', 'rt0', 'by0', 'a31', 'eval_go', 'obytes', 'encode_eval', 'encode_spec')
            if (_block_text(t, n) if n != 'room' else ('def room(' in t and _block_text(t, 'room')))]
     if not all(n in gtw for n in ('HD', 'mk3', 'rt0', 'by0', 'eval_go', 'obytes', 'encode_eval', 'encode_spec')) or not ({'room', 'roomf'} & set(gtw)):
         return t
@@ -666,7 +668,7 @@ def gtop_o(t):
             blk = re.sub(r'(?<![\w.])' + a + r'(?=[(:])', GTN.get(a, a + 'O'), blk)
         blk = blk.replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
         blk = re.sub(r'(?<![\w.])CI\.(sizex|szx|encx_spec|maxx)\(', r'CI.\1O(', blk)
-        blk = blk.replace('roomO(m, hok, 28n, {==})', 'roomO(m, hok, 29n, {==})')
+        blk = blk.replace('roomO(m, hok, 28n, {==})', 'roomO(m, hok, 30n, {==})')
         if n in ('rt0', 'by0'):
             # (the writer's putxO: hl32 from the bytes' bound)
             blk = blk.replace('def ' + n + 'O(', 'def ' + n + 'O(', 1)
@@ -675,10 +677,14 @@ def gtop_o(t):
                 blk = _rewrite_calls(blk, 'CI.' + w, lambda g, w=w: f'CI.{w}O(' + ', '.join(g[:11] + [hl32_of(L)] + g[11:]) + ')' if len(g) == 13 else None)
         if n == 'HD':
             blk = blk.replace('29n)', '31n)')
+        if n == 'npz':
+            blk = ('def npzO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:\n'
+                   '  VBE.np_nmax(CI.SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), '
+                   'Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CI.bndxO(m, hok)))\n')
         if n == 'room':
             SZ, S = 'CI.SZ(m)', 'U32.to_nat(CI.SZ(m))'
             blk = _room_o(blk, SZ, S, '', '', False)
-            blk = blk.replace('+k: Nat, +ek: {k == 29n : Nat}', '+k: Nat, +ek: {k == 29n : Nat}')
+            blk = blk.replace('+k: Nat, +ek: {k == 30n : Nat}', '+k: Nat, +ek: {k == 30n : Nat}')
         new.append(blk)
     return t.rstrip('\n') + '\n\n# ---- on OKW (the bytes below 2^31, the object API\'s limit): the output tree of depth below 31 ----\n' + '\n'.join(new)
 
@@ -697,11 +703,20 @@ def top_o(t, putxK):
         ab = _block_text(t, n)
         if not ab:
             return t
+        if n == 'npS':
+            base = t[ab[0]:ab[1]]
+            mh = re.search(r'\+hS = FD\.logic__subst\(Nat, z => \{Nat\.is_le\(z, A\.quad\(VB\.pw\(k\)\)\) == True\{\} : Bool\}, ', base)
+            ENDCx = deep._args(base, mh.end())[0][0]
+            hdrb = deep._hdr(base)
+            pre = hdrb[:hdrb.index(', +h:')].replace('def npS(', 'def npSO(', 1)
+            new.append('\n' + pre + f', +h: {{CI.OKTW({OAS}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 30n : Nat}}) -> {{O.is_poisoned({SZ}) == False{{}} : Bool}}:\n'
+                       f'  VBE.np_nmax({SZ}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, {ENDCx}, {S}, Equal.sym(Nat, {S}, {ENDCx}, Z.szSW({OAS}, h)), CI.ok_bndW({OAS}, h)))\n')
+            continue
         blk = t[ab[0]:ab[1]]
         for a in TTW:
             blk = re.sub(r'(?<![\w.])' + a + r'(?=[(:])', a + 'O', blk)
         blk = blk.replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}').replace('{CI.OKT(', '{CI.OKTW(')
-        blk = blk.replace(', h, 28n, {==})', ', h, 29n, {==})').replace('+ek: {k == 28n : Nat}', '+ek: {k == 29n : Nat}')
+        blk = blk.replace(', h, 28n, {==})', ', h, 30n, {==})').replace('+ek: {k == 28n : Nat}', '+ek: {k == 30n : Nat}')
         blk = _rewrite_calls(blk, 'Z.szS', lambda g: 'Z.szSW(' + ', '.join(g[:-2]) + ')' if g[-2:] == ['k', 'ek'] else None)
         blk = re.sub(r'(?<![\w.])Z\.sizeC\(', 'Z.sizeCW(', blk)
         blk = re.sub(r'(?<![\w.])CI\.lenE\(', 'CI.lenEW(', blk)

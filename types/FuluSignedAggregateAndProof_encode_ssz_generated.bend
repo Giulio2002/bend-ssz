@@ -48,9 +48,14 @@ def SignedAggregateAndProof_enc_put(+n: U32, pair: Array<U32> & (FuluSignedAggre
   (o, m) = r
   SignedAggregateAndProof_enc_out(n, out, o, m)
 
+def SignedAggregateAndProof_enc_go(bad: Bool, +n: U32, o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: SignedAggregateAndProof_enc_put(n, SignedAggregateAndProof_putn(O.out_new(n), 0, o))
+
 def SignedAggregateAndProof_enc_sized(pair: FuluSignedAggregateAndProof_d.SignedAggregateAndProof & U32) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof & B.Buf:
   (o, +n) = pair
-  SignedAggregateAndProof_enc_put(n, SignedAggregateAndProof_putn(O.out_new(n), 0, o))
+  SignedAggregateAndProof_enc_go(O.is_poisoned(n), n, o)
 
 def SignedAggregateAndProof_encode(o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof & B.Buf: SignedAggregateAndProof_enc_sized(SignedAggregateAndProof_size(o))
 

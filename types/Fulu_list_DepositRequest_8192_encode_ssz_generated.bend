@@ -12,7 +12,7 @@ import ./Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRe
 
 def l8192_DepositRequest_szf(+n: U32, pair: Array<FuluDepositRequest_d.DepositRequest> & U32) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 192 : U32), 2147483648))
+  (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 192), 4294967295))
 
 def l8192_DepositRequest_size(o: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l8192_DepositRequest_put(out: Array<U32>, +pos: U32, o: Fulu_list_DepositReq
 
 def l8192_DepositRequest_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq) -> Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 192 : U32)))
+  (out, (sq, O.mulc(n, 192)))
 
 def l8192_DepositRequest_putn(out: Array<U32>, +pos: U32, o: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq) -> Array<U32> & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l8192_DepositRequest_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_DepositR
   (o, ok) = pair
   match ok:
     case True{}: l8192_DepositRequest_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l8192_DepositRequest_va_cap(ok: Bool, +n: U32, pair: Array<FuluDepositRequest_d.DepositRequest> & U32) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq & Bool:
   (arr, +c) = pair

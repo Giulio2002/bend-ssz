@@ -131,7 +131,7 @@ def l1099511627776_Validator_app_in(ok: Bool, arr: Array<FuluValidator_d.Validat
 
 def l1099511627776_Validator_app_sz(+n: U32, v: FuluValidator_d.Validator, pair: Array<FuluValidator_d.Validator> & U32) -> l1099511627776_Validator_Seq & Bool:
   (arr, +sc) = pair
-  l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 17747798), U32.is_le(n, sc)), arr, n, v)
+  l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 35495597), U32.is_le(n, sc)), arr, n, v)
 
 def l1099511627776_Validator_append(o: l1099511627776_Validator_Seq, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Seq & Bool:
   match o:
@@ -200,7 +200,7 @@ def l1099511627776_Validator_capp_in(ok: Bool, arr: Array<FuluValidator_d.Valida
 
 def l1099511627776_Validator_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluValidator_d.Validator, pair: Array<FuluValidator_d.Validator> & U32) -> l1099511627776_Validator_Cached & Bool:
   (arr, +sc) = pair
-  l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 17747798), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+  l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 35495597), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
 
 def l1099511627776_Validator_capp(c: l1099511627776_Validator_Cached, v: FuluValidator_d.Validator) -> l1099511627776_Validator_Cached & Bool:
   match c:

@@ -91,7 +91,7 @@ def FuluParticipationFlags__decode_input__ParticipationFlags_ms_build() -> {Fulu
 def FuluParticipationFlags__decode_input__ParticipationFlags_ms_dec() -> {(FuluParticipationFlags_r.ParticipationFlags_decode(P4_B.Buf{uint8_e.u8_put(P4_O.out_at(2n), 0, uint8_d.u8_seed(2271560481)), 1}, 1), FuluParticipationFlags_r.ParticipationFlags_decode(P4_B.Buf{uint8_e.u8_put(P4_O.out_at(2n), 0, uint8_d.u8_seed(2271560482)), 1}, 1)) == ((P4_B.Buf{uint8_e.u8_put(P4_O.out_at(2n), 0, uint8_d.u8_seed(2271560481)), 1}, Some{uint8_d.u8_seed(2271560481)}), (P4_B.Buf{uint8_e.u8_put(P4_O.out_at(2n), 0, uint8_d.u8_seed(2271560482)), 1}, Some{uint8_d.u8_seed(2271560482)})) : (P4_B.Buf & Maybe<&1, U32>) & (P4_B.Buf & Maybe<&1, U32>)}:
   P4_PRV.ParticipationFlags_ms_dec()
 
-def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(2147483648, 2147483648, (P5_B.empty(), 536870912))) == None{} : Maybe<&1, U32>}:
+def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   P5_PRV.ParticipationFlags_decode_vchecked_limit()
 
 def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_dchw(1, 1, (P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:

@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_VarTestStruct_decode_checked_generated.ben
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(7, 7, (B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 2))), Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7))) == (True{}, True{}) : Bool & Bool}:
   PRV.VarTestStruct_decode_vchecked_accept()
 
-def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   PRV.VarTestStruct_decode_vchecked_limit()
 
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 458752), 7}, 7)) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:

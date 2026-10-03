@@ -52,7 +52,7 @@ def LightClientBootstrap_put_drop(pair: Array<U32> & (FuluLightClientBootstrap_d
 def LightClientBootstrap_put(out: Array<U32>, +pos: U32, o: FuluLightClientBootstrap_d.LightClientBootstrap) -> Array<U32> & FuluLightClientBootstrap_d.LightClientBootstrap: LightClientBootstrap_put_drop(LightClientBootstrap_putn(out, pos, o))
 
 def LightClientBootstrap_enc_out(out: Array<U32>, o: FuluLightClientBootstrap_d.LightClientBootstrap, +m: U32) -> FuluLightClientBootstrap_d.LightClientBootstrap & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def LightClientBootstrap_enc_put(pair: Array<U32> & (FuluLightClientBootstrap_d.LightClientBootstrap & U32)) -> FuluLightClientBootstrap_d.LightClientBootstrap & B.Buf:
   (out, r) = pair

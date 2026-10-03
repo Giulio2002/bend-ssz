@@ -101,7 +101,7 @@ def FuluLightClientBootstrap__decode_reject__decode_reject(+d: Nat, +t: P2_F.arr
 def FuluLightClientBootstrap__decode_none__decode_none(+d: Nat, +t: P2_F.array__Tree<U32>, +n: U32, +pf: {P2_F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P2_A.quad(P2_VB.pw(d))) == True{} : Bool}, +hchk: {P2_DC.CHK(t, n) == False{} : Bool}) -> {FuluLightClientBootstrap_r.LightClientBootstrap_decode(P2_DC.BF(t, n), n) == (P2_DC.BF(t, n), None{}) : P2_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P2_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
 
-def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P3_PRV.LightClientBootstrap_decode_vchecked_limit()
 
 def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:

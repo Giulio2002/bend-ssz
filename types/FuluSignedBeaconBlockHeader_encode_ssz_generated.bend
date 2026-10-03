@@ -26,7 +26,7 @@ def SignedBeaconBlockHeader_valid(+o: FuluSignedBeaconBlockHeader_d.SignedBeacon
 def SignedBeaconBlockHeader_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>) -> Array<U32> & (O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader> & U32):
   match o:
     case O.BSome{+v, rest}: (SignedBeaconBlockHeader_put(out, pos, v), (O.BSome{v, O.BNone{}}, O.pz(SignedBeaconBlockHeader_valid(v))))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def SignedBeaconBlockHeader_bx_valid(o: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>) -> O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader> & Bool:
   match o:

@@ -12,7 +12,7 @@ import ./Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerS
 
 def l16_ProposerSlashing_szf(+n: U32, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32) -> Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 416 : U32), 2147483648))
+  (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 416), 4294967295))
 
 def l16_ProposerSlashing_size(o: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq) -> Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32:
   match o:
@@ -54,7 +54,7 @@ def l16_ProposerSlashing_put(out: Array<U32>, +pos: U32, o: Fulu_list_ProposerSl
 
 def l16_ProposerSlashing_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq) -> Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 416 : U32)))
+  (out, (sq, O.mulc(n, 416)))
 
 def l16_ProposerSlashing_putn(out: Array<U32>, +pos: U32, o: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq) -> Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32):
   match o:
@@ -64,7 +64,7 @@ def l16_ProposerSlashing_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Proposer
   (o, ok) = pair
   match ok:
     case True{}: l16_ProposerSlashing_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l16_ProposerSlashing_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool) -> Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool:
   (arr, b) = pair

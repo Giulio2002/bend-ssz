@@ -57,9 +57,14 @@ def AggregateAndProof_enc_put(+n: U32, pair: Array<U32> & (FuluAggregateAndProof
   (o, m) = r
   AggregateAndProof_enc_out(n, out, o, m)
 
+def AggregateAndProof_enc_go(bad: Bool, +n: U32, o: FuluAggregateAndProof_d.AggregateAndProof) -> FuluAggregateAndProof_d.AggregateAndProof & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: AggregateAndProof_enc_put(n, AggregateAndProof_putn(O.out_new(n), 0, o))
+
 def AggregateAndProof_enc_sized(pair: FuluAggregateAndProof_d.AggregateAndProof & U32) -> FuluAggregateAndProof_d.AggregateAndProof & B.Buf:
   (o, +n) = pair
-  AggregateAndProof_enc_put(n, AggregateAndProof_putn(O.out_new(n), 0, o))
+  AggregateAndProof_enc_go(O.is_poisoned(n), n, o)
 
 def AggregateAndProof_encode(o: FuluAggregateAndProof_d.AggregateAndProof) -> FuluAggregateAndProof_d.AggregateAndProof & B.Buf: AggregateAndProof_enc_sized(AggregateAndProof_size(o))
 

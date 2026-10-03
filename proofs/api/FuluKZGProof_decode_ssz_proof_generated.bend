@@ -103,7 +103,7 @@ def FuluKZGProof__decode_input__KZGProof_ms_build() -> {FuluKZGProof_r.KZGProof_
 def FuluKZGProof__decode_input__KZGProof_ms_dec() -> {(FuluKZGProof_r.KZGProof_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, 48), FuluKZGProof_r.KZGProof_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, 48)) == ((P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, Some{FuluBytes48_d.b48_seed(2271560481)}), (P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, Some{FuluBytes48_d.b48_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>) & (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>)}:
   P6_PRV.KZGProof_ms_dec()
 
-def FuluKZGProof__decode_offsets__KZGProof_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
+def FuluKZGProof__decode_offsets__KZGProof_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   P7_PRV.KZGProof_decode_vchecked_limit()
 
 def FuluKZGProof__decode_offsets__KZGProof_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_dchw(48, 48, (P7_B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:

@@ -17,7 +17,7 @@ def bits6_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O
   (o, ok) = pair
   match ok:
     case True{}: bits6_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bits6_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 6, False{})
 
@@ -32,7 +32,7 @@ def bits6_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> 
   bits6_pvb(cur, bits6_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
 def bitlist_6_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def bitlist_6_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair

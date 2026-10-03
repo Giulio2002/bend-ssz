@@ -75,9 +75,9 @@ def by0O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +g: DK.P2(HDW(m), DK.P2(
   +h31 = CIo.bndxO(m, hok)
   CI.putx_bytesO(m, 13n, VC.ZT(13n), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, 13n, 0), hl, VCN.hl32z(List.length(&2, U32, CI.ENC(m)), h31), hz, hok)
 
-def a31O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147483647) == CI.SZ(m) : U32}:
+def a31O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:
   +hs = FD.logic__subst(Nat, z => {Nat.is_le(z, 26936n) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CI.maxxO(m, hok))
-  VBE.and31(CI.SZ(m), 15n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 26936n, FD.spec_common__pow2(15n), hs, {==}))
+  VBE.np31(CI.SZ(m), 15n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 26936n, FD.spec_common__pow2(15n), hs, {==}))
 
 def eval_goO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool})
     -> {FuluLightClientUpdate_e.LightClientUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}:
@@ -86,8 +86,8 @@ def eval_goO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool})
     {FuluLightClientUpdate_e.LightClientUpdate_enc_put(FuluLightClientUpdate_e.LightClientUpdate_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
   %Equal.sym(Array<U32> & (FuluLightClientUpdate_d.LightClientUpdate & U32), FuluLightClientUpdate_e.LightClientUpdate_putk(FD.array__thaw(U32, VC.ZT(13n)), 0, CI.TH(m)), (FD.array__thaw(U32, OB.OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
     {FuluLightClientUpdate_e.LightClientUpdate_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
-  %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31O(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, a31O(m, hok)) :
+    {(CI.TH(m), O.out_donep(_, CI.SZ(m), FD.array__thaw(U32, OB.OUTE(m)))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
   {==}
 
 def obytesO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI.SZ(m)), FX.limbs(FD.array__slots(U32, OB.OUTE(m)))) == CI.ENC(m) : +List<U32>}:

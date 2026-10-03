@@ -10,7 +10,7 @@ import ../../../slop/validity/generic_bitlist_7_decode_checked_generated.bend as
 def bitlist_7__decode_offsets__bitlist_7_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_dchw(1, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitlist_7_decode_vchecked_accept()
 
-def bitlist_7__decode_offsets__bitlist_7_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Bits>}:
+def bitlist_7__decode_offsets__bitlist_7_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_7_decode_vchecked_limit()
 
 def bitlist_7__decode_offsets__bitlist_7_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_7_r.bitlist_7_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, O.Bits>}:

@@ -21,7 +21,7 @@ def hyS(${NC}) -> {Nat.is_le(VC.YL(SFS(N)), VB.pw(${P2}n)) == True{} : Bool}:
     Order.add_left(31n, Nat.add(${FS}n, ${toN}), Nat.add(${FS}n, VS.x8(${LIMN})), Order.add_left(${FS}n, ${toN}, VS.x8(${LIMN}), leN(${NCa}))), ${K_YS})
 
 def npS(${NC}) -> {O.is_poisoned(SFS(N)) == False{} : Bool}:
-  VBE.np31y(SFS(N), ${P2}n, {==}, hyS(${NCa}))
+  VE.np31y(SFS(N), ${P2}n, {==}, hyS(${NCa}))
 
 def nwN(${NC}) -> {VC.NW(N) == Nat.double(c) : Nat}:
   %Equal.sym(Nat, VC.NW(N), VD.s_rng(2n, 3n+${toN}), VC.eNW(N, ${P2}n, {==}, hyN(${NCa}))) : {_ == Nat.double(c) : Nat}

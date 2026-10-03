@@ -613,14 +613,14 @@ def szx_term(f, ch, bnd):
     a = ch.alias
     LL = f'{a}.LL_{ch.p}({t}, {N})'
     hm = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == {TRUE}}}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N}), {bnd})'
-    rs = re.search(r'U32\.mul\(\w+, (\d+)\)', ch.sz).group(1)
+    rs = re.search(r'O\.mulc\(\w+, (\d+)\)', ch.sz).group(1)
     W = int(rs) // 4
     if int(rs) % 4:
         # records of a size off a word (Validator: 121 bytes): the list module's own size lemma
         return (f'Equal.trans(Nat, U32.to_nat({ch.sz}), {LL}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), '
                 f'{a}.szx_{ch.p}({t}, {N}, 0n, 0n, k, CS.hk29(k, ek), VRX.nwn_le({LL}, VB.pw(k), {hm})), '
                 f'Equal.sym(Nat, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N})))')
-    return (f'Equal.trans(Nat, U32.to_nat({ch.sz}), {LL}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), VRX.mulq(k, {N}, U32.to_nat({N}), {rs}, {W}n, {{==}}, {{==}}, hk, {hm}), '
+    return (f'Equal.trans(Nat, U32.to_nat({ch.sz}), {LL}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), VRX.mulqc(k, {N}, U32.to_nat({N}), {rs}, {W}n, {{==}}, {{==}}, hk, {hm}, {{==}}, {{==}}, {{==}}), '
             f'Equal.sym(Nat, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N})))')
 
 

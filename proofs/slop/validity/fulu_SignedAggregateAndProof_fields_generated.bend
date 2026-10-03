@@ -15,5 +15,5 @@ def SignedAggregateAndProof_serialize_vrefuse_bad_flag()
   {==}
 
 def SignedAggregateAndProof_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_sized((FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_sized((FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}

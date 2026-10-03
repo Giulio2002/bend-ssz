@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_bitvector_16_decode_checked_generated.bend
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_dchw(2, 2, (B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_16_decode_vchecked_accept()
 
-def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, bitvector_16_d.Bitvector16>}:
+def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_16_d.Bitvector16>}:
   PRV.bitvector_16_decode_vchecked_limit()
 
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 2)) == None{} : Maybe<&1, bitvector_16_d.Bitvector16>}:

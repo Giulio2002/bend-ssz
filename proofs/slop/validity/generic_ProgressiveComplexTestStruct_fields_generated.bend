@@ -19,11 +19,11 @@ def ProgressiveComplexTestStruct_serialize_vpoison_true_flag()
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vpoison_below()
-    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+    -> {O.is_poisoned(4294967264) == False{} : Bool}:
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vpoison_carried()
-    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+    -> {O.is_poisoned(O.padd(5, 4294967295)) == True{} : Bool}:
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vreject_f_A()
@@ -43,7 +43,7 @@ def ProgressiveComplexTestStruct_serialize_vrefuse_bad_flag()
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_sized((ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_sized((ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vreject_f_B()

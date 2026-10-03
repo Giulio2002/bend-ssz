@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_AttestationData_decode_checked_generated.bend
 def AttestationData__decode_offsets__AttestationData_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(128, 128, (B.Buf{Array.new(U32, 5n, 0), 128}, 32))), Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_decode_checked(B.Buf{Array.new(U32, 5n, 0), 128}, 128))) == (True{}, True{}) : Bool & Bool}:
   PRV.AttestationData_decode_vchecked_accept()
 
-def AttestationData__decode_offsets__AttestationData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
+def AttestationData__decode_offsets__AttestationData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   PRV.AttestationData_decode_vchecked_limit()
 
 def AttestationData__decode_offsets__AttestationData_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 128}, 128)) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:

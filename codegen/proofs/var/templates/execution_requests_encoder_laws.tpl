@@ -170,9 +170,9 @@ def QN(+n0: U32, +n1: U32, +n2: U32) -> Nat: Nat.add(Q2(n0, n1), M2(n2))
 def MX0() -> Nat: Nat.mul(U32.to_nat(${LIM[0]}), ${W[0]}n)
 def MX1() -> Nat: Nat.mul(U32.to_nat(${LIM[1]}), ${W[1]}n)
 def MX2() -> Nat: Nat.mul(U32.to_nat(${LIM[2]}), ${W[2]}n)
-def N0(+n0: U32) -> U32: U32.mul(n0, ${RS[0]})
-def N1(+n1: U32) -> U32: U32.mul(n1, ${RS[1]})
-def N2(+n2: U32) -> U32: U32.mul(n2, ${RS[2]})
+def N0(+n0: U32) -> U32: O.mulc(n0, ${RS[0]})
+def N1(+n1: U32) -> U32: O.mulc(n1, ${RS[1]})
+def N2(+n2: U32) -> U32: O.mulc(n2, ${RS[2]})
 def S1(+n0: U32) -> U32: U32.add(12, N0(n0))
 def S2(+n0: U32, +n1: U32) -> U32: U32.add(S1(n0), N1(n1))
 def S3(+n0: U32, +n1: U32, +n2: U32) -> U32: U32.add(S2(n0, n1), N2(n2))
@@ -233,8 +233,10 @@ def qle(${NP}, +x: Nat, +h: {Nat.is_le(x, QN(n0, n1, n2)) == ${TRUE}})
 @@ _bg_offsets_3 @@
 def eN${k}(${NP}) -> {U32.to_nat(N${k}(n${k})) == A.quad(M${k}(n${k})) : Nat}:
   Equal.trans(Nat, U32.to_nat(N${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})), A.quad(M${k}(n${k})),
-    VU.mul_le(n${k}, ${RS[k]}, 16777216, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(16777216)) == ${TRUE}}, A.quad(M${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})),
-      Equal.sym(Nat, Nat.mul(U32.to_nat(n${k}), A.quad(${W[k]}n)), A.quad(M${k}(n${k})), VRL.mul_quad(U32.to_nat(n${k}), ${W[k]}n)), qle(${NA}, M${k}(n${k}), lM${k}N(n0, n1, n2)))),
+    VE.mulc_nat_k(n${k}, ${RS[k]}, 31n, {==}, {==}, {==}, {==}, FD.nat__le_trans(Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})), U32.to_nat(16777216), U32.to_nat(VB.NMAX()),
+      FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(16777216)) == ${TRUE}}, A.quad(M${k}(n${k})), Nat.mul(U32.to_nat(n${k}), U32.to_nat(${RS[k]})),
+        Equal.sym(Nat, Nat.mul(U32.to_nat(n${k}), A.quad(${W[k]}n)), A.quad(M${k}(n${k})), VRL.mul_quad(U32.to_nat(n${k}), ${W[k]}n)), qle(${NA}, M${k}(n${k}), lM${k}N(n0, n1, n2))),
+      VB.le_gen(16777216, VB.NMAX(), U32.to_nat(16777216), U32.to_nat(VB.NMAX()), {==}, {==}, {==}))),
     VRL.mul_quad(U32.to_nat(n${k}), ${W[k]}n))
 
 @@ _bg_models @@
@@ -313,7 +315,7 @@ def pd3(${NP}) -> {O.padd(S2(n0, n1), N2(n2)) == S3(n0, n1, n2) : U32}:
   VE.padd_ok(S2(n0, n1), N2(n2), VE.winit(31n, VE.bits32(S2(n0, n1))), VE.winit(31n, VE.bits32(N2(n2))), ltN(${NA}, S2(n0, n1), Q2(n0, n1), eS2(${NA}), Order.below_sum(Q2(n0, n1), M2(n2))), ltN(${NA}, N2(n2), M2(n2), eN2(${NA}), lM2N(n0, n1, n2)))
 
 def npS3(${NP}) -> {O.is_poisoned(S3(n0, n1, n2)) == False{} : Bool}:
-  VBE.np31(S3(n0, n1, n2), 24n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(24n)) == ${TRUE}}, A.quad(QN(n0, n1, n2)), U32.to_nat(S3(n0, n1, n2)), Equal.sym(Nat, U32.to_nat(S3(n0, n1, n2)), A.quad(QN(n0, n1, n2)), eS3(${NA})), qlt(${NA}, QN(n0, n1, n2), FD.nat__le_refl(QN(n0, n1, n2)))))
+  VE.np31(S3(n0, n1, n2), 24n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(24n)) == ${TRUE}}, A.quad(QN(n0, n1, n2)), U32.to_nat(S3(n0, n1, n2)), Equal.sym(Nat, U32.to_nat(S3(n0, n1, n2)), A.quad(QN(n0, n1, n2)), eS3(${NA})), qlt(${NA}, QN(n0, n1, n2), FD.nat__le_refl(QN(n0, n1, n2)))))
 
 # ---- the output trees ---------------------------------------------------------------------------
 
@@ -369,19 +371,19 @@ def size_eval(${ALLP})
   %Equal.sym(Array<T.${R[0]}> & U32, Array.size(T.${R[0]}, FD.array__thaw(T.${R[0]}, A0)), (FD.array__thaw(T.${R[0]}, A0), FD.u32__pow2u(da0)), FD.array__size_thaw(T.${R[0]}, da0, A0, pfa0)) :
     {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, T.${p[0]}_szf(n0, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n0, FD.u32__pow2u(da0)), True{}, ${CAPS[0]}) :
-    {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, (${SEQ(0)}, O.pick(_, U32.mul(n0, ${RS[0]}), 4294967295))) == RHS : ${SZ}}
+    {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, (${SEQ(0)}, O.pick(_, O.mulc(n0, ${RS[0]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(12, N0(n0)), S1(n0), pd1(${NA})) :
     {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, _, T.${p[1]}_size(${SEQ(1)})) == RHS : ${SZ}}
   %Equal.sym(Array<T.${R[1]}> & U32, Array.size(T.${R[1]}, FD.array__thaw(T.${R[1]}, A1)), (FD.array__thaw(T.${R[1]}, A1), FD.u32__pow2u(da1)), FD.array__size_thaw(T.${R[1]}, da1, A1, pfa1)) :
     {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), T.${p[1]}_szf(n1, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n1, FD.u32__pow2u(da1)), True{}, ${CAPS[1]}) :
-    {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), (${SEQ(1)}, O.pick(_, U32.mul(n1, ${RS[1]}), 4294967295))) == RHS : ${SZ}}
+    {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), (${SEQ(1)}, O.pick(_, O.mulc(n1, ${RS[1]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(S1(n0), N1(n1)), S2(n0, n1), pd2(${NA})) :
     {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, _, T.${p[2]}_size(${SEQ(2)})) == RHS : ${SZ}}
   %Equal.sym(Array<T.${R[2]}> & U32, Array.size(T.${R[2]}, FD.array__thaw(T.${R[2]}, A2)), (FD.array__thaw(T.${R[2]}, A2), FD.u32__pow2u(da2)), FD.array__size_thaw(T.${R[2]}, da2, A2, pfa2)) :
     {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), T.${p[2]}_szf(n2, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n2, FD.u32__pow2u(da2)), True{}, ${CAPS[2]}) :
-    {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), (${SEQ(2)}, O.pick(_, U32.mul(n2, ${RS[2]}), 4294967295))) == RHS : ${SZ}}
+    {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), (${SEQ(2)}, O.pick(_, O.mulc(n2, ${RS[2]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(S2(n0, n1), N2(n2)), S3(n0, n1, n2), pd3(${NA})) :
     {(${OE}, _) == RHS : ${SZ}}
   {==}

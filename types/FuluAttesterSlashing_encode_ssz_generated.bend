@@ -82,7 +82,7 @@ def AttesterSlashing_bx_pk_back(pair: Array<U32> & (FuluAttesterSlashing_d.Attes
 def AttesterSlashing_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>) -> Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32):
   match o:
     case O.BSome{v, rest}: AttesterSlashing_bx_pk_back(AttesterSlashing_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def AttesterSlashing_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32)) -> Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32):
   (out, r) = pair
@@ -121,9 +121,14 @@ def AttesterSlashing_enc_put(+n: U32, pair: Array<U32> & (FuluAttesterSlashing_d
   (o, m) = r
   AttesterSlashing_enc_out(n, out, o, m)
 
+def AttesterSlashing_enc_go(bad: Bool, +n: U32, o: FuluAttesterSlashing_d.AttesterSlashing) -> FuluAttesterSlashing_d.AttesterSlashing & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: AttesterSlashing_enc_put(n, AttesterSlashing_putn(O.out_new(n), 0, o))
+
 def AttesterSlashing_enc_sized(pair: FuluAttesterSlashing_d.AttesterSlashing & U32) -> FuluAttesterSlashing_d.AttesterSlashing & B.Buf:
   (o, +n) = pair
-  AttesterSlashing_enc_put(n, AttesterSlashing_putn(O.out_new(n), 0, o))
+  AttesterSlashing_enc_go(O.is_poisoned(n), n, o)
 
 def AttesterSlashing_encode(o: FuluAttesterSlashing_d.AttesterSlashing) -> FuluAttesterSlashing_d.AttesterSlashing & B.Buf: AttesterSlashing_enc_sized(AttesterSlashing_size(o))
 

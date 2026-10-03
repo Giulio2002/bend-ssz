@@ -83,7 +83,7 @@ def ProgressiveVarTestStruct_bx_pk_back(pair: Array<U32> & (ProgressiveVarTestSt
 def ProgressiveVarTestStruct_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>) -> Array<U32> & (O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32):
   match o:
     case O.BSome{v, rest}: ProgressiveVarTestStruct_bx_pk_back(ProgressiveVarTestStruct_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def ProgressiveVarTestStruct_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32)) -> Array<U32> & (O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32):
   (out, r) = pair
@@ -122,9 +122,14 @@ def ProgressiveVarTestStruct_enc_put(+n: U32, pair: Array<U32> & (ProgressiveVar
   (o, m) = r
   ProgressiveVarTestStruct_enc_out(n, out, o, m)
 
+def ProgressiveVarTestStruct_enc_go(bad: Bool, +n: U32, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ProgressiveVarTestStruct_enc_put(n, ProgressiveVarTestStruct_putn(O.out_new(n), 0, o))
+
 def ProgressiveVarTestStruct_enc_sized(pair: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & U32) -> ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf:
   (o, +n) = pair
-  ProgressiveVarTestStruct_enc_put(n, ProgressiveVarTestStruct_putn(O.out_new(n), 0, o))
+  ProgressiveVarTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ProgressiveVarTestStruct_encode(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf: ProgressiveVarTestStruct_enc_sized(ProgressiveVarTestStruct_size(o))
 

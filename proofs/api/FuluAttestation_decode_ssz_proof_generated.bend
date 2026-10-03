@@ -132,7 +132,7 @@ def FuluAttestation__decode_offsets__Attestation_decode_vbits_clear_40() -> {Pai
 def FuluAttestation__decode_offsets__Attestation_decode_vbits_clear_63() -> {Pair.snd(P4_B.Buf, P4_O.Bits, P4_O.bits_clear(63, (P4_B.empty(), P4_O.Words{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4294967295), 1, 4294967295), 64}))) == P4_O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4294967295), 1, 2147483647), 63} : P4_O.Bits}:
   P4_PRV.Attestation_decode_vbits_clear_63()
 
-def FuluAttestation__decode_offsets__Attestation_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_dchw(2147483648, 2147483648, (P5_B.empty(), 536870912))) == None{} : Maybe<&1, FuluAttestation_d.Attestation>}:
+def FuluAttestation__decode_offsets__Attestation_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttestation_d.Attestation>}:
   P5_PRV.Attestation_decode_vchecked_limit()
 
 def FuluAttestation__decode_offsets__Attestation_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_dchw(237, 237, (P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 60))), Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode_checked(P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 237))) == (True{}, True{}) : Bool & Bool}:

@@ -83,7 +83,7 @@ def paddC2(${NCP}) -> {O.padd(${C1}, ${S2}) == ${C2} : U32}:
     VE.small_pad(${S2}, ${PB}n, {==}, FD.nat__le_lt_trans(U32.to_nat(${S2}), ${XL}, VB.pw(${PB}n), sB(N2, c2, ec2, hc2), ${K_P1})))
 
 def npC2(${NCP}) -> {O.is_poisoned(${C2}) == False{} : Bool}:
-  VBE.np31y(${C2}, ${P3}n, {==}, FD.nat__le_trans(Nat.add(31n, U32.to_nat(${C2})), Nat.add(31n, Nat.add(Nat.add(8n, ${XL}), ${XL})), VB.pw(${P3}n),
+  VE.np31y(${C2}, ${P3}n, {==}, FD.nat__le_trans(Nat.add(31n, U32.to_nat(${C2})), Nat.add(31n, Nat.add(Nat.add(8n, ${XL}), ${XL})), VB.pw(${P3}n),
     Order.add_left(31n, U32.to_nat(${C2}), Nat.add(Nat.add(8n, ${XL}), ${XL}), leC2(${NCa})), ${K_Y2}))
 
 def eQ(${NCP}) -> {A.quad(${Q}) == U32.to_nat(${C2}) : Nat}:

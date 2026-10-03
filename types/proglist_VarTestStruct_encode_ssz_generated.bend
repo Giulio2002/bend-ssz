@@ -43,7 +43,7 @@ def pl_VarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTe
 def pl_VarTestStruct_sz_ok(ok: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, +n: U32) -> proglist_VarTestStruct_d.pl_VarTestStruct_Seq & U32:
   match ok:
     case True{}: pl_VarTestStruct_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, 2147483648)
+    case False{}: (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, 4294967295)
 
 def pl_VarTestStruct_sz_cap(+n: U32, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32) -> proglist_VarTestStruct_d.pl_VarTestStruct_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def pl_VarTestStruct_pk(out: Array<U32>, +pos: U32, pair: proglist_VarTestStruct
   (o, ok) = pair
   match ok:
     case True{}: pl_VarTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_VarTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & Bool) -> proglist_VarTestStruct_d.pl_VarTestStruct_Seq & Bool:
   (arr, b) = pair
@@ -183,7 +183,7 @@ def pl_VarTestStruct_bx_pk_back(pair: Array<U32> & (proglist_VarTestStruct_d.pl_
 def pl_VarTestStruct_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>) -> Array<U32> & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & U32):
   match o:
     case O.BSome{v, rest}: pl_VarTestStruct_bx_pk_back(pl_VarTestStruct_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def pl_VarTestStruct_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & U32)) -> Array<U32> & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & U32):
   (out, r) = pair

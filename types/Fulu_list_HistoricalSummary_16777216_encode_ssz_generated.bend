@@ -12,7 +12,7 @@ import ./Fulu_list_HistoricalSummary_16777216_def_generated.bend as Fulu_list_Hi
 
 def l16777216_HistoricalSummary_szf(+n: U32, pair: Array<FuluHistoricalSummary_d.HistoricalSummary> & U32) -> Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 64 : U32), 2147483648))
+  (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 64), 4294967295))
 
 def l16777216_HistoricalSummary_size(o: Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq) -> Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l16777216_HistoricalSummary_put(out: Array<U32>, +pos: U32, o: Fulu_list_His
 
 def l16777216_HistoricalSummary_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq) -> Array<U32> & (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 64 : U32)))
+  (out, (sq, O.mulc(n, 64)))
 
 def l16777216_HistoricalSummary_putn(out: Array<U32>, +pos: U32, o: Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq) -> Array<U32> & (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l16777216_HistoricalSummary_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_H
   (o, ok) = pair
   match ok:
     case True{}: l16777216_HistoricalSummary_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l16777216_HistoricalSummary_va_cap(ok: Bool, +n: U32, pair: Array<FuluHistoricalSummary_d.HistoricalSummary> & U32) -> Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & Bool:
   (arr, +c) = pair

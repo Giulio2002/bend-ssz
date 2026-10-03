@@ -67,7 +67,7 @@ def Eth1Block_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth
 
 def Eth1Block_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>:
   (buf, +c) = pair
-  Eth1Block_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  Eth1Block_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def Eth1Block_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>:
   (buf, +n) = pair

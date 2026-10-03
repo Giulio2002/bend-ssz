@@ -67,7 +67,7 @@ def Eth1Data_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1
 
 def Eth1Data_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
   (buf, +c) = pair
-  Eth1Data_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  Eth1Data_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def Eth1Data_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
   (buf, +n) = pair

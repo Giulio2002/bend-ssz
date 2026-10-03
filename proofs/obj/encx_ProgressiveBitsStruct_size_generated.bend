@@ -49,6 +49,7 @@ import ./vbv257s.bend as V2S
 import ./vbv128s.bend as V2S8
 import ./vmr_generated.bend as VMR
 import ./encx_ProgressiveBitsStruct_generated.bend as K
+import ./vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./vlist.bend as VL

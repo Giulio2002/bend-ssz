@@ -36,6 +36,7 @@ import ../obj/encx_VarTestStruct_iface_generated.bend as EX_VarTestStruct
 import ../obj/encx_v2_VarTestStruct_generated.bend as EX_v2_VarTestStruct
 import ../obj/encx_v2_VarTestStruct_d_generated.bend as EX_v2_VarTestStruct_D
 import ../obj/vrecb.bend as VRB
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

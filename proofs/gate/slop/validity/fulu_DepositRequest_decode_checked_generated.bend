@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_DepositRequest_decode_checked_generated.bend 
 def DepositRequest__decode_offsets__DepositRequest_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_dchw(192, 192, (B.Buf{Array.new(U32, 6n, 0), 192}, 48))), Pair.snd(B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   PRV.DepositRequest_decode_vchecked_accept()
 
-def DepositRequest__decode_offsets__DepositRequest_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
+def DepositRequest__decode_offsets__DepositRequest_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
   PRV.DepositRequest_decode_vchecked_limit()
 
 def DepositRequest__decode_offsets__DepositRequest_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, FuluDepositRequest_d.DepositRequest>}:

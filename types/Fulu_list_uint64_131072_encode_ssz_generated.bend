@@ -17,7 +17,7 @@ def l131072_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U3
   (o, ok) = pair
   match ok:
     case True{}: l131072_u64_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l131072_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1048576, False{}, 8)
 

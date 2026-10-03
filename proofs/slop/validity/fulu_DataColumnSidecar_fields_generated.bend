@@ -15,7 +15,7 @@ def DataColumnSidecar_serialize_vrefuse_bad_flag()
   {==}
 
 def DataColumnSidecar_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, O.Encoded, FuluDataColumnSidecar_e.DataColumnSidecar_senc_sized((FuluDataColumnSidecar_d.DataColumnSidecar_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, O.Encoded, FuluDataColumnSidecar_e.DataColumnSidecar_senc_sized((FuluDataColumnSidecar_d.DataColumnSidecar_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def DataColumnSidecar_serialize_vreject_column()

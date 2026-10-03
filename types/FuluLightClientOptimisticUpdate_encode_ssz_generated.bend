@@ -47,7 +47,7 @@ def LightClientOptimisticUpdate_put_drop(pair: Array<U32> & (FuluLightClientOpti
 def LightClientOptimisticUpdate_put(out: Array<U32>, +pos: U32, o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate) -> Array<U32> & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate: LightClientOptimisticUpdate_put_drop(LightClientOptimisticUpdate_putn(out, pos, o))
 
 def LightClientOptimisticUpdate_enc_out(out: Array<U32>, o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, +m: U32) -> FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def LightClientOptimisticUpdate_enc_put(pair: Array<U32> & (FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & U32)) -> FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate & B.Buf:
   (out, r) = pair

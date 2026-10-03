@@ -10,7 +10,7 @@ import ../../../slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(128, 128, (B.Buf{Array.new(U32, 5n, 0), 128}, 32))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode_checked(B.Buf{Array.new(U32, 5n, 0), 128}, 128))) == (True{}, True{}) : Bool & Bool}:
   PRV.ExecutionBranch_decode_vchecked_accept()
 
-def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.ExecutionBranch_decode_vchecked_limit()
 
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 128}, 128)) == None{} : Maybe<&1, O.Words>}:

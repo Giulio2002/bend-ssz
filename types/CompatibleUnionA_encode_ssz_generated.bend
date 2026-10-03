@@ -36,7 +36,7 @@ def CompatibleUnionA_pk(out: Array<U32>, +pos: U32, pair: CompatibleUnionA_d.Com
   (o, ok) = pair
   match ok:
     case True{}: CompatibleUnionA_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def CompatibleUnionA_valid(o: CompatibleUnionA_d.CompatibleUnionA) -> CompatibleUnionA_d.CompatibleUnionA & Bool:
   match o:
@@ -45,7 +45,7 @@ def CompatibleUnionA_valid(o: CompatibleUnionA_d.CompatibleUnionA) -> Compatible
 def CompatibleUnionA_putk(out: Array<U32>, +pos: U32, o: CompatibleUnionA_d.CompatibleUnionA) -> Array<U32> & (CompatibleUnionA_d.CompatibleUnionA & U32): CompatibleUnionA_pk(out, pos, CompatibleUnionA_valid(o))
 
 def CompatibleUnionA_enc_out(out: Array<U32>, o: CompatibleUnionA_d.CompatibleUnionA, +m: U32) -> CompatibleUnionA_d.CompatibleUnionA & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def CompatibleUnionA_enc_put(pair: Array<U32> & (CompatibleUnionA_d.CompatibleUnionA & U32)) -> CompatibleUnionA_d.CompatibleUnionA & B.Buf:
   (out, r) = pair

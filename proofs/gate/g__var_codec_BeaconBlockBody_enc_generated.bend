@@ -39,6 +39,7 @@ import ../obj/encx_l16_SignedBLSToExecutionChange_generated.bend as EW_l16_Signe
 import ../obj/encx_l4096_b48_generated.bend as EX_l4096_b48
 import ../obj/encx_ExecutionRequests_iface_generated.bend as EX_ExecutionRequests
 import ../obj/encx_BeaconBlockBody_generated.bend as K
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

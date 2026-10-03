@@ -176,7 +176,7 @@ def boolean__decode_input__boolean_ms_build() -> {boolean_r.boolean_build(P7_B.B
 def boolean__decode_input__boolean_ms_dec() -> {(boolean_r.boolean_decode(P7_B.Buf{boolean_e.bool_put(P7_O.out_at(2n), 0, boolean_d.bool_seed(2271560481)), 1}, 1), boolean_r.boolean_decode(P7_B.Buf{boolean_e.bool_put(P7_O.out_at(2n), 0, boolean_d.bool_seed(2271560482)), 1}, 1)) == ((P7_B.Buf{boolean_e.bool_put(P7_O.out_at(2n), 0, boolean_d.bool_seed(2271560481)), 1}, Some{boolean_d.bool_seed(2271560481)}), (P7_B.Buf{boolean_e.bool_put(P7_O.out_at(2n), 0, boolean_d.bool_seed(2271560482)), 1}, Some{boolean_d.bool_seed(2271560482)})) : (P7_B.Buf & Maybe<&1, Bool>) & (P7_B.Buf & Maybe<&1, Bool>)}:
   P7_PRV.boolean_ms_dec()
 
-def boolean__decode_offsets__boolean_decode_vchecked_limit() -> {Pair.snd(P8_B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(2147483648, 2147483648, (P8_B.empty(), 536870912))) == None{} : Maybe<&1, Bool>}:
+def boolean__decode_offsets__boolean_decode_vchecked_limit() -> {Pair.snd(P8_B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(4294967265, 4294967265, (P8_B.empty(), 1073741824))) == None{} : Maybe<&1, Bool>}:
   P8_PRV.boolean_decode_vchecked_limit()
 
 def boolean__decode_offsets__boolean_decode_vchecked_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(1, 1, (P8_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P8_B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked(P8_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:

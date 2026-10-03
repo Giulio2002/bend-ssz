@@ -43,7 +43,7 @@ def pl_ProgressiveVarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<Progressiv
 def pl_ProgressiveVarTestStruct_sz_ok(ok: Bool, arr: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, +n: U32) -> proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq & U32:
   match ok:
     case True{}: pl_ProgressiveVarTestStruct_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, 2147483648)
+    case False{}: (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, 4294967295)
 
 def pl_ProgressiveVarTestStruct_sz_cap(+n: U32, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & U32) -> proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def pl_ProgressiveVarTestStruct_pk(out: Array<U32>, +pos: U32, pair: proglist_Pr
   (o, ok) = pair
   match ok:
     case True{}: pl_ProgressiveVarTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_ProgressiveVarTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & Bool) -> proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq & Bool:
   (arr, b) = pair

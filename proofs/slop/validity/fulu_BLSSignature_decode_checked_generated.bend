@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluBytes96_d.Bytes96>) -> Bool:
 def is_some(a: Maybe<&1, FuluBytes96_d.Bytes96>, b: Maybe<&1, FuluBytes96_d.Bytes96>) -> Bool & Bool: (some1(a), some1(b))
 
 def BLSSignature_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   {==}
 
 def BLSSignature_decode_vchecked_accept()

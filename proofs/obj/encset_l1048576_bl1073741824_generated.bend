@@ -175,7 +175,7 @@ def l1048576_bl1073741824_written(+t: F.array__Tree<E.MB<E.WMr>>, +N: U32, +i: U
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def l1048576_bl1073741824_api_encode_set(+t: F.array__Tree<E.MB<E.WMr>>, +N: U32, +i: U32, +m: E.MB<E.WMr>, +h: {E.OKL(t, N) == True{} : Bool},
     +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +em: {E.EOK(m) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL(F.array__upd(E.MB<E.WMr>, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(E.LL(F.array__upd(E.MB<E.WMr>, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(E.VALL(t, N), U32.to_nat(i), vv_l1048576_bl1073741824(m)), Spec.Schema73()) == Some{[S.Variable{E.ENCL(F.array__upd(E.MB<E.WMr>, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}:
   %l1048576_bl1073741824_vall_set(t, N, i, m, h, hs) :
     {Codec.parts(_, Spec.Schema73()) == Some{[S.Variable{E.ENCL(F.array__upd(E.MB<E.WMr>, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}

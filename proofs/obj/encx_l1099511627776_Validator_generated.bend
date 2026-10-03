@@ -636,7 +636,7 @@ def valid_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>
   {==}
 
 def RTL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_putk(FD.array__thaw(U32, D), X, THL_l1099511627776_Validator(A, N)) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
+  {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_putk(FD.array__thaw(U32, D), X, THL_l1099511627776_Validator(A, N)) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), O.mulc(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
 def BYL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l1099511627776_Validator(A, N, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l1099511627776_Validator(A, N)) : +List<U32>}
 def PFL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
@@ -646,9 +646,9 @@ def PFL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, 
 def putk_rt_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l1099511627776_Validator(U32.is_eq(N, 0), A, N, dd, D, X)) -> RTL_l1099511627776_Validator(A, N, dd, D, X, q, r):
   %Equal.sym(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)), (THL_l1099511627776_Validator(A, N), True{}), valid_l1099511627776_Validator(A, N, h)) :
-    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), O.mulc(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluValidator_d.Validator, A)), (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), THL_l1099511627776_Validator(A, N)), rtb) :
-    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), O.mulc(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
@@ -674,24 +674,31 @@ def putx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>,
   putx_l1099511627776_ValidatorW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
-def sizex_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}:
+def sizex_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), O.mulc(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}:
   +d = TDM_l1099511627776_Validator(A)
   %Equal.sym(Array<FuluValidator_d.Validator> & U32, Array.size(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A)), (FD.array__thaw(FuluValidator_d.Validator, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluValidator_d.Validator, d, A, okl_pf_l1099511627776_Validator(A, N, h))) :
-    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_szf(N, _) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_szf(N, _) == (THL_l1099511627776_Validator(A, N), O.mulc(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l1099511627776_Validator(A, N, h)) :
-    {(THL_l1099511627776_Validator(A, N), O.pick(_, U32.mul(N, 121), 2147483648)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
+    {(THL_l1099511627776_Validator(A, N), O.pick(_, O.mulc(N, 121), 4294967295)) == (THL_l1099511627776_Validator(A, N), O.mulc(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
   {==}
 
-# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +hN: {Nat.is_le(LL_l1099511627776_Validator(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  VRX.mulck(N, 121, 31n, {==}, {==}, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, LL_l1099511627776_Validator(A, N), Nat.mul(U32.to_nat(N), U32.to_nat(121)), {==}, hN))
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
 def szx_l1099511627776_ValidatorW(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l1099511627776_Validator(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
-  bmulW(N, U32.to_nat(N), 121, 121n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l1099511627776_Validator(A, N), Nat.mul(U32.to_nat(N), 121n), {==}, VRX.yl32(q, r, LL_l1099511627776_Validator(A, N), hl32)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(LL_l1099511627776_Validator(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l1099511627776_Validator(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  szxB_l1099511627776_Validator(A, N, hs31)
+
+# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+def szx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  szxB_l1099511627776_Validator(A, N, VRX.hs31w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl))
+
 
 # ---- l1099511627776_Validator: the spec side ----
-
-def szx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
-  szx_l1099511627776_ValidatorW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> S.Value: S.Sequence{ITV_l1099511627776_Validator(U32.to_nat(N), A, 0n)}
@@ -721,11 +728,7 @@ def encx_spec_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Valida
     {Codec.one(Some{_}, None{}) == Some{[S.Variable{(CHV_l1099511627776_Validator(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}
   {==}
 
-# szx_l1099511627776_Validator with its bytes below 2^32 (no tree): the OKW twins' size.
-def szxB_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h32: {Nat.is_lt(LL_l1099511627776_Validator(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
-  bmulW(N, U32.to_nat(N), 121, 121n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l1099511627776_Validator(A, N), Nat.mul(U32.to_nat(N), 121n), {==}, h32))
-
-def encx_spec_l1099511627776_ValidatorB(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+def encx_spec_l1099511627776_ValidatorB(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool},
     +hL: {Nat.is_le(LL_l1099511627776_Validator(A, N), B) == True{} : Bool})
     -> {Codec.parts(VALL_l1099511627776_Validator(A, N), Spec.Schema78()) == Some{[S.Variable{ENCL_l1099511627776_Validator(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +c = U32.to_nat(N)

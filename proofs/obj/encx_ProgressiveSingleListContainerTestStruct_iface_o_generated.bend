@@ -63,7 +63,7 @@ def okwOfOk(+m_f_C: EX_pbits.MB, +h: {OB.OKT(m_f_C) == True{} : Bool}) -> {OB.OK
   +s0 = h
   +p0 = FD.logic__and_left(EX_pbits.OK(m_f_C), Nat.is_le(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s0)
   +s1 = FD.logic__and_right(EX_pbits.OK(m_f_C), Nat.is_le(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s0)
-  FD.logic__and_intro(EX_pbits.OK(m_f_C), Nat.is_lt(OB.ENDC(m_f_C), VB.pw(31n)), p0, VCN.lt31q(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s1))
+  FD.logic__and_intro(EX_pbits.OK(m_f_C), Nat.is_le(OB.ENDC(m_f_C), U32.to_nat(VB.NMAX())), p0, VCN.lt31q(Nat.add(4n, LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s1))
 
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
@@ -72,7 +72,7 @@ def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
 def bndxO(m, hok):
   match m:
-    case OB.MW{+m_f_C}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDC(m_f_C), List.length(&2, U32, K.ENCC(m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_C)), OB.ENDC(m_f_C), OB.lenEW(m_f_C, hok)), OB.ok_bndW(m_f_C, hok))
+    case OB.MW{+m_f_C}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(m_f_C), List.length(&2, U32, K.ENCC(m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_C)), OB.ENDC(m_f_C), OB.lenEW(m_f_C, hok)), OB.ok_bndW(m_f_C, hok))

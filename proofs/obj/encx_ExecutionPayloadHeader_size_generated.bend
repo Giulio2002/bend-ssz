@@ -35,6 +35,7 @@ import ./vuwv_u256_generated.bend as V_u256
 import ./vuwv_b256_generated.bend as V_b256
 import ./encx_bl32_generated.bend as EB
 import ./encx_ExecutionPayloadHeader_generated.bend as K
+import ./vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./vlist.bend as VL

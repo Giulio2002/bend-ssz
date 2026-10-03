@@ -15,7 +15,7 @@ def BeaconBlock_serialize_vrefuse_bad_flag()
   {==}
 
 def BeaconBlock_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_sized((FuluBeaconBlock_d.BeaconBlock_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_sized((FuluBeaconBlock_d.BeaconBlock_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def BeaconBlock_serialize_vreject_body()

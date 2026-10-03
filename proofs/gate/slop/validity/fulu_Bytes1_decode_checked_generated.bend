@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_Bytes1_decode_checked_generated.bend as PRV
 def Bytes1__decode_offsets__Bytes1_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   PRV.Bytes1_decode_vchecked_accept()
 
-def Bytes1__decode_offsets__Bytes1_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes1_d.Bytes1>}:
+def Bytes1__decode_offsets__Bytes1_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes1_d.Bytes1>}:
   PRV.Bytes1_decode_vchecked_limit()
 
 def Bytes1__decode_offsets__Bytes1_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, FuluBytes1_d.Bytes1>}:

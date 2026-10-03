@@ -179,7 +179,7 @@ def ExecutionPayloadHeader_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Mayb
 
 def ExecutionPayloadHeader_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
   (buf, +c) = pair
-  ExecutionPayloadHeader_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  ExecutionPayloadHeader_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def ExecutionPayloadHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
   (buf, +n) = pair

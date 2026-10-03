@@ -59,7 +59,7 @@ def CompatibleUnionBC_pk(out: Array<U32>, +pos: U32, pair: CompatibleUnionBC_d.C
   (o, ok) = pair
   match ok:
     case True{}: CompatibleUnionBC_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def CompatibleUnionBC_va0(pair: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & Bool) -> CompatibleUnionBC_d.CompatibleUnionBC & Bool:
   (v, ok) = pair
@@ -84,9 +84,14 @@ def CompatibleUnionBC_enc_put(+n: U32, pair: Array<U32> & (CompatibleUnionBC_d.C
   (o, m) = r
   CompatibleUnionBC_enc_out(n, out, o, m)
 
+def CompatibleUnionBC_enc_go(bad: Bool, +n: U32, o: CompatibleUnionBC_d.CompatibleUnionBC) -> CompatibleUnionBC_d.CompatibleUnionBC & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: CompatibleUnionBC_enc_put(n, CompatibleUnionBC_putn(O.out_new(n), 0, o))
+
 def CompatibleUnionBC_enc_sized(pair: CompatibleUnionBC_d.CompatibleUnionBC & U32) -> CompatibleUnionBC_d.CompatibleUnionBC & B.Buf:
   (o, +n) = pair
-  CompatibleUnionBC_enc_put(n, CompatibleUnionBC_putn(O.out_new(n), 0, o))
+  CompatibleUnionBC_enc_go(O.is_poisoned(n), n, o)
 
 def CompatibleUnionBC_encode(o: CompatibleUnionBC_d.CompatibleUnionBC) -> CompatibleUnionBC_d.CompatibleUnionBC & B.Buf: CompatibleUnionBC_enc_sized(CompatibleUnionBC_size(o))
 

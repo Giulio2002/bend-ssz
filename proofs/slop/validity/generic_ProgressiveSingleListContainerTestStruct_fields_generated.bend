@@ -15,7 +15,7 @@ def ProgressiveSingleListContainerTestStruct_serialize_vrefuse_bad_flag()
   {==}
 
 def ProgressiveSingleListContainerTestStruct_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, O.Encoded, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_sized((ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, O.Encoded, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_sized((ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def ProgressiveSingleListContainerTestStruct_serialize_vreject_f_C()

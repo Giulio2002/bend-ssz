@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_WithdrawalRequest_decode_checked_generated.be
 def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(76, 76, (B.Buf{Array.new(U32, 5n, 0), 76}, 19))), Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(B.Buf{Array.new(U32, 5n, 0), 76}, 76))) == (True{}, True{}) : Bool & Bool}:
   PRV.WithdrawalRequest_decode_vchecked_accept()
 
-def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
+def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
   PRV.WithdrawalRequest_decode_vchecked_limit()
 
 def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(B.Buf{Array.new(U32, 0n, 0), 76}, 76)) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:

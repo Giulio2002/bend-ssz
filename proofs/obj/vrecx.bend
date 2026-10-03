@@ -11,6 +11,8 @@ import ./vua.bend as UA
 import ./vuw.bend as UW
 import ./vuwd.bend as WD
 import ./vu32.bend as VU
+import ./venc.bend as VE
+import ../../src/obj.bend as O
 import ./vme_generated.bend as VME
 import ./vrl_generated.bend as VRL
 
@@ -255,6 +257,33 @@ def mulq(+dd: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == 
       Equal.sym(Nat, U32.to_nat(F.u32__pow2u(2n+dd)), P2, F.u32__pow2u_value(2n+dd, F.nat__lt_trans(2n+dd, 31n, 32n, hdd, {==}))),
       F.logic__subst(Nat, z => {Nat.is_le(z, P2) == True{} : Bool}, A.quad(Nat.mul(j, W)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)), em), hm))),
     em)
+
+# The checked product O.mulc of record count i and record size Ru = 4 W: the product (j * 4 W) when it is at most NMAX (the
+# size model of a list of fixed composites: docs/SIZE_LIMIT_DESIGN.md).
+def mulqcW(+i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hm: {Nat.is_le(A.quad(Nat.mul(j, W)), U32.to_nat(VB.NMAX())) == True{} : Bool},
+    +hRu: {Nat.is_lt(U32.to_nat(Ru), F.spec_common__pow2(31n)) == True{} : Bool}, +hes: {Nat.is_le(1n, U32.to_nat(Ru)) == True{} : Bool}, +hz: {U32.is_zero(Ru) == False{} : Bool})
+    -> {U32.to_nat(O.mulc(i, Ru)) == A.quad(Nat.mul(j, W)) : Nat}:
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, A.quad(W)), A.quad(Nat.mul(j, W)),
+    Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, U32.to_nat(Ru)), Nat.mul(j, A.quad(W)),
+      Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Ru)), U32.to_nat(i), j, ei), Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Ru), A.quad(W), eR)),
+    VRL.mul_quad(j, W))
+  +hb = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, A.quad(Nat.mul(j, W)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)), em), hm)
+  Equal.trans(Nat, U32.to_nat(O.mulc(i, Ru)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), A.quad(Nat.mul(j, W)),
+    VE.mulc_nat(i, Ru, VE.winit(31n, VE.bits32(Ru)), VE.small_pad(Ru, 31n, {==}, hRu), hes, hz, hb), em)
+
+def mulqc(+dd: Nat, +i: U32, +j: Nat, +Ru: U32, +W: Nat, +eR: {U32.to_nat(Ru) == A.quad(W) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hm: {Nat.is_le(A.quad(Nat.mul(j, W)), VB.pw(2n+dd)) == True{} : Bool},
+    +hRu: {Nat.is_lt(U32.to_nat(Ru), F.spec_common__pow2(31n)) == True{} : Bool}, +hes: {Nat.is_le(1n, U32.to_nat(Ru)) == True{} : Bool}, +hz: {U32.is_zero(Ru) == False{} : Bool})
+    -> {U32.to_nat(O.mulc(i, Ru)) == A.quad(Nat.mul(j, W)) : Nat}:
+  mulqcW(i, j, Ru, W, eR, ei, VB.le_pw30_nmax(A.quad(Nat.mul(j, W)), F.nat__le_trans(A.quad(Nat.mul(j, W)), VB.pw(2n+dd), VB.pw(30n), hm, F.nat__pow2_mono(2n+dd, 30n, Order.add_left(2n, dd, 28n, F.nat__lt_succ_le(dd, 28n, hdd))))), hRu, hes, hz)
+
+# O.mulc of a count and a literal size es (es < 2^k): the product, when it is at most NMAX (forwards to venc.mulc_nat_k).
+def mulck(+n: U32, +es: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(es), F.spec_common__pow2(k)) == True{} : Bool},
+    +hes: {Nat.is_le(1n, U32.to_nat(es)) == True{} : Bool}, +hz: {U32.is_zero(es) == False{} : Bool},
+    +h: {Nat.is_le(Nat.mul(U32.to_nat(n), U32.to_nat(es)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {U32.to_nat(O.mulc(n, es)) == Nat.mul(U32.to_nat(n), U32.to_nat(es)) : Nat}:
+  VE.mulc_nat_k(n, es, k, hk, hlt, hes, hz, h)
 
 # Record j of a run of LT bytes at X = 4 q + r, the records j + 1 + k <= the run: its position, and its room.
 def rposW(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +Ru: U32, +LT: Nat, +dd: Nat,

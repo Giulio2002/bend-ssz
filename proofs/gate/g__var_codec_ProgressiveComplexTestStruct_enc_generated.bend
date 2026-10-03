@@ -40,6 +40,7 @@ import ../obj/encx_l10_ProgressiveSingleFieldContainerTestStruct_d_generated.ben
 import ../obj/encx_pl_ProgressiveVarTestStruct_generated.bend as EX_pl_ProgressiveVarTestStruct
 import ../obj/encx_pl_ProgressiveVarTestStruct_d_generated.bend as EX_pl_ProgressiveVarTestStruct_D
 import ../obj/vrecb.bend as VRB
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_SingleFieldTestStruct_decode_checked_gener
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   PRV.SingleFieldTestStruct_decode_vchecked_accept()
 
-def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
+def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
   PRV.SingleFieldTestStruct_decode_vchecked_limit()
 
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:

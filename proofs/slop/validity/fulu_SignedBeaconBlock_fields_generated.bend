@@ -15,5 +15,5 @@ def SignedBeaconBlock_serialize_vrefuse_bad_flag()
   {==}
 
 def SignedBeaconBlock_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_sized((FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_sized((FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}

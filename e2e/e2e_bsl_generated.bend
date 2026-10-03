@@ -322,8 +322,8 @@ def split32(x):
       %Equal.sym(Nat, Nat.add(Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(Word.to_nat(27n, r)))))), 31n), Nat.add(31n, Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(Word.to_nat(27n, r))))))), FD.nat__add_comm(Nat.double(Nat.double(Nat.double(Nat.double(Nat.double(Word.to_nat(27n, r)))))), 31n)) : {U32.to_nat(U32{WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, WCon{True{}, r}}}}}}) == _ : Nat}
       {==}
 # n below 2^31 is within the object API's limit NMAX
-def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
-  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))
+def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  h31
 
 
 # a length of 32 c bytes has no bytes past a whole chunk
@@ -395,7 +395,7 @@ def R_U(po: O.Words) -> Data:
   DK.Ex(EXu.MW, m => DK.P2({po == EXu.TH(m) : O.Words}, DK.P2({UL.uview(EXu.TH(m)) == EXu.VAL(m) : S.Value},
     DK.P2({EXuD.OK(m) == True{} : Bool}, {LY.LN(EXu.ENC(m)) == U32.to_nat(WO_L.len(po)) : Nat}))))
 
-def okU(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool})
+def okU(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {EXuD.OK(EXu.MW{U.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -428,7 +428,7 @@ def pk_U(-po: O.Words, +m: EXu.MW, +ew: {po == EXu.TH(m) : O.Words}, +ev: {UL.uv
   (m, (ew, (ev, (ok, el))))
 
 def kU2(-po: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {po == O.Words{FD.array__thaw(U32, tt), n} : O.Words}, +sf: U.SFT(tt, n, 31n), +c: Nat,
-    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_U(po):
+    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_U(po):
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
@@ -437,7 +437,7 @@ def kU2(-po: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {po == O.Words{FD.
     Equal.sym(Nat, U32.to_nat(WO_L.len(po)), U32.to_nat(n), Equal.cong(O.Words, Nat, z => U32.to_nat(WO_L.len(z)), po, O.Words{FD.array__thaw(U32, tt), n}, ew)))
   pk_U(po, EXu.MW{U.LDEP(U32, tt), tt, n}, ew, lvU(U.LDEP(U32, tt), tt, n, c, pf, hN, ex8, emul), hok, el)
 
-def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}, +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_U(po):
+def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == O.e8(UL.ucnt(po)) : Nat}, +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_U(po):
   (+tt, c1) = cw
   (+n, c2) = c1
   (+ew, +sf) = c2
@@ -445,11 +445,11 @@ def kU(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == O.e8(U
   +c = UL.ucnt(O.Words{FD.array__thaw(U32, tt), n})
   +ex8 = Equal.trans(Nat, U32.to_nat(n), O.e8(c), VS.x8(c), eN2, Equal.sym(Nat, VS.x8(c), O.e8(c), ULW.x8e(c)))
   +emul = Equal.trans(Nat, U32.to_nat(n), VS.x8(c), Nat.mul(c, 8n), ex8, Equal.sym(Nat, Nat.mul(c, 8n), VS.x8(c), VC.x8_mul(c)))
-  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
+  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
   kU2(po, tt, n, ew, sf, c, ex8, emul, hM2)
 
 # from rep (whole elements) and the premise U.sdk (its storage at depth below 28)
-def mk_U(-po: O.Words, +s: S.Schema, +rep: UL.rep_ul(po, s), +hs: U.sdk(po, 31n), +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_U(po):
+def mk_U(-po: O.Words, +s: S.Schema, +rep: UL.rep_ul(po, s), +hs: U.sdk(po, 31n), +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_U(po):
   (+wf, r1) = rep
   (+eN, +hl) = r1
   kU(po, cws(po, 31n, hs), eN, hM)
@@ -471,7 +471,7 @@ def lv8(+tt: FD.array__Tree<U32>, +n: U32) -> {PBF.vview1(O.Words{FD.array__thaw
   +e2 = Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it1(U32.to_nat(n), BL.WX0(tt, n)), PBM.it1(U32.to_nat(n), BL.WX0(tt, n)), it1eq(U32.to_nat(n), BL.WX0(tt, n)))
   Equal.trans(S.Value, PBF.vview1(O.Words{FD.array__thaw(U32, tt), n}), S.Sequence{PBF.it1(U32.to_nat(n), BL.WX0(tt, n))}, W8.VALw(tt, 0n, n), e1, e2)
 
-def ok8(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool})
+def ok8(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {EX8D.OK(EX8.MW{U.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -487,18 +487,18 @@ def pk_B8(-po: O.Words, +m: EX8.MW, +ew: {po == EX8.TH(m) : O.Words}, +ev: {PBF.
     +el: {LY.LN(EX8.ENC(m)) == U32.to_nat(WO_L.len(po)) : Nat}) -> R_B8(po):
   (m, (ew, (ev, (ok, el))))
 
-def kB8(-po: O.Words, +cw: CWS(po, 31n), +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_B8(po):
+def kB8(-po: O.Words, +cw: CWS(po, 31n), +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_B8(po):
   (+tt, c1) = cw
   (+n, c2) = c1
   (+ew, +sf) = c2
-  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
+  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
   +hok = ok8(tt, n, sf, hM2)
   +el = Equal.trans(Nat, LY.LN(EX8.ENC(EX8.MW{U.LDEP(U32, tt), tt, n})), U32.to_nat(n), U32.to_nat(WO_L.len(po)), Equal.sym(Nat, U32.to_nat(n), LY.LN(EX8.ENC(EX8.MW{U.LDEP(U32, tt), tt, n})), EX8D.szx(EX8.MW{U.LDEP(U32, tt), tt, n}, hok)),
     Equal.sym(Nat, U32.to_nat(WO_L.len(po)), U32.to_nat(n), Equal.cong(O.Words, Nat, z => U32.to_nat(WO_L.len(z)), po, O.Words{FD.array__thaw(U32, tt), n}, ew)))
   pk_B8(po, EX8.MW{U.LDEP(U32, tt), tt, n}, ew, lv8(tt, n), hok, el)
 
 # from the premise U.sdk (its storage at depth below 28); every U32 length is within the limit
-def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n), +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_B8(po):
+def mk_B8(-po: O.Words, +hs: U.sdk(po, 31n), +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_B8(po):
   kB8(po, cws(po, 31n, hs), hM)
 
 # ---- historical_roots: a list of Bytes32 as its encode record (EXh) ----
@@ -514,7 +514,7 @@ def hB29(+n: U32, +c: Nat, +eN: {U32.to_nat(n) == WS.e32(c) : Nat}, +hc: {Nat.is
   +h3 = FD.logic__subst(Nat, z => {Nat.is_le(WS.e32(c), z) == True{} : Bool}, VB.pw(29n), U32.to_nat(536870912), Equal.sym(Nat, U32.to_nat(536870912), VB.pw(29n), VG.u32pow(536870912, 29n, {==}, {==})), h2)
   FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(536870912)) == True{} : Bool}, WS.e32(c), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), WS.e32(c), eN), h3)
 
-def okH(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +c: Nat, +eN: {U32.to_nat(n) == WS.e32(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 32n) : Nat}, +hc: {Nat.is_le(c, U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool})
+def okH(+tt: FD.array__Tree<U32>, +n: U32, +sf: U.SFT(tt, n, 31n), +c: Nat, +eN: {U32.to_nat(n) == WS.e32(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 32n) : Nat}, +hc: {Nat.is_le(c, U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {EXhD.OK(EXh.MW{U.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -557,7 +557,7 @@ def pk_H(-po: O.Words, +m: EXh.MW, +ew: {po == EXh.TH(m) : O.Words}, +ev: {BLI.h
   (m, (ew, (ev, (ok, el))))
 
 def kH2(-po: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {po == O.Words{FD.array__thaw(U32, tt), n} : O.Words}, +sf: U.SFT(tt, n, 31n),
-    +eN: {U32.to_nat(n) == WS.e32(U32.to_nat(U32.shrn(n, 5n))) : Nat}, +hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> R_H(po):
+    +eN: {U32.to_nat(n) == WS.e32(U32.to_nat(U32.shrn(n, 5n))) : Nat}, +hc: {Nat.is_le(U32.to_nat(U32.shrn(n, 5n)), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_H(po):
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
@@ -569,17 +569,17 @@ def kH2(-po: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {po == O.Words{FD.
     Equal.sym(Nat, U32.to_nat(WO_L.len(po)), U32.to_nat(n), Equal.cong(O.Words, Nat, z => U32.to_nat(WO_L.len(z)), po, O.Words{FD.array__thaw(U32, tt), n}, ew)))
   pk_H(po, EXh.MW{U.LDEP(U32, tt), tt, n}, ew, lvH(U.LDEP(U32, tt), tt, n, c, pf, hN, emul, cq, {==}), hok, el)
 
-def kH(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == WS.e32(BLI.cnth(po)) : Nat}, +hl: {Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_H(po):
+def kH(-po: O.Words, +cw: CWS(po, 31n), +eN: {U32.to_nat(WO_L.len(po)) == WS.e32(BLI.cnth(po)) : Nat}, +hl: {Nat.is_le(BLI.cnth(po), U32.to_nat(16777216)) == True{} : Bool}, +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_H(po):
   (+tt, c1) = cw
   (+n, c2) = c1
   (+ew, +sf) = c2
   +eN2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO_L.len(z)) == WS.e32(BLI.cnth(z)) : Nat}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, eN)
   +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(BLI.cnth(z), U32.to_nat(16777216)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
-  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO_L.len(z)), VB.pw(31n)) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
+  +hM2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO_L.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, po, O.Words{FD.array__thaw(U32, tt), n}, ew, hM)
   kH2(po, tt, n, ew, sf, eN2, hl2, hM2)
 
 # from rep (whole chunks within the limit) and the premise U.sdk (its storage at depth below 28)
-def mk_H(-po: O.Words, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(16777216) : Nat}, +rep: BLI.rep_lh(po, s), +hs: U.sdk(po, 31n), +hM: {Nat.is_lt(U32.to_nat(WO_L.len(po)), VB.pw(31n)) == True{} : Bool}) -> R_H(po):
+def mk_H(-po: O.Words, +s: S.Schema, +el: {SH.ListOf_limit(s) == U32.to_nat(16777216) : Nat}, +rep: BLI.rep_lh(po, s), +hs: U.sdk(po, 31n), +hM: {Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> R_H(po):
   (+wf, r1) = rep
   (+eN, +hl) = r1
   kH(po, cws(po, 31n, hs), eN, FD.logic__subst(Nat, z => {Nat.is_le(BLI.cnth(po), z) == True{} : Bool}, SH.ListOf_limit(s), U32.to_nat(16777216), el, hl), hM)

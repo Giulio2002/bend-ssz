@@ -28,6 +28,7 @@ import ../obj/spec_bits_generated.bend as P0_FB
 import ../obj/dk.bend as P0_DK
 import ../obj/vuwv_b96_generated.bend as P0_V_b96
 import ../obj/encx_BeaconBlock_iface_generated.bend as P0_EC_BeaconBlock
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -62,6 +63,6 @@ def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vreject_
 def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_ms_size() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, U32, FuluSignedBeaconBlock_e.SignedBeaconBlock_size(FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) == 1120 : U32}:
   P2_PRV.SignedBeaconBlock_ms_size()
 
-def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_mc_ser() -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_serialize(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638494))) == (Pair.fst(FuluSignedBeaconBlock_d.SignedBeaconBlock, P3_B.Buf, FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638494)))), P3_O.encoded(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, P3_B.Buf, FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638494)))))) : FuluSignedBeaconBlock_d.SignedBeaconBlock & P3_O.Encoded}:
+def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_mc_ser() -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_serialize(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638732))) == (Pair.fst(FuluSignedBeaconBlock_d.SignedBeaconBlock, P3_B.Buf, FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638732)))), P3_O.encoded(Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, P3_B.Buf, FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_signature(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBytes96_d.b96_seed(2271638732)))))) : FuluSignedBeaconBlock_d.SignedBeaconBlock & P3_O.Encoded}:
   P3_PRV.SignedBeaconBlock_mc_ser()
 

@@ -213,7 +213,7 @@ def BeaconBlockBody_bx_pk_back(pair: Array<U32> & (FuluBeaconBlockBody_d.BeaconB
 def BeaconBlockBody_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>) -> Array<U32> & (O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32):
   match o:
     case O.BSome{v, rest}: BeaconBlockBody_bx_pk_back(BeaconBlockBody_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def BeaconBlockBody_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32)) -> Array<U32> & (O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32):
   (out, r) = pair
@@ -231,9 +231,14 @@ def BeaconBlockBody_enc_put(+n: U32, pair: Array<U32> & (FuluBeaconBlockBody_d.B
   (o, m) = r
   BeaconBlockBody_enc_out(n, out, o, m)
 
+def BeaconBlockBody_enc_go(bad: Bool, +n: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: BeaconBlockBody_enc_put(n, BeaconBlockBody_putn(O.out_new(n), 0, o))
+
 def BeaconBlockBody_enc_sized(pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf:
   (o, +n) = pair
-  BeaconBlockBody_enc_put(n, BeaconBlockBody_putn(O.out_new(n), 0, o))
+  BeaconBlockBody_enc_go(O.is_poisoned(n), n, o)
 
 def BeaconBlockBody_encode(o: FuluBeaconBlockBody_d.BeaconBlockBody) -> FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf: BeaconBlockBody_enc_sized(BeaconBlockBody_size(o))
 

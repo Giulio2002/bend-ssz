@@ -12,7 +12,7 @@ import ./Fulu_list_Eth1Data_2048_def_generated.bend as Fulu_list_Eth1Data_2048_d
 
 def l2048_Eth1Data_szf(+n: U32, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 72 : U32), 2147483648))
+  (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 72), 4294967295))
 
 def l2048_Eth1Data_size(o: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l2048_Eth1Data_put(out: Array<U32>, +pos: U32, o: Fulu_list_Eth1Data_2048_d.
 
 def l2048_Eth1Data_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq) -> Array<U32> & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 72 : U32)))
+  (out, (sq, O.mulc(n, 72)))
 
 def l2048_Eth1Data_putn(out: Array<U32>, +pos: U32, o: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq) -> Array<U32> & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l2048_Eth1Data_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Eth1Data_2048_
   (o, ok) = pair
   match ok:
     case True{}: l2048_Eth1Data_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l2048_Eth1Data_va_cap(ok: Bool, +n: U32, pair: Array<FuluEth1Data_d.Eth1Data> & U32) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool:
   (arr, +c) = pair

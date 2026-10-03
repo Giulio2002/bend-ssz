@@ -78,7 +78,7 @@ def vec_bool_8__decode_none__vec_bool_8_spec_reject(buf: P1_B.Buf, +m: U32, e: {
 def vec_bool_8__decode_none__vec_bool_8_spec_reject_bool(+x0: U32, +x1: U32, +hb: {P1_SP2.lf(P1_SF.limbs([x0, x1]), True{}) == False{} : Bool}) -> {vec_bool_8_r.vec_bool_8_decode(P1_B.Buf{ANode{ALeaf{x0}, ALeaf{x1}}, 8}, 8) == (P1_B.Buf{ANode{ALeaf{x0}, ALeaf{x1}}, 8}, None{}) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
   P1_PRV.vec_bool_8_spec_reject_bool(x0, x1, hb)
 
-def vec_bool_8__decode_offsets__vec_bool_8_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_bool_8_r.vec_bool_8_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, P3_O.Words>}:
+def vec_bool_8__decode_offsets__vec_bool_8_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_bool_8_r.vec_bool_8_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.vec_bool_8_decode_vchecked_limit()
 
 def vec_bool_8__decode_offsets__vec_bool_8_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_bool_8_r.vec_bool_8_dchw(8, 8, (P3_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, vec_bool_8_r.vec_bool_8_decode_checked(P3_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:

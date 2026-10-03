@@ -7,15 +7,15 @@ import ../../../types/Fulu_list_PendingDeposit_134217728_def_generated.bend as F
 # BeaconState: the boundary of the append guard of l134217728_PendingDeposit (manual spec-mutation audit, round 3; docs/mutation_testing/MUTATION_PROOFS.md).
 
 def BeaconState_serialize_vcoll_l134217728_PendingDeposit_appb_below()
-    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(24n), 11184809}, FuluPendingDeposit_d.PendingDeposit_default())) == True{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(25n), 22369620}, FuluPendingDeposit_d.PendingDeposit_default())) == True{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingDeposit_appb_at()
-    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(24n), 11184810}, FuluPendingDeposit_d.PendingDeposit_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(25n), 22369621}, FuluPendingDeposit_d.PendingDeposit_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingDeposit_appb_above()
-    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(24n), 11184811}, FuluPendingDeposit_d.PendingDeposit_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Bool, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_append(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(25n), 22369622}, FuluPendingDeposit_d.PendingDeposit_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingDeposit_appb_fit()

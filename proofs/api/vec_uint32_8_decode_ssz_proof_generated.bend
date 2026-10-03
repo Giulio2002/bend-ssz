@@ -81,7 +81,7 @@ def vec_uint32_8__decode_tree__vec_uint32_8_spec_decode_tree(+t: P3_FD.array__Tr
 def vec_uint32_8__decode_input__vec_uint32_8_spec_input(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32) -> {vec_uint32_8_r.vec_uint32_8_decode(P4_B.fill_at(P4_B.alloc(32), 0, P4_F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), 32) == (P4_B.fill_at(P4_B.alloc(32), 0, P4_F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), Some{P4_O.Words{ANode{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 32}}) : P4_B.Buf & Maybe<&1, P4_O.Words>}:
   P4_PRV.vec_uint32_8_spec_input(x0, x1, x2, x3, x4, x5, x6, x7)
 
-def vec_uint32_8__decode_offsets__vec_uint32_8_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint32_8_r.vec_uint32_8_dchw(2147483648, 2147483648, (P5_B.empty(), 536870912))) == None{} : Maybe<&1, P5_O.Words>}:
+def vec_uint32_8__decode_offsets__vec_uint32_8_decode_vchecked_limit() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint32_8_r.vec_uint32_8_dchw(4294967265, 4294967265, (P5_B.empty(), 1073741824))) == None{} : Maybe<&1, P5_O.Words>}:
   P5_PRV.vec_uint32_8_decode_vchecked_limit()
 
 def vec_uint32_8__decode_offsets__vec_uint32_8_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint32_8_r.vec_uint32_8_dchw(32, 32, (P5_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint32_8_r.vec_uint32_8_decode_checked(P5_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:

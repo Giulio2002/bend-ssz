@@ -67,7 +67,7 @@ def okwOfOk(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h
   +s0 = h
   +p0 = FD.logic__and_left(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), s0)
   +s1 = FD.logic__and_right(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), s0)
-  FD.logic__and_intro(EC_BeaconBlock.OKW(m_message), Nat.is_lt(OB.ENDC(m_message, signature), VB.pw(31n)), EC_BeaconBlocko.okwOfOkM(m_message, p0), VCN.lt31q(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), 28n, {==}, s1))
+  FD.logic__and_intro(EC_BeaconBlock.OKW(m_message), Nat.is_le(OB.ENDC(m_message, signature), U32.to_nat(VB.NMAX())), EC_BeaconBlocko.okwOfOkM(m_message, p0), VCN.lt31q(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), 28n, {==}, s1))
 
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
@@ -76,7 +76,7 @@ def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
 def bndxO(m, hok):
   match m:
-    case OB.MW{+m_message, +signature}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), OB.ENDC(m_message, signature), OB.lenEW(m_message, signature, hok)), OB.ok_bndW(m_message, signature, hok))
+    case OB.MW{+m_message, +signature}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), OB.ENDC(m_message, signature), OB.lenEW(m_message, signature, hok)), OB.ok_bndW(m_message, signature, hok))

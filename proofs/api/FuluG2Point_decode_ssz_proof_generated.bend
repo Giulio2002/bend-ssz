@@ -103,7 +103,7 @@ def FuluG2Point__decode_input__G2Point_ms_build() -> {FuluG2Point_r.G2Point_buil
 def FuluG2Point__decode_input__G2Point_ms_dec() -> {(FuluG2Point_r.G2Point_decode(P6_B.Buf{FuluBytes96_e.b96_put(P6_O.out_at(7n), 0, FuluBytes96_d.b96_seed(2271560481)), 96}, 96), FuluG2Point_r.G2Point_decode(P6_B.Buf{FuluBytes96_e.b96_put(P6_O.out_at(7n), 0, FuluBytes96_d.b96_seed(2271560482)), 96}, 96)) == ((P6_B.Buf{FuluBytes96_e.b96_put(P6_O.out_at(7n), 0, FuluBytes96_d.b96_seed(2271560481)), 96}, Some{FuluBytes96_d.b96_seed(2271560481)}), (P6_B.Buf{FuluBytes96_e.b96_put(P6_O.out_at(7n), 0, FuluBytes96_d.b96_seed(2271560482)), 96}, Some{FuluBytes96_d.b96_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>) & (P6_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>)}:
   P6_PRV.G2Point_ms_dec()
 
-def FuluG2Point__decode_offsets__G2Point_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
+def FuluG2Point__decode_offsets__G2Point_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.G2Point_decode_vchecked_limit()
 
 def FuluG2Point__decode_offsets__G2Point_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(96, 96, (P7_B.Buf{Array.new(U32, 5n, 0), 96}, 24))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 96}, 96))) == (True{}, True{}) : Bool & Bool}:

@@ -830,7 +830,7 @@ def top_text(n, Tn, ws, WA, HX, FSX, SRC, SRCa, OBJa, HDRL, RHS, RHSp, Y, TP, HN
     w('')
     w(f'def npX({HNC}) -> {{O.is_poisoned(SFSX(K)) == False{{}} : Bool}}:')
     w(f'  +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add({FSX}n, Nat.add({LIMN}, 1n))) == {TRUE}}}, Nat.add({FSX}n, {NKn}), U32.to_nat(SFSX(K)), Equal.sym(Nat, U32.to_nat(SFSX(K)), Nat.add({FSX}n, {NKn}), eSX(K, hN)), Order.add_left({FSX}n, {NKn}, Nat.add({LIMN}, 1n), E.eNK(K, hN)))')
-    w(f'  VBE.np31(SFSX(K), 18n, {{==}}, FD.nat__le_lt_trans(U32.to_nat(SFSX(K)), Nat.add({FSX}n, Nat.add({LIMN}, 1n)), FD.spec_common__pow2(18n), hl, {{==}}))')
+    w(f'  VE.np31(SFSX(K), 18n, {{==}}, FD.nat__le_lt_trans(U32.to_nat(SFSX(K)), Nat.add({FSX}n, Nat.add({LIMN}, 1n)), FD.spec_common__pow2(18n), hl, {{==}}))')
     w('')
     w(f'# The encoding\'s words: the header\'s {HX}, then the bit list\'s q + 1.')
     w(f'def nwS({HNC}) -> {{VC.NW(SFSX(K)) == Nat.add({HX}n, Nat.add({q}, 1n)) : Nat}}:')

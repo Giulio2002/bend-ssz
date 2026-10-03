@@ -101,7 +101,7 @@ def uint256__decode_input__uint256_ms_build() -> {uint256_r.uint256_build(P6_B.B
 def uint256__decode_input__uint256_ms_dec() -> {(uint256_r.uint256_decode(P6_B.Buf{uint256_e.u256_put(P6_O.out_at(5n), 0, uint256_d.u256_seed(2271560481)), 32}, 32), uint256_r.uint256_decode(P6_B.Buf{uint256_e.u256_put(P6_O.out_at(5n), 0, uint256_d.u256_seed(2271560482)), 32}, 32)) == ((P6_B.Buf{uint256_e.u256_put(P6_O.out_at(5n), 0, uint256_d.u256_seed(2271560481)), 32}, Some{uint256_d.u256_seed(2271560481)}), (P6_B.Buf{uint256_e.u256_put(P6_O.out_at(5n), 0, uint256_d.u256_seed(2271560482)), 32}, Some{uint256_d.u256_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, uint256_d.Uint256>) & (P6_B.Buf & Maybe<&1, uint256_d.Uint256>)}:
   P6_PRV.uint256_ms_dec()
 
-def uint256__decode_offsets__uint256_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, uint256_d.Uint256>}:
+def uint256__decode_offsets__uint256_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, uint256_d.Uint256>}:
   P7_PRV.uint256_decode_vchecked_limit()
 
 def uint256__decode_offsets__uint256_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_dchw(32, 32, (P7_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:

@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>) -> Bool:
 def is_some(a: Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, b: Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>) -> Bool & Bool: (some1(a), some1(b))
 
 def HistoricalSummary_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   {==}
 
 def HistoricalSummary_decode_vchecked_accept()

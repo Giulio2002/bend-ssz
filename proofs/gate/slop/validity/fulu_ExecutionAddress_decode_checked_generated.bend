@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_ExecutionAddress_decode_checked_generated.ben
 def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (B.Buf{Array.new(U32, 3n, 0), 20}, 5))), Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
   PRV.ExecutionAddress_decode_vchecked_accept()
 
-def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
+def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.ExecutionAddress_decode_vchecked_limit()
 
 def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(B.Buf{Array.new(U32, 0n, 0), 20}, 20)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:

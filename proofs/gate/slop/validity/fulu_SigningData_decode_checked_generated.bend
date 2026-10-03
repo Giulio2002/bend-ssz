@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_SigningData_decode_checked_generated.bend as 
 def SigningData__decode_offsets__SigningData_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_dchw(64, 64, (B.Buf{Array.new(U32, 4n, 0), 64}, 16))), Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
   PRV.SigningData_decode_vchecked_accept()
 
-def SigningData__decode_offsets__SigningData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:
+def SigningData__decode_offsets__SigningData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:
   PRV.SigningData_decode_vchecked_limit()
 
 def SigningData__decode_offsets__SigningData_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:

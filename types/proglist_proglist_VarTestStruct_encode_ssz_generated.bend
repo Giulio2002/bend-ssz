@@ -43,7 +43,7 @@ def pl_pl_VarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<proglist_VarTestSt
 def pl_pl_VarTestStruct_sz_ok(ok: Bool, arr: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, +n: U32) -> proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq & U32:
   match ok:
     case True{}: pl_pl_VarTestStruct_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, 2147483648)
+    case False{}: (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, 4294967295)
 
 def pl_pl_VarTestStruct_sz_cap(+n: U32, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & U32) -> proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def pl_pl_VarTestStruct_pk(out: Array<U32>, +pos: U32, pair: proglist_proglist_V
   (o, ok) = pair
   match ok:
     case True{}: pl_pl_VarTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_pl_VarTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>> & Bool) -> proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq & Bool:
   (arr, b) = pair

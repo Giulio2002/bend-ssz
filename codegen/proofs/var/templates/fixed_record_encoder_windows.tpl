@@ -240,7 +240,7 @@ def valid_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_
   {==}
 
 def RTL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.${p}_putk(FD.array__thaw(U32, D), X, THL_${p}(A, N)) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+  {T.${p}_putk(FD.array__thaw(U32, D), X, THL_${p}(A, N)) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
 def BYL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_${p}(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), ${X0}, ENCL_${p}(A, N)) : +List<U32>}
 def PFL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +q: Nat, +r: Nat) -> Data:
@@ -250,9 +250,9 @@ def PFL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +q: Nat, +r: Nat) -> Data
 def putk_rt_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}, +dd: Nat, +D: ${TR}, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_${p}(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_${p}(A, N, dd, D, X, q, r):
   %Equal.sym(T.${p}_Seq & Bool, T.${p}_valid(THL_${p}(A, N)), (THL_${p}(A, N), True{}), valid_${p}(A, N, h)) :
-    {T.${p}_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+    {T.${p}_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
   %Equal.sym(Array<U32> & T.${p}_Seq, T.${p}_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), ${TH}), (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), THL_${p}(A, N)), rtb) :
-    {T.${p}_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+    {T.${p}_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, q, r)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
@@ -273,19 +273,29 @@ def putx_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}, +dd: Nat, +D
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_size(THL_${p}(A, N)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}:
+def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_size(THL_${p}(A, N)) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}:
   +d = TDM_${p}(A)
   %Equal.sym(Array<T.${R}> & U32, Array.size(T.${R}, ${TH}), (${TH}, FD.u32__pow2u(d)), FD.array__size_thaw(T.${R}, d, A, okl_pf_${p}(A, N, h))) :
-    {T.${p}_szf(N, _) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {T.${p}_szf(N, _) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_${p}(A, N, h)) :
-    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 4294967295)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {(THL_${p}(A, N), O.pick(_, O.mulc(N, ${RS}), 4294967295)) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}
   {==}
+
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_${p}(+A: ${TRR}, +N: U32, +hN: {Nat.is_le(LL_${p}(A, N), U32.to_nat(VB.NMAX())) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == LL_${p}(A, N) : Nat}:
+  VRX.mulqcW(N, U32.to_nat(N), ${RS}, ${Wn}, {==}, {==}, hN, {==}, {==}, {==})
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
+def szx_${p}W(+A: ${TRR}, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == ${TRUE}},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_${p}(A, N)))), VB.pw(dd)) == ${TRUE}}, +hs31: {Nat.is_le(LL_${p}(A, N), U32.to_nat(VB.NMAX())) == ${TRUE}},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_${p}(A, N))), FD.spec_common__pow2(32n)) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == LL_${p}(A, N) : Nat}:
+  szxB_${p}(A, N, hs31)
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
 def szx_${p}(+A: ${TRR}, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == ${TRUE}},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_${p}(A, N)))), VB.pw(dd)) == ${TRUE}}) -> {U32.to_nat(U32.mul(N, ${RS})) == LL_${p}(A, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), ${RS}, ${Wn}, {==}, {==}, hd,
-    FD.nat__le_trans(LL_${p}(A, N), Nat.add(${X0}, LL_${p}(A, N)), VB.pw(2n+dd), Order.left_below_sum(${X0}, LL_${p}(A, N)), VRX.xend(q, r, LL_${p}(A, N), dd, hl)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_${p}(A, N)))), VB.pw(dd)) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == LL_${p}(A, N) : Nat}:
+  szxB_${p}(A, N, VRX.hs31w(q, r, LL_${p}(A, N), dd, hd, hl))
+
 
 @@ spec_x_text @@
 
@@ -838,7 +848,7 @@ def valid_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_
   {==}
 
 def RTL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.${p}_putk(FD.array__thaw(U32, D), X, THL_${p}(A, N)) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+  {T.${p}_putk(FD.array__thaw(U32, D), X, THL_${p}(A, N)) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
 def BYL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_${p}(A, N, dd, D, X)) == UW.SPL(UA.BYT(D), ${X0}, ENCL_${p}(A, N)) : +List<U32>}
 def PFL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +X: U32) -> Data:
@@ -848,9 +858,9 @@ def PFL_${p}(+A: ${TRR}, +N: U32, +dd: Nat, +D: ${TR}, +X: U32) -> Data:
 def putk_rt_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}, +dd: Nat, +D: ${TR}, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_${p}(U32.is_eq(N, 0), A, N, dd, D, X)) -> RTL_${p}(A, N, dd, D, X, q, r):
   %Equal.sym(T.${p}_Seq & Bool, T.${p}_valid(THL_${p}(A, N)), (THL_${p}(A, N), True{}), valid_${p}(A, N, h)) :
-    {T.${p}_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+    {T.${p}_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
   %Equal.sym(Array<U32> & T.${p}_Seq, T.${p}_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), ${TH}), (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), THL_${p}(A, N)), rtb) :
-    {T.${p}_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), U32.mul(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
+    {T.${p}_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_${p}(A, N, dd, D, X)), (THL_${p}(A, N), O.mulc(N, ${RS}))) : Array<U32> & (T.${p}_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
@@ -871,19 +881,29 @@ def putx_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}, +dd: Nat, +D
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_size(THL_${p}(A, N)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}:
+def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_size(THL_${p}(A, N)) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}:
   +d = TDM_${p}(A)
   %Equal.sym(Array<T.${R}> & U32, Array.size(T.${R}, ${TH}), (${TH}, FD.u32__pow2u(d)), FD.array__size_thaw(T.${R}, d, A, okl_pf_${p}(A, N, h))) :
-    {T.${p}_szf(N, _) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {T.${p}_szf(N, _) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_${p}(A, N, h)) :
-    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 4294967295)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {(THL_${p}(A, N), O.pick(_, O.mulc(N, ${RS}), 4294967295)) == (THL_${p}(A, N), O.mulc(N, ${RS})) : T.${p}_Seq & U32}
   {==}
+
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_${p}(+A: ${TRR}, +N: U32, +hN: {Nat.is_le(${LLv}, U32.to_nat(VB.NMAX())) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == ${LLv} : Nat}:
+  VRX.mulck(N, ${RS}, 31n, {==}, {==}, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == ${TRUE}}, ${LLv}, Nat.mul(U32.to_nat(N), U32.to_nat(${RS})), {==}, hN))
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
+def szx_${p}W(+A: ${TRR}, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == ${TRUE}},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, ${LLv}))), VB.pw(dd)) == ${TRUE}}, +hs31: {Nat.is_le(${LLv}, U32.to_nat(VB.NMAX())) == ${TRUE}},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, ${LLv})), FD.spec_common__pow2(32n)) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == ${LLv} : Nat}:
+  szxB_${p}(A, N, hs31)
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
 def szx_${p}(+A: ${TRR}, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == ${TRUE}},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, ${LLv}))), VB.pw(dd)) == ${TRUE}}) -> {U32.to_nat(U32.mul(N, ${RS})) == ${LLv} : Nat}:
-  bmul(dd, N, U32.to_nat(N), ${RS}, ${S}, {==}, {==}, hd,
-    FD.nat__le_trans(${LLv}, Nat.add(${X0}, ${LLv}), VB.pw(2n+dd), Order.left_below_sum(${X0}, ${LLv}), VRX.xend(q, r, ${LLv}, dd, hl)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, ${LLv}))), VB.pw(dd)) == ${TRUE}}) -> {U32.to_nat(O.mulc(N, ${RS})) == ${LLv} : Nat}:
+  szxB_${p}(A, N, VRX.hs31w(q, r, ${LLv}, dd, hd, hl))
+
 
 
 @@ _vlist_spec_side @@
@@ -1227,7 +1247,7 @@ def VAL(m: MW) -> S.Value:
     case MW{+da, +A, +N}: S.Sequence{ITS(U32.to_nat(N), A, 0n)}
 def SZ(m: MW) -> U32:
   match m:
-    case MW{+da, +A, +N}: U32.mul(N, @RS)
+    case MW{+da, +A, +N}: O.mulc(N, @RS)
 def PUTLb(b: Bool, +A: @TRR, +N: U32, +dd: Nat, +D: @TR, +P0: Nat) -> @TR:
   match b:
     case True{}: D
@@ -1334,14 +1354,14 @@ def hzx(+da: Nat, +A: @TRR, +N: U32, +r: Nat, +P0: Nat, +D: @TR,
     len_rbs(U32.to_nat(N), A, 0n), WD.zpre(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}), VS.bdr(P0, UA.BYT(D)), hz))
 
 def RTX(+da: Nat, +A: @TRR, +N: U32, +dd: Nat, +D: @TR, +X: U32, +P0: Nat) -> Data:
-  {T.@p_putk(FD.array__thaw(U32, D), X, T.@p_Seq{@TH, N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, U32.mul(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
+  {T.@p_putk(FD.array__thaw(U32, D), X, T.@p_Seq{@TH, N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, O.mulc(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
 
 def putk_rt(+da: Nat, +A: @TRR, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: @TR, +X: U32, +P0: Nat,
     +rtb: RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0)) -> RTX(da, A, N, dd, D, X, P0):
   %Equal.sym(T.@p_Seq & Bool, T.@p_valid(T.@p_Seq{@TH, N}), (T.@p_Seq{@TH, N}, True{}), valid(da, A, N, h)) :
-    {T.@p_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, U32.mul(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
+    {T.@p_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, O.mulc(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
   %Equal.sym(Array<U32> & T.@p_Seq, T.@p_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), @TH), (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), T.@p_Seq{@TH, N}), rtb) :
-    {T.@p_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, U32.mul(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
+    {T.@p_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.@p_Seq{@TH, N}, O.mulc(N, @RS))) : Array<U32> & (T.@p_Seq & U32)}
   {==}
 
 def go(+da: Nat, +A: @TRR, +N: U32, +dd: Nat, +D: @TR, +X: U32, +q: Nat, +r: Nat,
@@ -1422,9 +1442,10 @@ def szx(m, hok):
     case MW{+da, +A, +N}:
       +Q = A.quad(VB.pw(da))
       +hp = FD.u32__pow2u_value(2n+da, FD.nat__lt_trans(2n+da, 30n, 32n, ok_0(da, A, N, hok), {==}))
-      Equal.trans(Nat, U32.to_nat(U32.mul(N, @RS)), Nat.mul(U32.to_nat(N), @RSn), List.length(&2, U32, RBS(U32.to_nat(N), A, 0n)),
-        VU.mul_le(N, @RS, FD.u32__pow2u(2n+da), FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(U32.to_nat(N), @RSn), z) == True{} : Bool}, Q, U32.to_nat(FD.u32__pow2u(2n+da)),
-          Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(2n+da)), Q, hp), ok_3(da, A, N, hok))),
+      Equal.trans(Nat, U32.to_nat(O.mulc(N, @RS)), Nat.mul(U32.to_nat(N), @RSn), List.length(&2, U32, RBS(U32.to_nat(N), A, 0n)),
+        VRX.mulck(N, @RS, 31n, {==}, {==}, {==}, {==}, VB.le_pw30_nmax(Nat.mul(U32.to_nat(N), @RSn), FD.nat__le_trans(Nat.mul(U32.to_nat(N), @RSn), Q, VB.pw(30n), ok_3(da, A, N, hok),
+          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(30n)) == True{} : Bool}, VB.pw(2n+da), Q, Equal.sym(Nat, Q, VB.pw(2n+da), UW.qpw(da)),
+            FD.nat__pow2_mono(2n+da, 30n, FD.nat__lt_le(2n+da, 30n, ok_0(da, A, N, hok))))))),
         Equal.sym(Nat, List.length(&2, U32, RBS(U32.to_nat(N), A, 0n)), Nat.mul(U32.to_nat(N), @RSn), len_rbs(U32.to_nat(N), A, 0n)))
 
 law sizex:
@@ -1435,9 +1456,9 @@ def sizex(m, hok):
   match m:
     case MW{+da, +A, +N}:
       %Equal.sym(Array<T.@R> & U32, Array.size(T.@R, @TH), (@TH, FD.u32__pow2u(da)), FD.array__size_thaw(T.@R, da, A, ok_1(da, A, N, hok))) :
-        {T.@p_szf(N, _) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
+        {T.@p_szf(N, _) == (T.@p_Seq{@TH, N}, O.mulc(N, @RS)) : T.@p_Seq & U32}
       %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, hok)) :
-        {(T.@p_Seq{@TH, N}, O.pick(_, U32.mul(N, @RS), 4294967295)) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
+        {(T.@p_Seq{@TH, N}, O.pick(_, O.mulc(N, @RS), 4294967295)) == (T.@p_Seq{@TH, N}, O.mulc(N, @RS)) : T.@p_Seq & U32}
       {==}
 
 law validx:

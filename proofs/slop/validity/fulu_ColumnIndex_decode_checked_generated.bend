@@ -14,7 +14,7 @@ def some1(m: Maybe<&1, O.U64>) -> Bool:
 def is_some(a: Maybe<&1, O.U64>, b: Maybe<&1, O.U64>) -> Bool & Bool: (some1(a), some1(b))
 
 def ColumnIndex_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.U64>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   {==}
 
 def ColumnIndex_decode_vchecked_accept()

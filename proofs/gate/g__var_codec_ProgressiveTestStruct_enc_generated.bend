@@ -33,6 +33,7 @@ import ../obj/encx_pl_SmallTestStruct_generated.bend as EX_pl_SmallTestStruct
 import ../obj/encx_pl_SmallTestStruct_d_generated.bend as EX_pl_SmallTestStruct_D
 import ../obj/encx_pl_pl_VarTestStruct_generated.bend as EX_pl_pl_VarTestStruct
 import ../obj/encx_pl_pl_VarTestStruct_d_generated.bend as EX_pl_pl_VarTestStruct_D
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

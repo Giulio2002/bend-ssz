@@ -153,7 +153,7 @@ def l2048_Eth1Data_written(+A: F.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, 
 
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def l2048_Eth1Data_api_encode_set(+A: F.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +i: U32, +v: FuluEth1Data_d.Eth1Data, +h: {E.OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l2048_Eth1Data(F.array__upd(FuluEth1Data_d.Eth1Data, E.TDM_l2048_Eth1Data(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l2048_Eth1Data(F.array__upd(FuluEth1Data_d.Eth1Data, E.TDM_l2048_Eth1Data(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(E.VALL_l2048_Eth1Data(A, N), U32.to_nat(i), E.RVW_Eth1Data(v)), S.ListOf{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, U32.to_nat(2048)}) == Some{[S.Variable{E.ENCL_l2048_Eth1Data(F.array__upd(FuluEth1Data_d.Eth1Data, E.TDM_l2048_Eth1Data(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}:
   %l2048_Eth1Data_vall_set(A, N, i, v, h, hs) :
     {Codec.parts(_, S.ListOf{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, U32.to_nat(2048)}) == Some{[S.Variable{E.ENCL_l2048_Eth1Data(F.array__upd(FuluEth1Data_d.Eth1Data, E.TDM_l2048_Eth1Data(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}

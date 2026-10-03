@@ -91,7 +91,7 @@ def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vreject_bx
 def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vreject_bx_valid() -> {FuluAttesterSlashing_e.AttesterSlashing_bx_valid(P1_O.BNone{}) == (P1_O.BNone{}, False{}) : P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool}:
   P1_PRV.AttesterSlashing_serialize_vreject_bx_valid()
 
-def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vpoison_bx_absent() -> {Pair.snd(P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 1n, 0), 0, P1_O.BNone{}))) == 2147483648 : U32}:
+def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vpoison_bx_absent() -> {Pair.snd(P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 1n, 0), 0, P1_O.BNone{}))) == 4294967295 : U32}:
   P1_PRV.AttesterSlashing_serialize_vpoison_bx_absent()
 
 def FuluAttesterSlashing__serialize_valid__AttesterSlashing_serialize_vpoison_bx_ok() -> {P1_O.is_poisoned(Pair.snd(P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(FuluAttesterSlashing_d.AttesterSlashing_default()))))) == False{} : Bool}:

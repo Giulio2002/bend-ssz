@@ -69,7 +69,7 @@ def okwOfOk(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.By
   +s0 = h
   +p0 = FD.logic__and_left(EC_BeaconBlockBody.OK(m_body), Nat.is_le(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), A.quad(VB.pw(28n))), s0)
   +s1 = FD.logic__and_right(EC_BeaconBlockBody.OK(m_body), Nat.is_le(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), A.quad(VB.pw(28n))), s0)
-  FD.logic__and_intro(EC_BeaconBlockBody.OKW(m_body), Nat.is_lt(OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), VB.pw(31n)), EC_BeaconBlockBodyo.okwOfOkM(m_body, p0), VCN.lt31q(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), 28n, {==}, s1))
+  FD.logic__and_intro(EC_BeaconBlockBody.OKW(m_body), Nat.is_le(OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), U32.to_nat(VB.NMAX())), EC_BeaconBlockBodyo.okwOfOkM(m_body, p0), VCN.lt31q(Nat.add(84n, LY.LN(EC_BeaconBlockBody.ENC(m_body))), 28n, {==}, s1))
 
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
@@ -78,7 +78,7 @@ def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
 def bndxO(m, hok):
   match m:
-    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), OB.lenEW(slot, proposer_index, parent_root, state_root, m_body, hok)), OB.ok_bndW(slot, proposer_index, parent_root, state_root, m_body, hok))
+    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), OB.lenEW(slot, proposer_index, parent_root, state_root, m_body, hok)), OB.ok_bndW(slot, proposer_index, parent_root, state_root, m_body, hok))

@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluSyncAggregate_d.SyncAggregate>) -> Bool:
 def is_some(a: Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, b: Maybe<&1, FuluSyncAggregate_d.SyncAggregate>) -> Bool & Bool: (some1(a), some1(b))
 
 def SyncAggregate_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   {==}
 
 def SyncAggregate_decode_vchecked_accept()

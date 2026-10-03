@@ -78,7 +78,7 @@ def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arr
   +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENO.HDW(m), DK.P2(EN.HL(m), EN.HZ(m)), g))
   +hl0 = FD.logic__subst(Nat, z => {Nat.is_le(WD.NWN(z), VB.pw(VL.DO(CI.SZ(m)))) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),
     Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), hl)
-  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)),
     Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CIo.bndxO(m, hok))
   +ep = VCN.padb_id(0n, U32.to_nat(CI.SZ(m)))
   +hq = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(CI.SZ(m)), z) == True{} : Bool}, Nat.add(U32.to_nat(CI.SZ(m)), WD.PADB(0n, U32.to_nat(CI.SZ(m)))), A.quad(WD.NWN(U32.to_nat(CI.SZ(m)))), ep,

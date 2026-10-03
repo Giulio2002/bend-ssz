@@ -7,15 +7,15 @@ import ../../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fu
 # BeaconState: the boundary of the append guard of l1099511627776_Validator (manual spec-mutation audit, round 3; docs/mutation_testing/MUTATION_PROOFS.md).
 
 def BeaconState_serialize_vcoll_l1099511627776_Validator_appb_below()
-    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(25n), 17747797}, FuluValidator_d.Validator_default())) == True{} : Bool}:
+    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(26n), 35495596}, FuluValidator_d.Validator_default())) == True{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l1099511627776_Validator_appb_at()
-    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(25n), 17747798}, FuluValidator_d.Validator_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(26n), 35495597}, FuluValidator_d.Validator_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l1099511627776_Validator_appb_above()
-    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(25n), 17747799}, FuluValidator_d.Validator_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_append(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(26n), 35495598}, FuluValidator_d.Validator_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l1099511627776_Validator_appb_fit()

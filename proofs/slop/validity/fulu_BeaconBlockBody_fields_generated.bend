@@ -21,7 +21,7 @@ def BeaconBlockBody_serialize_vrefuse_bad_flag()
   {==}
 
 def BeaconBlockBody_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_senc_sized((FuluBeaconBlockBody_d.BeaconBlockBody_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, O.Encoded, FuluBeaconBlockBody_e.BeaconBlockBody_senc_sized((FuluBeaconBlockBody_d.BeaconBlockBody_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def BeaconBlockBody_serialize_vreject_proposer_slashings()
@@ -141,7 +141,7 @@ def BeaconBlockBody_serialize_vreject_bx_valid()
   {==}
 
 def BeaconBlockBody_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, Pair.snd(Array<U32>, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, Pair.snd(Array<U32>, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def BeaconBlockBody_serialize_vpoison_bx_ok()

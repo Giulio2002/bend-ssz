@@ -39,7 +39,7 @@ def PREM_ProgressiveSingleListContainerTestStruct(v: ProgressiveSingleListContai
 
 def RQ_ProgressiveSingleListContainerTestStruct(o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct) -> Data:
   DK.Ex(CI_ProgressiveSingleListContainerTestStruct.MW, m => DK.P2({o == CI_ProgressiveSingleListContainerTestStruct.TH(m) : ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct}, DK.P2({RT.v_ProgressiveSingleListContainerTestStruct(CI_ProgressiveSingleListContainerTestStruct.TH(m)) == CI_ProgressiveSingleListContainerTestStruct.VAL(m) : S.Value},
-    DK.P2({CI_ProgressiveSingleListContainerTestStruct.OKW(m) == True{} : Bool}, {Nat.is_lt(1n+LY.LN(CI_ProgressiveSingleListContainerTestStruct.ENC(m)), VB.pw(31n)) == True{} : Bool}))))
+    DK.P2({CI_ProgressiveSingleListContainerTestStruct.OKW(m) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_ProgressiveSingleListContainerTestStruct.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}))))
 
 # the object's view is the record's
 def vw_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB, +v0: {S.BitsValue{BO.bview(EX_pbits.TH(m0))} == EX_pbits.VAL(m0) : S.Value}) -> {RT.v_ProgressiveSingleListContainerTestStruct(CI_ProgressiveSingleListContainerTestStruct.TH(CI_ProgressiveSingleListContainerTestStruct.MW{m0})) == CI_ProgressiveSingleListContainerTestStruct.VAL(CI_ProgressiveSingleListContainerTestStruct.MW{m0}) : S.Value}:
@@ -49,16 +49,16 @@ def vw_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB, +v0: {S.BitsVa
 
 # the record's facts: its view, valid, 1 + its bytes within the bound
 def CF_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB) -> Data:
-  DK.P2({RT.v_ProgressiveSingleListContainerTestStruct(CI_ProgressiveSingleListContainerTestStruct.TH(CI_ProgressiveSingleListContainerTestStruct.MW{m0})) == CI_ProgressiveSingleListContainerTestStruct.VAL(CI_ProgressiveSingleListContainerTestStruct.MW{m0}) : S.Value}, DK.P2({CI_ProgressiveSingleListContainerTestStruct.OKW(CI_ProgressiveSingleListContainerTestStruct.MW{m0}) == True{} : Bool}, {Nat.is_lt(1n+LY.LN(CI_ProgressiveSingleListContainerTestStruct.ENC(CI_ProgressiveSingleListContainerTestStruct.MW{m0})), VB.pw(31n)) == True{} : Bool}))
+  DK.P2({RT.v_ProgressiveSingleListContainerTestStruct(CI_ProgressiveSingleListContainerTestStruct.TH(CI_ProgressiveSingleListContainerTestStruct.MW{m0})) == CI_ProgressiveSingleListContainerTestStruct.VAL(CI_ProgressiveSingleListContainerTestStruct.MW{m0}) : S.Value}, DK.P2({CI_ProgressiveSingleListContainerTestStruct.OKW(CI_ProgressiveSingleListContainerTestStruct.MW{m0}) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_ProgressiveSingleListContainerTestStruct.ENC(CI_ProgressiveSingleListContainerTestStruct.MW{m0})), U32.to_nat(VB.NMAX())) == True{} : Bool}))
 
 def c1f_ProgressiveSingleListContainerTestStruct(+m0: EX_pbits.MB, +v0: {S.BitsValue{BO.bview(EX_pbits.TH(m0))} == EX_pbits.VAL(m0) : S.Value}, +o0: {EX_pbits.OK(m0) == True{} : Bool}, +l0: {Nat.is_le(LY.LN(EX_pbits.ENC(m0)), Nat.add(VB.pw(29n), 1n)) == True{} : Bool}) -> CF_ProgressiveSingleListContainerTestStruct(m0):
-  +hb = FD.nat__le_lt_trans(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), VB.pw(31n), Order.add_right(4n, 4n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
+  +hb = FD.nat__le_trans(Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), U32.to_nat(VB.NMAX()), Order.add_right(4n, 4n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
     EP.bndL(4n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(4n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
-  +hok = FD.logic__and_intro(EX_pbits.OK(m0), Nat.is_lt(CI_ProgressiveSingleListContainerTestStruct.ENDC(m0), VB.pw(31n)), o0,
+  +hok = FD.logic__and_intro(EX_pbits.OK(m0), Nat.is_le(CI_ProgressiveSingleListContainerTestStruct.ENDC(m0), U32.to_nat(VB.NMAX())), o0,
     hb)
-  +hb1 = FD.nat__le_lt_trans(Nat.add(1n+4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(5n, LY.LN(EX_pbits.ENC(m0))), VB.pw(31n), Order.add_right(1n+4n, 5n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
+  +hb1 = FD.nat__le_trans(Nat.add(1n+4n, LY.LN(EX_pbits.ENC(m0))), Nat.add(5n, LY.LN(EX_pbits.ENC(m0))), U32.to_nat(VB.NMAX()), Order.add_right(1n+4n, 5n, LY.LN(EX_pbits.ENC(m0)), FD.nat__le_trans(4n, 4n, 4n, Order.reflexive(4n), {==})),
     EP.bndL(5n, LY.LN(EX_pbits.ENC(m0)), 29n, l0, FD.nat__le_trans(Nat.add(5n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
-  +lb = FD.logic__subst(Nat, z => {Nat.is_lt(1n+z, VB.pw(31n)) == True{} : Bool}, Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), List.length(&2, U32, K_ProgressiveSingleListContainerTestStruct.ENCC(m0)),
+  +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), List.length(&2, U32, K_ProgressiveSingleListContainerTestStruct.ENCC(m0)),
     Equal.sym(Nat, List.length(&2, U32, K_ProgressiveSingleListContainerTestStruct.ENCC(m0)), Nat.add(4n, LY.LN(EX_pbits.ENC(m0))), CI_ProgressiveSingleListContainerTestStruct.lenEW(m0, hok)), hb1)
   (vw_ProgressiveSingleListContainerTestStruct(m0, v0), (hok, lb))
 
@@ -88,7 +88,7 @@ def PREM_ProgressiveVarTestStruct(v: ProgressiveVarTestStruct_d.ProgressiveVarTe
 
 def RQ_ProgressiveVarTestStruct(o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> Data:
   DK.Ex(CI_ProgressiveVarTestStruct.MW, m => DK.P2({o == CI_ProgressiveVarTestStruct.TH(m) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}, DK.P2({RT.v_ProgressiveVarTestStruct(CI_ProgressiveVarTestStruct.TH(m)) == CI_ProgressiveVarTestStruct.VAL(m) : S.Value},
-    DK.P2({CI_ProgressiveVarTestStruct.OKW(m) == True{} : Bool}, {Nat.is_lt(1n+LY.LN(CI_ProgressiveVarTestStruct.ENC(m)), VB.pw(31n)) == True{} : Bool}))))
+    DK.P2({CI_ProgressiveVarTestStruct.OKW(m) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_ProgressiveVarTestStruct.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}))))
 
 # the object's view is the record's
 def vw_ProgressiveVarTestStruct(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB, +h0: {U32.is_lt(x0, 256) == True{} : Bool}, +v1: {PBF.vview2(EX_l123_u16.TH(m1)) == EX_l123_u16.VAL(m1) : S.Value}, +v2: {S.BitsValue{BO.bview(EX_pbits.TH(m2))} == EX_pbits.VAL(m2) : S.Value}) -> {RT.v_ProgressiveVarTestStruct(CI_ProgressiveVarTestStruct.TH(CI_ProgressiveVarTestStruct.MW{x0, m1, m2})) == CI_ProgressiveVarTestStruct.VAL(CI_ProgressiveVarTestStruct.MW{x0, m1, m2}) : S.Value}:
@@ -100,20 +100,20 @@ def vw_ProgressiveVarTestStruct(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB,
 
 # the record's facts: its view, valid, 1 + its bytes within the bound
 def CF_ProgressiveVarTestStruct(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB) -> Data:
-  DK.P2({RT.v_ProgressiveVarTestStruct(CI_ProgressiveVarTestStruct.TH(CI_ProgressiveVarTestStruct.MW{x0, m1, m2})) == CI_ProgressiveVarTestStruct.VAL(CI_ProgressiveVarTestStruct.MW{x0, m1, m2}) : S.Value}, DK.P2({CI_ProgressiveVarTestStruct.OKW(CI_ProgressiveVarTestStruct.MW{x0, m1, m2}) == True{} : Bool}, {Nat.is_lt(1n+LY.LN(CI_ProgressiveVarTestStruct.ENC(CI_ProgressiveVarTestStruct.MW{x0, m1, m2})), VB.pw(31n)) == True{} : Bool}))
+  DK.P2({RT.v_ProgressiveVarTestStruct(CI_ProgressiveVarTestStruct.TH(CI_ProgressiveVarTestStruct.MW{x0, m1, m2})) == CI_ProgressiveVarTestStruct.VAL(CI_ProgressiveVarTestStruct.MW{x0, m1, m2}) : S.Value}, DK.P2({CI_ProgressiveVarTestStruct.OKW(CI_ProgressiveVarTestStruct.MW{x0, m1, m2}) == True{} : Bool}, {Nat.is_le(1n+LY.LN(CI_ProgressiveVarTestStruct.ENC(CI_ProgressiveVarTestStruct.MW{x0, m1, m2})), U32.to_nat(VB.NMAX())) == True{} : Bool}))
 
 def c1f_ProgressiveVarTestStruct(+x0: U32, +m1: EX_l123_u16.MW, +m2: EX_pbits.MB, +h0: {U32.is_lt(x0, 256) == True{} : Bool}, +v1: {PBF.vview2(EX_l123_u16.TH(m1)) == EX_l123_u16.VAL(m1) : S.Value}, +v2: {S.BitsValue{BO.bview(EX_pbits.TH(m2))} == EX_pbits.VAL(m2) : S.Value}, +o1: {EX_l123_u16_D.OK(m1) == True{} : Bool}, +o2: {EX_pbits.OK(m2) == True{} : Bool}, +l1: {Nat.is_le(LY.LN(EX_l123_u16.ENC(m1)), 246n) == True{} : Bool}, +l2: {Nat.is_le(LY.LN(EX_pbits.ENC(m2)), Nat.add(VB.pw(29n), 1n)) == True{} : Bool}) -> CF_ProgressiveVarTestStruct(x0, m1, m2):
   +h8_0 = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), U32.is_le(x0, 255),
     Equal.sym(Bool, U32.is_le(x0, 255), Nat.is_le(U32.to_nat(x0), U32.to_nat(255)), VU.le_u32(x0, 255)), LB.small(x0, h0))
-  +hb = FD.nat__le_lt_trans(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(255n, LY.LN(EX_pbits.ENC(m2))), VB.pw(31n), Order.add_right(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 255n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
+  +hb = FD.nat__le_trans(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(255n, LY.LN(EX_pbits.ENC(m2))), U32.to_nat(VB.NMAX()), Order.add_right(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 255n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
     EP.bndL(255n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(255n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
-  +hok = FD.logic__and_intro(EX_l123_u16_D.OK(m1), Bool.and(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_lt(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), VB.pw(31n)))), o1,
-    FD.logic__and_intro(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_lt(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), VB.pw(31n))), o2,
-    FD.logic__and_intro(uint8_e.u8_valid(x0), Nat.is_lt(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), VB.pw(31n)), h8_0,
+  +hok = FD.logic__and_intro(EX_l123_u16_D.OK(m1), Bool.and(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX())))), o1,
+    FD.logic__and_intro(EX_pbits.OK(m2), Bool.and(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX()))), o2,
+    FD.logic__and_intro(uint8_e.u8_valid(x0), Nat.is_le(CI_ProgressiveVarTestStruct.ENDC(x0, m1, m2), U32.to_nat(VB.NMAX())), h8_0,
     hb)))
-  +hb1 = FD.nat__le_lt_trans(Nat.add(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(256n, LY.LN(EX_pbits.ENC(m2))), VB.pw(31n), Order.add_right(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 256n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
+  +hb1 = FD.nat__le_trans(Nat.add(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), Nat.add(256n, LY.LN(EX_pbits.ENC(m2))), U32.to_nat(VB.NMAX()), Order.add_right(1n+Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), 256n, LY.LN(EX_pbits.ENC(m2)), FD.nat__le_trans(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), Nat.add(9n, 246n), 255n, ER.addle(9n, LY.LN(EX_l123_u16.ENC(m1)), 9n, 246n, Order.reflexive(9n), l1), {==})),
     EP.bndL(256n, LY.LN(EX_pbits.ENC(m2)), 29n, l2, FD.nat__le_trans(Nat.add(256n, 1n), VB.pw(9n), VB.pw(29n), {==}, VBG.pw_mono(9n, 29n, {==}))))
-  +lb = FD.logic__subst(Nat, z => {Nat.is_lt(1n+z, VB.pw(31n)) == True{} : Bool}, Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), List.length(&2, U32, K_ProgressiveVarTestStruct.ENCC(x0, m1, m2)),
+  +lb = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), List.length(&2, U32, K_ProgressiveVarTestStruct.ENCC(x0, m1, m2)),
     Equal.sym(Nat, List.length(&2, U32, K_ProgressiveVarTestStruct.ENCC(x0, m1, m2)), Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m1))), LY.LN(EX_pbits.ENC(m2))), CI_ProgressiveVarTestStruct.lenEW(x0, m1, m2, hok)), hb1)
   (vw_ProgressiveVarTestStruct(x0, m1, m2, h0, v1, v2), (hok, lb))
 

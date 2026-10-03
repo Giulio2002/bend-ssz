@@ -12,7 +12,7 @@ import ./Fulu_list_PendingDeposit_134217728_def_generated.bend as Fulu_list_Pend
 
 def l134217728_PendingDeposit_szf(+n: U32, pair: Array<FuluPendingDeposit_d.PendingDeposit> & U32) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 192 : U32), 2147483648))
+  (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 192), 4294967295))
 
 def l134217728_PendingDeposit_size(o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l134217728_PendingDeposit_put(out: Array<U32>, +pos: U32, o: Fulu_list_Pendi
 
 def l134217728_PendingDeposit_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 192 : U32)))
+  (out, (sq, O.mulc(n, 192)))
 
 def l134217728_PendingDeposit_putn(out: Array<U32>, +pos: U32, o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l134217728_PendingDeposit_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Pen
   (o, ok) = pair
   match ok:
     case True{}: l134217728_PendingDeposit_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l134217728_PendingDeposit_va_cap(ok: Bool, +n: U32, pair: Array<FuluPendingDeposit_d.PendingDeposit> & U32) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool:
   (arr, +c) = pair

@@ -17,7 +17,7 @@ def pbits_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O
   (o, ok) = pair
   match ok:
     case True{}: pbits_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pbits_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 0, True{})
 
@@ -39,9 +39,14 @@ def progbitlist_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & 
   (o, m) = r
   progbitlist_enc_out(n, out, o, m)
 
+def progbitlist_enc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: progbitlist_enc_put(n, pbits_putn(O.out_new(n), 0, o))
+
 def progbitlist_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
   (o, +n) = pair
-  progbitlist_enc_put(n, pbits_putn(O.out_new(n), 0, o))
+  progbitlist_enc_go(O.is_poisoned(n), n, o)
 
 def progbitlist_encode(o: O.Bits) -> O.Bits & B.Buf: progbitlist_enc_sized(pbits_size(o))
 

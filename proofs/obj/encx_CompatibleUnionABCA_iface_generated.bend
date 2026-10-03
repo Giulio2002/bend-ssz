@@ -163,7 +163,7 @@ def rt1(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +dd: Nat, +D: FD.arr
   {==}
 def go1W(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC1(x))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_lt(List.length(&2, U32, ENC1(x)), VB.pw(31n)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC1(x)))), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC1(x))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(List.length(&2, U32, ENC1(x)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC1(x)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC1(x)), WD.PADB(r, List.length(&2, U32, ENC1(x)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC1(x)), WD.PADB(r, List.length(&2, U32, ENC1(x))))) : +List<U32>},
     +hok: {OK1(x) == True{} : Bool})
     -> DK.P2(RT1(x, dd, D, X, q, r), BY1(x, dd, D, q, r)):
@@ -236,7 +236,7 @@ def rt2(+x: EA_ProgressiveVarTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +
   {==}
 def go2W(+x: EA_ProgressiveVarTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC2(x))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_lt(List.length(&2, U32, ENC2(x)), VB.pw(31n)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC2(x)))), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC2(x))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(List.length(&2, U32, ENC2(x)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC2(x)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC2(x)), WD.PADB(r, List.length(&2, U32, ENC2(x)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC2(x)), WD.PADB(r, List.length(&2, U32, ENC2(x))))) : +List<U32>},
     +hok: {OK2(x) == True{} : Bool})
     -> DK.P2(RT2(x, dd, D, X, q, r), BY2(x, dd, D, q, r)):
@@ -413,7 +413,7 @@ law putxW:
   for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
-  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hs31: {Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
   for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
@@ -455,7 +455,7 @@ law putx_bytesW:
   for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
-  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hs31: {Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
   for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}

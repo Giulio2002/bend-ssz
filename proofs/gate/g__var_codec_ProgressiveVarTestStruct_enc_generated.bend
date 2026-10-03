@@ -30,6 +30,7 @@ import ../obj/encx_l123_u16_generated.bend as EX_l123_u16
 import ../obj/encx_l123_u16_d_generated.bend as EX_l123_u16_D
 import ../obj/encx_pbits_generated.bend as EX_pbits
 import ../obj/vrecb.bend as VRB
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

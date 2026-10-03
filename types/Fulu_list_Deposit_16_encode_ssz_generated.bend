@@ -12,7 +12,7 @@ import ./Fulu_list_Deposit_16_def_generated.bend as Fulu_list_Deposit_16_d
 
 def l16_Deposit_szf(+n: U32, pair: Array<O.Boxed<FuluDeposit_d.Deposit>> & U32) -> Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 1240 : U32), 2147483648))
+  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295))
 
 def l16_Deposit_size(o: Fulu_list_Deposit_16_d.l16_Deposit_Seq) -> Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32:
   match o:
@@ -54,7 +54,7 @@ def l16_Deposit_put(out: Array<U32>, +pos: U32, o: Fulu_list_Deposit_16_d.l16_De
 
 def l16_Deposit_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_Deposit_16_d.l16_Deposit_Seq) -> Array<U32> & (Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 1240 : U32)))
+  (out, (sq, O.mulc(n, 1240)))
 
 def l16_Deposit_putn(out: Array<U32>, +pos: U32, o: Fulu_list_Deposit_16_d.l16_Deposit_Seq) -> Array<U32> & (Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32):
   match o:
@@ -64,7 +64,7 @@ def l16_Deposit_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Deposit_16_d.l16_
   (o, ok) = pair
   match ok:
     case True{}: l16_Deposit_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l16_Deposit_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool) -> Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool:
   (arr, b) = pair

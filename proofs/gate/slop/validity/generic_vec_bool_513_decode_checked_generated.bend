@@ -10,7 +10,7 @@ import ../../../slop/validity/generic_vec_bool_513_decode_checked_generated.bend
 def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_dchw(513, 513, (B.Buf{Array.new(U32, 8n, 0), 513}, 129))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_decode_checked(B.Buf{Array.new(U32, 8n, 0), 513}, 513))) == (True{}, True{}) : Bool & Bool}:
   PRV.vec_bool_513_decode_vchecked_accept()
 
-def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_513_decode_vchecked_limit()
 
 def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_decode_checked(B.Buf{Array.new(U32, 0n, 0), 513}, 513)) == None{} : Maybe<&1, O.Words>}:

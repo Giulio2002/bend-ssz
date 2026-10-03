@@ -62,7 +62,7 @@ def LightClientFinalityUpdate_put_drop(pair: Array<U32> & (FuluLightClientFinali
 def LightClientFinalityUpdate_put(out: Array<U32>, +pos: U32, o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate) -> Array<U32> & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate: LightClientFinalityUpdate_put_drop(LightClientFinalityUpdate_putn(out, pos, o))
 
 def LightClientFinalityUpdate_enc_out(out: Array<U32>, o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +m: U32) -> FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def LightClientFinalityUpdate_enc_put(pair: Array<U32> & (FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & U32)) -> FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf:
   (out, r) = pair

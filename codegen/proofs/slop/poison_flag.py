@@ -26,6 +26,9 @@ from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
 from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
+MARKER_PATTERNS = (r'case False\{\}: \(out, \(o, (\d+)\)\)', r'case O\.BNone\{\}: \(out, \(O\.BNone\{\}, (\d+)\)\)',
+                    r'case False\{\}: \([\w.]+\{arr, n\}, (\d+)\)')
+
 SER = re.compile(r'^def (\w+)_serialize\(o: O\.Words\) -> [^\n]*: ([^\n]*)$', re.M)
 
 
@@ -50,11 +53,27 @@ def module(text, tmod):
     return out
 
 
+def marker_module(text, tmod):
+    """One file per runtime: every invalid-object marker literal the generated writers return (pk False branches of the words names,
+    the absent boxed record, the sequences) is poisoned. A stale literal (the old 2^31 flag, which O.is_poisoned no longer reads) makes
+    its law false by computation: the checked serializer of the invalid object would accept it."""
+    lits = sorted({m for pat in MARKER_PATTERNS for m in re.findall(pat, text)}, key=int)
+    if not lits:
+        return None
+    head = ['import Base', 'import ../../src/obj.bend as O', '', writer.header('poison_flag'),
+            '# Every invalid-object marker the generated writers return is poisoned (docs/SIZE_LIMIT_DESIGN.md: the marker is 4294967295).', '']
+    laws = [f'def marker_{n}() -> {{O.is_poisoned({n}) == True{{}} : Bool}}:\n  {{==}}\n' for n in lits]
+    return '\n'.join(head + laws)
+
+
 def main():
     out = {}
     for runtime, tmod in RUNTIMES:
         for X, t in module(RR.mono_text(runtime), tmod).items():
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_poison_flag')] = t
+        mk = marker_module(RR.mono_text(runtime), tmod)
+        if mk:
+            out[LAYOUT.module_path('validity', f'{runtime}_marker_poison')] = mk
     if LAYOUT.finish(RR.rewire_out(out), 'poison_flag', ('validity',), 'stale poison flag laws: ', 'flag laws are current', '--check' in sys.argv):
         print(f'{len(out)} files')
 

@@ -12,7 +12,7 @@ import ./proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct
 
 def pl_SmallTestStruct_szf(+n: U32, pair: Array<SmallTestStruct_d.SmallTestStruct> & U32) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32:
   (arr, +c) = pair
-  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 4 : U32), 2147483648))
+  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295))
 
 def pl_SmallTestStruct_size(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def pl_SmallTestStruct_put(out: Array<U32>, +pos: U32, o: proglist_SmallTestStru
 
 def pl_SmallTestStruct_ptn_fin(+n: U32, pair: Array<U32> & proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 4 : U32)))
+  (out, (sq, O.mulc(n, 4)))
 
 def pl_SmallTestStruct_putn(out: Array<U32>, +pos: U32, o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def pl_SmallTestStruct_pk(out: Array<U32>, +pos: U32, pair: proglist_SmallTestSt
   (o, ok) = pair
   match ok:
     case True{}: pl_SmallTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_SmallTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<SmallTestStruct_d.SmallTestStruct> & Bool) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool:
   (arr, b) = pair

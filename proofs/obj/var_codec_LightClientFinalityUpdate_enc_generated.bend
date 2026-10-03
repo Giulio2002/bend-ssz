@@ -81,11 +81,9 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   CI.putx_bytes(m, 10n, VC.ZT(10n), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, 10n, 0), hl, hz, hok)
 
-
-# the size under the mask 0x7fffffff: below 2^12 (CI.szx, CI.maxx)
-def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147483647) == CI.SZ(m) : U32}:
+def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:
   +hs = FD.logic__subst(Nat, z => {Nat.is_le(z, 2120n) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok)), CI.maxx(m, hok))
-  VBE.and31(CI.SZ(m), 12n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 2120n, FD.spec_common__pow2(12n), hs, {==}))
+  VBE.np31(CI.SZ(m), 12n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 2120n, FD.spec_common__pow2(12n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
     -> {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf}:
@@ -94,8 +92,8 @@ def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
     {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_enc_put(FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf}
   %Equal.sym(Array<U32> & (FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & U32), FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_putk(FD.array__thaw(U32, VC.ZT(10n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
     {FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf}
-  %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, a31(m, hok)) :
+    {(CI.TH(m), O.out_donep(_, CI.SZ(m), FD.array__thaw(U32, OUTE(m)))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.

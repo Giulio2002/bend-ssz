@@ -14,7 +14,7 @@ def some1(m: Maybe<&1, Bool>) -> Bool:
 def is_some(a: Maybe<&1, Bool>, b: Maybe<&1, Bool>) -> Bool & Bool: (some1(a), some1(b))
 
 def boolean_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, Bool>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, Bool>}:
   {==}
 
 def boolean_decode_vchecked_accept()

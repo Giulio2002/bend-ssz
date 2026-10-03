@@ -34,23 +34,23 @@ def ees(+sE: S.Schema, +ee: {sE == S.ProgressiveList{Spec.VarTestStruct()} : S.S
 # ---- the hooks ----
 def repT(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
-    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}, +sE: S.Schema, +ee: {sE == S.ProgressiveList{Spec.VarTestStruct()} : S.Schema})
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}, +sE: S.Schema, +ee: {sE == S.ProgressiveList{Spec.VarTestStruct()} : S.Schema})
     -> RT.rep_pl_VarTestStruct_bx(RT.th_pl_VarTestStruct_bx(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}), sE):
   ({==}, FD.logic__subst(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, z => RT.rep_pl_VarTestStruct(z, sE), V.OBJw(d, t, x, off, len), RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))), Equal.sym(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))), V.OBJw(d, t, x, off, len), D.thfz(d, t, x, off, len, eo, hd, hw, hw32, pfw, hchk)),
     D.rep(d, t, x, off, len, eo, hd, hw, hw32, pfw, sE, ees(sE, ee), hchk)))
 
 def sde(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
-    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}) -> EL.EPB_pl_pl_VarTestStruct(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}):
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> EL.EPB_pl_pl_VarTestStruct(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}):
   epfz(V.OBJw(d, t, x, off, len), D.sdl(d, t, x, off, len, eo, hd, hw, hw32, pfw, h31, hchk))
 
 def canon(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
-    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool}) -> {RT.th_pl_VarTestStruct_bx(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}) == O.BSome{V.OBJw(d, t, x, off, len), O.BNone{}} : O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>}:
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {RT.th_pl_VarTestStruct_bx(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}) == O.BSome{V.OBJw(d, t, x, off, len), O.BNone{}} : O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>}:
   Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, z => O.BSome{z, O.BNone{}}, RT.th_pl_VarTestStruct(RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))), V.OBJw(d, t, x, off, len), D.thfz(d, t, x, off, len, eo, hd, hw, hw32, pfw, hchk))
 
 def sz(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {V.CHKw(t, x, off, len) == True{} : Bool}, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
-    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_lt(U32.to_nat(len), VB.pw(31n)) == True{} : Bool})
+    +pfw: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h31: {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {List.length(&2, U32, XB.YE(EL.fbx_pl_pl_VarTestStruct(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}))) == U32.to_nat(len) : Nat}:
   Equal.trans(Nat, List.length(&2, U32, XB.YE(EL.fbx_pl_pl_VarTestStruct(RT.MSome{RT.fz_pl_VarTestStruct(V.OBJw(d, t, x, off, len))}))), D.LNQ(V.OBJw(d, t, x, off, len)), U32.to_nat(len), szo(V.OBJw(d, t, x, off, len)), D.szl(d, t, x, off, len, eo, hd, hw, hw32, pfw, hchk))

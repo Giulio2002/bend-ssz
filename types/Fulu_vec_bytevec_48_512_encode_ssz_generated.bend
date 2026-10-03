@@ -19,7 +19,7 @@ def v512_b48_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> 
   (o, ok) = pair
   match ok:
     case True{}: v512_b48_pk_ok(v512_b48_put(out, pos, o))
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def v512_b48_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 24576, 24576, False{}, 48)
 

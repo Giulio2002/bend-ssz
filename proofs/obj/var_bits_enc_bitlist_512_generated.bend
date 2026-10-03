@@ -127,7 +127,9 @@ def encode_eval(dw, T, K, pfT, hdw, rep, hcap):
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
     {bitlist_512_e.bitlist_512_enc_sized(O.bsz_pick(K, _)) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), F.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw, hcap)) :
-    {bitlist_512_e.bitlist_512_enc_sized((O.Bits{F.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_512_e.bitlist_512_enc_sized((O.Bits{F.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, CO.np_nk(K)) :
+    {bitlist_512_e.bitlist_512_enc_go(_, CO.NK(K), O.Bits{F.array__thaw(U32, T), K}) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CO.NK(K)))), F.array__thaw(U32, VC.ZT(CO.DOK(K))),
       Equal.trans(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CO.NK(K)))), Array.new(U32, CO.DOK(K), 0), F.array__thaw(U32, VC.ZT(CO.DOK(K))),
         zeros_at(B.words_depth_u(VC.nwu(CO.NK(K))), CO.DOK(K), VD.wdu(VC.nwu(CO.NK(K))), CO.hDOK(K, 10n, 5n, 512n, {==}, VR.rep_N(T, K, 512n, rep), {==}, {==})),

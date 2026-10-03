@@ -19,7 +19,7 @@ def v5_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (
   (o, ok) = pair
   match ok:
     case True{}: v5_u8_pk_ok(v5_u8_put(out, pos, o))
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def v5_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 5, 5, False{}, 1)
 

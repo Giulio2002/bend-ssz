@@ -40,7 +40,7 @@ def padd(${NC}) -> {O.padd(${FS}, CO.NK(K)) == SFS(K) : U32}:
 
 def npS(${NC}) -> {O.is_poisoned(SFS(K)) == False{} : Bool}:
   +hl = FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(${FS}n, Nat.add(${N}n, 1n))) == True{} : Bool}, Nat.add(${FS}n, U32.to_nat(CO.NK(K))), U32.to_nat(SFS(K)), Equal.sym(Nat, U32.to_nat(SFS(K)), Nat.add(${FS}n, U32.to_nat(CO.NK(K))), eS(${NCa})), Order.add_left(${FS}n, U32.to_nat(CO.NK(K)), Nat.add(${N}n, 1n), eNK(${NCa})))
-  VBE.np31(SFS(K), ${kb2}n, {==}, FD.nat__le_lt_trans(U32.to_nat(SFS(K)), Nat.add(${FS}n, Nat.add(${N}n, 1n)), FD.spec_common__pow2(${kb2}n), hl, {==}))
+  VE.np31(SFS(K), ${kb2}n, {==}, FD.nat__le_lt_trans(U32.to_nat(SFS(K)), Nat.add(${FS}n, Nat.add(${N}n, 1n)), FD.spec_common__pow2(${kb2}n), hl, {==}))
 
 # The encoding's words: the header's ${H}, then the bit list's q + 1.
 def nwS(${NC}) -> {VC.NW(SFS(K)) == Nat.add(${H}n, Nat.add(${q}, 1n)) : Nat}:
@@ -362,7 +362,7 @@ def cr(${PS}) -> CO.CR(${DO}, T, K):
   %Equal.sym(${PN}, O.put_bits_n(${ZT}, 0, ${OBJ}), (F.array__thaw(U32, OUT(T, K)), (${OBJ}, CO.NK(K))), ${EV}) :
     {T.${X}_enc_put(_) == ${RE} : O.Bits & B.Buf}
 @@ name_module_lines_7 @@
-  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, VBE.np31(CO.NK(K), ${KS}n, {==}, ${HL})) :
+  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, CO.np_nk(K)) :
     {(${OBJ}, O.out_donep(_, CO.NK(K), F.array__thaw(U32, OUT(T, K)))) == ${RE} : O.Bits & B.Buf}
   {==}
 @@ name_module_lines_8 @@

@@ -103,7 +103,7 @@ def validxO(m, hok):
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
 def bndxO(m, hok):
   match m:
-    case OB.MW{+f_A, +m_f_B, +f_C, +m_f_D, +m_f_E, +m_f_F, +m_f_G}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)), OB.ENDC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), OB.lenEW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, hok)), OB.ok_bndW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, hok))
+    case OB.MW{+f_A, +m_f_B, +f_C, +m_f_D, +m_f_E, +m_f_F, +m_f_G}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G)), OB.ENDC(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G), OB.lenEW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, hok)), OB.ok_bndW(f_A, m_f_B, f_C, m_f_D, m_f_E, m_f_F, m_f_G, hok))

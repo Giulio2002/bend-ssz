@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluWithdrawal_d.Withdrawal>) -> Bool:
 def is_some(a: Maybe<&1, FuluWithdrawal_d.Withdrawal>, b: Maybe<&1, FuluWithdrawal_d.Withdrawal>) -> Bool & Bool: (some1(a), some1(b))
 
 def Withdrawal_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
   {==}
 
 def Withdrawal_decode_vchecked_accept()

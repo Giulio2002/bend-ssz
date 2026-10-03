@@ -103,7 +103,7 @@ def FuluG1Point__decode_input__G1Point_ms_build() -> {FuluG1Point_r.G1Point_buil
 def FuluG1Point__decode_input__G1Point_ms_dec() -> {(FuluG1Point_r.G1Point_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, 48), FuluG1Point_r.G1Point_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, 48)) == ((P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, Some{FuluBytes48_d.b48_seed(2271560481)}), (P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, Some{FuluBytes48_d.b48_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>) & (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>)}:
   P6_PRV.G1Point_ms_dec()
 
-def FuluG1Point__decode_offsets__G1Point_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
+def FuluG1Point__decode_offsets__G1Point_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   P7_PRV.G1Point_decode_vchecked_limit()
 
 def FuluG1Point__decode_offsets__G1Point_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(48, 48, (P7_B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:

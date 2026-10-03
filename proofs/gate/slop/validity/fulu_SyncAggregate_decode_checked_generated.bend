@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_SyncAggregate_decode_checked_generated.bend a
 def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(160, 160, (B.Buf{Array.new(U32, 6n, 0), 160}, 40))), Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_decode_checked(B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
   PRV.SyncAggregate_decode_vchecked_accept()
 
-def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   PRV.SyncAggregate_decode_vchecked_limit()
 
 def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_decode_checked(B.Buf{Array.new(U32, 0n, 0), 160}, 160)) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:

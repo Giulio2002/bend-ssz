@@ -48,9 +48,14 @@ def SignedBeaconBlock_enc_put(+n: U32, pair: Array<U32> & (FuluSignedBeaconBlock
   (o, m) = r
   SignedBeaconBlock_enc_out(n, out, o, m)
 
+def SignedBeaconBlock_enc_go(bad: Bool, +n: U32, o: FuluSignedBeaconBlock_d.SignedBeaconBlock) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: SignedBeaconBlock_enc_put(n, SignedBeaconBlock_putn(O.out_new(n), 0, o))
+
 def SignedBeaconBlock_enc_sized(pair: FuluSignedBeaconBlock_d.SignedBeaconBlock & U32) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & B.Buf:
   (o, +n) = pair
-  SignedBeaconBlock_enc_put(n, SignedBeaconBlock_putn(O.out_new(n), 0, o))
+  SignedBeaconBlock_enc_go(O.is_poisoned(n), n, o)
 
 def SignedBeaconBlock_encode(o: FuluSignedBeaconBlock_d.SignedBeaconBlock) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & B.Buf: SignedBeaconBlock_enc_sized(SignedBeaconBlock_size(o))
 

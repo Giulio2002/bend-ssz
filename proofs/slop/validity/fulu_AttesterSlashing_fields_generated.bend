@@ -16,7 +16,7 @@ def AttesterSlashing_serialize_vrefuse_bad_flag()
   {==}
 
 def AttesterSlashing_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_senc_sized((FuluAttesterSlashing_d.AttesterSlashing_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_senc_sized((FuluAttesterSlashing_d.AttesterSlashing_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def AttesterSlashing_serialize_vreject_attestation_1()
@@ -60,7 +60,7 @@ def AttesterSlashing_serialize_vreject_bx_valid()
   {==}
 
 def AttesterSlashing_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def AttesterSlashing_serialize_vpoison_bx_ok()

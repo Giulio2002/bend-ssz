@@ -54,7 +54,7 @@ def BitsStruct_put_drop(pair: Array<U32> & (BitsStruct_d.BitsStruct & U32)) -> A
 def BitsStruct_put(out: Array<U32>, +pos: U32, o: BitsStruct_d.BitsStruct) -> Array<U32> & BitsStruct_d.BitsStruct: BitsStruct_put_drop(BitsStruct_putn(out, pos, o))
 
 def BitsStruct_enc_out(out: Array<U32>, o: BitsStruct_d.BitsStruct, +m: U32) -> BitsStruct_d.BitsStruct & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def BitsStruct_enc_put(pair: Array<U32> & (BitsStruct_d.BitsStruct & U32)) -> BitsStruct_d.BitsStruct & B.Buf:
   (out, r) = pair

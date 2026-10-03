@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStru
 def is_some(a: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, b: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>) -> Bool & Bool: (some1(a), some1(b))
 
 def ProgressiveComplexTestStruct_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   {==}
 
 def ProgressiveComplexTestStruct_decode_vchecked_accept()

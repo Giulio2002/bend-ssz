@@ -27,6 +27,7 @@ import ../obj/vconts.bend as P0_CS
 import ../obj/spec_bits_generated.bend as P0_FB
 import ../obj/dk.bend as P0_DK
 import ../obj/encx_pbits_generated.bend as P0_EX_pbits
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL

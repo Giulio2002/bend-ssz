@@ -42,7 +42,7 @@ def l1048576_bl1073741824_sz_nz(empty: Bool, arr: Array<O.Boxed<O.Words>>, +n: U
 def l1048576_bl1073741824_sz_ok(ok: Bool, arr: Array<O.Boxed<O.Words>>, +n: U32) -> Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq & U32:
   match ok:
     case True{}: l1048576_bl1073741824_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, 2147483648)
+    case False{}: (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, 4294967295)
 
 def l1048576_bl1073741824_sz_cap(+n: U32, pair: Array<O.Boxed<O.Words>> & U32) -> Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq & U32:
   (arr, +c) = pair
@@ -108,7 +108,7 @@ def l1048576_bl1073741824_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_bytelis
   (o, ok) = pair
   match ok:
     case True{}: l1048576_bl1073741824_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l1048576_bl1073741824_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<O.Words>> & Bool) -> Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq & Bool:
   (arr, b) = pair

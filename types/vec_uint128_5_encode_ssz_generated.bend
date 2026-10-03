@@ -110,7 +110,7 @@ def v5_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> &
   (o, ok) = pair
   match ok:
     case True{}: v5_u128_pk_ok(v5_u128_put(out, pos, o))
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def v5_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 80, 80, False{}, 16)
 

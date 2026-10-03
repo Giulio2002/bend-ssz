@@ -28,7 +28,7 @@ def DepositData_valid(+o: FuluDepositData_d.DepositData) -> Bool: True{}
 def DepositData_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluDepositData_d.DepositData>) -> Array<U32> & (O.Boxed<FuluDepositData_d.DepositData> & U32):
   match o:
     case O.BSome{+v, rest}: (DepositData_put(out, pos, v), (O.BSome{v, O.BNone{}}, O.pz(DepositData_valid(v))))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def DepositData_bx_valid(o: O.Boxed<FuluDepositData_d.DepositData>) -> O.Boxed<FuluDepositData_d.DepositData> & Bool:
   match o:

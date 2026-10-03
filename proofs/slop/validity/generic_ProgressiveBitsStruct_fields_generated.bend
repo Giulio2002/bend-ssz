@@ -15,7 +15,7 @@ def ProgressiveBitsStruct_serialize_vrefuse_bad_flag()
   {==}
 
 def ProgressiveBitsStruct_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, O.Encoded, ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_sized((ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, O.Encoded, ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_sized((ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def ProgressiveBitsStruct_serialize_vreject_f_B()

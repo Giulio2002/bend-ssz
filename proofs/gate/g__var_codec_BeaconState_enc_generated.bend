@@ -52,6 +52,7 @@ import ../obj/vfixw_spec.bend as FWS
 import ../obj/vfixw_u32.bend as WU
 import ../obj/vpos32.bend as P32
 import ../obj/encx_BeaconState_generated.bend as K
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

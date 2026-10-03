@@ -57,7 +57,7 @@ def ProposerSlashing_bx_pk_back(pair: Array<U32> & (FuluProposerSlashing_d.Propo
 def ProposerSlashing_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluProposerSlashing_d.ProposerSlashing>) -> Array<U32> & (O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & U32):
   match o:
     case O.BSome{v, rest}: ProposerSlashing_bx_pk_back(ProposerSlashing_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def ProposerSlashing_bx_va_back(pair: FuluProposerSlashing_d.ProposerSlashing & Bool) -> O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & Bool:
   (v, ok) = pair

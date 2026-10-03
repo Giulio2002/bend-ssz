@@ -29,6 +29,7 @@ import ../obj/vpiece.bend as VPC
 import ../obj/encx_l1024_u16_generated.bend as EX_l1024_u16
 import ../obj/encx_l1024_u16_d_generated.bend as EX_l1024_u16_D
 import ../obj/vrecb.bend as VRB
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

@@ -143,7 +143,7 @@ def pd3(${NP}) -> {O.padd(S2(N0, N1), N2) == S3(N0, N1, N2) : U32}:
   VE.padd_ok(S2(N0, N1), N2, VE.winit(31n, VE.bits32(S2(N0, N1))), VE.winit(31n, VE.bits32(N2)), ltN(${NA}, S2(N0, N1), Q2(c0, c1), eS2(${NA}), Order.below_sum(Q2(c0, c1), M2(c2))), ltN(${NA}, N2, M2(c2), ec2, lM2N(c0, c1, c2)))
 
 def npS3(${NP}) -> {O.is_poisoned(S3(N0, N1, N2)) == False{} : Bool}:
-  VBE.np31(S3(N0, N1, N2), 24n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(24n)) == ${TRUE}}, A.quad(QN(c0, c1, c2)), U32.to_nat(S3(N0, N1, N2)), Equal.sym(Nat, U32.to_nat(S3(N0, N1, N2)), A.quad(QN(c0, c1, c2)), eS3(${NA})), qlt(${NA}, QN(c0, c1, c2), FD.nat__le_refl(QN(c0, c1, c2)))))
+  VE.np31(S3(N0, N1, N2), 24n, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(24n)) == ${TRUE}}, A.quad(QN(c0, c1, c2)), U32.to_nat(S3(N0, N1, N2)), Equal.sym(Nat, U32.to_nat(S3(N0, N1, N2)), A.quad(QN(c0, c1, c2)), eS3(${NA})), qlt(${NA}, QN(c0, c1, c2), FD.nat__le_refl(QN(c0, c1, c2)))))
 
 @@ put_text @@
 

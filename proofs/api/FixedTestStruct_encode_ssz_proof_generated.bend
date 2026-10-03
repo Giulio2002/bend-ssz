@@ -54,10 +54,10 @@ def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_false_fl
 def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_true_flag() -> {P3_O.is_poisoned(P3_O.pz(True{})) == False{} : Bool}:
   P3_PRV.FixedTestStruct_serialize_vpoison_true_flag()
 
-def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(2147483647) == False{} : Bool}:
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_below() -> {P3_O.is_poisoned(4294967264) == False{} : Bool}:
   P3_PRV.FixedTestStruct_serialize_vpoison_below()
 
-def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 2147483648)) == True{} : Bool}:
+def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vpoison_carried() -> {P3_O.is_poisoned(P3_O.padd(5, 4294967295)) == True{} : Bool}:
   P3_PRV.FixedTestStruct_serialize_vpoison_carried()
 
 def FixedTestStruct__serialize_valid__FixedTestStruct_serialize_vreject_f_A() -> {FixedTestStruct_e.FixedTestStruct_valid(FixedTestStruct_d.FixedTestStruct_set_f_A_go(FixedTestStruct_d.FixedTestStruct_default(), 256)) == False{} : Bool}:

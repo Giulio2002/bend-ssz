@@ -28,6 +28,7 @@ import ./dk.bend as DK
 import ./vuwv_b32_generated.bend as V_b32
 import ./encx_BeaconBlockBody_iface_generated.bend as EC_BeaconBlockBody
 import ./encx_BeaconBlockBody_size_generated.bend as ES_BeaconBlockBody
+import ./vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./vlist.bend as VL
@@ -46,18 +47,18 @@ def HDW(+m: CI.MW) -> Data: {Nat.is_lt(VL.DO(CI.SZ(m)), 31n) == True{} : Bool}
 
 def mk3W(+m: CI.MW, +a: HDW(m), +b: OB.HL(m), +c: OB.HZ(m)) -> DK.P2(HDW(m), DK.P2(OB.HL(m), OB.HZ(m))): (a, (b, c))
 
-def roomO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +k: Nat, +ek: {k == 29n : Nat}) -> DK.P2(HDW(m), DK.P2(OB.HL(m), OB.HZ(m))):
+def roomO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +k: Nat, +ek: {k == 30n : Nat}) -> DK.P2(HDW(m), DK.P2(OB.HL(m), OB.HZ(m))):
   +es = CI.szxO(m, hok)
-  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), es), CIo.bndxO(m, hok))
-  +e31 = Equal.sym(Nat, Nat.add(2n, k), 31n, Equal.trans(Nat, Nat.add(2n, k), Nat.add(2n, 29n), 31n, Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 29n, ek), {==}))
-  +hS = VCN.le_qk(U32.to_nat(CI.SZ(m)), k, FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(CI.SZ(m)), VB.pw(z)) == True{} : Bool}, 31n, Nat.add(2n, k), e31, h31))
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), es), CIo.bndxO(m, hok))
+  +e31 = Equal.sym(Nat, Nat.add(2n, k), 32n, Equal.trans(Nat, Nat.add(2n, k), Nat.add(2n, 30n), 32n, Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 30n, ek), {==}))
+  +hS = VCN.le_qk(U32.to_nat(CI.SZ(m)), k, FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(CI.SZ(m)), VB.pw(z)) == True{} : Bool}, 32n, Nat.add(2n, k), e31, VB.nmax_lt32(U32.to_nat(CI.SZ(m)), h31)))
   +eNW = VCN.nw_nat31(CI.SZ(m), h31)
   +nw = VRX.nwn_le(U32.to_nat(CI.SZ(m)), VB.pw(k), hS)
   +nwp = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(VC.nwu(CI.SZ(m))), z) == True{} : Bool}, VB.pw(k), O.pow2n(k), VD.s_pow2_eq(k),
     FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(k)) == True{} : Bool}, WD.NWN(U32.to_nat(CI.SZ(m))), VC.NW(CI.SZ(m)), Equal.sym(Nat, VC.NW(CI.SZ(m)), WD.NWN(U32.to_nat(CI.SZ(m))), eNW), nw))
-  +hd = FD.nat__le_lt_trans(VL.DO(CI.SZ(m)), k, 31n, VD.wd_min(VC.nwu(CI.SZ(m)), k, nwp), FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, 29n, k, Equal.sym(Nat, k, 29n, ek), {==}))
+  +hd = FD.nat__le_lt_trans(VL.DO(CI.SZ(m)), k, 31n, VD.wd_min(VC.nwu(CI.SZ(m)), k, nwp), FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, 30n, k, Equal.sym(Nat, k, 30n, ek), {==}))
   +hcov = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(VC.nwu(CI.SZ(m))), z) == True{} : Bool}, O.pow2n(VL.DO(CI.SZ(m))), VB.pw(VL.DO(CI.SZ(m))), Equal.sym(Nat, VB.pw(VL.DO(CI.SZ(m))), O.pow2n(VL.DO(CI.SZ(m))), VD.s_pow2_eq(VL.DO(CI.SZ(m)))),
-    VD.wd_cover(VC.nwu(CI.SZ(m)), k, FD.logic__subst(Nat, z => {Nat.is_le(z, 32n) == True{} : Bool}, 29n, k, Equal.sym(Nat, k, 29n, ek), {==}), nwp))
+    VD.wd_cover(VC.nwu(CI.SZ(m)), k, FD.logic__subst(Nat, z => {Nat.is_le(z, 32n) == True{} : Bool}, 30n, k, Equal.sym(Nat, k, 30n, ek), {==}), nwp))
   +hl0 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(VL.DO(CI.SZ(m)))) == True{} : Bool}, VC.NW(CI.SZ(m)), WD.NWN(U32.to_nat(CI.SZ(m))), eNW, hcov)
   +hl = FD.logic__subst(Nat, z => {Nat.is_le(WD.NWN(z), VB.pw(VL.DO(CI.SZ(m)))) == True{} : Bool}, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), es, hl0)
   +M = Nat.add(List.length(&2, U32, CI.ENC(m)), WD.PADB(0n, List.length(&2, U32, CI.ENC(m))))
@@ -66,6 +67,9 @@ def roomO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +k: Nat, +ek: {k == 29n
   +hz = FD.logic__subst(+List<U32>, z => {VS.bt(M, VS.bdr(Nat.add(A.quad(0n), 0n), z)) == UW.ZB(M) : +List<U32>}, UW.ZB(A.quad(VB.pw(VL.DO(CI.SZ(m))))), UA.BYT(VC.ZT(VL.DO(CI.SZ(m)))),
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(VL.DO(CI.SZ(m)))), UW.ZB(A.quad(VB.pw(VL.DO(CI.SZ(m))))), UWB.zt_bytes(VL.DO(CI.SZ(m)))), VE2.bt_zb_le(M, A.quad(VB.pw(VL.DO(CI.SZ(m)))), hm))
   mk3W(m, hd, hl, hz)
+
+def npzO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:
+  VBE.np_nmax(CI.SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), CIo.bndxO(m, hok)))
 
 def rt0O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +g: DK.P2(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)))) -> OB.RT0(m):
   +hd = CI.PA(HDW(m), DK.P2(OB.HL(m), OB.HZ(m)), g)
@@ -83,9 +87,11 @@ def by0O(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}, +g: DK.P2(HDW(m), DK.P2(
 
 def eval_goO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool})
     -> {FuluBeaconBlock_e.BeaconBlock_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluBeaconBlock_d.BeaconBlock & B.Buf}:
-  +rt = rt0O(m, hok, roomO(m, hok, 29n, {==}))
+  +rt = rt0O(m, hok, roomO(m, hok, 30n, {==}))
   %Equal.sym(FuluBeaconBlock_d.BeaconBlock & U32, FuluBeaconBlock_e.BeaconBlock_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), CIo.sizexO(m, hok)) :
     {FuluBeaconBlock_e.BeaconBlock_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluBeaconBlock_d.BeaconBlock & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, npzO(m, hok)) :
+    {FuluBeaconBlock_e.BeaconBlock_enc_go(_, CI.SZ(m), CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluBeaconBlock_d.BeaconBlock & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))), Array.new(U32, VL.DO(CI.SZ(m)), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(CI.SZ(m)))), VL.DO(CI.SZ(m)), VD.wdu(VC.nwu(CI.SZ(m))), VZG.zg(B.words_depth_u(VC.nwu(CI.SZ(m)))))) :
     {FuluBeaconBlock_e.BeaconBlock_enc_put(CI.SZ(m), FuluBeaconBlock_e.BeaconBlock_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OB.OUTE(m)), CI.SZ(m)}) : FuluBeaconBlock_d.BeaconBlock & B.Buf}
@@ -96,7 +102,7 @@ def eval_goO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool})
   {==}
 
 def obytesO(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI.SZ(m)), FX.limbs(FD.array__slots(U32, OB.OUTE(m)))) == CI.ENC(m) : +List<U32>}:
-  +by = by0O(m, hok, roomO(m, hok, 29n, {==}))
+  +by = by0O(m, hok, roomO(m, hok, 30n, {==}))
   +P = UW.ZB(CI.PADB(0n, m))
   +R = VS.bdr(VCN.LN(VCN.AP(CI.ENC(m), P)), UA.BYT(VC.ZT(VL.DO(CI.SZ(m)))))
   +e1 = Equal.trans(+List<U32>, UA.BYT(OB.OUTE(m)), VCN.AP(VCN.AP(CI.ENC(m), P), R), VCN.AP(CI.ENC(m), VCN.AP(P, R)), by, VS.app_assoc(CI.ENC(m), P, R))

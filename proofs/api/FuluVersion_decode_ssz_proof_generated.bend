@@ -103,7 +103,7 @@ def FuluVersion__decode_input__Version_ms_build() -> {FuluVersion_r.Version_buil
 def FuluVersion__decode_input__Version_ms_dec() -> {(FuluVersion_r.Version_decode(P6_B.Buf{FuluBytes4_e.b4_put(P6_O.out_at(2n), 0, FuluBytes4_d.b4_seed(2271560481)), 4}, 4), FuluVersion_r.Version_decode(P6_B.Buf{FuluBytes4_e.b4_put(P6_O.out_at(2n), 0, FuluBytes4_d.b4_seed(2271560482)), 4}, 4)) == ((P6_B.Buf{FuluBytes4_e.b4_put(P6_O.out_at(2n), 0, FuluBytes4_d.b4_seed(2271560481)), 4}, Some{FuluBytes4_d.b4_seed(2271560481)}), (P6_B.Buf{FuluBytes4_e.b4_put(P6_O.out_at(2n), 0, FuluBytes4_d.b4_seed(2271560482)), 4}, Some{FuluBytes4_d.b4_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>) & (P6_B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>)}:
   P6_PRV.Version_ms_dec()
 
-def FuluVersion__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
+def FuluVersion__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   P7_PRV.Version_decode_vchecked_limit()
 
 def FuluVersion__decode_offsets__Version_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4, 4, (P7_B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:

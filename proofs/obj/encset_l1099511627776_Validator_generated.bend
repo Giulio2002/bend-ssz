@@ -152,7 +152,7 @@ def l1099511627776_Validator_written(+A: F.array__Tree<FuluValidator_d.Validator
 
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def l1099511627776_Validator_api_encode_set(+A: F.array__Tree<FuluValidator_d.Validator>, +N: U32, +i: U32, +v: FuluValidator_d.Validator, +h: {E.OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l1099511627776_Validator(F.array__upd(FuluValidator_d.Validator, E.TDM_l1099511627776_Validator(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l1099511627776_Validator(F.array__upd(FuluValidator_d.Validator, E.TDM_l1099511627776_Validator(A), A, U32.to_nat(i), v), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(E.VALL_l1099511627776_Validator(A, N), U32.to_nat(i), E.RVV(v)), Spec.Schema78()) == Some{[S.Variable{E.ENCL_l1099511627776_Validator(F.array__upd(FuluValidator_d.Validator, E.TDM_l1099511627776_Validator(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}:
   %l1099511627776_Validator_vall_set(A, N, i, v, h, hs) :
     {Codec.parts(_, Spec.Schema78()) == Some{[S.Variable{E.ENCL_l1099511627776_Validator(F.array__upd(FuluValidator_d.Validator, E.TDM_l1099511627776_Validator(A), A, U32.to_nat(i), v), N)}]} : Maybe<&2, +List<S.Part>>}

@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_AggregateAndProof_decode_checked_generated.be
 def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 87))), Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 345))) == (True{}, True{}) : Bool & Bool}:
   PRV.AggregateAndProof_decode_vchecked_accept()
 
-def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   PRV.AggregateAndProof_decode_vchecked_limit()
 
 def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 345}, 345)) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:

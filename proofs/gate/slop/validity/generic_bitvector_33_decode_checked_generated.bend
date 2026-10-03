@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_bitvector_33_decode_checked_generated.bend
 def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(5, 5, (B.Buf{Array.new(U32, 1n, 0), 5}, 2))), Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(B.Buf{Array.new(U32, 1n, 0), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_33_decode_vchecked_accept()
 
-def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
+def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
   PRV.bitvector_33_decode_vchecked_limit()
 
 def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(B.Buf{Array.new(U32, 0n, 0), 5}, 5)) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:

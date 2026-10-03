@@ -17,14 +17,14 @@ def bits8_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O
   (o, ok) = pair
   match ok:
     case True{}: bits8_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bits8_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 8, False{})
 
 def bits8_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits8_pk(out, pos, bits8_valid(o))
 
 def bitlist_8_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def bitlist_8_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair

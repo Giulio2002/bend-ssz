@@ -32,6 +32,7 @@ import ../obj/encx_bl32_generated.bend as EB
 import ../obj/encx_l1048576_bl1073741824_generated.bend as ET
 import ../obj/encx_l16_Withdrawal_generated.bend as EW_l16_Withdrawal
 import ../obj/encx_ExecutionPayload_generated.bend as K
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

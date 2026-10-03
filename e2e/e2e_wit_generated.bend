@@ -149,9 +149,9 @@ def totP(+R: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(R, 1n), P) == True{} : Bool})
 
 # the same at P = 2^29, the bound 2^31 written as the spec's power
 def tot29(+R: Nat, +q: Nat, +hq: {q == Nat.add(VB.pw(29n), 1n) : Nat}, +h: {Nat.is_lt(Nat.add(R, 1n), VB.pw(29n)) == True{} : Bool})
-    -> {Nat.is_lt(Nat.add(R, q), VB.pw(31n)) == True{} : Bool}:
-  %Equal.sym(Nat, q, Nat.add(VB.pw(29n), 1n), hq) : {Nat.is_lt(Nat.add(R, _), VB.pw(31n)) == True{} : Bool}
-  totP(R, VB.pw(29n), h)
+    -> {Nat.is_le(Nat.add(R, q), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  %Equal.sym(Nat, q, Nat.add(VB.pw(29n), 1n), hq) : {Nat.is_le(Nat.add(R, _), U32.to_nat(VB.NMAX())) == True{} : Bool}
+  VB.le_pw31_nmax(Nat.add(R, Nat.add(VB.pw(29n), 1n)), totP(R, VB.pw(29n), h))
 
 # 2x + 2k = 2(x + k), by x's structure (a big sum rewritten into doublings the checker compares level by level)
 def dadd2(+x: Nat, +k: Nat) -> {Nat.add(Nat.double(x), Nat.double(k)) == Nat.double(Nat.add(x, k)) : Nat}:

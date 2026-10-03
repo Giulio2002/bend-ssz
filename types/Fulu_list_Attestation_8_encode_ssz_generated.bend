@@ -43,7 +43,7 @@ def l8_Attestation_sz_nz(empty: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attes
 def l8_Attestation_sz_ok(ok: Bool, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32) -> Fulu_list_Attestation_8_d.l8_Attestation_Seq & U32:
   match ok:
     case True{}: l8_Attestation_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (Fulu_list_Attestation_8_d.l8_Attestation_Seq{arr, n}, 2147483648)
+    case False{}: (Fulu_list_Attestation_8_d.l8_Attestation_Seq{arr, n}, 4294967295)
 
 def l8_Attestation_sz_cap(+n: U32, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & U32) -> Fulu_list_Attestation_8_d.l8_Attestation_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def l8_Attestation_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Attestation_8_
   (o, ok) = pair
   match ok:
     case True{}: l8_Attestation_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l8_Attestation_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<FuluAttestation_d.Attestation>> & Bool) -> Fulu_list_Attestation_8_d.l8_Attestation_Seq & Bool:
   (arr, b) = pair

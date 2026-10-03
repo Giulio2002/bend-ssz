@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_ExecutionRequests_decode_checked_generated.be
 def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 3))), Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 12))) == (True{}, True{}) : Bool & Bool}:
   PRV.ExecutionRequests_decode_vchecked_accept()
 
-def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   PRV.ExecutionRequests_decode_vchecked_limit()
 
 def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 12), 12}, 12)) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:

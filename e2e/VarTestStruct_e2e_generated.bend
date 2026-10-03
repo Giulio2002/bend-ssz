@@ -45,7 +45,7 @@ def obM(+m: CI.MW, +hok: {CI.OKW(m) == True{} : Bool}) -> {E.obytes(B.Buf{FD.arr
     VCN.VME4(WD.NWN(L), VB.pw(VL.DO(CI.SZ(m))), hl))
   +hL = FD.nat__le_trans(L, M, A.quad(VB.pw(VL.DO(CI.SZ(m)))), FD.nat__le_add_right(L, WD.PADB(0n, L)), hm)
   +hn = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(VL.DO(CI.SZ(m))))) == True{} : Bool}, L, U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), L, CI.szxO(m, hok)), hL)
-  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, L, U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), L, CI.szxO(m, hok)), CIo.bndxO(m, hok))
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, L, U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), L, CI.szxO(m, hok)), CIo.bndxO(m, hok))
   EM.obD(VL.DO(CI.SZ(m)), EN.OUTE(m), CI.SZ(m), CI.pfx(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0n, 0n, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0)), hd, h31, hn)
 
 # (i) on a record

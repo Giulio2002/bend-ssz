@@ -58,7 +58,7 @@ def Deposit_bx_pk_back(pair: Array<U32> & (FuluDeposit_d.Deposit & U32)) -> Arra
 def Deposit_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluDeposit_d.Deposit>) -> Array<U32> & (O.Boxed<FuluDeposit_d.Deposit> & U32):
   match o:
     case O.BSome{v, rest}: Deposit_bx_pk_back(Deposit_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def Deposit_bx_va_back(pair: FuluDeposit_d.Deposit & Bool) -> O.Boxed<FuluDeposit_d.Deposit> & Bool:
   (v, ok) = pair

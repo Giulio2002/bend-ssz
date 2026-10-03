@@ -78,7 +78,7 @@ def Attestation_bx_pk_back(pair: Array<U32> & (FuluAttestation_d.Attestation & U
 def Attestation_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluAttestation_d.Attestation>) -> Array<U32> & (O.Boxed<FuluAttestation_d.Attestation> & U32):
   match o:
     case O.BSome{v, rest}: Attestation_bx_pk_back(Attestation_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def Attestation_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<FuluAttestation_d.Attestation> & U32)) -> Array<U32> & (O.Boxed<FuluAttestation_d.Attestation> & U32):
   (out, r) = pair
@@ -113,9 +113,14 @@ def Attestation_enc_put(+n: U32, pair: Array<U32> & (FuluAttestation_d.Attestati
   (o, m) = r
   Attestation_enc_out(n, out, o, m)
 
+def Attestation_enc_go(bad: Bool, +n: U32, o: FuluAttestation_d.Attestation) -> FuluAttestation_d.Attestation & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: Attestation_enc_put(n, Attestation_putn(O.out_new(n), 0, o))
+
 def Attestation_enc_sized(pair: FuluAttestation_d.Attestation & U32) -> FuluAttestation_d.Attestation & B.Buf:
   (o, +n) = pair
-  Attestation_enc_put(n, Attestation_putn(O.out_new(n), 0, o))
+  Attestation_enc_go(O.is_poisoned(n), n, o)
 
 def Attestation_encode(o: FuluAttestation_d.Attestation) -> FuluAttestation_d.Attestation & B.Buf: Attestation_enc_sized(Attestation_size(o))
 

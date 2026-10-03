@@ -10,7 +10,7 @@ import ../../../slop/validity/generic_vec_uint32_512_decode_checked_generated.be
 def vec_uint32_512__decode_offsets__vec_uint32_512_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_dchw(2048, 2048, (B.Buf{Array.new(U32, 9n, 0), 2048}, 512))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_decode_checked(B.Buf{Array.new(U32, 9n, 0), 2048}, 2048))) == (True{}, True{}) : Bool & Bool}:
   PRV.vec_uint32_512_decode_vchecked_accept()
 
-def vec_uint32_512__decode_offsets__vec_uint32_512_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def vec_uint32_512__decode_offsets__vec_uint32_512_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_uint32_512_decode_vchecked_limit()
 
 def vec_uint32_512__decode_offsets__vec_uint32_512_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2048}, 2048)) == None{} : Maybe<&1, O.Words>}:

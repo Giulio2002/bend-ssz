@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_G2Point_decode_checked_generated.bend as PRV
 def G2Point__decode_offsets__G2Point_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(96, 96, (B.Buf{Array.new(U32, 5n, 0), 96}, 24))), Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_decode_checked(B.Buf{Array.new(U32, 5n, 0), 96}, 96))) == (True{}, True{}) : Bool & Bool}:
   PRV.G2Point_decode_vchecked_accept()
 
-def G2Point__decode_offsets__G2Point_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
+def G2Point__decode_offsets__G2Point_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   PRV.G2Point_decode_vchecked_limit()
 
 def G2Point__decode_offsets__G2Point_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_decode_checked(B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:

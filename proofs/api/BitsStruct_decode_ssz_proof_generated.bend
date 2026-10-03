@@ -81,7 +81,7 @@ def BitsStruct__decode_reject__decode_reject(+d: Nat, +t: P1_FD.array__Tree<U32>
 def BitsStruct__decode_none__decode_none(+d: Nat, +t: P1_FD.array__Tree<U32>, +n: U32, +pf: {P1_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P1_A.quad(P1_VB.pw(d))) == True{} : Bool}, +hchk: {P1_PRV.CHK(t, n) == False{} : Bool}) -> {BitsStruct_r.BitsStruct_decode(P1_PRV.BF(t, n), n) == (P1_PRV.BF(t, n), None{}) : P1_B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
   P1_PRV.decode_none(d, t, n, pf, hd, hn, hchk)
 
-def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
+def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   P3_PRV.BitsStruct_decode_vchecked_limit()
 
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(13, 13, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 4))), Pair.snd(P3_B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 13))) == (True{}, True{}) : Bool & Bool}:

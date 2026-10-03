@@ -38,6 +38,7 @@ import ../obj/vpiece.bend as VPC
 import ../obj/vbv257s.bend as V2S
 import ../obj/vbv128s.bend as V2S8
 import ../obj/vmr_generated.bend as VMR
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

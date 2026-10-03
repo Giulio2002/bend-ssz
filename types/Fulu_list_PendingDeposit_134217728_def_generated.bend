@@ -131,7 +131,7 @@ def l134217728_PendingDeposit_app_in(ok: Bool, arr: Array<FuluPendingDeposit_d.P
 
 def l134217728_PendingDeposit_app_sz(+n: U32, v: FuluPendingDeposit_d.PendingDeposit, pair: Array<FuluPendingDeposit_d.PendingDeposit> & U32) -> l134217728_PendingDeposit_Seq & Bool:
   (arr, +sc) = pair
-  l134217728_PendingDeposit_app_in(Bool.and(U32.is_lt(n, 11184810), U32.is_le(n, sc)), arr, n, v)
+  l134217728_PendingDeposit_app_in(Bool.and(U32.is_lt(n, 22369621), U32.is_le(n, sc)), arr, n, v)
 
 def l134217728_PendingDeposit_append(o: l134217728_PendingDeposit_Seq, v: FuluPendingDeposit_d.PendingDeposit) -> l134217728_PendingDeposit_Seq & Bool:
   match o:
@@ -200,7 +200,7 @@ def l134217728_PendingDeposit_capp_in(ok: Bool, arr: Array<FuluPendingDeposit_d.
 
 def l134217728_PendingDeposit_capp_sz(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: FuluPendingDeposit_d.PendingDeposit, pair: Array<FuluPendingDeposit_d.PendingDeposit> & U32) -> l134217728_PendingDeposit_Cached & Bool:
   (arr, +sc) = pair
-  l134217728_PendingDeposit_capp_in(Bool.and(U32.is_lt(n, 11184810), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+  l134217728_PendingDeposit_capp_in(Bool.and(U32.is_lt(n, 22369621), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
 
 def l134217728_PendingDeposit_capp(c: l134217728_PendingDeposit_Cached, v: FuluPendingDeposit_d.PendingDeposit) -> l134217728_PendingDeposit_Cached & Bool:
   match c:

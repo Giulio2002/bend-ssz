@@ -29,6 +29,7 @@ import ../obj/vrecb.bend as VRB
 import ../obj/sub_pack_generated.bend as SP2
 import ../obj/encx_ProgressiveSingleListContainerTestStruct_iface_generated.bend as EA_ProgressiveSingleListContainerTestStruct
 import ../obj/encx_ProgressiveVarTestStruct_iface_generated.bend as EA_ProgressiveVarTestStruct
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

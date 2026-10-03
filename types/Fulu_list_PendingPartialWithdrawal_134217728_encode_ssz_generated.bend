@@ -12,7 +12,7 @@ import ./Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend as Fulu
 
 def l134217728_PendingPartialWithdrawal_szf(+n: U32, pair: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal> & U32) -> Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 24 : U32), 2147483648))
+  (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 24), 4294967295))
 
 def l134217728_PendingPartialWithdrawal_size(o: Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq) -> Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l134217728_PendingPartialWithdrawal_put(out: Array<U32>, +pos: U32, o: Fulu_
 
 def l134217728_PendingPartialWithdrawal_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq) -> Array<U32> & (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 24 : U32)))
+  (out, (sq, O.mulc(n, 24)))
 
 def l134217728_PendingPartialWithdrawal_putn(out: Array<U32>, +pos: U32, o: Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq) -> Array<U32> & (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l134217728_PendingPartialWithdrawal_pk(out: Array<U32>, +pos: U32, pair: Ful
   (o, ok) = pair
   match ok:
     case True{}: l134217728_PendingPartialWithdrawal_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l134217728_PendingPartialWithdrawal_va_cap(ok: Bool, +n: U32, pair: Array<FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal> & U32) -> Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & Bool:
   (arr, +c) = pair

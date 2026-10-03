@@ -103,7 +103,7 @@ def FuluBLSPubkey__decode_input__BLSPubkey_ms_build() -> {FuluBLSPubkey_r.BLSPub
 def FuluBLSPubkey__decode_input__BLSPubkey_ms_dec() -> {(FuluBLSPubkey_r.BLSPubkey_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, 48), FuluBLSPubkey_r.BLSPubkey_decode(P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, 48)) == ((P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560481)), 48}, Some{FuluBytes48_d.b48_seed(2271560481)}), (P6_B.Buf{FuluBytes48_e.b48_put(P6_O.out_at(6n), 0, FuluBytes48_d.b48_seed(2271560482)), 48}, Some{FuluBytes48_d.b48_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>) & (P6_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>)}:
   P6_PRV.BLSPubkey_ms_dec()
 
-def FuluBLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
+def FuluBLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   P7_PRV.BLSPubkey_decode_vchecked_limit()
 
 def FuluBLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (P7_B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:

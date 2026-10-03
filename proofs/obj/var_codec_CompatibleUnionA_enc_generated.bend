@@ -80,11 +80,9 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   CI.putx_bytes(m, 0n, VC.ZT(0n), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, 0n, 0), hl, hz, hok)
 
-
-# the size under the mask 0x7fffffff: below 2^2 (CI.szx, CI.maxx)
-def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147483647) == CI.SZ(m) : U32}:
+def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:
   +hs = FD.logic__subst(Nat, z => {Nat.is_le(z, 2n) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok)), CI.maxx(m, hok))
-  VBE.and31(CI.SZ(m), 2n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 2n, FD.spec_common__pow2(2n), hs, {==}))
+  VBE.np31(CI.SZ(m), 2n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 2n, FD.spec_common__pow2(2n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
     -> {CompatibleUnionA_e.CompatibleUnionA_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.CompatibleUnionA & B.Buf}:
@@ -93,8 +91,8 @@ def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
     {CompatibleUnionA_e.CompatibleUnionA_enc_put(CompatibleUnionA_e.CompatibleUnionA_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.CompatibleUnionA & B.Buf}
   %Equal.sym(Array<U32> & (CompatibleUnionA_d.CompatibleUnionA & U32), CompatibleUnionA_e.CompatibleUnionA_putn(FD.array__thaw(U32, VC.ZT(0n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
     {CompatibleUnionA_e.CompatibleUnionA_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.CompatibleUnionA & B.Buf}
-  %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.CompatibleUnionA & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, a31(m, hok)) :
+    {(CI.TH(m), O.out_donep(_, CI.SZ(m), FD.array__thaw(U32, OUTE(m)))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.CompatibleUnionA & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.

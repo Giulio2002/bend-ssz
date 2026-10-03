@@ -168,9 +168,14 @@ def ProgressiveBitsStruct_enc_put(+n: U32, pair: Array<U32> & (ProgressiveBitsSt
   (o, m) = r
   ProgressiveBitsStruct_enc_out(n, out, o, m)
 
+def ProgressiveBitsStruct_enc_go(bad: Bool, +n: U32, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct) -> ProgressiveBitsStruct_d.ProgressiveBitsStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ProgressiveBitsStruct_enc_put(n, ProgressiveBitsStruct_putn(O.out_new(n), 0, o))
+
 def ProgressiveBitsStruct_enc_sized(pair: ProgressiveBitsStruct_d.ProgressiveBitsStruct & U32) -> ProgressiveBitsStruct_d.ProgressiveBitsStruct & B.Buf:
   (o, +n) = pair
-  ProgressiveBitsStruct_enc_put(n, ProgressiveBitsStruct_putn(O.out_new(n), 0, o))
+  ProgressiveBitsStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ProgressiveBitsStruct_encode(o: ProgressiveBitsStruct_d.ProgressiveBitsStruct) -> ProgressiveBitsStruct_d.ProgressiveBitsStruct & B.Buf: ProgressiveBitsStruct_enc_sized(ProgressiveBitsStruct_size(o))
 

@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.be
 def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_dchw(112, 112, (B.Buf{Array.new(U32, 5n, 0), 112}, 28))), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 5n, 0), 112}, 112))) == (True{}, True{}) : Bool & Bool}:
   PRV.BeaconBlockHeader_decode_vchecked_accept()
 
-def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>}:
+def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>}:
   PRV.BeaconBlockHeader_decode_vchecked_limit()
 
 def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 0n, 0), 112}, 112)) == None{} : Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>}:

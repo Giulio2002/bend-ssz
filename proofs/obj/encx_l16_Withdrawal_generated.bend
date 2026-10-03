@@ -486,7 +486,7 @@ def valid_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U3
   {==}
 
 def RTL_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {Fulu_list_Withdrawal_16_e.l16_Withdrawal_putk(FD.array__thaw(U32, D), X, THL_l16_Withdrawal(A, N)) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), U32.mul(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
+  {Fulu_list_Withdrawal_16_e.l16_Withdrawal_putk(FD.array__thaw(U32, D), X, THL_l16_Withdrawal(A, N)) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), O.mulc(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
 def BYL_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l16_Withdrawal(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_Withdrawal(A, N)) : +List<U32>}
 def PFL_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -496,9 +496,9 @@ def PFL_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32,
 def putk_rt_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h: {OKL_l16_Withdrawal(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l16_Withdrawal(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_l16_Withdrawal(A, N, dd, D, X, q, r):
   %Equal.sym(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & Bool, Fulu_list_Withdrawal_16_e.l16_Withdrawal_valid(THL_l16_Withdrawal(A, N)), (THL_l16_Withdrawal(A, N), True{}), valid_l16_Withdrawal(A, N, h)) :
-    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), U32.mul(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
+    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), O.mulc(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, Fulu_list_Withdrawal_16_e.l16_Withdrawal_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluWithdrawal_d.Withdrawal, A)), (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), THL_l16_Withdrawal(A, N)), rtb) :
-    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), U32.mul(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
+    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_Withdrawal(A, N, dd, D, q, r)), (THL_l16_Withdrawal(A, N), O.mulc(N, 44))) : Array<U32> & (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
@@ -526,25 +526,32 @@ def putx_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32
   putx_l16_WithdrawalW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_Withdrawal(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
-def sizex_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h: {OKL_l16_Withdrawal(A, N) == True{} : Bool}) -> {Fulu_list_Withdrawal_16_e.l16_Withdrawal_size(THL_l16_Withdrawal(A, N)) == (THL_l16_Withdrawal(A, N), U32.mul(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}:
+def sizex_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h: {OKL_l16_Withdrawal(A, N) == True{} : Bool}) -> {Fulu_list_Withdrawal_16_e.l16_Withdrawal_size(THL_l16_Withdrawal(A, N)) == (THL_l16_Withdrawal(A, N), O.mulc(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}:
   +d = TDM_l16_Withdrawal(A)
   %Equal.sym(Array<FuluWithdrawal_d.Withdrawal> & U32, Array.size(FuluWithdrawal_d.Withdrawal, FD.array__thaw(FuluWithdrawal_d.Withdrawal, A)), (FD.array__thaw(FuluWithdrawal_d.Withdrawal, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluWithdrawal_d.Withdrawal, d, A, okl_pf_l16_Withdrawal(A, N, h))) :
-    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_szf(N, _) == (THL_l16_Withdrawal(A, N), U32.mul(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}
+    {Fulu_list_Withdrawal_16_e.l16_Withdrawal_szf(N, _) == (THL_l16_Withdrawal(A, N), O.mulc(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l16_Withdrawal(A, N, h)) :
-    {(THL_l16_Withdrawal(A, N), O.pick(_, U32.mul(N, 44), 2147483648)) == (THL_l16_Withdrawal(A, N), U32.mul(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}
+    {(THL_l16_Withdrawal(A, N), O.pick(_, O.mulc(N, 44), 4294967295)) == (THL_l16_Withdrawal(A, N), O.mulc(N, 44)) : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq & U32}
   {==}
 
-# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +hN: {Nat.is_le(LL_l16_Withdrawal(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
+  VRX.mulqcW(N, U32.to_nat(N), 44, 11n, {==}, {==}, hN, {==}, {==}, {==})
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
 def szx_l16_WithdrawalW(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_Withdrawal(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_Withdrawal(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
-  VRX.mulqW(N, U32.to_nat(N), 44, 11n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_Withdrawal(A, N), A.quad(Nat.mul(U32.to_nat(N), 11n)), {==}, VRX.yl32(q, r, LL_l16_Withdrawal(A, N), hl32)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_Withdrawal(A, N)))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(LL_l16_Withdrawal(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_Withdrawal(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
+  szxB_l16_Withdrawal(A, N, hs31)
+
+# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+def szx_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_Withdrawal(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
+  szxB_l16_Withdrawal(A, N, VRX.hs31w(q, r, LL_l16_Withdrawal(A, N), dd, hd, hl))
+
 
 
 # ---- l16_Withdrawal: the spec side ----
-
-def szx_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_Withdrawal(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
-  szx_l16_WithdrawalW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_Withdrawal(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32) -> S.Value: S.Sequence{ITW_l16_Withdrawal(U32.to_nat(N), A, 0n)}
@@ -565,11 +572,7 @@ def encx_spec_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N
     VBZ.fitq(dx, LL_l16_Withdrawal(A, N), hL, hdx))
   lpart_l16_Withdrawal(U32.to_nat(N), A, hlim, fit)
 
-# szx_l16_Withdrawal with its bytes below 2^32 (no tree): the OKW twins' size.
-def szxB_l16_Withdrawal(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h32: {Nat.is_lt(LL_l16_Withdrawal(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 44)) == LL_l16_Withdrawal(A, N) : Nat}:
-  VRX.mulqW(N, U32.to_nat(N), 44, 11n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_Withdrawal(A, N), A.quad(Nat.mul(U32.to_nat(N), 11n)), {==}, h32))
-
-def encx_spec_l16_WithdrawalB(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h: {OKL_l16_Withdrawal(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+def encx_spec_l16_WithdrawalB(+A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +N: U32, +h: {OKL_l16_Withdrawal(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool},
     +hL: {Nat.is_le(LL_l16_Withdrawal(A, N), B) == True{} : Bool})
     -> {Codec.parts(VALL_l16_Withdrawal(A, N), S.ListOf{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}, U32.to_nat(16)}) == Some{[S.Variable{ENCL_l16_Withdrawal(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16), okl_lim_l16_Withdrawal(A, N, h))

@@ -77,9 +77,14 @@ def ProgressiveTestStruct_enc_put(+n: U32, pair: Array<U32> & (ProgressiveTestSt
   (o, m) = r
   ProgressiveTestStruct_enc_out(n, out, o, m)
 
+def ProgressiveTestStruct_enc_go(bad: Bool, +n: U32, o: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ProgressiveTestStruct_enc_put(n, ProgressiveTestStruct_putn(O.out_new(n), 0, o))
+
 def ProgressiveTestStruct_enc_sized(pair: ProgressiveTestStruct_d.ProgressiveTestStruct & U32) -> ProgressiveTestStruct_d.ProgressiveTestStruct & B.Buf:
   (o, +n) = pair
-  ProgressiveTestStruct_enc_put(n, ProgressiveTestStruct_putn(O.out_new(n), 0, o))
+  ProgressiveTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ProgressiveTestStruct_encode(o: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct & B.Buf: ProgressiveTestStruct_enc_sized(ProgressiveTestStruct_size(o))
 

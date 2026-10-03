@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluBytes20_d.Bytes20>) -> Bool:
 def is_some(a: Maybe<&1, FuluBytes20_d.Bytes20>, b: Maybe<&1, FuluBytes20_d.Bytes20>) -> Bool & Bool: (some1(a), some1(b))
 
 def ExecutionAddress_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   {==}
 
 def ExecutionAddress_decode_vchecked_accept()

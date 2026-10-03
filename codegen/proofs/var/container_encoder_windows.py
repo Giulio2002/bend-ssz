@@ -633,8 +633,8 @@ class Child:
             self.vt = f'T.{p}_Seq'
             self.enc = f'{a}.ENCL_{p}({A_}, {N})'
             self.len = f'{a}.LL_{p}({A_}, {N})'
-            rs = re.search(r'\(n \* (\d+) : U32\)', fn_body(f'{p}_ptn_fin')).group(1)
-            self.sz = f'U32.mul({N}, {rs})'
+            rs = re.search(r'O\.mulc\(n, (\d+)\)', fn_body(f'{p}_ptn_fin')).group(1)
+            self.sz = f'O.mulc({N}, {rs})'
             self.pad = False
             self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {q}, {r})'
             self.hY = f'{a}.len_encl_{p}({A_}, {N})'

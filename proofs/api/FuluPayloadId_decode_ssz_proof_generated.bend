@@ -103,7 +103,7 @@ def FuluPayloadId__decode_input__PayloadId_ms_build() -> {FuluPayloadId_r.Payloa
 def FuluPayloadId__decode_input__PayloadId_ms_dec() -> {(FuluPayloadId_r.PayloadId_decode(P6_B.Buf{FuluBytes8_e.b8_put(P6_O.out_at(3n), 0, FuluBytes8_d.b8_seed(2271560481)), 8}, 8), FuluPayloadId_r.PayloadId_decode(P6_B.Buf{FuluBytes8_e.b8_put(P6_O.out_at(3n), 0, FuluBytes8_d.b8_seed(2271560482)), 8}, 8)) == ((P6_B.Buf{FuluBytes8_e.b8_put(P6_O.out_at(3n), 0, FuluBytes8_d.b8_seed(2271560481)), 8}, Some{FuluBytes8_d.b8_seed(2271560481)}), (P6_B.Buf{FuluBytes8_e.b8_put(P6_O.out_at(3n), 0, FuluBytes8_d.b8_seed(2271560482)), 8}, Some{FuluBytes8_d.b8_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>) & (P6_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>)}:
   P6_PRV.PayloadId_ms_dec()
 
-def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
+def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
   P7_PRV.PayloadId_decode_vchecked_limit()
 
 def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:

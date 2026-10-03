@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_Version_decode_checked_generated.bend as PRV
 def Version__decode_offsets__Version_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   PRV.Version_decode_vchecked_accept()
 
-def Version__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
+def Version__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_limit()
 
 def Version__decode_offsets__Version_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:

@@ -56,7 +56,7 @@ def bitvector_16_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitv
 
 def bitvector_16_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
   (buf, +c) = pair
-  bitvector_16_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  bitvector_16_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def bitvector_16_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>:
   (buf, +n) = pair

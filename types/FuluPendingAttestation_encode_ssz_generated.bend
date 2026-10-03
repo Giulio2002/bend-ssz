@@ -48,9 +48,14 @@ def PendingAttestation_enc_put(+n: U32, pair: Array<U32> & (FuluPendingAttestati
   (o, m) = r
   PendingAttestation_enc_out(n, out, o, m)
 
+def PendingAttestation_enc_go(bad: Bool, +n: U32, o: FuluPendingAttestation_d.PendingAttestation) -> FuluPendingAttestation_d.PendingAttestation & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: PendingAttestation_enc_put(n, PendingAttestation_putn(O.out_new(n), 0, o))
+
 def PendingAttestation_enc_sized(pair: FuluPendingAttestation_d.PendingAttestation & U32) -> FuluPendingAttestation_d.PendingAttestation & B.Buf:
   (o, +n) = pair
-  PendingAttestation_enc_put(n, PendingAttestation_putn(O.out_new(n), 0, o))
+  PendingAttestation_enc_go(O.is_poisoned(n), n, o)
 
 def PendingAttestation_encode(o: FuluPendingAttestation_d.PendingAttestation) -> FuluPendingAttestation_d.PendingAttestation & B.Buf: PendingAttestation_enc_sized(PendingAttestation_size(o))
 

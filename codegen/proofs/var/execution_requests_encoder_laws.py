@@ -148,7 +148,7 @@ def _bg_models(X, w, p, W, NP, NA, DP, DA, ALLP, DOe, SEQ, QXT):
     return TH, RT, HD29
 
 
-def _bg_perfect_and_size(X, w, p, R, RS, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29):
+def _bg_perfect_and_size(X, w, p, R, RS, LIM, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29):
     """the perfect trees of the models, the capacities and the size law"""
     PF = {'ZD': f'FD.array__trep_perfect(U32, {DOe}, 0)'}
     PF['D1'] = f'VF.updv_perfect([12], {DOe}, ZD({DA}), 0n, {PF["ZD"]})'
@@ -165,7 +165,7 @@ def _bg_perfect_and_size(X, w, p, R, RS, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, R
         CAPS.append(f'VRL.u32le_n(n{k}, FD.u32__pow2u(da{k}), U32.to_nat(n{k}), {{==}}, FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(n{k}), z) == {TRUE}}}, VB.pw(da{k}), U32.to_nat(FD.u32__pow2u(da{k})), '
                     f'Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da{k})), VB.pw(da{k}), FD.u32__pow2u_value(da{k}, VB.lt32(da{k}, hda{k}))), hca{k}))')
     SZ = f'T.{X} & U32'
-    w(TEMPLATES.render('_bg_perfect_and_size_2', ALLP=ALLP, X=X, OE=OE, SZ=SZ, R=R, SEQ=SEQ, p=p, CAPS=CAPS, RS=RS, NA=NA, TH=TH, ALLA=ALLA, DOe=DOe, RT=RT))
+    w(TEMPLATES.render('_bg_perfect_and_size_2', ALLP=ALLP, X=X, OE=OE, SZ=SZ, R=R, SEQ=SEQ, p=p, CAPS=CAPS, RS=RS, LIM=LIM, NA=NA, TH=TH, ALLA=ALLA, DOe=DOe, RT=RT))
 
 
 def big_text(HEAD, LS):
@@ -174,7 +174,7 @@ def big_text(HEAD, LS):
     X, L, w, p, R, RS, W, LIM, NP, NA, DP, DA, ALLP, ALLA, DOe, SEQ, OE, QXV, QW, QXS, QXT = _bg_names(HEAD, LS)
     _bg_offsets(w, RS, W, LIM, NP, NA, QXV, QW, QXS, QXT)
     TH, RT, HD29 = _bg_models(X, w, p, W, NP, NA, DP, DA, ALLP, DOe, SEQ, QXT)
-    _bg_perfect_and_size(X, w, p, R, RS, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29)
+    _bg_perfect_and_size(X, w, p, R, RS, LIM, NA, DA, ALLP, ALLA, DOe, SEQ, OE, TH, RT, HD29)
     return L, dict(NP=NP, NA=NA, DP=DP, DA=DA, ALLP=ALLP, ALLA=ALLA, OE=OE, DOe=DOe, SEQ=SEQ, TH=TH, p=p, R=R, RS=RS, W=W, LIM=LIM)
 
 

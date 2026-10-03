@@ -101,7 +101,7 @@ def uint32__decode_input__uint32_ms_build() -> {uint32_r.uint32_build(P6_B.Buf{u
 def uint32__decode_input__uint32_ms_dec() -> {(uint32_r.uint32_decode(P6_B.Buf{uint32_e.u32_put(P6_O.out_at(2n), 0, uint32_d.u32_seed(2271560481)), 4}, 4), uint32_r.uint32_decode(P6_B.Buf{uint32_e.u32_put(P6_O.out_at(2n), 0, uint32_d.u32_seed(2271560482)), 4}, 4)) == ((P6_B.Buf{uint32_e.u32_put(P6_O.out_at(2n), 0, uint32_d.u32_seed(2271560481)), 4}, Some{uint32_d.u32_seed(2271560481)}), (P6_B.Buf{uint32_e.u32_put(P6_O.out_at(2n), 0, uint32_d.u32_seed(2271560482)), 4}, Some{uint32_d.u32_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, U32>) & (P6_B.Buf & Maybe<&1, U32>)}:
   P6_PRV.uint32_ms_dec()
 
-def uint32__decode_offsets__uint32_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, U32>, uint32_r.uint32_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, U32>}:
+def uint32__decode_offsets__uint32_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, U32>, uint32_r.uint32_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, U32>}:
   P7_PRV.uint32_decode_vchecked_limit()
 
 def uint32__decode_offsets__uint32_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, U32>, uint32_r.uint32_dchw(4, 4, (P7_B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(P7_B.Buf, Maybe<&1, U32>, uint32_r.uint32_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:

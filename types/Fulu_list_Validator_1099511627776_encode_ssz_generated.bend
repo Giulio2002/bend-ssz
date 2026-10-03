@@ -12,7 +12,7 @@ import ./Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Valid
 
 def l1099511627776_Validator_szf(+n: U32, pair: Array<FuluValidator_d.Validator> & U32) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 121 : U32), 2147483648))
+  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295))
 
 def l1099511627776_Validator_size(o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l1099511627776_Validator_put(out: Array<U32>, +pos: U32, o: Fulu_list_Valida
 
 def l1099511627776_Validator_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 121 : U32)))
+  (out, (sq, O.mulc(n, 121)))
 
 def l1099511627776_Validator_putn(out: Array<U32>, +pos: U32, o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l1099511627776_Validator_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Vali
   (o, ok) = pair
   match ok:
     case True{}: l1099511627776_Validator_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l1099511627776_Validator_va_cap(ok: Bool, +n: U32, pair: Array<FuluValidator_d.Validator> & U32) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool:
   (arr, +c) = pair

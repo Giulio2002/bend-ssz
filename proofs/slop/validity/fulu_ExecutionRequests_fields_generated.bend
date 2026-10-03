@@ -18,7 +18,7 @@ def ExecutionRequests_serialize_vrefuse_bad_flag()
   {==}
 
 def ExecutionRequests_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, O.Encoded, FuluExecutionRequests_e.ExecutionRequests_senc_sized((FuluExecutionRequests_d.ExecutionRequests_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, O.Encoded, FuluExecutionRequests_e.ExecutionRequests_senc_sized((FuluExecutionRequests_d.ExecutionRequests_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def ExecutionRequests_serialize_vreject_deposits()

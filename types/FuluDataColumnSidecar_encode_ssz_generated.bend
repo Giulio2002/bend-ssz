@@ -78,9 +78,14 @@ def DataColumnSidecar_enc_put(+n: U32, pair: Array<U32> & (FuluDataColumnSidecar
   (o, m) = r
   DataColumnSidecar_enc_out(n, out, o, m)
 
+def DataColumnSidecar_enc_go(bad: Bool, +n: U32, o: FuluDataColumnSidecar_d.DataColumnSidecar) -> FuluDataColumnSidecar_d.DataColumnSidecar & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: DataColumnSidecar_enc_put(n, DataColumnSidecar_putn(O.out_new(n), 0, o))
+
 def DataColumnSidecar_enc_sized(pair: FuluDataColumnSidecar_d.DataColumnSidecar & U32) -> FuluDataColumnSidecar_d.DataColumnSidecar & B.Buf:
   (o, +n) = pair
-  DataColumnSidecar_enc_put(n, DataColumnSidecar_putn(O.out_new(n), 0, o))
+  DataColumnSidecar_enc_go(O.is_poisoned(n), n, o)
 
 def DataColumnSidecar_encode(o: FuluDataColumnSidecar_d.DataColumnSidecar) -> FuluDataColumnSidecar_d.DataColumnSidecar & B.Buf: DataColumnSidecar_enc_sized(DataColumnSidecar_size(o))
 

@@ -46,6 +46,7 @@ import ../obj/vpiece.bend as P0_VPC
 import ../obj/vbv257s.bend as P0_V2S
 import ../obj/vbv128s.bend as P0_V2S8
 import ../obj/vmr_generated.bend as P0_VMR
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -289,6 +290,6 @@ def ProgressiveBitsStruct__serialize_valid__ProgressiveBitsStruct_serialize_vuni
 def ProgressiveBitsStruct__serialize_valid__ProgressiveBitsStruct_serialize_vunit_bv1280_range_above_161() -> {Pair.snd(P16_O.Words, Bool, bitvector_1280_e.bv1280_valid(P16_O.words_new(161))) == False{} : Bool}:
   P16_PRV.ProgressiveBitsStruct_serialize_vunit_bv1280_range_above_161()
 
-def ProgressiveBitsStruct__serialize_valid__ProgressiveBitsStruct_mc_ser() -> {ProgressiveBitsStruct_e.ProgressiveBitsStruct_serialize(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572126)), bitvector_257_d.bv257_seed(2271572177))) == (Pair.fst(ProgressiveBitsStruct_d.ProgressiveBitsStruct, P17_B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572126)), bitvector_257_d.bv257_seed(2271572177)))), P17_O.encoded(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, P17_B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572126)), bitvector_257_d.bv257_seed(2271572177)))))) : ProgressiveBitsStruct_d.ProgressiveBitsStruct & P17_O.Encoded}:
+def ProgressiveBitsStruct__serialize_valid__ProgressiveBitsStruct_mc_ser() -> {ProgressiveBitsStruct_e.ProgressiveBitsStruct_serialize(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572194)), bitvector_257_d.bv257_seed(2271572245))) == (Pair.fst(ProgressiveBitsStruct_d.ProgressiveBitsStruct, P17_B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572194)), bitvector_257_d.bv257_seed(2271572245)))), P17_O.encoded(Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, P17_B.Buf, ProgressiveBitsStruct_e.ProgressiveBitsStruct_encode(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_D(ProgressiveBitsStruct_d.ProgressiveBitsStruct_set_f_A(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), bitvector_256_d.bv256_seed(2271572194)), bitvector_257_d.bv257_seed(2271572245)))))) : ProgressiveBitsStruct_d.ProgressiveBitsStruct & P17_O.Encoded}:
   P17_PRV.ProgressiveBitsStruct_mc_ser()
 

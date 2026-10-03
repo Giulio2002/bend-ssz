@@ -7,15 +7,15 @@ import ../../../types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated
 # BeaconState: the boundary of the append guard of l134217728_PendingPartialWithdrawal (manual spec-mutation audit, round 3; docs/mutation_testing/MUTATION_PROOFS.md).
 
 def BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_appb_below()
-    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(27n), 89478484}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == True{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(28n), 134217727}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == True{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_appb_at()
-    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(27n), 89478485}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(28n), 134217728}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_appb_above()
-    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(27n), 89478486}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == False{} : Bool}:
+    -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, Bool, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_append(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(28n), 134217729}, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default())) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_appb_fit()

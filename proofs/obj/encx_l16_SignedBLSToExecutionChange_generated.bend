@@ -505,7 +505,7 @@ def valid_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecu
   {==}
 
 def RTL_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_putk(FD.array__thaw(U32, D), X, THL_l16_SignedBLSToExecutionChange(A, N)) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
+  {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_putk(FD.array__thaw(U32, D), X, THL_l16_SignedBLSToExecutionChange(A, N)) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
 def BYL_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_SignedBLSToExecutionChange(A, N)) : +List<U32>}
 def PFL_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -515,9 +515,9 @@ def PFL_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecuti
 def putk_rt_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h: {OKL_l16_SignedBLSToExecutionChange(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l16_SignedBLSToExecutionChange(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_l16_SignedBLSToExecutionChange(A, N, dd, D, X, q, r):
   %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & Bool, Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_valid(THL_l16_SignedBLSToExecutionChange(A, N)), (THL_l16_SignedBLSToExecutionChange(A, N), True{}), valid_l16_SignedBLSToExecutionChange(A, N, h)) :
-    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
+    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
   %Equal.sym(Array<U32> & Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, A)), (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), THL_l16_SignedBLSToExecutionChange(A, N)), rtb) :
-    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
+    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_SignedBLSToExecutionChange(A, N, dd, D, q, r)), (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172))) : Array<U32> & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
@@ -545,25 +545,32 @@ def putx_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecut
   putx_l16_SignedBLSToExecutionChangeW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_SignedBLSToExecutionChange(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
-def sizex_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h: {OKL_l16_SignedBLSToExecutionChange(A, N) == True{} : Bool}) -> {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_size(THL_l16_SignedBLSToExecutionChange(A, N)) == (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}:
+def sizex_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h: {OKL_l16_SignedBLSToExecutionChange(A, N) == True{} : Bool}) -> {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_size(THL_l16_SignedBLSToExecutionChange(A, N)) == (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}:
   +d = TDM_l16_SignedBLSToExecutionChange(A)
   %Equal.sym(Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange> & U32, Array.size(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, FD.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, A)), (FD.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, d, A, okl_pf_l16_SignedBLSToExecutionChange(A, N, h))) :
-    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_szf(N, _) == (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}
+    {Fulu_list_SignedBLSToExecutionChange_16_e.l16_SignedBLSToExecutionChange_szf(N, _) == (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l16_SignedBLSToExecutionChange(A, N, h)) :
-    {(THL_l16_SignedBLSToExecutionChange(A, N), O.pick(_, U32.mul(N, 172), 2147483648)) == (THL_l16_SignedBLSToExecutionChange(A, N), U32.mul(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}
+    {(THL_l16_SignedBLSToExecutionChange(A, N), O.pick(_, O.mulc(N, 172), 4294967295)) == (THL_l16_SignedBLSToExecutionChange(A, N), O.mulc(N, 172)) : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & U32}
   {==}
 
-# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +hN: {Nat.is_le(LL_l16_SignedBLSToExecutionChange(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
+  VRX.mulqcW(N, U32.to_nat(N), 172, 43n, {==}, {==}, hN, {==}, {==}, {==})
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
 def szx_l16_SignedBLSToExecutionChangeW(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
-  VRX.mulqW(N, U32.to_nat(N), 172, 43n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_SignedBLSToExecutionChange(A, N), A.quad(Nat.mul(U32.to_nat(N), 43n)), {==}, VRX.yl32(q, r, LL_l16_SignedBLSToExecutionChange(A, N), hl32)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N)))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(LL_l16_SignedBLSToExecutionChange(A, N), U32.to_nat(VB.NMAX())) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
+  szxB_l16_SignedBLSToExecutionChange(A, N, hs31)
+
+# szx: the size the writer returns is the list's byte count, when the list lies in the tree.
+def szx_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
+  szxB_l16_SignedBLSToExecutionChange(A, N, VRX.hs31w(q, r, LL_l16_SignedBLSToExecutionChange(A, N), dd, hd, hl))
+
 
 
 # ---- l16_SignedBLSToExecutionChange: the spec side ----
-
-def szx_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedBLSToExecutionChange(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
-  szx_l16_SignedBLSToExecutionChangeW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_SignedBLSToExecutionChange(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32) -> S.Value: S.Sequence{ITW_l16_SignedBLSToExecutionChange(U32.to_nat(N), A, 0n)}
@@ -584,11 +591,7 @@ def encx_spec_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToE
     VBZ.fitq(dx, LL_l16_SignedBLSToExecutionChange(A, N), hL, hdx))
   lpart_l16_SignedBLSToExecutionChange(U32.to_nat(N), A, hlim, fit)
 
-# szx_l16_SignedBLSToExecutionChange with its bytes below 2^32 (no tree): the OKW twins' size.
-def szxB_l16_SignedBLSToExecutionChange(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h32: {Nat.is_lt(LL_l16_SignedBLSToExecutionChange(A, N), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 172)) == LL_l16_SignedBLSToExecutionChange(A, N) : Nat}:
-  VRX.mulqW(N, U32.to_nat(N), 172, 43n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_SignedBLSToExecutionChange(A, N), A.quad(Nat.mul(U32.to_nat(N), 43n)), {==}, h32))
-
-def encx_spec_l16_SignedBLSToExecutionChangeB(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h: {OKL_l16_SignedBLSToExecutionChange(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool},
+def encx_spec_l16_SignedBLSToExecutionChangeB(+A: FD.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +h: {OKL_l16_SignedBLSToExecutionChange(A, N) == True{} : Bool}, +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool},
     +hL: {Nat.is_le(LL_l16_SignedBLSToExecutionChange(A, N), B) == True{} : Bool})
     -> {Codec.parts(VALL_l16_SignedBLSToExecutionChange(A, N), S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, U32.to_nat(16)}) == Some{[S.Variable{ENCL_l16_SignedBLSToExecutionChange(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16), okl_lim_l16_SignedBLSToExecutionChange(A, N, h))

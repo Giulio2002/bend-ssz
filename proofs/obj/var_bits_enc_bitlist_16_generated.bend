@@ -52,8 +52,8 @@ def encode_eval(dw, T, K, pfT, hdw, rep):
     {bitlist_16_e.bitlist_16_enc_put(bitlist_16_e.bits16_putn(_, 0, O.Bits{F.array__thaw(U32, T), K})) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(F.array__thaw(U32, VC.ZT(0n)), 0, O.Bits{F.array__thaw(U32, T), K}), (F.array__thaw(U32, OUT(T, K)), (O.Bits{F.array__thaw(U32, T), K}, CO.NK(K))), CO.cr1(0n, T, K, cr(dw, T, K, pfT, hdw, rep))) :
     {bitlist_16_e.bitlist_16_enc_put(_) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
-  %Equal.sym(U32, U32.and(CO.NK(K), 2147483647), CO.NK(K), VBE.and31(CO.NK(K), 5n, {==}, F.nat__le_lt_trans(U32.to_nat(CO.NK(K)), 17n, F.spec_common__pow2(5n), CO.nk_le(K, 5n, 16n, {==}, VR.rep_N(T, K, 16n, rep), {==}), {==}))) :
-    {(O.Bits{F.array__thaw(U32, T), K}, O.out_done(_, F.array__thaw(U32, OUT(T, K)))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CO.NK(K)), False{}, CO.np_nk(K)) :
+    {(O.Bits{F.array__thaw(U32, T), K}, O.out_donep(_, CO.NK(K), F.array__thaw(U32, OUT(T, K)))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   {==}
 
 # Those bytes are the spec/codec.bend encoding of the object's value.

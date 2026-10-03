@@ -107,7 +107,7 @@ def FuluBytes20__decode_input__Bytes20_ms_build() -> {FuluBytes20_r.Bytes20_buil
 def FuluBytes20__decode_input__Bytes20_ms_dec() -> {(FuluBytes20_r.Bytes20_decode(P7_B.Buf{FuluBytes20_e.b20_put(P7_O.out_at(5n), 0, FuluBytes20_d.b20_seed(2271560481)), 20}, 20), FuluBytes20_r.Bytes20_decode(P7_B.Buf{FuluBytes20_e.b20_put(P7_O.out_at(5n), 0, FuluBytes20_d.b20_seed(2271560482)), 20}, 20)) == ((P7_B.Buf{FuluBytes20_e.b20_put(P7_O.out_at(5n), 0, FuluBytes20_d.b20_seed(2271560481)), 20}, Some{FuluBytes20_d.b20_seed(2271560481)}), (P7_B.Buf{FuluBytes20_e.b20_put(P7_O.out_at(5n), 0, FuluBytes20_d.b20_seed(2271560482)), 20}, Some{FuluBytes20_d.b20_seed(2271560482)})) : (P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>) & (P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>)}:
   P7_PRV.Bytes20_ms_dec()
 
-def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_limit() -> {Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(2147483648, 2147483648, (P8_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
+def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_limit() -> {Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(4294967265, 4294967265, (P8_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   P8_PRV.Bytes20_decode_vchecked_limit()
 
 def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(20, 20, (P8_B.Buf{Array.new(U32, 3n, 0), 20}, 5))), Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked(P8_B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:

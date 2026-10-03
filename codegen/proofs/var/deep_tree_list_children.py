@@ -260,7 +260,14 @@ CLOSURES = {
 
 
 # the progressive lists of fixed-size records: the tree depth below 30 (their byte counts 4 N below 2^31: U32.mul(N, 4))
-_RL_SUBS = [('Nat.is_lt(da, 28n)', 'Nat.is_lt(da, 30n)'),
+_SZX_BASE_T = ('VB.le_pw30_nmax(Nat.mul(U32.to_nat(N), @RS@), FD.nat__le_trans(Nat.mul(U32.to_nat(N), @RS@), Q, VB.pw(30n), ok_3(da, A, N, hok),\n'
+             '          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(30n)) == True{} : Bool}, VB.pw(2n+da), Q, Equal.sym(Nat, Q, VB.pw(2n+da), UW.qpw(da)),\n'
+             '            FD.nat__pow2_mono(2n+da, 30n, FD.nat__lt_le(2n+da, 30n, ok_0(da, A, N, hok))))))')
+_SZX_RL_T = ('VB.le31_nmax(Nat.mul(U32.to_nat(N), @RS@), FD.nat__le_trans(Nat.mul(U32.to_nat(N), @RS@), Q, VB.pw(31n), ok_3(da, A, N, hok),\n'
+           '          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(31n)) == True{} : Bool}, VB.pw(2n+da), Q, Equal.sym(Nat, Q, VB.pw(2n+da), UW.qpw(da)),\n'
+           '            FD.nat__pow2_mono(2n+da, 31n, Order.add_left(2n, da, 29n, FD.nat__lt_succ_le(da, 29n, ok_0(da, A, N, hok)))))))')
+_RL_SUBS = [(_SZX_BASE_T.replace('@RS@', rs), _SZX_RL_T.replace('@RS@', rs)) for rs in ('1n', '4n')] + [
+            ('Nat.is_lt(da, 28n)', 'Nat.is_lt(da, 30n)'),
             ('FD.nat__lt_trans(2n+da, 30n, 32n, ok_0(da, A, N, hok), {==})', 'ok_0(da, A, N, hok)'),
             ('FD.nat__lt_trans(da, 28n, 30n, ok_0(da, A, N, hok), {==})', 'ok_0(da, A, N, hok)'),
             ('FD.nat__lt_trans(da, 28n, 31n, ok_0(da, A, N, h), {==})', 'FD.nat__lt_trans(da, 30n, 31n, ok_0(da, A, N, h), {==})'),
@@ -306,7 +313,7 @@ def vlist_widen(text):
     fam = ''.join(new[n].rstrip('\n') + '\n\n' for n in VL_FAM)
     out = text[:first] + VL_HELP + '\n' + fam + text[first:]
     B28 = 'Nat.is_le(LL(t, N), A.quad(VB.pw(28n)))'
-    B31 = 'Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX()))'
+    B31 = 'Nat.is_lt(LL(t, N), VB.pw(31n))'
     for n in ('OKT', 'ok_l', 'ok_b'):
         a = out.index(f'\ndef {n}(') + 1
         e = out.find('\ndef ', a + 5)

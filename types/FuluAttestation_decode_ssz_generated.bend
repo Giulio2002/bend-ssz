@@ -103,7 +103,7 @@ def Attestation_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluA
 
 def Attestation_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
   (buf, +c) = pair
-  Attestation_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  Attestation_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def Attestation_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>:
   (buf, +n) = pair

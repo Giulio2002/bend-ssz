@@ -323,7 +323,7 @@ def ProgressiveBitsStruct_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe
 
 def ProgressiveBitsStruct_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
   (buf, +c) = pair
-  ProgressiveBitsStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  ProgressiveBitsStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def ProgressiveBitsStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
   (buf, +n) = pair

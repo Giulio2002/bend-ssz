@@ -32,6 +32,9 @@ import ../../types/FuluAttestation_def_generated.bend as At
 import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as LW
 import ../../types/FuluWithdrawal_def_generated.bend as Wd
 import ../../types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend as LWE
+import ../../types/proglist_uint8_encode_ssz_generated.bend as PlE
+import ../../types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend as LPDE
+import ../../types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend as LVE
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -233,6 +236,45 @@ def case43() -> IO(Unit): maybe_line("decode_window_2_pow_32_minus_1", CpR.Check
 def case44() -> IO(Unit): maybe_w("decode_empty_list_empty_buf", PlR.proglist_uint8_decode(B.empty(), 0))
 def case45() -> IO(Unit): maybe_w("decode_list_window_5_of_empty_buf", PlR.proglist_uint8_decode(B.empty(), 5))
 
+# size-limit (agent/size-limit, docs/SIZE_LIMIT_DESIGN.md): a valid object is up to NMAX = 2^32 - 32 bytes; the size pass neither wraps n * es
+# nor takes a size past NMAX for valid; an unchecked encode of such a size refuses (empty buffer) before it allocates. The storage is a
+# lazily shared zero tree of depth 30 (2^30 words), so no case touches gigabytes.
+def big() -> Array<U32>: Array.new(U32, 30n, 0)
+def size_line(label: String, pair: O.Words & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print(label ++ "=" ++ U32.show(n))
+def enc_len_line(label: String, pair: O.Words & B.Buf) -> IO(Unit):
+  (o, b) = pair
+  IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+def ser_words_line(label: String, pair: O.Words & O.Encoded) -> IO(Unit):
+  (o, e) = pair
+  match e:
+    case O.Encoded{ok, b}: IO.print(label ++ " ok=" ++ O.pick_str(ok))
+def case46() -> IO(Unit): size_line("size_2_pow_31_plus_1", PlE.pl_u8_size(O.Words{big(), 2147483649}))
+def case47() -> IO(Unit): size_line("size_nmax", PlE.pl_u8_size(O.Words{big(), 4294967264}))
+def case48() -> IO(Unit): size_line("size_2_pow_32_minus_2", PlE.pl_u8_size(O.Words{big(), 4294967294}))
+def case49() -> IO(Unit): enc_len_line("encode_2_pow_32_minus_2", PlE.proglist_uint8_encode(O.Words{big(), 4294967294}))
+def case50() -> IO(Unit): ser_words_line("serialize_2_pow_32_minus_2", PlE.proglist_uint8_serialize(O.Words{big(), 4294967294}))
+def pd_size_line(label: String, pair: LPD.l134217728_PendingDeposit_Seq & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print(label ++ "=" ++ U32.show(n))
+def pds(+n: U32) -> LPD.l134217728_PendingDeposit_Seq: LPD.l134217728_PendingDeposit_Seq{LPD.l134217728_PendingDeposit_fill(25n), n}
+def case51() -> IO(Unit): pd_size_line("pd_size_22369621", LPDE.l134217728_PendingDeposit_size(pds(22369621)))
+def case52() -> IO(Unit): pd_size_line("pd_size_22369622", LPDE.l134217728_PendingDeposit_size(pds(22369622)))
+def va_size_line(label: String, pair: LV.l1099511627776_Validator_Seq & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print(label ++ "=" ++ U32.show(n))
+def vas(+n: U32) -> LV.l1099511627776_Validator_Seq: LV.l1099511627776_Validator_Seq{LV.l1099511627776_Validator_fill(26n), n}
+def case53() -> IO(Unit): va_size_line("validator_size_17747799", LVE.l1099511627776_Validator_size(vas(17747799)))
+def case54() -> IO(Unit): va_size_line("validator_size_35495597", LVE.l1099511627776_Validator_size(vas(35495597)))
+def case55() -> IO(Unit): va_size_line("validator_size_35495598", LVE.l1099511627776_Validator_size(vas(35495598)))
+def case56() -> IO(Unit): va_line("validator_append_at_17747798", LV.l1099511627776_Validator_append(vas(17747798), Va.Validator_default()))
+def case57() -> IO(Unit): va_line("validator_append_at_35495597", LV.l1099511627776_Validator_append(vas(35495597), Va.Validator_default()))
+def pd_enc_len_line(label: String, pair: LPD.l134217728_PendingDeposit_Seq & B.Buf) -> IO(Unit):
+  (o, b) = pair
+  IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+def case58() -> IO(Unit): pd_enc_len_line("pd_encode_22369622", LPDE.l134217728_PendingDeposit_encode(pds(22369622)))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -279,6 +321,19 @@ def dispatch(+c: U32) -> IO(Unit):
     case 43: case43()
     case 44: case44()
     case 45: case45()
+    case 46: case46()
+    case 47: case47()
+    case 48: case48()
+    case 49: case49()
+    case 50: case50()
+    case 51: case51()
+    case 52: case52()
+    case 53: case53()
+    case 54: case54()
+    case 55: case55()
+    case 56: case56()
+    case 57: case57()
+    case 58: case58()
     case _: case12()
 
 def main() -> IO(Unit):

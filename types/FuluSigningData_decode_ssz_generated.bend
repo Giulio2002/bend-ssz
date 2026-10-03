@@ -62,7 +62,7 @@ def SigningData_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluS
 
 def SigningData_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
   (buf, +c) = pair
-  SigningData_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  SigningData_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def SigningData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
   (buf, +n) = pair

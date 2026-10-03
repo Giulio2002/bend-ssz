@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluBeaconState_d.BeaconState>) -> Bool:
 def is_some(a: Maybe<&1, FuluBeaconState_d.BeaconState>, b: Maybe<&1, FuluBeaconState_d.BeaconState>) -> Bool & Bool: (some1(a), some1(b))
 
 def BeaconState_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}
 
 def BeaconState_decode_vchecked_window()

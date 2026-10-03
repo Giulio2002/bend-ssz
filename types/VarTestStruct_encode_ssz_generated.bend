@@ -74,7 +74,7 @@ def VarTestStruct_bx_pk_back(pair: Array<U32> & (VarTestStruct_d.VarTestStruct &
 def VarTestStruct_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<VarTestStruct_d.VarTestStruct>) -> Array<U32> & (O.Boxed<VarTestStruct_d.VarTestStruct> & U32):
   match o:
     case O.BSome{v, rest}: VarTestStruct_bx_pk_back(VarTestStruct_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def VarTestStruct_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<VarTestStruct_d.VarTestStruct> & U32)) -> Array<U32> & (O.Boxed<VarTestStruct_d.VarTestStruct> & U32):
   (out, r) = pair
@@ -117,9 +117,14 @@ def VarTestStruct_enc_put(+n: U32, pair: Array<U32> & (VarTestStruct_d.VarTestSt
   (o, m) = r
   VarTestStruct_enc_out(n, out, o, m)
 
+def VarTestStruct_enc_go(bad: Bool, +n: U32, o: VarTestStruct_d.VarTestStruct) -> VarTestStruct_d.VarTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: VarTestStruct_enc_put(n, VarTestStruct_putn(O.out_new(n), 0, o))
+
 def VarTestStruct_enc_sized(pair: VarTestStruct_d.VarTestStruct & U32) -> VarTestStruct_d.VarTestStruct & B.Buf:
   (o, +n) = pair
-  VarTestStruct_enc_put(n, VarTestStruct_putn(O.out_new(n), 0, o))
+  VarTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def VarTestStruct_encode(o: VarTestStruct_d.VarTestStruct) -> VarTestStruct_d.VarTestStruct & B.Buf: VarTestStruct_enc_sized(VarTestStruct_size(o))
 

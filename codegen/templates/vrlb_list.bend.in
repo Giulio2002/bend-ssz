@@ -304,7 +304,7 @@ def ptnz(+t: FD.array__Tree<MB<@M>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) ==
          T.@P_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
 
 def RTL(+t: FD.array__Tree<MB<@M>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.@P_putk(FD.array__thaw(U32, D), X, THL(t, N)) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
+  {T.@P_putk(FD.array__thaw(U32, D), X, THL(t, N)) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), O.mulc(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
 def BYL(+t: FD.array__Tree<MB<@M>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL(t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL(t, N)) : +List<U32>}
 def PFL(+t: FD.array__Tree<MB<@M>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -314,9 +314,9 @@ def PFL(+t: FD.array__Tree<MB<@M>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, 
 def putk_rt(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN(U32.is_eq(N, 0), t, N, dd, D, X, q, r)) -> RTL(t, N, dd, D, X, q, r):
   %Equal.sym(T.@P_Seq & Bool, T.@P_valid(THL(t, N)), (THL(t, N), True{}), valid_l(t, N, h)) :
-    {T.@P_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
+    {T.@P_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), O.mulc(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
   %Equal.sym(Array<U32> & T.@P_Seq, T.@P_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), THL(t, N)), rtb) :
-    {T.@P_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
+    {T.@P_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), O.mulc(N, @RS))) : Array<U32> & (T.@P_Seq & U32)}
   {==}
 
 def mk3(+t: FD.array__Tree<MB<@M>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -340,19 +340,29 @@ def putx(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, 
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.@P_size(THL(t, N)) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}:
+def sizex(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.@P_size(THL(t, N)) == (THL(t, N), O.mulc(N, @RS)) : T.@P_Seq & U32}:
   +d = TDM(t)
   %Equal.sym(Array<O.Boxed<T.@E>> & U32, Array.size(O.Boxed<T.@E>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_@P(d, t, okl_pf(t, N, h))) :
-    {T.@P_szf(N, _) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}
+    {T.@P_szf(N, _) == (THL(t, N), O.mulc(N, @RS)) : T.@P_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {(THL(t, N), O.pick(_, U32.mul(N, @RS), 4294967295)) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}
+    {(THL(t, N), O.pick(_, O.mulc(N, @RS), 4294967295)) == (THL(t, N), O.mulc(N, @RS)) : T.@P_Seq & U32}
   {==}
+
+# szxB: the size pass's O.mulc is the list's byte count when the bytes are at most NMAX (no tree).
+def szxB_@P(+t: FD.array__Tree<MB<@M>>, +N: U32, +hN: {Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, @RS)) == LL(t, N) : Nat}:
+  VRX.mulqcW(N, U32.to_nat(N), @RS, @Wn, {==}, {==}, hN, {==}, {==}, {==})
+
+# szx at any depth dd < 31 (hs31: the bytes within NMAX; hl32 is not used).
+def szx_@PW(+t: FD.array__Tree<MB<@M>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX())) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL(t, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, @RS)) == LL(t, N) : Nat}:
+  szxB_@P(t, N, hs31)
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
 def szx(+t: FD.array__Tree<MB<@M>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, @RS)) == LL(t, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), @RS, @Wn, {==}, {==}, hd,
-    FD.nat__le_trans(LL(t, N), Nat.add(Nat.add(A.quad(q), r), LL(t, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL(t, N)), VRX.xend(q, r, LL(t, N), dd, hl)))
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(O.mulc(N, @RS)) == LL(t, N) : Nat}:
+  szxB_@P(t, N, VRX.hs31w(q, r, LL(t, N), dd, hd, hl))
+
 
 # ---- the spec side: the list's value, its parts, one variable part of its bytes ---------------------
 

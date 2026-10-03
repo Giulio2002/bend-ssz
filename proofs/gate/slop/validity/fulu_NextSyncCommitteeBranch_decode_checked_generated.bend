@@ -10,7 +10,7 @@ import ../../../slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_genera
 def NextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dchw(192, 192, (B.Buf{Array.new(U32, 6n, 0), 192}, 48))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   PRV.NextSyncCommitteeBranch_decode_vchecked_accept()
 
-def NextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def NextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.NextSyncCommitteeBranch_decode_vchecked_limit()
 
 def NextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, O.Words>}:

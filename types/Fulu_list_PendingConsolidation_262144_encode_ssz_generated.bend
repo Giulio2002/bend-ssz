@@ -12,7 +12,7 @@ import ./Fulu_list_PendingConsolidation_262144_def_generated.bend as Fulu_list_P
 
 def l262144_PendingConsolidation_szf(+n: U32, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 16 : U32), 2147483648))
+  (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 16), 4294967295))
 
 def l262144_PendingConsolidation_size(o: Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq) -> Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l262144_PendingConsolidation_put(out: Array<U32>, +pos: U32, o: Fulu_list_Pe
 
 def l262144_PendingConsolidation_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq) -> Array<U32> & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 16 : U32)))
+  (out, (sq, O.mulc(n, 16)))
 
 def l262144_PendingConsolidation_putn(out: Array<U32>, +pos: U32, o: Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq) -> Array<U32> & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l262144_PendingConsolidation_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_
   (o, ok) = pair
   match ok:
     case True{}: l262144_PendingConsolidation_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l262144_PendingConsolidation_va_cap(ok: Bool, +n: U32, pair: Array<FuluPendingConsolidation_d.PendingConsolidation> & U32) -> Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool:
   (arr, +c) = pair

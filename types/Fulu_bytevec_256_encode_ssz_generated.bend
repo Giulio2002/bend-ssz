@@ -286,7 +286,7 @@ def b256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O
   (o, ok) = pair
   match ok:
     case True{}: b256_pk_ok(b256_put(out, pos, o))
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def b256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 256, 256, False{}, 1)
 

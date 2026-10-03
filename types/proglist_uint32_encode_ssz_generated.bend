@@ -17,7 +17,7 @@ def pl_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & 
   (o, ok) = pair
   match ok:
     case True{}: pl_u32_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def pl_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)
 
@@ -31,9 +31,14 @@ def proglist_uint32_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Wo
   (o, m) = r
   proglist_uint32_enc_out(n, out, o, m)
 
+def proglist_uint32_enc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: proglist_uint32_enc_put(n, pl_u32_putn(O.out_new(n), 0, o))
+
 def proglist_uint32_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  proglist_uint32_enc_put(n, pl_u32_putn(O.out_new(n), 0, o))
+  proglist_uint32_enc_go(O.is_poisoned(n), n, o)
 
 def proglist_uint32_encode(o: O.Words) -> O.Words & B.Buf: proglist_uint32_enc_sized(pl_u32_size(o))
 

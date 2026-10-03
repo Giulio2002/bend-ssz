@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, bitvector_33_d.Bitvector33>) -> Bool:
 def is_some(a: Maybe<&1, bitvector_33_d.Bitvector33>, b: Maybe<&1, bitvector_33_d.Bitvector33>) -> Bool & Bool: (some1(a), some1(b))
 
 def bitvector_33_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
   {==}
 
 def bitvector_33_decode_vchecked_accept()

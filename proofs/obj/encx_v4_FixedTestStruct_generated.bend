@@ -410,7 +410,7 @@ def VAL(m: MW) -> S.Value:
     case MW{+da, +A, +N}: S.Sequence{ITS(U32.to_nat(N), A, 0n)}
 def SZ(m: MW) -> U32:
   match m:
-    case MW{+da, +A, +N}: U32.mul(N, 13)
+    case MW{+da, +A, +N}: O.mulc(N, 13)
 def PUTLb(b: Bool, +A: FD.array__Tree<FixedTestStruct_d.FixedTestStruct>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D

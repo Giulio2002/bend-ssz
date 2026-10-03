@@ -75,7 +75,7 @@ def LightClientUpdate_put_drop(pair: Array<U32> & (FuluLightClientUpdate_d.Light
 def LightClientUpdate_put(out: Array<U32>, +pos: U32, o: FuluLightClientUpdate_d.LightClientUpdate) -> Array<U32> & FuluLightClientUpdate_d.LightClientUpdate: LightClientUpdate_put_drop(LightClientUpdate_putn(out, pos, o))
 
 def LightClientUpdate_enc_out(out: Array<U32>, o: FuluLightClientUpdate_d.LightClientUpdate, +m: U32) -> FuluLightClientUpdate_d.LightClientUpdate & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def LightClientUpdate_enc_put(pair: Array<U32> & (FuluLightClientUpdate_d.LightClientUpdate & U32)) -> FuluLightClientUpdate_d.LightClientUpdate & B.Buf:
   (out, r) = pair

@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluCheckpoint_d.Checkpoint>) -> Bool:
 def is_some(a: Maybe<&1, FuluCheckpoint_d.Checkpoint>, b: Maybe<&1, FuluCheckpoint_d.Checkpoint>) -> Bool & Bool: (some1(a), some1(b))
 
 def Checkpoint_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
   {==}
 
 def Checkpoint_decode_vchecked_accept()

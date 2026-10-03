@@ -88,7 +88,9 @@ def encode_eval(dw, T, N, pfT, hdw, hN, hM):
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {proglist_uint8_e.proglist_uint8_enc_sized(O.wsz_pick(N, _)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hsrc(dw, N, hdw, hN, hM))) :
-    {proglist_uint8_e.proglist_uint8_enc_sized((OBJ(T, N), O.pick(_, N, 2147483648))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.proglist_uint8_enc_sized((OBJ(T, N), O.pick(_, N, 4294967295))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(N), False{}, VE.np_nmax(N, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX()), hM))) :
+    {proglist_uint8_e.proglist_uint8_enc_go(_, N, OBJ(T, N)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, DO, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), DO, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
     {proglist_uint8_e.proglist_uint8_enc_put(N, proglist_uint8_e.pl_u8_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}

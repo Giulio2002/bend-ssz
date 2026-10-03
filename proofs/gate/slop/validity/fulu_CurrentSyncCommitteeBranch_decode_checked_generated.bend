@@ -10,7 +10,7 @@ import ../../../slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_gen
 def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(192, 192, (B.Buf{Array.new(U32, 6n, 0), 192}, 48))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   PRV.CurrentSyncCommitteeBranch_decode_vchecked_accept()
 
-def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.Words>}:
+def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.CurrentSyncCommitteeBranch_decode_vchecked_limit()
 
 def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, O.Words>}:

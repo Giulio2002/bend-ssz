@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluMatrixEntry_d.MatrixEntry>) -> Bool:
 def is_some(a: Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, b: Maybe<&1, FuluMatrixEntry_d.MatrixEntry>) -> Bool & Bool: (some1(a), some1(b))
 
 def MatrixEntry_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   {==}
 
 def MatrixEntry_decode_vchecked_window()

@@ -11,10 +11,10 @@ import ../../../slop/validity/generic_SmallTestStruct_fields_generated.bend as P
 def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vfields(+f_A: U32, +f_B: U32) -> {SmallTestStruct_e.SmallTestStruct_valid(SmallTestStruct_d.SmallTestStruct{f_A, f_B}) == Bool.and(uint16_e.u16_valid(f_A), uint16_e.u16_valid(f_B)) : Bool}:
   PRV.SmallTestStruct_serialize_vfields(f_A, f_B)
 
-def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_below() -> {O.is_poisoned(2147483647) == False{} : Bool}:
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_below() -> {O.is_poisoned(4294967264) == False{} : Bool}:
   PRV.SmallTestStruct_serialize_vpoison_below()
 
-def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_carried() -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_carried() -> {O.is_poisoned(O.padd(5, 4294967295)) == True{} : Bool}:
   PRV.SmallTestStruct_serialize_vpoison_carried()
 
 def SmallTestStruct__serialize_valid__SmallTestStruct_serialize_vpoison_false_flag() -> {O.is_poisoned(O.pz(False{})) == True{} : Bool}:

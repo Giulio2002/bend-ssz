@@ -30,6 +30,7 @@ import ./encx_l123_u16_generated.bend as EX_l123_u16
 import ./encx_l123_u16_d_generated.bend as EX_l123_u16_D
 import ./encx_pbits_generated.bend as EX_pbits
 import ./vrecb.bend as VRB
+import ./vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./vlist.bend as VL
@@ -90,11 +91,17 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   CI.putx_bytes(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, hz, hok)
 
+def npz(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {O.is_poisoned(CI.SZ(m)) == False{} : Bool}:
+  +hS = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(28n))) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok)), CI.bndx(m, hok, 28n, {==}))
+  VBE.np_nmax(CI.SZ(m), VCN.lt31q(U32.to_nat(CI.SZ(m)), 28n, {==}, hS))
+
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
     -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf}:
   +rt = rt0(m, hok, room(m, hok, 28n, {==}))
   %Equal.sym(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), CI.sizex(m, hok)) :
     {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, npz(m, hok)) :
+    {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_enc_go(_, CI.SZ(m), CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))), Array.new(U32, VL.DO(CI.SZ(m)), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(CI.SZ(m)))), VL.DO(CI.SZ(m)), VD.wdu(VC.nwu(CI.SZ(m))), VZG.zg(B.words_depth_u(VC.nwu(CI.SZ(m)))))) :
     {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_enc_put(CI.SZ(m), ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & B.Buf}

@@ -43,7 +43,7 @@ def v2_VarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTe
 def v2_VarTestStruct_sz_ok(ok: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, +n: U32) -> vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & U32:
   match ok:
     case True{}: v2_VarTestStruct_sz_nz(U32.is_eq(n, 0), arr, n)
-    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 2147483648)
+    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 4294967295)
 
 def v2_VarTestStruct_sz_cap(+n: U32, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & U32) -> vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & U32:
   (arr, +c) = pair
@@ -109,7 +109,7 @@ def v2_VarTestStruct_pk(out: Array<U32>, +pos: U32, pair: vec_VarTestStruct_2_d.
   (o, ok) = pair
   match ok:
     case True{}: v2_VarTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def v2_VarTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & Bool) -> vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & Bool:
   (arr, b) = pair

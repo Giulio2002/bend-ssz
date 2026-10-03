@@ -47,9 +47,14 @@ def DataColumnsByRootIdentifier_enc_put(+n: U32, pair: Array<U32> & (FuluDataCol
   (o, m) = r
   DataColumnsByRootIdentifier_enc_out(n, out, o, m)
 
+def DataColumnsByRootIdentifier_enc_go(bad: Bool, +n: U32, o: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier) -> FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: DataColumnsByRootIdentifier_enc_put(n, DataColumnsByRootIdentifier_putn(O.out_new(n), 0, o))
+
 def DataColumnsByRootIdentifier_enc_sized(pair: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & U32) -> FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & B.Buf:
   (o, +n) = pair
-  DataColumnsByRootIdentifier_enc_put(n, DataColumnsByRootIdentifier_putn(O.out_new(n), 0, o))
+  DataColumnsByRootIdentifier_enc_go(O.is_poisoned(n), n, o)
 
 def DataColumnsByRootIdentifier_encode(o: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier) -> FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & B.Buf: DataColumnsByRootIdentifier_enc_sized(DataColumnsByRootIdentifier_size(o))
 

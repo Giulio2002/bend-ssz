@@ -15,7 +15,7 @@ def DataColumnsByRootIdentifier_serialize_vrefuse_bad_flag()
   {==}
 
 def DataColumnsByRootIdentifier_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, O.Encoded, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_sized((FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, O.Encoded, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_sized((FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def DataColumnsByRootIdentifier_serialize_vreject_columns()

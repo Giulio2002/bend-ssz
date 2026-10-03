@@ -1682,7 +1682,7 @@ def _seq_size_put(w, p, e, R, E, S):
         # the size of storage that does not hold n elements is refused (bit 31)
         w(f'def {p}_szf(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
         w('  (arr, +c) = pair')
-        w(f'  ({S}{{arr, n}}, O.pick(U32.is_le(n, c), (n * {es} : U32), 4294967295))')
+        w(f'  ({S}{{arr, n}}, O.pick(U32.is_le(n, c), O.mulc(n, {es}), 4294967295))')
         if e.data:
             w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & Array<{R}>:')
             w('  match k:')
@@ -1964,7 +1964,7 @@ def emit_seq(s, w):
     if e.fixed and not s.fixed:
         w(f'def {p}_ptn_fin(+n: U32, pair: Array<U32> & {S}) -> Array<U32> & ({S} & U32):')
         w('  (out, sq) = pair')
-        w(f'  (out, (sq, (n * {e.fsize} : U32)))')
+        w(f'  (out, (sq, O.mulc(n, {e.fsize})))')
         w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & ({S} & U32):')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: {p}_ptn_fin(n, {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))')

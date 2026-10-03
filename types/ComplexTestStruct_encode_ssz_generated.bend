@@ -86,9 +86,14 @@ def ComplexTestStruct_enc_put(+n: U32, pair: Array<U32> & (ComplexTestStruct_d.C
   (o, m) = r
   ComplexTestStruct_enc_out(n, out, o, m)
 
+def ComplexTestStruct_enc_go(bad: Bool, +n: U32, o: ComplexTestStruct_d.ComplexTestStruct) -> ComplexTestStruct_d.ComplexTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ComplexTestStruct_enc_put(n, ComplexTestStruct_putn(O.out_new(n), 0, o))
+
 def ComplexTestStruct_enc_sized(pair: ComplexTestStruct_d.ComplexTestStruct & U32) -> ComplexTestStruct_d.ComplexTestStruct & B.Buf:
   (o, +n) = pair
-  ComplexTestStruct_enc_put(n, ComplexTestStruct_putn(O.out_new(n), 0, o))
+  ComplexTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ComplexTestStruct_encode(o: ComplexTestStruct_d.ComplexTestStruct) -> ComplexTestStruct_d.ComplexTestStruct & B.Buf: ComplexTestStruct_enc_sized(ComplexTestStruct_size(o))
 

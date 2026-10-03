@@ -17,7 +17,7 @@ def bits257_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & 
   (o, ok) = pair
   match ok:
     case True{}: bits257_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bits257_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 257, False{})
 

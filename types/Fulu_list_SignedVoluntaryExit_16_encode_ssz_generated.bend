@@ -12,7 +12,7 @@ import ./Fulu_list_SignedVoluntaryExit_16_def_generated.bend as Fulu_list_Signed
 
 def l16_SignedVoluntaryExit_szf(+n: U32, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 112 : U32), 2147483648))
+  (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 112), 4294967295))
 
 def l16_SignedVoluntaryExit_size(o: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq) -> Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l16_SignedVoluntaryExit_put(out: Array<U32>, +pos: U32, o: Fulu_list_SignedV
 
 def l16_SignedVoluntaryExit_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq) -> Array<U32> & (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 112 : U32)))
+  (out, (sq, O.mulc(n, 112)))
 
 def l16_SignedVoluntaryExit_putn(out: Array<U32>, +pos: U32, o: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq) -> Array<U32> & (Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l16_SignedVoluntaryExit_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Signe
   (o, ok) = pair
   match ok:
     case True{}: l16_SignedVoluntaryExit_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l16_SignedVoluntaryExit_va_cap(ok: Bool, +n: U32, pair: Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & U32) -> Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & Bool:
   (arr, +c) = pair

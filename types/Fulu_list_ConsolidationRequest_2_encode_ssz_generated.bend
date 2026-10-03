@@ -12,7 +12,7 @@ import ./Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_Consol
 
 def l2_ConsolidationRequest_szf(+n: U32, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32:
   (arr, +c) = pair
-  (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 116 : U32), 2147483648))
+  (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 116), 4294967295))
 
 def l2_ConsolidationRequest_size(o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq) -> Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l2_ConsolidationRequest_put(out: Array<U32>, +pos: U32, o: Fulu_list_Consoli
 
 def l2_ConsolidationRequest_ptn_fin(+n: U32, pair: Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq) -> Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 116 : U32)))
+  (out, (sq, O.mulc(n, 116)))
 
 def l2_ConsolidationRequest_putn(out: Array<U32>, +pos: U32, o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq) -> Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l2_ConsolidationRequest_pk(out: Array<U32>, +pos: U32, pair: Fulu_list_Conso
   (o, ok) = pair
   match ok:
     case True{}: l2_ConsolidationRequest_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l2_ConsolidationRequest_va_cap(ok: Bool, +n: U32, pair: Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32) -> Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool:
   (arr, +c) = pair

@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>)
 def is_some(a: Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, b: Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>) -> Bool & Bool: (some1(a), some1(b))
 
 def PendingPartialWithdrawal_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   {==}
 
 def PendingPartialWithdrawal_decode_vchecked_accept()

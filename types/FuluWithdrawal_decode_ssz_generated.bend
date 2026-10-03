@@ -71,7 +71,7 @@ def Withdrawal_dgo(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWi
 
 def Withdrawal_dchw(+size: U32, +n: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>:
   (buf, +c) = pair
-  Withdrawal_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+  Withdrawal_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
 
 def Withdrawal_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>:
   (buf, +n) = pair

@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_Deposit_decode_checked_generated.bend as PRV
 def Deposit__decode_offsets__Deposit_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_dchw(1240, 1240, (B.Buf{Array.new(U32, 9n, 0), 1240}, 310))), Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(B.Buf{Array.new(U32, 9n, 0), 1240}, 1240))) == (True{}, True{}) : Bool & Bool}:
   PRV.Deposit_decode_vchecked_accept()
 
-def Deposit__decode_offsets__Deposit_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
+def Deposit__decode_offsets__Deposit_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
   PRV.Deposit_decode_vchecked_limit()
 
 def Deposit__decode_offsets__Deposit_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1240}, 1240)) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:

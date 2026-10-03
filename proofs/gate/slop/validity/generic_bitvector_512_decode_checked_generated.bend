@@ -11,7 +11,7 @@ import ../../../slop/validity/generic_bitvector_512_decode_checked_generated.ben
 def bitvector_512__decode_offsets__bitvector_512_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_512_d.Bitvector512>, bitvector_512_r.bitvector_512_dchw(64, 64, (B.Buf{Array.new(U32, 4n, 0), 64}, 16))), Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_512_d.Bitvector512>, bitvector_512_r.bitvector_512_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_512_decode_vchecked_accept()
 
-def bitvector_512__decode_offsets__bitvector_512_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_512_d.Bitvector512>, bitvector_512_r.bitvector_512_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
+def bitvector_512__decode_offsets__bitvector_512_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_512_d.Bitvector512>, bitvector_512_r.bitvector_512_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
   PRV.bitvector_512_decode_vchecked_limit()
 
 def bitvector_512__decode_offsets__bitvector_512_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, Fulu_bitvector_512_d.Bitvector512>, bitvector_512_r.bitvector_512_decode_checked(B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:

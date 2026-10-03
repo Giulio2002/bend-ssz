@@ -110,9 +110,14 @@ def ProgressiveComplexTestStruct_enc_put(+n: U32, pair: Array<U32> & (Progressiv
   (o, m) = r
   ProgressiveComplexTestStruct_enc_out(n, out, o, m)
 
+def ProgressiveComplexTestStruct_enc_go(bad: Bool, +n: U32, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ProgressiveComplexTestStruct_enc_put(n, ProgressiveComplexTestStruct_putn(O.out_new(n), 0, o))
+
 def ProgressiveComplexTestStruct_enc_sized(pair: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & U32) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & B.Buf:
   (o, +n) = pair
-  ProgressiveComplexTestStruct_enc_put(n, ProgressiveComplexTestStruct_putn(O.out_new(n), 0, o))
+  ProgressiveComplexTestStruct_enc_go(O.is_poisoned(n), n, o)
 
 def ProgressiveComplexTestStruct_encode(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & B.Buf: ProgressiveComplexTestStruct_enc_sized(ProgressiveComplexTestStruct_size(o))
 

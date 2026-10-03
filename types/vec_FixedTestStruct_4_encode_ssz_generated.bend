@@ -12,7 +12,7 @@ import ./vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
 
 def v4_FixedTestStruct_szf(+n: U32, pair: Array<FixedTestStruct_d.FixedTestStruct> & U32) -> vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & U32:
   (arr, +c) = pair
-  (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 13 : U32), 2147483648))
+  (vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 13), 4294967295))
 
 def v4_FixedTestStruct_size(o: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq) -> vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & U32:
   match o:
@@ -48,7 +48,7 @@ def v4_FixedTestStruct_pk(out: Array<U32>, +pos: U32, pair: vec_FixedTestStruct_
   (o, ok) = pair
   match ok:
     case True{}: v4_FixedTestStruct_pk_ok(v4_FixedTestStruct_put(out, pos, o))
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def v4_FixedTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<FixedTestStruct_d.FixedTestStruct> & Bool) -> vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq & Bool:
   (arr, b) = pair

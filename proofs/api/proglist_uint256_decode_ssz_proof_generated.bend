@@ -92,7 +92,7 @@ def proglist_uint256__decode_reject__decode_reject(+d: Nat, +t: P2_FD.array__Tre
 def proglist_uint256__decode_none__decode_none(+t: P2_FD.array__Tree<U32>, +n: U32, +hchk: {P2_DC.CHK(n) == False{} : Bool}) -> {proglist_uint256_r.proglist_uint256_decode(P2_DC.BF(t, n), n) == (P2_DC.BF(t, n), None{}) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
   P2_PRV.decode_none(t, n, hchk)
 
-def proglist_uint256__decode_offsets__proglist_uint256_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_uint256_r.proglist_uint256_dchw(2147483648, 2147483648, (P3_B.empty(), 536870912))) == None{} : Maybe<&1, P3_O.Words>}:
+def proglist_uint256__decode_offsets__proglist_uint256_decode_vchecked_limit() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_uint256_r.proglist_uint256_dchw(4294967265, 4294967265, (P3_B.empty(), 1073741824))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_uint256_decode_vchecked_limit()
 
 def proglist_uint256__decode_offsets__proglist_uint256_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_uint256_r.proglist_uint256_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, P3_O.Words>}:

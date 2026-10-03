@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_Hash32_decode_checked_generated.bend as PRV
 def Hash32__decode_offsets__Hash32_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   PRV.Hash32_decode_vchecked_accept()
 
-def Hash32__decode_offsets__Hash32_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
+def Hash32__decode_offsets__Hash32_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Hash32_decode_vchecked_limit()
 
 def Hash32__decode_offsets__Hash32_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_decode_checked(B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:

@@ -103,7 +103,7 @@ def FuluGwei__decode_input__Gwei_ms_build() -> {FuluGwei_r.Gwei_build(P6_B.Buf{u
 def FuluGwei__decode_input__Gwei_ms_dec() -> {(FuluGwei_r.Gwei_decode(P6_B.Buf{uint64_e.u64_put(P6_O.out_at(3n), 0, uint64_d.u64_seed(2271560481)), 8}, 8), FuluGwei_r.Gwei_decode(P6_B.Buf{uint64_e.u64_put(P6_O.out_at(3n), 0, uint64_d.u64_seed(2271560482)), 8}, 8)) == ((P6_B.Buf{uint64_e.u64_put(P6_O.out_at(3n), 0, uint64_d.u64_seed(2271560481)), 8}, Some{uint64_d.u64_seed(2271560481)}), (P6_B.Buf{uint64_e.u64_put(P6_O.out_at(3n), 0, uint64_d.u64_seed(2271560482)), 8}, Some{uint64_d.u64_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, P6_O.U64>) & (P6_B.Buf & Maybe<&1, P6_O.U64>)}:
   P6_PRV.Gwei_ms_dec()
 
-def FuluGwei__decode_offsets__Gwei_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluGwei_r.Gwei_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, P7_O.U64>}:
+def FuluGwei__decode_offsets__Gwei_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluGwei_r.Gwei_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.Gwei_decode_vchecked_limit()
 
 def FuluGwei__decode_offsets__Gwei_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluGwei_r.Gwei_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluGwei_r.Gwei_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:

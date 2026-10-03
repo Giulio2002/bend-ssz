@@ -76,9 +76,14 @@ def ExecutionRequests_enc_put(+n: U32, pair: Array<U32> & (FuluExecutionRequests
   (o, m) = r
   ExecutionRequests_enc_out(n, out, o, m)
 
+def ExecutionRequests_enc_go(bad: Bool, +n: U32, o: FuluExecutionRequests_d.ExecutionRequests) -> FuluExecutionRequests_d.ExecutionRequests & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ExecutionRequests_enc_put(n, ExecutionRequests_putn(O.out_new(n), 0, o))
+
 def ExecutionRequests_enc_sized(pair: FuluExecutionRequests_d.ExecutionRequests & U32) -> FuluExecutionRequests_d.ExecutionRequests & B.Buf:
   (o, +n) = pair
-  ExecutionRequests_enc_put(n, ExecutionRequests_putn(O.out_new(n), 0, o))
+  ExecutionRequests_enc_go(O.is_poisoned(n), n, o)
 
 def ExecutionRequests_encode(o: FuluExecutionRequests_d.ExecutionRequests) -> FuluExecutionRequests_d.ExecutionRequests & B.Buf: ExecutionRequests_enc_sized(ExecutionRequests_size(o))
 

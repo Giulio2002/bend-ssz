@@ -191,7 +191,7 @@ def size_go(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: 
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, ok_pf(dw, T, K, B, kb, KY, h))) :
     {O.bsz_pick(K, _) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), FD.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw31(dw, T, K, B, kb, KY, h), ok_hcap(dw, T, K, B, kb, KY, h))) :
-    {(O.Bits{FD.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648)) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
+    {(O.Bits{FD.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295)) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
   {==}
 
 def putx_goW(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,

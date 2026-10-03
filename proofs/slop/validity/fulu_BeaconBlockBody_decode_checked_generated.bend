@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> Bool:
 def is_some(a: Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, b: Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> Bool & Bool: (some1(a), some1(b))
 
 def BeaconBlockBody_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   {==}
 
 def BeaconBlockBody_decode_vchecked_accept()

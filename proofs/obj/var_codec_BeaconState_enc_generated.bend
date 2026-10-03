@@ -52,6 +52,7 @@ import ./vfixw_spec.bend as FWS
 import ./vfixw_u32.bend as WU
 import ./vpos32.bend as P32
 import ./encx_BeaconState_generated.bend as K
+import ./vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./vlist.bend as VL
@@ -103,12 +104,19 @@ def putx0(+wR: K.KW, +h: {CI.OKT(wR) == True{} : Bool}, +k: Nat, +ek: {k == 28n 
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(VL.DO(Z.SZS(wR)))), UW.ZB(A.quad(VB.pw(VL.DO(Z.SZS(wR))))), UWB.zt_bytes(VL.DO(Z.SZS(wR)))), VE2.bt_zb_le(m, A.quad(VB.pw(VL.DO(Z.SZS(wR)))), hm))
   K.putx(wR, CI.ok_pfB_block_roots(wR, h), CI.ok_hdB_block_roots(wR, h), CI.ok_hrB_block_roots(wR, h), CI.ok_pfB_state_roots(wR, h), CI.ok_hdB_state_roots(wR, h), CI.ok_hrB_state_roots(wR, h), CI.ok_hok_historical_roots(wR, h), CI.ok_h_eth1_data_votes(wR, h), CI.ok_h_validators(wR, h), CI.ok_hok_balances(wR, h), CI.ok_pfB_randao_mixes(wR, h), CI.ok_hdB_randao_mixes(wR, h), CI.ok_hrB_randao_mixes(wR, h), CI.ok_pfB_slashings(wR, h), CI.ok_hdB_slashings(wR, h), CI.ok_hrB_slashings(wR, h), CI.ok_hok_previous_epoch_participation(wR, h), CI.ok_hok_current_epoch_participation(wR, h), CI.ok_hv_justification_bits(wR, h), CI.ok_hok_inactivity_scores(wR, h), CI.ok_pfB_current_sync_committee(wR, h), CI.ok_hdB_current_sync_committee(wR, h), CI.ok_hrB_current_sync_committee(wR, h), CI.ok_pfB_next_sync_committee(wR, h), CI.ok_hdB_next_sync_committee(wR, h), CI.ok_hrB_next_sync_committee(wR, h), CI.ok_hok_latest_execution_payload_header(wR, h), CI.ok_h_historical_summaries(wR, h), CI.ok_h_pending_deposits(wR, h), CI.ok_h_pending_partial_withdrawals(wR, h), CI.ok_h_pending_consolidations(wR, h), CI.ok_pfB_proposer_lookahead(wR, h), CI.ok_hdB_proposer_lookahead(wR, h), CI.ok_hrB_proposer_lookahead(wR, h), CI.ok_hpz_g2(wR, h), VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n, {==}, {==}, hd, hl, pf0, hz)
 
+def npS(+wR: K.KW, +h: {CI.OKT(wR) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {O.is_poisoned(Z.SZS(wR)) == False{} : Bool}:
+  +es = Z.szS(wR, h, k, ek)
+  +hS = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == True{} : Bool}, CI.ENDCs(wR, U32.to_nat(2737225)), U32.to_nat(Z.SZS(wR)), Equal.sym(Nat, U32.to_nat(Z.SZS(wR)), CI.ENDCs(wR, U32.to_nat(2737225)), es), CI.okbk(wR, h, k, ek))
+  VBE.np_nmax(Z.SZS(wR), VCN.lt31q(U32.to_nat(Z.SZS(wR)), k, FD.logic__subst(Nat, z => {Nat.is_lt(z, 29n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), hS))
+
 def eval_go(+wR: K.KW, +h: {CI.OKT(wR) == True{} : Bool})
     -> {FuluBeaconState_e.BeaconState_encode(K.OBJC(wR)) == (K.OBJC(wR), B.Buf{FD.array__thaw(U32, K.PUTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n)), Z.SZS(wR)}) : FuluBeaconState_d.BeaconState & B.Buf}:
   +g = putx0(wR, h, 28n, {==})
   +rt = CI.PA(K.RTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n), DK.P2(K.BYC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n), DK.P2(K.PFC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n), K.SZXC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n))), g)
   %Equal.sym(FuluBeaconState_d.BeaconState & U32, FuluBeaconState_e.BeaconState_size(K.OBJC(wR)), (K.OBJC(wR), Z.SZS(wR)), Z.sizeC(wR, h)) :
     {FuluBeaconState_e.BeaconState_enc_sized(_) == (K.OBJC(wR), B.Buf{FD.array__thaw(U32, K.PUTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n)), Z.SZS(wR)}) : FuluBeaconState_d.BeaconState & B.Buf}
+  %Equal.sym(Bool, O.is_poisoned(Z.SZS(wR)), False{}, npS(wR, h, 28n, {==})) :
+    {FuluBeaconState_e.BeaconState_enc_go(_, Z.SZS(wR), K.OBJC(wR)) == (K.OBJC(wR), B.Buf{FD.array__thaw(U32, K.PUTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n)), Z.SZS(wR)}) : FuluBeaconState_d.BeaconState & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(Z.SZS(wR)))), Array.new(U32, VL.DO(Z.SZS(wR)), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(Z.SZS(wR)))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(Z.SZS(wR)))), VL.DO(Z.SZS(wR)), VD.wdu(VC.nwu(Z.SZS(wR))), VZG.zg(B.words_depth_u(VC.nwu(Z.SZS(wR)))))) :
     {FuluBeaconState_e.BeaconState_enc_put(Z.SZS(wR), FuluBeaconState_e.BeaconState_putn(_, 0, K.OBJC(wR))) == (K.OBJC(wR), B.Buf{FD.array__thaw(U32, K.PUTC(wR, VL.DO(Z.SZS(wR)), VC.ZT(VL.DO(Z.SZS(wR))), 0, 0n, 0n)), Z.SZS(wR)}) : FuluBeaconState_d.BeaconState & B.Buf}

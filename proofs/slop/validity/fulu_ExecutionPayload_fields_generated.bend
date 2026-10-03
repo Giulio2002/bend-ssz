@@ -17,7 +17,7 @@ def ExecutionPayload_serialize_vrefuse_bad_flag()
   {==}
 
 def ExecutionPayload_serialize_vrefuse_poisoned_size()
-    -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_senc_sized((FuluExecutionPayload_d.ExecutionPayload_default(), 2147483648))) == O.refused() : O.Encoded}:
+    -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_senc_sized((FuluExecutionPayload_d.ExecutionPayload_default(), 4294967295))) == O.refused() : O.Encoded}:
   {==}
 
 def ExecutionPayload_serialize_vreject_logs_bloom()
@@ -61,7 +61,7 @@ def ExecutionPayload_serialize_vreject_bx_valid()
   {==}
 
 def ExecutionPayload_serialize_vpoison_bx_absent()
-    -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+    -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}
 
 def ExecutionPayload_serialize_vpoison_bx_ok()

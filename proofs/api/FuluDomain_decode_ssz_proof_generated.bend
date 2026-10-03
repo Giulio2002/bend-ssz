@@ -103,7 +103,7 @@ def FuluDomain__decode_input__Domain_ms_build() -> {FuluDomain_r.Domain_build(P6
 def FuluDomain__decode_input__Domain_ms_dec() -> {(FuluDomain_r.Domain_decode(P6_B.Buf{FuluBytes32_e.b32_put(P6_O.out_at(5n), 0, FuluBytes32_d.b32_seed(2271560481)), 32}, 32), FuluDomain_r.Domain_decode(P6_B.Buf{FuluBytes32_e.b32_put(P6_O.out_at(5n), 0, FuluBytes32_d.b32_seed(2271560482)), 32}, 32)) == ((P6_B.Buf{FuluBytes32_e.b32_put(P6_O.out_at(5n), 0, FuluBytes32_d.b32_seed(2271560481)), 32}, Some{FuluBytes32_d.b32_seed(2271560481)}), (P6_B.Buf{FuluBytes32_e.b32_put(P6_O.out_at(5n), 0, FuluBytes32_d.b32_seed(2271560482)), 32}, Some{FuluBytes32_d.b32_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>) & (P6_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>)}:
   P6_PRV.Domain_ms_dec()
 
-def FuluDomain__decode_offsets__Domain_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
+def FuluDomain__decode_offsets__Domain_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   P7_PRV.Domain_decode_vchecked_limit()
 
 def FuluDomain__decode_offsets__Domain_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_dchw(32, 32, (P7_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:

@@ -55,7 +55,7 @@ def LightClientHeader_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v:
   LightClientHeader_pvb(cur, LightClientHeader_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
 def LightClientHeader_enc_out(out: Array<U32>, o: FuluLightClientHeader_d.LightClientHeader, +m: U32) -> FuluLightClientHeader_d.LightClientHeader & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def LightClientHeader_enc_put(pair: Array<U32> & (FuluLightClientHeader_d.LightClientHeader & U32)) -> FuluLightClientHeader_d.LightClientHeader & B.Buf:
   (out, r) = pair

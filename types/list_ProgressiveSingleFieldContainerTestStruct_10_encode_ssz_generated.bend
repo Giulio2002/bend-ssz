@@ -12,7 +12,7 @@ import ./list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as
 
 def l10_ProgressiveSingleFieldContainerTestStruct_szf(+n: U32, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & U32) -> list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
   (arr, +c) = pair
-  (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 1 : U32), 2147483648))
+  (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1), 4294967295))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_size(o: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32:
   match o:
@@ -42,7 +42,7 @@ def l10_ProgressiveSingleFieldContainerTestStruct_put(out: Array<U32>, +pos: U32
 
 def l10_ProgressiveSingleFieldContainerTestStruct_ptn_fin(+n: U32, pair: Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32):
   (out, sq) = pair
-  (out, (sq, (n * 1 : U32)))
+  (out, (sq, O.mulc(n, 1)))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_putn(out: Array<U32>, +pos: U32, o: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq) -> Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & U32):
   match o:
@@ -52,7 +52,7 @@ def l10_ProgressiveSingleFieldContainerTestStruct_pk(out: Array<U32>, +pos: U32,
   (o, ok) = pair
   match ok:
     case True{}: l10_ProgressiveSingleFieldContainerTestStruct_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def l10_ProgressiveSingleFieldContainerTestStruct_va_fin(+n: U32, ok: Bool, pair: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct> & Bool) -> list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & Bool:
   (arr, b) = pair

@@ -43,6 +43,7 @@ import ../obj/encx_VarTestStruct_iface_generated.bend as P0_EX_VarTestStruct
 import ../obj/encx_v2_VarTestStruct_generated.bend as P0_EX_v2_VarTestStruct
 import ../obj/encx_v2_VarTestStruct_d_generated.bend as P0_EX_v2_VarTestStruct_D
 import ../obj/vrecb.bend as P0_VRB
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -152,10 +153,10 @@ def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_fals
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_true_flag() -> {P5_O.is_poisoned(P5_O.pz(True{})) == False{} : Bool}:
   P5_PRV.ComplexTestStruct_serialize_vpoison_true_flag()
 
-def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_below() -> {P5_O.is_poisoned(2147483647) == False{} : Bool}:
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_below() -> {P5_O.is_poisoned(4294967264) == False{} : Bool}:
   P5_PRV.ComplexTestStruct_serialize_vpoison_below()
 
-def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_carried() -> {P5_O.is_poisoned(P5_O.padd(5, 2147483648)) == True{} : Bool}:
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vpoison_carried() -> {P5_O.is_poisoned(P5_O.padd(5, 4294967295)) == True{} : Bool}:
   P5_PRV.ComplexTestStruct_serialize_vpoison_carried()
 
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_f_A() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), 65536))) == False{} : Bool}:
@@ -218,6 +219,6 @@ def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_range_above_258() -> {Pair.snd(P7_O.Words, Bool, list_uint16_128_e.l128_u16_valid(P7_O.words_new(258))) == False{} : Bool}:
   P7_PRV.ComplexTestStruct_serialize_vunit_l128_u16_range_above_258()
 
-def ComplexTestStruct__serialize_valid__ComplexTestStruct_mc_ser() -> {ComplexTestStruct_e.ComplexTestStruct_serialize(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567876)), uint8_d.u8_seed(2271567927))) == (Pair.fst(ComplexTestStruct_d.ComplexTestStruct, P8_B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567876)), uint8_d.u8_seed(2271567927)))), P8_O.encoded(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, P8_B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567876)), uint8_d.u8_seed(2271567927)))))) : ComplexTestStruct_d.ComplexTestStruct & P8_O.Encoded}:
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_mc_ser() -> {ComplexTestStruct_e.ComplexTestStruct_serialize(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567927)), uint8_d.u8_seed(2271567978))) == (Pair.fst(ComplexTestStruct_d.ComplexTestStruct, P8_B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567927)), uint8_d.u8_seed(2271567978)))), P8_O.encoded(Pair.snd(ComplexTestStruct_d.ComplexTestStruct, P8_B.Buf, ComplexTestStruct_e.ComplexTestStruct_encode(ComplexTestStruct_d.ComplexTestStruct_set_f_C_go(ComplexTestStruct_d.ComplexTestStruct_set_f_A_go(ComplexTestStruct_d.ComplexTestStruct_default(), uint8_d.u8_seed(2271567927)), uint8_d.u8_seed(2271567978)))))) : ComplexTestStruct_d.ComplexTestStruct & P8_O.Encoded}:
   P8_PRV.ComplexTestStruct_mc_ser()
 

@@ -91,11 +91,11 @@ def p1ltk(+x: Nat, +k: Nat, +hl: {Nat.is_le(x, Nat.add(VB.pw(k), 1n)) == True{} 
   +h1 = FD.logic__subst(Nat, z => {Nat.is_le(x, z) == True{} : Bool}, Nat.add(VB.pw(k), 1n), Nat.add(1n, VB.pw(k)), FD.nat__add_comm(VB.pw(k), 1n), hl)
   +h2 = FD.nat__le_trans(x, Nat.add(1n, VB.pw(k)), Nat.double(VB.pw(k)), h1, FD.nat__double_succ_le(VB.pw(k), FD.nat__pow2_pos(k)))
   FD.nat__le_lt_trans(x, VB.pw(1n+k), VB.pw(3n+k), h2, FD.nat__lt_le_trans(VB.pw(1n+k), VB.pw(2n+k), VB.pw(3n+k), FD.nat__pow2_lt_succ(1n+k), FD.nat__pow2_mono(2n+k, 3n+k, FD.nat__lt_le(2n+k, 3n+k, FD.nat__lt_succ(2n+k)))))
-def nmaxD(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
-  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))
+def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
+  h31
 
 # ---- pu8: a progressive list of uint8 field (encx_pl_u8) ----
-def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +hl: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> {XU8D.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
+def ok_pu8(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +hl: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {XU8D.OK(XU8.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
@@ -113,12 +113,12 @@ def LR_pu8(w: O.Words) -> Data:
   DK.Ex(XU8.MW, m => DK.P2({w == XU8.TH(m) : O.Words}, DK.P2({PBF.vview1(XU8.TH(m)) == XU8.VAL(m) : S.Value}, DK.P2({XU8D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU8.ENC(m)), U32.to_nat(WO.len(XU8.TH(m)))) == True{} : Bool}))))
 
 # the premise of a byte-storage list field: its storage at depth below 28, its bytes within P1
-def PW1(w: O.Words) -> Data: DK.P2(BL.sdk(w, 31n), {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool})
+def PW1(w: O.Words) -> Data: DK.P2(BL.sdk(w, 31n), {Nat.is_le(U32.to_nat(WO.len(w)), U32.to_nat(VB.NMAX())) == True{} : Bool})
 
-def lb2_pu8(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool}) -> LR_pu8(w):
+def lb2_pu8(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> LR_pu8(w):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO.len(z)), VB.pw(31n)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
   +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 31n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
   +hok = ok_pu8(tt, n, ER.sfk(tt, n, 31n, hs2), hl2)
   +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(n)) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), Equal.sym(Nat, List.length(&2, U32, XU8.ENC(XU8.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU8D.eL(ER.LDEP(U32, tt), tt, n, hok)), FD.nat__le_refl(U32.to_nat(n)))
@@ -156,7 +156,7 @@ def rws0(m: Nat, +j: Nat, +dw: Nat, +t: FD.array__Tree<U32>, +pf: {FD.array__per
         {Con{UA.jn(0n, VB.slot(t, _), VB.slot(t, 1n+_)), UR.RWS(p, t, A.quad(1n+j))} == Con{FD.flat__nthc(S, j), VS.wtake(p, VB.wdr(1n+j, S))} : List<&2, U32>}
       Equal.cong(List<&2, U32>, List<&2, U32>, z => Con{FD.flat__nthc(S, j), z}, UR.RWS(p, t, A.quad(1n+j)), VS.wtake(p, VB.wdr(1n+j, S)), rws0(p, 1n+j, dw, t, pf, h1))
 
-def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool})
+def ok_pu64(+tt: FD.array__Tree<U32>, +n: U32, +sf: ER.SFT(tt, n, 31n), +c: Nat, +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool})
     -> {XU64D.OK(XU64.MW{ER.LDEP(U32, tt), tt, n}) == True{} : Bool}:
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
@@ -191,7 +191,7 @@ def LR_pu64(w: O.Words) -> Data:
   DK.Ex(XU64.MW, m => DK.P2({w == XU64.TH(m) : O.Words}, DK.P2({UL.uview(XU64.TH(m)) == XU64.VAL(m) : S.Value}, DK.P2({XU64D.OK(m) == True{} : Bool}, {Nat.is_le(LY.LN(XU64.ENC(m)), U32.to_nat(WO.len(XU64.TH(m)))) == True{} : Bool}))))
 
 def lb3_pu64(-w: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {w == O.Words{FD.array__thaw(U32, tt), n} : O.Words}, +sf: ER.SFT(tt, n, 31n), +c: Nat,
-    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl2: {Nat.is_lt(U32.to_nat(n), VB.pw(31n)) == True{} : Bool}) -> LR_pu64(w):
+    +ex8: {U32.to_nat(n) == VS.x8(c) : Nat}, +emul: {U32.to_nat(n) == Nat.mul(c, 8n) : Nat}, +hl2: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> LR_pu64(w):
   (+pf, +s1) = sf
   (+hdw, +s2) = s1
   (+hN, +htz) = s2
@@ -199,11 +199,11 @@ def lb3_pu64(-w: O.Words, +tt: FD.array__Tree<U32>, +n: U32, +ew: {w == O.Words{
   +ln = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(n)) == True{} : Bool}, U32.to_nat(n), List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), Equal.sym(Nat, List.length(&2, U32, XU64.ENC(XU64.MW{ER.LDEP(U32, tt), tt, n})), U32.to_nat(n), XU64D.eL(ER.LDEP(U32, tt), tt, n, hok)), FD.nat__le_refl(U32.to_nat(n)))
   (XU64.MW{ER.LDEP(U32, tt), tt, n}, (ew, (lv_pu64(ER.LDEP(U32, tt), tt, n, c, pf, hN, ex8, emul), (hok, ln))))
 
-def lb2_pu64(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_lt(U32.to_nat(WO.len(w)), VB.pw(31n)) == True{} : Bool},
+def lb2_pu64(-w: O.Words, +cw: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, n => {w == O.Words{FD.array__thaw(U32, t), n} : O.Words})), +hs: BL.sdk(w, 31n), +hl: {Nat.is_le(U32.to_nat(WO.len(w)), U32.to_nat(VB.NMAX())) == True{} : Bool},
     +eN: {U32.to_nat(WO.len(w)) == O.e8(UL.ucnt(w)) : Nat}) -> LR_pu64(w):
   (+tt, +c1) = cw
   (+n, +ew) = c1
-  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_lt(U32.to_nat(WO.len(z)), VB.pw(31n)) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
+  +hl2 = FD.logic__subst(O.Words, z => {Nat.is_le(U32.to_nat(WO.len(z)), U32.to_nat(VB.NMAX())) == True{} : Bool}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, hl)
   +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, 31n), w, O.Words{FD.array__thaw(U32, tt), n}, ew, hs)
   +eN2 = FD.logic__subst(O.Words, z => {U32.to_nat(WO.len(z)) == O.e8(UL.ucnt(z)) : Nat}, w, O.Words{FD.array__thaw(U32, tt), n}, ew, eN)
   +c = UL.ucnt(O.Words{FD.array__thaw(U32, tt), n})
@@ -398,7 +398,7 @@ def LRR_pl_SmallTestStruct(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq)
 # the premise: the records' tree at depth below 28, its bytes within P1
 def PRL_pl_SmallTestStruct(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Data:
   match o:
-    case proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, +N}: DK.P2({Nat.is_lt(ER.LDEP(SmallTestStruct_d.SmallTestStruct, FD.array__freeze(SmallTestStruct_d.SmallTestStruct, arr)), 30n) == True{} : Bool}, {Nat.is_lt(Nat.mul(U32.to_nat(N), 4n), VB.pw(31n)) == True{} : Bool})
+    case proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, +N}: DK.P2({Nat.is_lt(ER.LDEP(SmallTestStruct_d.SmallTestStruct, FD.array__freeze(SmallTestStruct_d.SmallTestStruct, arr)), 30n) == True{} : Bool}, {Nat.is_le(Nat.mul(U32.to_nat(N), 4n), U32.to_nat(VB.NMAX())) == True{} : Bool})
 
 def rb2_pl_SmallTestStruct(-o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, +t: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +dw: Nat, +N: U32, +eo: {o == proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, t), N} : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq},
     +pf: {FD.array__perfect(SmallTestStruct_d.SmallTestStruct, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
@@ -665,7 +665,7 @@ def EPS_pl_VarTestStruct(k: Nat, +W: List<&2, RT2.MB<RT2.M_VarTestStruct>>, +i: 
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_VarTestStruct(RT2.xat_pl_VarTestStruct(W, i)), EPS_pl_VarTestStruct(q, W, 1n+i))
 def PM_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_VarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XA.LL(TM_pl_VarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_VarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XA.LL(TM_pl_VarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, EPS_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, t), 0n)))
 def PRV_pl_VarTestStruct(o: proglist_VarTestStruct_d.pl_VarTestStruct_Seq) -> Data:
   match o:
     case proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, +N}: PM_pl_VarTestStruct(RT2.tfz_pl_VarTestStruct(arr), N)
@@ -711,7 +711,7 @@ def MK_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +N: U32
   DK.P2({RT2.xv_pl_VarTestStruct(XA.TH(XA.MW{TM_pl_VarTestStruct(t), N})) == XA.VAL(XA.MW{TM_pl_VarTestStruct(t), N}) : S.Value},
   DK.P2({XAD.OK(XA.MW{TM_pl_VarTestStruct(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XA.ENC(XA.MW{TM_pl_VarTestStruct(t), N})), XA.LL(TM_pl_VarTestStruct(t), N)) == True{} : Bool})))
 def mk2_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_VarTestStruct>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_VarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XA.LL(TM_pl_VarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, t), 0n)) -> MK_pl_VarTestStruct(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_VarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XA.LL(TM_pl_VarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, +x: EXS_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_VarTestStruct>, t), 0n)) -> MK_pl_VarTestStruct(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_VarTestStruct(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_VarTestStruct>, t), dw, ER.pdep(RT2.MB<RT2.M_VarTestStruct>, dw, t, pf), hd31)
@@ -724,7 +724,7 @@ def mk2_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_VarTestStruct>>, +dw: N
     FD.logic__and_intro(True{}, XAD.EOKS(U32.to_nat(N), XA.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XA.MB<XVT.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XAD.EOKS(U32.to_nat(N), XA.SL(T2), 0n))))) == True{} : Bool},
     dw, XA.TDM(T2), Equal.sym(Nat, XA.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XAD.OKL(T2, N), Nat.is_lt(XA.LL(T2, N), VB.pw(31n)), okl, hll)
+  +ok = FD.logic__and_intro(XAD.OKL(T2, N), Nat.is_le(XA.LL(T2, N), U32.to_nat(VB.NMAX())), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, proglist_VarTestStruct_d.pl_VarTestStruct_Seq, z => proglist_VarTestStruct_d.pl_VarTestStruct_Seq{z, N}, XA.AR(T2), RT2.am_pl_VarTestStruct(t), arTM_pl_VarTestStruct(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_VarTestStruct(XA.TH(XA.MW{T2, N})), RT2.xv_pl_VarTestStruct(proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), N}), XA.VAL(XA.MW{T2, N}),
     Equal.cong(proglist_VarTestStruct_d.pl_VarTestStruct_Seq, S.Value, z => RT2.xv_pl_VarTestStruct(z), XA.TH(XA.MW{T2, N}), proglist_VarTestStruct_d.pl_VarTestStruct_Seq{RT2.am_pl_VarTestStruct(t), N}, eth),
@@ -890,7 +890,7 @@ def EPS_pl_pl_VarTestStruct(k: Nat, +W: List<&2, RT2.MB<RT2.M_pl_VarTestStruct>>
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_pl_VarTestStruct(RT2.xat_pl_pl_VarTestStruct(W, i)), EPS_pl_pl_VarTestStruct(q, W, 1n+i))
 def PM_pl_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_VarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XB.LL(TM_pl_pl_VarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_VarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XB.LL(TM_pl_pl_VarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, EPS_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, t), 0n)))
 def PRV_pl_pl_VarTestStruct(o: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq) -> Data:
   match o:
     case proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, +N}: PM_pl_pl_VarTestStruct(RT2.tfz_pl_pl_VarTestStruct(arr), N)
@@ -936,7 +936,7 @@ def MK_pl_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +
   DK.P2({RT2.xv_pl_pl_VarTestStruct(XB.TH(XB.MW{TM_pl_pl_VarTestStruct(t), N})) == XB.VAL(XB.MW{TM_pl_pl_VarTestStruct(t), N}) : S.Value},
   DK.P2({XBD.OK(XB.MW{TM_pl_pl_VarTestStruct(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XB.ENC(XB.MW{TM_pl_pl_VarTestStruct(t), N})), XB.LL(TM_pl_pl_VarTestStruct(t), N)) == True{} : Bool})))
 def mk2_pl_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_pl_VarTestStruct>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_VarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XB.LL(TM_pl_pl_VarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, t), 0n)) -> MK_pl_pl_VarTestStruct(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_pl_VarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XB.LL(TM_pl_pl_VarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, +x: EXS_pl_pl_VarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_pl_VarTestStruct>, t), 0n)) -> MK_pl_pl_VarTestStruct(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_pl_VarTestStruct(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_pl_VarTestStruct>, t), dw, ER.pdep(RT2.MB<RT2.M_pl_VarTestStruct>, dw, t, pf), hd31)
@@ -949,7 +949,7 @@ def mk2_pl_pl_VarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_pl_VarTestStruct>>, 
     FD.logic__and_intro(True{}, XBD.EOKS(U32.to_nat(N), XB.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XB.MB<XA.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XBD.EOKS(U32.to_nat(N), XB.SL(T2), 0n))))) == True{} : Bool},
     dw, XB.TDM(T2), Equal.sym(Nat, XB.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XBD.OKL(T2, N), Nat.is_lt(XB.LL(T2, N), VB.pw(31n)), okl, hll)
+  +ok = FD.logic__and_intro(XBD.OKL(T2, N), Nat.is_le(XB.LL(T2, N), U32.to_nat(VB.NMAX())), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>>, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, z => proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{z, N}, XB.AR(T2), RT2.am_pl_pl_VarTestStruct(t), arTM_pl_pl_VarTestStruct(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_pl_VarTestStruct(XB.TH(XB.MW{T2, N})), RT2.xv_pl_pl_VarTestStruct(proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{RT2.am_pl_pl_VarTestStruct(t), N}), XB.VAL(XB.MW{T2, N}),
     Equal.cong(proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, S.Value, z => RT2.xv_pl_pl_VarTestStruct(z), XB.TH(XB.MW{T2, N}), proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{RT2.am_pl_pl_VarTestStruct(t), N}, eth),
@@ -1162,7 +1162,7 @@ def EPS_pl_ProgressiveVarTestStruct(k: Nat, +W: List<&2, RT2.MB<RT2.M_Progressiv
     case 0n: {True{} == True{} : Bool}
     case 1n+q: DK.P2(EPB_pl_ProgressiveVarTestStruct(RT2.xat_pl_ProgressiveVarTestStruct(W, i)), EPS_pl_ProgressiveVarTestStruct(q, W, 1n+i))
 def PM_pl_ProgressiveVarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +N: U32) -> Data:
-  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_lt(XC.LL(TM_pl_ProgressiveVarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, EPS_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 0n)))
+  DK.P2({Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 31n) == True{} : Bool}, DK.P2({Nat.is_le(XC.LL(TM_pl_ProgressiveVarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, EPS_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 0n)))
 def PRV_pl_ProgressiveVarTestStruct(o: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq) -> Data:
   match o:
     case proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, +N}: PM_pl_ProgressiveVarTestStruct(RT2.tfz_pl_ProgressiveVarTestStruct(arr), N)
@@ -1208,7 +1208,7 @@ def MK_pl_ProgressiveVarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVa
   DK.P2({RT2.xv_pl_ProgressiveVarTestStruct(XC.TH(XC.MW{TM_pl_ProgressiveVarTestStruct(t), N})) == XC.VAL(XC.MW{TM_pl_ProgressiveVarTestStruct(t), N}) : S.Value},
   DK.P2({XCD.OK(XC.MW{TM_pl_ProgressiveVarTestStruct(t), N}) == True{} : Bool}, {Nat.is_le(LY.LN(XC.ENC(XC.MW{TM_pl_ProgressiveVarTestStruct(t), N})), XC.LL(TM_pl_ProgressiveVarTestStruct(t), N)) == True{} : Bool})))
 def mk2_pl_ProgressiveVarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_ProgressiveVarTestStruct>>, +dw: Nat, +N: U32, +pf: {FD.array__perfect(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dw, t) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{} : Bool},
-    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_lt(XC.LL(TM_pl_ProgressiveVarTestStruct(t), N), VB.pw(31n)) == True{} : Bool}, +x: EXS_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 0n)) -> MK_pl_ProgressiveVarTestStruct(t, N):
+    +hd31: {Nat.is_lt(ER.LDEP(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 31n) == True{} : Bool}, +hll: {Nat.is_le(XC.LL(TM_pl_ProgressiveVarTestStruct(t), N), U32.to_nat(VB.NMAX())) == True{} : Bool}, +x: EXS_pl_ProgressiveVarTestStruct(U32.to_nat(N), FD.array__slots(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), 0n)) -> MK_pl_ProgressiveVarTestStruct(t, N):
   (+xo, +xv) = x
   +T2 = TM_pl_ProgressiveVarTestStruct(t)
   +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 31n) == True{} : Bool}, ER.LDEP(RT2.MB<RT2.M_ProgressiveVarTestStruct>, t), dw, ER.pdep(RT2.MB<RT2.M_ProgressiveVarTestStruct>, dw, t, pf), hd31)
@@ -1221,7 +1221,7 @@ def mk2_pl_ProgressiveVarTestStruct(+t: FD.array__Tree<RT2.MB<RT2.M_ProgressiveV
     FD.logic__and_intro(True{}, XCD.EOKS(U32.to_nat(N), XC.SL(T2), 0n), {==}, hx2))))
   +okl = FD.logic__subst(Nat, z => {Bool.and(Nat.is_lt(z, 31n), Bool.and(FD.array__perfect(XC.MB<CIG.MW>, z, T2), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(z)), Bool.and(True{}, XCD.EOKS(U32.to_nat(N), XC.SL(T2), 0n))))) == True{} : Bool},
     dw, XC.TDM(T2), Equal.sym(Nat, XC.TDM(T2), dw, td), okl0)
-  +ok = FD.logic__and_intro(XCD.OKL(T2, N), Nat.is_lt(XC.LL(T2, N), VB.pw(31n)), okl, hll)
+  +ok = FD.logic__and_intro(XCD.OKL(T2, N), Nat.is_le(XC.LL(T2, N), U32.to_nat(VB.NMAX())), okl, hll)
   +eth = Equal.cong(Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, z => proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{z, N}, XC.AR(T2), RT2.am_pl_ProgressiveVarTestStruct(t), arTM_pl_ProgressiveVarTestStruct(t))
   +ev = Equal.trans(S.Value, RT2.xv_pl_ProgressiveVarTestStruct(XC.TH(XC.MW{T2, N})), RT2.xv_pl_ProgressiveVarTestStruct(proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{RT2.am_pl_ProgressiveVarTestStruct(t), N}), XC.VAL(XC.MW{T2, N}),
     Equal.cong(proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, S.Value, z => RT2.xv_pl_ProgressiveVarTestStruct(z), XC.TH(XC.MW{T2, N}), proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{RT2.am_pl_ProgressiveVarTestStruct(t), N}, eth),

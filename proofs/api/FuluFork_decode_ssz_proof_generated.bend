@@ -104,7 +104,7 @@ def FuluFork__decode_input__Fork_ms_build() -> {FuluFork_r.Fork_build(P6_B.Buf{F
 def FuluFork__decode_input__Fork_ms_dec() -> {(FuluFork_r.Fork_decode(P6_B.Buf{FuluFork_e.Fork_put(P6_O.out_at(4n), 0, FuluFork_d.Fork_seed(2271560481)), 16}, 16), FuluFork_r.Fork_decode(P6_B.Buf{FuluFork_e.Fork_put(P6_O.out_at(4n), 0, FuluFork_d.Fork_seed(2271560482)), 16}, 16)) == ((P6_B.Buf{FuluFork_e.Fork_put(P6_O.out_at(4n), 0, FuluFork_d.Fork_seed(2271560481)), 16}, Some{FuluFork_d.Fork_seed(2271560481)}), (P6_B.Buf{FuluFork_e.Fork_put(P6_O.out_at(4n), 0, FuluFork_d.Fork_seed(2271560482)), 16}, Some{FuluFork_d.Fork_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, FuluFork_d.Fork>) & (P6_B.Buf & Maybe<&1, FuluFork_d.Fork>)}:
   P6_PRV.Fork_ms_dec()
 
-def FuluFork__decode_offsets__Fork_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluFork_d.Fork>, FuluFork_r.Fork_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, FuluFork_d.Fork>}:
+def FuluFork__decode_offsets__Fork_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluFork_d.Fork>, FuluFork_r.Fork_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, FuluFork_d.Fork>}:
   P7_PRV.Fork_decode_vchecked_limit()
 
 def FuluFork__decode_offsets__Fork_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluFork_d.Fork>, FuluFork_r.Fork_dchw(16, 16, (P7_B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(P7_B.Buf, Maybe<&1, FuluFork_d.Fork>, FuluFork_r.Fork_decode_checked(P7_B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:

@@ -34,6 +34,7 @@ import ../obj/encx_l123_u16_generated.bend as P0_EX_l123_u16
 import ../obj/encx_l123_u16_d_generated.bend as P0_EX_l123_u16_D
 import ../obj/encx_pbits_generated.bend as P0_EX_pbits
 import ../obj/vrecb.bend as P0_VRB
+import ../obj/vbenc.bend as P0_VBE
 import ../../src/buffer.bend as P0_B
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../obj/vlist.bend as P0_VL
@@ -132,10 +133,10 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_true_flag() -> {P5_O.is_poisoned(P5_O.pz(True{})) == False{} : Bool}:
   P5_PRV.ProgressiveVarTestStruct_serialize_vpoison_true_flag()
 
-def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_below() -> {P5_O.is_poisoned(2147483647) == False{} : Bool}:
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_below() -> {P5_O.is_poisoned(4294967264) == False{} : Bool}:
   P5_PRV.ProgressiveVarTestStruct_serialize_vpoison_below()
 
-def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_carried() -> {P5_O.is_poisoned(P5_O.padd(5, 2147483648)) == True{} : Bool}:
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_carried() -> {P5_O.is_poisoned(P5_O.padd(5, 4294967295)) == True{} : Bool}:
   P5_PRV.ProgressiveVarTestStruct_serialize_vpoison_carried()
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_f_A() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_valid(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 256))) == False{} : Bool}:
@@ -159,7 +160,7 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_valid() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(P5_O.BNone{}) == (P5_O.BNone{}, False{}) : P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & Bool}:
   P5_PRV.ProgressiveVarTestStruct_serialize_vreject_bx_valid()
 
-def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P5_O.BNone{}))) == 2147483648 : U32}:
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P5_O.BNone{}))) == 4294967295 : U32}:
   P5_PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_absent()
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_ok() -> {P5_O.is_poisoned(Pair.snd(P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()))))) == False{} : Bool}:
@@ -198,6 +199,6 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_mc_bxpoi
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_mc_bxcount_ProgressiveVarTestStruct(out: Array<U32>, pos: U32) -> {Pair.snd(P8_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, (P8_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32), ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putn(out, pos, P8_O.BNone{}))) == 0 : U32}:
   P8_PRV.ProgressiveVarTestStruct_mc_bxcount_ProgressiveVarTestStruct(out, pos)
 
-def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_mc_ser() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_serialize(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579606))) == (Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, P8_B.Buf, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_encode(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579606)))), P8_O.encoded(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, P8_B.Buf, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_encode(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579606)))))) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & P8_O.Encoded}:
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_mc_ser() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_serialize(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579742))) == (Pair.fst(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, P8_B.Buf, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_encode(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579742)))), P8_O.encoded(Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, P8_B.Buf, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_encode(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), uint8_d.u8_seed(2271579742)))))) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & P8_O.Encoded}:
   P8_PRV.ProgressiveVarTestStruct_mc_ser()
 

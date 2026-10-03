@@ -176,7 +176,7 @@ def l16_ProposerSlashing_written(+t: F.array__Tree<E.MB<E.M_ProposerSlashing>>, 
 # ---- the composed statement: the spec encode of the set value is the bytes of the written object ----
 def l16_ProposerSlashing_api_encode_set(+t: F.array__Tree<E.MB<E.M_ProposerSlashing>>, +N: U32, +i: U32, +m: E.MB<E.M_ProposerSlashing>, +h: {E.OKL_l16_ProposerSlashing(t, N) == True{} : Bool},
     +hs: {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}, +em: {E.EOK(m) == True{} : Bool},
-    +B: Nat, +hB: {Nat.is_lt(B, VB.pw(31n)) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l16_ProposerSlashing(F.array__upd(E.MB<E.M_ProposerSlashing>, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
+    +B: Nat, +hB: {Nat.is_le(B, U32.to_nat(VB.NMAX())) == True{} : Bool}, +hL: {Nat.is_le(E.LL_l16_ProposerSlashing(F.array__upd(E.MB<E.M_ProposerSlashing>, E.TDM(t), t, U32.to_nat(i), m), N), B) == True{} : Bool})
     -> {Codec.parts(VS.field_set(E.VALL_l16_ProposerSlashing(t, N), U32.to_nat(i), vv_l16_ProposerSlashing(m)), Spec.Schema97()) == Some{[S.Variable{E.ENCL_l16_ProposerSlashing(F.array__upd(E.MB<E.M_ProposerSlashing>, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}:
   %l16_ProposerSlashing_vall_set(t, N, i, m, h, hs) :
     {Codec.parts(_, Spec.Schema97()) == Some{[S.Variable{E.ENCL_l16_ProposerSlashing(F.array__upd(E.MB<E.M_ProposerSlashing>, E.TDM(t), t, U32.to_nat(i), m), N)}]} : Maybe<&2, +List<S.Part>>}

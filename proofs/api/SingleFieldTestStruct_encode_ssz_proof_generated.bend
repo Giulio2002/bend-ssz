@@ -48,10 +48,10 @@ def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoi
 def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_true_flag() -> {P2_O.is_poisoned(P2_O.pz(True{})) == False{} : Bool}:
   P2_PRV.SingleFieldTestStruct_serialize_vpoison_true_flag()
 
-def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(2147483647) == False{} : Bool}:
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_below() -> {P2_O.is_poisoned(4294967264) == False{} : Bool}:
   P2_PRV.SingleFieldTestStruct_serialize_vpoison_below()
 
-def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 2147483648)) == True{} : Bool}:
+def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vpoison_carried() -> {P2_O.is_poisoned(P2_O.padd(5, 4294967295)) == True{} : Bool}:
   P2_PRV.SingleFieldTestStruct_serialize_vpoison_carried()
 
 def SingleFieldTestStruct__serialize_valid__SingleFieldTestStruct_serialize_vreject_f_A() -> {SingleFieldTestStruct_e.SingleFieldTestStruct_valid(SingleFieldTestStruct_d.SingleFieldTestStruct_set_f_A_go(SingleFieldTestStruct_d.SingleFieldTestStruct_default(), 256)) == False{} : Bool}:

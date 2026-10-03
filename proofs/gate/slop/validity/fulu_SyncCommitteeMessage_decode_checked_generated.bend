@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated
 def SyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(144, 144, (B.Buf{Array.new(U32, 6n, 0), 144}, 36))), Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 6n, 0), 144}, 144))) == (True{}, True{}) : Bool & Bool}:
   PRV.SyncCommitteeMessage_decode_vchecked_accept()
 
-def SyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+def SyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
   PRV.SyncCommitteeMessage_decode_vchecked_limit()
 
 def SyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 0n, 0), 144}, 144)) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:

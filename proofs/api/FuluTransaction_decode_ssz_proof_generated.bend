@@ -63,7 +63,7 @@ def FuluTransaction__decode_reject__decode_reject(+d: Nat, +t: P0_FD.array__Tree
 def FuluTransaction__decode_none__decode_none(+d: Nat, +t: P0_FD.array__Tree<U32>, +n: U32, +pf: {P0_FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), P0_A.quad(P0_VB.pw(d))) == True{} : Bool}, +hN: {U32.is_le(n, P0_VB.NMAX()) == True{} : Bool}, +hchk: {P0_PRV.CHK(t, n) == False{} : Bool}) -> {FuluTransaction_r.Transaction_decode(P0_PRV.BF(t, n), n) == (P0_PRV.BF(t, n), None{}) : P0_B.Buf & Maybe<&1, P0_O.Words>}:
   P0_PRV.decode_none(d, t, n, pf, hd, hn, hN, hchk)
 
-def FuluTransaction__decode_offsets__Transaction_decode_vchecked_limit() -> {Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_dchw(2147483648, 2147483648, (P1_B.empty(), 536870912))) == None{} : Maybe<&1, P1_O.Words>}:
+def FuluTransaction__decode_offsets__Transaction_decode_vchecked_limit() -> {Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_dchw(4294967265, 4294967265, (P1_B.empty(), 1073741824))) == None{} : Maybe<&1, P1_O.Words>}:
   P1_PRV.Transaction_decode_vchecked_limit()
 
 def FuluTransaction__decode_offsets__Transaction_decode_vchecked_window() -> {Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_dchw(5, 4, (P1_B.empty(), 8))) == None{} : Maybe<&1, P1_O.Words>}:

@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_PendingAttestation_decode_checked_generated.b
 def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 38))), Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 149))) == (True{}, True{}) : Bool & Bool}:
   PRV.PendingAttestation_decode_vchecked_accept()
 
-def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   PRV.PendingAttestation_decode_vchecked_limit()
 
 def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 148), 149}, 149)) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:

@@ -127,7 +127,7 @@ def ExecutionPayloadHeader_bx_pk_back(pair: Array<U32> & (FuluExecutionPayloadHe
 def ExecutionPayloadHeader_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>) -> Array<U32> & (O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32):
   match o:
     case O.BSome{v, rest}: ExecutionPayloadHeader_bx_pk_back(ExecutionPayloadHeader_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def ExecutionPayloadHeader_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32)) -> Array<U32> & (O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32):
   (out, r) = pair
@@ -138,7 +138,7 @@ def ExecutionPayloadHeader_bx_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur:
   ExecutionPayloadHeader_bx_pvb(cur, ExecutionPayloadHeader_bx_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
 def ExecutionPayloadHeader_enc_out(out: Array<U32>, o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +m: U32) -> FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & B.Buf:
-  (o, O.out_done((m .&. 2147483647 : U32), out))
+  (o, O.out_donem(m, out))
 
 def ExecutionPayloadHeader_enc_put(pair: Array<U32> & (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32)) -> FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & B.Buf:
   (out, r) = pair

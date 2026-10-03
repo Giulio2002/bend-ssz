@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluAttestationData_d.AttestationData>) -> Bool:
 def is_some(a: Maybe<&1, FuluAttestationData_d.AttestationData>, b: Maybe<&1, FuluAttestationData_d.AttestationData>) -> Bool & Bool: (some1(a), some1(b))
 
 def AttestationData_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   {==}
 
 def AttestationData_decode_vchecked_accept()

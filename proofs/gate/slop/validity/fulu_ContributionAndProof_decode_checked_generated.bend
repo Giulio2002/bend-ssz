@@ -11,7 +11,7 @@ import ../../../slop/validity/fulu_ContributionAndProof_decode_checked_generated
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(264, 264, (B.Buf{Array.new(U32, 7n, 0), 264}, 66))), Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(B.Buf{Array.new(U32, 7n, 0), 264}, 264))) == (True{}, True{}) : Bool & Bool}:
   PRV.ContributionAndProof_decode_vchecked_accept()
 
-def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_limit()
 
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 264}, 264)) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:

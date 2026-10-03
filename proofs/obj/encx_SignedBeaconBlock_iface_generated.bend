@@ -148,13 +148,13 @@ def lenE(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {
 
 # ---- OKW: the encoding below 2^31 bytes (the object API's limit: O.padd's poison bit), the children OKW ----
 
-def OKTW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> Bool: Bool.and(EC_BeaconBlock.OKW(m_message), Nat.is_lt(ENDC(m_message, signature), VB.pw(31n)))
+def OKTW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> Bool: Bool.and(EC_BeaconBlock.OKW(m_message), Nat.is_le(ENDC(m_message, signature), U32.to_nat(VB.NMAX())))
 
-def okr1W(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {Nat.is_lt(ENDC(m_message, signature), VB.pw(31n)) == True{} : Bool}: and_r(EC_BeaconBlock.OKW(m_message), Nat.is_lt(ENDC(m_message, signature), VB.pw(31n)), h)
+def okr1W(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {Nat.is_le(ENDC(m_message, signature), U32.to_nat(VB.NMAX())) == True{} : Bool}: and_r(EC_BeaconBlock.OKW(m_message), Nat.is_le(ENDC(m_message, signature), U32.to_nat(VB.NMAX())), h)
 
-def ok_hok_messageW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {EC_BeaconBlock.OKW(m_message) == True{} : Bool}: and_l(EC_BeaconBlock.OKW(m_message), Nat.is_lt(ENDC(m_message, signature), VB.pw(31n)), h)
+def ok_hok_messageW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {EC_BeaconBlock.OKW(m_message) == True{} : Bool}: and_l(EC_BeaconBlock.OKW(m_message), Nat.is_le(ENDC(m_message, signature), U32.to_nat(VB.NMAX())), h)
 
-def ok_bndW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {Nat.is_lt(ENDC(m_message, signature), VB.pw(31n)) == True{} : Bool}: okr1W(m_message, signature, h)
+def ok_bndW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool}) -> {Nat.is_le(ENDC(m_message, signature), U32.to_nat(VB.NMAX())) == True{} : Bool}: okr1W(m_message, signature, h)
 
 def partsCW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKTW(m_message, signature) == True{} : Bool})
     -> {Codec.parts(S.Items{EC_BeaconBlock.VAL(m_message), S.Items{LV_b96(signature), S.EmptyItems{}}}, S.Chain{Spec.Schema105(), S.Chain{Spec.Schema9(), S.End{}}}) == Some{PSC(m_message, signature)} : Maybe<&2, +List<S.Part>>}:
@@ -253,7 +253,7 @@ def BYX(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: N
 
 def goW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_lt(List.length(&2, U32, K.ENCC(m_message, signature)), VB.pw(31n)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature)))), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature))))), VB.pw(dd)) == True{} : Bool}, +hs31: {Nat.is_le(List.length(&2, U32, K.ENCC(m_message, signature)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature))))) : +List<U32>})
     -> DK.P2(RTX(m_message, signature, dd, D, X, q, r), BYX(m_message, signature, dd, D, q, r)):
   +LLv = K.LLC(m_message, signature, dd, D, XQ(q, r), q, r)
@@ -262,7 +262,7 @@ def goW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {O
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hz)
   +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
   +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
-  +g = K.putxW(m_message, signature, ok_hok_message(m_message, signature, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hl32), pf, hz2)
+  +g = K.putxW(m_message, signature, ok_hok_message(m_message, signature, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hl32), pf, hz2)
   +rt = K.putk_bridge(m_message, signature, dd, D, XQ(q, r), q, r, PA(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r)), g2)
@@ -277,14 +277,14 @@ def goO(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {O
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature))))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature)))), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature))))) : +List<U32>})
     -> DK.P2(RTX(m_message, signature, dd, D, X, q, r), BYX(m_message, signature, dd, D, q, r)):
-  +hs31 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), ENDC(m_message, signature), lenEW(m_message, signature, h)), ok_bndW(m_message, signature, h))
+  +hs31 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), ENDC(m_message, signature), lenEW(m_message, signature, h)), ok_bndW(m_message, signature, h))
   +LLv = K.LLC(m_message, signature, dd, D, XQ(q, r), q, r)
   +el = lenC(m_message, signature, dd, D, XQ(q, r), q, r)
   +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hl)
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hz)
   +ex = CS.exqW(X, q, r, LLv, dd, e, hd, hl2)
   +e2 = FD.logic__subst(U32, z => {U32.to_nat(z) == Nat.add(A.quad(q), r) : Nat}, X, XQ(q, r), ex, e)
-  +g = K.putxO(m_message, signature, ok_hok_messageW(m_message, signature, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hl32), pf, hz2)
+  +g = K.putxO(m_message, signature, ok_hok_messageW(m_message, signature, h), dd, D, XQ(q, r), q, r, e2, hr, hd, hl2, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hs31), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), FD.spec_common__pow2(32n)) == True{} : Bool}, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el, hl32), pf, hz2)
   +rt = K.putk_bridge(m_message, signature, dd, D, XQ(q, r), q, r, PA(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r)), g2)
@@ -315,7 +315,7 @@ law putxW:
   for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
-  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hs31: {Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
   for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
@@ -374,7 +374,7 @@ law putx_bytesW:
   for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
-  for +hs31: {Nat.is_lt(List.length(&2, U32, ENC(m)), VB.pw(31n)) == True{} : Bool}
+  for +hs31: {Nat.is_le(List.length(&2, U32, ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
   for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, List.length(&2, U32, ENC(m)))), FD.spec_common__pow2(32n)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}

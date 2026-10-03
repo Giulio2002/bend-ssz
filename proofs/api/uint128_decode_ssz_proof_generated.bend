@@ -101,7 +101,7 @@ def uint128__decode_input__uint128_ms_build() -> {uint128_r.uint128_build(P6_B.B
 def uint128__decode_input__uint128_ms_dec() -> {(uint128_r.uint128_decode(P6_B.Buf{uint128_e.u128_put(P6_O.out_at(4n), 0, uint128_d.u128_seed(2271560481)), 16}, 16), uint128_r.uint128_decode(P6_B.Buf{uint128_e.u128_put(P6_O.out_at(4n), 0, uint128_d.u128_seed(2271560482)), 16}, 16)) == ((P6_B.Buf{uint128_e.u128_put(P6_O.out_at(4n), 0, uint128_d.u128_seed(2271560481)), 16}, Some{uint128_d.u128_seed(2271560481)}), (P6_B.Buf{uint128_e.u128_put(P6_O.out_at(4n), 0, uint128_d.u128_seed(2271560482)), 16}, Some{uint128_d.u128_seed(2271560482)})) : (P6_B.Buf & Maybe<&1, uint128_d.Uint128>) & (P6_B.Buf & Maybe<&1, uint128_d.Uint128>)}:
   P6_PRV.uint128_ms_dec()
 
-def uint128__decode_offsets__uint128_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_dchw(2147483648, 2147483648, (P7_B.empty(), 536870912))) == None{} : Maybe<&1, uint128_d.Uint128>}:
+def uint128__decode_offsets__uint128_decode_vchecked_limit() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_dchw(4294967265, 4294967265, (P7_B.empty(), 1073741824))) == None{} : Maybe<&1, uint128_d.Uint128>}:
   P7_PRV.uint128_decode_vchecked_limit()
 
 def uint128__decode_offsets__uint128_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_dchw(16, 16, (P7_B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(P7_B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked(P7_B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:

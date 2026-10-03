@@ -149,7 +149,7 @@ def ExecutionPayload_bx_pk_back(pair: Array<U32> & (FuluExecutionPayload_d.Execu
 def ExecutionPayload_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluExecutionPayload_d.ExecutionPayload>) -> Array<U32> & (O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32):
   match o:
     case O.BSome{v, rest}: ExecutionPayload_bx_pk_back(ExecutionPayload_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def ExecutionPayload_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32)) -> Array<U32> & (O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32):
   (out, r) = pair
@@ -167,9 +167,14 @@ def ExecutionPayload_enc_put(+n: U32, pair: Array<U32> & (FuluExecutionPayload_d
   (o, m) = r
   ExecutionPayload_enc_out(n, out, o, m)
 
+def ExecutionPayload_enc_go(bad: Bool, +n: U32, o: FuluExecutionPayload_d.ExecutionPayload) -> FuluExecutionPayload_d.ExecutionPayload & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: ExecutionPayload_enc_put(n, ExecutionPayload_putn(O.out_new(n), 0, o))
+
 def ExecutionPayload_enc_sized(pair: FuluExecutionPayload_d.ExecutionPayload & U32) -> FuluExecutionPayload_d.ExecutionPayload & B.Buf:
   (o, +n) = pair
-  ExecutionPayload_enc_put(n, ExecutionPayload_putn(O.out_new(n), 0, o))
+  ExecutionPayload_enc_go(O.is_poisoned(n), n, o)
 
 def ExecutionPayload_encode(o: FuluExecutionPayload_d.ExecutionPayload) -> FuluExecutionPayload_d.ExecutionPayload & B.Buf: ExecutionPayload_enc_sized(ExecutionPayload_size(o))
 

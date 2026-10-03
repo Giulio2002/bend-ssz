@@ -28,6 +28,7 @@ import ../obj/dk.bend as DK
 import ../obj/vuwv_b32_generated.bend as V_b32
 import ../obj/encx_BeaconBlockBody_iface_generated.bend as EC_BeaconBlockBody
 import ../obj/encx_BeaconBlockBody_size_generated.bend as ES_BeaconBlockBody
+import ../obj/vbenc.bend as VBE
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/vlist.bend as VL

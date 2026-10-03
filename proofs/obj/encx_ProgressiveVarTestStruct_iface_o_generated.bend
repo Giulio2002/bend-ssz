@@ -81,7 +81,7 @@ def okwOfOk(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OB.OKT(
   +s2 = FD.logic__and_right(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), s1)
   +p2 = FD.logic__and_left(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s2)
   +s3 = FD.logic__and_right(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), s2)
-  FD.logic__and_intro(EX_l123_u16_D.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n)))), EX_l123_u16_D.okDb(m_f_B, p0), FD.logic__and_intro(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n))), p1, FD.logic__and_intro(uint8_e.u8_valid(f_A), Nat.is_lt(OB.ENDC(f_A, m_f_B, m_f_C), VB.pw(31n)), p2, VCN.lt31q(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s3))))
+  FD.logic__and_intro(EX_l123_u16_D.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(OB.ENDC(f_A, m_f_B, m_f_C), U32.to_nat(VB.NMAX())))), EX_l123_u16_D.okDb(m_f_B, p0), FD.logic__and_intro(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(OB.ENDC(f_A, m_f_B, m_f_C), U32.to_nat(VB.NMAX()))), p1, FD.logic__and_intro(uint8_e.u8_valid(f_A), Nat.is_le(OB.ENDC(f_A, m_f_B, m_f_C), U32.to_nat(VB.NMAX())), p2, VCN.lt31q(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), 28n, {==}, s3))))
 
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
@@ -90,7 +90,7 @@ def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True
 law bndxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_lt(List.length(&2, U32, OB.ENC(m)), VB.pw(31n)) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
 def bndxO(m, hok):
   match m:
-    case OB.MW{+f_A, +m_f_B, +m_f_C}: FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, OB.ENDC(f_A, m_f_B, m_f_C), List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), OB.ENDC(f_A, m_f_B, m_f_C), OB.lenEW(f_A, m_f_B, m_f_C, hok)), OB.ok_bndW(f_A, m_f_B, m_f_C, hok))
+    case OB.MW{+f_A, +m_f_B, +m_f_C}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(f_A, m_f_B, m_f_C), List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), OB.ENDC(f_A, m_f_B, m_f_C), OB.lenEW(f_A, m_f_B, m_f_C, hok)), OB.ok_bndW(f_A, m_f_B, m_f_C, hok))

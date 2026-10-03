@@ -20,11 +20,11 @@ def SingleFieldTestStruct_serialize_vpoison_true_flag()
   {==}
 
 def SingleFieldTestStruct_serialize_vpoison_below()
-    -> {O.is_poisoned(2147483647) == False{} : Bool}:
+    -> {O.is_poisoned(4294967264) == False{} : Bool}:
   {==}
 
 def SingleFieldTestStruct_serialize_vpoison_carried()
-    -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
+    -> {O.is_poisoned(O.padd(5, 4294967295)) == True{} : Bool}:
   {==}
 
 def SingleFieldTestStruct_serialize_vreject_f_A()

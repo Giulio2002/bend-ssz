@@ -15,7 +15,7 @@ def some1(m: Maybe<&1, FuluForkData_d.ForkData>) -> Bool:
 def is_some(a: Maybe<&1, FuluForkData_d.ForkData>, b: Maybe<&1, FuluForkData_d.ForkData>) -> Bool & Bool: (some1(a), some1(b))
 
 def ForkData_decode_vchecked_limit()
-    -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
   {==}
 
 def ForkData_decode_vchecked_accept()

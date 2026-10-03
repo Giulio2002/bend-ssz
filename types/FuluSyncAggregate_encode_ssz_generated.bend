@@ -26,7 +26,7 @@ def SyncAggregate_valid(+o: FuluSyncAggregate_d.SyncAggregate) -> Bool: True{}
 def SyncAggregate_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<FuluSyncAggregate_d.SyncAggregate>) -> Array<U32> & (O.Boxed<FuluSyncAggregate_d.SyncAggregate> & U32):
   match o:
     case O.BSome{+v, rest}: (SyncAggregate_put(out, pos, v), (O.BSome{v, O.BNone{}}, O.pz(SyncAggregate_valid(v))))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def SyncAggregate_encode(+o: FuluSyncAggregate_d.SyncAggregate) -> B.Buf: O.out_done(160, SyncAggregate_put(O.out_at(6n), 0, o))
 

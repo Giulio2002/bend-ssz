@@ -10,7 +10,7 @@ import ../../../slop/validity/fulu_Epoch_decode_checked_generated.bend as PRV
 def Epoch__decode_offsets__Epoch_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluEpoch_r.Epoch_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluEpoch_r.Epoch_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   PRV.Epoch_decode_vchecked_accept()
 
-def Epoch__decode_offsets__Epoch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluEpoch_r.Epoch_dchw(2147483648, 2147483648, (B.empty(), 536870912))) == None{} : Maybe<&1, O.U64>}:
+def Epoch__decode_offsets__Epoch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluEpoch_r.Epoch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   PRV.Epoch_decode_vchecked_limit()
 
 def Epoch__decode_offsets__Epoch_decode_vchecked_real() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluEpoch_r.Epoch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:

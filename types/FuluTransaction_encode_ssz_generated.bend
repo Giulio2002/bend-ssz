@@ -18,7 +18,7 @@ def bl1073741824_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U
   (o, ok) = pair
   match ok:
     case True{}: bl1073741824_putn(out, pos, o)
-    case False{}: (out, (o, 2147483648))
+    case False{}: (out, (o, 4294967295))
 
 def bl1073741824_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1073741824, False{}, 1)
 
@@ -59,7 +59,7 @@ def bl1073741824_bx_pk_back(pair: Array<U32> & (O.Words & U32)) -> Array<U32> & 
 def bl1073741824_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<O.Words>) -> Array<U32> & (O.Boxed<O.Words> & U32):
   match o:
     case O.BSome{v, rest}: bl1073741824_bx_pk_back(bl1073741824_putk(out, pos, v))
-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 
 def bl1073741824_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<O.Words> & U32)) -> Array<U32> & (O.Boxed<O.Words> & U32):
   (out, r) = pair
@@ -86,9 +86,14 @@ def Transaction_enc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words 
   (o, m) = r
   Transaction_enc_out(n, out, o, m)
 
+def Transaction_enc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & B.Buf:
+  match bad:
+    case True{}: (o, B.empty())
+    case False{}: Transaction_enc_put(n, bl1073741824_putn(O.out_new(n), 0, o))
+
 def Transaction_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
   (o, +n) = pair
-  Transaction_enc_put(n, bl1073741824_putn(O.out_new(n), 0, o))
+  Transaction_enc_go(O.is_poisoned(n), n, o)
 
 def Transaction_encode(o: O.Words) -> O.Words & B.Buf: Transaction_enc_sized(bl1073741824_size(o))
 
