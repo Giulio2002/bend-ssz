@@ -443,8 +443,8 @@ def within(expr, n):
 
 
 def seq_count_bound(t, e):
-    """The largest count of a list of composites: its limit, and for fixed-size elements the largest count whose encoding stays below 2^31 bytes
-    (n * es wraps in U32 from n >= 2^32 / es, and the size, validity and writer arithmetic is U32: docs/CRASH_HUNT.md R3-03)."""
+    """The largest count of a list of composites: its limit, and for fixed-size elements the largest count whose encoding stays within NMAX = 4294967264 bytes
+    (n * es wraps in U32 from n >= 2^32 / es, and the size, validity and writer arithmetic is U32: docs/CRASH_HUNT.md R3-03; docs/SIZE_LIMIT_DESIGN.md)."""
     b = t.size
     if e.fixed and e.fsize:
         b = min(b, 4294967264 // e.fsize)

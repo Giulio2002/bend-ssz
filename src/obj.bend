@@ -1740,9 +1740,9 @@ def bitvec_tail(+k: U32, pair: Words & Bool) -> Words & Bool:
 # ---- the fused check of the encode path --------------------------------------
 # The literal-depth encoders (every name whose output depth is a constant)
 # check validity while they write: each writer reports a count or flag with
-# bit 31 set when the value it wrote was invalid, and the running cursors keep
-# it set (`padd`), so the final length says whether the whole value was valid.
-# A valid encoding is shorter than 2^31 bytes there by construction.
+# the marker 4294967295 (`poison`) when the value it wrote was invalid, and the running
+# cursors keep it (`padd` saturates at the marker), so the final length says whether the whole
+# value was valid. A valid encoding is at most NMAX = 2^32 - 32 bytes there by construction.
 def poison() -> U32: 4294967295
 
 def pz(ok: Bool) -> U32:
@@ -1750,7 +1750,7 @@ def pz(ok: Bool) -> U32:
     case True{}: 0
     case False{}: 4294967295
 
-# Add two counts, keeping bit 31 if either had it.
+# Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
 def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
 
 # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
@@ -1794,7 +1794,7 @@ def ser_done(bad: Bool, +m: U32, out: Array<U32>) -> Encoded:
     case True{}: refused()
     case False{}: Encoded{True{}, B.Buf{out, m}}
 
-# The size of a packed collection for the size pass: bit 31 when its storage
+# The size of a packed collection for the size pass: the marker when its storage
 # cannot hold its length (so nothing that large is ever allocated for it).
 def wsz_pick(+n: U32, pair: Array<U32> & U32) -> Words & U32:
   (ws, +c) = pair

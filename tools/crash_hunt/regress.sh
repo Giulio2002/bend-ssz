@@ -12,7 +12,7 @@ mkdir -p "$OUT"
 BUN_JSC_forceRAMSize=3000000000 nice -n 19 timeout 900 "$BEND" tools/crash_hunt/pf_fixed.bend -o "$OUT/pf" > "$OUT/compile.log" 2>&1 || { echo "compile failed"; tail -5 "$OUT/compile.log"; exit 2; }
 bad=0
 while read -r c expect; do
-  got=$( ( ulimit -d 16777216; export SSZ_CASE=$c; timeout 60 nice -n 19 "$OUT/pf" --threads 1 --gpu off 2>&1 | tr '\n' ' ' | sed 's/ *$//' ) )
+  got=$( ( ulimit -d 33554432; export SSZ_CASE=$c; timeout 60 nice -n 19 "$OUT/pf" --threads 1 --gpu off 2>&1 | tr '\n' ' ' | sed 's/ *$//' ) )
   if [ "$got" = "$expect" ]; then echo "ok    case $c: $got"; else echo "FAIL  case $c: got '$got', expected '$expect'"; bad=$((bad+1)); fi
 done < tools/crash_hunt/regress_expected.txt
 rm -rf "$OUT"

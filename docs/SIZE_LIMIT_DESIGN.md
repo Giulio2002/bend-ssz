@@ -36,5 +36,8 @@ Least proof churn and no new types. The proof work splits in two:
   regeneration; the BeaconState size and window files are the ones at risk for the 2 minute limit (they are 145 to 175 s today only for the block family).
 
 ## Status
-Spike commit 9da79f583 on `agent/size-limit` (marker, saturating padd, checked szf). The bulk change (proof lemmas, bounds, templates, regression cases for 2^31 + 1, 2^32 - 2,
-22.4M deposits and 17.7M validators) is not done.
+Done on `agent/size-limit` (devtools-sl on gate.git): marker 4294967295, saturating `padd`, `O.mulc` (checked `n * es`), `out_donem` (CH-02), the decode limit
+`size <= 4294967264`, the append bounds at floor(NMAX / element size), all generated outputs regenerated, the proofs lifted from `2^31` to `NMAX` (changed statements:
+docs/size_limit_statement_diff.md), regress cases 46-57, laws that compute on the generated writers (`proofs/slop/validity/*_marker_poison_generated.bend`,
+`crash_fix_laws`). Documented exception: the DECODE side of the progressive record-list families keeps its `len < 2^31` window facts (section 4 of the diff document).
+R3-03 (a wrapped `n * es`), CH-02 and CH-07 are closed.
