@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/01
+# type: bitvector_9
+# ops: encode
+# spec: a Bitvector[9] object with a bit above bit 8 is invalid (the encoder would write it into the padding)
+# fault: the bound is w0 <= 512
+# why: boundary
+# file: types/bitvector_9_encode_ssz_generated.bend
+# sym: bv9_valid
+--- a/types/bitvector_9_encode_ssz_generated.bend
++++ b/types/bitvector_9_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_9_d.Bitvector9{+w0}: U32.is_lt(w0, 512)
++    case bitvector_9_d.Bitvector9{+w0}: U32.is_le(w0, 512)
+ 

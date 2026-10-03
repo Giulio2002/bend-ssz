@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/04
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: setting leaf i marks the dirty range to include i
+# fault: only the lower bound of the dirty range is updated
+# why: hi not updated
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_cset_in,l16_ProposerSlashing_cset
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -174,3 +174,3 @@
+   match ok:
+-    case True{}: (l16_ProposerSlashing_Cached{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l16_ProposerSlashing_Cached{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), hi}, True{})
+     case False{}: (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, False{})

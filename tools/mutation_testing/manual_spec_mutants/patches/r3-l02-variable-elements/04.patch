@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/04
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: same
+# fault: the storage test is dropped (a claimed count with a smaller array is sized by its claim)
+# why: check dropped
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_sz_ok,l1_AttesterSlashing_sz_cap,l1_AttesterSlashing_size
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -49,3 +49,3 @@
+   (arr, +c) = pair
+-  l1_AttesterSlashing_sz_ok(U32.is_le(n, c), arr, n)
++  l1_AttesterSlashing_sz_ok(True{}, arr, n)
+ 

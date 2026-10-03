@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/08
+# type: bytelist_256
+# ops: root
+# spec: an empty value has no chunk to test
+# fault: with no chunk the clean test answers False (the empty value takes the copy path)
+# why: base case value
+# file: src/obj.bend
+# sym: wcn_k,chunks_of
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -980,3 +980,3 @@
+   match k:
+-    case 0n: (ws, True{})
++    case 0n: (ws, False{})
+     case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)

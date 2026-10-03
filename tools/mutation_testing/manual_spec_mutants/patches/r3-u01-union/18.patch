@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/18
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: the selector is the first byte of the window (validation)
+# fault: validation reads the selector at off + len - 1 (the last byte)
+# why: index
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_ok_sel,CompatibleUnionABCA_ok_nz
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -42,3 +42,3 @@
+   match nonempty:
+-    case True{}: CompatibleUnionABCA_ok_sel(off, len, O.rd_u8(buf, off))
++    case True{}: CompatibleUnionABCA_ok_sel(off, len, O.rd_u8(buf, (off + len - 1 : U32)))
+     case False{}: (buf, False{})

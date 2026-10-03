@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x08-cache/03
+# type: Fulu_list_Attestation_8
+# ops: root
+# spec: same
+# fault: a depth of 32 or more is accepted
+# why: arm
+# file: src/obj.bend
+# sym: cache_dok,pow2u,nat_u32
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1497,3 +1497,3 @@
+     case True{}: U32.is_le(pow2u(d), c)
+-    case False{}: False{}
++    case False{}: True{}
+ 

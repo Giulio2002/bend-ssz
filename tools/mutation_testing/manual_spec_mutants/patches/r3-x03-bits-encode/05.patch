@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x03-bits-encode/05
+# type: bitlist_9
+# ops: encode
+# spec: the bits are written as ceil(k / 8) bytes
+# fault: floor(k / 8) bytes are written (the last partial byte is dropped before the delimiter is ORed in)
+# why: rounding
+# file: src/obj.bend
+# sym: put_bits,bits_nbytes,bits_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1158,3 +1158,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_fin(k, w8_delim(p, k, put_words(out, p, Words{ws, bits_nbytes(k)})))
++    case Bits{ws, +k}: bits_fin(k, w8_delim(p, k, put_words(out, p, Words{ws, U32.shrn(k, 3n)})))
+ 

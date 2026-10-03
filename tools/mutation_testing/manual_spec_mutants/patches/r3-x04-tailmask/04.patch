@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x04-tailmask/04
+# type: bitlist_9
+# ops: root
+# spec: same
+# fault: the mask for a length of 31 mod 32 tests nothing
+# why: mask constant
+# file: src/obj.bend
+# sym: bits_above_zero,bk_last,bits_ok,bk_cap
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1651,3 +1651,3 @@
+     case 30: U32.is_eq((x .&. 3221225472 : U32), 0)
+-    case _: U32.is_eq((x .&. 2147483648 : U32), 0)
++    case _: U32.is_eq((x .&. 0 : U32), 0)
+ 

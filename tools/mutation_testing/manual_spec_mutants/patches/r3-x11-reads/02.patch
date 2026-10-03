@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x11-reads/02
+# type: Fulu_list_uint64_128
+# ops: decode
+# spec: uint64 is little endian: the low word is read first
+# fault: the two words of a uint64 are swapped
+# why: endianness
+# file: src/obj.bend
+# sym: u64_of,rd_u64
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1208,3 +1208,3 @@
+   (lo, hi) = w
+-  (buf, U64{lo, hi})
++  (buf, U64{hi, lo})
+ 

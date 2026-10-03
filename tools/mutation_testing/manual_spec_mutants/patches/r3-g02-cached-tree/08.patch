@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/08
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: a leaf past the count is the zero chunk (i < n is inside)
+# fault: a leaf at i = n counts as inside
+# why: boundary
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_leaf_step,l16_ProposerSlashing_leaves
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -224,3 +224,3 @@
+     case 1n+r:
+-      l16_ProposerSlashing_leaves(hl, r, (i + 1 : U32), n, seg, cap, l16_ProposerSlashing_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++      l16_ProposerSlashing_leaves(hl, r, (i + 1 : U32), n, seg, cap, l16_ProposerSlashing_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+ 

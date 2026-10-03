@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w01-clean-chunk/03
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the first word of the chunk is tested against byte offset 4 instead of 0
+# why: constant of the first step
+# file: src/obj.bend
+# sym: lc_step,lc_s0,wcn_k,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -962,3 +962,3 @@
+   (ws, acc) = pair
+-  lc_s1(q, rN, lc_step(rN, 0n, acc, lc_read(q, 0n, ws)))
++  lc_s1(q, rN, lc_step(rN, 4n, acc, lc_read(q, 0n, ws)))
+ 

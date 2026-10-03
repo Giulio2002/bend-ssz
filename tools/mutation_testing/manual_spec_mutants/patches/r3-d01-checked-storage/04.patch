@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-d01-checked-storage/04
+# type: uint256
+# ops: decode
+# spec: the storage comes from B.stored(buf), the size from B.size(buf)
+# fault: both come from the size field
+# why: wrong accessor
+# file: types/uint256_decode_ssz_generated.bend
+# sym: uint256_dchk,uint256_decode_checked,uint256_dchw
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -79,3 +79,3 @@
+   (buf, +n) = pair
+-  uint256_dchw(size, n, B.stored(buf))
++  uint256_dchw(size, n, (buf, n))
+ 

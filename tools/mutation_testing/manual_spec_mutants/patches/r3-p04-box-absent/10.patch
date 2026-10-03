@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/10
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: the offset of variable field 2 is written at its slot (pos + 4) with the running size
+# fault: the second offset is written at slot 0
+# why: slot
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_bx_putv,AttesterSlashing_putn,AttesterSlashing_pw0
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+   (attestation_1, c) = r
+-  AttesterSlashing_pw1(pos, attestation_1, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 4, c, attestation_2))
++  AttesterSlashing_pw1(pos, attestation_1, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, c, attestation_2))
+ 

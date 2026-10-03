@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/01
+# type: Fulu_list_uint64_1099511627776
+# ops: encode
+# spec: the append guard keeps (n + 1) * 8 + 31 below 2^32: n < floor((2^32 - 32) / 8) = 536870908
+# fault: the guard is n < 536870909 (the append at n = 536870908 wraps the chunk rounding)
+# why: guard off by one
+# file: types/Fulu_list_uint64_1099511627776_def_generated.bend
+# sym: l1099511627776_u64_append,l1099511627776_u64_grow
+--- a/types/Fulu_list_uint64_1099511627776_def_generated.bend
++++ b/types/Fulu_list_uint64_1099511627776_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  l1099511627776_u64_grow(U32.is_lt(n, 536870908), o, n, v)
++  l1099511627776_u64_grow(U32.is_lt(n, 536870909), o, n, v)
+ 

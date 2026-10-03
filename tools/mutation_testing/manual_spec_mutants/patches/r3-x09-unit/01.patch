@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x09-unit/01
+# type: Fulu_list_uint64_128
+# ops: root
+# spec: a packed list of 8-byte elements has a byte length that is a multiple of 8
+# fault: the 8-byte case tests n mod 4
+# why: mask
+# file: src/obj.bend
+# sym: unit_ok,words_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1666,3 +1666,3 @@
+     case 4: U32.is_eq((n .&. 3 : U32), 0)
+-    case 8: U32.is_eq((n .&. 7 : U32), 0)
++    case 8: U32.is_eq((n .&. 3 : U32), 0)
+     case 32: U32.is_eq((n .&. 31 : U32), 0)

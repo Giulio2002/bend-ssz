@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/01
+# type: ProgressiveSingleFieldContainerTestStruct
+# ops: root
+# spec: hash_tree_root(progressive container) = mix_in_active_fields(merkleize_progressive(field roots), active_fields): the active bitvector [1] is the chunk 1
+# fault: the active-fields chunk is 2
+# why: constant
+# file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleFieldContainerTestStruct_fin,ProgressiveSingleFieldContainerTestStruct_root
+--- a/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleFieldContainerTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 2))
+ 

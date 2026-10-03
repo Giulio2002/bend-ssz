@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x02-bits-clear/01
+# type: bitlist_9
+# ops: decode,root
+# spec: the decoded bits do not contain the delimiter
+# fault: the delimiter is not cleared (the object holds the delimiter bit as data)
+# why: clear skipped
+# file: src/obj.bend
+# sym: clear_at,clear_bit,bits_clear,bits_from,bits_in
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1125,3 +1125,3 @@
+   match w:
+-    case Words{ws, +n}: (buf, Bits{clear_bit(ws, nbits), nbits})
++    case Words{ws, +n}: (buf, Bits{ws, nbits})
+ 

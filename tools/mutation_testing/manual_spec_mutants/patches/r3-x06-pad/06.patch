@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x06-pad/06
+# type: bitvector_9
+# ops: decode
+# spec: the padding byte is the last byte of the vector (position pos)
+# fault: the padding test reads the byte at pos + 1
+# why: index
+# file: src/obj.bend
+# sym: ok_pad
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1299,3 +1299,3 @@
+ # The last byte of a bit vector whose length is 8q + r (r > 0): bits r..7 clear.
+-def ok_pad(buf: B.Buf, +pos: U32, +r: U32) -> B.Buf & Bool: pad_pick(r, B.byte_at(buf, pos))
++def ok_pad(buf: B.Buf, +pos: U32, +r: U32) -> B.Buf & Bool: pad_pick(r, B.byte_at(buf, (pos + 1 : U32)))
+ 

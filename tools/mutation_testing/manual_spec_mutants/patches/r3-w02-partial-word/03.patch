@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/03
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the tail test uses n mod 2 (lengths 3 mod 4 are tested like 1 mod 4)
+# why: mask width
+# file: src/obj.bend
+# sym: wcn_tz,tail_zero,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -967,3 +967,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++  (ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 1 : U32), x)))
+ 

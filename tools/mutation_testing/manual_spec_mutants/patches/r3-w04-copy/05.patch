@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w04-copy/05
+# type: bytelist_256
+# ops: root
+# spec: the copy is clean: the unused bytes of the last word are zero
+# fault: the last word is not masked
+# why: mask dropped
+# file: src/obj.bend
+# sym: cc_fin,words_copy,mask_last
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -995,3 +995,3 @@
+   (out, ws) = pair
+-  (mask_last(n, out), ws)
++  (out, ws)
+ 

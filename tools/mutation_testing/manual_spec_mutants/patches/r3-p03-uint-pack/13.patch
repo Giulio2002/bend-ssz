@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/13
+# type: uint256
+# ops: encode
+# spec: position 3 mod 4 uses the 8-bit carry family (pw3)
+# fault: it uses pw1
+# why: dispatch
+# file: types/uint256_encode_ssz_generated.bend
+# sym: u256_pwu,u256_pwd
+--- a/types/uint256_encode_ssz_generated.bend
++++ b/types/uint256_encode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+     case 2: u256_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+-    case _: u256_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
++    case _: u256_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+ 

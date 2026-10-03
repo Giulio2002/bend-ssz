@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/07
+# type: bitvector_17
+# ops: decode
+# spec: same
+# fault: the pad rule is r = 2
+# why: parameter
+# file: types/bitvector_17_decode_ssz_generated.bend
+# sym: bv17_ok_at,ok_pad,bv17_read
+--- a/types/bitvector_17_decode_ssz_generated.bend
++++ b/types/bitvector_17_decode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+ 
+-def bv17_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 2 : U32), 1)
++def bv17_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 2 : U32), 2)
+ 

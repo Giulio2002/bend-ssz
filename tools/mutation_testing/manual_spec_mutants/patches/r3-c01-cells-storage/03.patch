@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-c01-cells-storage/03
+# type: Fulu_list_bytevec_2048_4096
+# ops: encode
+# spec: the cell appender refuses a cell whose storage holds fewer than 512 words (R2-05)
+# fault: the appender's storage test is 256 words
+# why: boundary
+# file: types/Fulu_list_bytevec_2048_4096_def_generated.bend
+# sym: l4096_b2048_app_w,l4096_b2048_append,l4096_b2048_grow
+--- a/types/Fulu_list_bytevec_2048_4096_def_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_def_generated.bend
+@@ -68,3 +68,3 @@
+   (vws, +vc) = pair
+-  l4096_b2048_grow(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(512, vc)), o, n, O.Words{vws, vn})
++  l4096_b2048_grow(Bool.and(Bool.and(U32.is_lt(n, 4096), U32.is_eq(vn, 2048)), U32.is_le(256, vc)), o, n, O.Words{vws, vn})
+ 

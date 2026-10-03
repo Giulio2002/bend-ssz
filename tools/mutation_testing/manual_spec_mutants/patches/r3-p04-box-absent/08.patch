@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/08
+# type: FuluAttestation
+# ops: encode
+# spec: a present box reports the size of its value
+# fault: a present box's checked writer reports size 0
+# why: size lost
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_bx_pk_back,Attestation_bx_putk
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -75,3 +75,3 @@
+   (v, m) = r
+-  (out, (O.BSome{v, O.BNone{}}, m))
++  (out, (O.BSome{v, O.BNone{}}, 0))
+ 

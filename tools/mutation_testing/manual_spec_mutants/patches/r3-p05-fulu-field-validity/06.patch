@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/06
+# type: Fulu_bitlist_131072
+# ops: encode
+# spec: same
+# fault: the list is declared unbounded
+# why: parameter
+# file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+# sym: bits131072_valid,bits_ok
+--- a/types/Fulu_bitlist_131072_encode_ssz_generated.bend
++++ b/types/Fulu_bitlist_131072_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bits131072_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 131072, False{})
++def bits131072_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 131072, True{})
+ 

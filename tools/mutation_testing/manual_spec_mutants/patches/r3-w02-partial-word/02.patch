@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/02
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the storage test and the tail test are and-ed
+# why: or/and
+# file: src/obj.bend
+# sym: wcn_tz,tail_zero,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -967,3 +967,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++  (ws, Bool.and(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/11
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: the cached append guard is the list limit
+# fault: the cached append guard is n < 15
+# why: guard off by one
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_capp,l16_ProposerSlashing_capp_in
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -193,3 +193,3 @@
+   match c:
+-    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 16), arr, n, d, nodes, lo, hi, v)
++    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_capp_in(U32.is_lt(n, 15), arr, n, d, nodes, lo, hi, v)
+ 

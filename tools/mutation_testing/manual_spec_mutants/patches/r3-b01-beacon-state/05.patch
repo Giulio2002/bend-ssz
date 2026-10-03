@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/05
+# type: FuluBeaconState
+# ops: decode
+# spec: offsets are non-decreasing: o2 <= o3 <= len
+# fault: the order test o2 <= o3 is dropped (o3 <= len only)
+# why: check dropped
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_v3,BeaconState_c3
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -494,3 +494,3 @@
+   (buf, +o3) = pair
+-  BeaconState_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++  BeaconState_c3(U32.is_le(o3, len), buf, off, len, o0, o1, o2, o3)
+ 

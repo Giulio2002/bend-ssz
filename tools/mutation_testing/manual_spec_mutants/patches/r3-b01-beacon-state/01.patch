@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/01
+# type: FuluBeaconState
+# ops: decode
+# spec: a container's first offset equals its fixed size (2737225 for BeaconState)
+# fault: the first offset may be any value above the fixed size (>=)
+# why: boundary
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_v0,BeaconState_ok_len,BeaconState_ok
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -521,3 +521,3 @@
+   (buf, +o0) = pair
+-  BeaconState_c0(U32.is_eq(o0, 2737225), buf, off, len, o0)
++  BeaconState_c0(U32.is_le(2737225, o0), buf, off, len, o0)
+ 

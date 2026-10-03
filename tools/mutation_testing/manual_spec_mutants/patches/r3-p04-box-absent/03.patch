@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/03
+# type: FuluIndexedAttestation
+# ops: encode
+# spec: CH-12: the size pass keeps the absent box absent
+# fault: the size pass replaces the absent box by the default box (the original CH-12 defect)
+# why: absent box lost in the size pass
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_bx_size,IndexedAttestation_bx_putk
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -68,3 +68,3 @@
+     case O.BSome{v, rest}: FuluIndexedAttestation_d.IndexedAttestation_bx_size_back(IndexedAttestation_size(v))
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluIndexedAttestation_d.IndexedAttestation_bx_default(), 0)
+ 

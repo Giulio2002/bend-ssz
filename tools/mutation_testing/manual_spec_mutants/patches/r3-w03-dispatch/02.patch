@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w03-dispatch/02
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the capacity test is strict (a storage of exactly 8 words per chunk takes the slow path)
+# why: boundary
+# file: src/obj.bend
+# sym: wr_size,wr_cap,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1032,3 +1032,3 @@
+   (ws, +sz) = pair
+-  wr_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++  wr_cap(Nat.is_lt(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+ 

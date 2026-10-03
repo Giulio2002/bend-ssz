@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/08
+# type: vec_uint256_31
+# ops: encode
+# spec: a Vector[uint256, 31] is 992 bytes: a multiple of 32
+# fault: the element size is 16
+# why: unit
+# file: types/vec_uint256_31_encode_ssz_generated.bend
+# sym: v31_u256_valid,words_ok
+--- a/types/vec_uint256_31_encode_ssz_generated.bend
++++ b/types/vec_uint256_31_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)
++def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 16)
+ 

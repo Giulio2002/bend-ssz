@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/13
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: same
+# fault: the size accumulation drops the poison of the first field (plain +)
+# why: padd -> +
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_sz1,AttesterSlashing_size
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (attestation_1, +m) = pair
+-  AttesterSlashing_sz1(attestation_1, O.padd(acc, m), FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_2))
++  AttesterSlashing_sz1(attestation_1, (acc + m : U32), FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_2))
+ 

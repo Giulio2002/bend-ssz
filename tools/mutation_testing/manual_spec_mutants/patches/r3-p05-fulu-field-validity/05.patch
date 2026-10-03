@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/05
+# type: Fulu_bitlist_131072
+# ops: encode
+# spec: aggregation_bits is a Bitlist[131072]: 131073 bits are invalid
+# fault: the limit is 131073
+# why: parameter off by one
+# file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+# sym: bits131072_valid,bits_ok
+--- a/types/Fulu_bitlist_131072_encode_ssz_generated.bend
++++ b/types/Fulu_bitlist_131072_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bits131072_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 131072, False{})
++def bits131072_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 131073, False{})
+ 

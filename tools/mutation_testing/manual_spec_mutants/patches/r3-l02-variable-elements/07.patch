@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/07
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: the first element starts after the offset table: at 4 n
+# fault: the first element starts at 4 n + 4
+# why: constant
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_pvn_nz,l1_AttesterSlashing_pv
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -89,3 +89,3 @@
+     case True{}: (out, (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 0))
+-    case False{}: l1_AttesterSlashing_pvn_fin(n, l1_AttesterSlashing_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
++    case False{}: l1_AttesterSlashing_pvn_fin(n, l1_AttesterSlashing_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n + 4 : U32), O.BNone{})))))
+ 

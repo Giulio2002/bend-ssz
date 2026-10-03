@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/01
+# type: bytelist_256
+# ops: encode
+# spec: a ByteList[256] of more than 256 bytes is invalid
+# fault: the upper bound is 257
+# why: parameter off by one
+# file: types/bytelist_256_encode_ssz_generated.bend
+# sym: bl256_valid,words_ok
+--- a/types/bytelist_256_encode_ssz_generated.bend
++++ b/types/bytelist_256_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 1)
++def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 257, False{}, 1)
+ 

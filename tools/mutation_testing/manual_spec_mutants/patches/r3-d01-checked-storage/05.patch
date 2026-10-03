@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-d01-checked-storage/05
+# type: bitvector_9
+# ops: decode
+# spec: window <= buffer size, window < 2^31
+# fault: the window test is size < n (a window equal to the buffer size is refused)
+# why: boundary
+# file: types/bitvector_9_decode_ssz_generated.bend
+# sym: bitvector_9_dchw,bitvector_9_decode_checked
+--- a/types/bitvector_9_decode_ssz_generated.bend
++++ b/types/bitvector_9_decode_ssz_generated.bend
+@@ -47,3 +47,3 @@
+   (buf, +c) = pair
+-  bitvector_9_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  bitvector_9_dgo(Bool.and(Bool.and(U32.is_lt(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+ 

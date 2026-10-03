@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/06
+# type: uint256
+# ops: decode
+# spec: word 5 is at byte offset 20
+# fault: word 5 is read at offset 16
+# why: offset
+# file: types/uint256_decode_ssz_generated.bend
+# sym: u256_r4,u256_read
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+   (buf, +x) = pair
+-  u256_r5(off, w0, w1, w2, w3, x, B.read32(buf, (off + 20 : U32)))
++  u256_r5(off, w0, w1, w2, w3, x, B.read32(buf, (off + 16 : U32)))
+ 

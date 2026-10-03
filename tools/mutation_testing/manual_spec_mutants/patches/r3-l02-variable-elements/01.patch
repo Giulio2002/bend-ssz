@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/01
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: the size of a list of variable-size elements is 4 n offsets plus the sizes of the elements
+# fault: the offset table is not counted
+# why: term dropped
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_sz_fin,l1_AttesterSlashing_size
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd((4 * n : U32), m))
++  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(0, m))
+ 

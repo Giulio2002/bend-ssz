@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w01-clean-chunk/06
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: word 5 of the chunk is never read (word 4 is read twice)
+# why: read index
+# file: src/obj.bend
+# sym: lc_s5,lc_read,wcn_k,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -942,3 +942,3 @@
+   (ws, acc) = pair
+-  lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 5n, ws)))
++  lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 4n, ws)))
+ 

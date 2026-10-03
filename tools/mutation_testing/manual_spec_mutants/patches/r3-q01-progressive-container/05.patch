@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/05
+# type: ProgressiveSingleListContainerTestStruct
+# ops: root
+# spec: the field at slot 4 sits in the third progressive subtree (chunks 5..20) at position 1 of the 4-leaf subtree, with zero leaves around it
+# fault: the inner zero subtree is on the left of the field instead of the right
+# why: operand order
+# file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_fin
+--- a/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleListContainerTestStruct_fin(+hl: Nat, +d_f_C: D.Digest, +z1: D.Digest, h: B.Buf, f_C: O.Bits) -> B.Buf & (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest):
+-  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C))), D.zero()), 16)))
++  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, d_f_C, D.zero()))), D.zero()), 16)))
+ 

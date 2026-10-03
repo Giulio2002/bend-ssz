@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-d01-checked-storage/03
+# type: uint256
+# ops: decode
+# spec: same
+# fault: the storage is compared with the size in bytes (a buffer of 8 words for 32 bytes is refused only above ... c >= size)
+# why: unit
+# file: types/uint256_decode_ssz_generated.bend
+# sym: uint256_dchw,uint256_decode_checked
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -75,3 +75,3 @@
+   (buf, +c) = pair
+-  uint256_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  uint256_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(size, c)), buf, size)
+ 

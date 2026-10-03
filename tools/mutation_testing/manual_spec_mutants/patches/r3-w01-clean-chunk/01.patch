@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w01-clean-chunk/01
+# type: bytelist_256
+# ops: root
+# spec: hash_tree_root(bytes) hashes the zero-padded chunks of the value: a byte past the length inside the last chunk is part of the chunk, so storage with junk there must not hash as the value
+# fault: a word that starts exactly at the length is exempt from the zero test (c <= rN instead of c < rN)
+# why: boundary of the partial chunk
+# file: src/obj.bend
+# sym: lc_step,wcn_k,wcn_t,wr_size,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -930,3 +930,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.and(acc, Bool.or(Nat.is_le(c, rN), U32.is_eq(x, 0))))
+ 

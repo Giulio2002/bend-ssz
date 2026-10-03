@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/02
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: union selector 3 is written as the byte 3
+# fault: arm 2 writes the selector 2
+# why: selector constant
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_pt2,CompatibleUnionABCA_put
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -46,3 +46,3 @@
+ def CompatibleUnionABCA_pt2(+pos: U32, v: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, out: Array<U32>) -> Array<U32> & CompatibleUnionABCA_d.CompatibleUnionABCA:
+-  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v))
++  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
+ 

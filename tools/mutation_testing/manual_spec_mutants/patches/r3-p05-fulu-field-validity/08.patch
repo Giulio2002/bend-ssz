@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/08
+# type: FuluTransaction
+# ops: encode
+# spec: a Transaction is a ByteList[2^30]: more is invalid
+# fault: the bound is 2^30 + 1
+# why: parameter off by one
+# file: types/FuluTransaction_encode_ssz_generated.bend
+# sym: bl1073741824_valid,words_ok
+--- a/types/FuluTransaction_encode_ssz_generated.bend
++++ b/types/FuluTransaction_encode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+ 
+-def bl1073741824_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1073741824, False{}, 1)
++def bl1073741824_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1073741825, False{}, 1)
+ 

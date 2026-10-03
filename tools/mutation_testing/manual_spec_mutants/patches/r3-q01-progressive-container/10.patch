@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/10
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: z5 is the zero subtree of depth 5
+# fault: z5 is the zero subtree of depth 4
+# why: zero level
+# file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveComplexTestStruct_rt11,ProgressiveComplexTestStruct_rt12,ProgressiveComplexTestStruct_fin
+--- a/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+@@ -31,3 +31,3 @@
+   (h, z4) = pair
+-  ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(5n)))
++  ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(4n)))
+ 

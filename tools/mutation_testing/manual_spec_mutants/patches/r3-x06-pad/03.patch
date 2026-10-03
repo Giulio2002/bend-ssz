@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x06-pad/03
+# type: bitvector_9
+# ops: decode
+# spec: same
+# fault: for r = 1 the allowed mask is 0 (bit 0 may not be set: a valid vector is refused)
+# why: constant
+# file: src/obj.bend
+# sym: low_mask,pad_pick,ok_pad
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1286,3 +1286,3 @@
+     case 0: 255
+-    case 1: 1
++    case 1: 0
+     case 2: 3

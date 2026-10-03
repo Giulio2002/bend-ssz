@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/06
+# type: Fulu_vec_uint64_8192
+# ops: encode
+# spec: a Vector[uint64, 8192] is exactly 65536 bytes
+# fault: any length up to 65536 is valid (lower bound 0)
+# why: parameter
+# file: types/Fulu_vec_uint64_8192_encode_ssz_generated.bend
+# sym: v8192_u64_valid,words_ok
+--- a/types/Fulu_vec_uint64_8192_encode_ssz_generated.bend
++++ b/types/Fulu_vec_uint64_8192_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v8192_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 65536, 65536, False{}, 8)
++def v8192_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 65536, False{}, 8)
+ 

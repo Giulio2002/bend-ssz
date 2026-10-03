@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/08
+# type: uint128
+# ops: decode
+# spec: a uint128 is exactly 16 bytes
+# fault: any length from 16 up is accepted
+# why: boundary
+# file: types/uint128_decode_ssz_generated.bend
+# sym: u128_ok,u128_ok_len
+--- a/types/uint128_decode_ssz_generated.bend
++++ b/types/uint128_decode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+ 
+-def u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u128_ok_len(U32.is_eq(len, 16), buf, off)
++def u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: u128_ok_len(U32.is_le(16, len), buf, off)
+ 

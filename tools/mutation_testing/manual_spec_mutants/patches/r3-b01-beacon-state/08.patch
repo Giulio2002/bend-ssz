@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/08
+# type: FuluBeaconState
+# ops: decode
+# spec: the historical_roots list (field 7) is the window [o0, o1)
+# fault: it starts at o1
+# why: window
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_c12,BeaconState_v12
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -408,3 +408,3 @@
+   match ok:
+-    case True{}: BeaconState_v13(off, len, o0, o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, Fulu_list_bytevec_32_16777216_r.l16777216_b32_ok(buf, (off + o0 : U32), (o1 - o0 : U32)))
++    case True{}: BeaconState_v13(off, len, o0, o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, Fulu_list_bytevec_32_16777216_r.l16777216_b32_ok(buf, (off + o1 : U32), (o1 - o0 : U32)))
+     case False{}: (buf, False{})

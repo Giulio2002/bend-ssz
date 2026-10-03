@@ -16,10 +16,35 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 # that is absent; 5 the same with one default Attestation appended (control); 6 BeaconBlockBody whose attester_slashings list claims one
 # absent element; 7 AttesterSlashing_valid of case 1; 8 AttesterSlashing_valid of the default.
 
+def ck(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> Array<U32> & U32:
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (ws, (acc + (w * (i + 1 : U32) : U32) : U32))
+    case 1n+q:
+      (ws, +w) = pair
+      ck(q, (i + 1 : U32), (acc + (w * (i + 1 : U32) : U32) : U32), Array.get(U32, ws, (i + 1 : U32)))
+
+def ckz(empty: Bool, ws: Array<U32>, +n: U32) -> Array<U32> & U32:
+  match empty:
+    case True{}: (ws, 0)
+    case False{}: ck(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, 0, Array.get(U32, ws, 0))
+
+def ckfin(+n: U32, pair: Array<U32> & U32) -> U32 & U32:
+  (ws, +c) = pair
+  (n, c)
+
+def ckinfo(b: B.Buf) -> U32 & U32:
+  match b:
+    case B.Buf{ws, +n}: ckfin(n, ckz(U32.is_eq(n, 0), ws, n))
+
+def show_ck(label: String, ok: Bool, pair: U32 & U32) -> IO(Unit):
+  (+n, +c) = pair
+  IO.print(label ++ " ok=" ++ O.pick_str(ok) ++ " size=" ++ U32.show(n) ++ " ck=" ++ U32.show(c))
+
 def show(label: String, e: O.Encoded) -> IO(Unit):
   match e:
-    case O.Encoded{ok, b}:
-      IO.print(label ++ " ok=" ++ O.pick_str(ok) ++ " size=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+    case O.Encoded{ok, b}: show_ck(label, ok, ckinfo(b))
 
 def ser_as(label: String, pair: AsD.AttesterSlashing & O.Encoded) -> IO(Unit):
   (o, e) = pair

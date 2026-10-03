@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/05
+# type: bitvector_513
+# ops: decode
+# spec: same
+# fault: the last word keeps two bytes (bits 513..15 of the byte after are data)
+# why: keep
+# file: types/bitvector_513_decode_ssz_generated.bend
+# sym: bv513_ok_at,bv513_read,ok_pad
+--- a/types/bitvector_513_decode_ssz_generated.bend
++++ b/types/bitvector_513_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, bitvector_513_d.Bitvector513{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, O.keep(1, x)})
++  (buf, bitvector_513_d.Bitvector513{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, O.keep(2, x)})
+ 

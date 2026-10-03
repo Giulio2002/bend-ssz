@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/09
+# type: vec_uint64_513
+# ops: encode
+# spec: a Vector[uint64, 513] is 4104 bytes
+# fault: the lower bound is 4096
+# why: parameter
+# file: types/vec_uint64_513_encode_ssz_generated.bend
+# sym: v513_u64_valid,words_ok
+--- a/types/vec_uint64_513_encode_ssz_generated.bend
++++ b/types/vec_uint64_513_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4104, 4104, False{}, 8)
++def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4096, 4104, False{}, 8)
+ 

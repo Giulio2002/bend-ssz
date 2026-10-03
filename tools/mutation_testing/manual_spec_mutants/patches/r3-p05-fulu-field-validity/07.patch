@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/07
+# type: Fulu_vec_bytevec_32_65536
+# ops: encode
+# spec: block_roots is a Vector[Bytes32, 65536] of exactly 2097152 bytes
+# fault: any length from 0 up to 2097152 is valid
+# why: parameter
+# file: types/Fulu_vec_bytevec_32_65536_encode_ssz_generated.bend
+# sym: v65536_b32_valid,words_ok
+--- a/types/Fulu_vec_bytevec_32_65536_encode_ssz_generated.bend
++++ b/types/Fulu_vec_bytevec_32_65536_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v65536_b32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2097152, 2097152, False{}, 32)
++def v65536_b32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 2097152, False{}, 32)
+ 

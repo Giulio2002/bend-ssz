@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x01-high-bit/03
+# type: bitlist_9
+# ops: decode,root
+# spec: same
+# fault: the last arm answers 1 for v = 1 (the delimiter of a one-bit... byte 0x01 is position 0)
+# why: base case
+# file: src/obj.bend
+# sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1129,3 +1129,3 @@
+   pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 16), 4,
+-    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 0)))))))
++    pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 1)))))))
+ 

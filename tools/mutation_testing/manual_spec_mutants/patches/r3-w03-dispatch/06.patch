@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r3-w03-dispatch/06
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the arms of the covered test are swapped (a covered object is clamped, an uncovered one is copied)
+# why: arms
+# file: src/obj.bend
+# sym: wr_slow,words_copy,wr_clean,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1013,4 +1013,4 @@
+   match covered:
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+-    case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case True{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case False{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+ 

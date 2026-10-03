@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/01
+# type: FuluIndexedAttestation
+# ops: encode
+# spec: CH-12: an absent box is refused by the checked writer (poison)
+# fault: the checked writer answers an absent box with a valid zero count
+# why: poison dropped
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_bx_putk,IndexedAttestation_bx_size,IndexedAttestation_bx_valid
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -78,3 +78,3 @@
+     case O.BSome{v, rest}: IndexedAttestation_bx_pk_back(IndexedAttestation_putk(out, pos, v))
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 0))
+ 

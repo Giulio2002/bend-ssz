@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/10
+# type: vec_bool_513
+# ops: encode
+# spec: a boolean byte other than 0 and 1 is invalid
+# fault: the boolean scan is dropped from the validity
+# why: conjunct dropped
+# file: types/vec_bool_513_encode_ssz_generated.bend
+# sym: v513_bool_valid,bools_ok
+--- a/types/vec_bool_513_encode_ssz_generated.bend
++++ b/types/vec_bool_513_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v513_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 513, 513, False{}, 1))
++def v513_bool_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 513, 513, False{}, 1)
+ 

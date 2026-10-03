@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/01
+# type: FuluBeaconState
+# ops: encode
+# spec: the fixed part of a BeaconState is 2737225 bytes; the size is the fixed part plus the variable parts
+# fault: the size starts at 2737224
+# why: constant
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_sz0,BeaconState_size
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -251,3 +251,3 @@
+   match o:
+-    case FuluBeaconState_d.BeaconState{g0, g1, g2, g3, g4}: BeaconState_sz0(g1, g2, g3, g4, 2737225, BeaconState_g0_size(g0))
++    case FuluBeaconState_d.BeaconState{g0, g1, g2, g3, g4}: BeaconState_sz0(g1, g2, g3, g4, 2737224, BeaconState_g0_size(g0))
+ 

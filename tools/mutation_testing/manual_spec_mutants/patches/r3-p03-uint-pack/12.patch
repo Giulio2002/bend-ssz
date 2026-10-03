@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/12
+# type: uint128
+# ops: encode
+# spec: position 2 mod 4 uses the 16-bit shift family
+# fault: position 2 mod 4 uses the 24-bit family
+# why: dispatch
+# file: types/uint128_encode_ssz_generated.bend
+# sym: u128_pwu
+--- a/types/uint128_encode_ssz_generated.bend
++++ b/types/uint128_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+     case 1: u128_pw1(out, q, w0, w1, w2, w3)
+-    case 2: u128_pw2(out, q, w0, w1, w2, w3)
++    case 2: u128_pw3(out, q, w0, w1, w2, w3)
+     case _: u128_pw3(out, q, w0, w1, w2, w3)

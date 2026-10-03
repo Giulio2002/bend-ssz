@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w06-chunks/01
+# type: bytelist_256
+# ops: root
+# spec: chunk count of n bytes is ceil(n / 32)
+# fault: chunks_of adds 32 before dividing (a chunk more when n is a multiple of 32)
+# why: rounding constant
+# file: src/obj.bend
+# sym: chunks_of,wr_cnt,wr_clean,wr_size
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -892,3 +892,3 @@
+ # the proofs reason about it with Nat division alone).
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 32n), 32n)
+ 

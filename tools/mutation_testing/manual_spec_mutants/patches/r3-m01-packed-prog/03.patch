@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-m01-packed-prog/03
+# type: proglist_uint128
+# ops: root
+# spec: the count mixed into a ProgressiveList[uint128] root is the byte length / 16
+# fault: the shift is 3 (byte length / 8)
+# why: shift
+# file: types/proglist_uint128_hashtreeroot_generated.bend
+# sym: pl_u128_root
+--- a/types/proglist_uint128_hashtreeroot_generated.bend
++++ b/types/proglist_uint128_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def pl_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
++def pl_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root_prog(hl, h, o, seg))
+ 

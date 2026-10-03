@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w05-prog/01
+# type: proglist_uint8
+# ops: root
+# spec: the progressive packed-bytes root has the same tight-storage rule as the binary one
+# fault: the capacity test compares chunks with the storage
+# why: unit
+# file: src/obj.bend
+# sym: wrp_size,wrp_cap,wrp_fit,wrp_slow,wrp_clean,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1097,3 +1097,3 @@
+   (ws, +sz) = pair
+-  wrp_cap(Nat.is_le(e8(chunks_of(n)), U32.to_nat(sz)), hl, h, n, sz, ws)
++  wrp_cap(Nat.is_le(chunks_of(n), U32.to_nat(sz)), hl, h, n, sz, ws)
+ 

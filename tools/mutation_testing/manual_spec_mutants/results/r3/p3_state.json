@@ -1,0 +1,163 @@
+{
+ "baseline": {
+  "1": "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+  "2": "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+  "3": "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794"
+ },
+ "r3-b01-beacon-state/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b01-beacon-state/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b01-beacon-state/03": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737809 ck=2643098167 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=3368469343 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=390950343 decoded=none"
+   ]
+  }
+ },
+ "r3-b01-beacon-state/04": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=3368469343 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=390950343 decoded=none"
+   ]
+  }
+ },
+ "r3-b01-beacon-state/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b01-beacon-state/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b01-beacon-state/07": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737809 ck=2643098167 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=3368469343 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=390950343 decoded=none"
+   ]
+  }
+ },
+ "r3-b01-beacon-state/08": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b02-beacon-state-encode/01": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737808 ck=2643098167 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738050 ck=3368469343 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738194 ck=390950343 decoded=none"
+   ]
+  }
+ },
+ "r3-b02-beacon-state-encode/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-b02-beacon-state-encode/03": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737810 ck=2643098167 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738052 ck=3368469343 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738196 ck=390950343 decoded=none"
+   ]
+  }
+ },
+ "r3-b02-beacon-state-encode/04": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737809 ck=1851232823 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=3784414049 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=806895049 decoded=none"
+   ]
+  }
+ },
+ "r3-b02-beacon-state-encode/05": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737809 ck=80877367 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=2496866911 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=1164256455 decoded=none"
+   ]
+  }
+ },
+ "r3-b02-beacon-state-encode/06": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "state_default size=2737809 ck=2643098167 decoded=1 size2=2737809 ck2=2643098167 root0=2852332636",
+    "state_default size=2737809 ck=3346564992 decoded=none"
+   ],
+   "2": [
+    "state_2val size=2738051 ck=3368469343 decoded=1 size2=2738051 ck2=3368469343 root0=1545088499",
+    "state_2val size=2738051 ck=4071998362 decoded=none"
+   ],
+   "3": [
+    "state_2val_2votes size=2738195 ck=390950343 decoded=1 size2=2738195 ck2=390950343 root0=1571621794",
+    "state_2val_2votes size=2738195 ck=1094516370 decoded=none"
+   ]
+  }
+ }
+}

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w05-prog/02
+# type: proglist_uint8
+# ops: root
+# spec: same
+# fault: tight storage counts as uncovered (is_lt)
+# why: boundary
+# file: src/obj.bend
+# sym: wrp_fit,wrp_slow,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1084,3 +1084,3 @@
+     case True{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
+-    case False{}: wrp_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)
++    case False{}: wrp_slow(Nat.is_lt(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)
+ 

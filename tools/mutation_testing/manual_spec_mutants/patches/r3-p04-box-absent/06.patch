@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/06
+# type: FuluAttestation
+# ops: encode
+# spec: same
+# fault: the size pass replaces the absent box by the default box
+# why: absent box lost in the size pass
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_bx_size,Attestation_bx_putk
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -70,3 +70,3 @@
+     case O.BSome{v, rest}: FuluAttestation_d.Attestation_bx_size_back(Attestation_size(v))
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluAttestation_d.Attestation_bx_default(), 0)
+ 

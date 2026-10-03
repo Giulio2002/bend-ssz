@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x03-bits-encode/04
+# type: bitlist_9
+# ops: encode
+# spec: the size of a Bitlist of k bits is floor(k / 8) + 1
+# fault: the size is floor(k / 8)
+# why: delimiter byte dropped
+# file: src/obj.bend
+# sym: bits_size,put_bits_n,pbn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1142,3 +1142,3 @@
+   match b:
+-    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
++    case Bits{ws, +k}: (Bits{ws, k}, (U32.shrn(k, 3n) : U32))
+ 

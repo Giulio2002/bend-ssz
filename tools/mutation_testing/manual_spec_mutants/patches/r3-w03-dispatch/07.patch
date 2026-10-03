@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w03-dispatch/07
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the clean copy is not used: the digest is computed over the ORIGINAL storage
+# why: wrong array
+# file: src/obj.bend
+# sym: wr_clean,wr_slow,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1009,3 +1009,3 @@
+   (out, ws) = pair
+-  wr_swap(ws, wr_cnt(hl, h, depth, n, out, chunks_of(n)))
++  wr_swap(ws, wr_cnt(hl, h, depth, n, ws, chunks_of(n)))
+ 

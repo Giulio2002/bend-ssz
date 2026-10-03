@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/13
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 4's payload is validated over [off + 1, len - 1)
+# fault: selector 4's payload window is the whole window (len)
+# why: window
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_ok3,CompatibleUnionABCA_ok2
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   match c:
+-    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + 1 : U32), len)
+     case False{}: (buf, False{})

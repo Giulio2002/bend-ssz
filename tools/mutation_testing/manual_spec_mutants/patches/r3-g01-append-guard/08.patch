@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/08
+# type: FuluTransaction
+# ops: encode
+# spec: a ByteList[2^30] holds at most 2^30 bytes: the append at n = 2^30 is refused
+# fault: the guard is n <= 2^30
+# why: guard boundary
+# file: types/FuluTransaction_def_generated.bend
+# sym: bl1073741824_append,bl1073741824_grow
+--- a/types/FuluTransaction_def_generated.bend
++++ b/types/FuluTransaction_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  bl1073741824_grow(Bool.and(U32.is_lt(n, 1073741824), U32.is_le(v, 255)), o, n, v)
++  bl1073741824_grow(Bool.and(U32.is_le(n, 1073741824), U32.is_le(v, 255)), o, n, v)
+ 

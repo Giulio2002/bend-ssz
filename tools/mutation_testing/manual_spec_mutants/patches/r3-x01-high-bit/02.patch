@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x01-high-bit/02
+# type: bitlist_9
+# ops: decode,root
+# spec: same
+# fault: the threshold for position 4 is v >= 17
+# why: threshold
+# file: src/obj.bend
+# sym: high_bit,bits_from,bits_in,bitlist_pick,ok_bitlist
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1128,3 +1128,3 @@
+ def high_bit(+v: U32) -> U32:
+-  pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 16), 4,
++  pick(U32.is_ge(v, 128), 7, pick(U32.is_ge(v, 64), 6, pick(U32.is_ge(v, 32), 5, pick(U32.is_ge(v, 17), 4,
+     pick(U32.is_ge(v, 8), 3, pick(U32.is_ge(v, 4), 2, pick(U32.is_ge(v, 2), 1, 0)))))))

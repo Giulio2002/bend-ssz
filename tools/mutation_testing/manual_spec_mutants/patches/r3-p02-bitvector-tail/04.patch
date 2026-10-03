@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/04
+# type: bitvector_513
+# ops: decode
+# spec: the padding bits of the last byte (byte 64) of a Bitvector[513] are zero
+# fault: the padding byte tested is byte 63
+# why: offset
+# file: types/bitvector_513_decode_ssz_generated.bend
+# sym: bv513_ok_at,bv513_read,ok_pad
+--- a/types/bitvector_513_decode_ssz_generated.bend
++++ b/types/bitvector_513_decode_ssz_generated.bend
+@@ -80,3 +80,3 @@
+ 
+-def bv513_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 64 : U32), 1)
++def bv513_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 63 : U32), 1)
+ 

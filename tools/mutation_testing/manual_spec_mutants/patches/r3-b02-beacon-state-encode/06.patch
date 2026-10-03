@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/06
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: group 2 is written at position pos + 4
+# why: position
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_pw1v,BeaconState_pw1
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -278,3 +278,3 @@
+ def BeaconState_pw1v(+pos: U32, g0: FuluBeaconState_d.BeaconState_g0, g1: FuluBeaconState_d.BeaconState_g1, g2: FuluBeaconState_d.BeaconState_g2, g3: FuluBeaconState_d.BeaconState_g3, g4: FuluBeaconState_d.BeaconState_g4, +voff: U32, out: Array<U32>) -> Array<U32> & (FuluBeaconState_d.BeaconState & U32):
+-  BeaconState_pw2(pos, g0, g1, g3, g4, BeaconState_g2_put(out, pos, voff, g2))
++  BeaconState_pw2(pos, g0, g1, g3, g4, BeaconState_g2_put(out, (pos + 4 : U32), voff, g2))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/03
+# type: proglist_uint32
+# ops: encode
+# spec: n < floor((2^32 - 32) / 4) = 1073741816
+# fault: the guard is n < 1073741817
+# why: guard off by one
+# file: types/proglist_uint32_def_generated.bend
+# sym: pl_u32_append,pl_u32_grow
+--- a/types/proglist_uint32_def_generated.bend
++++ b/types/proglist_uint32_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  pl_u32_grow(U32.is_lt(n, 1073741816), o, n, v)
++  pl_u32_grow(U32.is_lt(n, 1073741817), o, n, v)
+ 

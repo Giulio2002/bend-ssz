@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/01
+# type: Fulu_bytelist_32
+# ops: encode
+# spec: extra_data is a ByteList[32]: 33 bytes are invalid
+# fault: the upper bound is 33
+# why: parameter off by one
+# file: types/Fulu_bytelist_32_encode_ssz_generated.bend
+# sym: bl32_valid,words_ok
+--- a/types/Fulu_bytelist_32_encode_ssz_generated.bend
++++ b/types/Fulu_bytelist_32_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bl32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 32, False{}, 1)
++def bl32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 33, False{}, 1)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x09-unit/03
+# type: Fulu_list_uint64_128
+# ops: root
+# spec: a packed list of 2-byte elements has an even byte length
+# fault: the 2-byte case answers True
+# why: check dropped
+# file: src/obj.bend
+# sym: unit_ok,words_ok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1664,3 +1664,3 @@
+     case 1: True{}
+-    case 2: U32.is_eq((n .&. 1 : U32), 0)
++    case 2: True{}
+     case 4: U32.is_eq((n .&. 3 : U32), 0)

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x02-bits-clear/03
+# type: bitlist_9
+# ops: decode,root
+# spec: same
+# fault: the mask position inside the word is k mod 8 (not k mod 32)
+# why: position
+# file: src/obj.bend
+# sym: clear_at,clear_bit,bits_clear
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1120,3 +1120,3 @@
+ def clear_bit(ws: Array<U32>, +k: U32) -> Array<U32>:
+-  clear_at(U32.shrn(k, 5n), M.shl_by(1, (k .&. 31 : U32)), Array.get(U32, ws, U32.shrn(k, 5n)))
++  clear_at(U32.shrn(k, 5n), M.shl_by(1, (k .&. 7 : U32)), Array.get(U32, ws, U32.shrn(k, 5n)))
+ 

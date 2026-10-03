@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/10
+# type: uint128
+# ops: encode
+# spec: a uint128 written at a position 1 mod 4 spills the high byte of word 3 into the next word
+# fault: the spill is word 3 shifted by 16
+# why: shift
+# file: types/uint128_encode_ssz_generated.bend
+# sym: u128_pw1,u128_pwu
+--- a/types/uint128_encode_ssz_generated.bend
++++ b/types/uint128_encode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def u128_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), U32.shrn(w3, 24n))
++def u128_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), U32.shrn(w3, 16n))
+ 

@@ -1,0 +1,104 @@
+[
+ {
+  "id": "r3-b01-beacon-state/03",
+  "type": "FuluBeaconState",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-b01-beacon-state/05",
+  "type": "FuluBeaconState",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-b01-beacon-state/07",
+  "type": "FuluBeaconState",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-b01-beacon-state/08",
+  "type": "FuluBeaconState",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-u01-union/01",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/02",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/03",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/04",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/05",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/06",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-u01-union/07",
+  "type": "CompatibleUnionABCA",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g15_generated.bend'"
+ },
+ {
+  "id": "r3-q01-progressive-container/01",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-q01-progressive-container/02",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-q01-progressive-container/03",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-q01-progressive-container/04",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ },
+ {
+  "id": "r3-p03-uint-pack/01",
+  "type": "uint128",
+  "B": "ERROR",
+  "msg": "[Errno 2] No such file or directory: '/srv/ssz-optimization/agents/manualmut-r3/tree/benchmarks/objprog/g16_generated.bend'"
+ },
+ {
+  "id": "r3-p03-uint-pack/06",
+  "type": "uint256",
+  "B": "ERROR",
+  "msg": "No module named 'snappy'"
+ }
+]

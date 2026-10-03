@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/04
+# type: list_uint16_128
+# ops: encode
+# spec: a List[uint16, 128] holds at most 128 elements = 256 bytes, an even number of bytes
+# fault: the element size is 1 (an odd byte length is valid)
+# why: unit
+# file: types/list_uint16_128_encode_ssz_generated.bend
+# sym: l128_u16_valid,words_ok
+--- a/types/list_uint16_128_encode_ssz_generated.bend
++++ b/types/list_uint16_128_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def l128_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 2)
++def l128_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 1)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/05
+# type: proglist_bool
+# ops: encode
+# spec: n < 2^32 - 32 for one-byte elements
+# fault: the guard is n < 2^32 - 1
+# why: guard constant
+# file: types/proglist_bool_def_generated.bend
+# sym: pl_bool_append,pl_bool_grow
+--- a/types/proglist_bool_def_generated.bend
++++ b/types/proglist_bool_def_generated.bend
+@@ -60,3 +60,3 @@
+   (o, +n) = pair
+-  pl_bool_grow(U32.is_lt(n, 4294967264), o, n, v)
++  pl_bool_grow(U32.is_lt(n, 4294967295), o, n, v)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w06-chunks/03
+# type: bytelist_256
+# ops: root
+# spec: an empty list has the zero root: no chunk is present when k = 0
+# fault: the presence flag of the first leaf is 0 <= k (always true)
+# why: flag
+# file: src/obj.bend
+# sym: wr_cnt,mtree
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -909,3 +909,3 @@
+ def wr_cnt(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_le(0n, k), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x02-bits-clear/06
+# type: bitlist_9
+# ops: decode,root
+# spec: same
+# fault: the bit count adds one for the delimiter
+# why: delimiter counted
+# file: src/obj.bend
+# sym: bits_from,bits_in,bits_clear,high_bit
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1135,3 +1135,3 @@
+   (buf, +last) = pair
+-  bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++  bits_clear((8 * (len - 1 : U32) + high_bit(last) + 1 : U32), copy_in(buf, off, len))
+ 

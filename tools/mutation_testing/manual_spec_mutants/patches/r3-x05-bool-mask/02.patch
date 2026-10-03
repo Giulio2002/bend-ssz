@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x05-bool-mask/02
+# type: vec_bool_16
+# ops: root,encode
+# spec: same
+# fault: the top byte of every word may hold any value (mask 0x00FEFEFE)
+# why: mask constant
+# file: src/obj.bend
+# sym: bo_go,bools_ok,bools_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1685,3 +1685,3 @@
+     case 1n+q Tuple{ws, +x}:
+-      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4278124286 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))
++      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 16711422 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))
+ def bools_fin(+n: U32, ok: Bool, pair: Array<U32> & Bool) -> Words & Bool:

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/18
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: serialize tests the size pass's flag
+# fault: the pre-write test looks at bit 30 (a size with only the poison bit 31 is not refused here)
+# why: constant
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_senc_sized,AttesterSlashing_serialize
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -144,3 +144,3 @@
+   (o, +n) = pair
+-  AttesterSlashing_senc_go(O.is_poisoned(n), n, o)
++  AttesterSlashing_senc_go(U32.is_le(1073741824, n), n, o)
+ 

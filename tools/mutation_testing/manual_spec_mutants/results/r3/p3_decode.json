@@ -1,0 +1,70 @@
+{
+ "baseline": {
+  "1": "u256_honest_32=some",
+  "2": "u256_lying_1word=none",
+  "3": "u256_lying_4words=none",
+  "4": "bv9_honest_2=some",
+  "5": "bv9_alloc3_window2=some",
+  "6": "bv9_lying_1word=some",
+  "7": "union_zero_2=none",
+  "8": "u256_alloc40_window32=some",
+  "9": "bv9_alloc2_window3=none",
+  "10": "u256_alloc32_window33=none"
+ },
+ "r3-d01-checked-storage/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-d01-checked-storage/02": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "u256_lying_1word=none",
+    "u256_lying_1word=some"
+   ],
+   "3": [
+    "u256_lying_4words=none",
+    "u256_lying_4words=some"
+   ]
+  }
+ },
+ "r3-d01-checked-storage/03": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "u256_honest_32=some",
+    "u256_honest_32=none"
+   ],
+   "8": [
+    "u256_alloc40_window32=some",
+    "u256_alloc40_window32=none"
+   ]
+  }
+ },
+ "r3-d01-checked-storage/04": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "u256_lying_1word=none",
+    "u256_lying_1word=some"
+   ],
+   "3": [
+    "u256_lying_4words=none",
+    "u256_lying_4words=some"
+   ]
+  }
+ },
+ "r3-d01-checked-storage/05": {
+  "B2": "KILLED",
+  "diff": {
+   "4": [
+    "bv9_honest_2=some",
+    "bv9_honest_2=none"
+   ],
+   "6": [
+    "bv9_lying_1word=some",
+    "bv9_lying_1word=none"
+   ]
+  }
+ }
+}

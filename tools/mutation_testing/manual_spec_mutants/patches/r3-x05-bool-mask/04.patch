@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x05-bool-mask/04
+# type: vec_bool_16
+# ops: root,encode
+# spec: same
+# fault: the scan stops one word early (k - 1 words, the last word of the booleans is not tested)
+# why: loop bound
+# file: src/obj.bend
+# sym: bo_go,bools_ok,bools_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1692,3 +1692,3 @@
+   match o:
+-    case Words{ws, +n}: bools_fin(n, ok, bo_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, True{}, Array.get(U32, ws, 0)))
++    case Words{ws, +n}: bools_fin(n, ok, bo_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, True{}, Array.get(U32, ws, 0)))
+ 

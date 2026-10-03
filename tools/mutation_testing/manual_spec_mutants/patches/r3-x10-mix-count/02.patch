@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x10-mix-count/02
+# type: proglist_uint128
+# ops: root
+# spec: same
+# fault: the shift is applied to the byte length plus one
+# why: off by one
+# file: src/obj.bend
+# sym: mix_count,mix_len,len_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1231,3 +1231,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn((n + 1 : U32), shift))))
+ 

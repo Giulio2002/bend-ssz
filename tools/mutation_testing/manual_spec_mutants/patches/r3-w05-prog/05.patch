@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w05-prog/05
+# type: proglist_uint8
+# ops: root
+# spec: the progressive root hashes the chunks of the value
+# fault: the chunk count passed to the progressive tree is the byte count
+# why: unit
+# file: src/obj.bend
+# sym: wrp_cnt,prog_root,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1070,3 +1070,3 @@
+ def wrp_cnt(+hl: Nat, h: B.Buf, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, prog_root(hl, LWords{}, k, h, ws))
++  mt_words(n, prog_root(hl, LWords{}, U32.to_nat(n), h, ws))
+ 

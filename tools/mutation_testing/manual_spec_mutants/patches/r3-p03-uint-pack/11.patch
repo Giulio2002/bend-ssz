@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/11
+# type: uint128
+# ops: encode
+# spec: a uint128 written at a position 3 mod 4 carries the high 8 bits of the previous word
+# fault: the carry into word 2 is w1 shifted by 24
+# why: shift
+# file: types/uint128_encode_ssz_generated.bend
+# sym: u128_pw3,u128_pwu
+--- a/types/uint128_encode_ssz_generated.bend
++++ b/types/uint128_encode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+ 
+-def u128_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), U32.shrn(w3, 8n))
++def u128_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), U32.shrn(w3, 8n))
+ 

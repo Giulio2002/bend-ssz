@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w05-prog/04
+# type: proglist_uint8
+# ops: root
+# spec: same
+# fault: an object without chunk room is treated as clean
+# why: branch
+# file: src/obj.bend
+# sym: wrp_cap,wrp_fit,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1093,3 +1093,3 @@
+     case True{}: wrp_zc(hl, h, n, sz, wcn_k(chunks_of(n), n, sz, ws))
+-    case False{}: wrp_fit(False{}, hl, h, n, sz, ws)
++    case False{}: wrp_fit(True{}, hl, h, n, sz, ws)
+ 

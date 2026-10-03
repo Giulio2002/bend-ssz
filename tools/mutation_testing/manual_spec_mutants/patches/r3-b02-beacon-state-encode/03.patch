@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/03
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: group 1's size is counted once more than needed (+ 1)
+# why: constant
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_sz1,BeaconState_size
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -243,3 +243,3 @@
+   (g1, +m) = pair
+-  BeaconState_sz2(g3, g4, g0, g1, O.padd(acc, m), BeaconState_g2_size(g2))
++  BeaconState_sz2(g3, g4, g0, g1, O.padd((acc + 1 : U32), m), BeaconState_g2_size(g2))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-d01-checked-storage/01
+# type: uint256
+# ops: decode
+# spec: the checked decoder refuses a window the buffer's array does not hold
+# fault: the storage test counts floor(size / 4) words (a partial last word need not be stored)
+# why: rounding
+# file: types/uint256_decode_ssz_generated.bend
+# sym: uint256_dchw,uint256_decode_checked,uint256_dchk
+--- a/types/uint256_decode_ssz_generated.bend
++++ b/types/uint256_decode_ssz_generated.bend
+@@ -75,3 +75,3 @@
+   (buf, +c) = pair
+-  uint256_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  uint256_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn(size, 2n), c)), buf, size)
+ 

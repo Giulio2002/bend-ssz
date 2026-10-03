@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/03
+# type: bitvector_513
+# ops: encode
+# spec: a Bitvector[513] object with a bit above bit 512 (bits of w16 above bit 0) is invalid
+# fault: the bound is w16 < 4
+# why: parameter
+# file: types/bitvector_513_encode_ssz_generated.bend
+# sym: bv513_valid
+--- a/types/bitvector_513_encode_ssz_generated.bend
++++ b/types/bitvector_513_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_513_d.Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: U32.is_lt(w16, 2)
++    case bitvector_513_d.Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: U32.is_lt(w16, 4)
+ 

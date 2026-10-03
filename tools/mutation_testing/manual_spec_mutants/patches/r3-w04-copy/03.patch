@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w04-copy/03
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: each word is stored one slot late
+# why: index
+# file: src/obj.bend
+# sym: cc_go,words_copy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -991,3 +991,3 @@
+     case 0n Tuple{ws, x}: (out, ws)
+-    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 1 : U32)))
++    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, (j + 1 : U32), x), Array.get(U32, ws, (j + 1 : U32)))
+ 

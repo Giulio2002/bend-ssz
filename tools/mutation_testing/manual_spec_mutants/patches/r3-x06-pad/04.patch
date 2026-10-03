@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x06-pad/04
+# type: bitvector_9
+# ops: decode
+# spec: same
+# fault: for r = 5 the allowed mask is 63
+# why: constant
+# file: src/obj.bend
+# sym: low_mask,pad_pick,ok_pad
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1290,3 +1290,3 @@
+     case 4: 15
+-    case 5: 31
++    case 5: 63
+     case 6: 63

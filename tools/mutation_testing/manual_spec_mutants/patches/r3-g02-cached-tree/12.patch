@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/12
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: after a cached root the dirty range is empty (lo = n, hi = 0 marks nothing dirty)
+# fault: the range after the root is (0, n): the whole tree stays dirty (recomputed, same root: designed equivalent)
+# why: performance only
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_croot_fin,l16_ProposerSlashing_cached_root
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -268,3 +268,3 @@
+   (h, +r) = pr
+-  (h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++  (h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, 0, n}, O.mix_len(hl, r, n)))
+ 

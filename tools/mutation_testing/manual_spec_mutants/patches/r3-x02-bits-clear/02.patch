@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x02-bits-clear/02
+# type: bitlist_9
+# ops: decode,root
+# spec: same
+# fault: the mask is OR-ed instead of cleared
+# why: and-not / or
+# file: src/obj.bend
+# sym: clear_at,clear_bit,bits_clear
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1117,3 +1117,3 @@
+   (a, +w) = pair
+-  Array.set(U32, a, i, (w .&. U32.not(m) : U32))
++  Array.set(U32, a, i, (w .|. m : U32))
+ 

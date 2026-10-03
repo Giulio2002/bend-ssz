@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x06-pad/05
+# type: bitvector_9
+# ops: decode
+# spec: same
+# fault: the padding test masks with the allowed bits (low_mask) instead of their complement
+# why: not dropped
+# file: src/obj.bend
+# sym: pad_pick,ok_pad
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1296,3 +1296,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_eq((v .&. U32.not(low_mask(r)) : U32), 0))
++  (buf, U32.is_eq((v .&. low_mask(r) : U32), 0))
+ 

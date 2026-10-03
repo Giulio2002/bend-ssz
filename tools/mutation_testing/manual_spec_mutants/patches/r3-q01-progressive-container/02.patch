@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/02
+# type: ProgressiveSingleFieldContainerTestStruct
+# ops: root
+# spec: merkleize_progressive of one chunk is H(zero, chunk)
+# fault: the node is H(chunk, zero)
+# why: operand order
+# file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleFieldContainerTestStruct_fin
+--- a/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleFieldContainerTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, D.node(hl, d_f_A, D.zero()), 1))
+ 

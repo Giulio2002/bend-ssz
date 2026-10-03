@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/12
+# type: bitlist_9
+# ops: encode
+# spec: a Bitlist[9] of 10 bits is invalid
+# fault: the limit is 8
+# why: parameter
+# file: types/bitlist_9_encode_ssz_generated.bend
+# sym: bits9_valid,bits_ok
+--- a/types/bitlist_9_encode_ssz_generated.bend
++++ b/types/bitlist_9_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bits9_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 9, False{})
++def bits9_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 8, False{})
+ 

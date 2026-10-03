@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/15
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: serialize refuses a value whose size pass reports poison
+# fault: the refusal test is removed (serialize always writes)
+# why: refusal dropped
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_senc_go,AttesterSlashing_senc_sized,AttesterSlashing_serialize
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -139,3 +139,3 @@
+   match bad:
+-    case True{}: (o, O.refused())
++    case True{}: AttesterSlashing_senc_put(n, AttesterSlashing_putk(O.out_new(n), 0, o))
+     case False{}: AttesterSlashing_senc_put(n, AttesterSlashing_putk(O.out_new(n), 0, o))

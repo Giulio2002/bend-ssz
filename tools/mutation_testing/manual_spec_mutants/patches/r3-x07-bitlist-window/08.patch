@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x07-bitlist-window/08
+# type: bitlist_9
+# ops: decode
+# spec: a guarded child validation is conjoined with the earlier ones
+# fault: the accumulated validity is or-ed with the child
+# why: and/or
+# file: src/obj.bend
+# sym: and_pair
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1325,3 +1325,3 @@
+   (buf, ok) = pair
+-  (buf, Bool.and(acc, ok))
++  (buf, Bool.or(acc, ok))
+ 

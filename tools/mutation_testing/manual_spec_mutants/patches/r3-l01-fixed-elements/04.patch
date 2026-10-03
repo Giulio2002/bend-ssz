@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l01-fixed-elements/04
+# type: Fulu_list_Withdrawal_16
+# ops: encode
+# spec: element i is written at pos + 44 i
+# fault: the last element (case 0n) is written at pos + 43 i
+# why: stride
+# file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+# sym: l16_Withdrawal_pt,l16_Withdrawal_putn
+--- a/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+       (arr, +v) = pair
+-      (FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 44 : U32), v), arr)
++      (FuluWithdrawal_e.Withdrawal_put(out, (pos + i * 43 : U32), v), arr)
+     case 1n+q:

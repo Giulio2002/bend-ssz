@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x11-reads/01
+# type: Fulu_list_uint64_128
+# ops: decode
+# spec: a uint16 is the low two bytes of the word read at its offset
+# fault: the read keeps one byte
+# why: mask
+# file: src/obj.bend
+# sym: rd_u16,keep2,rd_u64,u64_of
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1199,3 +1199,3 @@
+   (buf, +v) = pair
+-  (buf, (v .&. 65535 : U32))
++  (buf, (v .&. 255 : U32))
+ 

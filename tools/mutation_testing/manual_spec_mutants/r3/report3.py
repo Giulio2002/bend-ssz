@@ -15,10 +15,17 @@ from runner import header   # noqa: E402
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--pk', required=True); ap.add_argument('--res', required=True)
-    ap.add_argument('--probe', action='append', default=[]); ap.add_argument('--judg', required=True)
+    ap.add_argument('--probe', action='append', default=[]); ap.add_argument('--wide', default=None); ap.add_argument('--judg', required=True)
     ap.add_argument('--out-json', required=True); ap.add_argument('--out-md', required=True)
     a = ap.parse_args()
     res = {r['id']: r for r in json.load(open(a.res))}
+    if a.wide:
+        for r in json.load(open(a.wide)):
+            if r['A'] != 'UNJUDGED':
+                res[r['id']] = dict(r, wide=True)
+    for i in ('r3-w03-dispatch/07', 'r3-w05-prog/03'):   # the mutant does not type-check (a linear variable is consumed twice): not a kill
+        if i in res:
+            res[i]['A'] = 'ILLTYPED'
     probes = {}
     for p in a.probe:
         name, f = p.split('=', 1)
@@ -46,7 +53,7 @@ def main():
             if v:
                 pk.append('%s %s%s' % (n, v['B2'], (' ' + ','.join(sorted(v.get('diff', {}), key=lambda x: int(x))[:6])) if v.get('diff') else ''))
         rows.append((fid, h.get('type'), h['file'], h.get('fault'), A, killer, '; '.join(pk)))
-        if A != 'KILLED':
+        if A not in ('KILLED', 'ILLTYPED'):
             j = judg.get(fid, {})
             surv.append({'id': fid, 'patch': 'tools/mutation_testing/manual_spec_mutants/patches/' + h['patch'].split('pk/')[-1] if 'pk/' in h['patch'] else h['patch'],
                          'type': h.get('type'), 'file': h['file'], 'rule': h.get('spec'),

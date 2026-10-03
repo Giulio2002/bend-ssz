@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x11-reads/05
+# type: boolean
+# ops: decode
+# spec: same
+# fault: the validity bound is v < 1 (True refused)
+# why: boundary
+# file: src/obj.bend
+# sym: bool_ok_pick,ok_bool
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1279,3 +1279,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_le(v, 1))
++  (buf, U32.is_lt(v, 1))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/03
+# type: FuluBeaconState
+# ops: decode
+# spec: the offset of field 4 is read at its fixed position (off + 2687248)
+# fault: it is read at off + 2687244
+# why: offset position
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_c3,BeaconState_v3
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -489,3 +489,3 @@
+   match ok:
+-    case True{}: BeaconState_v4(off, len, o0, o1, o2, o3, B.read32(buf, (off + 2687248 : U32)))
++    case True{}: BeaconState_v4(off, len, o0, o1, o2, o3, B.read32(buf, (off + 2687244 : U32)))
+     case False{}: (buf, False{})

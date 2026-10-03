@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/09
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: same
+# fault: the size pass replaces an absent box by the default box
+# why: absent box lost in the size pass
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_bx_size,AttesterSlashing_bx_putk
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -74,3 +74,3 @@
+     case O.BSome{v, rest}: FuluAttesterSlashing_d.AttesterSlashing_bx_size_back(AttesterSlashing_size(v))
+-    case O.BNone{}: (O.BNone{}, 0)
++    case O.BNone{}: (FuluAttesterSlashing_d.AttesterSlashing_bx_default(), 0)
+ 

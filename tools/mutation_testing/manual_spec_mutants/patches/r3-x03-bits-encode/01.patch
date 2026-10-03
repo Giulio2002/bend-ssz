@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x03-bits-encode/01
+# type: bitlist_9
+# ops: encode
+# spec: the encoding of a Bitlist is its bits and a delimiter bit at position k
+# fault: the delimiter bit is at position k mod 4 inside its byte
+# why: mask
+# file: src/obj.bend
+# sym: w8_delim,put_bits,bits_size,put_bits_n
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1147,3 +1147,3 @@
+   (out, w) = pair
+-  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 7 : U32))), w)
++  (w8(out, (p + U32.shrn(k, 3n) : U32), M.shl_by(1, (k .&. 3 : U32))), w)
+ 

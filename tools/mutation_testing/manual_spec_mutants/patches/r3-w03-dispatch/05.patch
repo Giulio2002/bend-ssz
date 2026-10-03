@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w03-dispatch/05
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the covered test rounds down (n / 4 words instead of ceil(n / 4))
+# why: rounding
+# file: src/obj.bend
+# sym: wr_fit,wr_slow,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1019,3 +1019,3 @@
+     case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+-    case False{}: wr_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++    case False{}: wr_slow(Nat.is_le(Nat.div(U32.to_nat(n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
+ 

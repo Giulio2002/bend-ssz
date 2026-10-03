@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/03
+# type: bytelist_256
+# ops: encode
+# spec: same
+# fault: the list is declared unbounded (big)
+# why: parameter
+# file: types/bytelist_256_encode_ssz_generated.bend
+# sym: bl256_valid,words_ok
+--- a/types/bytelist_256_encode_ssz_generated.bend
++++ b/types/bytelist_256_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 1)
++def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, True{}, 1)
+ 

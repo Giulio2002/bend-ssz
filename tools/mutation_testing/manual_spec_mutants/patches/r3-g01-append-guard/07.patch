@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/07
+# type: Fulu_list_uint8_1099511627776
+# ops: encode
+# spec: n < 2^32 - 32
+# fault: the guard is n < 2^32 - 31
+# why: guard boundary
+# file: types/Fulu_list_uint8_1099511627776_def_generated.bend
+# sym: l1099511627776_u8_append,l1099511627776_u8_grow
+--- a/types/Fulu_list_uint8_1099511627776_def_generated.bend
++++ b/types/Fulu_list_uint8_1099511627776_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +n) = pair
+-  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967264), U32.is_le(v, 255)), o, n, v)
++  l1099511627776_u8_grow(Bool.and(U32.is_lt(n, 4294967265), U32.is_le(v, 255)), o, n, v)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/02
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: the running size starts at 0
+# fault: the running size starts at 1
+# why: constant
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_sz_nz,l1_AttesterSlashing_sz
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -40,3 +40,3 @@
+     case True{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 0)
+-    case False{}: l1_AttesterSlashing_sz_fin(n, l1_AttesterSlashing_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
++    case False{}: l1_AttesterSlashing_sz_fin(n, l1_AttesterSlashing_sz(U32.to_nat(n), 0, (arr, (1, O.BNone{}))))
+ 

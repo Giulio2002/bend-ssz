@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/05
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: the root of the 16-leaf tree padded to the limit depth 4 hashes (4 - d) more levels with the zero subtrees
+# fault: one pad level too few (Nat.sub(3n, d))
+# why: pad levels
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_croot_pad,l16_ProposerSlashing_pad_go,l16_ProposerSlashing_croot_fin
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -271,3 +271,3 @@
+ def l16_ProposerSlashing_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_ProposerSlashing_Cached & D.Digest):
+-  l16_ProposerSlashing_croot_fin(hl, n, d, arr, nodes, l16_ProposerSlashing_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l16_ProposerSlashing_croot_fin(hl, n, d, arr, nodes, l16_ProposerSlashing_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

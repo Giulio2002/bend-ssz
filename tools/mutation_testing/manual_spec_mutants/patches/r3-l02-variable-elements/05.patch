@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/05
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: every element's size is added to the running size
+# fault: the element's size is dropped
+# why: term dropped
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_sz_back,l1_AttesterSlashing_sz_one
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (v, +m) = pair
+-  l1_AttesterSlashing_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, i, v))
++  l1_AttesterSlashing_sz_ret(acc, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, i, v))
+ 

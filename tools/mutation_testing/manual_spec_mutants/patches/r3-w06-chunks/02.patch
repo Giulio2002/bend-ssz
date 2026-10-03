@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w06-chunks/02
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: chunks_of divides by 31
+# why: constant
+# file: src/obj.bend
+# sym: chunks_of,wr_cnt,wr_clean,wr_size
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -892,3 +892,3 @@
+ # the proofs reason about it with Nat division alone).
+-def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
++def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 31n)
+ 

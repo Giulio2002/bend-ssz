@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/07
+# type: vec_uint128_513
+# ops: encode
+# spec: a Vector[uint128, 513] is exactly 8208 bytes
+# fault: any length from 8208 up to 8224 is valid
+# why: parameter
+# file: types/vec_uint128_513_encode_ssz_generated.bend
+# sym: v513_u128_valid,words_ok
+--- a/types/vec_uint128_513_encode_ssz_generated.bend
++++ b/types/vec_uint128_513_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+ 
+-def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)
++def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8224, False{}, 16)
+ 

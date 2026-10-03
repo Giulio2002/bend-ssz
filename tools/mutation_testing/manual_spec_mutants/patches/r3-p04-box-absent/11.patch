@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/11
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: the running offset after a variable field is the offset plus the field's size, poison kept
+# fault: the running offset adds the size with a plain sum (poison of the field lost when cur is small)
+# why: padd -> +
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_bx_pvb,AttesterSlashing_bx_putv
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -89,3 +89,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+ 

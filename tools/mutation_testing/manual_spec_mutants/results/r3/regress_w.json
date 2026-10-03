@@ -1,0 +1,226 @@
+{
+ "baseline": {
+  "1": "cell_set_empty=0",
+  "2": "cell_set_4096_at_1=0",
+  "3": "cell_set_64=0",
+  "4": "cell_append_empty=0",
+  "5": "cell_set_2048_control=1",
+  "6": "pbits_append_max=0",
+  "7": "bits2048_append_max=0",
+  "8": "pl_u8_append_max=0",
+  "9": "decode_checked_empty_buf_40=none",
+  "10": "decode_checked_40_control=some",
+  "11": "decode_checked_2gib=none",
+  "12": "complex_default_serialize_ok=1 size=100",
+  "15": "u64list_append_max=0",
+  "16": "pl_u16_append_max=0",
+  "17": "pl_u32_append_max=0",
+  "18": "pl_u64_append_max=0",
+  "19": "pl_u8_append_chunk_wrap=0",
+  "20": "cell_set_one_word=0",
+  "21": "cell_append_one_word=0",
+  "22": "decode_checked_lying_buf=none",
+  "26": "tight_root_equals_roomy=1",
+  "27": "attestation_1_absent ok=0",
+  "28": "attestation_2_absent ok=0",
+  "29": "both_present_control ok=1",
+  "30": "dirty_root_equals_clean=1"
+ },
+ "r3-w01-clean-chunk/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w01-clean-chunk/02": {
+  "B2": "KILLED",
+  "diff": {
+   "30": [
+    "dirty_root_equals_clean=1",
+    "dirty_root_equals_clean=0"
+   ]
+  }
+ },
+ "r3-w01-clean-chunk/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w01-clean-chunk/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w01-clean-chunk/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w01-clean-chunk/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w01-clean-chunk/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/05": {
+  "B2": "KILLED",
+  "diff": {
+   "30": [
+    "dirty_root_equals_clean=1",
+    "dirty_root_equals_clean=0"
+   ]
+  }
+ },
+ "r3-w02-partial-word/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w02-partial-word/08": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w03-dispatch/07": {
+  "B2": "ERROR",
+  "msg": "compile failed: r:\n- expected : ws\n- observed : ws (consumed more than once)\nContext:\n- hl    : Nat\n- h     : B.Buf\n- depth : U32\n- n     : U32\n- out   : Array<U32>\nLocation: wr_clean\n1008 | def wr_clean(+hl: Nat, h: B.Buf, +depth: U32, +n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & (Words & D.D"
+ },
+ "r3-w04-copy/01": {
+  "B2": "KILLED",
+  "diff": {
+   "26": [
+    "tight_root_equals_roomy=1",
+    "tight_root_equals_roomy=0"
+   ]
+  }
+ },
+ "r3-w04-copy/02": {
+  "B2": "KILLED",
+  "diff": {
+   "26": [
+    "tight_root_equals_roomy=1",
+    "tight_root_equals_roomy=0"
+   ]
+  }
+ },
+ "r3-w04-copy/03": {
+  "B2": "KILLED",
+  "diff": {
+   "26": [
+    "tight_root_equals_roomy=1",
+    "tight_root_equals_roomy=0"
+   ],
+   "30": [
+    "dirty_root_equals_clean=1",
+    "dirty_root_equals_clean=0"
+   ]
+  }
+ },
+ "r3-w04-copy/04": {
+  "B2": "KILLED",
+  "diff": {
+   "30": [
+    "dirty_root_equals_clean=1",
+    "dirty_root_equals_clean=0"
+   ]
+  }
+ },
+ "r3-w04-copy/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w04-copy/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w04-copy/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w05-prog/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w05-prog/02": {
+  "B2": "KILLED",
+  "diff": {
+   "26": [
+    "tight_root_equals_roomy=1",
+    "tight_root_equals_roomy=0"
+   ]
+  }
+ },
+ "r3-w05-prog/03": {
+  "B2": "ERROR",
+  "msg": "compile failed: SOME PROOFS FAIL\nError:\n- expected : ws\n- observed : ws (consumed more than once)\nContext:\n- hl  : Nat\n- h   : B.Buf\n- n   : U32\n- out : Array<U32>\nLocation: wrp_clean\n1073 | def wrp_clean(+hl: Nat, h: B.Buf, +n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & (Words & D.Digest):\n1074"
+ },
+ "r3-w05-prog/04": {
+  "B2": "KILLED",
+  "diff": {
+   "26": [
+    "tight_root_equals_roomy=1",
+    "tight_root_equals_roomy=0"
+   ]
+  }
+ },
+ "r3-w05-prog/05": {
+  "B2": "KILLED",
+  "diff": {
+   "30": [
+    "dirty_root_equals_clean=1",
+    "dirty_root_equals_clean=0"
+   ]
+  }
+ },
+ "r3-w06-chunks/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w06-chunks/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-w06-chunks/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ }
+}

@@ -1098,3 +1098,332 @@ The checker overflows its stack (also at 1 GB) on every mutant of `Fulu_list_Att
 | r2-v06-composite-list-validity/05 | FuluExecutionPayload | types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend | the count may not exceed the storage | KILLED | encx_l1048576_bl1073741824.bend: valid_l |  |
 | r2-v06-composite-list-validity/06 | FuluExecutionPayload | types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend | List[Transaction, 1048576] holds at most 1048576 transactions | KILLED | encx_l1048576_bl1073741824.bend: valid_l |  |
 | r2-v06-composite-list-validity/07 | FuluExecutionPayload | types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend | an element is validated in place (swapped out and set back) | KILLED | encx_l1048576_bl1073741824.bend: va_go |  |
+
+# Round 3 (agent/manual-spec-mutations-r3)
+
+Auditor: independent, fresh (round 3). Base: `origin/main` b1e3c20ee (round-2 crash fixes included); the round-1 and round-2 materials (`defs/r2_*`, `patches/r2-*`)
+were taken from `agent/manual-spec-mutations-r2` as the exclusion list. Machine-readable: `docs/mutation_testing/manual_round_3_survivors.json` (every fault the
+proofs did not kill: 76 entries). Definitions `defs/r3_01..07*.txt`, patches `patches/r3-*` (259 faults, 33 rule slugs), drivers `r3/` (`mk3.py`, `run3.py`, `apiprobe3.py`,
+`judg3.py`, `report3.py`, `go.sh`), probes `r3/probes/*.bend`, raw results `results/r3/*.json`. None of the 270 + 317 earlier faults is repeated (the earlier fault lists were read first).
+
+## R3.1 Result
+
+| | count |
+|---|---|
+| Faults | **259** |
+| Ill-typed mutants (a linear variable consumed twice: `w03-dispatch/07`, `w05-prog/03`; not counted) | 2 |
+| (A) killed by a named law | **181** |
+| (A) survived every checked root | **64** |
+| (A) UNJUDGED (checker stack overflow at the pinned settings or timeout; the 600 s `--wide` pass did not change 12 of 13) | **12** |
+| Non-killed faults judged by API probes (below) | 76: critical **58**, equivalent **15**, gap-unreachable **2**, unjudged **1** |
+
+Verdict (A) is run3.py (round 2's run2.py unchanged: cheapest proof roots that import the patched file and mention a changed identifier, then direct importers, then the facades;
+K = 6, 120 s per root; unjudged ones re-run with `--wide`). Verdict (B') are the API probes of this round (`r3/probes`): programs that call ONLY public entry points
+(`X_valid`, `X_serialize`, `X_decode`, `X_decode_checked`, `X_hash_tree_root`, `X_append/set/get/len`, `X_cache/_cached_root/_cset/_capp/_cget`, the record constructors
+`O.Words{..}`, `O.Bits{..}`, `B.Buf{..}`, `O.BNone{}`), compiled from a hard-linked copy of the import cone with the patch applied and compared line by line with the unmutated build
+(11 programs, 400 observations, baselines in `results/r3/*.json`). Verdict (B'') is `tools/crash_hunt/regress.sh` (pf_fixed.bend, cases 1-30) run on the same mutants
+(`regress_w.json`, `regress_x.json`): a TEST, not a proof. All three were also run on the faults the proofs killed in the same files (every `w` fault: 37 faults x 45 shapes), which is
+the sample of rejected faults asked for in the brief; no killed fault was found equivalent.
+**(B) The reference corpus was NOT run.** `corpus.py` does not run on current main (it addresses `benchmarks/objprog/{x,g}<k>.bend`, renamed to `f<k>_generated.bend` / `g<k>_generated.bend`, and imports
+`snappy`, which the server lacks); I fixed the path in `r3/corpus3.py`, the missing module stopped it. The corpus only decodes, re-encodes and hashes valid values, so it cannot observe the validity,
+append, cache and refusal faults that make up the survivors; the decode-path survivors (`u01`, `x11`, `b01`) are covered by the probes instead.
+
+## R3.2 Findings (nothing in the proofs catches them; the probe shows the wrong answer)
+
+1. **The tight-storage and junk-storage root paths of the crash-fix3 are pinned by no proof, only by two regress cases** (`w02/06,07`, `w03/03,04,06`, `w04/01..04`, `w05/02,04`: 11 faults). `O.wcn_k`'s remainder
+   (`n - 32 q`), the dispatch `wr_fit` / `wr_slow` (`ceil(n / 4) <= storage` and the arms), `O.words_copy` (word count, index, stride) survive every proof root, because the laws
+   (`words_canon`, `words_cap`, `pbits_obj`, `pv_obj`: `lcs`, `lcchain`, `wr_unfold`) are over well-formed objects whose storage is zero past the length. Counter-example through the public API (`p3_bytes2` cases 3, 4, 5, 110-115):
+   `bytelist_256_valid(O.Words{Array.new(U32, 1n, 0) with byte 65, 5}) = True`, `bytelist_256_hash_tree_root` is the clamped (zero) root instead of the root of the 5 bytes (fault `w03/04`), or
+   `O.Words{zeros_for(40) with 0xDEADBEEF in word 12, 40}` hashes the junk (`w02/06`). The progressive variant and the copy are caught by `regress.sh` cases 26 and 30; the binary dispatch
+   (`w03/03,04,06`) is caught by nothing.
+2. **`X_hash_tree_root` of cached lists has no law for 6 of the list types** (`g02/01..07,09..11`, 10 faults; the cache laws `proofs/obj/cached_*` exist for 11 types, not for `List[ProposerSlashing, 16]`, `List[Attestation, 8]`, `List[Deposit, 16]`,
+   `List[Validator, 2^40]`, `List[AttesterSlashing, 1]`, the transaction list). Probe `p3_cache` (honest objects only): the digest array size (`dfill d`), the dirty range ends, the pad levels, the zero subtree level,
+   the right child index, the cached get / set at `i = n`, the 16th cached append all change a printed root or flag.
+3. **The CH-12 absent-box fix is not pinned in the copies of other types** (`p04/03,04,06,07,08,09,16,17`): `AttesterSlashing_serialize(AttesterSlashing{O.BNone{}, default})` returns `ok = 1, 236 bytes` when the size pass of `IndexedAttestation` replaces the absent box
+   (`p04/03`), when the checked writer ignores the flag (`p04/16,17`), and `BeaconBlockBody` with an absent attestation or slashing element returns `ok = 1` (`p04/06,09`). `regress.sh` 27 / 28 kill `p04/03,16,17` only. `X_valid` of `IndexedAttestation_bx_valid` and
+   `Attestation_bx_valid` answers True for an absent box (`p04/04,07`; a list claiming one absent element is `valid`). `p04/15` (serialize allocates before refusing a poisoned size, CH-02) is invisible to line probes: resource issue.
+4. **Append guards are pinned only far from the boundary** (`g01/03,05,06,12,13`): the R2-01 laws test one count near 2^32 - 1; a guard constant off by one (`1073741817` for the `uint32` list, `n <= 2^32 - 32`, `n <= 2^32 - 1`, guard dropped) is accepted: `pl_u32_append(O.Words{.., 4294967264}, 7)` returns `ok = 1` (len 1073741817) instead of a refusal, `List[Validator]` / `ProgressiveList[SmallTestStruct]` / `[ProgressiveVarTestStruct]` claimed at 2^32 - 1 answer `ok = 1` and a count of 0 (wrap). Claim objects only.
+5. **`X_decode_checked` is pinned for two types** (`d01/02..05`): the storage test of `uint256_decode_checked` can be dropped or compared with bytes and nothing fails (`uint256_decode_checked(B.Buf{1 word, 32}, 32)` answers Some;
+   `uint256_decode_checked(B.alloc(32), 32)` answers None); `bitvector_9_decode_checked(B.alloc(2), 2)` answers None with `size < n`. The generator emits the same text for every type, so this is a coverage gap of the copies, not a generator bug.
+6. **Unpinned decode / validity predicates of small types**: `uint16` decode keeps one byte (`x11/01`: `uint16_decode` of 01 02 = 1, passes all proofs); Bitlist decode leaves the delimiter or clears the wrong bit (`x02/02..04`: `bitlist_9_decode` of ff 03 then `valid` / `serialize` / `hash_tree_root` differ, also `Bitlist[33]`);
+   `Bitlist[9]` serialises 9 bits to 1 byte (`x03/04`, proof run unjudged); `List[Bytes32]` of 16 bytes and `List[uint16]` of 3 bytes are valid (`x09/02,03`); `Vector[uint64, 8192]` of 8 bytes and `Vector[Bytes32, 65536]` of 32 bytes are valid (`p01/06`, `p05/07`); `X_cache_at` accepts depth 32 (`x08/03`, caught by regress 25 only);
+   a union arm with an invalid payload serialises (`u01/08`); `CompatibleUnionABCA_decode` accepts selector 0 (`u01/15`, proof run unjudged); `ExecutionPayload` with 17 withdrawals serialises (`l01/10`).
+7. **Unjudged by the checker, killed by probes**: `l01/04,05` (withdrawal element stride), `p04/08`, `x03/04`, `u01/15`, `b01/03,04,07` (BeaconState offset reads / window): every proof root of these files overflows the checker stack even at the wide budget; the probes show the wrong bytes.
+
+## R3.3 Not critical (reasoned and probed)
+
+* Equivalent (15): every fault that makes the clean-chunk test answer "unclean" more often (`w01/07`, `w02/01..03,08`, `w03/01,02,05`) only moves the root to the clean copy, whose result is the same; `w04/05..07` (mask of the copy, `zeros_for(n - 1)`, returning the copy) cannot change a root; `w02/04` needs an unclean partial word, which `X_valid` refuses;
+  `g02/08,12` (the root of an absent box is the zero chunk, a conservative dirty range only recomputes); `u01/16` (selector 0 past an empty window is no arm); `b01/06` (the next offset tests imply it), `b01/08` (validity of a list of 32-byte items depends on the window length only); `d01/01` (32 is a multiple of 4).
+* gap-unreachable (2): `g01/14` (needs 2^32 - 2 bits), `p04/18` (needs a valid object of 1 GiB or more).
+* unjudged (1): `x07/08` (`O.and_pair` or-ed; reachable only by a list of variable-size elements that can be invalid, e.g. `List[Attestation, 8]`; no probe built).
+
+## R3.4 The new proofs (focus c)
+
+Read: `proofs/slop/crash/crash_fix_laws_generated.bend` (24 laws), `proofs/slop/validity/*` (446 files), `proofs/slop/size/*` (150+ files). Every law is a closed equality by computation: none has a hypothesis, so none can be vacuous.
+Their weakness is breadth: `*_append_max_refused` test one count (g01); `decode_checked_*` two types (d01); the validity laws one invalid shape per field (`ExecutionPayload.extra_data`: storage one word short only; no over-limit, no vector-too-short, no tail-bit shape: p01/06, p05/07, l01/10, u01/08);
+the cell laws are tight (all 6 cell faults killed); the size laws `*_ms_*` and `bx_size == 0` pin their constants (every mutation of a size constant I tried was killed). The `proofs/obj` laws about the root are over well-formed objects (finding 1).
+
+## R3.5 Every fault
+
+| fault | type | file | fault | A | killed by | API probes |
+|---|---|---|---|---|---|---|
+| r3-b01-beacon-state/01 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | the first offset may be any value above the fixed size (>=) | KILLED | fulu_BeaconState_first_offset_generated.bend: BeaconState_decode_first_offset | state SURVIVED |
+| r3-b01-beacon-state/02 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | a window of fixed size - 1 bytes is accepted | KILLED | fulu_BeaconState_first_offset_generated.bend: BeaconState_decode_first_offset | state SURVIVED |
+| r3-b01-beacon-state/03 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | it is read at off + 2687244 | UNJUDGED |  | state KILLED 1,2,3 |
+| r3-b01-beacon-state/04 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | it is read at off + 524552 (the offset of field 2 again) | UNJUDGED |  | state KILLED 2,3 |
+| r3-b01-beacon-state/05 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | the order test o2 <= o3 is dropped (o3 <= len only) | UNJUDGED |  | state SURVIVED |
+| r3-b01-beacon-state/06 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | the bound o1 <= len is dropped | UNJUDGED |  | state SURVIVED |
+| r3-b01-beacon-state/07 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | its window length is o2 - o1 - 1 | UNJUDGED |  | state KILLED 1,2,3 |
+| r3-b01-beacon-state/08 | FuluBeaconState | types/FuluBeaconState_decode_ssz_generated.bend | it starts at o1 | SURVIVED |  | state SURVIVED |
+| r3-b02-beacon-state-encode/01 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | the size starts at 2737224 | KILLED | encx_BeaconState_size_generated.bend: rt_size | state KILLED 1,2,3 |
+| r3-b02-beacon-state-encode/02 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | group 0's size is not added to the running size | KILLED | encx_BeaconState_size_generated.bend: rt_size | state SURVIVED |
+| r3-b02-beacon-state-encode/03 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | group 1's size is counted once more than needed (+ 1) | KILLED | encx_BeaconState_size_generated.bend: rt_size | state KILLED 1,2,3 |
+| r3-b02-beacon-state-encode/04 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | group 3 starts 4 bytes late | KILLED | encx_BeaconState_generated.bend: rt_all | state KILLED 1,2,3 |
+| r3-b02-beacon-state-encode/05 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | group 4 is written at variable offset 0 | KILLED | encx_BeaconState_generated.bend: rt_all | state KILLED 1,2,3 |
+| r3-b02-beacon-state-encode/06 | FuluBeaconState | types/FuluBeaconState_encode_ssz_generated.bend | group 2 is written at position pos + 4 | KILLED | encx_BeaconState_generated.bend: rt_all | state KILLED 1,2,3 |
+| r3-c01-cells-storage/01 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the setter's storage test is 511 words | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_set_flag |  |
+| r3-c01-cells-storage/02 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the setter's storage test is strict (a cell with exactly 512 words is refused) | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_set_flag |  |
+| r3-c01-cells-storage/03 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the appender's storage test is 256 words | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_append_flag |  |
+| r3-c01-cells-storage/04 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the appender's storage test is dropped | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_append_flag |  |
+| r3-c01-cells-storage/05 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the appender's count limit is dropped (n < 4096 removed) | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_append_flag |  |
+| r3-c01-cells-storage/06 | Fulu_list_bytevec_2048_4096 | types/Fulu_list_bytevec_2048_4096_def_generated.bend | the setter's index test is dropped (i < n removed) | KILLED | l4096_b2048_api_witness_generated.bend: l4096_b2048_api_set_flag |  |
+| r3-d01-checked-storage/01 | uint256 | types/uint256_decode_ssz_generated.bend | the storage test counts floor(size / 4) words (a partial last word need not be stored) | SURVIVED |  | decode SURVIVED |
+| r3-d01-checked-storage/02 | uint256 | types/uint256_decode_ssz_generated.bend | the storage test is dropped (only the size tests remain) | SURVIVED |  | decode KILLED 2,3 |
+| r3-d01-checked-storage/03 | uint256 | types/uint256_decode_ssz_generated.bend | the storage is compared with the size in bytes (a buffer of 8 words for 32 bytes is refused only above ... c >= size) | SURVIVED |  | decode KILLED 1,8 |
+| r3-d01-checked-storage/04 | uint256 | types/uint256_decode_ssz_generated.bend | both come from the size field | SURVIVED |  | decode KILLED 2,3 |
+| r3-d01-checked-storage/05 | bitvector_9 | types/bitvector_9_decode_ssz_generated.bend | the window test is size < n (a window equal to the buffer size is refused) | SURVIVED |  | decode KILLED 4,6 |
+| r3-g01-append-guard/01 | Fulu_list_uint64_1099511627776 | types/Fulu_list_uint64_1099511627776_def_generated.bend | the guard is n < 536870909 (the append at n = 536870908 wraps the chunk rounding) | KILLED | l1099511627776_u64_api_witness_generated.bend: l1099511627776_u64_api_append_flag | regress_x SURVIVED; guards NOTAPPLICABLE |
+| r3-g01-append-guard/02 | Fulu_list_uint64_1099511627776 | types/Fulu_list_uint64_1099511627776_def_generated.bend | the guard is n < 536870907 (the last legal element is refused) | KILLED | l1099511627776_u64_api_witness_generated.bend: l1099511627776_u64_api_append_flag | regress_x SURVIVED; guards NOTAPPLICABLE |
+| r3-g01-append-guard/03 | proglist_uint32 | types/proglist_uint32_def_generated.bend | the guard is n < 1073741817 | SURVIVED |  | regress_x SURVIVED; guards KILLED 1 |
+| r3-g01-append-guard/04 | proglist_uint32 | types/proglist_uint32_def_generated.bend | the guard is n < 1073741824 (2^30 elements: (n + 1) * 4 wraps) | KILLED | crash_fix_laws_generated.bend: pl_u32_append_max_refused | regress_x KILLED 17; guards KILLED 1 |
+| r3-g01-append-guard/05 | proglist_bool | types/proglist_bool_def_generated.bend | the guard is n < 2^32 - 1 | SURVIVED |  | regress_x NOTAPPLICABLE; guards KILLED 2 |
+| r3-g01-append-guard/06 | proglist_bool | types/proglist_bool_def_generated.bend | the guard is n <= 2^32 - 32 | SURVIVED |  | regress_x NOTAPPLICABLE; guards KILLED 2 |
+| r3-g01-append-guard/07 | Fulu_list_uint8_1099511627776 | types/Fulu_list_uint8_1099511627776_def_generated.bend | the guard is n < 2^32 - 31 | KILLED | l1099511627776_u8_api_witness_generated.bend: l1099511627776_u8_api_append_flag | regress_x NOTAPPLICABLE; guards KILLED 3 |
+| r3-g01-append-guard/08 | FuluTransaction | types/FuluTransaction_def_generated.bend | the guard is n <= 2^30 | KILLED | bl1073741824_api_witness_generated.bend: bl1073741824_api_append_flag | regress_x NOTAPPLICABLE; guards KILLED 4 |
+| r3-g01-append-guard/09 | FuluTransaction | types/FuluTransaction_def_generated.bend | the value range test is v <= 256 | KILLED | bl1073741824_api_witness_generated.bend: bl1073741824_api_append_flag | regress_x NOTAPPLICABLE; guards KILLED 5 |
+| r3-g01-append-guard/10 | Fulu_list_Validator_1099511627776 | types/Fulu_list_Validator_1099511627776_def_generated.bend | the append guard is n <= 2^32 - 1 (the count wraps to 0 at n = 2^32 - 1) | KILLED | l1099511627776_Validator_api_witness_generated.bend: l1099511627776_Validator_api_append_flag | regress_x NOTAPPLICABLE; guards KILLED 6 |
+| r3-g01-append-guard/11 | Fulu_list_Validator_1099511627776 | types/Fulu_list_Validator_1099511627776_def_generated.bend | the cached append guard is n <= 2^32 - 1 | KILLED | chist.bend: capp_eq | regress_x NOTAPPLICABLE; guards SURVIVED |
+| r3-g01-append-guard/12 | proglist_SmallTestStruct | types/proglist_SmallTestStruct_def_generated.bend | the append guard is n <= 2^32 - 1 | SURVIVED |  | regress_x NOTAPPLICABLE; guards KILLED 7 |
+| r3-g01-append-guard/13 | proglist_ProgressiveVarTestStruct | types/proglist_ProgressiveVarTestStruct_def_generated.bend | the append guard is dropped (always true) | SURVIVED |  | regress_x NOTAPPLICABLE; guards NOTAPPLICABLE; last KILLED 3 |
+| r3-g01-append-guard/14 | progbitlist | types/progbitlist_def_generated.bend | the guard is n < 2^32 - 2 | SURVIVED |  | regress_x SURVIVED; guards NOTAPPLICABLE |
+| r3-g01-append-guard/15 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the guard is n <= 16 | KILLED | l16_ProposerSlashing_api_witness_generated.bend: l16_ProposerSlashing_api_append_flag | regress_x NOTAPPLICABLE; guards KILLED 8 |
+| r3-g02-cached-tree/01 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the digest array has 2^d slots (dfill d instead of 1 + d) | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 3,4,5,6,9,14 |
+| r3-g02-cached-tree/02 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the dirty range ends at 2^d - 2 | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 2,6 |
+| r3-g02-cached-tree/03 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the dirty range starts at 1 | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 2,3,4,5,6,9 |
+| r3-g02-cached-tree/04 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | only the lower bound of the dirty range is updated | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 9,14 |
+| r3-g02-cached-tree/05 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | one pad level too few (Nat.sub(3n, d)) | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 1,2,3,4,9,14 |
+| r3-g02-cached-tree/06 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the first zero subtree is zconst(d + 1) | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 1,2,3,4,9,14 |
+| r3-g02-cached-tree/07 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the right child is node 2 j + 2 | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 3,4,5,6,8,9 |
+| r3-g02-cached-tree/08 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | a leaf at i = n counts as inside | SURVIVED |  | regress_x NOTAPPLICABLE; cache SURVIVED |
+| r3-g02-cached-tree/09 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | cached get is inside iff i <= n | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 10 |
+| r3-g02-cached-tree/10 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | cached set is accepted iff i <= n | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 13 |
+| r3-g02-cached-tree/11 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the cached append guard is n < 15 | SURVIVED |  | regress_x NOTAPPLICABLE; cache KILLED 16 |
+| r3-g02-cached-tree/12 | Fulu_list_ProposerSlashing_16 | types/Fulu_list_ProposerSlashing_16_def_generated.bend | the range after the root is (0, n): the whole tree stays dirty (recomputed, same root: designed equivalent) | SURVIVED |  | regress_x NOTAPPLICABLE; cache SURVIVED |
+| r3-l01-fixed-elements/01 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the size is n * 43 | KILLED | encx_l16_Withdrawal_generated.bend: sizex_l16_Withdrawal | misc KILLED 21,22,45 |
+| r3-l01-fixed-elements/02 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | a list whose storage is smaller than its count is not poisoned (the size is n * 44 whatever the array holds) | KILLED | encx_l16_Withdrawal_generated.bend: sizex_l16_Withdrawal | misc SURVIVED |
+| r3-l01-fixed-elements/03 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | a list whose count equals its storage is poisoned (is_lt) | KILLED | encx_l16_Withdrawal_generated.bend: sizex_l16_Withdrawal | misc KILLED 22 |
+| r3-l01-fixed-elements/04 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the last element (case 0n) is written at pos + 43 i | UNJUDGED |  | misc KILLED 45 |
+| r3-l01-fixed-elements/05 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the intermediate elements are written at pos + 44 i + 4 | UNJUDGED |  | misc KILLED 45 |
+| r3-l01-fixed-elements/06 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | it reports (n - 1) * 44 + 44 wrapped: n * 44 + 1 | KILLED | encx_l16_Withdrawal_generated.bend: putk_rt_l16_Withdrawal | misc SURVIVED |
+| r3-l01-fixed-elements/07 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the limit is 17 | KILLED | encx_l16_Withdrawal_generated.bend: valid_l16_Withdrawal | misc KILLED 15 |
+| r3-l01-fixed-elements/08 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the storage test is n < c | KILLED | encx_l16_Withdrawal_generated.bend: valid_l16_Withdrawal | misc KILLED 22 |
+| r3-l01-fixed-elements/09 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | the storage test is dropped | KILLED | encx_l16_Withdrawal_generated.bend: valid_l16_Withdrawal | misc SURVIVED |
+| r3-l01-fixed-elements/10 | Fulu_list_Withdrawal_16 | types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend | an invalid list is written (the flag is ignored) | SURVIVED |  | misc KILLED 15 |
+| r3-l02-variable-elements/01 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the offset table is not counted | KILLED | encx_l1_AttesterSlashing_generated.bend: sizexb |  |
+| r3-l02-variable-elements/02 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the running size starts at 1 | KILLED | encx_l1_AttesterSlashing_generated.bend: sizexb |  |
+| r3-l02-variable-elements/03 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the storage test is n < c | KILLED | encx_l1_AttesterSlashing_generated.bend: sizel |  |
+| r3-l02-variable-elements/04 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the storage test is dropped (a claimed count with a smaller array is sized by its claim) | KILLED | encx_l1_AttesterSlashing_generated.bend: sizel |  |
+| r3-l02-variable-elements/05 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the element's size is dropped | KILLED | encx_l1_AttesterSlashing_generated.bend: sz_go |  |
+| r3-l02-variable-elements/06 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the offset slot is 4 i + 4 | KILLED | encx_l1_AttesterSlashing_generated.bend: step_rt |  |
+| r3-l02-variable-elements/07 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | the first element starts at 4 n + 4 | KILLED | encx_l1_AttesterSlashing_generated.bend: putx_rt_f |  |
+| r3-l02-variable-elements/08 | Fulu_list_AttesterSlashing_1 | types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend | an empty list is sized 4 | KILLED | encx_l1_AttesterSlashing_generated.bend: sizexb |  |
+| r3-m01-packed-prog/01 | proglist_uint128 | types/proglist_uint128_encode_ssz_generated.bend | the element size is 8 | KILLED | generic_proglist_uint128_unit_pl_u128_generated.bend: proglist_uint128_serialize_vunit_pl_u128_refuse_8 |  |
+| r3-m01-packed-prog/02 | proglist_uint256 | types/proglist_uint256_encode_ssz_generated.bend | the element size is 16 | KILLED | generic_proglist_uint256_generated.bend: proglist_uint256_serialize_vsym |  |
+| r3-m01-packed-prog/03 | proglist_uint128 | types/proglist_uint128_hashtreeroot_generated.bend | the shift is 3 (byte length / 8) | KILLED | proglist_uint128_e2e_witness_generated.bend: proglist_uint128_root_correct |  |
+| r3-m01-packed-prog/04 | proglist_uint256 | types/proglist_uint256_hashtreeroot_generated.bend | the shift is 4 (byte length / 16) | KILLED | proglist_uint256_e2e_witness_generated.bend: proglist_uint256_root_correct |  |
+| r3-p01-words-ok-params/01 | bytelist_256 | types/bytelist_256_encode_ssz_generated.bend | the upper bound is 257 | KILLED | encx_bl256_generated.bend: valid | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/02 | bytelist_256 | types/bytelist_256_encode_ssz_generated.bend | the upper bound is 255 (a full list is invalid) | KILLED | encx_bl256_generated.bend: valid | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/03 | bytelist_256 | types/bytelist_256_encode_ssz_generated.bend | the list is declared unbounded (big) | KILLED | encx_bl256_generated.bend: valid | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/04 | list_uint16_128 | types/list_uint16_128_encode_ssz_generated.bend | the element size is 1 (an odd byte length is valid) | KILLED | encx_l128_u16_d_generated.bend: valid | misc KILLED 2 |
+| r3-p01-words-ok-params/05 | list_uint16_128 | types/list_uint16_128_encode_ssz_generated.bend | the upper bound is 258 bytes (129 elements) | KILLED | encx_l128_u16_d_generated.bend: valid | misc SURVIVED |
+| r3-p01-words-ok-params/06 | Fulu_vec_uint64_8192 | types/Fulu_vec_uint64_8192_encode_ssz_generated.bend | any length up to 65536 is valid (lower bound 0) | SURVIVED |  | misc KILLED 16 |
+| r3-p01-words-ok-params/07 | vec_uint128_513 | types/vec_uint128_513_encode_ssz_generated.bend | any length from 8208 up to 8224 is valid | KILLED | generic_vec_uint128_513_generated.bend: vec_uint128_513_serialize_vsym | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/08 | vec_uint256_31 | types/vec_uint256_31_encode_ssz_generated.bend | the element size is 16 | KILLED | generic_vec_uint256_31_generated.bend: vec_uint256_31_serialize_vsym | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/09 | vec_uint64_513 | types/vec_uint64_513_encode_ssz_generated.bend | the lower bound is 4096 | KILLED | generic_vec_uint64_513_generated.bend: vec_uint64_513_serialize_vsym | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/10 | vec_bool_513 | types/vec_bool_513_encode_ssz_generated.bend | the boolean scan is dropped from the validity | KILLED | generic_vec_bool_513_booleans_generated.bend: vec_bool_513_serialize_vbool_2_at_0 | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/11 | bitlist_513 | types/bitlist_513_encode_ssz_generated.bend | the limit is 514 | KILLED | generic_bitlist_513_generated.bend: bitlist_513_serialize_vover | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/12 | bitlist_9 | types/bitlist_9_encode_ssz_generated.bend | the limit is 8 | KILLED | generic_bitlist_9_generated.bend: bitlist_9_serialize_vin | misc KILLED 4,5 |
+| r3-p01-words-ok-params/13 | Fulu_list_uint64_1099511627776 | types/Fulu_list_uint64_1099511627776_encode_ssz_generated.bend | the element size is 4 | KILLED | encx_l1099511627776_u64_d_generated.bend: valid | misc NOTAPPLICABLE |
+| r3-p01-words-ok-params/14 | proglist_uint64 | types/proglist_uint64_encode_ssz_generated.bend | the element size is 2 | KILLED | encx_pl_u64_generated.bend: valid | misc NOTAPPLICABLE |
+| r3-p02-bitvector-tail/01 | bitvector_9 | types/bitvector_9_encode_ssz_generated.bend | the bound is w0 <= 512 | KILLED | bitvector_9_e2e_ser_generated.bend: bitvector_9_ser_prem |  |
+| r3-p02-bitvector-tail/02 | bitvector_17 | types/bitvector_17_encode_ssz_generated.bend | the bound is w0 < 262144 (bit 17 allowed) | KILLED | bitvector_17_e2e_ser_generated.bend: bitvector_17_ser_prem |  |
+| r3-p02-bitvector-tail/03 | bitvector_513 | types/bitvector_513_encode_ssz_generated.bend | the bound is w16 < 4 | KILLED | bitvector_513_e2e_ser_generated.bend: bitvector_513_ser_prem |  |
+| r3-p02-bitvector-tail/04 | bitvector_513 | types/bitvector_513_decode_ssz_generated.bend | the padding byte tested is byte 63 | KILLED | fixchk_pad_generated.bend: bitvector_513_at |  |
+| r3-p02-bitvector-tail/05 | bitvector_513 | types/bitvector_513_decode_ssz_generated.bend | the last word keeps two bytes (bits 513..15 of the byte after are data) | KILLED | sub_bitvector_513_generated.bend: bitvector_513_spec_decode |  |
+| r3-p02-bitvector-tail/06 | bitvector_17 | types/bitvector_17_decode_ssz_generated.bend | the pad rule is r = 0 (mask 255: nothing must be zero) | KILLED | fixchk_pad_generated.bend: bitvector_17_at |  |
+| r3-p02-bitvector-tail/07 | bitvector_17 | types/bitvector_17_decode_ssz_generated.bend | the pad rule is r = 2 | KILLED | fixchk_pad_generated.bend: bitvector_17_at |  |
+| r3-p02-bitvector-tail/08 | bitvector_513 | types/bitvector_513_hashtreeroot_generated.bend | the last chunk word is not byte-swapped | KILLED | gbits_bitvector_513_generated.bend: bitvector_513_st |  |
+| r3-p03-uint-pack/01 | uint128 | types/uint128_hashtreeroot_generated.bend | the high word is not byte-swapped | KILLED | root_gnames_generated.bend: st_u128 |  |
+| r3-p03-uint-pack/02 | uint128 | types/uint128_hashtreeroot_generated.bend | words 1 and 2 are exchanged | KILLED | root_gnames_generated.bend: st_u128 |  |
+| r3-p03-uint-pack/03 | uint128 | types/uint128_hashtreeroot_generated.bend | the high word is repeated into the padding | KILLED | root_gnames_generated.bend: st_u128 |  |
+| r3-p03-uint-pack/04 | uint256 | types/uint256_hashtreeroot_generated.bend | the top word is not byte-swapped | KILLED | root_names_generated.bend: st_u256 |  |
+| r3-p03-uint-pack/05 | uint256 | types/uint256_hashtreeroot_generated.bend | words 3 and 4 are exchanged | KILLED | root_names_generated.bend: st_u256 |  |
+| r3-p03-uint-pack/06 | uint256 | types/uint256_decode_ssz_generated.bend | word 5 is read at offset 16 | KILLED | var_bytes_fix_generated.bend: rd_u256 |  |
+| r3-p03-uint-pack/07 | uint256 | types/uint256_decode_ssz_generated.bend | any length up to 32 is accepted | KILLED | spec_codec_uint256_generated.bend: uint256_spec_reject |  |
+| r3-p03-uint-pack/08 | uint128 | types/uint128_decode_ssz_generated.bend | any length from 16 up is accepted | KILLED | spec_gcodec_uint128_generated.bend: uint128_spec_reject |  |
+| r3-p03-uint-pack/09 | uint128 | types/uint128_decode_ssz_generated.bend | word 3 is read at offset 8 | KILLED | g__gcodec_0_generated.bend: uint128_roundtrip |  |
+| r3-p03-uint-pack/10 | uint128 | types/uint128_encode_ssz_generated.bend | the spill is word 3 shifted by 16 | KILLED | uint128_word_positions_generated.bend: uint128_arith_pw1 |  |
+| r3-p03-uint-pack/11 | uint128 | types/uint128_encode_ssz_generated.bend | the carry into word 2 is w1 shifted by 24 | KILLED | uint128_word_positions_generated.bend: uint128_arith_pw3 |  |
+| r3-p03-uint-pack/12 | uint128 | types/uint128_encode_ssz_generated.bend | position 2 mod 4 uses the 24-bit family | KILLED | uint128_encode_ssz_proof_generated.bend: uint128_mc_put |  |
+| r3-p03-uint-pack/13 | uint256 | types/uint256_encode_ssz_generated.bend | it uses pw1 | KILLED | vuwf3_generated.bend: putu_u256 |  |
+| r3-p03-uint-pack/14 | uint256 | types/uint256_encode_ssz_generated.bend | the output length is 31 | KILLED | codec_0_generated.bend: uint256_encoded_size |  |
+| r3-p04-box-absent/01 | FuluIndexedAttestation | types/FuluIndexedAttestation_encode_ssz_generated.bend | the checked writer answers an absent box with a valid zero count | KILLED | IndexedAttestation_generated.bend: IndexedAttestation_mc_bxpoison_IndexedAttestation | regress_x KILLED 27,28; boxes KILLED 1,2 |
+| r3-p04-box-absent/02 | FuluIndexedAttestation | types/FuluIndexedAttestation_encode_ssz_generated.bend | the poison is bit 30 (not bit 31) | KILLED | IndexedAttestation_generated.bend: IndexedAttestation_mc_bxpoison_IndexedAttestation | regress_x KILLED 27,28; boxes KILLED 1,2 |
+| r3-p04-box-absent/03 | FuluIndexedAttestation | types/FuluIndexedAttestation_encode_ssz_generated.bend | the size pass replaces the absent box by the default box (the original CH-12 defect) | SURVIVED |  | regress_x KILLED 27,28; boxes KILLED 1,2 |
+| r3-p04-box-absent/04 | FuluIndexedAttestation | types/FuluIndexedAttestation_encode_ssz_generated.bend | an absent box is valid | SURVIVED |  | regress_x SURVIVED; boxes KILLED 7; last NOTAPPLICABLE |
+| r3-p04-box-absent/05 | FuluAttestation | types/FuluAttestation_encode_ssz_generated.bend | the checked writer answers an absent box with a valid zero count | KILLED | Attestation_generated.bend: Attestation_mc_bxpoison_Attestation | regress_x NOTAPPLICABLE; boxes SURVIVED |
+| r3-p04-box-absent/06 | FuluAttestation | types/FuluAttestation_encode_ssz_generated.bend | the size pass replaces the absent box by the default box | SURVIVED |  | regress_x NOTAPPLICABLE; boxes KILLED 4 |
+| r3-p04-box-absent/07 | FuluAttestation | types/FuluAttestation_encode_ssz_generated.bend | an absent box is valid | SURVIVED |  | regress_x NOTAPPLICABLE; boxes SURVIVED; last KILLED 2 |
+| r3-p04-box-absent/08 | FuluAttestation | types/FuluAttestation_encode_ssz_generated.bend | a present box's checked writer reports size 0 | UNJUDGED |  | regress_x NOTAPPLICABLE; boxes KILLED 5 |
+| r3-p04-box-absent/09 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the size pass replaces an absent box by the default box | SURVIVED |  | regress_x SURVIVED; boxes KILLED 6 |
+| r3-p04-box-absent/10 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the second offset is written at slot 0 | KILLED | var_codec_AttesterSlashing_enc_generated.bend: put_eval | regress_x SURVIVED; boxes KILLED 3 |
+| r3-p04-box-absent/11 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the running offset adds the size with a plain sum (poison of the field lost when cur is small) | KILLED | encx_l1_AttesterSlashing_generated.bend: step_rt | regress_x SURVIVED; boxes SURVIVED |
+| r3-p04-box-absent/12 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the fixed part is 4 (one offset) | KILLED | var_codec_AttesterSlashing_enc_generated.bend: size_eval | regress_x SURVIVED; boxes KILLED 3 |
+| r3-p04-box-absent/13 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the size accumulation drops the poison of the first field (plain +) | KILLED | var_codec_AttesterSlashing_enc_generated.bend: size_eval | regress_x SURVIVED; boxes SURVIVED |
+| r3-p04-box-absent/14 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the size accumulation drops the poison of the second field (plain +) | KILLED | var_codec_AttesterSlashing_enc_generated.bend: size_eval | regress_x SURVIVED; boxes SURVIVED |
+| r3-p04-box-absent/15 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the refusal test is removed (serialize always writes) | SURVIVED |  | regress_x SURVIVED; boxes SURVIVED |
+| r3-p04-box-absent/16 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the final poison test is dropped (the writer's flag is ignored) | SURVIVED |  | regress_x KILLED 27,28; boxes KILLED 1,2 |
+| r3-p04-box-absent/17 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the final poison test looks at the size n (already tested) instead of the writer's flag m | SURVIVED |  | regress_x KILLED 27,28; boxes KILLED 1,2 |
+| r3-p04-box-absent/18 | FuluAttesterSlashing | types/FuluAttesterSlashing_encode_ssz_generated.bend | the pre-write test looks at bit 30 (a size with only the poison bit 31 is not refused here) | SURVIVED |  | regress_x SURVIVED; boxes SURVIVED |
+| r3-p05-fulu-field-validity/01 | Fulu_bytelist_32 | types/Fulu_bytelist_32_encode_ssz_generated.bend | the upper bound is 33 | KILLED | encx_bl32_d_generated.bend: valid |  |
+| r3-p05-fulu-field-validity/02 | Fulu_bytelist_32 | types/Fulu_bytelist_32_encode_ssz_generated.bend | the upper bound is 31 (a full extra_data is invalid) | KILLED | encx_bl32_d_generated.bend: valid |  |
+| r3-p05-fulu-field-validity/03 | Fulu_list_uint64_131072 | types/Fulu_list_uint64_131072_encode_ssz_generated.bend | the upper bound is 1048584 (one element more) | KILLED | var_codec_IndexedAttestation_enc_generated.bend: put_eval |  |
+| r3-p05-fulu-field-validity/04 | Fulu_list_uint64_131072 | types/Fulu_list_uint64_131072_encode_ssz_generated.bend | the element size is 4 | KILLED | var_codec_IndexedAttestation_enc_generated.bend: put_eval |  |
+| r3-p05-fulu-field-validity/05 | Fulu_bitlist_131072 | types/Fulu_bitlist_131072_encode_ssz_generated.bend | the limit is 131073 | KILLED | encx_bits131072_generated.bend: valid |  |
+| r3-p05-fulu-field-validity/06 | Fulu_bitlist_131072 | types/Fulu_bitlist_131072_encode_ssz_generated.bend | the list is declared unbounded | KILLED | encx_bits131072_generated.bend: valid |  |
+| r3-p05-fulu-field-validity/07 | Fulu_vec_bytevec_32_65536 | types/Fulu_vec_bytevec_32_65536_encode_ssz_generated.bend | any length from 0 up to 2097152 is valid | SURVIVED |  | last KILLED 1 |
+| r3-p05-fulu-field-validity/08 | FuluTransaction | types/FuluTransaction_encode_ssz_generated.bend | the bound is 2^30 + 1 | KILLED | fulu_Transaction_generated.bend: Transaction_serialize_vsym |  |
+| r3-p05-fulu-field-validity/09 | proglist_bool | types/proglist_bool_encode_ssz_generated.bend | the boolean scan is dropped from the progressive list's validity | KILLED | generic_proglist_bool_booleans_generated.bend: proglist_bool_serialize_vbool_2_at_0 |  |
+| r3-p05-fulu-field-validity/10 | Fulu_list_uint8_1099511627776 | types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend | the list is declared bounded by 4294967294 bytes (not unbounded) | KILLED | encx_l1099511627776_u8_d_generated.bend: valid |  |
+| r3-q01-progressive-container/01 | ProgressiveSingleFieldContainerTestStruct | types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend | the active-fields chunk is 2 | KILLED | root_gnames_generated.bend: st_ProgressiveSingleFieldContainerTestStruct |  |
+| r3-q01-progressive-container/02 | ProgressiveSingleFieldContainerTestStruct | types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend | the node is H(chunk, zero) | KILLED | g__root_gnames_generated.bend: st_ProgressiveSingleFieldContainerTestStruct |  |
+| r3-q01-progressive-container/03 | ProgressiveSingleListContainerTestStruct | types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend | the chunk is 8 (slot 3) | KILLED | root_gtypes2_generated.bend: st_ProgressiveSingleListContainerTestStruct |  |
+| r3-q01-progressive-container/04 | ProgressiveSingleListContainerTestStruct | types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend | the chunk is 17 | KILLED | ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend: st_ProgressiveSingleListContainerTestStruct |  |
+| r3-q01-progressive-container/05 | ProgressiveSingleListContainerTestStruct | types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend | the inner zero subtree is on the left of the field instead of the right | KILLED | ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend: st_ProgressiveSingleListContainerTestStruct |  |
+| r3-q01-progressive-container/06 | ProgressiveSingleListContainerTestStruct | types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend | z1 is the zero chunk of depth 2 | KILLED | root_gtypes2_generated.bend: st_ProgressiveSingleListContainerTestStruct |  |
+| r3-q01-progressive-container/07 | ProgressiveSingleListContainerTestStruct | types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend | the outermost node is H(zero, subtree) (rest on the right) | KILLED | ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend: st_ProgressiveSingleListContainerTestStruct |  |
+| r3-q01-progressive-container/08 | ProgressiveComplexTestStruct | types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend | the chunk is 3158292 | KILLED | root_gtypes2_generated.bend: st_ProgressiveComplexTestStruct |  |
+| r3-q01-progressive-container/09 | ProgressiveComplexTestStruct | types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend | the chunk is 3158293 + 2^21 | KILLED | ProgressiveComplexTestStruct_e2e_set_generated.bend: st_ProgressiveComplexTestStruct |  |
+| r3-q01-progressive-container/10 | ProgressiveComplexTestStruct | types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend | z5 is the zero subtree of depth 4 | KILLED | ProgressiveComplexTestStruct_e2e_set_generated.bend: st_ProgressiveComplexTestStruct |  |
+| r3-q01-progressive-container/11 | ProgressiveComplexTestStruct | types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend | z2 is the zero subtree of depth 3 | KILLED | ProgressiveComplexTestStruct_e2e_set_generated.bend: st_ProgressiveComplexTestStruct |  |
+| r3-u01-union/01 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 1 writes the selector 1 | KILLED | var_codec_CompatibleUnionABCA_enc_generated.bend: rt1 | misc KILLED 25,34 |
+| r3-u01-union/02 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 2 writes the selector 2 | KILLED | var_codec_CompatibleUnionABCA_enc_generated.bend: rt2 | misc KILLED 26,33 |
+| r3-u01-union/03 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 3 writes selector 1 | KILLED | CompatibleUnionABCA_generated.bend: CompatibleUnionABCA_ms_arm3 | misc KILLED 27,32,36 |
+| r3-u01-union/04 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 3's size is 1 | KILLED | var_codec_CompatibleUnionABCA_enc_generated.bend: rt3 | misc KILLED 27,32,36 |
+| r3-u01-union/05 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 1 does not count the selector byte | KILLED | var_codec_CompatibleUnionABCA_enc_generated.bend: rt1 | misc KILLED 25,34 |
+| r3-u01-union/06 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 2 counts two selector bytes | KILLED | var_codec_CompatibleUnionABCA_enc_generated.bend: rt2 | misc KILLED 26,33 |
+| r3-u01-union/07 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | an invalid payload is written as if valid (the checked writer ignores the flag) | KILLED | CompatibleUnionABCA_generated.bend: CompatibleUnionABCA_mc_poison_CompatibleUnionABCA | misc KILLED 46 |
+| r3-u01-union/08 | CompatibleUnionABCA | types/CompatibleUnionABCA_encode_ssz_generated.bend | arm 1's validity is not consulted (always valid) | SURVIVED |  | misc KILLED 46 |
+| r3-u01-union/09 | CompatibleUnionABCA | types/CompatibleUnionABCA_hashtreeroot_generated.bend | arm 1 mixes selector 1 (selector 2) | KILLED | root_gtypes2_generated.bend: stc_CompatibleUnionABCA_1 | misc KILLED 29 |
+| r3-u01-union/10 | CompatibleUnionABCA | types/CompatibleUnionABCA_hashtreeroot_generated.bend | arm 3 mixes selector 3 | KILLED | root_gtypes2_generated.bend: stc_CompatibleUnionABCA_3 | misc KILLED 31 |
+| r3-u01-union/11 | CompatibleUnionABCA | types/CompatibleUnionABCA_hashtreeroot_generated.bend | arm 0 mixes selector 0 | KILLED | root_gtypes2_generated.bend: stc_CompatibleUnionABCA_0 | misc KILLED 28 |
+| r3-u01-union/12 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | selector 4 is built as arm 0 | KILLED | CompatibleUnionABCA_union_arm_generated.bend: CompatibleUnionABCA_ua_rd3_t | misc KILLED 32,36 |
+| r3-u01-union/13 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | selector 4's payload window is the whole window (len) | KILLED | CompatibleUnionABCA_union_arm_generated.bend: CompatibleUnionABCA_ua_ok3_t | misc KILLED 18,32,36 |
+| r3-u01-union/14 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | selector 3's payload is validated at off | KILLED | CompatibleUnionABCA_union_arm_generated.bend: CompatibleUnionABCA_ua_ok2_t | misc KILLED 33 |
+| r3-u01-union/15 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | selector 1 is tested as s <= 1 (selector 0 is accepted as arm 0) | UNJUDGED |  | misc KILLED 11 |
+| r3-u01-union/16 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | the empty window is accepted as non-empty (is_le(0, len)); the selector read is then past the window | UNJUDGED |  | misc SURVIVED |
+| r3-u01-union/17 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | the selector byte is read at off + 1 | KILLED | CompatibleUnionABCA_generated.bend: CompatibleUnionABCA_ms_arm3 | misc KILLED 32,33,34,36 |
+| r3-u01-union/18 | CompatibleUnionABCA | types/CompatibleUnionABCA_decode_ssz_generated.bend | validation reads the selector at off + len - 1 (the last byte) | KILLED | CompatibleUnionABCA_generated.bend: CompatibleUnionABCA_ms_arm0 | misc KILLED 12,17,18,32,33,34 |
+| r3-w01-clean-chunk/01 | bytelist_256 | src/obj.bend | a word that starts exactly at the length is exempt from the zero test (c <= rN instead of c < rN) | KILLED | pv_obj.bend: lcs | bytes KILLED 110,309,425; regress_w SURVIVED |
+| r3-w01-clean-chunk/02 | bytelist_256 | src/obj.bend | the words of the chunk are accepted when ANY of them is clean (acc or-ed instead of and-ed) | KILLED | pv_obj.bend: lcs | bytes KILLED 110,111,112,113,114,115; regress_w KILLED 30 |
+| r3-w01-clean-chunk/03 | bytelist_256 | src/obj.bend | the first word of the chunk is tested against byte offset 4 instead of 0 | KILLED | pv_obj.bend: lcchain | bytes SURVIVED; regress_w SURVIVED |
+| r3-w01-clean-chunk/04 | bytelist_256 | src/obj.bend | the fourth word of the chunk is tested against byte offset 16 (word 3 starts at byte 12) | KILLED | pv_obj.bend: lcchain | bytes SURVIVED; regress_w SURVIVED |
+| r3-w01-clean-chunk/05 | bytelist_256 | src/obj.bend | the last word of the chunk (word 7, byte 28) is tested against offset 24 | KILLED | pv_obj.bend: lcchain | bytes KILLED 215; regress_w SURVIVED |
+| r3-w01-clean-chunk/06 | bytelist_256 | src/obj.bend | word 5 of the chunk is never read (word 4 is read twice) | KILLED | pv_obj.bend: lcchain | bytes KILLED 113,313,429,505,605; regress_w SURVIVED |
+| r3-w01-clean-chunk/07 | bytelist_256 | src/obj.bend | the chunk base is 4 q words (not 8 q) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w02-partial-word/01 | bytelist_256 | src/obj.bend | the partial word is accepted only when it is past the storage (the tail test is dropped) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w02-partial-word/02 | bytelist_256 | src/obj.bend | the storage test and the tail test are and-ed | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w02-partial-word/03 | bytelist_256 | src/obj.bend | the tail test uses n mod 2 (lengths 3 mod 4 are tested like 1 mod 4) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w02-partial-word/04 | bytelist_256 | src/obj.bend | when the partial word is unclean the test answers True (the dirty storage is hashed as it is) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w02-partial-word/05 | bytelist_256 | src/obj.bend | when the partial word is clean the chunk words are not examined (answer True) | KILLED | pbits_obj.bend: canon1 | bytes KILLED 110,111,112,113,114,115; regress_w KILLED 30 |
+| r3-w02-partial-word/06 | bytelist_256 | src/obj.bend | the remainder is n - 8 q (e8 instead of e32) | SURVIVED |  | bytes KILLED 110,111,112,113,114,115; regress_w SURVIVED |
+| r3-w02-partial-word/07 | bytelist_256 | src/obj.bend | e32 is only 16 x | SURVIVED |  | bytes KILLED 110,111,112,113,215,309; regress_w SURVIVED |
+| r3-w02-partial-word/08 | bytelist_256 | src/obj.bend | with no chunk the clean test answers False (the empty value takes the copy path) | KILLED | pv_obj.bend: canon0 | bytes SURVIVED; regress_w SURVIVED |
+| r3-w03-dispatch/01 | bytelist_256 | src/obj.bend | the capacity test compares chunks (not 8 words per chunk) with the storage | KILLED | pv_obj.bend: wr_unfold | bytes SURVIVED; regress_w SURVIVED |
+| r3-w03-dispatch/02 | bytelist_256 | src/obj.bend | the capacity test is strict (a storage of exactly 8 words per chunk takes the slow path) | KILLED | pv_obj.bend: wr_unfold | bytes SURVIVED; regress_w SURVIVED |
+| r3-w03-dispatch/03 | bytelist_256 | src/obj.bend | an object without chunk room skips the clean test and is treated as clean | SURVIVED |  | bytes KILLED 3,4,5; regress_w SURVIVED |
+| r3-w03-dispatch/04 | bytelist_256 | src/obj.bend | a tight storage (ceil(n / 4) words exactly) counts as not covered (is_lt) and is hashed over w / 8 chunks | SURVIVED |  | bytes KILLED 3,5; regress_w SURVIVED |
+| r3-w03-dispatch/05 | bytelist_256 | src/obj.bend | the covered test rounds down (n / 4 words instead of ceil(n / 4)) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w03-dispatch/06 | bytelist_256 | src/obj.bend | the arms of the covered test are swapped (a covered object is clamped, an uncovered one is copied) | SURVIVED |  | bytes KILLED 3,4,5,110,111,112; regress_w SURVIVED |
+| r3-w03-dispatch/07 | bytelist_256 | src/obj.bend | the clean copy is not used: the digest is computed over the ORIGINAL storage | ILLTYPED | words_root_light.bend: wr_clean | bytes ERROR; regress_w ERROR |
+| r3-w04-copy/01 | bytelist_256 | src/obj.bend | the copy moves floor(n / 4) words (a partial last word is lost) | SURVIVED |  | bytes KILLED 3,4,5,215,502,503; regress_w KILLED 26 |
+| r3-w04-copy/02 | bytelist_256 | src/obj.bend | the copy moves one word more than the value has (junk past the length is copied in) | SURVIVED |  | bytes KILLED 3,5,110,215,309,425; regress_w KILLED 26 |
+| r3-w04-copy/03 | bytelist_256 | src/obj.bend | each word is stored one slot late | SURVIVED |  | bytes KILLED 3,4,5,110,111,112; regress_w KILLED 26,30 |
+| r3-w04-copy/04 | bytelist_256 | src/obj.bend | the source index advances by 2 | SURVIVED |  | bytes KILLED 3,4,110,111,112,113; regress_w KILLED 30 |
+| r3-w04-copy/05 | bytelist_256 | src/obj.bend | the last word is not masked | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w04-copy/06 | bytelist_256 | src/obj.bend | the copy is allocated for n - 1 bytes (one chunk less when n is a multiple of 32) | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w04-copy/07 | bytelist_256 | src/obj.bend | the object returned is the clean copy | SURVIVED |  | bytes SURVIVED; regress_w SURVIVED |
+| r3-w05-prog/01 | proglist_uint8 | src/obj.bend | the capacity test compares chunks with the storage | KILLED | pbits_obj.bend: wrp_unfold | bytes SURVIVED; prog SURVIVED; regress_w SURVIVED |
+| r3-w05-prog/02 | proglist_uint8 | src/obj.bend | tight storage counts as uncovered (is_lt) | SURVIVED |  | bytes SURVIVED; prog KILLED 3,5; regress_w KILLED 26 |
+| r3-w05-prog/03 | proglist_uint8 | src/obj.bend | the clean copy is not used | ILLTYPED | pbits_obj.bend: wrp_clean | bytes ERROR; prog ERROR; regress_w ERROR |
+| r3-w05-prog/04 | proglist_uint8 | src/obj.bend | an object without chunk room is treated as clean | SURVIVED |  | bytes SURVIVED; prog KILLED 3,4,5; regress_w KILLED 26 |
+| r3-w05-prog/05 | proglist_uint8 | src/obj.bend | the chunk count passed to the progressive tree is the byte count | KILLED | pbits_obj.bend: wrp_unfold | bytes SURVIVED; prog KILLED 1,2,3,4,6,7; regress_w KILLED 30 |
+| r3-w06-chunks/01 | bytelist_256 | src/obj.bend | chunks_of adds 32 before dividing (a chunk more when n is a multiple of 32) | KILLED | pv_obj_light.bend: minimal_view | bytes SURVIVED; regress_w SURVIVED |
+| r3-w06-chunks/02 | bytelist_256 | src/obj.bend | chunks_of divides by 31 | KILLED | pv_obj_light.bend: minimal_view | bytes SURVIVED; regress_w SURVIVED |
+| r3-w06-chunks/03 | bytelist_256 | src/obj.bend | the presence flag of the first leaf is 0 <= k (always true) | KILLED | words_root.bend: wr_unfold | bytes SURVIVED; regress_w SURVIVED |
+| r3-x01-high-bit/01 | bitlist_9 | src/obj.bend | the threshold for position 7 is v >= 129 (a last byte of exactly 128 has its delimiter taken as bit 6) | KILLED | vbyte_generated.bend: hb7 | regress_x SURVIVED |
+| r3-x01-high-bit/02 | bitlist_9 | src/obj.bend | the threshold for position 4 is v >= 17 | KILLED | vbyte_generated.bend: hb4 | regress_x SURVIVED |
+| r3-x01-high-bit/03 | bitlist_9 | src/obj.bend | the last arm answers 1 for v = 1 (the delimiter of a one-bit... byte 0x01 is position 0) | KILLED | vbyte_generated.bend: hb1 | regress_x SURVIVED |
+| r3-x01-high-bit/04 | bitlist_9 | src/obj.bend | the position-2 threshold tests v >= 5 | KILLED | vbyte_generated.bend: hb2 | regress_x SURVIVED |
+| r3-x02-bits-clear/01 | bitlist_9 | src/obj.bend | the delimiter is not cleared (the object holds the delimiter bit as data) | KILLED | var_bits_bitlist_16_generated.bend: rd_go | regress_x SURVIVED; misc KILLED 4,5,6,7,8,9 |
+| r3-x02-bits-clear/02 | bitlist_9 | src/obj.bend | the mask is OR-ed instead of cleared | SURVIVED |  | regress_x SURVIVED; misc KILLED 4,5,6,7,8,9 |
+| r3-x02-bits-clear/03 | bitlist_9 | src/obj.bend | the mask position inside the word is k mod 8 (not k mod 32) | SURVIVED |  | regress_x SURVIVED; misc KILLED 4,5,6,7,8,9 |
+| r3-x02-bits-clear/04 | bitlist_9 | src/obj.bend | the word of the delimiter is k >> 4 | SURVIVED |  | regress_x SURVIVED; misc KILLED 7,8,9,19,20 |
+| r3-x02-bits-clear/05 | bitlist_9 | src/obj.bend | the bit count is 8 len + position | KILLED | var_bits_bitlist_16_generated.bend: rd_go | regress_x SURVIVED; misc KILLED 4,5,6,7,8,10 |
+| r3-x02-bits-clear/06 | bitlist_9 | src/obj.bend | the bit count adds one for the delimiter | KILLED | var_bits_bitlist_16_generated.bend: rd_go | regress_x SURVIVED; misc KILLED 4,5,6,7,8,10 |
+| r3-x02-bits-clear/07 | bitlist_9 | src/obj.bend | the last byte is read at off + len (one past the window) | KILLED | var_bits_bitlist_16_generated.bend: rd_go | regress_x SURVIVED; misc KILLED 4,5,6,7,8,9 |
+| r3-x03-bits-encode/01 | bitlist_9 | src/obj.bend | the delimiter bit is at position k mod 4 inside its byte | KILLED | vbitenc.bend: put_bits2 | regress_x SURVIVED; misc KILLED 7 |
+| r3-x03-bits-encode/02 | bitlist_9 | src/obj.bend | the delimiter byte is p + (k >> 3) + 1 | KILLED | vbitenc.bend: put_bits2 | regress_x SURVIVED; misc KILLED 4,7,19,25,26 |
+| r3-x03-bits-encode/03 | bitlist_9 | src/obj.bend | the delimiter is written with a shift by 2 (value 2 << position) | KILLED | vbitenc.bend: put_bits2 | regress_x SURVIVED; misc KILLED 4,7,19,25,26 |
+| r3-x03-bits-encode/04 | bitlist_9 | src/obj.bend | the size is floor(k / 8) | UNJUDGED |  | regress_x SURVIVED; misc KILLED 4 |
+| r3-x03-bits-encode/05 | bitlist_9 | src/obj.bend | floor(k / 8) bytes are written (the last partial byte is dropped before the delimiter is ORed in) | KILLED | vbitenc.bend: put_bits2 | regress_x SURVIVED; misc KILLED 19 |
+| r3-x04-tailmask/01 | bitlist_9 | src/obj.bend | the mask for a length of 12 mod 32 tests bits 8..31 (bits 8..11, which are data, must be zero) | KILLED | bitlist_9_hashtreeroot_proof_generated.bend: bitlist_9_serialize_vbits_table_12 | regress_x SURVIVED |
+| r3-x04-tailmask/02 | bitlist_9 | src/obj.bend | the mask for a length of 27 mod 32 omits the top bit | KILLED | bitlist_9_hashtreeroot_proof_generated.bend: bitlist_9_serialize_vbits_table_27 | regress_x SURVIVED |
+| r3-x04-tailmask/03 | bitlist_9 | src/obj.bend | the mask for a length of 20 mod 32 is the mask of 21 | KILLED | bitlist_9_hashtreeroot_proof_generated.bend: bitlist_9_serialize_vbits_table_20 | regress_x SURVIVED |
+| r3-x04-tailmask/04 | bitlist_9 | src/obj.bend | the mask for a length of 31 mod 32 tests nothing | KILLED | bitlist_9_hashtreeroot_proof_generated.bend: bitlist_9_serialize_vbits_table_31 | regress_x SURVIVED |
+| r3-x04-tailmask/05 | bitlist_9 | src/obj.bend | the mask for a length of 3 mod 32 tests bits 4..31 | KILLED | bitlist_9_hashtreeroot_proof_generated.bend: bitlist_9_serialize_vbits_table_3 | regress_x SURVIVED |
+| r3-x05-bool-mask/01 | vec_bool_16 | src/obj.bend | the first byte of every word may hold any value (mask 0xFEFEFEFF) | KILLED | vec_bool_16_hashtreeroot_proof_generated.bend: vec_bool_16_mc_ser | regress_x SURVIVED |
+| r3-x05-bool-mask/02 | vec_bool_16 | src/obj.bend | the top byte of every word may hold any value (mask 0x00FEFEFE) | KILLED | vec_bool_16_encode_ssz_proof_generated.bend: vec_bool_16_serialize_vbool_2_at_3 | regress_x SURVIVED |
+| r3-x05-bool-mask/03 | vec_bool_16 | src/obj.bend | the second byte may hold 2 or 3 (mask 0xFEFEFCFE)... only the lowest bit of byte 1 is tested | KILLED | vec_bool_16_encode_ssz_proof_generated.bend: vec_bool_16_serialize_vbool_2_at_1 | regress_x SURVIVED |
+| r3-x05-bool-mask/04 | vec_bool_16 | src/obj.bend | the scan stops one word early (k - 1 words, the last word of the booleans is not tested) | KILLED | vec_bool_16_encode_ssz_proof_generated.bend: vec_bool_16_serialize_vbool_2_at_15 | regress_x SURVIVED |
+| r3-x05-bool-mask/05 | vec_bool_16 | src/obj.bend | the conjunction of the words is an or (one clean word makes the collection valid) | KILLED | vec_bool_16_encode_ssz_proof_generated.bend: vec_bool_16_serialize_vbool_2_at_0 | regress_x SURVIVED |
+| r3-x06-pad/01 | bitvector_9 | src/obj.bend | for r = 3 the allowed mask is 15 (bit 3 may be set) | KILLED | e2e_mask_generated.bend: pz3_3 | regress_x SURVIVED |
+| r3-x06-pad/02 | bitvector_9 | src/obj.bend | for r = 7 the allowed mask is 255 | KILLED | e2e_mask_generated.bend: pz7_7 | regress_x SURVIVED |
+| r3-x06-pad/03 | bitvector_9 | src/obj.bend | for r = 1 the allowed mask is 0 (bit 0 may not be set: a valid vector is refused) | KILLED | bitvector_9_decode_ssz_proof_generated.bend: base1 | regress_x SURVIVED |
+| r3-x06-pad/04 | bitvector_9 | src/obj.bend | for r = 5 the allowed mask is 63 | KILLED | e2e_mask_generated.bend: pz5_5 | regress_x SURVIVED |
+| r3-x06-pad/05 | bitvector_9 | src/obj.bend | the padding test masks with the allowed bits (low_mask) instead of their complement | KILLED | fixchk_pad_generated.bend: bitvector_15_at | regress_x SURVIVED |
+| r3-x06-pad/06 | bitvector_9 | src/obj.bend | the padding test reads the byte at pos + 1 | KILLED | bitvector_9_decode_ssz_proof_generated.bend: bitvector_15_at | regress_x SURVIVED |
+| r3-x07-bitlist-window/01 | bitlist_9 | src/obj.bend | an all-zero last byte is accepted | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc KILLED 37 |
+| r3-x07-bitlist-window/02 | bitlist_9 | src/obj.bend | the limit is strict (a list of exactly N bits is refused) | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc KILLED 4,5,6,19,20 |
+| r3-x07-bitlist-window/03 | bitlist_9 | src/obj.bend | the bit count weight is 7 per byte | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc KILLED 38 |
+| r3-x07-bitlist-window/04 | bitlist_9 | src/obj.bend | the delimiter position is not added (the limit is tested on 8 (len - 1)) | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc KILLED 38 |
+| r3-x07-bitlist-window/05 | bitlist_9 | src/obj.bend | the unbounded check is len - 1 <= 2^29 (the count 2^32 + position wraps) | KILLED | var_pbits_progbitlist_rej_generated.bend: okA | regress_x SURVIVED; misc SURVIVED |
+| r3-x07-bitlist-window/06 | bitlist_9 | src/obj.bend | the selector swaps its arms | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc KILLED 4,5,6,7,8,9 |
+| r3-x07-bitlist-window/07 | bitlist_9 | src/obj.bend | a window of length 0 is non-empty (is_le(0, len)) | KILLED | var_bits_bitlist_16_generated.bend: okA | regress_x SURVIVED; misc SURVIVED |
+| r3-x07-bitlist-window/08 | bitlist_9 | src/obj.bend | the accumulated validity is or-ed with the child | UNJUDGED |  | regress_x SURVIVED; misc SURVIVED |
+| r3-x08-cache/01 | Fulu_list_Attestation_8 | src/obj.bend | a depth is accepted when 2^d < the array size (strict: an array exactly 2^d long is refused) | KILLED | cached_l2048_Eth1Data_generated.bend: dok_true | regress_x SURVIVED |
+| r3-x08-cache/02 | Fulu_list_Attestation_8 | src/obj.bend | any depth below 32 is accepted whatever the array holds | KILLED | cached_l2048_Eth1Data_generated.bend: dok_true | regress_x SURVIVED |
+| r3-x08-cache/03 | Fulu_list_Attestation_8 | src/obj.bend | a depth of 32 or more is accepted | SURVIVED |  | regress_x KILLED 25 |
+| r3-x08-cache/04 | Fulu_list_Attestation_8 | src/obj.bend | pow2u 0 = 2 | KILLED | vdepth.bend: s_pow2u_eq | regress_x SURVIVED |
+| r3-x08-cache/05 | Fulu_list_Attestation_8 | src/obj.bend | nat_u32 counts by two | KILLED | cached_l2048_Eth1Data_generated.bend: nat_u32_val | regress_x SURVIVED |
+| r3-x09-unit/01 | Fulu_list_uint64_128 | src/obj.bend | the 8-byte case tests n mod 4 | KILLED | venc.bend: words_ok_u64 | regress_x SURVIVED; misc SURVIVED |
+| r3-x09-unit/02 | Fulu_list_uint64_128 | src/obj.bend | the 32-byte case tests n mod 16 | SURVIVED |  | regress_x SURVIVED; misc KILLED 1 |
+| r3-x09-unit/03 | Fulu_list_uint64_128 | src/obj.bend | the 2-byte case answers True | SURVIVED |  | regress_x SURVIVED; misc KILLED 2 |
+| r3-x10-mix-count/01 | proglist_uint128 | src/obj.bend | the byte length is mixed in (no shift) | KILLED | ulist_obj.bend: ul_st | regress_x SURVIVED |
+| r3-x10-mix-count/02 | proglist_uint128 | src/obj.bend | the shift is applied to the byte length plus one | KILLED | list_obj.bend: bl_state | regress_x SURVIVED |
+| r3-x11-reads/01 | Fulu_list_uint64_128 | src/obj.bend | the read keeps one byte | SURVIVED |  | regress_x SURVIVED; misc KILLED 3 |
+| r3-x11-reads/02 | Fulu_list_uint64_128 | src/obj.bend | the two words of a uint64 are swapped | KILLED | var_fix_types_generated.bend: rd_u64 | regress_x SURVIVED; misc KILLED 43 |
+| r3-x11-reads/03 | boolean | src/obj.bend | the read answers True for every non-zero byte (designed equivalent after validation) | KILLED | var_winx_l1099511627776_Validator_generated.bend: rdxV | regress_x SURVIVED; misc SURVIVED |
+| r3-x11-reads/04 | boolean | src/obj.bend | the validity bound is v <= 2 | KILLED | vrejb_generated.bend: okb | regress_x SURVIVED; misc KILLED 40 |
+| r3-x11-reads/05 | boolean | src/obj.bend | the validity bound is v < 1 (True refused) | KILLED | vrejb_generated.bend: okb | regress_x SURVIVED; misc KILLED 41 |
+

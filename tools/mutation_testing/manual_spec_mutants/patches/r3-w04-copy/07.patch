@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w04-copy/07
+# type: bytelist_256
+# ops: root
+# spec: the root call returns the object it was given
+# fault: the object returned is the clean copy
+# why: only observable through the object
+# file: src/obj.bend
+# sym: wr_swap,wr_clean
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1005,3 +1005,3 @@
+   match w:
+-    case Words{out, +n}: (h, (Words{ws, n}, d))
++    case Words{out, +n}: (h, (Words{out, n}, d))
+ 

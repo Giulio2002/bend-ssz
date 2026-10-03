@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/14
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 3's payload is validated at off + 1
+# fault: selector 3's payload is validated at off
+# why: window
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_ok2,CompatibleUnionABCA_ok1
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   match c:
+-    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, off, (len - 1 : U32))
+     case False{}: CompatibleUnionABCA_ok3(U32.is_eq(s, 4), s, buf, off, len)

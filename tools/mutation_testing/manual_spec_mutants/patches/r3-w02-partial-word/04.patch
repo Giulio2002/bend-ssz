@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/04
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: when the partial word is unclean the test answers True (the dirty storage is hashed as it is)
+# why: wrong branch value
+# file: src/obj.bend
+# sym: wcn_c,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -973,3 +973,3 @@
+     case True{}: lc_s0(q, rN, (ws, True{}))
+-    case False{}: (ws, False{})
++    case False{}: (ws, True{})
+ 

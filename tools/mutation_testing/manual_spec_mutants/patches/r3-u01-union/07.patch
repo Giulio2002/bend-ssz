@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/07
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: a payload that is invalid poisons the union's size
+# fault: an invalid payload is written as if valid (the checked writer ignores the flag)
+# why: poison dropped
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_pk,CompatibleUnionABCA_putk,CompatibleUnionABCA_valid
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -73,3 +73,3 @@
+     case True{}: CompatibleUnionABCA_putn(out, pos, o)
+-    case False{}: (out, (o, 2147483648))
++    case False{}: CompatibleUnionABCA_putn(out, pos, o)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w05-prog/03
+# type: proglist_uint8
+# ops: root
+# spec: same
+# fault: the clean copy is not used
+# why: wrong array
+# file: src/obj.bend
+# sym: wrp_slow,wrp_clean,words_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1074,3 +1074,3 @@
+   (out, ws) = pair
+-  wr_swap(ws, wrp_cnt(hl, h, n, out, chunks_of(n)))
++  wr_swap(ws, wrp_cnt(hl, h, n, ws, chunks_of(n)))
+ 

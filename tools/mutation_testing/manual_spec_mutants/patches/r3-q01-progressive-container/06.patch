@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/06
+# type: ProgressiveSingleListContainerTestStruct
+# ops: root
+# spec: z1 is the zero subtree of depth 1
+# fault: z1 is the zero chunk of depth 2
+# why: zero level
+# file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_rt0,ProgressiveSingleListContainerTestStruct_rt1
+--- a/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+@@ -21,3 +21,3 @@
+   (f_C, d_f_C) = r
+-  ProgressiveSingleListContainerTestStruct_rt1(hl, seg, f_C, d_f_C, (h, D.zconst(1n)))
++  ProgressiveSingleListContainerTestStruct_rt1(hl, seg, f_C, d_f_C, (h, D.zconst(2n)))
+ 

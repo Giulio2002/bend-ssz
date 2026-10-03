@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/02
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: group 0's size is not added to the running size
+# why: term dropped
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_sz0,BeaconState_size
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -247,3 +247,3 @@
+   (g0, +m) = pair
+-  BeaconState_sz1(g2, g3, g4, g0, O.padd(acc, m), BeaconState_g1_size(g1))
++  BeaconState_sz1(g2, g3, g4, g0, acc, BeaconState_g1_size(g1))
+ 

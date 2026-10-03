@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/10
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: cached set is accepted iff i < n
+# fault: cached set is accepted iff i <= n
+# why: boundary
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_cset_in,l16_ProposerSlashing_cset
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -179,3 +179,3 @@
+   match c:
+-    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++    case l16_ProposerSlashing_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_ProposerSlashing_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+ 

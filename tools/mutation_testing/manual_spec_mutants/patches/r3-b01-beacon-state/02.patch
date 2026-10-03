@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/02
+# type: FuluBeaconState
+# ops: decode
+# spec: a BeaconState window is at least its fixed size
+# fault: a window of fixed size - 1 bytes is accepted
+# why: boundary
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_ok_len,BeaconState_ok
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -528,3 +528,3 @@
+ 
+-def BeaconState_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: BeaconState_ok_len(U32.is_le(2737225, len), buf, off, len)
++def BeaconState_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: BeaconState_ok_len(U32.is_le(2737224, len), buf, off, len)
+ 

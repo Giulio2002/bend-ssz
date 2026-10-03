@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b01-beacon-state/07
+# type: FuluBeaconState
+# ops: decode
+# spec: the Eth1Data list (field 9) is the window [o1, o2)
+# fault: its window length is o2 - o1 - 1
+# why: window
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_c13,BeaconState_v13
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -399,3 +399,3 @@
+   match ok:
+-    case True{}: BeaconState_v14(off, len, o0, o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: BeaconState_v14(off, len, o0, o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_ok(buf, (off + o1 : U32), (o2 - o1 - 1 : U32)))
+     case False{}: (buf, False{})

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x02-bits-clear/07
+# type: bitlist_9
+# ops: decode
+# spec: the delimiter is in the last byte of the window
+# fault: the last byte is read at off + len (one past the window)
+# why: index
+# file: src/obj.bend
+# sym: bits_in,bits_from
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1138,3 +1138,3 @@
+ def bits_in(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bits:
+-  bits_from(len, off, B.byte_at(buf, (off + len - 1 : U32)))
++  bits_from(len, off, B.byte_at(buf, (off + len : U32)))
+ 

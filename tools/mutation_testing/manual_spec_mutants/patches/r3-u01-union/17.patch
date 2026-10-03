@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/17
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: the selector is the first byte of the window
+# fault: the selector byte is read at off + 1
+# why: index
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_rd_sel,CompatibleUnionABCA_read
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+ 
+-def CompatibleUnionABCA_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & CompatibleUnionABCA_d.CompatibleUnionABCA: CompatibleUnionABCA_rd_sel(off, len, O.rd_u8(buf, off))
++def CompatibleUnionABCA_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & CompatibleUnionABCA_d.CompatibleUnionABCA: CompatibleUnionABCA_rd_sel(off, len, O.rd_u8(buf, (off + 1 : U32)))
+ 

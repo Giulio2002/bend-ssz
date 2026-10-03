@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/04
+# type: FuluIndexedAttestation
+# ops: encode
+# spec: an absent box is not a valid value
+# fault: an absent box is valid
+# why: validity
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_bx_valid
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -103,3 +103,3 @@
+     case O.BSome{v, rest}: IndexedAttestation_bx_va_back(IndexedAttestation_valid(v))
+-    case O.BNone{}: (O.BNone{}, False{})
++    case O.BNone{}: (O.BNone{}, True{})
+ 

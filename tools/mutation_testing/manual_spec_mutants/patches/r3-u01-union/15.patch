@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/15
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 0 is invalid in a compatible union and so is any selector above 4
+# fault: selector 1 is tested as s <= 1 (selector 0 is accepted as arm 0)
+# why: selector test
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_ok_sel,CompatibleUnionABCA_ok0
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -38,3 +38,3 @@
+   (buf, +s) = pair
+-  CompatibleUnionABCA_ok0(U32.is_eq(s, 1), s, buf, off, len)
++  CompatibleUnionABCA_ok0(U32.is_le(s, 1), s, buf, off, len)
+ 

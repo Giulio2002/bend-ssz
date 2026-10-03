@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x08-cache/01
+# type: Fulu_list_Attestation_8
+# ops: root
+# spec: cached tree depth covers the leaves
+# fault: a depth is accepted when 2^d < the array size (strict: an array exactly 2^d long is refused)
+# why: boundary
+# file: src/obj.bend
+# sym: cache_dok,pow2u,nat_u32
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1496,3 +1496,3 @@
+   match fits:
+-    case True{}: U32.is_le(pow2u(d), c)
++    case True{}: U32.is_lt(pow2u(d), c)
+     case False{}: False{}

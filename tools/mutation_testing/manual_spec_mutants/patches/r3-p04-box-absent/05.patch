@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/05
+# type: FuluAttestation
+# ops: encode
+# spec: same
+# fault: the checked writer answers an absent box with a valid zero count
+# why: poison dropped
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_bx_putk,Attestation_bx_size,Attestation_bx_valid
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -80,3 +80,3 @@
+     case O.BSome{v, rest}: Attestation_bx_pk_back(Attestation_putk(out, pos, v))
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 0))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w01-clean-chunk/02
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the words of the chunk are accepted when ANY of them is clean (acc or-ed instead of and-ed)
+# why: and/or
+# file: src/obj.bend
+# sym: lc_step,wcn_k,wcn_t,wr_size,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -930,3 +930,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.or(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
+ 

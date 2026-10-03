@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/04
+# type: FuluBeaconState
+# ops: encode
+# spec: group 3's offsets are written with the running variable offset
+# fault: group 3 starts 4 bytes late
+# why: offset
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_pw2v,BeaconState_pw2
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -270,3 +270,3 @@
+ def BeaconState_pw2v(+pos: U32, g0: FuluBeaconState_d.BeaconState_g0, g1: FuluBeaconState_d.BeaconState_g1, g2: FuluBeaconState_d.BeaconState_g2, g3: FuluBeaconState_d.BeaconState_g3, g4: FuluBeaconState_d.BeaconState_g4, +voff: U32, out: Array<U32>) -> Array<U32> & (FuluBeaconState_d.BeaconState & U32):
+-  BeaconState_pw3(pos, g0, g1, g2, g4, BeaconState_g3_put(out, pos, voff, g3))
++  BeaconState_pw3(pos, g0, g1, g2, g4, BeaconState_g3_put(out, pos, (voff + 4 : U32), g3))
+ 

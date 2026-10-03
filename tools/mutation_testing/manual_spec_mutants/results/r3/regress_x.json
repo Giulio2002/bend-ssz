@@ -1,0 +1,463 @@
+{
+ "baseline": {
+  "1": "cell_set_empty=0",
+  "2": "cell_set_4096_at_1=0",
+  "3": "cell_set_64=0",
+  "4": "cell_append_empty=0",
+  "5": "cell_set_2048_control=1",
+  "6": "pbits_append_max=0",
+  "7": "bits2048_append_max=0",
+  "8": "pl_u8_append_max=0",
+  "9": "decode_checked_empty_buf_40=none",
+  "10": "decode_checked_40_control=some",
+  "11": "decode_checked_2gib=none",
+  "12": "complex_default_serialize_ok=1 size=100",
+  "13": "pl_u8_root_huge_claim=done",
+  "14": "bits2048_root_huge_claim=done",
+  "15": "u64list_append_max=0",
+  "16": "pl_u16_append_max=0",
+  "17": "pl_u32_append_max=0",
+  "18": "pl_u64_append_max=0",
+  "19": "pl_u8_append_chunk_wrap=0",
+  "20": "cell_set_one_word=0",
+  "21": "cell_append_one_word=0",
+  "22": "decode_checked_lying_buf=none",
+  "23": "pd_root_huge_claim=done",
+  "24": "pd_cache_huge_claim=done",
+  "25": "pd_cache_at_huge_depth=done",
+  "26": "tight_root_equals_roomy=1",
+  "27": "attestation_1_absent ok=0",
+  "28": "attestation_2_absent ok=0",
+  "29": "both_present_control ok=1",
+  "30": "dirty_root_equals_clean=1"
+ },
+ "r3-g01-append-guard/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-g01-append-guard/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-g01-append-guard/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-g01-append-guard/04": {
+  "B2": "KILLED",
+  "diff": {
+   "17": [
+    "pl_u32_append_max=0",
+    "pl_u32_append_max=1"
+   ]
+  }
+ },
+ "r3-g01-append-guard/05": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/06": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/07": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/08": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/09": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/10": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/11": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/12": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/13": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g01-append-guard/14": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-g01-append-guard/15": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/01": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/02": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/03": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/04": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/05": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/06": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/07": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/08": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/09": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/10": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/11": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-g02-cached-tree/12": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-p04-box-absent/01": {
+  "B2": "KILLED",
+  "diff": {
+   "27": [
+    "attestation_1_absent ok=0",
+    "attestation_1_absent ok=1"
+   ],
+   "28": [
+    "attestation_2_absent ok=0",
+    "attestation_2_absent ok=1"
+   ]
+  }
+ },
+ "r3-p04-box-absent/02": {
+  "B2": "KILLED",
+  "diff": {
+   "27": [
+    "attestation_1_absent ok=0",
+    "attestation_1_absent ok=1"
+   ],
+   "28": [
+    "attestation_2_absent ok=0",
+    "attestation_2_absent ok=1"
+   ]
+  }
+ },
+ "r3-p04-box-absent/03": {
+  "B2": "KILLED",
+  "diff": {
+   "27": [
+    "attestation_1_absent ok=0",
+    "attestation_1_absent ok=1"
+   ],
+   "28": [
+    "attestation_2_absent ok=0",
+    "attestation_2_absent ok=1"
+   ]
+  }
+ },
+ "r3-p04-box-absent/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/05": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-p04-box-absent/06": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-p04-box-absent/07": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-p04-box-absent/08": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r3-p04-box-absent/09": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/10": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/11": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/12": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/13": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/14": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/15": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-p04-box-absent/16": {
+  "B2": "KILLED",
+  "diff": {
+   "27": [
+    "attestation_1_absent ok=0",
+    "attestation_1_absent ok=1"
+   ],
+   "28": [
+    "attestation_2_absent ok=0",
+    "attestation_2_absent ok=1"
+   ]
+  }
+ },
+ "r3-p04-box-absent/17": {
+  "B2": "KILLED",
+  "diff": {
+   "27": [
+    "attestation_1_absent ok=0",
+    "attestation_1_absent ok=1"
+   ],
+   "28": [
+    "attestation_2_absent ok=0",
+    "attestation_2_absent ok=1"
+   ]
+  }
+ },
+ "r3-p04-box-absent/18": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x01-high-bit/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x01-high-bit/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x01-high-bit/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x01-high-bit/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x02-bits-clear/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x03-bits-encode/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x03-bits-encode/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x03-bits-encode/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x03-bits-encode/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x03-bits-encode/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x04-tailmask/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x04-tailmask/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x04-tailmask/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x04-tailmask/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x04-tailmask/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x05-bool-mask/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x05-bool-mask/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x05-bool-mask/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x05-bool-mask/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x05-bool-mask/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x06-pad/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x07-bitlist-window/08": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x08-cache/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x08-cache/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x08-cache/03": {
+  "B2": "KILLED",
+  "diff": {
+   "25": [
+    "pd_cache_at_huge_depth=done",
+    "rc=1 bend: an array past the deepest block class 31"
+   ]
+  }
+ },
+ "r3-x08-cache/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x08-cache/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x09-unit/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x09-unit/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x09-unit/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x10-mix-count/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x10-mix-count/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x11-reads/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x11-reads/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x11-reads/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x11-reads/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r3-x11-reads/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ }
+}

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p04-box-absent/02
+# type: FuluIndexedAttestation
+# ops: encode
+# spec: same
+# fault: the poison is bit 30 (not bit 31)
+# why: poison bit
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_bx_putk,IndexedAttestation_bx_size
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -78,3 +78,3 @@
+     case O.BSome{v, rest}: IndexedAttestation_bx_pk_back(IndexedAttestation_putk(out, pos, v))
+-    case O.BNone{}: (out, (O.BNone{}, 2147483648))
++    case O.BNone{}: (out, (O.BNone{}, 1073741824))
+ 

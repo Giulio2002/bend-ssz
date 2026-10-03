@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/16
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: the empty window is invalid (a union needs a selector byte)
+# fault: the empty window is accepted as non-empty (is_le(0, len)); the selector read is then past the window
+# why: boundary
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_ok_nz,CompatibleUnionABCA_ok
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -45,3 +45,3 @@
+ 
+-def CompatibleUnionABCA_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionABCA_ok_nz(U32.is_le(1, len), buf, off, len)
++def CompatibleUnionABCA_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionABCA_ok_nz(U32.is_le(0, len), buf, off, len)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x08-cache/05
+# type: Fulu_list_Attestation_8
+# ops: root
+# spec: nat_u32 d = d
+# fault: nat_u32 counts by two
+# why: step
+# file: src/obj.bend
+# sym: nat_u32
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1502,3 +1502,3 @@
+     case 0n: 0
+-    case 1n+q: (nat_u32(q) + 1 : U32)
++    case 1n+q: (nat_u32(q) + 2 : U32)
+ 

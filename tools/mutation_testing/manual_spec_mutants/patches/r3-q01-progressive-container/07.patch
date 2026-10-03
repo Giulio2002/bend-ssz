@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-q01-progressive-container/07
+# type: ProgressiveSingleListContainerTestStruct
+# ops: root
+# spec: the progressive tree is H(rest, subtree): the rest (zero) is the left operand at the outermost level
+# fault: the outermost node is H(zero, subtree) (rest on the right)
+# why: operand order
+# file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_fin
+--- a/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleListContainerTestStruct_fin(+hl: Nat, +d_f_C: D.Digest, +z1: D.Digest, h: B.Buf, f_C: O.Bits) -> B.Buf & (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest):
+-  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C))), D.zero()), 16)))
++  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.zero(), D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C)))), 16)))
+ 

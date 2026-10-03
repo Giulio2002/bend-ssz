@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w01-clean-chunk/05
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the last word of the chunk (word 7, byte 28) is tested against offset 24
+# why: constant of the step 7
+# file: src/obj.bend
+# sym: lc_step,lc_s7,wcn_k,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -934,3 +934,3 @@
+   (ws, acc) = pair
+-  lc_step(rN, 28n, acc, lc_read(q, 7n, ws))
++  lc_step(rN, 24n, acc, lc_read(q, 7n, ws))
+ 

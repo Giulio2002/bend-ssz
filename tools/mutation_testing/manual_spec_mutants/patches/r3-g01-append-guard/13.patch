@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g01-append-guard/13
+# type: proglist_ProgressiveVarTestStruct
+# ops: root
+# spec: same
+# fault: the append guard is dropped (always true)
+# why: guard removed
+# file: types/proglist_ProgressiveVarTestStruct_def_generated.bend
+# sym: pl_ProgressiveVarTestStruct_append,pl_ProgressiveVarTestStruct_app_in
+--- a/types/proglist_ProgressiveVarTestStruct_def_generated.bend
++++ b/types/proglist_ProgressiveVarTestStruct_def_generated.bend
+@@ -127,3 +127,3 @@
+   match o:
+-    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_in(U32.is_lt(n, 4294967295), arr, n, v)
++    case pl_ProgressiveVarTestStruct_Seq{arr, +n}: pl_ProgressiveVarTestStruct_app_in(True{}, arr, n, v)
+ 

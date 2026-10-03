@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/01
+# type: bytelist_256
+# ops: root
+# spec: the bytes of the last word past the length are part of the last chunk
+# fault: the partial word is accepted only when it is past the storage (the tail test is dropped)
+# why: tail test dropped
+# file: src/obj.bend
+# sym: wcn_tz,tail_zero,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -967,3 +967,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.or(U32.is_le(c, U32.shrn(n, 2n)), tail_zero((n .&. 3 : U32), x)))
++  (ws, U32.is_le(c, U32.shrn(n, 2n)))
+ 

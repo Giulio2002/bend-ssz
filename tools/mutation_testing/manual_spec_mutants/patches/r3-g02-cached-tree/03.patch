@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/03
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: same
+# fault: the dirty range starts at 1
+# why: range
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_cached_root
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -139,3 +139,3 @@
+ def l16_ProposerSlashing_cache_fin(arr: Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, +n: U32, +d: Nat) -> l16_ProposerSlashing_Cached:
+-  l16_ProposerSlashing_Cached{arr, n, d, l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l16_ProposerSlashing_Cached{arr, n, d, l16_ProposerSlashing_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+ 

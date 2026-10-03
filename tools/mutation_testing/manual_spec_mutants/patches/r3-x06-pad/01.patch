@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x06-pad/01
+# type: bitvector_9
+# ops: decode
+# spec: the padding bits of the last byte of a Bitvector[N] are zero (N = 8 q + r: bits r..7)
+# fault: for r = 3 the allowed mask is 15 (bit 3 may be set)
+# why: constant
+# file: src/obj.bend
+# sym: low_mask,pad_pick,ok_pad
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1288,3 +1288,3 @@
+     case 2: 3
+-    case 3: 7
++    case 3: 15
+     case 4: 15

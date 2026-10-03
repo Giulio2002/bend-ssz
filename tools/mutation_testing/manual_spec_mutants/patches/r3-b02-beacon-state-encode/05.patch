@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-b02-beacon-state-encode/05
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: group 4 is written at variable offset 0
+# why: offset
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_pw3v,BeaconState_pw3
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -262,3 +262,3 @@
+ def BeaconState_pw3v(+pos: U32, g0: FuluBeaconState_d.BeaconState_g0, g1: FuluBeaconState_d.BeaconState_g1, g2: FuluBeaconState_d.BeaconState_g2, g3: FuluBeaconState_d.BeaconState_g3, g4: FuluBeaconState_d.BeaconState_g4, +voff: U32, out: Array<U32>) -> Array<U32> & (FuluBeaconState_d.BeaconState & U32):
+-  BeaconState_pw4(pos, g0, g1, g2, g3, BeaconState_g4_put(out, pos, voff, g4))
++  BeaconState_pw4(pos, g0, g1, g2, g3, BeaconState_g4_put(out, pos, 0, g4))
+ 

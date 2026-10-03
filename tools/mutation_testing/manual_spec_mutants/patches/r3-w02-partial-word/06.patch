@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/06
+# type: bytelist_256
+# ops: root
+# spec: the last chunk q holds bytes 32 q .. 32 q + rN of the value: rN = n - 32 q
+# fault: the remainder is n - 8 q (e8 instead of e32)
+# why: chunk size in bytes
+# file: src/obj.bend
+# sym: wcn_k,e32,chunks_of
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -981,3 +981,3 @@
+     case 0n: (ws, True{})
+-    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e8(q)), ws)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/12
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: selector 4 decodes to the fourth arm (not the first: same payload type)
+# fault: selector 4 is built as arm 0
+# why: arm identity
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_rd3,CompatibleUnionABCA_rd_sel
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -65,3 +65,3 @@
+   match c:
+-    case True{}: CompatibleUnionABCA_rw3(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
++    case True{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))
+     case False{}: CompatibleUnionABCA_rw0(ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + 1 : U32), (len - 1 : U32)))

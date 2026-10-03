@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p02-bitvector-tail/02
+# type: bitvector_17
+# ops: encode
+# spec: a Bitvector[17] object with a bit above bit 16 is invalid
+# fault: the bound is w0 < 262144 (bit 17 allowed)
+# why: parameter
+# file: types/bitvector_17_encode_ssz_generated.bend
+# sym: bv17_valid
+--- a/types/bitvector_17_encode_ssz_generated.bend
++++ b/types/bitvector_17_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_17_d.Bitvector17{+w0}: U32.is_lt(w0, 131072)
++    case bitvector_17_d.Bitvector17{+w0}: U32.is_lt(w0, 262144)
+ 

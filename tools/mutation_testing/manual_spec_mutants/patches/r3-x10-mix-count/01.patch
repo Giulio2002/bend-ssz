@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x10-mix-count/01
+# type: proglist_uint128
+# ops: root
+# spec: the length mixed into a packed list root is the element count: n / element size
+# fault: the byte length is mixed in (no shift)
+# why: shift dropped
+# file: src/obj.bend
+# sym: mix_count,mix_len,len_chunk
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1231,3 +1231,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
++    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, n)))
+ 

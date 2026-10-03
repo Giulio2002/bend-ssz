@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-u01-union/11
+# type: CompatibleUnionABCA
+# ops: root
+# spec: arm 0 has selector 1
+# fault: arm 0 mixes selector 0
+# why: selector
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt0,CompatibleUnionABCA_root
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v}, O.mix_len(hl, d, 1)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v}, O.mix_len(hl, d, 0)))
+ 

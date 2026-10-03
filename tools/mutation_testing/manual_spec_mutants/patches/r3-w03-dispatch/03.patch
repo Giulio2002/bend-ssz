@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w03-dispatch/03
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: an object without chunk room skips the clean test and is treated as clean
+# why: branch
+# file: src/obj.bend
+# sym: wr_cap,wr_fit,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1028,3 +1028,3 @@
+     case True{}: wr_zc(hl, h, depth, n, sz, wcn_k(chunks_of(n), n, sz, ws))
+-    case False{}: wr_fit(False{}, hl, h, depth, n, sz, ws)
++    case False{}: wr_fit(True{}, hl, h, depth, n, sz, ws)
+ 

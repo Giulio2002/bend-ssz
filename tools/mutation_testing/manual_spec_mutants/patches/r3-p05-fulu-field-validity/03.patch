@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/03
+# type: Fulu_list_uint64_131072
+# ops: encode
+# spec: attesting_indices is a List[uint64, 131072]: at most 1048576 bytes
+# fault: the upper bound is 1048584 (one element more)
+# why: parameter off by one
+# file: types/Fulu_list_uint64_131072_encode_ssz_generated.bend
+# sym: l131072_u64_valid,words_ok
+--- a/types/Fulu_list_uint64_131072_encode_ssz_generated.bend
++++ b/types/Fulu_list_uint64_131072_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def l131072_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1048576, False{}, 8)
++def l131072_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 1048584, False{}, 8)
+ 

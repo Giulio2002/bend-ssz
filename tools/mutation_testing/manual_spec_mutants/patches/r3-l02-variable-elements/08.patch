@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/08
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: an empty list encodes to 0 bytes
+# fault: an empty list is sized 4
+# why: constant
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_sz_nz
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -39,3 +39,3 @@
+   match empty:
+-    case True{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 0)
++    case True{}: (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 4)
+     case False{}: l1_AttesterSlashing_sz_fin(n, l1_AttesterSlashing_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))

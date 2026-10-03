@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-l02-variable-elements/06
+# type: Fulu_list_AttesterSlashing_1
+# ops: encode
+# spec: the offset of element i is stored at slot 4 i
+# fault: the offset slot is 4 i + 4
+# why: slot
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# sym: l1_AttesterSlashing_pv_one,l1_AttesterSlashing_pv
+--- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+@@ -66,3 +66,3 @@
+   (arr, v) = pair
+-  l1_AttesterSlashing_pv_placed(i, arr, FuluAttesterSlashing_e.AttesterSlashing_bx_putv(out, pos, (4 * i : U32), cur, v))
++  l1_AttesterSlashing_pv_placed(i, arr, FuluAttesterSlashing_e.AttesterSlashing_bx_putv(out, pos, (4 * i + 4 : U32), cur, v))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x11-reads/03
+# type: boolean
+# ops: decode
+# spec: a boolean is True iff its byte is 1 (0 is False; others are invalid and refused before the read)
+# fault: the read answers True for every non-zero byte (designed equivalent after validation)
+# why: validated window
+# file: src/obj.bend
+# sym: bool_of,rd_bool,bool_ok_pick,ok_bool
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1191,3 +1191,3 @@
+   (buf, +v) = pair
+-  (buf, U32.is_eq(v, 1))
++  (buf, U32.is_lt(0, v))
+ 

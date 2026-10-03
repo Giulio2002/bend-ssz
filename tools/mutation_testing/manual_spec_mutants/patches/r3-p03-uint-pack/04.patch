@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p03-uint-pack/04
+# type: uint256
+# ops: root
+# spec: a uint256 is a chunk of its 32 little-endian bytes
+# fault: the top word is not byte-swapped
+# why: endianness
+# file: types/uint256_hashtreeroot_generated.bend
+# sym: u256_root
+--- a/types/uint256_hashtreeroot_generated.bend
++++ b/types/uint256_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
++    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), w7})
+ 

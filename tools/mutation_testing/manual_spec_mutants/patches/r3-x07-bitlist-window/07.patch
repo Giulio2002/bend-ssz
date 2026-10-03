@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x07-bitlist-window/07
+# type: bitlist_9
+# ops: decode
+# spec: an empty window is not a Bitlist
+# fault: a window of length 0 is non-empty (is_le(0, len))
+# why: boundary
+# file: src/obj.bend
+# sym: ok_bitlist,bitlist_nz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1320,3 +1320,3 @@
+ def ok_bitlist(buf: B.Buf, +off: U32, +len: U32, +lim: U32, big: Bool) -> B.Buf & Bool:
+-  bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
++  bitlist_nz(U32.is_le(0, len), buf, off, len, lim, big)
+ 

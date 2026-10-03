@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p05-fulu-field-validity/09
+# type: proglist_bool
+# ops: encode
+# spec: a boolean byte other than 0 and 1 is invalid
+# fault: the boolean scan is dropped from the progressive list's validity
+# why: conjunct dropped
+# file: types/proglist_bool_encode_ssz_generated.bend
+# sym: pl_bool_valid,bools_ok
+--- a/types/proglist_bool_encode_ssz_generated.bend
++++ b/types/proglist_bool_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, True{}, 1))
++def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 1)
+ 

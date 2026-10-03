@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-x08-cache/04
+# type: Fulu_list_Attestation_8
+# ops: root
+# spec: 2^0 = 1
+# fault: pow2u 0 = 2
+# why: base
+# file: src/obj.bend
+# sym: pow2u,cache_dok
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1489,3 +1489,3 @@
+   match d:
+-    case 0n: 1
++    case 0n: 2
+     case 1n+q: U32.shl(pow2u(q))

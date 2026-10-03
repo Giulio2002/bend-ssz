@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-g02-cached-tree/07
+# type: Fulu_list_ProposerSlashing_16
+# ops: root
+# spec: node j hashes children 2j and 2j + 1
+# fault: the right child is node 2 j + 2
+# why: child index
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_node_go,l16_ProposerSlashing_node_step
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -232,3 +232,3 @@
+   (nodes, +dl) = pr
+-  l16_ProposerSlashing_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
++  l16_ProposerSlashing_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 2 : U32)))
+ 

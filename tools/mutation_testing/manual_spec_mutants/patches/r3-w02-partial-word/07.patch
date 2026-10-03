@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-w02-partial-word/07
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: e32 is only 16 x
+# why: shift count
+# file: src/obj.bend
+# sym: e32,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -919,3 +919,3 @@
+ 
+-def e32(+x: Nat) -> Nat: Nat.double(Nat.double(e8(x)))
++def e32(+x: Nat) -> Nat: Nat.double(e8(x))
+ 

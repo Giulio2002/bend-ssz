@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r3-p01-words-ok-params/05
+# type: list_uint16_128
+# ops: encode
+# spec: same
+# fault: the upper bound is 258 bytes (129 elements)
+# why: parameter
+# file: types/list_uint16_128_encode_ssz_generated.bend
+# sym: l128_u16_valid,words_ok
+--- a/types/list_uint16_128_encode_ssz_generated.bend
++++ b/types/list_uint16_128_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def l128_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 2)
++def l128_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 258, False{}, 2)
+ 
