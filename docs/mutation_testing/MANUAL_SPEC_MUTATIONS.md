@@ -1442,10 +1442,10 @@ Machine-readable: `docs/mutation_testing/manual_round_4_survivors.json` (48 entr
 | | count |
 |---|---|
 | Faults | **208** |
-| (A) killed by a named law | **160** |
-| (A) survived every checked root | **43** |
+| (A) killed by a named law (160 in the narrow pass, + 1 in the --wide pass) | **161** |
+| (A) survived every checked root | **42** (11 of them re-run with `--wide`: every mentioning root up to 600 s, 20 direct importers, every facade: 6 to 121 roots each, all still check) |
 | (A) UNJUDGED (pinned checker overflows its stack on every root that unfolds `O.padd` / `O.is_poisoned`, also at 1 GiB ulimit / 800 MB JSC stack) | **5** |
-| Survivors + unjudged judged through the public API | 48: critical **13** demonstrated by a probe + **15** argued (same template / conditional / not demonstrated), gap **4**, gap-unreachable **5**, equivalent **11** (6 designed) |
+| Survivors + unjudged judged through the public API | 48 (incl. the wide-killed c02/02, corpus-gap-only): critical **12** demonstrated by a probe + **15** argued (same template / conditional / not demonstrated), gap **4**, gap-unreachable **5**, equivalent **11** (6 designed) |
 
 Verdict (A): `run4.py` = round 3's `run3.py` with the laws of `proofs/slop/*` (marker_poison, crash_fix_laws, constants, fields) tried first among the cheapest roots that import
 the patched file and mention a changed identifier (K = 4, cost <= 60 s), then 1 direct importer, then 1 facade; 120 s per root, STACK retried once at the big stack (CRASH = unjudged).
@@ -1482,7 +1482,7 @@ Per family (killed / survived / unjudged): padd 4/0/3, pz 4/2/0, is_poisoned 4/0
 5. **The NMAX conjunct of every `X_decode_checked` is unpinned** (`a14/01,04,05`): with it dropped (or the bound raised to 2^32 - 1), `X_decode_checked(B.Buf{1 word, 2^32 - 1}, 2^32 - 1)` passes the storage
    test because `(size + 3) >> 2` wraps to 0, and the validator then runs a 4 GiB window over one word (aliased reads). The probe's all-zero word is still refused by the validator (first offset 0), so
    this is not demonstrated; the refusal of the lying claim (CH-05 / R2-04) then rests on the validator alone. `a14/02` (storage counted with floor) reads one aliased word past the array.
-6. **Cached roots after an append are pinned for no Fulu list of this round** (`c02/02` Eth1Data, demonstrated: cached root after `_capp` != root of the uncached list; `c01/05` Deposit, same template).
+6. **The cached append of `List[Deposit, 16]` is unpinned** (`c01/05`, hi not raised after `_capp`). The same fault on `List[Eth1Data, 2048]` (`c02/02`, probe: cached root after `_capp` != root of the uncached list) is killed only by `cached_l2048_Eth1Data: app_state`, a root above the narrow pass cost limit (found by the `--wide` pass); Deposit has no such law.
    `c01/01,03` (`_ctake` does not mark the slot dirty) change the cached root of the taken-from list (probe case 17), an object that is not valid.
    **Unmutated-build observation:** after `l16_Deposit_ctake(c, 1)` the cached root (`2691140158,...`) differs from `l16_Deposit_root` of `l16_Deposit_uncache(c)` (`2188094812,...`)
    (`p4_size` case 17, baseline). The object holds an absent box, so `hash_tree_root` has no contract on it, but docs/API_CONTRACTS.md says for R3-01 "_ctake marks the slot dirty, so the cached
