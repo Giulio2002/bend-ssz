@@ -60,13 +60,72 @@ def or_zero_u(+x: U32) -> {U32.or(x, U32{Word.zero(32n)}) == x : U32}:
   match x:
     case U32{+w}: Equal.cong(Word(32n), U32, v => U32{v}, Word.or(32n, w, Word.zero(32n)), w, or_zero(32n, w))
 
+# A word with 31 free bits is below 2^31.
+def word31_lt(+x: U32, +v: Word(31n), +e: {x == U32{Word.shr.pad(31n, v)} : U32})
+    -> {Nat.is_lt(U32.to_nat(x), F.spec_common__pow2(31n)) == True{} : Bool}:
+  %Equal.sym(U32, x, U32{Word.shr.pad(31n, v)}, e) : {Nat.is_lt(U32.to_nat(_), F.spec_common__pow2(31n)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(U32{Word.shr.pad(31n, v)}), F.spec_numeric__unsigned(32n, Word.shr.pad(31n, v)), F.u32__to_nat_word(Word.shr.pad(31n, v))) : {Nat.is_lt(_, F.spec_common__pow2(31n)) == True{} : Bool}
+  %Equal.sym(Nat, F.spec_numeric__unsigned(32n, Word.shr.pad(31n, v)), F.spec_numeric__unsigned(31n, v), F.u32__pad_value(31n, v)) : {Nat.is_lt(_, F.spec_common__pow2(31n)) == True{} : Bool}
+  %Equal.sym(Nat, F.spec_common__pow2(31n), F.spec_numeric__scale_binary(31n, 1n), F.u32__pow2_scale(31n)) : {Nat.is_lt(F.spec_numeric__unsigned(31n, v), _) == True{} : Bool}
+  F.lru_word_bounds__unsigned_bound(31n, v)
+
+def pow2_succ(+k: Nat) -> {F.spec_common__pow2(1n+k) == Nat.double(F.spec_common__pow2(k)) : Nat}: {==}
+# The word of n one bits, and its value: 1 + (2^n - 1) = 2^n, so the marker 4294967295 is 2^32 - 1 without a closed power.
+def ones(+n: Nat) -> Word(n):
+  match n:
+    case 0n: WNil{}
+    case 1n+ +p: WCon{True{}, ones(p)}
+
+def ones_val(+n: Nat) -> {Nat.add(1n, F.spec_numeric__unsigned(n, ones(n))) == F.spec_numeric__scale_binary(n, 1n) : Nat}:
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      Equal.cong(Nat, Nat, z => Nat.double(z), Nat.add(1n, F.spec_numeric__unsigned(p, ones(p))), F.spec_numeric__scale_binary(p, 1n), ones_val(p))
+
+def umax_succ() -> {Nat.add(1n, U32.to_nat(O.poison())) == F.spec_common__pow2(32n) : Nat}:
+  %Equal.sym(U32, O.poison(), U32{ones(32n)}, {==}) : {Nat.add(1n, U32.to_nat(_)) == F.spec_common__pow2(32n) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32{ones(32n)}), F.spec_numeric__unsigned(32n, ones(32n)), F.u32__to_nat_word(ones(32n))) : {Nat.add(1n, _) == F.spec_common__pow2(32n) : Nat}
+  %Equal.sym(Nat, F.spec_common__pow2(32n), F.spec_numeric__scale_binary(32n, 1n), F.u32__pow2_scale(32n)) : {Nat.add(1n, F.spec_numeric__unsigned(32n, ones(32n))) == _ : Nat}
+  ones_val(32n)
+
+def hp_lem(+a: U32, +b: U32, +ha: {Nat.is_lt(U32.to_nat(a), F.spec_common__pow2(31n)) == True{} : Bool}, +hb: {Nat.is_lt(U32.to_nat(b), F.spec_common__pow2(31n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +P = F.spec_common__pow2(31n)
+  F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), z) == True{} : Bool}, Nat.add(P, P), F.spec_common__pow2(32n),
+    Equal.trans(Nat, Nat.add(P, P), Nat.double(P), F.spec_common__pow2(32n), Equal.sym(Nat, Nat.double(P), Nat.add(P, P), F.lru_nat_algebra__double_self(P)), Equal.sym(Nat, F.spec_common__pow2(32n), Nat.double(P), pow2_succ(31n))),
+    F.nat__le_lt_trans(Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), Nat.add(P, U32.to_nat(b)), Nat.add(P, P), Order.add_right(1n+U32.to_nat(a), P, U32.to_nat(b), F.nat__lt_succ_le_succ(U32.to_nat(a), P, ha)), F.nat__lt_add_left(U32.to_nat(b), P, P, hb)))
+def sum_nw(+a: U32, +b: U32, +ha: {Nat.is_lt(U32.to_nat(a), F.spec_common__pow2(31n)) == True{} : Bool}, +hb: {Nat.is_lt(U32.to_nat(b), F.spec_common__pow2(31n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(a, b)) == Nat.add(U32.to_nat(b), U32.to_nat(a)) : Nat}:
+  +hP = hp_lem(a, b, ha, hb)
+  +step = F.logic__subst(Nat, z => {Nat.is_lt(z, Nat.add(1n+U32.to_nat(a), U32.to_nat(b))) == True{} : Bool}, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), F.nat__add_comm(U32.to_nat(a), U32.to_nat(b)), F.nat__lt_succ(Nat.add(U32.to_nat(a), U32.to_nat(b))))
+  +h1 = F.nat__lt_trans(Nat.add(U32.to_nat(b), U32.to_nat(a)), Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), F.spec_common__pow2(32n), step, hP)
+  VB.add_lt32(a, b, U32.to_nat(a), {==}, h1)
+def umax_succ2() -> {Nat.add(1n, U32.to_nat(O.poison())) == F.spec_common__pow2(32n) : Nat}:
+  umax_succ()
+
+def lt_pois(+a: U32, +b: U32, +ha: {Nat.is_lt(U32.to_nat(a), F.spec_common__pow2(31n)) == True{} : Bool}, +hb: {Nat.is_lt(U32.to_nat(b), F.spec_common__pow2(31n)) == True{} : Bool})
+    -> {Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(O.poison())) == True{} : Bool}:
+  +hP = hp_lem(a, b, ha, hb)
+  +hU = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), z) == True{} : Bool}, F.spec_common__pow2(32n), Nat.add(1n, U32.to_nat(O.poison())), Equal.sym(Nat, Nat.add(1n, U32.to_nat(O.poison())), F.spec_common__pow2(32n), umax_succ()), hP)
+  +hU2 = F.nat__lt_succ_le(Nat.add(1n+U32.to_nat(a), U32.to_nat(b)), U32.to_nat(O.poison()), hU)
+  F.logic__subst(Nat, z => {Nat.is_lt(z, U32.to_nat(O.poison())) == True{} : Bool}, Nat.add(U32.to_nat(a), U32.to_nat(b)), U32.to_nat(U32.add(a, b)), Equal.trans(Nat, Nat.add(U32.to_nat(a), U32.to_nat(b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(U32.add(a, b)), F.nat__add_comm(U32.to_nat(a), U32.to_nat(b)), Equal.sym(Nat, U32.to_nat(U32.add(a, b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), sum_nw(a, b, ha, hb))), F.nat__succ_le_lt(Nat.add(U32.to_nat(a), U32.to_nat(b)), U32.to_nat(O.poison()), hU2))
+def les_lem(+a: U32, +b: U32, +ha: {Nat.is_lt(U32.to_nat(a), F.spec_common__pow2(31n)) == True{} : Bool}, +hb: {Nat.is_lt(U32.to_nat(b), F.spec_common__pow2(31n)) == True{} : Bool})
+    -> {U32.is_le(a, U32.add(a, b)) == True{} : Bool}:
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(a), U32.to_nat(U32.add(a, b))), U32.is_le(a, U32.add(a, b)),
+    Equal.sym(Bool, U32.is_le(a, U32.add(a, b)), Nat.is_le(U32.to_nat(a), U32.to_nat(U32.add(a, b))), VU.le_u32(a, U32.add(a, b))),
+    F.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(a), z) == True{} : Bool}, Nat.add(U32.to_nat(b), U32.to_nat(a)), U32.to_nat(U32.add(a, b)), Equal.sym(Nat, U32.to_nat(U32.add(a, b)), Nat.add(U32.to_nat(b), U32.to_nat(a)), sum_nw(a, b, ha, hb)), Order.left_below_sum(U32.to_nat(b), U32.to_nat(a))))
+
+def lts_lem(+a: U32, +b: U32, +ha: {Nat.is_lt(U32.to_nat(a), F.spec_common__pow2(31n)) == True{} : Bool}, +hb: {Nat.is_lt(U32.to_nat(b), F.spec_common__pow2(31n)) == True{} : Bool})
+    -> {U32.is_lt(U32.add(a, b), O.poison()) == True{} : Bool}:
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(O.poison())), U32.is_lt(U32.add(a, b), O.poison()),
+    Equal.sym(Bool, U32.is_lt(U32.add(a, b), O.poison()), Nat.is_lt(U32.to_nat(U32.add(a, b)), U32.to_nat(O.poison())), F.u32__is_lt_nat(U32.add(a, b), O.poison())), lt_pois(a, b, ha, hb))
+# O.padd (saturating at the marker 4294967295) adds when both addends are below 2^31: the sum is below the marker, does not wrap and is at least a.
 def padd_ok(+a: U32, +b: U32, +av: Word(31n), +bv: Word(31n), +ea: {a == U32{Word.shr.pad(31n, av)} : U32}, +eb: {b == U32{Word.shr.pad(31n, bv)} : U32})
     -> {O.padd(a, b) == U32.add(a, b) : U32}:
-  %Equal.sym(U32, a, U32{Word.shr.pad(31n, av)}, ea) : {U32.or(U32.add(a, b), U32.and(U32.or(_, b), 2147483648)) == U32.add(a, b) : U32}
-  %Equal.sym(U32, b, U32{Word.shr.pad(31n, bv)}, eb) : {U32.or(U32.add(a, b), U32.and(U32.or(U32{Word.shr.pad(31n, av)}, _), 2147483648)) == U32.add(a, b) : U32}
-  %Equal.sym(Word(32n), Word.and(32n, Word.or(32n, Word.shr.pad(31n, av), Word.shr.pad(31n, bv)), top(31n)), Word.zero(32n), and_or_top(31n, av, bv)) :
-    {U32.or(U32.add(a, b), U32{_}) == U32.add(a, b) : U32}
-  or_zero_u(U32.add(a, b))
+  +ha = word31_lt(a, av, ea)
+  +hb = word31_lt(b, bv, eb)
+  %Equal.sym(Bool, Bool.and(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison())), True{}, F.logic__and_intro(U32.is_le(a, U32.add(a, b)), U32.is_lt(U32.add(a, b), O.poison()), les_lem(a, b, ha, hb), lts_lem(a, b, ha, hb))) : {O.pick(_, U32.add(a, b), O.poison()) == U32.add(a, b) : U32}
+  {==}
 
 # ---- a value below 2^k (k <= 31) has a clear top bit ------------------------------------------
 

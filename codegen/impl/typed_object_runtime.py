@@ -447,7 +447,7 @@ def seq_count_bound(t, e):
     (n * es wraps in U32 from n >= 2^32 / es, and the size, validity and writer arithmetic is U32: docs/CRASH_HUNT.md R3-03)."""
     b = t.size
     if e.fixed and e.fsize:
-        b = min(b, ((1 << 31) - 1) // e.fsize)
+        b = min(b, 4294967264 // e.fsize)
     return b
 
 
@@ -1682,7 +1682,7 @@ def _seq_size_put(w, p, e, R, E, S):
         # the size of storage that does not hold n elements is refused (bit 31)
         w(f'def {p}_szf(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
         w('  (arr, +c) = pair')
-        w(f'  ({S}{{arr, n}}, O.pick(Bool.and(U32.is_le(n, c), U32.is_le(n, {((1 << 32) - 2) // es})), (n * {es} : U32), 4294967295))')
+        w(f'  ({S}{{arr, n}}, O.pick(U32.is_le(n, c), (n * {es} : U32), 4294967295))')
         if e.data:
             w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & Array<{R}>:')
             w('  match k:')

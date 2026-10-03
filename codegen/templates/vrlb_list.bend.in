@@ -345,7 +345,7 @@ def sizex(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool})
   %Equal.sym(Array<O.Boxed<T.@E>> & U32, Array.size(O.Boxed<T.@E>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_@P(d, t, okl_pf(t, N, h))) :
     {T.@P_szf(N, _) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {(THL(t, N), O.pick(_, U32.mul(N, @RS), 2147483648)) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}
+    {(THL(t, N), O.pick(_, U32.mul(N, @RS), 4294967295)) == (THL(t, N), U32.mul(N, @RS)) : T.@P_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.

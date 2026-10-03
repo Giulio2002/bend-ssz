@@ -110,7 +110,7 @@ def size_go(${ARGS}, +h: {OKT(${A_}) == ${TRUE}})
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, ok_pf(${A_}, h))) :
     {O.bsz_pick(K, _) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), FD.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw31(${A_}, h), ok_hcap(${A_}, h))) :
-    {(O.Bits{FD.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648)) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
+    {(O.Bits{FD.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295)) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
   {==}
 
 @@ HYP @@

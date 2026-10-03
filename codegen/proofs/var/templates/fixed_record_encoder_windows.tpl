@@ -278,7 +278,7 @@ def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_
   %Equal.sym(Array<T.${R}> & U32, Array.size(T.${R}, ${TH}), (${TH}, FD.u32__pow2u(d)), FD.array__size_thaw(T.${R}, d, A, okl_pf_${p}(A, N, h))) :
     {T.${p}_szf(N, _) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_${p}(A, N, h)) :
-    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 2147483648)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 4294967295)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
@@ -876,7 +876,7 @@ def sizex_${p}(+A: ${TRR}, +N: U32, +h: {OKL_${p}(A, N) == ${TRUE}}) -> {T.${p}_
   %Equal.sym(Array<T.${R}> & U32, Array.size(T.${R}, ${TH}), (${TH}, FD.u32__pow2u(d)), FD.array__size_thaw(T.${R}, d, A, okl_pf_${p}(A, N, h))) :
     {T.${p}_szf(N, _) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_${p}(A, N, h)) :
-    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 2147483648)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
+    {(THL_${p}(A, N), O.pick(_, U32.mul(N, ${RS}), 4294967295)) == (THL_${p}(A, N), U32.mul(N, ${RS})) : T.${p}_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
@@ -1437,7 +1437,7 @@ def sizex(m, hok):
       %Equal.sym(Array<T.@R> & U32, Array.size(T.@R, @TH), (@TH, FD.u32__pow2u(da)), FD.array__size_thaw(T.@R, da, A, ok_1(da, A, N, hok))) :
         {T.@p_szf(N, _) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
       %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, hok)) :
-        {(T.@p_Seq{@TH, N}, O.pick(_, U32.mul(N, @RS), 2147483648)) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
+        {(T.@p_Seq{@TH, N}, O.pick(_, U32.mul(N, @RS), 4294967295)) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
       {==}
 
 law validx:

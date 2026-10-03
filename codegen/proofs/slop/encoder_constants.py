@@ -234,7 +234,7 @@ def build_name_laws(tx, X, idx, files, syms):
             continue
         b = tx.blk[nm]
         m = re.fullmatch(r'(\w+)_pk', nm)
-        if m and re.search(r'case False\{\}: \(out, \(o, 2147483648\)\)$', b):
+        if m and re.search(r'case False\{\}: \(out, \(o, 4294967295\)\)$', b):
             sg = tx.get(nm)
             A = ptype(sg[0][2]).rsplit(' & ', 1)[0]
             QA = qual(A)
@@ -242,7 +242,7 @@ def build_name_laws(tx, X, idx, files, syms):
                          f'def {X}_mc_poison_{m.group(1)}(out: Array<U32>, pos: U32, o: {QA})\n'
                          f'    -> {{T.{nm}(out, pos, (o, False{{}})) == (out, (o, O.poison())) : Array<U32> & ({QA} & U32)}}:\n  {{==}}'))
         m = re.fullmatch(r'(\w+)_bx_putk', nm)
-        if m and re.search(r'case O\.BNone\{\}: \(out, \(O\.BNone\{\}, 2147483648\)\)$', b):
+        if m and re.search(r'case O\.BNone\{\}: \(out, \(O\.BNone\{\}, 4294967295\)\)$', b):
             sg = tx.get(nm)
             Bx = ptype(sg[0][2])         # O.Boxed<A>
             A = Bx[len('O.Boxed<'):-1]

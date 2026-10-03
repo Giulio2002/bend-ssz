@@ -20,7 +20,7 @@ def encode_eval(${AS}):
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
     {T.${X}_enc_sized(O.bsz_pick(K, _)) == ${RE} : O.Bits & B.Buf}
   %Equal.sym(Bool, ${CAP}, True{}, CO.capT(K, dw, hdw, hcap)) :
-    {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == ${RE} : O.Bits & B.Buf}
+    {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295))) == ${RE} : O.Bits & B.Buf}
   %Equal.sym(Array<U32>, ${ZB}, ${ZT},
       Equal.trans(Array<U32>, ${ZB}, Array.new(U32, ${DO}, 0), ${ZT},
         F.logic__subst(Nat, z => {${ZB} == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(CO.NK(K)))), ${DO},

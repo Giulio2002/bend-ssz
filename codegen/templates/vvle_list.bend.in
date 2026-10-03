@@ -95,7 +95,7 @@ def wsize(+t: F.array__Tree<U32>, +n: U32, +h: {WOK(t, n) == True{} : Bool})
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, wok_pf(t, n, h))) :
     {O.wsz_pick(n, _) == (O.Words{F.array__thaw(U32, t), n}, n) : O.Words & U32}
   %Equal.sym(Bool, U32.is_le(VC.nwu(n), F.u32__pow2u(d)), True{}, VE.le_room(n, d, hd, VBR.nwleU(d, n, VB.le_nmax(n, VB.u32le_trans(n, @LIM, VB.NMAX(), wok_lim(t, n, h), {==})), wok_n(t, n, h)))) :
-    {(O.Words{F.array__thaw(U32, t), n}, O.pick(_, n, 2147483648)) == (O.Words{F.array__thaw(U32, t), n}, n) : O.Words & U32}
+    {(O.Words{F.array__thaw(U32, t), n}, O.pick(_, n, 4294967295)) == (O.Words{F.array__thaw(U32, t), n}, n) : O.Words & U32}
   {==}
 
 # ---- the mirror array ---------------------------------------------------------------------------

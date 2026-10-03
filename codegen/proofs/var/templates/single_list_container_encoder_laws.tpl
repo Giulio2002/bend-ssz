@@ -75,7 +75,7 @@ def size_eval(${ALLP})
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {${Tn}_sz0(${FIXOBJS}, ${FS}, O.wsz_pick(N, _)) == ${RS} : ${Tn} & U32}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw, hroom)) :
-    {(${OBJ}, O.padd(${FS}, O.pick(_, N, 2147483648))) == ${RS} : ${Tn} & U32}
+    {(${OBJ}, O.padd(${FS}, O.pick(_, N, 4294967295))) == ${RS} : ${Tn} & U32}
   %Equal.sym(U32, O.padd(${FS}, N), SFS(N), padd(${NCa})) : {(${OBJ}, _) == ${RS} : ${Tn} & U32}
   {==}
 

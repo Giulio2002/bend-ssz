@@ -366,19 +366,19 @@ def size_eval(${ALLP})
   %Equal.sym(Array<T.${R[0]}> & U32, Array.size(T.${R[0]}, FD.array__thaw(T.${R[0]}, A0)), (FD.array__thaw(T.${R[0]}, A0), FD.u32__pow2u(da0)), FD.array__size_thaw(T.${R[0]}, da0, A0, pfa0)) :
     {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, T.${p[0]}_szf(n0, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n0, FD.u32__pow2u(da0)), True{}, ${CAPS[0]}) :
-    {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, (${SEQ(0)}, O.pick(_, U32.mul(n0, ${RS[0]}), 2147483648))) == RHS : ${SZ}}
+    {T.${X}_sz0(${SEQ(1)}, ${SEQ(2)}, 12, (${SEQ(0)}, O.pick(_, U32.mul(n0, ${RS[0]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(12, N0(n0)), S1(n0), pd1(${NA})) :
     {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, _, T.${p[1]}_size(${SEQ(1)})) == RHS : ${SZ}}
   %Equal.sym(Array<T.${R[1]}> & U32, Array.size(T.${R[1]}, FD.array__thaw(T.${R[1]}, A1)), (FD.array__thaw(T.${R[1]}, A1), FD.u32__pow2u(da1)), FD.array__size_thaw(T.${R[1]}, da1, A1, pfa1)) :
     {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), T.${p[1]}_szf(n1, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n1, FD.u32__pow2u(da1)), True{}, ${CAPS[1]}) :
-    {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), (${SEQ(1)}, O.pick(_, U32.mul(n1, ${RS[1]}), 2147483648))) == RHS : ${SZ}}
+    {T.${X}_sz1(${SEQ(2)}, ${SEQ(0)}, S1(n0), (${SEQ(1)}, O.pick(_, U32.mul(n1, ${RS[1]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(S1(n0), N1(n1)), S2(n0, n1), pd2(${NA})) :
     {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, _, T.${p[2]}_size(${SEQ(2)})) == RHS : ${SZ}}
   %Equal.sym(Array<T.${R[2]}> & U32, Array.size(T.${R[2]}, FD.array__thaw(T.${R[2]}, A2)), (FD.array__thaw(T.${R[2]}, A2), FD.u32__pow2u(da2)), FD.array__size_thaw(T.${R[2]}, da2, A2, pfa2)) :
     {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), T.${p[2]}_szf(n2, _)) == RHS : ${SZ}}
   %Equal.sym(Bool, U32.is_le(n2, FD.u32__pow2u(da2)), True{}, ${CAPS[2]}) :
-    {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), (${SEQ(2)}, O.pick(_, U32.mul(n2, ${RS[2]}), 2147483648))) == RHS : ${SZ}}
+    {T.${X}_sz2(${SEQ(0)}, ${SEQ(1)}, S2(n0, n1), (${SEQ(2)}, O.pick(_, U32.mul(n2, ${RS[2]}), 4294967295))) == RHS : ${SZ}}
   %Equal.sym(U32, O.padd(S2(n0, n1), N2(n2)), S3(n0, n1, n2), pd3(${NA})) :
     {(${OE}, _) == RHS : ${SZ}}
   {==}

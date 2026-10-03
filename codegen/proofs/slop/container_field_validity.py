@@ -87,9 +87,9 @@ def laws_of(tx, X, t):
         rhs = re.sub(r'(?<![\w.])(\w+_valid)\(', r'T.\1(', want)
         laws.append(f'def {X}_serialize_vfields({params})\n    -> {{T.{X}_valid(T.{X}{{{", ".join(n for n, _ in fields)}}}) == {rhs} : Bool}}:\n  {{==}}')
     if rng and tx.get(f'{X}_serialize'):
-        # the poison marker of the fused check: a false flag is bit 31, a true one is 0, and the test reads bit 31 (at exactly 2^31 too)
+        # the poison marker of the fused check: a false flag is the marker 4294967295, a true one is 0, and the test reads a size above NMAX = 4294967264 (at 4294967265 too)
         for tag, stmt in (('false_flag', 'O.is_poisoned(O.pz(False{})) == True{}'), ('true_flag', 'O.is_poisoned(O.pz(True{})) == False{}'),
-                          ('below', 'O.is_poisoned(2147483647) == False{}'), ('carried', 'O.is_poisoned(O.padd(5, 2147483648)) == True{}')):
+                          ('below', 'O.is_poisoned(4294967264) == False{}'), ('carried', 'O.is_poisoned(O.padd(5, 4294967295)) == True{}')):
             laws.append(f'def {X}_serialize_vpoison_{tag}()\n    -> {{{stmt} : Bool}}:\n  {{==}}')
     for fn, _, bad in rng:
         obj = f'T.{X}_set_{fn}_go(T.{X}_default(), {bad})'
@@ -172,7 +172,7 @@ def witness_laws(tx, X, fu_t):
         pair = ' & O.Encoded' in go.split('\n', 1)[0]
         snd = (lambda c: f'Pair.snd({qual(X)}, O.Encoded, {c})') if pair else (lambda c: c)    # noqa: E731
         laws.append(f'def {X}_serialize_vrefuse_bad_flag()\n    -> {{{snd(f"T.{X}_senc_go(True{{}}, 0, T.{X}_default())")} == O.refused() : O.Encoded}}:\n  {{==}}')
-        laws.append(f'def {X}_serialize_vrefuse_poisoned_size()\n    -> {{{snd(f"T.{X}_senc_sized((T.{X}_default(), 2147483648))")} == O.refused() : O.Encoded}}:\n  {{==}}')
+        laws.append(f'def {X}_serialize_vrefuse_poisoned_size()\n    -> {{{snd(f"T.{X}_senc_sized((T.{X}_default(), 4294967295))")} == O.refused() : O.Encoded}}:\n  {{==}}')
     for fn, ty in decls[X]:
         if ty.startswith(f'{X}_g') and ty in decls:         # a group of fields: its own setters, the others at their default
             for gf, gty in decls[ty]:
@@ -203,7 +203,7 @@ def box_laws(tx, X, t):
     out = [f'def {X}_serialize_vreject_bx_size()\n    -> {{T.{X}_bx_size(O.BNone{{}}) == (O.BNone{{}}, 0) : {B} & U32}}:\n  {{==}}',
            f'def {X}_serialize_vreject_bx_valid()\n    -> {{T.{X}_bx_valid(O.BNone{{}}) == (O.BNone{{}}, False{{}}) : {B} & Bool}}:\n  {{==}}']
     if f'{X}_bx_putk' in tx.blk and MC.min_size(t) <= SERIALIZE_MAX:
-        out.append(f'def {X}_serialize_vpoison_bx_absent()\n    -> {{Pair.snd({B}, U32, Pair.snd(Array<U32>, {B} & U32, T.{X}_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{{}}))) == 2147483648 : U32}}:\n  {{==}}')
+        out.append(f'def {X}_serialize_vpoison_bx_absent()\n    -> {{Pair.snd({B}, U32, Pair.snd(Array<U32>, {B} & U32, T.{X}_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{{}}))) == 4294967295 : U32}}:\n  {{==}}')
         # a present box holds the verdict of its value: the box of an invalid X is poisoned (the writer's flag), the box of the default is not
         decls = type_decls(tx)
         bad = [(fn, b) for fn, ty in decls.get(X, []) for _, b in bad_values(tx, decls, ty)[:1] if f'{X}_set_{fn}' in tx.blk]

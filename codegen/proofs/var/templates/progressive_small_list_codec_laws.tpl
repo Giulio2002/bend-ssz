@@ -486,7 +486,7 @@ def encode_eval(dw, T, N, pfT, hdw, hN):
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {T.@X_enc_sized(O.wsz_pick(N, _)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hsrc(dw, N, hdw, hN))) :
-    {T.@X_enc_sized((OBJ(T, N), O.pick(_, N, 2147483648))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {T.@X_enc_sized((OBJ(T, N), O.pick(_, N, 4294967295))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, DO, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), DO, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
     {T.@X_enc_put(N, T.@p_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
@@ -723,7 +723,7 @@ def sizex(m, hok):
       %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, ok_pf(dw, T, N, hok))) :
         {O.wsz_pick(N, _) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
       %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}), hsrc(dw, N, hdw, ok_hN(dw, T, N, hok)))) :
-        {(O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 2147483648)) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
+        {(O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 4294967295)) == (O.Words{FD.array__thaw(U32, T), N}, N) : O.Words & U32}
       {==}
 
 law encx_spec:

@@ -258,7 +258,7 @@ def encode_eval(dw, T, N, c, pfT, hdw, ec, hroom):
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {${Tn}_enc_sized(O.wsz_pick(N, _)) == ${RHS} : ${TY}}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, VL.roomwA(dw, N, ${m}, hdw, e4, hroom))) :
-    {${Tn}_enc_sized((${O_}, O.pick(_, N, 2147483648))) == ${RHS} : ${TY}}
+    {${Tn}_enc_sized((${O_}, O.pick(_, N, 4294967295))) == ${RHS} : ${TY}}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, VL.DO(N), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), VL.DO(N), VD.wdu(VC.nwu(N)), Z.zs(B.words_depth_u(VC.nwu(N))))) :
     {${Tn}_enc_put(N, T.${lp}_putn(_, 0, ${O_})) == ${RHS} : ${TY}}

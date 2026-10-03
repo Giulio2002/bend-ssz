@@ -112,7 +112,7 @@ def size_eval(${ALLP})
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
     {${Tn}_sz0(${FIXOBJS}, ${FS}, O.bsz_pick(K, _)) == ${RS} : ${Tn} & U32}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), FD.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw, hcap)) :
-    {${Tn}_sz0(${FIXOBJS}, ${FS}, (${OBB}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == ${RS} : ${Tn} & U32}
+    {${Tn}_sz0(${FIXOBJS}, ${FS}, (${OBB}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295))) == ${RS} : ${Tn} & U32}
   %Equal.sym(U32, O.padd(${FS}, CO.NK(K)), SFS(K), padd(K, ${HN})) : {(${OBJ}, _) == ${RS} : ${Tn} & U32}
   {==}
 
@@ -365,7 +365,7 @@ def cr(${PS}) -> CO.CR(${DO}, T, K):
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
     {T.${X}_enc_sized(O.bsz_pick(K, _)) == ${RE} : O.Bits & B.Buf}
   %Equal.sym(Bool, ${CAP}, True{}, CO.capT(K, dw, hdw, hcap)) :
-    {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == ${RE} : O.Bits & B.Buf}
+    {T.${X}_enc_sized((${OBJ}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 4294967295))) == ${RE} : O.Bits & B.Buf}
 @@ name_module_lines_9 @@
   %Equal.sym(Array<U32>, ${ZB}, ${ZT},
       Equal.trans(Array<U32>, ${ZB}, Array.new(U32, CO.DOK(K), 0), ${ZT},

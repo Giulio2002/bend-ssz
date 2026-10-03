@@ -40,7 +40,7 @@ from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 
 DCHW = re.compile(r'^def (\w+)_dchw\(\+size: U32, \+n: U32, pair: B\.Buf & U32\) -> B\.Buf & Maybe<&1, ([\w.]+)>:\n'
                   r'  \(buf, \+c\) = pair\n'
-                  r'  \w+_dgo\(Bool\.and\(Bool\.and\(U32\.is_le\(size, n\), U32\.is_lt\(size, 2147483648\)\), U32\.is_le\(U32\.shrn\(\(size \+ 3 : U32\), 2n\), c\)\), buf, size\)$', re.M)
+                  r'  \w+_dgo\(Bool\.and\(Bool\.and\(U32\.is_le\(size, n\), U32\.is_le\(size, 4294967264\)\), U32\.is_le\(U32\.shrn\(\(size \+ 3 : U32\), 2n\), c\)\), buf, size\)$', re.M)
 CHECKED = re.compile(r'^def (\w+)_decode_checked\(buf: B\.Buf, \+size: U32\) -> B\.Buf & Maybe<&1, [\w.]+>: \w+_dchk\(size, B\.size\(buf\)\)$', re.M)
 DCHK = re.compile(r'^def (\w+)_dchk\(\+size: U32, pair: B\.Buf & U32\) -> B\.Buf & Maybe<&1, [\w.]+>:\n  \(buf, \+n\) = pair\n  \w+_dchw\(size, n, B\.stored\(buf\)\)$', re.M)
 
@@ -106,7 +106,7 @@ def laws_of(X, V, win):
 
     def law(tag, stmt):
         out.append(f'def {X}_decode_vchecked_{tag}()\n    -> {{{stmt}}}:\n  {{==}}')
-    law('limit', f'{snd(f"T.{X}_dchw(2147483648, 2147483648, (B.empty(), 536870912))")} == None{{}} : {M}')
+    law('limit', f'{snd(f"T.{X}_dchw(4294967265, 4294967265, (B.empty(), 1073741824))")} == None{{}} : {M}')
     if win is None:
         # no known valid window: only what is refused whatever the type decodes
         law('window', f'{snd(f"T.{X}_dchw(5, 4, (B.empty(), 8))")} == None{{}} : {M}')

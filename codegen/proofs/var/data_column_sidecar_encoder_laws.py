@@ -153,19 +153,19 @@ def size_eval({ALLP})
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T0)), (FD.array__thaw(U32, T0), FD.u32__pow2u(dw0)), FD.array__size_thaw(U32, dw0, T0, pf0)) :
     {{T.{X}_sz0({U}, {W1}, {W2}, {HB}, {WP}, 356, O.wsz_pick(N0, _)) == RHS : T.{X} & U32}}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N0), FD.u32__pow2u(dw0)), True{{}}, VE.le_room(N0, dw0, hdw0, hr0)) :
-    {{T.{X}_sz0({U}, {W1}, {W2}, {HB}, {WP}, 356, ({W0}, O.pick(_, N0, 2147483648))) == RHS : T.{X} & U32}}
+    {{T.{X}_sz0({U}, {W1}, {W2}, {HB}, {WP}, 356, ({W0}, O.pick(_, N0, 4294967295))) == RHS : T.{X} & U32}}
   %Equal.sym(U32, O.padd(356, N0), {S1}, pd1({NH})) :
     {{T.{X}_sz1({U}, {W2}, {HB}, {WP}, {W0}, _, T.l4096_b48_size({W1})) == RHS : T.{X} & U32}}
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T1)), (FD.array__thaw(U32, T1), FD.u32__pow2u(dw1)), FD.array__size_thaw(U32, dw1, T1, pf1)) :
     {{T.{X}_sz1({U}, {W2}, {HB}, {WP}, {W0}, {S1}, O.wsz_pick(N1, _)) == RHS : T.{X} & U32}}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N1), FD.u32__pow2u(dw1)), True{{}}, VE.le_room(N1, dw1, hdw1, hr1)) :
-    {{T.{X}_sz1({U}, {W2}, {HB}, {WP}, {W0}, {S1}, ({W1}, O.pick(_, N1, 2147483648))) == RHS : T.{X} & U32}}
+    {{T.{X}_sz1({U}, {W2}, {HB}, {WP}, {W0}, {S1}, ({W1}, O.pick(_, N1, 4294967295))) == RHS : T.{X} & U32}}
   %Equal.sym(U32, O.padd({S1}, N1), {S2}, pd2({NH})) :
     {{T.{X}_sz2({U}, {HB}, {WP}, {W0}, {W1}, _, T.l4096_b48_size({W2})) == RHS : T.{X} & U32}}
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T2)), (FD.array__thaw(U32, T2), FD.u32__pow2u(dw2)), FD.array__size_thaw(U32, dw2, T2, pf2)) :
     {{T.{X}_sz2({U}, {HB}, {WP}, {W0}, {W1}, {S2}, O.wsz_pick(N2, _)) == RHS : T.{X} & U32}}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N2), FD.u32__pow2u(dw2)), True{{}}, VE.le_room(N2, dw2, hdw2, hr2)) :
-    {{T.{X}_sz2({U}, {HB}, {WP}, {W0}, {W1}, {S2}, ({W2}, O.pick(_, N2, 2147483648))) == RHS : T.{X} & U32}}
+    {{T.{X}_sz2({U}, {HB}, {WP}, {W0}, {W1}, {S2}, ({W2}, O.pick(_, N2, 4294967295))) == RHS : T.{X} & U32}}
   %Equal.sym(U32, O.padd({S2}, N2), {S3}, pd3({NH})) :
     {{({OE}, _) == RHS : T.{X} & U32}}
   {{==}}
