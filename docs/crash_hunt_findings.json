@@ -459,5 +459,102 @@
     "proof_impact": "guard text as R2-05; cache_at is stated with d symbolic in the cache laws (larger change), so documentation is the cheap option"
    }
   ]
+ },
+ "round4": {
+  "branch": "agent/crash-hunt-r4",
+  "base": "506290081",
+  "counts": {
+   "findings": 4,
+   "info": 2,
+   "high": 0,
+   "medium": 1,
+   "low": 3,
+   "CRASH": 1,
+   "WRONG": 3
+  },
+  "ok_suites": [
+   "regress.sh: 57 of 57 pass on 506290081",
+   "gen_lie_r4.py: 102 packed collections, 8-word storage, claims incl. NMAX-1, NMAX, NMAX+1, 2^32-4, 2^32-2, floor(NMAX/es)*es+-es: 11,656 runs, 0 abort / hang / >3 GB / >8 s (43 runner verdicts are honest claims the storage holds)",
+   "padd saturation on ProgressiveComplexTestStruct totals NMAX (ok, 4294967264 bytes), NMAX+1, 2^32-2, 2^32-1, 2^32+5, wrap: refused, _encode length 0",
+   "append bounds with 4 GiB storage: pl_u8 at NMAX-1 ok then serialize 4294967264 bytes, at NMAX refused; pl_u16 at 2147483631 ok, 2147483632 refused",
+   "decode_checked of an honest 4 GiB buffer: NMAX Some, NMAX+1 and 2^32-1 None",
+   "roots of proglist_uint8 (2^32-4), proglist_uint64 (2^32-8), List[uint8,2^40] (2^32-4) in clean storage equal the reference",
+   "big record lists: decode of up to 1,073,741,808 SmallTestStructs (4.29 GB input, 12.6 GB RSS), appends at 2^26..2^29 SmallTestStructs and 2^26 PendingPartialWithdrawals: linear, flag 1"
+  ],
+  "findings": [
+   {
+    "id": "R4-02",
+    "severity": "medium",
+    "class": "CRASH",
+    "entry_point": "ProgressiveComplexTestStruct_decode_checked / _decode (and ProgressiveTestStruct, any container holding proglist_proglist_VarTestStruct, proglist_ProgressiveVarTestStruct, by the same arithmetic proglist_VarTestStruct)",
+    "input": "a VALID encoding of 4,294,967,262 bytes whose f_F holds 1,073,741,808 empty inner lists; or 4,294,967,252 bytes whose f_H holds 306,783,373 default ProgressiveVarTestStructs",
+    "repro": "tools/crash_hunt/pn_r4.bend SSZ_CASE=18 SSZ_ARG=1073741808, SSZ_CASE=19 SSZ_ARG=306783373 (R4_DMEM=134217728 tools/crash_hunt/r4run.sh build/ch/pn4 CASE ARG 0 0 0 600)",
+    "observed": "bend: out of memory, exit 1, after 74 s / 52 s at 61.9 GB RSS; 2^29 empty lists (2 GiB) decode in 60 s at 37.8 GB, 2^28 ProgressiveVarTestStructs (3.76 GB) at 56.6 GB",
+    "call_chain": "X_decode_checked -> X_decode_in -> X_read -> pl_pl_VarTestStruct_read / pl_ProgressiveVarTestStruct_read: one boxed element per offset (about 64 heap bytes per 4 input bytes, 195 per 14)",
+    "why": "the runtime heap stops at 61.9 GB whatever ulimit -d allows; the NMAX lift made 2^31..NMAX windows decodable and the in-memory form of the largest of them does not fit (before: < 2^31 bytes, <= 2^29 offsets, 38 GB)",
+    "fix": "a count bound for variable-size-element lists in X_decode_checked (e.g. 2^28, documented as a capacity limit next to NMAX), or a cheaper empty element, or documentation of the practical limit (about 3.5 GB of such lists)",
+    "proof_impact": "bound in the checked entry only: its slop laws (as R2-04); the frozen decode statements are about _decode"
+   },
+   {
+    "id": "R4-01",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "_hash_tree_root / _root of the packed lists without a limit: proglist_uint8, proglist_uint16..uint128, proglist_bool, Fulu_list_uint8_1099511627776, Fulu_list_uint64_1099511627776",
+    "input": "O.Words{Array.new(U32, 30n, 0) with a data word at 2^30-3 and a non-zero word 2^30-1 past the length, n} for NMAX < n <= 2^32-4 (measured n = 4294967292, 4294967288)",
+    "repro": "tools/crash_hunt/pn_r4.bend SSZ_CASE=1/2 (proglist_uint8), 3/4 (proglist_uint64), 5/6 (List[uint8,2^40]) SSZ_ARG=4294967292 (4294967288 for uint64)",
+    "observed": "valid=1 and root 3092528689,... (dirty tail) against 2732131542,... for the same bytes in clean storage, which equals the reference; the same split for uint64 and List[uint8,2^40]",
+    "call_chain": "X_root -> words_root(_prog) -> wr_cap (last chunk dirty) -> wr_slow (covered) -> wr_clean(words_copy(n, ws)) -> zeros_for(n): (n + 31) >> 5 wraps, 8-word copy, cc_go copies 2^30 words through the index mask",
+    "why": "the CH-11 / R2-02(b) clean copy allocates with the U32 chunk rounding, which wraps above NMAX; words_ok has no NMAX bound for big lists, so such an object is valid",
+    "fix": "take the clean copy only for n <= NMAX (else the cap_cnt path) or size it wrap-free like bits_nbytes; or bound words_ok by NMAX for big lists (R4-05)",
+    "proof_impact": "first two: src/obj.bend only (root laws hold under rep, below NMAX); the third changes the *_valid statements"
+   },
+   {
+    "id": "R4-04",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "CompatibleUnionA_size, CompatibleUnionBC_size, CompatibleUnionABCA_size (four sz* defs), hence _encode",
+    "input": "CompatibleUnionBC_c0{ProgressiveSingleListContainerTestStruct{O.Bits{1-word array, 4294967295 or 1000}}}",
+    "repro": "tools/crash_hunt/pn_r4.bend SSZ_CASE=17 SSZ_ARG=4294967295 SSZ_DEPTH=0",
+    "observed": "size=0 valid=0 ser_ok=0 enc_len=0",
+    "call_chain": "X_size -> sz<k>: (m + 1 : U32) with m the payload marker 4294967295",
+    "why": "the selector byte is added with a plain U32 sum; with the old marker 2^31 bit 31 survived, with 4294967295 it wraps to 0 (regression of the marker change); _serialize unaffected (checked writer sees valid=0), no container holds a union",
+    "fix": "O.padd(m, 1) in the union size pass (generator)",
+    "proof_impact": "union size laws: m + 1 for a valid payload equals padd(m, 1); one rewrite per union"
+   },
+   {
+    "id": "R4-03",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "proglist_proglist_VarTestStruct size pass and writer (pl_pl_VarTestStruct_sz_fin, pv / pvn_nz), via ProgressiveComplexTestStruct / ProgressiveTestStruct _serialize",
+    "input": "a list of n >= 2^30 empty inner lists (reasoned; building it aborts the runtime first)",
+    "repro": "tools/crash_hunt/pn_r4.bend SSZ_CASE=16 SSZ_DEPTH=26 (ok, 268435486 bytes), SSZ_DEPTH=30 (bend: out of memory at 61.9 GB, 60 s)",
+    "observed": "latent: O.padd((4 * n : U32), m) and the cursor (4 * n : U32) wrap at n = 2^30 (size 0, serialize would answer ok with 30 bytes)",
+    "call_chain": "X_serialize -> X_size -> pl_pl_VarTestStruct_sz_fin; writer pl_pl_VarTestStruct_pvn_nz",
+    "why": "the offset table size is not a checked product; only this list can reach it (other element types are >= 7 bytes, padd saturates first); append bound n < 2^32-1; _decode cannot (4n > NMAX)",
+    "fix": "O.mulc(n, 4) in the size pass, or the append bound n < floor(NMAX / 4) for variable-size-element lists",
+    "proof_impact": "var-list size laws (one product) and the append guard text of one list"
+   },
+   {
+    "id": "R4-05",
+    "severity": "info",
+    "class": "INFO",
+    "entry_point": "X_valid of big packed lists (words_ok), of fixed-size composite lists (va_cap), of containers",
+    "input": "Words claim NMAX < n <= 2^32-4 in 4 GiB storage; ProgressiveComplexTestStruct with totals NMAX+1 .. 2^32+5",
+    "repro": "pn_r4.bend SSZ_CASE=1..6 and SSZ_CASE=11 (SSZ_D=4294967232, SSZ_K=24/256/264/312; SSZ_D=4294967264 SSZ_K=2147483648)",
+    "observed": "valid=1 while _serialize refuses (ser_ok=0) and _encode returns length 0",
+    "why": "validity tests storage and per-field bounds, not the NMAX size limit; _hash_tree_root takes _valid as its precondition (R4-01)",
+    "fix": "document that valid does not imply encodable above NMAX, or bound words_ok for big lists",
+    "proof_impact": "documentation: none"
+   },
+   {
+    "id": "R4-06",
+    "severity": "info",
+    "class": "INFO",
+    "entry_point": "docs/API_CONTRACTS.md",
+    "observed": "table rows X_decode_checked (size < 2^31), X_serialize (2^31 marker, R3-03 known gap), X_encode (allocates the 2^31 marker), X_set/X_append (17,747,798 validators) contradict the closing paragraph and the code",
+    "fix": "update the rows to marker 4294967295, NMAX, _encode empty, 35,495,597 validators",
+    "proof_impact": "none"
+   }
+  ]
  }
 }

@@ -8,7 +8,7 @@ Machine-readable list: `docs/crash_hunt_findings.json`. Raw outputs: `docs/crash
 
 
 Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3),
-section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12) and the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04, last section) update the table below.
+section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12), the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04) and the round-4 hunter report (R4.1 to R4.4, R4-01 to R4-06, last section) update the table below.
 
 ## 0. Status after the fix series (agent/crash-fix)
 
@@ -538,7 +538,7 @@ Repro (`pn_r4.bend`, server, `R4_DMEM=134217728 tools/crash_hunt/r4run.sh build/
   ARG = 2^29 (2 GiB input): `Some`, 37.8 GB, 60 s. ARG = 2^24: 1 GB above the 4 GiB input.
 * case 19, ARG = 306,783,373: f_H holds 306,783,373 default ProgressiveVarTestStructs (10 bytes each, 4,294,967,252 bytes): **`bend: out of memory`, exit 1, after 52 s at 61.9 GB**. ARG = 2^28 (3.76 GB): `Some`, 56.6 GB.
 Why: the decoder builds one boxed element per offset; an empty `proglist_VarTestStruct` costs about 64 bytes of heap for its 4 input bytes, a ProgressiveVarTestStruct about 195 bytes for 14 (amplification 13 to 16).
-The native runtime's heap stops at the same 61.9 GB in every run whatever `ulimit -d` allows (64 and 128 GiB tried), so the abort is the runtime's, not the machine's. Before agent/size-limit the window was
+The native runtime's heap stops at the same 61.9 GB in every run with `ulimit -d` at 128 GiB and 200 GB of free memory on the machine, so the abort is the runtime's heap limit, not the machine's. Before agent/size-limit the window was
 below 2^31 bytes (at most 2^29 offsets, 38 GB): the lift to NMAX made these inputs decodable in principle and they now abort. Inputs up to about 3.5 GB of such lists decode.
 Fix options (generator, the `_ok` of the variable-size-element lists, or only `_dchw`): (a) a count bound in `X_decode_checked` for a list of variable-size elements (for example 2^28 elements, documented as
 a capacity limit next to NMAX), (b) a cheaper representation of an empty element (the default inner list allocates its own array leaf), (c) document the practical limit. (a) touches only the checked entry
