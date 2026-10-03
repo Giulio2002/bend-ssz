@@ -422,3 +422,67 @@ No crash and no way for an honest object to get there; the index mask is documen
 Not run: honest objects of 2^31 bytes or more (the wrap of R3-03 was reached by a valid object of 2^25 slots, which needs 8.4 GB, not by 22 million separate appends); the 240 names one by one through
 the batch mutation driver (the three real containers and the ten variable-size generic types were; the 102 packed collections went through the differential and lying-object sweeps instead); the union selectors of the 200 other names (round 1 swept them).
 Generated programs are not committed: `gen_*.py` rebuild them (`gen ... --out tools/crash_hunt/<dir>`; compile with the pinned toolchain, one program per name).
+
+
+## 8. Fourth pass (agent/crash-fix4): the four round-3 findings
+
+Branch `agent/crash-fix4` is main (b1e3c20ee, then f683ee2c6) plus the round-3 hunter's commits and these fixes. Regression: `tools/crash_hunt/regress.sh`
+(cases 1-39 of `pf_fixed.bend`; cases 31-39 are new, 39 of 39 pass), `proofs/slop/crash/crash_fix_laws_generated.bend` (nine new laws),
+`codegen/tests/test_append_guards.py`, and the round-3 campaigns re-run on the fixed tree (`tools/crash_hunt/run_round3.sh` (b), (d): 167 packed collections built by
+`_append` / `_set` against the reference with 0 mismatches, 18 lists of composites cached = plain on every scenario, 7,608 lying-object runs with no abort, no hang and no allocation in
+proportion to a claim).
+
+| id | status | what changed | regression |
+|---|---|---|---|
+| R3-01 | FIXED by renaming the boxed getters | `_get` / `_cget` of the nine kinds with boxed elements are `_take` / `_ctake`; `_ctake` marks the slot dirty; `_get` / `_cget` stay for the copyable kinds | `regress.sh` cases 38, 39; laws `unboxed_get_keeps_the_list`, `boxed_take_leaves_a_hole`; probes `pl_r3`, `pm_r3` (renamed) |
+| R3-02 | FIXED | every append guard also tests the storage: `n <= Array.size(arr)` (composite lists, cached `_capp`), `ceil(n * es / 4) <= words of storage` (packed lists, cells), `ceil(ceil(k / 8) / 4) <= words` (bit lists); `_force` and `_dump` visit `min(n, storage)` elements; `O.dump_bytes` clamps to the storage | `regress.sh` cases 31-37; laws `*_claim_over_storage_refused`, `pl_u8_append_tight_storage_accepted`; `test_append_guards.py` |
+| R3-03 | PARTIAL | the append / `_capp` guard of a list of fixed-size composites is bounded by the count whose encoding stays below 2^31 bytes (17,747,798 validators, 11,184,810 pending deposits, 89,478,485 pending partial withdrawals, and 536,870,911 for the progressive list of 4-byte records): the API can no longer build a list beyond it. `valid` / `szf` of a HAND-BUILT list beyond the bound are unchanged: see 8.3 | `test_append_guards.py` (`test_composite_count_bound_keeps_the_encoding_below_2_31_bytes`) |
+| R3-04 | DOCUMENTED | lying objects (claim larger than storage) answer `_set` / `_get` / `_cache_at` from aliased storage; nothing allocates in proportion to the claim and no honest object reaches it: `docs/API_CONTRACTS.md` | - |
+
+### 8.1 R3-01: why a rename, and what it costs
+A getter that returns the element and leaves the list intact needs a copy of the element. The nine kinds hold their elements in `O.Boxed<..>` (a non-copyable
+`Type`, not `Data`: the proofs use affine arrays of boxes), and none of them has a clone function; one would be the size of a serializer plus a decoder
+per type (`_serialize` then `_decode`), proved against the spec. Moving the element out and leaving the empty box in its slot is the only operation the representation
+allows, and it is what the old `_get` did; the fault was the name and the cached root, not the arithmetic. The least statement churn that makes a getter NOT corrupt the list
+is therefore the rename, and only for the kinds where it is true:
+* `X_take(o, i)` / `X_ctake(c, i)`: `Some{element}` and the object with the empty box at `i` (not valid until `_set` puts an element back; `_serialize` refuses it, CH-12);
+  `_ctake` also marks leaf `i` dirty (`lo` / `hi`), so the next `_cached_root` is the root of the object it returned (before, it stayed at the old value, and the first
+  `_cached_root` after it silently put a default element back).
+* Statement diff: the statements of the nine kinds that name the getter (`api_get_outside`, `api_read_set`, `api_read_append`, `api_other_set`, their witnesses) now say
+  `X_take`; the statement of each is otherwise unchanged (they already stated that the element is taken out of its slot: `Array.set(.., O.BNone{})` in the result of `read_set`
+  / `read_append`, which is how the hunter's report found "no law states that `get` leaves a boxed list unchanged"). The copyable kinds keep `_get`.
+
+### 8.2 R3-02: the storage test
+The append guards bounded the CLAIM by the limit (R2-01) but never compared it with the storage, so `room` / `grow` allocated for the claim (`Fulu_list_Validator_1099511627776_append(Seq{one slot, 67108864}, default)`:
+"an array past the deepest block class 31", 0.1 s; 67108863: 8.4 GB). The guard of every append is now `guard(n) and storage_ok`, with `storage_ok` read from the object
+before anything is allocated:
+* composite lists: `X_append(o, v) = X_app_sz(n, v, Array.size(arr))`, `X_app_sz` tests `U32.is_le(n, sc)`; the cached `_capp` the same (`X_capp_sz`);
+* packed lists, byte lists, cells: `X_app_n` -> `X_app_c(v, n, O.words_cap(o))` tests `U32.is_le(ceil(n * es / 4), sc)` (the sum cannot wrap where the count test passes, and its value
+  is ignored where it fails); bit lists the same with `O.bits_cap` and `ceil(ceil(k / 8) / 4)`;
+* `X_force` / `X_dump`: `min(n, sc)`; `O.dump_bytes` (the packed and bit lists' dump) clamps to the bytes the storage holds.
+For every represented object the storage test is the identity (the proofs hold the storage as a perfect tree of depth d with n <= 2^d: `F.u32__pow2u(d)`; for the generic
+`-arr` laws the size is a parameter `sc` with the premise `esc: {Array.size(arr) == (arr, sc)}`, as the cell laws take `vc`), so the proofs only gained the rewrite of `Array.size` before
+the guard (`capi.bend` `le_store`, `cgrow.bend`, the generated `cached_*` and `cspec_*` files, `coll_api_*`, `coll_seq`, `coll_bits`, `coll_bytes`). The premise-satisfiability witnesses (`e2e/*_api_witness`)
+supply `sc` (the 2^d slots of the concrete array); the number of witnessed collection statements is unchanged (374 + 7 root).
+Not done: the setter and getter guards (R3-04).
+
+### 8.3 R3-03: what was done and what was not
+`n * element size` is U32 arithmetic in the size pass (`szf`), the validity of the list (`va_cap`) and the writer positions (`pt`: `pos + i * es`) of a list of fixed-size composites,
+and it wraps for n >= 2^32 / es (35,495,597 validators of 121 bytes; 22,369,621 pending deposits of 192 bytes). Done: the guard of `_append` and `_capp` for such a list is the
+count whose encoding stays below 2^31 bytes (so the API never builds a list that can wrap; `_decode` cannot, the buffer is below 2^32 bytes and refused from 2^31; the setters keep the length).
+NOT done: `X_valid`, `szf` and the writers of a HAND-BUILT list beyond that count still wrap, so such a valid hand-built object (storage of 2^25 slots or more: 4.3 GB and up) is accepted by
+`_serialize` with a wrapped size (the hunter's repro `pm_r3` cases 7-9 needs 8.4 GB). Why: the refusal has to be a conjunct of `X_valid` and of the size pass, and the proofs reach those
+two through the encode record of BeaconState (`OKL_<list>` -> `valid_<list>`, `sizex_<list>`, `putk_rt_<list>`, `putx_<list>W` in `proofs/obj/encx_<list>_generated.bend`, consumed by the
+window generators of `container_encoder_windows.py` / `container_encoder_top_laws.py` and their D / O twins). The new fact `n * es < 2^31` is not in `OKL` (a perfect tree of depth < 31 holding n <= 2^dim
+elements, and for two of the lists n <= limit); it follows from the record's size bound (`CI.ok_bnd`: the total end <= 2^30; the e2e theorem's `hZ`), which is in scope in the size module
+and in the e2e top lemma but not in the writer windows. The proof needs (a) `fit(n) = n < 2^K and n * es < 2^31` as the runtime test (K the least exponent with es * 2^K >= 2^31: 25, 24, 27;
+both tests are decided in U32 without a literal Nat comparison: the proof from `Nat.is_lt(Nat.mul(N, es), pw(31))` is symbolic: `fit_of`), (b) a new premise `hLL: LL(A, N) < pw(31)` on `valid_`, `sizex_`, `putk_rt_` and `putx_W`
+of the three lists, supplied from `CI.ok_bnd` and the sum `ENDCs` in the size module and from a new premise of the window lemmas in the writer windows, and (c) the same in the O twins. That is the
+`OKT`-conjunct change that section 7.2 declined for `words_ok`, for three lists instead of sixty; it adds a hypothesis to the frozen BeaconState encode theorem's windows (derived from `hZ`, not new in the theorem), so it was
+not done here without the coordinator's decision. Measured exposure: the hunter's cases 7, 8, 9 are unchanged (size 5832704 for 22,400,000 pending deposits, `valid` 1, `BeaconState_serialize` ok=1).
+
+### 8.4 R3-04: documented
+The setters and getters of the 28 collections with API laws (`coll_api_*`) use the claim `n` as the length: `put_at(i < n, ..)`. A storage test there would be a conjunct of `GS` / `GG`, which the read-after-write laws,
+the view laws and the root laws (`root_set_law`, `view_set_law`, the cell laws' `GSV` / `HGV`) take as premises or match textually (`GS != 'Bool.and(Bool.and(..'` in `cells_readback`), so it is a larger change than R3-02's
+append (where the guard is read once). The consequence of leaving it: an object that claims more than it holds answers `set` / `get` from the word the index mask selects (no abort, no allocation); `X_valid` of
+such an object is 0, so `_serialize` refuses it and no honest path reaches it. Recorded in `docs/API_CONTRACTS.md`. `X_cache_at(arr, n, d)` takes `d` as given (the cache laws state it with `d` symbolic).

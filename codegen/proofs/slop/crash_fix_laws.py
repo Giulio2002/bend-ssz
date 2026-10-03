@@ -14,6 +14,12 @@ proofs/slop/crash/crash_fix_laws_generated.bend (one module; the objects are tin
   CH-10  serialize(default) of ComplexTestStruct, whose default holds a vector of variable-size elements, is accepted and has the
          spec's 100 bytes (the absent boxes of the default used to leave 14 bytes unwritten).
 
+  R3-02  an append to an object that claims more elements than its storage holds is refused (a byte list claiming 2^31 - 1 bytes in 8 words, a progressive bit
+         list claiming 2^31 - 1 bits in 4 words, a validator list claiming 67108864 elements in one slot); an object whose storage holds its claim exactly
+         (4 bytes in 1 word) still accepts one.
+  R3-01  the getter of an unboxed element keeps the list (get of a withdrawal list returns it unchanged and Some{element}); the getter of a boxed element is
+         `_take`, which leaves the empty box in its slot, so the list is no longer valid.
+
 The symbolic statements of the same fixes are the regenerated collection laws (`<X>_api_set_flag`, `<X>_api_append_flag`: the flag is
 exactly the guard, now with the length test and `n < limit`); these laws fail on the unfixed tree where a statement about the guard alone
 would not name the object.

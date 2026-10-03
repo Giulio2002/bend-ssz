@@ -319,6 +319,13 @@
   ]
  },
  "round3": {
+  "fix_status": {
+   "branch": "agent/crash-fix4",
+   "R3-01": "FIXED: the getters of the nine boxed-element kinds are _take / _ctake (the element is moved out, documented); _ctake marks the slot dirty; _get / _cget stay for copyable kinds. regress.sh cases 38-39",
+   "R3-02": "FIXED: every append guard (composite lists, cached _capp, packed lists, cells, bit lists) also tests the storage; _force / _dump / O.dump_bytes visit min(n, storage). regress.sh cases 31-37",
+   "R3-03": "PARTIAL: _append / _capp of fixed-size composite lists are bounded by the count whose encoding is below 2^31 bytes; valid / szf of a hand-built list beyond it are unchanged (needs a new premise on valid_ / sizex_ / putk_rt_ / putx_W of three lists, see docs/CRASH_HUNT.md 8.3)",
+   "R3-04": "DOCUMENTED in docs/API_CONTRACTS.md: lying objects answer set / get / cache_at from aliased storage, nothing allocates in proportion to a claim"
+  },
   "branch": "agent/crash-hunt-r3",
   "base": "origin/main b1e3c20ee",
   "counts": {
