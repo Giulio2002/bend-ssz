@@ -496,3 +496,108 @@ The setters and getters of the 28 collections with API laws (`coll_api_*`) use t
 the view laws and the root laws (`root_set_law`, `view_set_law`, the cell laws' `GSV` / `HGV`) take as premises or match textually (`GS != 'Bool.and(Bool.and(..'` in `cells_readback`), so it is a larger change than R3-02's
 append (where the guard is read once). The consequence of leaving it: an object that claims more than it holds answers `set` / `get` from the word the index mask selects (no abort, no allocation); `X_valid` of
 such an object is 0, so `_serialize` refuses it and no honest path reaches it. Recorded in `docs/API_CONTRACTS.md`. `X_cache_at(arr, n, d)` takes `d` as given (the cache laws state it with `d` symbolic).
+
+
+# Round 4 (agent/crash-hunt-r4, off origin/main 506290081)
+
+Fresh auditor, same rule. Focus: the size arithmetic of agent/size-limit (marker 4294967295, saturating `O.padd`, `O.mulc`, valid objects up to
+NMAX = 4294967264 bytes), the decode window of agent/decode-window, differential runs near the new limits, resource blowups. Exclusions: CH-01 .. CH-12,
+R2-01 .. R2-06, R3-01 .. R3-04. Machine-readable: the `round4` key of `docs/crash_hunt_findings.json`. No library file was changed. Everything ran on the
+server under `agents/crashhunt-r4/`, nice 19, at most 4 programs at a time and one big object at a time, stack 16384 KB, `ulimit -d` 32 to 128 GiB,
+120 s timeout (600 s for the 30 to 60 GB runs). Probe: `tools/crash_hunt/pn_r4.bend` (cases 1-19, header), runner `tools/crash_hunt/r4run.sh`, sweep
+`tools/crash_hunt/gen_lie_r4.py` + `compile_lie_r4.sh`. `df /srv`: 14 GB free at the end.
+
+## R4.1 Result in one page
+
+| | |
+|---|---|
+| New findings | **4** (0 high, 1 medium, 3 low) and 2 info |
+| CRASH (abort / OOM / hang) | **1** (R4-02) |
+| WRONG (accepts, or answers silently wrong) | **3** (R4-01, R4-03 latent, R4-04) |
+| INFO | **2** (R4-05 `_valid` admits objects above NMAX, R4-06 stale contract text) |
+| Regression of the earlier fixes (`regress.sh`, 57 cases incl. the 4 GiB ones, on 506290081) | **57 of 57 pass** |
+| Lying objects at the new limits (`gen_lie_r4.py`: all 102 packed collections, 8 words of storage, claims of round 3 plus NMAX - 1, NMAX, NMAX + 1, 2^32 - 4, 2^32 - 2 and floor(NMAX / es) * es +- es, ops valid / root / serialize / append / set / get / len) | **11,656 runs: 0 abort, 0 hang, 0 runs over 3 GB, 0 slower than 8 s**; the runner's 43 "serialize accepted" verdicts are all claims the 8 words really hold (bit lists of <= 256 bits, vectors of their exact length): honest objects, OK |
+| padd saturation (ProgressiveComplexTestStruct, f_D = a 4 GiB-storage `proglist_uint64`, f_C sized so the total is NMAX, NMAX + 1, 2^32 - 2, exactly the marker 2^32 - 1, 2^32 + 5, and NMAX + 2^29 (wrap)) | total NMAX: `ser_ok=1 len=4294967264`, `_encode` the same; every other total: size >= NMAX + 1 or the marker, `ser_ok=0`, `_encode` length 0 (no allocation from the marker). OK |
+| append at the bounds, honest 4 GiB storage | `pl_u8` at NMAX - 1: flag 1, length NMAX, then `_serialize` ok with 4,294,967,264 bytes (8.4 GB RSS); at NMAX: flag 0. `pl_u16` at 2,147,483,631 elements: flag 1 (NMAX bytes); at 2,147,483,632: flag 0. OK |
+| decode window | `proglist_uint8_decode_checked` of an honest 4 GiB buffer: size NMAX `Some` (len NMAX), NMAX + 1 and 2^32 - 1 `None`. OK (plain `_decode` answers `Some` with a lying object for NMAX + 1 .. 2^32 - 1: CH-05, unchanged, not counted) |
+| near-limit roots against the reference (zero-hash formula in Python on the server) | `proglist_uint8` of 2^32 - 4 bytes, `proglist_uint64` of 2^32 - 8 bytes, `List[uint8, 2^40]` of 2^32 - 4 bytes, each with one data word near the end, clean storage: **equal to the reference** (80 s, 4.2 GB each) |
+| big honest record lists | `ProgressiveComplexTestStruct_decode_checked` with f_E = 2^26 + 1 .. 1,073,741,808 SmallTestStructs (up to a 4.29 GB input): `Some`, linear (12.6 GB RSS at the top); appends at 2^26 .. 2^29 SmallTestStructs and 2^26 PendingPartialWithdrawals (array grows to depth 27, 6.3 GB): flag 1 |
+| union with a 2^32 - 1-bit payload (valid) | `CompatibleUnionBC` size 536,870,917, serialize and encode ok. OK |
+
+The new size arithmetic itself holds where it is used: `padd`, `mulc`, `is_poisoned`, the append bounds and the checked decode window behave at every edge tried.
+The findings are in the parts the size-limit change did not touch: a clean-copy allocation that still rounds in U32 (R4-01), an in-memory representation that does not
+fit the runtime's heap for the largest inputs the decoder now accepts (R4-02), a `4 * n` left out of `mulc` (R4-03) and a `+ 1` left out of `padd` (R4-04).
+
+## R4.2 Findings, ranked
+
+### R4-02 (MEDIUM, CRASH): `_decode_checked` of a VALID 3.8 to 4.29 GB input aborts the process: the decoded object does not fit the runtime heap
+Entry points: `ProgressiveComplexTestStruct_decode_checked` / `_decode` (and `ProgressiveTestStruct`, and every container that holds a list of variable-size elements without a small limit:
+`proglist_proglist_VarTestStruct`, `proglist_ProgressiveVarTestStruct`, by the same arithmetic `proglist_VarTestStruct`).
+Repro (`pn_r4.bend`, server, `R4_DMEM=134217728 tools/crash_hunt/r4run.sh build/ch/pn4 CASE ARG 0 0 0 600`):
+* case 18, ARG = 1,073,741,808: a valid encoding of 4,294,967,262 bytes whose f_F holds 1,073,741,808 empty inner lists (an offset table of equal offsets): **`bend: out of memory`, exit 1, after 74 s at 61.9 GB RSS**.
+  ARG = 2^29 (2 GiB input): `Some`, 37.8 GB, 60 s. ARG = 2^24: 1 GB above the 4 GiB input.
+* case 19, ARG = 306,783,373: f_H holds 306,783,373 default ProgressiveVarTestStructs (10 bytes each, 4,294,967,252 bytes): **`bend: out of memory`, exit 1, after 52 s at 61.9 GB**. ARG = 2^28 (3.76 GB): `Some`, 56.6 GB.
+Why: the decoder builds one boxed element per offset; an empty `proglist_VarTestStruct` costs about 64 bytes of heap for its 4 input bytes, a ProgressiveVarTestStruct about 195 bytes for 14 (amplification 13 to 16).
+The native runtime's heap stops at the same 61.9 GB in every run whatever `ulimit -d` allows (64 and 128 GiB tried), so the abort is the runtime's, not the machine's. Before agent/size-limit the window was
+below 2^31 bytes (at most 2^29 offsets, 38 GB): the lift to NMAX made these inputs decodable in principle and they now abort. Inputs up to about 3.5 GB of such lists decode.
+Fix options (generator, the `_ok` of the variable-size-element lists, or only `_dchw`): (a) a count bound in `X_decode_checked` for a list of variable-size elements (for example 2^28 elements, documented as
+a capacity limit next to NMAX), (b) a cheaper representation of an empty element (the default inner list allocates its own array leaf), (c) document the practical limit. (a) touches only the checked entry
+(its slop laws, as R2-04 did); the frozen decode statements are about `_decode`.
+
+### R4-01 (LOW, WRONG): a `_valid` packed list above NMAX hashes to a wrong root: the clean-copy path of CH-11 / R2-02 (b) allocates with a wrapping `zeros_for`
+Entry points: `_hash_tree_root` / `_root` of the packed lists without a limit: `proglist_uint8`, `proglist_uint16 .. uint128`, `proglist_bool`, `Fulu_list_uint8_1099511627776`, `Fulu_list_uint64_1099511627776`
+(measured on `proglist_uint8`, `proglist_uint64`, `List[uint8, 2^40]`).
+Repro (`pn_r4.bend` cases 1-6; 4 GiB storage `Array.new(U32, 30n, 0)`, word 2^30 - 3 = 0x11223344 is data, word 2^30 - 1 is a non-zero byte past the length):
+`proglist_uint8` claim 4,294,967,292: `valid=1`, root `3092528689,...` (dirty tail) against `2732131542,...` (same bytes, clean storage), and the reference root is `2732131542,...`;
+`proglist_uint64` at 4,294,967,288 and `List[uint8, 2^40]` at 4,294,967,292: the same split (clean = reference, dirty differs). 80 s and 4.2 GB each.
+Chain: `X_root` -> `words_root` / `words_root_prog` -> `wr_cap` finds the last chunk dirty (`wcn_k`) -> `wr_slow` (covered) -> `wr_clean(words_copy(n, ws))` -> `zeros_for(n)`: `(n + 31) >> 5` wraps for
+n > NMAX and the copy gets 8 words; `cc_go` copies 2^30 words into them through the index mask, so every chunk of the root reads the last words of the list.
+Why it is reachable: `words_ok` has no upper bound for the lists without a limit (`big`), so `_valid` is 1 for NMAX < n <= 2^32 - 4 in honest 4 GiB storage (R2-02 (a) is only the wrap at 2^32 - 3 .. 2^32 - 1);
+the root's precondition is `_valid`. Hand-built objects only (append stops at NMAX, `_decode_checked` refuses the window, plain `_decode` makes a lying object instead: CH-05).
+Fix: in `wr_slow` / `wrp_slow` take the clean copy only for n <= NMAX (else the `cap_cnt` path), or size the copy wrap-free (`(n >> 5) + ((n & 31) + 31 >> 5)`, as `bits_nbytes`); or bound `words_ok` by NMAX for
+`big` lists (R4-05). Proof impact: the first two change `src/obj.bend` only, under `rep` the copy is never taken above NMAX (`words_canon.bend` is stated for represented objects, below NMAX); the third
+changes the `*_valid` statements (the narrowing section 7.2 declined).
+
+### R4-04 (LOW, WRONG, regression of the marker change): a union's `_size` of an invalid payload is 0
+Entry points: `CompatibleUnionA_size`, `CompatibleUnionBC_size`, `CompatibleUnionABCA_size` (four `sz*` defs), so `_encode`.
+Repro (`pn_r4.bend` case 17): `CompatibleUnionBC_c0{ProgressiveSingleListContainerTestStruct{O.Bits{1-word array, 4294967295 or 1000}}}`: **`size=0`**, `valid=0`, `ser_ok=0`, `enc_len=0`.
+Chain: the payload's size pass answers the marker 4294967295 and the union adds the selector byte with a plain `(m + 1 : U32)`, which wraps to 0. With the old marker 2^31 the sum kept bit 31, so this is
+the one size site that the marker change made silently wrong. `_serialize` is not affected (the checked writer sees `valid = 0`); `_size` answers a valid-looking 0 and `_encode` allocates nothing and
+returns length 0 by accident. No container holds a union today, so no container size under-counts.
+Fix (generator, union size): `O.padd(m, 1)`. Proof impact: the union size laws state `m + 1` for a valid payload (size <= NMAX - 1, equal); one rewrite per union.
+
+### R4-03 (LOW, WRONG, latent): `4 * n` of a list of variable-size elements is plain U32
+`pl_pl_VarTestStruct_sz_fin` is `O.padd((4 * n : U32), m)` and the writer starts its cursor at `(4 * n : U32)` with offsets `(4 * i : U32)` (all seven variable-size-element lists, `grep "4 \* n"`).
+For n >= 2^30 the offset table wraps: 2^30 empty inner lists would have size 0 and `ProgressiveComplexTestStruct_serialize` would answer ok with 30 bytes. Only `proglist_proglist_VarTestStruct` can get there
+(its elements may be empty; VarTestStruct and ProgressiveVarTestStruct elements are at least 7 and 9 bytes, so `padd` saturates first), its append bound is `n < 2^32 - 1`, and `_decode` cannot (4 n > NMAX).
+Not reachable in practice: building 2^30 honest elements aborts with `bend: out of memory` at 61.9 GB (case 16, 60 s; 2^26 elements: `ser_ok=1 len=268435486`, 4.7 GB).
+Fix: `O.mulc(n, 4)` in the size pass (the writer then never runs, the size is the marker), or the append bound `n < floor(NMAX / 4)` for these lists. Proof impact: the var-list size laws and the append guard text of one list.
+
+### R4-05 (INFO): `_valid` = 1 for objects the size limit says cannot exist
+`words_ok` has no NMAX bound (big lists, NMAX < n <= 2^32 - 4 in 4 GiB storage), `va_cap` of the fixed-size composite lists tests only the storage (Validator lists of 35,495,598 or more), and a container's
+`_valid` does not add its fields' sizes: `ProgressiveComplexTestStruct` with totals NMAX + 1 .. 2^32 + 5 answers `valid=1`, `ser_ok=0`. The contract ("no object of more than NMAX bytes is encodable") holds for
+`_serialize`; `_valid` and `_serialize` disagree above NMAX, and `_hash_tree_root` takes `_valid` as its precondition (R4-01). Proposed: state it in docs/API_CONTRACTS.md ("valid does not imply encodable above
+NMAX"), or bound `words_ok` for big lists.
+
+### R4-06 (INFO): docs/API_CONTRACTS.md still describes the 2^31 limit in its table
+Rows `X_decode_checked` ("`size < 2^31`"), `X_serialize` ("an encoding of 2^31 bytes or more (CH-07: ... bit 31 reserved as the invalid marker, so the largest object is 2^31 - 1 bytes)" and the R3-03 "known gap"),
+`X_encode` ("the size pass answers the marker 2^31, which `_encode` allocates (CH-02)") and `X_set` / `X_append` ("the count whose encoding stays below 2^31 bytes (17,747,798 validators, ...)") contradict the
+closing paragraph and the code (`size <= 4294967264`, marker 4294967295, `_encode` empty, 35,495,597 validators). Documentation only.
+
+## R4.3 Not findings (checked, behaves)
+* No stale marker: no generated type or `src/` file compares a size with 2147483648 (the two hits in `bitvector_31` / `bitvector_511` and `bits_above_zero` are bit masks); every checked writer tests `is_poisoned`.
+* `out_done` of `_encode` is only reached when the size pass is not poisoned (`enc_go`): every poisoned total of the padd sweep gave length 0, no 4 GiB allocation.
+* `_decode` (plain) of a hand-built `B.Buf` whose size field exceeds its storage still reads aliased words: documented in API_CONTRACTS (`_decode_checked` is the entry for bytes of unknown origin; R2-04).
+* Progressive bit lists: the decoder's `len - 1 < 2^29` and the append bound `k < 2^32 - 1` agree; a union holding a 2^32 - 1-bit list serializes at 536,870,917 bytes.
+
+## R4.4 What was run
+
+| run | size | result |
+|---|---|---|
+| `regress.sh` | 57 cases | 57 of 57 pass on 506290081 |
+| `gen_lie_r4.py` (102 programs, compiled with the pinned toolchain, then deleted) | 11,656 runs | 0 CRASH; 43 runner verdicts on honest objects (above) |
+| `pn_r4.bend` cases 1-19 | 52 runs, 0.1 s to 80 s, up to 62 GB | R4-01 .. R4-05; the OK rows of R4.1 |
+| reference roots (Python, zero-hash formula, server) | 4 roots | clean storage = reference; the dirty tail of R4-01 differs |
+
+Not run: `proglist_VarTestStruct` inside a decode at the limit (same arithmetic as R4-02: about 11 input bytes per element, not measured); the union selectors and hostile byte corpora (rounds 1 and 3 covered
+2 million mutants and nothing in the decode-window change touches the validators below the top-level window test).
