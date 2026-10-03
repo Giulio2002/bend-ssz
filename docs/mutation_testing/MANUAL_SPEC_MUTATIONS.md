@@ -1121,7 +1121,7 @@ Verdict (A) is run3.py (round 2's run2.py unchanged: cheapest proof roots that i
 K = 6, 120 s per root; unjudged ones re-run with `--wide`). Verdict (B') are the API probes of this round (`r3/probes`): programs that call ONLY public entry points
 (`X_valid`, `X_serialize`, `X_decode`, `X_decode_checked`, `X_hash_tree_root`, `X_append/set/get/len`, `X_cache/_cached_root/_cset/_capp/_cget`, the record constructors
 `O.Words{..}`, `O.Bits{..}`, `B.Buf{..}`, `O.BNone{}`), compiled from a hard-linked copy of the import cone with the patch applied and compared line by line with the unmutated build
-(11 programs, 400 observations, baselines in `results/r3/*.json`). Verdict (B'') is `tools/crash_hunt/regress.sh` (pf_fixed.bend, cases 1-30) run on the same mutants
+(9 programs, baselines in `results/r3/*.json`). Verdict (B'') is `tools/crash_hunt/regress.sh` (pf_fixed.bend, cases 1-30) run on the same mutants
 (`regress_w.json`, `regress_x.json`): a TEST, not a proof. All three were also run on the faults the proofs killed in the same files (every `w` fault: 37 faults x 45 shapes), which is
 the sample of rejected faults asked for in the brief; no killed fault was found equivalent.
 **(B) The reference corpus was NOT run.** `corpus.py` does not run on current main (it addresses `benchmarks/objprog/{x,g}<k>.bend`, renamed to `f<k>_generated.bend` / `g<k>_generated.bend`, and imports
