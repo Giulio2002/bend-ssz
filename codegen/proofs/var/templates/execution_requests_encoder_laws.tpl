@@ -135,9 +135,9 @@ def pvl_${p}(+dd: Nat, +D: ${TR}, +h: Nat, +hB: U32, +S: U32, +Q: Nat, +eS: {U32
     +hlim: {Nat.is_le(c, U32.to_nat(${LIM})) == ${TRUE}}, +w32: {O.w32(FD.array__thaw(U32, D), U32.add(0, hB), S) == Array.set(U32, FD.array__thaw(U32, D), U32.from_nat(h), S) : Array<U32>},
     +pa: {U32.add(0, S) == S : U32})
     -> {T.${p}_putv(FD.array__thaw(U32, D), 0, hB, S, T.${p}_Seq{FD.array__thaw(T.${R}, A), n})
-        == (FD.array__thaw(U32, LW_${p}(U32.is_eq(n, 0), n, dd, VF.updv([S], dd, D, h), Q, A)), (T.${p}_Seq{FD.array__thaw(T.${R}, A), n}, O.padd(S, U32.mul(n, ${RS})))) : Array<U32> & (T.${p}_Seq & U32)}:
+        == (FD.array__thaw(U32, LW_${p}(U32.is_eq(n, 0), n, dd, VF.updv([S], dd, D, h), Q, A)), (T.${p}_Seq{FD.array__thaw(T.${R}, A), n}, O.padd(S, O.mulc(n, ${RS})))) : Array<U32> & (T.${p}_Seq & U32)}:
   +D1 = VF.updv([S], dd, D, h)
-  +RHS = (FD.array__thaw(U32, LW_${p}(U32.is_eq(n, 0), n, dd, D1, Q, A)), (T.${p}_Seq{FD.array__thaw(T.${R}, A), n}, O.padd(S, U32.mul(n, ${RS}))))
+  +RHS = (FD.array__thaw(U32, LW_${p}(U32.is_eq(n, 0), n, dd, D1, Q, A)), (T.${p}_Seq{FD.array__thaw(T.${R}, A), n}, O.padd(S, O.mulc(n, ${RS}))))
   +hn = VRL.u32le_n(n, ${LIM}, c, ec, hlim)
   +hc = VRL.u32le_n(n, FD.u32__pow2u(da), c, ec, FD.logic__subst(Nat, z => {Nat.is_le(c, z) == ${TRUE}}, VB.pw(da), U32.to_nat(FD.u32__pow2u(da)),
     Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, VB.lt32(da, hda))), hca))

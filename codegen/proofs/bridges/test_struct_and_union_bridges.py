@@ -1424,7 +1424,7 @@ def venc_mw(R, X):
     HDX = 'ENo.HDW' if om else 'EN.HD'
     EVAL, SPEC = ('ENo.encode_evalO', 'ENo.encode_specO') if om else ('EN.encode_eval', 'EN.encode_spec')
     if om:
-        room = 'ENo.roomO(m, hok, 29n, {==})'
+        room = 'ENo.roomO(m, hok, 30n, {==})'
     tmod = re.search(r'-> \{(\w+)\.' + X + r'_encode\(', esrc).group(1)
     tpath = re.search(r'^import \.\./\.\./types/(\S+) as ' + tmod + '$', esrc, re.M).group(1)
     dmod = re.search(r'-> \{\w+\.' + X + r'_encode\(CI\.TH\(m\)\) == \(CI\.TH\(m\), B\.Buf\{.*?\}\) : (\w+)\.' + X + r' & B\.Buf\}', esrc).group(1)
@@ -5799,13 +5799,13 @@ def prog_q(X, D, dm=False):
               f'    EP.bnd({va}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc}))')
     if dm:
         BPROOF = (f'FD.nat__le_trans({SUM}, Nat.add({va}n, {b}), U32.to_nat(VB.NMAX()), Order.add_right({a}, {va}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
-                  f'    EP.bndL({va}n, {b}, {P27}n, {lens[b][1]}, {hc}))')
+                  f'    VB.le_pw31_nmax(Nat.add({va}n, {b}), EP.bndL({va}n, {b}, {P27}n, {lens[b][1]}, {hc})))')
     hc1 = (f'FD.nat__le_trans(Nat.add({va + 1}n, 1n), VB.pw(9n), VB.pw({P27}n), {{==}}, VBG.pw_mono(9n, {P27}n, {{==}}))')
     BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), A.quad(VB.pw({KQ}n)), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
                f'    EP.bnd({va + 1}n, {b}, VB.pw({P27}n), {lens[b][1]}, {hc1}))')
     if dm:
         BPROOF1 = (f'FD.nat__le_trans(Nat.add(1n+{a}, {b}), Nat.add({va + 1}n, {b}), U32.to_nat(VB.NMAX()), Order.add_right(1n+{a}, {va + 1}n, {b}, FD.nat__le_trans({a}, {sa}, {va}n, {pa}, {{==}})),\n'
-                   f'    EP.bndL({va + 1}n, {b}, {P27}n, {lens[b][1]}, {hc1}))')
+                   f'    VB.le_pw31_nmax(Nat.add({va + 1}n, {b}), EP.bndL({va + 1}n, {b}, {P27}n, {lens[b][1]}, {hc1})))')
     FARGS = ', '.join(ren[n] for n in names)
     LBP = 'Nat.is_le(1n+z, U32.to_nat(VB.NMAX())) == True{} : Bool' if dm else f'Nat.is_le(1n+z, A.quad(VB.pw({KQ}n))) == True{{}} : Bool'
     LBT = f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), U32.to_nat(VB.NMAX()))' if dm else f'Nat.is_le(1n+LY.LN(CI_{X}.ENC(m)), A.quad(VB.pw({KQ}n)))'

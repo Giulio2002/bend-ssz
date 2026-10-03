@@ -4170,7 +4170,7 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +c: Nat, +pf: {FD.array__pe
     Equal.trans(S.Value, S.Sequence{@VW@(U32.to_nat(U32.shrn(N, @S@n)), FD.array__slots(U32, T))}, S.Sequence{@VW@(c, FD.array__slots(U32, T))}, EN.XE(c, FD.array__slots(U32, T)), e2, e3))
   +h31 = hdw
   +e4 = Equal.trans(Nat, U32.to_nat(N), EL.@BK@(c), A.quad(EL.@WK@(c)), ec, PW.bq@W@(c))
-  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, h31, ec, hroom)) :
+  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, h31, ec, hroom, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX()), hM))) :
     {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.@X@(), @VIEW@(@OW@)) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), @BYT@,
       EM.obN(VL.DO(N), VL.OUTP(N, T), N, BL.pfo(N, T), FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VL.hDOA(dw, N, EL.@WK@(c), hdw, e4, hroom), hdw), hM,
@@ -4664,7 +4664,7 @@ def venc_ep(R, X, mode='enc'):
     DO = f'VL.DO({SZ})'
     OUT = f'EN.OUTC({AA})'
     obc = (f"# the encoder's buffer's bytes on the OKW laws (the encoding below 2^31 bytes): the output tree is perfect at depth DO(size) < 31, the size within it\n"
-           f"def obC({PP}, +h: {{CI.OKTW({AA}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 29n : Nat}})\n"
+           f"def obC({PP}, +h: {{CI.OKTW({AA}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 30n : Nat}})\n"
            f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ}}}) == VSP.bt(U32.to_nat({SZ}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
            + '\n'.join(lets) + '\n' +
            f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ}))\n"
@@ -4673,7 +4673,7 @@ def venc_ep(R, X, mode='enc'):
            f"  +hn = FD.nat__le_trans(U32.to_nat({SZ}), A.quad(WD.NWN(U32.to_nat({SZ}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ})), FD.spec_common__pow2({DO}), hl0))\n"
            f"  EM.obD({DO}, {OUT}, {SZ}, CI.pfx(CI.MW{{{AA}}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, h31, hn)\n\n"
            f"def obM(+m: CI.MW, +hok: {{CI.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
-           f"  match m:\n    case CI.MW{{{', '.join('+' + n for n in fn)}}}: obC({AA}, hok, 29n, {{==}})\n")
+           f"  match m:\n    case CI.MW{{{', '.join('+' + n for n in fn)}}}: obC({AA}, hok, 30n, {{==}})\n")
     G, common = _encx_common(R, X, OT, 0, 10)
     a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')
     common = _okw_common(common[:a] + obc + '\n' + common[b:])
@@ -6945,7 +6945,7 @@ def venc_crec(R, X, rmod, al, extra_imports=(), premise_note=''):
     DO = f'VL.DO({SZ})'
     OUT = f'EN.OUTC({AA})'
     obc = (f"# the encoder's buffer's bytes on the OKW laws (the encoding below 2^31 bytes): the output tree is perfect at depth DO(size) < 31, the size within it\n"
-           f"def obC({PP}, +h: {{CI.OKTW({AA}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 29n : Nat}})\n"
+           f"def obC({PP}, +h: {{CI.OKTW({AA}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 30n : Nat}})\n"
            f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ}}}) == VSP.bt(U32.to_nat({SZ}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
            + '\n'.join(lets) + '\n' +
            f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ}))\n"
@@ -6954,7 +6954,7 @@ def venc_crec(R, X, rmod, al, extra_imports=(), premise_note=''):
            f"  +hn = FD.nat__le_trans(U32.to_nat({SZ}), A.quad(WD.NWN(U32.to_nat({SZ}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ})), FD.spec_common__pow2({DO}), hl0))\n"
            f"  EM.obD({DO}, {OUT}, {SZ}, CI.pfx(CI.MW{{{AA}}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, h31, hn)\n\n"
            f"def obM(+m: CI.MW, +hok: {{CI.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
-           f"  match m:\n    case CI.MW{{{', '.join('+' + n_ for n_ in fn)}}}: obC({AA}, hok, 29n, {{==}})\n")
+           f"  match m:\n    case CI.MW{{{', '.join('+' + n_ for n_ in fn)}}}: obC({AA}, hok, 30n, {{==}})\n")
     return _venc_crec_tail(R, X, rmod, al, extra_imports, premise_note, it, obc)
 
 
@@ -6965,7 +6965,7 @@ def _venc_crec_top(R, X, rmod, al, extra_imports, premise_note, it, fn, AA):
     H3 = 'DK.P2(EN.HL(m), EN.HZ(m))'
     obc = (f"# the encoder's buffer's bytes on the OKW laws (the encoding below 2^31 bytes): the output tree is perfect at depth DO(size) < 31 (ENO.roomO), the size within it\n"
            f"def obM(+m: CI.MW, +hok: {{CI.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
-           f"  +g = ENO.roomO(m, hok, 29n, {{==}})\n"
+           f"  +g = ENO.roomO(m, hok, 30n, {{==}})\n"
            f"  +hd = CI.PA(ENO.HDW(m), {H3}, g)\n"
            f"  +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(ENO.HDW(m), {H3}, g))\n"
            f"  +hl0 = FD.logic__subst(Nat, z => {{Nat.is_le(WD.NWN(z), VB.pw({DO})) == True{{}} : Bool}}, List.length(&2, U32, CI.ENC(m)), U32.to_nat({SZ}),\n"

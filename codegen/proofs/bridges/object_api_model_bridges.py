@@ -2035,11 +2035,11 @@ def n31_N(+n: U32, +h31: {Nat.is_lt(U32.to_nat(n), FD.spec_common__pow2(31n)) ==
   FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()),
     Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), h3)
 
-# The output path's bytes at any depth d < 31, for n < 2^31 (n <= 4 * 2^d).
+# The output path's bytes at any depth d < 31, for n <= NMAX (n <= 4 * 2^d).
 def obD(+d: Nat, +T: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, T) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
-    +h31: {Nat.is_lt(U32.to_nat(n), FD.spec_common__pow2(31n)) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool})
+    +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool})
     -> {Pair.snd(B.Buf, +List<U32>, B.emit(B.Buf{FD.array__thaw(U32, T), n}, 0, C.nwu(n))) == VSP.bt(U32.to_nat(n), SF.limbs(FD.array__slots(U32, T))) : +List<U32>}:
-  obN(d, T, n, pf, hd, n31_N(n, h31), hn)
+  obN(d, T, n, pf, hd, FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()), Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), h31), hn)
 '''
     return ('\n\n# ---- the same at the object API\'s own limit: depth d < 31, n <= VB.NMAX() (obN) ----\n' + txt + OBD)
 

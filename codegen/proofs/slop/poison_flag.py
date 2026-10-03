@@ -26,9 +26,6 @@ from codegen.core.law_module_helpers import RUNTIMES  # noqa: E402
 from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 
-MARKER_PATTERNS = (r'case False\{\}: \(out, \(o, (\d+)\)\)', r'case O\.BNone\{\}: \(out, \(O\.BNone\{\}, (\d+)\)\)',
-                    r'case False\{\}: \([\w.]+\{arr, n\}, (\d+)\)')
-
 SER = re.compile(r'^def (\w+)_serialize\(o: O\.Words\) -> [^\n]*: ([^\n]*)$', re.M)
 
 
@@ -53,16 +50,50 @@ def module(text, tmod):
     return out
 
 
+def _params(sig):
+    """The top-level parameters of a def signature: [(name, type)] (commas inside <> do not split)."""
+    out, depth, cur = [], 0, ''
+    for ch in sig:
+        if ch in '<(':
+            depth += 1
+        elif ch in '>)':
+            depth -= 1
+        if ch == ',' and depth == 0:
+            out.append(cur.strip())
+            cur = ''
+        else:
+            cur += ch
+    out.append(cur.strip())
+    res = []
+    for p in out:
+        n, t = p.split(':', 1)
+        res.append((n.strip().lstrip('+'), t.strip()))
+    return res
+
+
 def marker_module(text, tmod):
-    """One file per runtime: every invalid-object marker literal the generated writers return (pk False branches of the words names,
-    the absent boxed record, the sequences) is poisoned. A stale literal (the old 2^31 flag, which O.is_poisoned no longer reads) makes
-    its law false by computation: the checked serializer of the invalid object would accept it."""
-    lits = sorted({m for pat in MARKER_PATTERNS for m in re.findall(pat, text)}, key=int)
-    if not lits:
+    """One file per runtime: the writers' invalid-object results are POISONED, by computation on the generated writers themselves (the
+    pk False branch of every words name, the absent boxed record, the sequence size pass of a failed storage check). A stale marker in
+    the generated types (the old 2^31 flag, which O.is_poisoned no longer reads) makes the law false."""
+    laws = []
+    for name in re.findall(r'^def (\w+_pk)\(out: Array<U32>, \+pos: U32, pair: O\.Words & Bool\) -> Array<U32> & \(O\.Words & U32\):', text, re.M):
+        laws.append(f'def {name}_false_poisoned(out: Array<U32>, +pos: U32, o: O.Words) -> {{O.is_poisoned(Pair.snd(O.Words, U32, Pair.snd(Array<U32>, O.Words & U32, '
+                    f'T.{name}(out, pos, (o, False{{}}))))) == True{{}} : Bool}}:\n  {{==}}\n')
+    for name, sig in re.findall(r'^def (\w+_bx_putk)\((.*)\) -> Array<U32> & \(.*\):$', text, re.M):
+        ot = _params(sig)[2][1]
+        ot = re.sub(r'<(\w+)>', r'<T.\1>', ot)
+        laws.append(f'def {name}_none_poisoned(out: Array<U32>, +pos: U32) -> {{O.is_poisoned(Pair.snd({ot}, U32, Pair.snd(Array<U32>, {ot} & U32, '
+                    f'T.{name}(out, pos, O.BNone{{}})))) == True{{}} : Bool}}:\n  {{==}}\n')
+    for name, sig, ret in re.findall(r'^def (\w+_sz_ok)\((.*)\) -> (.*):$', text, re.M):
+        sig_t = re.sub(r'<(\w+)>', r'<T.\1>', sig)
+        ps = _params(sig)
+        seq = 'T.' + ret.split(' & ')[0].strip()
+        laws.append(f'def {name}_false_poisoned({sig_t}) -> {{O.is_poisoned(Pair.snd({seq}, U32, T.{name}(False{{}}, {ps[1][0]}, {ps[2][0]}))) == True{{}} : Bool}}:\n  {{==}}\n')
+    if not laws:
         return None
-    head = ['import Base', 'import ../../src/obj.bend as O', '', writer.header('poison_flag'),
-            '# Every invalid-object marker the generated writers return is poisoned (docs/SIZE_LIMIT_DESIGN.md: the marker is 4294967295).', '']
-    laws = [f'def marker_{n}() -> {{O.is_poisoned({n}) == True{{}} : Bool}}:\n  {{==}}\n' for n in lits]
+    head = ['import Base', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '', writer.header('poison_flag'),
+            '# The invalid-object results of the generated writers are poisoned (docs/SIZE_LIMIT_DESIGN.md: the marker is 4294967295).',
+            '# By computation on the generated writers: a stale marker literal in types/ makes the law false.', '']
     return '\n'.join(head + laws)
 
 

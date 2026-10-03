@@ -270,10 +270,6 @@ def case54() -> IO(Unit): va_size_line("validator_size_35495597", LVE.l109951162
 def case55() -> IO(Unit): va_size_line("validator_size_35495598", LVE.l1099511627776_Validator_size(vas(35495598)))
 def case56() -> IO(Unit): va_line("validator_append_at_17747798", LV.l1099511627776_Validator_append(vas(17747798), Va.Validator_default()))
 def case57() -> IO(Unit): va_line("validator_append_at_35495597", LV.l1099511627776_Validator_append(vas(35495597), Va.Validator_default()))
-def pd_enc_len_line(label: String, pair: LPD.l134217728_PendingDeposit_Seq & B.Buf) -> IO(Unit):
-  (o, b) = pair
-  IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
-def case58() -> IO(Unit): pd_enc_len_line("pd_encode_22369622", LPDE.l134217728_PendingDeposit_encode(pds(22369622)))
 
 def dispatch(+c: U32) -> IO(Unit):
   match c:
@@ -333,7 +329,6 @@ def dispatch(+c: U32) -> IO(Unit):
     case 55: case55()
     case 56: case56()
     case 57: case57()
-    case 58: case58()
     case _: case12()
 
 def main() -> IO(Unit):

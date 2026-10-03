@@ -1294,7 +1294,7 @@ def _vs_common(R, X, EV, OT, eno, eph, out, kS, law):
             lets.append(l)
     SZ_ = 'Z.SZS(wR)'; DO = f'VL.DO({SZ_})'; OUT = 'EN.OUTC(wR)'
     obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 31, the size (below 2^31) within it\n"
-           f"def obC(+wR: K.KW, +h: {{CIo.OKTW(wR) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 29n : Nat}})\n"
+           f"def obC(+wR: K.KW, +h: {{CIo.OKTW(wR) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 30n : Nat}})\n"
            f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ_}}}) == VSP.bt(U32.to_nat({SZ_}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
            + '\n'.join(lets) + '\n' +
            f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ_}))\n"
@@ -1308,7 +1308,7 @@ def _vs_common(R, X, EV, OT, eno, eph, out, kS, law):
            f"    K.pfC(wR, {DO}, VC.ZT({DO}), 0, 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)))\n"
            f"  EM.obD({DO}, {OUT}, {SZ_}, pfo, hd, h31, hn)\n\n"
            f"def obM(+m: CI.MW, +hok: {{CIo.OKW(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
-           f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 29n, {{==}})\n")
+           f"  match m:\n    case CI.MW{{+wR}}: obC(wR, hok, 30n, {{==}})\n")
     a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')
     rest = common[b:].replace('{CI.OK(m) == True{} : Bool}', '{CIo.OKW(m) == True{} : Bool}').replace('EN.encode_eval(', 'ENo.encode_evalO(').replace('EN.encode_spec(', 'ENo.encode_specO(')
     common = common[:a] + obc + '\n' + rest

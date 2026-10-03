@@ -57,7 +57,7 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +c: Nat, +pf: {FD.array__pe
     Equal.trans(S.Value, S.Sequence{UL.uitems(U32.to_nat(U32.shrn(N, 3n)), FD.array__slots(U32, T))}, S.Sequence{UL.uitems(c, FD.array__slots(U32, T))}, EN.XE(c, FD.array__slots(U32, T)), e2, e3))
   +h31 = hdw
   +e4 = Equal.trans(Nat, U32.to_nat(N), EL.b2(c), A.quad(EL.w2(c)), ec, PW.bq2(c))
-  %Equal.sym(O.Words & B.Buf, proglist_uint64_e.proglist_uint64_encode(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, h31, ec, hroom)) :
+  %Equal.sym(O.Words & B.Buf, proglist_uint64_e.proglist_uint64_encode(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, h31, ec, hroom, FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX()), hM))) :
     {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.proglist_uint64(), UL.uview(O.Words{FD.array__thaw(U32, T), N})) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), VSP.bt(U32.to_nat(N), SF.limbs(FD.array__slots(U32, VL.OUTP(N, T)))),
       EM.obN(VL.DO(N), VL.OUTP(N, T), N, BL.pfo(N, T), FD.nat__le_lt_trans(VL.DO(N), dw, 31n, VL.hDOA(dw, N, EL.w2(c), hdw, e4, hroom), hdw), hM,
