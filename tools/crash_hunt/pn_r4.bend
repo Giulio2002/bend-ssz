@@ -21,6 +21,9 @@ import ../../types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.be
 import ../../types/proglist_VarTestStruct_def_generated.bend as PV
 import ../../types/proglist_proglist_VarTestStruct_def_generated.bend as PP
 import ../../types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend as PPE
+import ../../types/CompatibleUnionBC_def_generated.bend as UB
+import ../../types/CompatibleUnionBC_encode_ssz_generated.bend as UBE
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as PSL
 import ../../benchmarks/compact/objio.bend as IOx
 
 # Crash hunt round 4, probe N: the new size arithmetic (objects of 2^31 .. NMAX = 4294967264 bytes) and the decode window.
@@ -36,6 +39,8 @@ import ../../benchmarks/compact/objio.bend as IOx
 #  12   List[PendingPartialWithdrawal, 2^27]: append to Seq{fill(SSZ_DEPTH), ARG}
 #  13   proglist_SmallTestStruct: append to Seq{fill(SSZ_DEPTH), ARG}
 #  14   proglist_proglist_VarTestStruct of 2^SSZ_DEPTH honest empty inner lists: size, valid, then PCTS serialize with it as f_F
+#  16   ProgressiveComplexTestStruct serialize with f_F = 2^SSZ_DEPTH honest empty inner lists (one build)
+#  17   CompatibleUnionBC c0 whose payload bit list claims ARG bits in 2^SSZ_DEPTH words: size, valid, serialize, encode
 #  15   proglist_uint8 decode_checked / decode of an honest 4 GiB buffer whose size field is ARG
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
@@ -186,6 +191,31 @@ def c15(+n: U32) -> IO(Unit):
     dec_line("pl_u8 decode_checked", P8R.proglist_uint8_decode_checked(B.Buf{big(), n}, n))
     dec_line("pl_u8 decode", P8R.proglist_uint8_decode(B.Buf{big(), n}, n))
 
+def c16(+d: U32) -> IO(Unit):
+  pc_ser(PCE.ProgressiveComplexTestStruct_serialize(PC.ProgressiveComplexTestStruct_set_f_F(PC.ProgressiveComplexTestStruct_default(), pp_mk(d))))
+
+# a union whose payload is invalid (a bit list claiming ARG bits in storage of 2^SSZ_DEPTH words)
+def ub_mk(+k: U32, +d: U32) -> UB.CompatibleUnionBC: UB.CompatibleUnionBC_c0{PSL.ProgressiveSingleListContainerTestStruct{O.Bits{Array.new(U32, U32.to_nat(d), 0), k}}}
+def ub_size(pair: UB.CompatibleUnionBC & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print("union size=" ++ U32.show(n))
+def ub_valid(pair: UB.CompatibleUnionBC & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print("union valid=" ++ O.pick_str(ok))
+def ub_ser(pair: UB.CompatibleUnionBC & O.Encoded) -> IO(Unit):
+  (o, e) = pair
+  match e:
+    case O.Encoded{ok, b}: ser_tail("union", ok, B.size(b))
+def ub_enc(pair: UB.CompatibleUnionBC & B.Buf) -> IO(Unit):
+  (o, b) = pair
+  enc_tail("union", B.size(b))
+def c17(+k: U32, +d: U32) -> IO(Unit):
+  do IO<Unit>:
+    ub_size(UBE.CompatibleUnionBC_size(ub_mk(k, d)))
+    ub_valid(UBE.CompatibleUnionBC_valid(ub_mk(k, d)))
+    ub_ser(UBE.CompatibleUnionBC_serialize(ub_mk(k, d)))
+    ub_enc(UBE.CompatibleUnionBC_encode(ub_mk(k, d)))
+
 def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
   match c:
     case 1: c1(True{}, n)
@@ -203,6 +233,8 @@ def dispatch(+c: U32, +n: U32, +dn: U32, +k: U32, +dep: U32) -> IO(Unit):
     case 13: c13(n, dep)
     case 14: c14(dep)
     case 15: c15(n)
+    case 16: c16(dep)
+    case 17: c17(n, dep)
     case _: IO.print("NOCASE")
 
 def main() -> IO(Unit):
