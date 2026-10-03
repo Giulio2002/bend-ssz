@@ -10,6 +10,14 @@ def ProgressiveSingleListContainerTestStruct_serialize_vreject_default_valid()
     -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, Bool, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_valid(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) == True{} : Bool}:
   {==}
 
+def ProgressiveSingleListContainerTestStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, O.Encoded, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_go(True{}, 0, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, O.Encoded, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_sized((ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def ProgressiveSingleListContainerTestStruct_serialize_vreject_f_C()
     -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, Bool, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_valid(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_set_f_C(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   {==}

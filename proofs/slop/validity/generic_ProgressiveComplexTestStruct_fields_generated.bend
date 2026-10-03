@@ -38,6 +38,14 @@ def ProgressiveComplexTestStruct_serialize_vreject_default_valid()
     -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) == True{} : Bool}:
   {==}
 
+def ProgressiveComplexTestStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_go(True{}, 0, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def ProgressiveComplexTestStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_sized((ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def ProgressiveComplexTestStruct_serialize_vreject_f_B()
     -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_B(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}
@@ -64,6 +72,14 @@ def ProgressiveComplexTestStruct_serialize_vreject_f_F_elem()
 
 def ProgressiveComplexTestStruct_serialize_vreject_f_G()
     -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_fill(0n), 2}))) == False{} : Bool}:
+  {==}
+
+def ProgressiveComplexTestStruct_serialize_vreject_f_G_limit()
+    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_fill(4n), 11}))) == False{} : Bool}:
+  {==}
+
+def ProgressiveComplexTestStruct_serialize_vrefuse_f_G_limit()
+    -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_G(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_fill(4n), 11}))) == O.refused() : O.Encoded}:
   {==}
 
 def ProgressiveComplexTestStruct_serialize_vreject_f_H()

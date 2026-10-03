@@ -8,3 +8,15 @@ import ../../../types/vec_uint16_1_encode_ssz_generated.bend as vec_uint16_1_e
 def vec_uint16_1_serialize_vunit_v1_u16_accept_2()
     -> {Pair.snd(O.Words, Bool, vec_uint16_1_e.v1_u16_valid(O.words_new(2))) == True{} : Bool}:
   {==}
+
+def vec_uint16_1_serialize_vunit_v1_u16_range_below_0()
+    -> {Pair.snd(O.Words, Bool, vec_uint16_1_e.v1_u16_valid(O.words_new(0))) == False{} : Bool}:
+  {==}
+
+def vec_uint16_1_serialize_vunit_v1_u16_range_lo_2()
+    -> {Pair.snd(O.Words, Bool, vec_uint16_1_e.v1_u16_valid(O.words_new(2))) == True{} : Bool}:
+  {==}
+
+def vec_uint16_1_serialize_vunit_v1_u16_range_above_4()
+    -> {Pair.snd(O.Words, Bool, vec_uint16_1_e.v1_u16_valid(O.words_new(4))) == False{} : Bool}:
+  {==}

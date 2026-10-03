@@ -114,6 +114,9 @@ def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vuni
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vunit_pl_u64_accept_16() -> {Pair.snd(P3_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P3_O.words_new(16))) == True{} : Bool}:
   P3_PRV.ProgressiveTestStruct_serialize_vunit_pl_u64_accept_16()
 
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(P3_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P3_O.words_new(0))) == True{} : Bool}:
+  P3_PRV.ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0()
+
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_mc_ser() -> {ProgressiveTestStruct_e.ProgressiveTestStruct_serialize(ProgressiveTestStruct_d.ProgressiveTestStruct_default()) == (Pair.fst(ProgressiveTestStruct_d.ProgressiveTestStruct, P4_B.Buf, ProgressiveTestStruct_e.ProgressiveTestStruct_encode(ProgressiveTestStruct_d.ProgressiveTestStruct_default())), P4_O.encoded(Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, P4_B.Buf, ProgressiveTestStruct_e.ProgressiveTestStruct_encode(ProgressiveTestStruct_d.ProgressiveTestStruct_default())))) : ProgressiveTestStruct_d.ProgressiveTestStruct & P4_O.Encoded}:
   P4_PRV.ProgressiveTestStruct_mc_ser()
 

@@ -12,6 +12,9 @@ def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_
 def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_accept_4096() -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(O.words_new(4096))) == True{} : Bool}:
   PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_accept_4096()
 
+def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_range_lo_0() -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_range_lo_0()
+
 def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_1() -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(O.words_new(1))) == False{} : Bool}:
   PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_1()
 
@@ -20,4 +23,7 @@ def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_
 
 def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_2049() -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(O.words_new(2049))) == False{} : Bool}:
   PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_refuse_2049()
+
+def DataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_ok_2048() -> {(O.unit_ok(2048, 1), (O.unit_ok(2048, 1024), (O.unit_ok(2048, 2047), (O.unit_ok(2048, 2048), (O.unit_ok(2048, 2049), (O.unit_ok(2048, 4095), (O.unit_ok(2048, 4096), (O.unit_ok(2048, 6144), O.unit_ok(2048, 7168))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  PRV.DataColumnSidecar_serialize_vunit_ok_2048()
 

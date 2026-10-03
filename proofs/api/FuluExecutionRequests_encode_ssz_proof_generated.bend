@@ -72,11 +72,29 @@ def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_
 def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_deposits() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_deposits(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_fill(0n), 2}))) == False{} : Bool}:
   P1_PRV.ExecutionRequests_serialize_vreject_deposits()
 
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_deposits_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_deposits(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_fill(14n), 8193}))) == False{} : Bool}:
+  P1_PRV.ExecutionRequests_serialize_vreject_deposits_limit()
+
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vrefuse_deposits_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, P1_O.Encoded, FuluExecutionRequests_e.ExecutionRequests_serialize(FuluExecutionRequests_d.ExecutionRequests_set_deposits(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_fill(14n), 8193}))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.ExecutionRequests_serialize_vrefuse_deposits_limit()
+
 def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_withdrawals() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_fill(0n), 2}))) == False{} : Bool}:
   P1_PRV.ExecutionRequests_serialize_vreject_withdrawals()
 
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_withdrawals_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_fill(5n), 17}))) == False{} : Bool}:
+  P1_PRV.ExecutionRequests_serialize_vreject_withdrawals_limit()
+
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vrefuse_withdrawals_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, P1_O.Encoded, FuluExecutionRequests_e.ExecutionRequests_serialize(FuluExecutionRequests_d.ExecutionRequests_set_withdrawals(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_fill(5n), 17}))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.ExecutionRequests_serialize_vrefuse_withdrawals_limit()
+
 def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_consolidations() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_fill(0n), 2}))) == False{} : Bool}:
   P1_PRV.ExecutionRequests_serialize_vreject_consolidations()
+
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vreject_consolidations_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, Bool, FuluExecutionRequests_e.ExecutionRequests_valid(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_fill(2n), 3}))) == False{} : Bool}:
+  P1_PRV.ExecutionRequests_serialize_vreject_consolidations_limit()
+
+def FuluExecutionRequests__serialize_valid__ExecutionRequests_serialize_vrefuse_consolidations_limit() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, P1_O.Encoded, FuluExecutionRequests_e.ExecutionRequests_serialize(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_fill(2n), 3}))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.ExecutionRequests_serialize_vrefuse_consolidations_limit()
 
 def FuluExecutionRequests__serialize_valid__ExecutionRequests_ms_size() -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, U32, FuluExecutionRequests_e.ExecutionRequests_size(FuluExecutionRequests_d.ExecutionRequests_default())) == 12 : U32}:
   P2_PRV.ExecutionRequests_ms_size()

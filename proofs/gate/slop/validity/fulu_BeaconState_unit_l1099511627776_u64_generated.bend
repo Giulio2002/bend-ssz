@@ -12,6 +12,9 @@ def BeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64
 def BeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_accept_8() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.words_new(8))) == True{} : Bool}:
   PRV.BeaconState_serialize_vunit_l1099511627776_u64_accept_8()
 
+def BeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0()
+
 def BeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_1() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.words_new(1))) == False{} : Bool}:
   PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_1()
 

@@ -60,6 +60,9 @@ def FuluContributionAndProof__serialize_valid__ContributionAndProof_serialize_vr
 def FuluContributionAndProof__serialize_valid__ContributionAndProof_serialize_vreject_contribution() -> {Pair.snd(FuluContributionAndProof_d.ContributionAndProof, Bool, FuluContributionAndProof_e.ContributionAndProof_valid(FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), P3_O.BNone{}))) == False{} : Bool}:
   P3_PRV.ContributionAndProof_serialize_vreject_contribution()
 
+def FuluContributionAndProof__serialize_valid__ContributionAndProof_serialize_vrefuse_contribution() -> {Pair.snd(FuluContributionAndProof_d.ContributionAndProof, P3_O.Encoded, FuluContributionAndProof_e.ContributionAndProof_serialize(FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), P3_O.BNone{}))) == P3_O.refused() : P3_O.Encoded}:
+  P3_PRV.ContributionAndProof_serialize_vrefuse_contribution()
+
 def FuluContributionAndProof__serialize_valid__ContributionAndProof_serialize_cap() -> {FuluContributionAndProof_e.ContributionAndProof_serialize(FuluContributionAndProof_d.ContributionAndProof_default()) == (FuluContributionAndProof_d.ContributionAndProof_default(), P4_O.encoded(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, P4_B.Buf, FuluContributionAndProof_e.ContributionAndProof_encode(FuluContributionAndProof_d.ContributionAndProof_default())))) : FuluContributionAndProof_d.ContributionAndProof & P4_O.Encoded}:
   P4_PRV.ContributionAndProof_serialize_cap()
 

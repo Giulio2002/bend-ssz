@@ -10,6 +10,14 @@ def DataColumnSidecar_serialize_vreject_default_valid()
     -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, Bool, FuluDataColumnSidecar_e.DataColumnSidecar_valid(FuluDataColumnSidecar_d.DataColumnSidecar_default())) == True{} : Bool}:
   {==}
 
+def DataColumnSidecar_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, O.Encoded, FuluDataColumnSidecar_e.DataColumnSidecar_senc_go(True{}, 0, FuluDataColumnSidecar_d.DataColumnSidecar_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def DataColumnSidecar_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, O.Encoded, FuluDataColumnSidecar_e.DataColumnSidecar_senc_sized((FuluDataColumnSidecar_d.DataColumnSidecar_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def DataColumnSidecar_serialize_vreject_column()
     -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, Bool, FuluDataColumnSidecar_e.DataColumnSidecar_valid(FuluDataColumnSidecar_d.DataColumnSidecar_set_column(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}
@@ -24,6 +32,10 @@ def DataColumnSidecar_serialize_vreject_kzg_proofs()
 
 def DataColumnSidecar_serialize_vreject_signed_block_header()
     -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, Bool, FuluDataColumnSidecar_e.DataColumnSidecar_valid(FuluDataColumnSidecar_d.DataColumnSidecar_set_signed_block_header(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.BNone{}))) == False{} : Bool}:
+  {==}
+
+def DataColumnSidecar_serialize_vrefuse_signed_block_header()
+    -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, O.Encoded, FuluDataColumnSidecar_e.DataColumnSidecar_serialize(FuluDataColumnSidecar_d.DataColumnSidecar_set_signed_block_header(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.BNone{}))) == O.refused() : O.Encoded}:
   {==}
 
 def DataColumnSidecar_serialize_vreject_kzg_commitments_inclusion_proof()

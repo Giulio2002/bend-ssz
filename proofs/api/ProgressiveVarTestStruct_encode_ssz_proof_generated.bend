@@ -122,6 +122,21 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_f_C() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_valid(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_C(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), P3_O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   P3_PRV.ProgressiveVarTestStruct_serialize_vreject_f_C()
 
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_size() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_size(P3_O.BNone{}) == (P3_O.BNone{}, 0) : P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32}:
+  P3_PRV.ProgressiveVarTestStruct_serialize_vreject_bx_size()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_valid() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(P3_O.BNone{}) == (P3_O.BNone{}, False{}) : P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & Bool}:
+  P3_PRV.ProgressiveVarTestStruct_serialize_vreject_bx_valid()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P3_O.BNone{}))) == 2147483648 : U32}:
+  P3_PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_absent()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_ok() -> {P3_O.is_poisoned(Pair.snd(P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()))))) == False{} : Bool}:
+  P3_PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_ok()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_invalid() -> {P3_O.is_poisoned(Pair.snd(P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), P3_O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
+  P3_PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_invalid()
+
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1() -> {Pair.snd(P4_O.Words, Bool, list_uint16_123_e.l123_u16_valid(P4_O.words_new(1))) == False{} : Bool}:
   P4_PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1()
 
@@ -133,6 +148,15 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4() -> {Pair.snd(P4_O.Words, Bool, list_uint16_123_e.l123_u16_valid(P4_O.words_new(4))) == True{} : Bool}:
   P4_PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_lo_0() -> {Pair.snd(P4_O.Words, Bool, list_uint16_123_e.l123_u16_valid(P4_O.words_new(0))) == True{} : Bool}:
+  P4_PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_lo_0()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_hi_246() -> {Pair.snd(P4_O.Words, Bool, list_uint16_123_e.l123_u16_valid(P4_O.words_new(246))) == True{} : Bool}:
+  P4_PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_hi_246()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248() -> {Pair.snd(P4_O.Words, Bool, list_uint16_123_e.l123_u16_valid(P4_O.words_new(248))) == False{} : Bool}:
+  P4_PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248()
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_ms_bxsize_ProgressiveVarTestStruct() -> {Pair.snd(P5_O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_size(P5_O.BNone{})) == 0 : U32}:
   P5_PRV.ProgressiveVarTestStruct_ms_bxsize_ProgressiveVarTestStruct()

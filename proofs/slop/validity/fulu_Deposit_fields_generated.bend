@@ -17,3 +17,7 @@ def Deposit_serialize_vreject_proof()
 def Deposit_serialize_vreject_data()
     -> {Pair.snd(FuluDeposit_d.Deposit, Bool, FuluDeposit_e.Deposit_valid(FuluDeposit_d.Deposit_set_data(FuluDeposit_d.Deposit_default(), O.BNone{}))) == False{} : Bool}:
   {==}
+
+def Deposit_serialize_vrefuse_data()
+    -> {Pair.snd(FuluDeposit_d.Deposit, O.Encoded, FuluDeposit_e.Deposit_serialize(FuluDeposit_d.Deposit_set_data(FuluDeposit_d.Deposit_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}

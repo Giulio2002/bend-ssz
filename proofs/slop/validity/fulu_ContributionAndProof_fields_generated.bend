@@ -13,3 +13,7 @@ def ContributionAndProof_serialize_vreject_default_valid()
 def ContributionAndProof_serialize_vreject_contribution()
     -> {Pair.snd(FuluContributionAndProof_d.ContributionAndProof, Bool, FuluContributionAndProof_e.ContributionAndProof_valid(FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), O.BNone{}))) == False{} : Bool}:
   {==}
+
+def ContributionAndProof_serialize_vrefuse_contribution()
+    -> {Pair.snd(FuluContributionAndProof_d.ContributionAndProof, O.Encoded, FuluContributionAndProof_e.ContributionAndProof_serialize(FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}

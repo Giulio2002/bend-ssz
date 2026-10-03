@@ -10,6 +10,14 @@ def PendingAttestation_serialize_vreject_default_valid()
     -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, Bool, FuluPendingAttestation_e.PendingAttestation_valid(FuluPendingAttestation_d.PendingAttestation_default())) == True{} : Bool}:
   {==}
 
+def PendingAttestation_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, O.Encoded, FuluPendingAttestation_e.PendingAttestation_senc_go(True{}, 0, FuluPendingAttestation_d.PendingAttestation_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def PendingAttestation_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, O.Encoded, FuluPendingAttestation_e.PendingAttestation_senc_sized((FuluPendingAttestation_d.PendingAttestation_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def PendingAttestation_serialize_vreject_aggregation_bits()
     -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, Bool, FuluPendingAttestation_e.PendingAttestation_valid(FuluPendingAttestation_d.PendingAttestation_set_aggregation_bits(FuluPendingAttestation_d.PendingAttestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   {==}

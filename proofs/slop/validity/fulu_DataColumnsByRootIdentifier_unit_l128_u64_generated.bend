@@ -24,3 +24,15 @@ def DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_8()
 def DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_16()
     -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(16))) == True{} : Bool}:
   {==}
+
+def DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_hi_1024()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(1024))) == True{} : Bool}:
+  {==}
+
+def DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_above_1032()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(1032))) == False{} : Bool}:
+  {==}

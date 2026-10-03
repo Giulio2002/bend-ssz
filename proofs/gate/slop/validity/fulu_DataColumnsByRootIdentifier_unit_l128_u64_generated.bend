@@ -12,6 +12,15 @@ def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_se
 def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_8() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(8))) == True{} : Bool}:
   PRV.DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_8()
 
+def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_above_1032() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(1032))) == False{} : Bool}:
+  PRV.DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_above_1032()
+
+def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_hi_1024() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(1024))) == True{} : Bool}:
+  PRV.DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_hi_1024()
+
+def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_lo_0() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_lo_0()
+
 def DataColumnsByRootIdentifier__serialize_valid__DataColumnsByRootIdentifier_serialize_vunit_l128_u64_refuse_1() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_128_e.l128_u64_valid(O.words_new(1))) == False{} : Bool}:
   PRV.DataColumnsByRootIdentifier_serialize_vunit_l128_u64_refuse_1()
 

@@ -69,6 +69,12 @@ def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_
 def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_accept_32() -> {Pair.snd(P2_O.Words, Bool, proglist_uint128_e.pl_u128_valid(P2_O.words_new(32))) == True{} : Bool}:
   P2_PRV.proglist_uint128_serialize_vunit_pl_u128_accept_32()
 
+def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_range_lo_0() -> {Pair.snd(P2_O.Words, Bool, proglist_uint128_e.pl_u128_valid(P2_O.words_new(0))) == True{} : Bool}:
+  P2_PRV.proglist_uint128_serialize_vunit_pl_u128_range_lo_0()
+
+def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_ok_16() -> {(P2_O.unit_ok(16, 1), (P2_O.unit_ok(16, 8), (P2_O.unit_ok(16, 15), (P2_O.unit_ok(16, 16), (P2_O.unit_ok(16, 17), (P2_O.unit_ok(16, 31), (P2_O.unit_ok(16, 32), (P2_O.unit_ok(16, 48), P2_O.unit_ok(16, 56))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  P2_PRV.proglist_uint128_serialize_vunit_ok_16()
+
 def proglist_uint128__serialize_valid__proglist_uint128_mc_poison_pl_u128(out: Array<U32>, pos: U32, o: P3_O.Words) -> {proglist_uint128_e.pl_u128_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Words & U32)}:
   P3_PRV.proglist_uint128_mc_poison_pl_u128(out, pos, o)
 

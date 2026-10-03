@@ -2225,3 +2225,6 @@ types/generic_obj_g9.bend	types/generic_obj_g9_generated.bend
 codegen/collection_guards.py	codegen/proofs/slop/collection_guards.py
 codegen/word_unit_validity.py	codegen/proofs/slop/word_unit_validity.py
 codegen/cell_list_guards.py	codegen/proofs/slop/cell_list_guards.py
+codegen/tight_storage_root.py	codegen/proofs/slop/tight_storage_root.py
+codegen/cached_list_roots.py	codegen/proofs/slop/cached_list_roots.py
+codegen/small_type_predicates.py	codegen/proofs/slop/small_type_predicates.py

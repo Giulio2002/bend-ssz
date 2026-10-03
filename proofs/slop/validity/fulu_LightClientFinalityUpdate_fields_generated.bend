@@ -17,3 +17,7 @@ def LightClientFinalityUpdate_serialize_vreject_finality_branch()
 def LightClientFinalityUpdate_serialize_vreject_sync_aggregate()
     -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), O.BNone{}))) == False{} : Bool}:
   {==}
+
+def LightClientFinalityUpdate_serialize_vrefuse_sync_aggregate()
+    -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, O.Encoded, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_sync_aggregate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}

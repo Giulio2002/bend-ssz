@@ -14,6 +14,10 @@ def LightClientHeader_serialize_vreject_execution()
     -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, Bool, FuluLightClientHeader_e.LightClientHeader_valid(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{}))) == False{} : Bool}:
   {==}
 
+def LightClientHeader_serialize_vrefuse_execution()
+    -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, O.Encoded, FuluLightClientHeader_e.LightClientHeader_serialize(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
 def LightClientHeader_serialize_vreject_execution_branch()
     -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, Bool, FuluLightClientHeader_e.LightClientHeader_valid(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(FuluLightClientHeader_d.LightClientHeader_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}

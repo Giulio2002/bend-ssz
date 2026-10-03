@@ -712,6 +712,7 @@
     "slop/offsets/FinalityBranch_word_positions_generated.bend",
     "slop/validity/fulu_FinalityBranch_generated.bend",
     "slop/validity/fulu_FinalityBranch_poison_flag_generated.bend",
+    "slop/validity/fulu_FinalityBranch_unit_v7_b32_generated.bend",
     "slop/capacity/FinalityBranch_generated.bend",
     "slop/size/FinalityBranch_generated.bend",
     "slop/constants/FinalityBranch_generated.bend"
@@ -1600,6 +1601,7 @@
     "slop/capacity/HistoricalBatch_symbolic_generated.bend",
     "slop/alignment/HistoricalBatch_flag_generated.bend",
     "slop/validity/fulu_HistoricalBatch_fields_generated.bend",
+    "slop/validity/fulu_HistoricalBatch_unit_v8192_b32_generated.bend",
     "slop/size/HistoricalBatch_generated.bend"
    ]
   },
@@ -1776,6 +1778,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bitc_enc_Attestation.bend",
+    "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_fields_generated.bend",
     "slop/size/Attestation_generated.bend",
@@ -1791,6 +1794,7 @@
     "var_bitc_Attestation.bend",
     "var_bitc_Attestation_unique.bend",
     "var_bitc_Attestation_rej.bend",
+    "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
     "slop/offsets/Attestation_generated.bend"
    ]
   },
@@ -1867,6 +1871,7 @@
    "op": "encode_ssz",
    "files": [
     "var_bitc_enc_PendingAttestation.bend",
+    "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_fields_generated.bend",
     "slop/size/PendingAttestation_generated.bend",
@@ -1882,6 +1887,7 @@
     "var_bitc_PendingAttestation.bend",
     "var_bitc_PendingAttestation_unique.bend",
     "var_bitc_PendingAttestation_rej.bend",
+    "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
     "slop/offsets/PendingAttestation_generated.bend"
    ]
   },
@@ -2226,6 +2232,7 @@
     "slop/capacity/SyncCommittee_symbolic_generated.bend",
     "slop/alignment/SyncCommittee_flag_generated.bend",
     "slop/validity/fulu_SyncCommittee_fields_generated.bend",
+    "slop/validity/fulu_SyncCommittee_unit_v512_b48_generated.bend",
     "slop/size/SyncCommittee_generated.bend"
    ]
   },
@@ -2297,6 +2304,7 @@
     "slop/alignment/Deposit_flag_generated.bend",
     "slop/offsets/Deposit_reported_size_generated.bend",
     "slop/validity/fulu_Deposit_fields_generated.bend",
+    "slop/validity/fulu_Deposit_unit_v33_b32_generated.bend",
     "slop/capacity/Deposit_generated.bend",
     "slop/size/Deposit_generated.bend",
     "slop/constants/Deposit_generated.bend"
@@ -2543,6 +2551,7 @@
     "slop/offsets/CurrentSyncCommitteeBranch_word_positions_generated.bend",
     "slop/validity/fulu_CurrentSyncCommitteeBranch_generated.bend",
     "slop/validity/fulu_CurrentSyncCommitteeBranch_poison_flag_generated.bend",
+    "slop/validity/fulu_CurrentSyncCommitteeBranch_unit_v6_b32_generated.bend",
     "slop/capacity/CurrentSyncCommitteeBranch_generated.bend",
     "slop/size/CurrentSyncCommitteeBranch_generated.bend",
     "slop/constants/CurrentSyncCommitteeBranch_generated.bend"
@@ -2581,6 +2590,7 @@
     "slop/offsets/NextSyncCommitteeBranch_word_positions_generated.bend",
     "slop/validity/fulu_NextSyncCommitteeBranch_generated.bend",
     "slop/validity/fulu_NextSyncCommitteeBranch_poison_flag_generated.bend",
+    "slop/validity/fulu_NextSyncCommitteeBranch_unit_v6_b32_generated.bend",
     "slop/capacity/NextSyncCommitteeBranch_generated.bend",
     "slop/size/NextSyncCommitteeBranch_generated.bend",
     "slop/constants/NextSyncCommitteeBranch_generated.bend"
@@ -2616,6 +2626,7 @@
     "var_codec_Transaction_enc.bend",
     "slop/validity/fulu_Transaction_generated.bend",
     "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
+    "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
     "slop/size/Transaction_generated.bend",
     "slop/constants/Transaction_generated.bend"
    ]
@@ -2774,7 +2785,26 @@
    "generated_name": "ExecutionRequests",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_4_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_dok_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_end_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_limit_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_4_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_dok_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_end_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_3_generated.bend"
    ]
   },
   "FuluBLSToExecutionChange_encode_ssz_proof_generated.bend": {
@@ -2860,6 +2890,8 @@
     "slop/capacity/ExecutionPayloadHeader_symbolic_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_collection_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
     "slop/capacity/ExecutionPayloadHeader_generated.bend",
     "slop/size/ExecutionPayloadHeader_generated.bend",
     "slop/constants/ExecutionPayloadHeader_generated.bend"
@@ -2881,7 +2913,8 @@
    "generated_name": "ExecutionPayloadHeader",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend"
    ]
   },
   "FuluPayloadId_encode_ssz_proof_generated.bend": {
@@ -3002,6 +3035,7 @@
     "var_codec_ExecutionPayload_enc.bend",
     "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend",
     "slop/size/ExecutionPayload_generated.bend",
     "slop/constants/ExecutionPayload_generated.bend"
    ]
@@ -3013,6 +3047,7 @@
    "files": [
     "slop/offsets/fulu_ExecutionPayload_first_offset_generated.bend",
     "var_codec_ExecutionPayload.bend",
+    "slop/validity/fulu_ExecutionPayload_and_pair_generated.bend",
     "slop/offsets/ExecutionPayload_generated.bend"
    ]
   },
@@ -3021,7 +3056,17 @@
    "generated_name": "ExecutionPayload",
    "op": "hashtreeroot",
    "files": [
-    "root_ExecutionPayload.bend"
+    "root_ExecutionPayload.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_4_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_dok_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_end_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_limit_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_3_generated.bend"
    ]
   },
   "FuluBeaconState_encode_ssz_proof_generated.bend": {
@@ -3033,7 +3078,14 @@
     "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_fields_generated.bend",
     "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
-    "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend"
+    "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
+    "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+    "slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend",
+    "slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend",
+    "slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend",
+    "slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_enc_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend"
    ]
   },
   "FuluBeaconState_decode_ssz_proof_generated.bend": {
@@ -3043,6 +3095,7 @@
    "files": [
     "slop/offsets/fulu_BeaconState_first_offset_generated.bend",
     "var_codec_BeaconState.bend",
+    "slop/validity/fulu_BeaconState_and_pair_generated.bend",
     "slop/offsets/BeaconState_generated.bend"
    ]
   },
@@ -3051,7 +3104,40 @@
    "generated_name": "BeaconState",
    "op": "hashtreeroot",
    "files": [
-    "root_BeaconState.bend"
+    "root_BeaconState.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_fold_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend"
    ]
   },
   "FuluExecutionBranch_encode_ssz_proof_generated.bend": {
@@ -3065,6 +3151,7 @@
     "slop/offsets/ExecutionBranch_word_positions_generated.bend",
     "slop/validity/fulu_ExecutionBranch_generated.bend",
     "slop/validity/fulu_ExecutionBranch_poison_flag_generated.bend",
+    "slop/validity/fulu_ExecutionBranch_unit_v4_b32_generated.bend",
     "slop/capacity/ExecutionBranch_generated.bend",
     "slop/size/ExecutionBranch_generated.bend",
     "slop/constants/ExecutionBranch_generated.bend"
@@ -3100,6 +3187,7 @@
     "var_bytes_LightClientHeader_enc.bend",
     "slop/capacity/LightClientHeader_symbolic_generated.bend",
     "slop/validity/fulu_LightClientHeader_fields_generated.bend",
+    "slop/validity/fulu_LightClientHeader_unit_v4_b32_generated.bend",
     "slop/capacity/LightClientHeader_generated.bend",
     "slop/size/LightClientHeader_generated.bend",
     "slop/constants/LightClientHeader_generated.bend"
@@ -3165,6 +3253,7 @@
     "var_codec_LightClientFinalityUpdate_enc.bend",
     "slop/capacity/LightClientFinalityUpdate_symbolic_generated.bend",
     "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
+    "slop/validity/fulu_LightClientFinalityUpdate_unit_v7_b32_generated.bend",
     "slop/capacity/LightClientFinalityUpdate_generated.bend",
     "slop/size/LightClientFinalityUpdate_generated.bend",
     "slop/constants/LightClientFinalityUpdate_generated.bend"
@@ -3195,6 +3284,8 @@
     "var_codec_LightClientUpdate_enc.bend",
     "slop/capacity/LightClientUpdate_symbolic_generated.bend",
     "slop/validity/fulu_LightClientUpdate_fields_generated.bend",
+    "slop/validity/fulu_LightClientUpdate_unit_v6_b32_generated.bend",
+    "slop/validity/fulu_LightClientUpdate_unit_v7_b32_generated.bend",
     "slop/size/LightClientUpdate_generated.bend"
    ]
   },
@@ -3223,6 +3314,7 @@
     "var_bytes_LightClientBootstrap_enc.bend",
     "slop/capacity/LightClientBootstrap_symbolic_generated.bend",
     "slop/validity/fulu_LightClientBootstrap_fields_generated.bend",
+    "slop/validity/fulu_LightClientBootstrap_unit_v6_b32_generated.bend",
     "slop/size/LightClientBootstrap_generated.bend"
    ]
   },
@@ -3363,6 +3455,9 @@
     "var_codec_BeaconBlockBody_enc.bend",
     "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_enc_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_enc_generated.bend",
     "slop/size/BeaconBlockBody_generated.bend",
     "slop/constants/BeaconBlockBody_generated.bend"
    ]
@@ -3374,6 +3469,7 @@
    "files": [
     "slop/offsets/fulu_BeaconBlockBody_first_offset_generated.bend",
     "var_codec_BeaconBlockBody.bend",
+    "slop/validity/fulu_BeaconBlockBody_and_pair_generated.bend",
     "slop/offsets/BeaconBlockBody_generated.bend"
    ]
   },
@@ -3382,7 +3478,61 @@
    "generated_name": "BeaconBlockBody",
    "op": "hashtreeroot",
    "files": [
-    "root_BeaconBlockBody.bend"
+    "root_BeaconBlockBody.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
    ]
   },
   "FuluBeaconBlock_encode_ssz_proof_generated.bend": {
@@ -3489,6 +3639,7 @@
     "slop/capacity/Blob_symbolic_generated.bend",
     "slop/validity/fulu_Blob_generated.bend",
     "slop/validity/fulu_Blob_poison_flag_generated.bend",
+    "slop/validity/fulu_Blob_unit_b131072_generated.bend",
     "slop/size/size_and_bound_fulu_generated.bend",
     "slop/size/Blob_generated.bend",
     "slop/constants/Blob_generated.bend"
@@ -3523,6 +3674,7 @@
     "slop/capacity/BlobSidecar_symbolic_generated.bend",
     "slop/alignment/BlobSidecar_flag_generated.bend",
     "slop/validity/fulu_BlobSidecar_fields_generated.bend",
+    "slop/validity/fulu_BlobSidecar_unit_v17_b32_generated.bend",
     "slop/size/BlobSidecar_generated.bend"
    ]
   },
@@ -3554,6 +3706,7 @@
     "slop/capacity/Cell_symbolic_generated.bend",
     "slop/validity/fulu_Cell_generated.bend",
     "slop/validity/fulu_Cell_poison_flag_generated.bend",
+    "slop/validity/fulu_Cell_unit_b2048_generated.bend",
     "slop/size/size_and_bound_fulu_generated.bend",
     "slop/capacity/Cell_generated.bend",
     "slop/size/Cell_generated.bend",
@@ -3813,6 +3966,7 @@
     "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_unit_v4_b32_generated.bend",
     "slop/size/DataColumnSidecar_generated.bend",
     "slop/constants/DataColumnSidecar_generated.bend"
    ]
@@ -4004,6 +4158,7 @@
     "var_plist_proglist_bool_enc.bend",
     "slop/validity/generic_proglist_bool_generated.bend",
     "slop/validity/generic_proglist_bool_booleans_generated.bend",
+    "slop/validity/generic_proglist_bool_unit_pl_bool_generated.bend",
     "slop/constants/proglist_bool_generated.bend"
    ]
   },
@@ -4038,6 +4193,7 @@
     "slop/validity/generic_vec_bool_16_generated.bend",
     "slop/validity/generic_vec_bool_16_booleans_generated.bend",
     "slop/validity/generic_vec_bool_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_16_unit_v16_bool_generated.bend",
     "slop/capacity/vec_bool_16_generated.bend",
     "slop/size/vec_bool_16_generated.bend",
     "slop/constants/vec_bool_16_generated.bend"
@@ -4051,6 +4207,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_16.bend",
     "sub_unique_vec_bool_16.bend",
+    "slop/validity/generic_vec_bool_16_and_pair_generated.bend",
     "slop/offsets/vec_bool_16_generated.bend"
    ]
   },
@@ -4073,6 +4230,7 @@
     "slop/validity/generic_vec_bool_1_generated.bend",
     "slop/validity/generic_vec_bool_1_booleans_generated.bend",
     "slop/validity/generic_vec_bool_1_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_1_unit_v1_bool_generated.bend",
     "slop/capacity/vec_bool_1_generated.bend",
     "slop/size/vec_bool_1_generated.bend",
     "slop/constants/vec_bool_1_generated.bend"
@@ -4086,6 +4244,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_1.bend",
     "sub_unique_vec_bool_1.bend",
+    "slop/validity/generic_vec_bool_1_and_pair_generated.bend",
     "slop/offsets/vec_bool_1_generated.bend"
    ]
   },
@@ -4108,6 +4267,7 @@
     "slop/validity/generic_vec_bool_2_generated.bend",
     "slop/validity/generic_vec_bool_2_booleans_generated.bend",
     "slop/validity/generic_vec_bool_2_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_2_unit_v2_bool_generated.bend",
     "slop/capacity/vec_bool_2_generated.bend",
     "slop/size/vec_bool_2_generated.bend",
     "slop/constants/vec_bool_2_generated.bend"
@@ -4121,6 +4281,7 @@
     "fixchk_boolg.bend",
     "sub_vec_bool_2.bend",
     "sub_unique_vec_bool_2.bend",
+    "slop/validity/generic_vec_bool_2_and_pair_generated.bend",
     "slop/offsets/vec_bool_2_generated.bend"
    ]
   },
@@ -4143,6 +4304,7 @@
     "slop/validity/generic_vec_bool_31_generated.bend",
     "slop/validity/generic_vec_bool_31_booleans_generated.bend",
     "slop/validity/generic_vec_bool_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
     "slop/capacity/vec_bool_31_generated.bend",
     "slop/size/vec_bool_31_generated.bend",
     "slop/constants/vec_bool_31_generated.bend"
@@ -4178,6 +4340,7 @@
     "slop/validity/generic_vec_bool_3_generated.bend",
     "slop/validity/generic_vec_bool_3_booleans_generated.bend",
     "slop/validity/generic_vec_bool_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
     "slop/capacity/vec_bool_3_generated.bend",
     "slop/size/vec_bool_3_generated.bend",
     "slop/constants/vec_bool_3_generated.bend"
@@ -4215,6 +4378,7 @@
     "slop/validity/generic_vec_bool_4_generated.bend",
     "slop/validity/generic_vec_bool_4_booleans_generated.bend",
     "slop/validity/generic_vec_bool_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_4_unit_v4_bool_generated.bend",
     "slop/capacity/vec_bool_4_generated.bend",
     "slop/size/vec_bool_4_generated.bend",
     "slop/constants/vec_bool_4_generated.bend"
@@ -4250,6 +4414,7 @@
     "slop/validity/generic_vec_bool_512_generated.bend",
     "slop/validity/generic_vec_bool_512_booleans_generated.bend",
     "slop/validity/generic_vec_bool_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_512_unit_v512_bool_generated.bend",
     "slop/capacity/vec_bool_512_generated.bend",
     "slop/size/vec_bool_512_generated.bend",
     "slop/constants/vec_bool_512_generated.bend"
@@ -4285,6 +4450,7 @@
     "slop/validity/generic_vec_bool_513_generated.bend",
     "slop/validity/generic_vec_bool_513_booleans_generated.bend",
     "slop/validity/generic_vec_bool_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
     "slop/capacity/vec_bool_513_generated.bend",
     "slop/size/vec_bool_513_generated.bend",
     "slop/constants/vec_bool_513_generated.bend"
@@ -4320,6 +4486,7 @@
     "slop/validity/generic_vec_bool_5_generated.bend",
     "slop/validity/generic_vec_bool_5_booleans_generated.bend",
     "slop/validity/generic_vec_bool_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
     "slop/capacity/vec_bool_5_generated.bend",
     "slop/size/vec_bool_5_generated.bend",
     "slop/constants/vec_bool_5_generated.bend"
@@ -4357,6 +4524,7 @@
     "slop/validity/generic_vec_bool_8_generated.bend",
     "slop/validity/generic_vec_bool_8_booleans_generated.bend",
     "slop/validity/generic_vec_bool_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_bool_8_unit_v8_bool_generated.bend",
     "slop/capacity/vec_bool_8_generated.bend",
     "slop/size/vec_bool_8_generated.bend",
     "slop/constants/vec_bool_8_generated.bend"
@@ -4423,6 +4591,7 @@
     "slop/offsets/vec_uint128_16_word_positions_generated.bend",
     "slop/validity/generic_vec_uint128_16_generated.bend",
     "slop/validity/generic_vec_uint128_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_16_unit_v16_u128_generated.bend",
     "slop/capacity/vec_uint128_16_generated.bend",
     "slop/size/vec_uint128_16_generated.bend",
     "slop/constants/vec_uint128_16_generated.bend"
@@ -4537,6 +4706,7 @@
     "slop/capacity/vec_uint128_31_symbolic_generated.bend",
     "slop/validity/generic_vec_uint128_31_generated.bend",
     "slop/validity/generic_vec_uint128_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_31_unit_v31_u128_generated.bend",
     "slop/capacity/vec_uint128_31_generated.bend",
     "slop/size/vec_uint128_31_generated.bend",
     "slop/constants/vec_uint128_31_generated.bend"
@@ -4575,6 +4745,7 @@
     "slop/offsets/vec_uint128_3_word_positions_generated.bend",
     "slop/validity/generic_vec_uint128_3_generated.bend",
     "slop/validity/generic_vec_uint128_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_3_unit_v3_u128_generated.bend",
     "slop/capacity/vec_uint128_3_generated.bend",
     "slop/size/vec_uint128_3_generated.bend",
     "slop/constants/vec_uint128_3_generated.bend"
@@ -4613,6 +4784,7 @@
     "slop/offsets/vec_uint128_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint128_4_generated.bend",
     "slop/validity/generic_vec_uint128_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_4_unit_v4_u128_generated.bend",
     "slop/capacity/vec_uint128_4_generated.bend",
     "slop/size/vec_uint128_4_generated.bend",
     "slop/constants/vec_uint128_4_generated.bend"
@@ -4649,6 +4821,7 @@
     "slop/capacity/vec_uint128_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint128_512_generated.bend",
     "slop/validity/generic_vec_uint128_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_512_unit_v512_u128_generated.bend",
     "slop/size/vec_uint128_512_generated.bend",
     "slop/constants/vec_uint128_512_generated.bend"
    ]
@@ -4682,6 +4855,7 @@
     "slop/capacity/vec_uint128_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint128_513_generated.bend",
     "slop/validity/generic_vec_uint128_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_513_unit_v513_u128_generated.bend",
     "slop/size/vec_uint128_513_generated.bend",
     "slop/constants/vec_uint128_513_generated.bend"
    ]
@@ -4717,6 +4891,7 @@
     "slop/offsets/vec_uint128_5_word_positions_generated.bend",
     "slop/validity/generic_vec_uint128_5_generated.bend",
     "slop/validity/generic_vec_uint128_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_5_unit_v5_u128_generated.bend",
     "slop/capacity/vec_uint128_5_generated.bend",
     "slop/size/vec_uint128_5_generated.bend",
     "slop/constants/vec_uint128_5_generated.bend"
@@ -4755,6 +4930,7 @@
     "slop/offsets/vec_uint128_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint128_8_generated.bend",
     "slop/validity/generic_vec_uint128_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint128_8_unit_v8_u128_generated.bend",
     "slop/capacity/vec_uint128_8_generated.bend",
     "slop/size/vec_uint128_8_generated.bend",
     "slop/constants/vec_uint128_8_generated.bend"
@@ -4790,6 +4966,7 @@
     "var_plist_proglist_uint8_enc.bend",
     "slop/validity/generic_proglist_uint8_generated.bend",
     "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
+    "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
     "slop/constants/proglist_uint8_generated.bend"
    ]
   },
@@ -4808,7 +4985,8 @@
    "generated_name": "proglist_uint8",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend"
    ]
   },
   "vec_uint8_16_encode_ssz_proof_generated.bend": {
@@ -4822,6 +5000,7 @@
     "slop/offsets/vec_uint8_16_word_positions_generated.bend",
     "slop/validity/generic_vec_uint8_16_generated.bend",
     "slop/validity/generic_vec_uint8_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_16_unit_v16_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_16_generated.bend",
     "slop/size/vec_uint8_16_generated.bend",
@@ -4857,6 +5036,7 @@
     "slop/capacity/vec_uint8_1_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_1_generated.bend",
     "slop/validity/generic_vec_uint8_1_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_1_unit_v1_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_1_generated.bend",
     "slop/size/vec_uint8_1_generated.bend",
@@ -4892,6 +5072,7 @@
     "slop/capacity/vec_uint8_2_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_2_generated.bend",
     "slop/validity/generic_vec_uint8_2_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_2_unit_v2_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_2_generated.bend",
     "slop/size/vec_uint8_2_generated.bend",
@@ -4927,6 +5108,7 @@
     "slop/capacity/vec_uint8_31_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_31_generated.bend",
     "slop/validity/generic_vec_uint8_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_31_generated.bend",
     "slop/size/vec_uint8_31_generated.bend",
@@ -4962,6 +5144,7 @@
     "slop/capacity/vec_uint8_3_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_3_generated.bend",
     "slop/validity/generic_vec_uint8_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_3_generated.bend",
     "slop/size/vec_uint8_3_generated.bend",
@@ -4999,6 +5182,7 @@
     "slop/offsets/vec_uint8_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint8_4_generated.bend",
     "slop/validity/generic_vec_uint8_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_4_unit_v4_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_4_generated.bend",
     "slop/size/vec_uint8_4_generated.bend",
@@ -5034,6 +5218,7 @@
     "slop/capacity/vec_uint8_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_512_generated.bend",
     "slop/validity/generic_vec_uint8_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_512_unit_v512_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_512_generated.bend",
     "slop/size/vec_uint8_512_generated.bend",
@@ -5069,6 +5254,7 @@
     "slop/capacity/vec_uint8_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_513_generated.bend",
     "slop/validity/generic_vec_uint8_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_513_generated.bend",
     "slop/size/vec_uint8_513_generated.bend",
@@ -5104,6 +5290,7 @@
     "slop/capacity/vec_uint8_5_symbolic_generated.bend",
     "slop/validity/generic_vec_uint8_5_generated.bend",
     "slop/validity/generic_vec_uint8_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_5_generated.bend",
     "slop/size/vec_uint8_5_generated.bend",
@@ -5141,6 +5328,7 @@
     "slop/offsets/vec_uint8_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint8_8_generated.bend",
     "slop/validity/generic_vec_uint8_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint8_8_unit_v8_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_8_generated.bend",
     "slop/size/vec_uint8_8_generated.bend",
@@ -5208,6 +5396,7 @@
     "slop/offsets/vec_uint16_16_word_positions_generated.bend",
     "slop/validity/generic_vec_uint16_16_generated.bend",
     "slop/validity/generic_vec_uint16_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_16_unit_v16_u16_generated.bend",
     "slop/capacity/vec_uint16_16_generated.bend",
     "slop/size/vec_uint16_16_generated.bend",
     "slop/constants/vec_uint16_16_generated.bend"
@@ -5314,6 +5503,7 @@
     "slop/capacity/vec_uint16_31_symbolic_generated.bend",
     "slop/validity/generic_vec_uint16_31_generated.bend",
     "slop/validity/generic_vec_uint16_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
     "slop/capacity/vec_uint16_31_generated.bend",
     "slop/size/vec_uint16_31_generated.bend",
     "slop/constants/vec_uint16_31_generated.bend"
@@ -5348,6 +5538,7 @@
     "slop/capacity/vec_uint16_3_symbolic_generated.bend",
     "slop/validity/generic_vec_uint16_3_generated.bend",
     "slop/validity/generic_vec_uint16_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
     "slop/capacity/vec_uint16_3_generated.bend",
     "slop/size/vec_uint16_3_generated.bend",
     "slop/constants/vec_uint16_3_generated.bend"
@@ -5384,6 +5575,7 @@
     "slop/offsets/vec_uint16_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint16_4_generated.bend",
     "slop/validity/generic_vec_uint16_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_4_unit_v4_u16_generated.bend",
     "slop/capacity/vec_uint16_4_generated.bend",
     "slop/size/vec_uint16_4_generated.bend",
     "slop/constants/vec_uint16_4_generated.bend"
@@ -5418,6 +5610,7 @@
     "slop/capacity/vec_uint16_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint16_512_generated.bend",
     "slop/validity/generic_vec_uint16_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_512_unit_v512_u16_generated.bend",
     "slop/capacity/vec_uint16_512_generated.bend",
     "slop/size/vec_uint16_512_generated.bend",
     "slop/constants/vec_uint16_512_generated.bend"
@@ -5452,6 +5645,7 @@
     "slop/capacity/vec_uint16_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint16_513_generated.bend",
     "slop/validity/generic_vec_uint16_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
     "slop/capacity/vec_uint16_513_generated.bend",
     "slop/size/vec_uint16_513_generated.bend",
     "slop/constants/vec_uint16_513_generated.bend"
@@ -5486,6 +5680,7 @@
     "slop/capacity/vec_uint16_5_symbolic_generated.bend",
     "slop/validity/generic_vec_uint16_5_generated.bend",
     "slop/validity/generic_vec_uint16_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
     "slop/capacity/vec_uint16_5_generated.bend",
     "slop/size/vec_uint16_5_generated.bend",
     "slop/constants/vec_uint16_5_generated.bend"
@@ -5522,6 +5717,7 @@
     "slop/offsets/vec_uint16_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint16_8_generated.bend",
     "slop/validity/generic_vec_uint16_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint16_8_unit_v8_u16_generated.bend",
     "slop/capacity/vec_uint16_8_generated.bend",
     "slop/size/vec_uint16_8_generated.bend",
     "slop/constants/vec_uint16_8_generated.bend"
@@ -5586,6 +5782,7 @@
     "slop/capacity/vec_uint256_16_symbolic_generated.bend",
     "slop/validity/generic_vec_uint256_16_generated.bend",
     "slop/validity/generic_vec_uint256_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_16_unit_v16_u256_generated.bend",
     "slop/capacity/vec_uint256_16_generated.bend",
     "slop/size/vec_uint256_16_generated.bend",
     "slop/constants/vec_uint256_16_generated.bend"
@@ -5700,6 +5897,7 @@
     "slop/capacity/vec_uint256_31_symbolic_generated.bend",
     "slop/validity/generic_vec_uint256_31_generated.bend",
     "slop/validity/generic_vec_uint256_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_31_unit_v31_u256_generated.bend",
     "slop/capacity/vec_uint256_31_generated.bend",
     "slop/size/vec_uint256_31_generated.bend",
     "slop/constants/vec_uint256_31_generated.bend"
@@ -5738,6 +5936,7 @@
     "slop/offsets/vec_uint256_3_word_positions_generated.bend",
     "slop/validity/generic_vec_uint256_3_generated.bend",
     "slop/validity/generic_vec_uint256_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_3_unit_v3_u256_generated.bend",
     "slop/capacity/vec_uint256_3_generated.bend",
     "slop/size/vec_uint256_3_generated.bend",
     "slop/constants/vec_uint256_3_generated.bend"
@@ -5776,6 +5975,7 @@
     "slop/offsets/vec_uint256_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint256_4_generated.bend",
     "slop/validity/generic_vec_uint256_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_4_unit_v4_u256_generated.bend",
     "slop/capacity/vec_uint256_4_generated.bend",
     "slop/size/vec_uint256_4_generated.bend",
     "slop/constants/vec_uint256_4_generated.bend"
@@ -5812,6 +6012,7 @@
     "slop/capacity/vec_uint256_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint256_512_generated.bend",
     "slop/validity/generic_vec_uint256_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_512_unit_v512_u256_generated.bend",
     "slop/size/vec_uint256_512_generated.bend",
     "slop/constants/vec_uint256_512_generated.bend"
    ]
@@ -5845,6 +6046,7 @@
     "slop/capacity/vec_uint256_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint256_513_generated.bend",
     "slop/validity/generic_vec_uint256_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_513_unit_v513_u256_generated.bend",
     "slop/size/vec_uint256_513_generated.bend",
     "slop/constants/vec_uint256_513_generated.bend"
    ]
@@ -5880,6 +6082,7 @@
     "slop/offsets/vec_uint256_5_word_positions_generated.bend",
     "slop/validity/generic_vec_uint256_5_generated.bend",
     "slop/validity/generic_vec_uint256_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_5_unit_v5_u256_generated.bend",
     "slop/capacity/vec_uint256_5_generated.bend",
     "slop/size/vec_uint256_5_generated.bend",
     "slop/constants/vec_uint256_5_generated.bend"
@@ -5918,6 +6121,7 @@
     "slop/offsets/vec_uint256_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint256_8_generated.bend",
     "slop/validity/generic_vec_uint256_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint256_8_unit_v8_u256_generated.bend",
     "slop/capacity/vec_uint256_8_generated.bend",
     "slop/size/vec_uint256_8_generated.bend",
     "slop/constants/vec_uint256_8_generated.bend"
@@ -5986,6 +6190,7 @@
     "slop/offsets/vec_uint32_16_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_16_generated.bend",
     "slop/validity/generic_vec_uint32_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_16_unit_v16_u32_generated.bend",
     "slop/capacity/vec_uint32_16_generated.bend",
     "slop/size/vec_uint32_16_generated.bend",
     "slop/constants/vec_uint32_16_generated.bend"
@@ -6102,6 +6307,7 @@
     "slop/offsets/vec_uint32_31_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_31_generated.bend",
     "slop/validity/generic_vec_uint32_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_31_unit_v31_u32_generated.bend",
     "slop/capacity/vec_uint32_31_generated.bend",
     "slop/size/vec_uint32_31_generated.bend",
     "slop/constants/vec_uint32_31_generated.bend"
@@ -6140,6 +6346,7 @@
     "slop/offsets/vec_uint32_3_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_3_generated.bend",
     "slop/validity/generic_vec_uint32_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_3_unit_v3_u32_generated.bend",
     "slop/capacity/vec_uint32_3_generated.bend",
     "slop/size/vec_uint32_3_generated.bend",
     "slop/constants/vec_uint32_3_generated.bend"
@@ -6178,6 +6385,7 @@
     "slop/offsets/vec_uint32_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_4_generated.bend",
     "slop/validity/generic_vec_uint32_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_4_unit_v4_u32_generated.bend",
     "slop/capacity/vec_uint32_4_generated.bend",
     "slop/size/vec_uint32_4_generated.bend",
     "slop/constants/vec_uint32_4_generated.bend"
@@ -6214,6 +6422,7 @@
     "slop/capacity/vec_uint32_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint32_512_generated.bend",
     "slop/validity/generic_vec_uint32_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_512_unit_v512_u32_generated.bend",
     "slop/capacity/vec_uint32_512_generated.bend",
     "slop/size/vec_uint32_512_generated.bend",
     "slop/constants/vec_uint32_512_generated.bend"
@@ -6248,6 +6457,7 @@
     "slop/capacity/vec_uint32_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint32_513_generated.bend",
     "slop/validity/generic_vec_uint32_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_513_unit_v513_u32_generated.bend",
     "slop/capacity/vec_uint32_513_generated.bend",
     "slop/size/vec_uint32_513_generated.bend",
     "slop/constants/vec_uint32_513_generated.bend"
@@ -6284,6 +6494,7 @@
     "slop/offsets/vec_uint32_5_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_5_generated.bend",
     "slop/validity/generic_vec_uint32_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_5_unit_v5_u32_generated.bend",
     "slop/capacity/vec_uint32_5_generated.bend",
     "slop/size/vec_uint32_5_generated.bend",
     "slop/constants/vec_uint32_5_generated.bend"
@@ -6322,6 +6533,7 @@
     "slop/offsets/vec_uint32_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint32_8_generated.bend",
     "slop/validity/generic_vec_uint32_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint32_8_unit_v8_u32_generated.bend",
     "slop/capacity/vec_uint32_8_generated.bend",
     "slop/size/vec_uint32_8_generated.bend",
     "slop/constants/vec_uint32_8_generated.bend"
@@ -6390,6 +6602,7 @@
     "slop/offsets/vec_uint64_16_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_16_generated.bend",
     "slop/validity/generic_vec_uint64_16_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_16_unit_v16_u64_generated.bend",
     "slop/capacity/vec_uint64_16_generated.bend",
     "slop/size/vec_uint64_16_generated.bend",
     "slop/constants/vec_uint64_16_generated.bend"
@@ -6506,6 +6719,7 @@
     "slop/offsets/vec_uint64_31_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_31_generated.bend",
     "slop/validity/generic_vec_uint64_31_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_31_unit_v31_u64_generated.bend",
     "slop/capacity/vec_uint64_31_generated.bend",
     "slop/size/vec_uint64_31_generated.bend",
     "slop/constants/vec_uint64_31_generated.bend"
@@ -6544,6 +6758,7 @@
     "slop/offsets/vec_uint64_3_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_3_generated.bend",
     "slop/validity/generic_vec_uint64_3_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_3_unit_v3_u64_generated.bend",
     "slop/capacity/vec_uint64_3_generated.bend",
     "slop/size/vec_uint64_3_generated.bend",
     "slop/constants/vec_uint64_3_generated.bend"
@@ -6582,6 +6797,7 @@
     "slop/offsets/vec_uint64_4_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_4_generated.bend",
     "slop/validity/generic_vec_uint64_4_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_4_unit_v4_u64_generated.bend",
     "slop/capacity/vec_uint64_4_generated.bend",
     "slop/size/vec_uint64_4_generated.bend",
     "slop/constants/vec_uint64_4_generated.bend"
@@ -6618,6 +6834,7 @@
     "slop/capacity/vec_uint64_512_symbolic_generated.bend",
     "slop/validity/generic_vec_uint64_512_generated.bend",
     "slop/validity/generic_vec_uint64_512_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_512_unit_v512_u64_generated.bend",
     "slop/capacity/vec_uint64_512_generated.bend",
     "slop/size/vec_uint64_512_generated.bend",
     "slop/constants/vec_uint64_512_generated.bend"
@@ -6652,6 +6869,7 @@
     "slop/capacity/vec_uint64_513_symbolic_generated.bend",
     "slop/validity/generic_vec_uint64_513_generated.bend",
     "slop/validity/generic_vec_uint64_513_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_513_unit_v513_u64_generated.bend",
     "slop/size/vec_uint64_513_generated.bend",
     "slop/constants/vec_uint64_513_generated.bend"
    ]
@@ -6687,6 +6905,7 @@
     "slop/offsets/vec_uint64_5_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_5_generated.bend",
     "slop/validity/generic_vec_uint64_5_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_5_unit_v5_u64_generated.bend",
     "slop/capacity/vec_uint64_5_generated.bend",
     "slop/size/vec_uint64_5_generated.bend",
     "slop/constants/vec_uint64_5_generated.bend"
@@ -6725,6 +6944,7 @@
     "slop/offsets/vec_uint64_8_word_positions_generated.bend",
     "slop/validity/generic_vec_uint64_8_generated.bend",
     "slop/validity/generic_vec_uint64_8_poison_flag_generated.bend",
+    "slop/validity/generic_vec_uint64_8_unit_v8_u64_generated.bend",
     "slop/capacity/vec_uint64_8_generated.bend",
     "slop/size/vec_uint64_8_generated.bend",
     "slop/constants/vec_uint64_8_generated.bend"
@@ -6822,12 +7042,17 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveBitsStruct_enc.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_collection_bits1281_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_collection_bits256_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_collection_bits257_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
     "slop/constants/ProgressiveBitsStruct_generated.bend"
    ]
   },
@@ -6839,6 +7064,10 @@
     "slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend",
     "var_codec_ProgressiveBitsStruct.bend",
     "var_codec_ProgressiveBitsStruct_unique.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
     "slop/offsets/ProgressiveBitsStruct_generated.bend"
    ]
   },
@@ -6952,6 +7181,7 @@
     "slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
     "slop/constants/ComplexTestStruct_generated.bend"
    ]
@@ -6972,7 +7202,8 @@
    "generated_name": "ComplexTestStruct",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend"
    ]
   },
   "SmallTestStruct_encode_ssz_proof_generated.bend": {
@@ -7014,6 +7245,7 @@
     "var_bits_enc_bitlist_15.bend",
     "slop/capacity/bitlist_15_symbolic_generated.bend",
     "slop/validity/generic_bitlist_15_generated.bend",
+    "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_bits_generated.bend",
     "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
     "slop/capacity/bitlist_15_generated.bend",
@@ -7028,6 +7260,7 @@
     "var_bits_bitlist_15.bend",
     "var_bits_bitlist_15_unique.bend",
     "var_bits_bitlist_15_rej.bend",
+    "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
     "slop/offsets/bitlist_15_generated.bend"
    ]
   },
@@ -7049,6 +7282,7 @@
     "var_bits_enc_bitlist_16.bend",
     "slop/capacity/bitlist_16_symbolic_generated.bend",
     "slop/validity/generic_bitlist_16_generated.bend",
+    "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_bits_generated.bend",
     "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
     "slop/capacity/bitlist_16_generated.bend",
@@ -7063,6 +7297,7 @@
     "var_bits_bitlist_16.bend",
     "var_bits_bitlist_16_unique.bend",
     "var_bits_bitlist_16_rej.bend",
+    "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
     "slop/offsets/bitlist_16_generated.bend"
    ]
   },
@@ -7084,6 +7319,7 @@
     "var_bits_enc_bitlist_17.bend",
     "slop/capacity/bitlist_17_symbolic_generated.bend",
     "slop/validity/generic_bitlist_17_generated.bend",
+    "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_bits_generated.bend",
     "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
     "slop/capacity/bitlist_17_generated.bend",
@@ -7098,6 +7334,7 @@
     "var_bits_bitlist_17.bend",
     "var_bits_bitlist_17_unique.bend",
     "var_bits_bitlist_17_rej.bend",
+    "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
     "slop/offsets/bitlist_17_generated.bend"
    ]
   },
@@ -7119,6 +7356,7 @@
     "var_bits_enc_bitlist_1.bend",
     "slop/capacity/bitlist_1_symbolic_generated.bend",
     "slop/validity/generic_bitlist_1_generated.bend",
+    "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_bits_generated.bend",
     "slop/validity/generic_bitlist_1_collection_bits1_generated.bend",
     "slop/capacity/bitlist_1_generated.bend",
@@ -7133,6 +7371,7 @@
     "var_bits_bitlist_1.bend",
     "var_bits_bitlist_1_unique.bend",
     "var_bits_bitlist_1_rej.bend",
+    "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
     "slop/offsets/bitlist_1_generated.bend"
    ]
   },
@@ -7154,6 +7393,7 @@
     "var_bits_enc_bitlist_2.bend",
     "slop/capacity/bitlist_2_symbolic_generated.bend",
     "slop/validity/generic_bitlist_2_generated.bend",
+    "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_bits_generated.bend",
     "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
     "slop/capacity/bitlist_2_generated.bend",
@@ -7168,6 +7408,7 @@
     "var_bits_bitlist_2.bend",
     "var_bits_bitlist_2_unique.bend",
     "var_bits_bitlist_2_rej.bend",
+    "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
     "slop/offsets/bitlist_2_generated.bend"
    ]
   },
@@ -7189,6 +7430,7 @@
     "var_bits_enc_bitlist_31.bend",
     "slop/capacity/bitlist_31_symbolic_generated.bend",
     "slop/validity/generic_bitlist_31_generated.bend",
+    "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_bits_generated.bend",
     "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
     "slop/capacity/bitlist_31_generated.bend",
@@ -7203,6 +7445,7 @@
     "var_bits_bitlist_31.bend",
     "var_bits_bitlist_31_unique.bend",
     "var_bits_bitlist_31_rej.bend",
+    "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
     "slop/offsets/bitlist_31_generated.bend"
    ]
   },
@@ -7223,6 +7466,7 @@
    "files": [
     "var_bits_enc_bitlist_32.bend",
     "slop/validity/generic_bitlist_32_generated.bend",
+    "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_bits_generated.bend",
     "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
     "slop/constants/bitlist_32_generated.bend"
@@ -7236,6 +7480,7 @@
     "var_bits_bitlist_32.bend",
     "var_bits_bitlist_32_unique.bend",
     "var_bits_bitlist_32_rej.bend",
+    "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
     "slop/offsets/bitlist_32_generated.bend"
    ]
   },
@@ -7256,6 +7501,7 @@
    "files": [
     "var_bits_enc_bitlist_33.bend",
     "slop/validity/generic_bitlist_33_generated.bend",
+    "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_bits_generated.bend",
     "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
     "slop/constants/bitlist_33_generated.bend"
@@ -7269,6 +7515,7 @@
     "var_bits_bitlist_33.bend",
     "var_bits_bitlist_33_unique.bend",
     "var_bits_bitlist_33_rej.bend",
+    "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
     "slop/offsets/bitlist_33_generated.bend"
    ]
   },
@@ -7290,6 +7537,7 @@
     "var_bits_enc_bitlist_3.bend",
     "slop/capacity/bitlist_3_symbolic_generated.bend",
     "slop/validity/generic_bitlist_3_generated.bend",
+    "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_bits_generated.bend",
     "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
     "slop/capacity/bitlist_3_generated.bend",
@@ -7304,6 +7552,7 @@
     "var_bits_bitlist_3.bend",
     "var_bits_bitlist_3_unique.bend",
     "var_bits_bitlist_3_rej.bend",
+    "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
     "slop/offsets/bitlist_3_generated.bend"
    ]
   },
@@ -7325,6 +7574,7 @@
     "var_bits_enc_bitlist_4.bend",
     "slop/capacity/bitlist_4_symbolic_generated.bend",
     "slop/validity/generic_bitlist_4_generated.bend",
+    "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_bits_generated.bend",
     "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
     "slop/capacity/bitlist_4_generated.bend",
@@ -7339,6 +7589,7 @@
     "var_bits_bitlist_4.bend",
     "var_bits_bitlist_4_unique.bend",
     "var_bits_bitlist_4_rej.bend",
+    "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
     "slop/offsets/bitlist_4_generated.bend"
    ]
   },
@@ -7359,6 +7610,7 @@
    "files": [
     "var_bits_enc_bitlist_511.bend",
     "slop/validity/generic_bitlist_511_generated.bend",
+    "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_bits_generated.bend",
     "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
     "slop/constants/bitlist_511_generated.bend"
@@ -7372,6 +7624,7 @@
     "var_bits_bitlist_511.bend",
     "var_bits_bitlist_511_unique.bend",
     "var_bits_bitlist_511_rej.bend",
+    "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
     "slop/offsets/bitlist_511_generated.bend"
    ]
   },
@@ -7392,6 +7645,7 @@
    "files": [
     "var_bits_enc_bitlist_512.bend",
     "slop/validity/generic_bitlist_512_generated.bend",
+    "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_bits_generated.bend",
     "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
     "slop/constants/bitlist_512_generated.bend"
@@ -7405,6 +7659,7 @@
     "var_bits_bitlist_512.bend",
     "var_bits_bitlist_512_unique.bend",
     "var_bits_bitlist_512_rej.bend",
+    "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
     "slop/offsets/bitlist_512_generated.bend"
    ]
   },
@@ -7425,6 +7680,7 @@
    "files": [
     "var_bits_enc_bitlist_513.bend",
     "slop/validity/generic_bitlist_513_generated.bend",
+    "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_bits_generated.bend",
     "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
     "slop/constants/bitlist_513_generated.bend"
@@ -7438,6 +7694,7 @@
     "var_bits_bitlist_513.bend",
     "var_bits_bitlist_513_unique.bend",
     "var_bits_bitlist_513_rej.bend",
+    "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
     "slop/offsets/bitlist_513_generated.bend"
    ]
   },
@@ -7459,6 +7716,7 @@
     "var_bits_enc_bitlist_5.bend",
     "slop/capacity/bitlist_5_symbolic_generated.bend",
     "slop/validity/generic_bitlist_5_generated.bend",
+    "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_bits_generated.bend",
     "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
     "slop/capacity/bitlist_5_generated.bend",
@@ -7473,6 +7731,7 @@
     "var_bits_bitlist_5.bend",
     "var_bits_bitlist_5_unique.bend",
     "var_bits_bitlist_5_rej.bend",
+    "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
     "slop/offsets/bitlist_5_generated.bend"
    ]
   },
@@ -7494,6 +7753,7 @@
     "var_bits_enc_bitlist_6.bend",
     "slop/capacity/bitlist_6_symbolic_generated.bend",
     "slop/validity/generic_bitlist_6_generated.bend",
+    "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_bits_generated.bend",
     "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
     "slop/capacity/bitlist_6_generated.bend",
@@ -7508,6 +7768,7 @@
     "var_bits_bitlist_6.bend",
     "var_bits_bitlist_6_unique.bend",
     "var_bits_bitlist_6_rej.bend",
+    "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
     "slop/offsets/bitlist_6_generated.bend"
    ]
   },
@@ -7529,6 +7790,7 @@
     "var_bits_enc_bitlist_7.bend",
     "slop/capacity/bitlist_7_symbolic_generated.bend",
     "slop/validity/generic_bitlist_7_generated.bend",
+    "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_bits_generated.bend",
     "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
     "slop/capacity/bitlist_7_generated.bend",
@@ -7543,6 +7805,7 @@
     "var_bits_bitlist_7.bend",
     "var_bits_bitlist_7_unique.bend",
     "var_bits_bitlist_7_rej.bend",
+    "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
     "slop/offsets/bitlist_7_generated.bend"
    ]
   },
@@ -7564,6 +7827,7 @@
     "var_bits_enc_bitlist_8.bend",
     "slop/capacity/bitlist_8_symbolic_generated.bend",
     "slop/validity/generic_bitlist_8_generated.bend",
+    "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_bits_generated.bend",
     "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
     "slop/capacity/bitlist_8_generated.bend",
@@ -7578,6 +7842,7 @@
     "var_bits_bitlist_8.bend",
     "var_bits_bitlist_8_unique.bend",
     "var_bits_bitlist_8_rej.bend",
+    "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
     "slop/offsets/bitlist_8_generated.bend"
    ]
   },
@@ -7599,6 +7864,7 @@
     "var_bits_enc_bitlist_9.bend",
     "slop/capacity/bitlist_9_symbolic_generated.bend",
     "slop/validity/generic_bitlist_9_generated.bend",
+    "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_bits_generated.bend",
     "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
     "slop/capacity/bitlist_9_generated.bend",
@@ -7613,6 +7879,7 @@
     "var_bits_bitlist_9.bend",
     "var_bits_bitlist_9_unique.bend",
     "var_bits_bitlist_9_rej.bend",
+    "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
     "slop/offsets/bitlist_9_generated.bend"
    ]
   },
@@ -8234,6 +8501,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_CompatibleUnionBC_enc.bend",
+    "slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
     "slop/constants/CompatibleUnionBC_generated.bend"
    ]
   },
@@ -8245,6 +8513,7 @@
     "var_codec_CompatibleUnionBC.bend",
     "slop/alignment/CompatibleUnionBC_union_arm_generated.bend",
     "var_codec_CompatibleUnionBC_unique.bend",
+    "slop/validity/generic_CompatibleUnionBC_selectors_generated.bend",
     "slop/offsets/CompatibleUnionBC_generated.bend"
    ]
   },
@@ -8262,6 +8531,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_CompatibleUnionABCA_enc.bend",
+    "slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
     "slop/constants/CompatibleUnionABCA_generated.bend"
    ]
   },
@@ -8274,6 +8544,7 @@
     "slop/alignment/CompatibleUnionABCA_union_arm_generated.bend",
     "var_codec_CompatibleUnionABCA_unique.bend",
     "slop/size/CompatibleUnionABCA_generated.bend",
+    "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionABCA_generated.bend"
    ]
   },
@@ -8305,6 +8576,7 @@
     "slop/alignment/CompatibleUnionA_union_arm_generated.bend",
     "var_codec_CompatibleUnionA_unique.bend",
     "slop/size/CompatibleUnionA_generated.bend",
+    "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionA_generated.bend"
    ]
   },
@@ -8323,6 +8595,7 @@
    "files": [
     "var_pbits_progbitlist_enc.bend",
     "slop/validity/generic_progbitlist_generated.bend",
+    "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
     "slop/validity/generic_progbitlist_bits_generated.bend",
     "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
     "slop/constants/progbitlist_generated.bend"
@@ -8336,6 +8609,7 @@
     "var_pbits_progbitlist.bend",
     "var_pbits_progbitlist_unique.bend",
     "var_pbits_progbitlist_rej.bend",
+    "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
     "slop/offsets/progbitlist_generated.bend"
    ]
   },
@@ -8404,6 +8678,7 @@
     "sub_uint16.bend",
     "sub_unique_uint16.bend",
     "slop/size/uint16_generated.bend",
+    "slop/validity/generic_uint16_read_generated.bend",
     "slop/offsets/uint16_generated.bend"
    ]
   },

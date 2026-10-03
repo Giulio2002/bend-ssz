@@ -2971,6 +2971,22 @@
      "law": "FinalityBranch_serialize_vflag"
     },
     {
+     "file": "slop/validity/fulu_FinalityBranch_unit_v7_b32_generated.bend",
+     "law": "FinalityBranch_serialize_vunit_v7_b32_range_below_192"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_unit_v7_b32_generated.bend",
+     "law": "FinalityBranch_serialize_vunit_v7_b32_range_lo_224"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_unit_v7_b32_generated.bend",
+     "law": "FinalityBranch_serialize_vunit_v7_b32_range_above_256"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_unit_v7_b32_generated.bend",
+     "law": "FinalityBranch_serialize_vunit_ok_32"
+    },
+    {
      "file": "slop/capacity/FinalityBranch_generated.bend",
      "law": "FinalityBranch_serialize_cap"
     },
@@ -5256,6 +5272,10 @@
      "law": "ContributionAndProof_serialize_vreject_contribution"
     },
     {
+     "file": "slop/validity/fulu_ContributionAndProof_fields_generated.bend",
+     "law": "ContributionAndProof_serialize_vrefuse_contribution"
+    },
+    {
      "file": "slop/capacity/ContributionAndProof_generated.bend",
      "law": "ContributionAndProof_serialize_cap"
     },
@@ -6072,7 +6092,15 @@
     },
     {
      "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
+     "law": "ProposerSlashing_serialize_vrefuse_signed_header_1"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
      "law": "ProposerSlashing_serialize_vreject_signed_header_2"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_fields_generated.bend",
+     "law": "ProposerSlashing_serialize_vrefuse_signed_header_2"
     },
     {
      "file": "slop/capacity/ProposerSlashing_generated.bend",
@@ -6209,6 +6237,18 @@
     {
      "file": "slop/validity/fulu_HistoricalBatch_fields_generated.bend",
      "law": "HistoricalBatch_serialize_vreject_state_roots"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_unit_v8192_b32_generated.bend",
+     "law": "HistoricalBatch_serialize_vunit_v8192_b32_range_below_262112"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_unit_v8192_b32_generated.bend",
+     "law": "HistoricalBatch_serialize_vunit_v8192_b32_range_lo_262144"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_unit_v8192_b32_generated.bend",
+     "law": "HistoricalBatch_serialize_vunit_v8192_b32_range_above_262176"
     },
     {
      "file": "slop/capacity/HistoricalBatch_symbolic_generated.bend",
@@ -6838,6 +6878,10 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_serialize_vbits_size"
+    },
+    {
      "file": "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
      "law": "Attestation_serialize_vcoll_bits131072_first"
     },
@@ -6856,6 +6900,26 @@
     {
      "file": "slop/validity/fulu_Attestation_fields_generated.bend",
      "law": "Attestation_serialize_vreject_aggregation_bits"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_fields_generated.bend",
+     "law": "Attestation_serialize_vpoison_bx_invalid"
     },
     {
      "file": "slop/size/Attestation_generated.bend",
@@ -6879,6 +6943,26 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
+     "law": "Attestation_decode_vbits_clear_63"
+    },
     {
      "file": "slop/offsets/Attestation_generated.bend",
      "law": "Attestation_decode_build"
@@ -6960,6 +7044,18 @@
     {
      "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
      "law": "AggregateAndProof_serialize_vreject_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+     "law": "AggregateAndProof_serialize_vrefuse_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+     "law": "AggregateAndProof_serialize_vreject_aggregate_aggregation_bits"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+     "law": "AggregateAndProof_serialize_vrefuse_aggregate_aggregation_bits"
     },
     {
      "file": "slop/size/AggregateAndProof_generated.bend",
@@ -7129,6 +7225,10 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vbits_size"
+    },
+    {
      "file": "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
      "law": "PendingAttestation_serialize_vcoll_bits2048_first"
     },
@@ -7162,6 +7262,26 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
+     "law": "PendingAttestation_decode_vbits_clear_63"
+    },
     {
      "file": "slop/offsets/PendingAttestation_generated.bend",
      "law": "PendingAttestation_decode_build"
@@ -7245,6 +7365,26 @@
      "law": "IndexedAttestation_serialize_vreject_attesting_indices"
     },
     {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_fields_generated.bend",
+     "law": "IndexedAttestation_serialize_vpoison_bx_invalid"
+    },
+    {
      "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
      "law": "IndexedAttestation_serialize_vunit_l131072_u64_refuse_1"
     },
@@ -7263,6 +7403,22 @@
     {
      "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
      "law": "IndexedAttestation_serialize_vunit_l131072_u64_accept_16"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_unit_l131072_u64_generated.bend",
+     "law": "IndexedAttestation_serialize_vunit_ok_8"
     },
     {
      "file": "slop/size/IndexedAttestation_generated.bend",
@@ -7370,7 +7526,51 @@
     },
     {
      "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vrefuse_attestation_1"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_attestation_1_attesting_indices"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vrefuse_attestation_1_attesting_indices"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
      "law": "AttesterSlashing_serialize_vreject_attestation_2"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vrefuse_attestation_2"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_attestation_2_attesting_indices"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vrefuse_attestation_2_attesting_indices"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_fields_generated.bend",
+     "law": "AttesterSlashing_serialize_vpoison_bx_invalid"
     },
     {
      "file": "slop/size/AttesterSlashing_generated.bend",
@@ -8440,6 +8640,22 @@
      "law": "SyncCommittee_serialize_vreject_pubkeys"
     },
     {
+     "file": "slop/validity/fulu_SyncCommittee_unit_v512_b48_generated.bend",
+     "law": "SyncCommittee_serialize_vunit_v512_b48_range_below_24528"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_unit_v512_b48_generated.bend",
+     "law": "SyncCommittee_serialize_vunit_v512_b48_range_lo_24576"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_unit_v512_b48_generated.bend",
+     "law": "SyncCommittee_serialize_vunit_v512_b48_range_above_24624"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_unit_v512_b48_generated.bend",
+     "law": "SyncCommittee_serialize_vunit_ok_48"
+    },
+    {
      "file": "slop/capacity/SyncCommittee_symbolic_generated.bend",
      "law": "SyncCommittee_serialize_capsym"
     },
@@ -8713,6 +8929,22 @@
     {
      "file": "slop/validity/fulu_Deposit_fields_generated.bend",
      "law": "Deposit_serialize_vreject_data"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_fields_generated.bend",
+     "law": "Deposit_serialize_vrefuse_data"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_unit_v33_b32_generated.bend",
+     "law": "Deposit_serialize_vunit_v33_b32_range_below_1024"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_unit_v33_b32_generated.bend",
+     "law": "Deposit_serialize_vunit_v33_b32_range_lo_1056"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_unit_v33_b32_generated.bend",
+     "law": "Deposit_serialize_vunit_v33_b32_range_above_1088"
     },
     {
      "file": "slop/capacity/Deposit_generated.bend",
@@ -9593,6 +9825,18 @@
      "law": "CurrentSyncCommitteeBranch_serialize_vflag"
     },
     {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_serialize_vunit_v6_b32_range_below_160"
+    },
+    {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_serialize_vunit_v6_b32_range_lo_192"
+    },
+    {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_serialize_vunit_v6_b32_range_above_224"
+    },
+    {
      "file": "slop/capacity/CurrentSyncCommitteeBranch_generated.bend",
      "law": "CurrentSyncCommitteeBranch_serialize_cap"
     },
@@ -9738,6 +9982,18 @@
      "law": "NextSyncCommitteeBranch_serialize_vflag"
     },
     {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "NextSyncCommitteeBranch_serialize_vunit_v6_b32_range_below_160"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "NextSyncCommitteeBranch_serialize_vunit_v6_b32_range_lo_192"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_unit_v6_b32_generated.bend",
+     "law": "NextSyncCommitteeBranch_serialize_vunit_v6_b32_range_above_224"
+    },
+    {
      "file": "slop/capacity/NextSyncCommitteeBranch_generated.bend",
      "law": "NextSyncCommitteeBranch_serialize_cap"
     },
@@ -9867,6 +10123,10 @@
     {
      "file": "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
      "law": "Transaction_serialize_vcoll_bl1073741824_set_write"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vunit_bl1073741824_range_lo_0"
     },
     {
      "file": "slop/size/Transaction_generated.bend",
@@ -10309,6 +10569,82 @@
     {
      "file": "root_types.bend",
      "law": "ExecutionRequests_root_correct"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_4_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_dok_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_end_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_limit_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_4_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_dok_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_end_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_set_3"
     }
    ],
    "ok_eval": [
@@ -10376,11 +10712,35 @@
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_deposits_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vrefuse_deposits_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
      "law": "ExecutionRequests_serialize_vreject_withdrawals"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_withdrawals_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vrefuse_withdrawals_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
      "law": "ExecutionRequests_serialize_vreject_consolidations"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vreject_consolidations_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
+     "law": "ExecutionRequests_serialize_vrefuse_consolidations_limit"
     },
     {
      "file": "slop/size/ExecutionRequests_generated.bend",
@@ -10670,6 +11030,26 @@
     {
      "file": "root_types.bend",
      "law": "ExecutionPayloadHeader_root_correct"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_tight_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_tight_junk_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_roomy_junk_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_slack_junk_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_short_5"
     }
    ],
    "ok_eval": [
@@ -10766,6 +11146,46 @@
     {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
      "law": "ExecutionPayloadHeader_serialize_vreject_extra_data"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_fields_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_b256_range_below_255"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_b256_range_lo_256"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_b256_range_above_257"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_bl32_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_bl32_range_hi_32"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vunit_bl32_range_above_33"
     },
     {
      "file": "slop/capacity/ExecutionPayloadHeader_generated.bend",
@@ -11208,6 +11628,46 @@
     {
      "file": "root_ExecutionPayload.bend",
      "law": "ExecutionPayload_root_correct"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_4_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_dok_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_end_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_limit_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_set_3"
     }
    ],
    "ok_eval": [
@@ -11318,6 +11778,34 @@
      "law": "ExecutionPayload_serialize_vreject_withdrawals"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_withdrawals_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vrefuse_withdrawals_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_l16_Withdrawal_enc"
+    },
+    {
      "file": "slop/size/ExecutionPayload_generated.bend",
      "law": "ExecutionPayload_ms_size"
     },
@@ -11340,6 +11828,10 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/fulu_ExecutionPayload_and_pair_generated.bend",
+     "law": "ExecutionPayload_decode_vand_pair"
+    },
+    {
      "file": "slop/offsets/ExecutionPayload_generated.bend",
      "law": "ExecutionPayload_decode_build"
     }
@@ -11356,6 +11848,138 @@
     {
      "file": "root_BeaconState.bend",
      "law": "BeaconState_root_correct"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_fold_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_4_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_set_3"
     }
    ],
    "ok_eval": [
@@ -11455,6 +12079,10 @@
     },
     {
      "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_eth1_data_votes_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
      "law": "BeaconState_serialize_vreject_validators"
     },
     {
@@ -11503,6 +12131,10 @@
     },
     {
      "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
+     "law": "BeaconState_serialize_vreject_pending_consolidations_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_fields_generated.bend",
      "law": "BeaconState_serialize_vreject_proposer_lookahead"
     },
     {
@@ -11526,6 +12158,14 @@
      "law": "BeaconState_serialize_vunit_l1099511627776_u64_accept_16"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
      "law": "BeaconState_serialize_vunit_l16777216_b32_refuse_1"
     },
@@ -11544,9 +12184,73 @@
     {
      "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
      "law": "BeaconState_serialize_vunit_l16777216_b32_accept_64"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v64_u64_range_below_504"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v64_u64_range_lo_512"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v64_u64_range_above_520"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v65536_b32_range_below_2097120"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v65536_b32_range_lo_2097152"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v65536_b32_range_above_2097184"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_b32_range_below_262112"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_b32_range_lo_262144"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_b32_range_above_262176"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_u64_range_below_65528"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_u64_range_lo_65536"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_v8192_u64_range_above_65544"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_enc_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc"
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/fulu_BeaconState_and_pair_generated.bend",
+     "law": "BeaconState_decode_vand_pair"
+    },
     {
      "file": "slop/offsets/BeaconState_generated.bend",
      "law": "BeaconState_decode_build"
@@ -11662,6 +12366,18 @@
     {
      "file": "slop/validity/fulu_ExecutionBranch_poison_flag_generated.bend",
      "law": "ExecutionBranch_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_unit_v4_b32_generated.bend",
+     "law": "ExecutionBranch_serialize_vunit_v4_b32_range_below_96"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_unit_v4_b32_generated.bend",
+     "law": "ExecutionBranch_serialize_vunit_v4_b32_range_lo_128"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_unit_v4_b32_generated.bend",
+     "law": "ExecutionBranch_serialize_vunit_v4_b32_range_above_160"
     },
     {
      "file": "slop/capacity/ExecutionBranch_generated.bend",
@@ -11780,7 +12496,23 @@
     },
     {
      "file": "slop/validity/fulu_LightClientHeader_fields_generated.bend",
+     "law": "LightClientHeader_serialize_vrefuse_execution"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_fields_generated.bend",
      "law": "LightClientHeader_serialize_vreject_execution_branch"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_unit_v4_b32_generated.bend",
+     "law": "LightClientHeader_serialize_vunit_v4_b32_range_below_96"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_unit_v4_b32_generated.bend",
+     "law": "LightClientHeader_serialize_vunit_v4_b32_range_lo_128"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_unit_v4_b32_generated.bend",
+     "law": "LightClientHeader_serialize_vunit_v4_b32_range_above_160"
     },
     {
      "file": "slop/capacity/LightClientHeader_generated.bend",
@@ -11891,6 +12623,10 @@
      "law": "LightClientOptimisticUpdate_serialize_vreject_sync_aggregate"
     },
     {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_fields_generated.bend",
+     "law": "LightClientOptimisticUpdate_serialize_vrefuse_sync_aggregate"
+    },
+    {
      "file": "slop/capacity/LightClientOptimisticUpdate_generated.bend",
      "law": "LightClientOptimisticUpdate_serialize_cap"
     },
@@ -11996,6 +12732,22 @@
     {
      "file": "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
      "law": "LightClientFinalityUpdate_serialize_vreject_sync_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_fields_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vrefuse_sync_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vunit_v7_b32_range_below_192"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vunit_v7_b32_range_lo_224"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientFinalityUpdate_serialize_vunit_v7_b32_range_above_256"
     },
     {
      "file": "slop/capacity/LightClientFinalityUpdate_generated.bend",
@@ -12109,6 +12861,30 @@
      "law": "LightClientUpdate_serialize_vreject_sync_aggregate"
     },
     {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v6_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v6_b32_range_below_160"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v6_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v6_b32_range_lo_192"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v6_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v6_b32_range_above_224"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v7_b32_range_below_192"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v7_b32_range_lo_224"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_unit_v7_b32_generated.bend",
+     "law": "LightClientUpdate_serialize_vunit_v7_b32_range_above_256"
+    },
+    {
      "file": "slop/capacity/LightClientUpdate_symbolic_generated.bend",
      "law": "LightClientUpdate_serialize_capsym"
     },
@@ -12202,6 +12978,18 @@
     {
      "file": "slop/validity/fulu_LightClientBootstrap_fields_generated.bend",
      "law": "LightClientBootstrap_serialize_vreject_current_sync_committee_branch"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_unit_v6_b32_generated.bend",
+     "law": "LightClientBootstrap_serialize_vunit_v6_b32_range_below_160"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_unit_v6_b32_generated.bend",
+     "law": "LightClientBootstrap_serialize_vunit_v6_b32_range_lo_192"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_unit_v6_b32_generated.bend",
+     "law": "LightClientBootstrap_serialize_vunit_v6_b32_range_above_224"
     },
     {
      "file": "slop/capacity/LightClientBootstrap_symbolic_generated.bend",
@@ -12624,6 +13412,222 @@
     {
      "file": "root_BeaconBlockBody.bend",
      "law": "BeaconBlockBody_root_correct"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_dok_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_end_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_limit_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_set_3"
     }
    ],
    "ok_eval": [
@@ -12695,11 +13699,27 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_proposer_slashings_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_proposer_slashings_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_attester_slashings"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_attester_slashings_elem"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attester_slashings_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_attester_slashings_limit"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
@@ -12711,6 +13731,14 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_attestations_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_attestations_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_deposits"
     },
     {
@@ -12719,7 +13747,23 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_deposits_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_deposits_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_voluntary_exits"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_voluntary_exits_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_voluntary_exits_limit"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
@@ -12727,7 +13771,15 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_sync_aggregate"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_execution_payload"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_execution_payload"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
@@ -12735,7 +13787,31 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_bls_to_execution_changes_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vrefuse_bls_to_execution_changes_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
      "law": "BeaconBlockBody_serialize_vreject_blob_kzg_commitments"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_bx_ok"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
@@ -12756,6 +13832,30 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
      "law": "BeaconBlockBody_serialize_vunit_l4096_b48_accept_96"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_range_hi_196608"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vunit_l4096_b48_range_above_196656"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_ProposerSlashing_enc"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_enc_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_SignedBLSToExecutionChange_enc"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_enc_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_SignedVoluntaryExit_enc"
     },
     {
      "file": "slop/size/BeaconBlockBody_generated.bend",
@@ -12779,6 +13879,10 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_and_pair_generated.bend",
+     "law": "BeaconBlockBody_decode_vand_pair"
+    },
     {
      "file": "slop/offsets/BeaconBlockBody_generated.bend",
      "law": "BeaconBlockBody_decode_build"
@@ -12860,6 +13964,10 @@
     {
      "file": "slop/validity/fulu_BeaconBlock_fields_generated.bend",
      "law": "BeaconBlock_serialize_vreject_body"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlock_fields_generated.bend",
+     "law": "BeaconBlock_serialize_vrefuse_body"
     },
     {
      "file": "slop/size/BeaconBlock_generated.bend",
@@ -13191,6 +14299,18 @@
      "law": "Blob_serialize_vflag"
     },
     {
+     "file": "slop/validity/fulu_Blob_unit_b131072_generated.bend",
+     "law": "Blob_serialize_vunit_b131072_range_below_131071"
+    },
+    {
+     "file": "slop/validity/fulu_Blob_unit_b131072_generated.bend",
+     "law": "Blob_serialize_vunit_b131072_range_lo_131072"
+    },
+    {
+     "file": "slop/validity/fulu_Blob_unit_b131072_generated.bend",
+     "law": "Blob_serialize_vunit_b131072_range_above_131073"
+    },
+    {
      "file": "slop/size/size_and_bound_fulu_generated.bend",
      "law": "Blob_serialize_over"
     },
@@ -13313,6 +14433,18 @@
     {
      "file": "slop/validity/fulu_BlobSidecar_fields_generated.bend",
      "law": "BlobSidecar_serialize_vreject_kzg_commitment_inclusion_proof"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_unit_v17_b32_generated.bend",
+     "law": "BlobSidecar_serialize_vunit_v17_b32_range_below_512"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_unit_v17_b32_generated.bend",
+     "law": "BlobSidecar_serialize_vunit_v17_b32_range_lo_544"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_unit_v17_b32_generated.bend",
+     "law": "BlobSidecar_serialize_vunit_v17_b32_range_above_576"
     },
     {
      "file": "slop/capacity/BlobSidecar_symbolic_generated.bend",
@@ -13438,6 +14570,18 @@
     {
      "file": "slop/validity/fulu_Cell_poison_flag_generated.bend",
      "law": "Cell_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_unit_b2048_generated.bend",
+     "law": "Cell_serialize_vunit_b2048_range_below_2047"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_unit_b2048_generated.bend",
+     "law": "Cell_serialize_vunit_b2048_range_lo_2048"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_unit_b2048_generated.bend",
+     "law": "Cell_serialize_vunit_b2048_range_above_2049"
     },
     {
      "file": "slop/size/size_and_bound_fulu_generated.bend",
@@ -14055,6 +15199,18 @@
      "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_accept_16"
     },
     {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_hi_1024"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_unit_l128_u64_generated.bend",
+     "law": "DataColumnsByRootIdentifier_serialize_vunit_l128_u64_range_above_1032"
+    },
+    {
      "file": "slop/size/DataColumnsByRootIdentifier_generated.bend",
      "law": "DataColumnsByRootIdentifier_ms_size"
     },
@@ -14352,6 +15508,10 @@
     },
     {
      "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
+     "law": "DataColumnSidecar_serialize_vrefuse_signed_block_header"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_fields_generated.bend",
      "law": "DataColumnSidecar_serialize_vreject_kzg_commitments_inclusion_proof"
     },
     {
@@ -14375,6 +15535,14 @@
      "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_accept_4096"
     },
     {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_ok_2048"
+    },
+    {
      "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
      "law": "DataColumnSidecar_serialize_vunit_l4096_b48_refuse_1"
     },
@@ -14393,6 +15561,30 @@
     {
      "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
      "law": "DataColumnSidecar_serialize_vunit_l4096_b48_accept_96"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_range_hi_196608"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b48_range_above_196656"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_v4_b32_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_v4_b32_range_below_96"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_v4_b32_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_v4_b32_range_lo_128"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_v4_b32_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_v4_b32_range_above_160"
     },
     {
      "file": "slop/size/DataColumnSidecar_generated.bend",
@@ -14788,6 +15980,14 @@
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vreject_f_G_limit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vrefuse_f_G_limit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vreject_f_H"
     },
     {
@@ -14811,6 +16011,22 @@
      "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_accept_4"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_hi_246"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_above_248"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_ok_2"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_refuse_1"
     },
@@ -14829,6 +16045,10 @@
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_accept_16"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_lo_0"
     },
     {
      "file": "slop/constants/ProgressiveComplexTestStruct_generated.bend",
@@ -14978,6 +16198,26 @@
      "law": "ProgressiveVarTestStruct_serialize_vreject_f_C"
     },
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vpoison_bx_invalid"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
      "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1"
     },
@@ -14992,6 +16232,18 @@
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
      "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_hi_246"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248"
     },
     {
      "file": "slop/size/ProgressiveVarTestStruct_generated.bend",
@@ -15277,6 +16529,10 @@
      "law": "proglist_bool_serialize_vbool_128_at_4"
     },
     {
+     "file": "slop/validity/generic_proglist_bool_unit_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vunit_pl_bool_range_lo_0"
+    },
+    {
      "file": "slop/constants/proglist_bool_generated.bend",
      "law": "proglist_bool_mc_poison_pl_bool"
     },
@@ -15472,6 +16728,18 @@
      "law": "vec_bool_16_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_16_unit_v16_bool_generated.bend",
+     "law": "vec_bool_16_serialize_vunit_v16_bool_range_below_15"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_unit_v16_bool_generated.bend",
+     "law": "vec_bool_16_serialize_vunit_v16_bool_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_unit_v16_bool_generated.bend",
+     "law": "vec_bool_16_serialize_vunit_v16_bool_range_above_17"
+    },
+    {
      "file": "slop/capacity/vec_bool_16_generated.bend",
      "law": "vec_bool_16_serialize_cap"
     },
@@ -15505,6 +16773,10 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_vec_bool_16_and_pair_generated.bend",
+     "law": "vec_bool_16_decode_vand_pair"
+    },
     {
      "file": "slop/offsets/vec_bool_16_generated.bend",
      "law": "vec_bool_16_decode_build"
@@ -15619,6 +16891,18 @@
      "law": "vec_bool_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_unit_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vunit_v1_bool_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_unit_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vunit_v1_bool_range_lo_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_unit_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vunit_v1_bool_range_above_2"
+    },
+    {
      "file": "slop/capacity/vec_bool_1_generated.bend",
      "law": "vec_bool_1_serialize_cap"
     },
@@ -15648,6 +16932,10 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_vec_bool_1_and_pair_generated.bend",
+     "law": "vec_bool_1_decode_vand_pair"
+    },
     {
      "file": "slop/offsets/vec_bool_1_generated.bend",
      "law": "vec_bool_1_decode_build"
@@ -15774,6 +17062,18 @@
      "law": "vec_bool_2_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_2_unit_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vunit_v2_bool_range_below_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_unit_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vunit_v2_bool_range_lo_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_unit_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vunit_v2_bool_range_above_3"
+    },
+    {
      "file": "slop/capacity/vec_bool_2_generated.bend",
      "law": "vec_bool_2_serialize_cap"
     },
@@ -15803,6 +17103,10 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_vec_bool_2_and_pair_generated.bend",
+     "law": "vec_bool_2_decode_vand_pair"
+    },
     {
      "file": "slop/offsets/vec_bool_2_generated.bend",
      "law": "vec_bool_2_decode_build"
@@ -15977,6 +17281,18 @@
      "law": "vec_bool_31_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
+     "law": "vec_bool_31_serialize_vunit_v31_bool_range_below_30"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
+     "law": "vec_bool_31_serialize_vunit_v31_bool_range_lo_31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
+     "law": "vec_bool_31_serialize_vunit_v31_bool_range_above_32"
+    },
+    {
      "file": "slop/capacity/vec_bool_31_generated.bend",
      "law": "vec_bool_31_serialize_cap"
     },
@@ -16142,6 +17458,18 @@
     {
      "file": "slop/validity/generic_vec_bool_3_poison_flag_generated.bend",
      "law": "vec_bool_3_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
+     "law": "vec_bool_3_serialize_vunit_v3_bool_range_below_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
+     "law": "vec_bool_3_serialize_vunit_v3_bool_range_lo_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
+     "law": "vec_bool_3_serialize_vunit_v3_bool_range_above_4"
     },
     {
      "file": "slop/capacity/vec_bool_3_generated.bend",
@@ -16333,6 +17661,18 @@
     {
      "file": "slop/validity/generic_vec_bool_4_poison_flag_generated.bend",
      "law": "vec_bool_4_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_unit_v4_bool_generated.bend",
+     "law": "vec_bool_4_serialize_vunit_v4_bool_range_below_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_unit_v4_bool_generated.bend",
+     "law": "vec_bool_4_serialize_vunit_v4_bool_range_lo_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_unit_v4_bool_generated.bend",
+     "law": "vec_bool_4_serialize_vunit_v4_bool_range_above_5"
     },
     {
      "file": "slop/capacity/vec_bool_4_generated.bend",
@@ -16542,6 +17882,18 @@
      "law": "vec_bool_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_512_unit_v512_bool_generated.bend",
+     "law": "vec_bool_512_serialize_vunit_v512_bool_range_below_511"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_unit_v512_bool_generated.bend",
+     "law": "vec_bool_512_serialize_vunit_v512_bool_range_lo_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_unit_v512_bool_generated.bend",
+     "law": "vec_bool_512_serialize_vunit_v512_bool_range_above_513"
+    },
+    {
      "file": "slop/capacity/vec_bool_512_generated.bend",
      "law": "vec_bool_512_serialize_cap"
     },
@@ -16745,6 +18097,18 @@
      "law": "vec_bool_513_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vunit_v513_bool_range_below_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vunit_v513_bool_range_lo_513"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vunit_v513_bool_range_above_514"
+    },
+    {
      "file": "slop/capacity/vec_bool_513_generated.bend",
      "law": "vec_bool_513_serialize_cap"
     },
@@ -16934,6 +18298,18 @@
     {
      "file": "slop/validity/generic_vec_bool_5_poison_flag_generated.bend",
      "law": "vec_bool_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vunit_v5_bool_range_below_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vunit_v5_bool_range_lo_5"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vunit_v5_bool_range_above_6"
     },
     {
      "file": "slop/capacity/vec_bool_5_generated.bend",
@@ -17151,6 +18527,18 @@
      "law": "vec_bool_8_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_bool_8_unit_v8_bool_generated.bend",
+     "law": "vec_bool_8_serialize_vunit_v8_bool_range_below_7"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_unit_v8_bool_generated.bend",
+     "law": "vec_bool_8_serialize_vunit_v8_bool_range_lo_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_unit_v8_bool_generated.bend",
+     "law": "vec_bool_8_serialize_vunit_v8_bool_range_above_9"
+    },
+    {
      "file": "slop/capacity/vec_bool_8_generated.bend",
      "law": "vec_bool_8_serialize_cap"
     },
@@ -17286,6 +18674,14 @@
      "law": "proglist_uint128_serialize_vunit_pl_u128_accept_32"
     },
     {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_ok_16"
+    },
+    {
      "file": "slop/constants/proglist_uint128_generated.bend",
      "law": "proglist_uint128_mc_poison_pl_u128"
     },
@@ -17405,6 +18801,18 @@
     {
      "file": "slop/validity/generic_vec_uint128_16_poison_flag_generated.bend",
      "law": "vec_uint128_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_unit_v16_u128_generated.bend",
+     "law": "vec_uint128_16_serialize_vunit_v16_u128_range_below_240"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_unit_v16_u128_generated.bend",
+     "law": "vec_uint128_16_serialize_vunit_v16_u128_range_lo_256"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_unit_v16_u128_generated.bend",
+     "law": "vec_uint128_16_serialize_vunit_v16_u128_range_above_272"
     },
     {
      "file": "slop/capacity/vec_uint128_16_generated.bend",
@@ -17556,6 +18964,18 @@
      "law": "vec_uint128_1_serialize_vunit_v1_u128_accept_16"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_1_unit_v1_u128_generated.bend",
+     "law": "vec_uint128_1_serialize_vunit_v1_u128_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_1_unit_v1_u128_generated.bend",
+     "law": "vec_uint128_1_serialize_vunit_v1_u128_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_1_unit_v1_u128_generated.bend",
+     "law": "vec_uint128_1_serialize_vunit_v1_u128_range_above_32"
+    },
+    {
      "file": "slop/capacity/vec_uint128_1_generated.bend",
      "law": "vec_uint128_1_serialize_cap"
     },
@@ -17705,6 +19125,18 @@
      "law": "vec_uint128_2_serialize_vunit_v2_u128_accept_32"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_2_unit_v2_u128_generated.bend",
+     "law": "vec_uint128_2_serialize_vunit_v2_u128_range_below_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_unit_v2_u128_generated.bend",
+     "law": "vec_uint128_2_serialize_vunit_v2_u128_range_lo_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_unit_v2_u128_generated.bend",
+     "law": "vec_uint128_2_serialize_vunit_v2_u128_range_above_48"
+    },
+    {
      "file": "slop/capacity/vec_uint128_2_generated.bend",
      "law": "vec_uint128_2_serialize_cap"
     },
@@ -17836,6 +19268,18 @@
     {
      "file": "slop/validity/generic_vec_uint128_31_poison_flag_generated.bend",
      "law": "vec_uint128_31_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_unit_v31_u128_generated.bend",
+     "law": "vec_uint128_31_serialize_vunit_v31_u128_range_below_480"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_unit_v31_u128_generated.bend",
+     "law": "vec_uint128_31_serialize_vunit_v31_u128_range_lo_496"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_unit_v31_u128_generated.bend",
+     "law": "vec_uint128_31_serialize_vunit_v31_u128_range_above_512"
     },
     {
      "file": "slop/capacity/vec_uint128_31_generated.bend",
@@ -17977,6 +19421,18 @@
     {
      "file": "slop/validity/generic_vec_uint128_3_poison_flag_generated.bend",
      "law": "vec_uint128_3_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_unit_v3_u128_generated.bend",
+     "law": "vec_uint128_3_serialize_vunit_v3_u128_range_below_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_unit_v3_u128_generated.bend",
+     "law": "vec_uint128_3_serialize_vunit_v3_u128_range_lo_48"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_unit_v3_u128_generated.bend",
+     "law": "vec_uint128_3_serialize_vunit_v3_u128_range_above_64"
     },
     {
      "file": "slop/capacity/vec_uint128_3_generated.bend",
@@ -18124,6 +19580,18 @@
      "law": "vec_uint128_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_4_unit_v4_u128_generated.bend",
+     "law": "vec_uint128_4_serialize_vunit_v4_u128_range_below_48"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_4_unit_v4_u128_generated.bend",
+     "law": "vec_uint128_4_serialize_vunit_v4_u128_range_lo_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_4_unit_v4_u128_generated.bend",
+     "law": "vec_uint128_4_serialize_vunit_v4_u128_range_above_80"
+    },
+    {
      "file": "slop/capacity/vec_uint128_4_generated.bend",
      "law": "vec_uint128_4_serialize_cap"
     },
@@ -18248,6 +19716,18 @@
      "law": "vec_uint128_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_512_unit_v512_u128_generated.bend",
+     "law": "vec_uint128_512_serialize_vunit_v512_u128_range_below_8176"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_512_unit_v512_u128_generated.bend",
+     "law": "vec_uint128_512_serialize_vunit_v512_u128_range_lo_8192"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_512_unit_v512_u128_generated.bend",
+     "law": "vec_uint128_512_serialize_vunit_v512_u128_range_above_8208"
+    },
+    {
      "file": "slop/capacity/vec_uint128_512_symbolic_generated.bend",
      "law": "vec_uint128_512_serialize_capsym"
     },
@@ -18362,6 +19842,18 @@
     {
      "file": "slop/validity/generic_vec_uint128_513_poison_flag_generated.bend",
      "law": "vec_uint128_513_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_unit_v513_u128_generated.bend",
+     "law": "vec_uint128_513_serialize_vunit_v513_u128_range_below_8192"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_unit_v513_u128_generated.bend",
+     "law": "vec_uint128_513_serialize_vunit_v513_u128_range_lo_8208"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_unit_v513_u128_generated.bend",
+     "law": "vec_uint128_513_serialize_vunit_v513_u128_range_above_8224"
     },
     {
      "file": "slop/capacity/vec_uint128_513_symbolic_generated.bend",
@@ -18495,6 +19987,18 @@
     {
      "file": "slop/validity/generic_vec_uint128_5_poison_flag_generated.bend",
      "law": "vec_uint128_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_unit_v5_u128_generated.bend",
+     "law": "vec_uint128_5_serialize_vunit_v5_u128_range_below_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_unit_v5_u128_generated.bend",
+     "law": "vec_uint128_5_serialize_vunit_v5_u128_range_lo_80"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_unit_v5_u128_generated.bend",
+     "law": "vec_uint128_5_serialize_vunit_v5_u128_range_above_96"
     },
     {
      "file": "slop/capacity/vec_uint128_5_generated.bend",
@@ -18642,6 +20146,18 @@
      "law": "vec_uint128_8_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_8_unit_v8_u128_generated.bend",
+     "law": "vec_uint128_8_serialize_vunit_v8_u128_range_below_112"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_unit_v8_u128_generated.bend",
+     "law": "vec_uint128_8_serialize_vunit_v8_u128_range_lo_128"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_unit_v8_u128_generated.bend",
+     "law": "vec_uint128_8_serialize_vunit_v8_u128_range_above_144"
+    },
+    {
      "file": "slop/capacity/vec_uint128_8_generated.bend",
      "law": "vec_uint128_8_serialize_cap"
     },
@@ -18687,6 +20203,42 @@
     {
      "file": "root_gtypes.bend",
      "law": "proglist_uint8_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_tight_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_tight_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_roomy_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_slack_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_short_5"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_junk_41"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_past_41"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_junk_73"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_past_73"
     }
    ],
    "ok_eval": [
@@ -18775,6 +20327,10 @@
     {
      "file": "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
      "law": "proglist_uint8_serialize_vcoll_pl_u8_set_write"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vunit_pl_u8_range_lo_0"
     },
     {
      "file": "slop/constants/proglist_uint8_generated.bend",
@@ -18882,6 +20438,18 @@
     {
      "file": "slop/validity/generic_vec_uint8_16_poison_flag_generated.bend",
      "law": "vec_uint8_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_unit_v16_u8_generated.bend",
+     "law": "vec_uint8_16_serialize_vunit_v16_u8_range_below_15"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_unit_v16_u8_generated.bend",
+     "law": "vec_uint8_16_serialize_vunit_v16_u8_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_unit_v16_u8_generated.bend",
+     "law": "vec_uint8_16_serialize_vunit_v16_u8_range_above_17"
     },
     {
      "file": "slop/size/size_and_bound_generic_generated.bend",
@@ -19007,6 +20575,18 @@
      "law": "vec_uint8_1_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_1_unit_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vunit_v1_u8_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_unit_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vunit_v1_u8_range_lo_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_unit_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vunit_v1_u8_range_above_2"
+    },
+    {
      "file": "slop/size/size_and_bound_generic_generated.bend",
      "law": "vec_uint8_1_serialize_over"
     },
@@ -19124,6 +20704,18 @@
     {
      "file": "slop/validity/generic_vec_uint8_2_poison_flag_generated.bend",
      "law": "vec_uint8_2_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_unit_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vunit_v2_u8_range_below_1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_unit_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vunit_v2_u8_range_lo_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_unit_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vunit_v2_u8_range_above_3"
     },
     {
      "file": "slop/size/size_and_bound_generic_generated.bend",
@@ -19245,6 +20837,18 @@
      "law": "vec_uint8_31_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
+     "law": "vec_uint8_31_serialize_vunit_v31_u8_range_below_30"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
+     "law": "vec_uint8_31_serialize_vunit_v31_u8_range_lo_31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
+     "law": "vec_uint8_31_serialize_vunit_v31_u8_range_above_32"
+    },
+    {
      "file": "slop/size/size_and_bound_generic_generated.bend",
      "law": "vec_uint8_31_serialize_over"
     },
@@ -19362,6 +20966,18 @@
     {
      "file": "slop/validity/generic_vec_uint8_3_poison_flag_generated.bend",
      "law": "vec_uint8_3_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
+     "law": "vec_uint8_3_serialize_vunit_v3_u8_range_below_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
+     "law": "vec_uint8_3_serialize_vunit_v3_u8_range_lo_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
+     "law": "vec_uint8_3_serialize_vunit_v3_u8_range_above_4"
     },
     {
      "file": "slop/size/size_and_bound_generic_generated.bend",
@@ -19495,6 +21111,18 @@
      "law": "vec_uint8_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_4_unit_v4_u8_generated.bend",
+     "law": "vec_uint8_4_serialize_vunit_v4_u8_range_below_3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_4_unit_v4_u8_generated.bend",
+     "law": "vec_uint8_4_serialize_vunit_v4_u8_range_lo_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_4_unit_v4_u8_generated.bend",
+     "law": "vec_uint8_4_serialize_vunit_v4_u8_range_above_5"
+    },
+    {
      "file": "slop/size/size_and_bound_generic_generated.bend",
      "law": "vec_uint8_4_serialize_over"
     },
@@ -19618,6 +21246,18 @@
      "law": "vec_uint8_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_512_unit_v512_u8_generated.bend",
+     "law": "vec_uint8_512_serialize_vunit_v512_u8_range_below_511"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_unit_v512_u8_generated.bend",
+     "law": "vec_uint8_512_serialize_vunit_v512_u8_range_lo_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_unit_v512_u8_generated.bend",
+     "law": "vec_uint8_512_serialize_vunit_v512_u8_range_above_513"
+    },
+    {
      "file": "slop/size/size_and_bound_generic_generated.bend",
      "law": "vec_uint8_512_serialize_over"
     },
@@ -19737,6 +21377,18 @@
      "law": "vec_uint8_513_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vunit_v513_u8_range_below_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vunit_v513_u8_range_lo_513"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vunit_v513_u8_range_above_514"
+    },
+    {
      "file": "slop/size/size_and_bound_generic_generated.bend",
      "law": "vec_uint8_513_serialize_over"
     },
@@ -19854,6 +21506,18 @@
     {
      "file": "slop/validity/generic_vec_uint8_5_poison_flag_generated.bend",
      "law": "vec_uint8_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vunit_v5_u8_range_below_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vunit_v5_u8_range_lo_5"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vunit_v5_u8_range_above_6"
     },
     {
      "file": "slop/size/size_and_bound_generic_generated.bend",
@@ -19985,6 +21649,18 @@
     {
      "file": "slop/validity/generic_vec_uint8_8_poison_flag_generated.bend",
      "law": "vec_uint8_8_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_unit_v8_u8_generated.bend",
+     "law": "vec_uint8_8_serialize_vunit_v8_u8_range_below_7"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_unit_v8_u8_generated.bend",
+     "law": "vec_uint8_8_serialize_vunit_v8_u8_range_lo_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_unit_v8_u8_generated.bend",
+     "law": "vec_uint8_8_serialize_vunit_v8_u8_range_above_9"
     },
     {
      "file": "slop/size/size_and_bound_generic_generated.bend",
@@ -20142,6 +21818,10 @@
      "law": "proglist_uint16_serialize_vunit_pl_u16_accept_4"
     },
     {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_range_lo_0"
+    },
+    {
      "file": "slop/constants/proglist_uint16_generated.bend",
      "law": "proglist_uint16_mc_poison_pl_u16"
     },
@@ -20251,6 +21931,18 @@
     {
      "file": "slop/validity/generic_vec_uint16_16_poison_flag_generated.bend",
      "law": "vec_uint16_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_unit_v16_u16_generated.bend",
+     "law": "vec_uint16_16_serialize_vunit_v16_u16_range_below_30"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_unit_v16_u16_generated.bend",
+     "law": "vec_uint16_16_serialize_vunit_v16_u16_range_lo_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_unit_v16_u16_generated.bend",
+     "law": "vec_uint16_16_serialize_vunit_v16_u16_range_above_34"
     },
     {
      "file": "slop/capacity/vec_uint16_16_generated.bend",
@@ -20378,6 +22070,18 @@
     {
      "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
      "law": "vec_uint16_1_serialize_vunit_v1_u16_accept_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vunit_v1_u16_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vunit_v1_u16_range_lo_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vunit_v1_u16_range_above_4"
     },
     {
      "file": "slop/capacity/vec_uint16_1_generated.bend",
@@ -20515,6 +22219,18 @@
      "law": "vec_uint16_2_serialize_vunit_v2_u16_accept_4"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_2_unit_v2_u16_generated.bend",
+     "law": "vec_uint16_2_serialize_vunit_v2_u16_range_below_2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_unit_v2_u16_generated.bend",
+     "law": "vec_uint16_2_serialize_vunit_v2_u16_range_lo_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_unit_v2_u16_generated.bend",
+     "law": "vec_uint16_2_serialize_vunit_v2_u16_range_above_6"
+    },
+    {
      "file": "slop/capacity/vec_uint16_2_generated.bend",
      "law": "vec_uint16_2_serialize_cap"
     },
@@ -20638,6 +22354,18 @@
      "law": "vec_uint16_31_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vunit_v31_u16_range_below_60"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vunit_v31_u16_range_lo_62"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vunit_v31_u16_range_above_64"
+    },
+    {
      "file": "slop/capacity/vec_uint16_31_generated.bend",
      "law": "vec_uint16_31_serialize_cap"
     },
@@ -20755,6 +22483,18 @@
     {
      "file": "slop/validity/generic_vec_uint16_3_poison_flag_generated.bend",
      "law": "vec_uint16_3_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vunit_v3_u16_range_below_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vunit_v3_u16_range_lo_6"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vunit_v3_u16_range_above_8"
     },
     {
      "file": "slop/capacity/vec_uint16_3_generated.bend",
@@ -20888,6 +22628,18 @@
      "law": "vec_uint16_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_4_unit_v4_u16_generated.bend",
+     "law": "vec_uint16_4_serialize_vunit_v4_u16_range_below_6"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_4_unit_v4_u16_generated.bend",
+     "law": "vec_uint16_4_serialize_vunit_v4_u16_range_lo_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_4_unit_v4_u16_generated.bend",
+     "law": "vec_uint16_4_serialize_vunit_v4_u16_range_above_10"
+    },
+    {
      "file": "slop/capacity/vec_uint16_4_generated.bend",
      "law": "vec_uint16_4_serialize_cap"
     },
@@ -21011,6 +22763,18 @@
      "law": "vec_uint16_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_512_unit_v512_u16_generated.bend",
+     "law": "vec_uint16_512_serialize_vunit_v512_u16_range_below_1022"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_unit_v512_u16_generated.bend",
+     "law": "vec_uint16_512_serialize_vunit_v512_u16_range_lo_1024"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_unit_v512_u16_generated.bend",
+     "law": "vec_uint16_512_serialize_vunit_v512_u16_range_above_1026"
+    },
+    {
      "file": "slop/capacity/vec_uint16_512_generated.bend",
      "law": "vec_uint16_512_serialize_cap"
     },
@@ -21130,6 +22894,18 @@
      "law": "vec_uint16_513_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vunit_v513_u16_range_below_1024"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vunit_v513_u16_range_lo_1026"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vunit_v513_u16_range_above_1028"
+    },
+    {
      "file": "slop/capacity/vec_uint16_513_generated.bend",
      "law": "vec_uint16_513_serialize_cap"
     },
@@ -21247,6 +23023,18 @@
     {
      "file": "slop/validity/generic_vec_uint16_5_poison_flag_generated.bend",
      "law": "vec_uint16_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vunit_v5_u16_range_below_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vunit_v5_u16_range_lo_10"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vunit_v5_u16_range_above_12"
     },
     {
      "file": "slop/capacity/vec_uint16_5_generated.bend",
@@ -21378,6 +23166,18 @@
     {
      "file": "slop/validity/generic_vec_uint16_8_poison_flag_generated.bend",
      "law": "vec_uint16_8_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_unit_v8_u16_generated.bend",
+     "law": "vec_uint16_8_serialize_vunit_v8_u16_range_below_14"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_unit_v8_u16_generated.bend",
+     "law": "vec_uint16_8_serialize_vunit_v8_u16_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_unit_v8_u16_generated.bend",
+     "law": "vec_uint16_8_serialize_vunit_v8_u16_range_above_18"
     },
     {
      "file": "slop/capacity/vec_uint16_8_generated.bend",
@@ -21515,6 +23315,10 @@
      "law": "proglist_uint256_serialize_vunit_pl_u256_accept_64"
     },
     {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_range_lo_0"
+    },
+    {
      "file": "slop/constants/proglist_uint256_generated.bend",
      "law": "proglist_uint256_mc_poison_pl_u256"
     },
@@ -21622,6 +23426,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_16_poison_flag_generated.bend",
      "law": "vec_uint256_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_unit_v16_u256_generated.bend",
+     "law": "vec_uint256_16_serialize_vunit_v16_u256_range_below_480"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_unit_v16_u256_generated.bend",
+     "law": "vec_uint256_16_serialize_vunit_v16_u256_range_lo_512"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_unit_v16_u256_generated.bend",
+     "law": "vec_uint256_16_serialize_vunit_v16_u256_range_above_544"
     },
     {
      "file": "slop/capacity/vec_uint256_16_generated.bend",
@@ -21767,6 +23583,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_1_unit_v1_u256_generated.bend",
      "law": "vec_uint256_1_serialize_vunit_v1_u256_accept_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_unit_v1_u256_generated.bend",
+     "law": "vec_uint256_1_serialize_vunit_v1_u256_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_unit_v1_u256_generated.bend",
+     "law": "vec_uint256_1_serialize_vunit_v1_u256_range_lo_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_unit_v1_u256_generated.bend",
+     "law": "vec_uint256_1_serialize_vunit_v1_u256_range_above_64"
     },
     {
      "file": "slop/capacity/vec_uint256_1_generated.bend",
@@ -21918,6 +23746,18 @@
      "law": "vec_uint256_2_serialize_vunit_v2_u256_accept_64"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_2_unit_v2_u256_generated.bend",
+     "law": "vec_uint256_2_serialize_vunit_v2_u256_range_below_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_unit_v2_u256_generated.bend",
+     "law": "vec_uint256_2_serialize_vunit_v2_u256_range_lo_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_unit_v2_u256_generated.bend",
+     "law": "vec_uint256_2_serialize_vunit_v2_u256_range_above_96"
+    },
+    {
      "file": "slop/capacity/vec_uint256_2_generated.bend",
      "law": "vec_uint256_2_serialize_cap"
     },
@@ -22049,6 +23889,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_31_poison_flag_generated.bend",
      "law": "vec_uint256_31_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_unit_v31_u256_generated.bend",
+     "law": "vec_uint256_31_serialize_vunit_v31_u256_range_below_960"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_unit_v31_u256_generated.bend",
+     "law": "vec_uint256_31_serialize_vunit_v31_u256_range_lo_992"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_unit_v31_u256_generated.bend",
+     "law": "vec_uint256_31_serialize_vunit_v31_u256_range_above_1024"
     },
     {
      "file": "slop/capacity/vec_uint256_31_generated.bend",
@@ -22190,6 +24042,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_3_poison_flag_generated.bend",
      "law": "vec_uint256_3_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_unit_v3_u256_generated.bend",
+     "law": "vec_uint256_3_serialize_vunit_v3_u256_range_below_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_unit_v3_u256_generated.bend",
+     "law": "vec_uint256_3_serialize_vunit_v3_u256_range_lo_96"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_unit_v3_u256_generated.bend",
+     "law": "vec_uint256_3_serialize_vunit_v3_u256_range_above_128"
     },
     {
      "file": "slop/capacity/vec_uint256_3_generated.bend",
@@ -22337,6 +24201,18 @@
      "law": "vec_uint256_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_4_unit_v4_u256_generated.bend",
+     "law": "vec_uint256_4_serialize_vunit_v4_u256_range_below_96"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_4_unit_v4_u256_generated.bend",
+     "law": "vec_uint256_4_serialize_vunit_v4_u256_range_lo_128"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_4_unit_v4_u256_generated.bend",
+     "law": "vec_uint256_4_serialize_vunit_v4_u256_range_above_160"
+    },
+    {
      "file": "slop/capacity/vec_uint256_4_generated.bend",
      "law": "vec_uint256_4_serialize_cap"
     },
@@ -22461,6 +24337,18 @@
      "law": "vec_uint256_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_512_unit_v512_u256_generated.bend",
+     "law": "vec_uint256_512_serialize_vunit_v512_u256_range_below_16352"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_512_unit_v512_u256_generated.bend",
+     "law": "vec_uint256_512_serialize_vunit_v512_u256_range_lo_16384"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_512_unit_v512_u256_generated.bend",
+     "law": "vec_uint256_512_serialize_vunit_v512_u256_range_above_16416"
+    },
+    {
      "file": "slop/capacity/vec_uint256_512_symbolic_generated.bend",
      "law": "vec_uint256_512_serialize_capsym"
     },
@@ -22571,6 +24459,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_513_poison_flag_generated.bend",
      "law": "vec_uint256_513_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_unit_v513_u256_generated.bend",
+     "law": "vec_uint256_513_serialize_vunit_v513_u256_range_below_16384"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_unit_v513_u256_generated.bend",
+     "law": "vec_uint256_513_serialize_vunit_v513_u256_range_lo_16416"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_unit_v513_u256_generated.bend",
+     "law": "vec_uint256_513_serialize_vunit_v513_u256_range_above_16448"
     },
     {
      "file": "slop/capacity/vec_uint256_513_symbolic_generated.bend",
@@ -22704,6 +24604,18 @@
     {
      "file": "slop/validity/generic_vec_uint256_5_poison_flag_generated.bend",
      "law": "vec_uint256_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_unit_v5_u256_generated.bend",
+     "law": "vec_uint256_5_serialize_vunit_v5_u256_range_below_128"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_unit_v5_u256_generated.bend",
+     "law": "vec_uint256_5_serialize_vunit_v5_u256_range_lo_160"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_unit_v5_u256_generated.bend",
+     "law": "vec_uint256_5_serialize_vunit_v5_u256_range_above_192"
     },
     {
      "file": "slop/capacity/vec_uint256_5_generated.bend",
@@ -22851,6 +24763,18 @@
      "law": "vec_uint256_8_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_8_unit_v8_u256_generated.bend",
+     "law": "vec_uint256_8_serialize_vunit_v8_u256_range_below_224"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_8_unit_v8_u256_generated.bend",
+     "law": "vec_uint256_8_serialize_vunit_v8_u256_range_lo_256"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_8_unit_v8_u256_generated.bend",
+     "law": "vec_uint256_8_serialize_vunit_v8_u256_range_above_288"
+    },
+    {
      "file": "slop/capacity/vec_uint256_8_generated.bend",
      "law": "vec_uint256_8_serialize_cap"
     },
@@ -22986,6 +24910,14 @@
      "law": "proglist_uint32_serialize_vunit_pl_u32_accept_8"
     },
     {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_ok_4"
+    },
+    {
      "file": "slop/constants/proglist_uint32_generated.bend",
      "law": "proglist_uint32_mc_poison_pl_u32"
     },
@@ -23105,6 +25037,18 @@
     {
      "file": "slop/validity/generic_vec_uint32_16_poison_flag_generated.bend",
      "law": "vec_uint32_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_unit_v16_u32_generated.bend",
+     "law": "vec_uint32_16_serialize_vunit_v16_u32_range_below_60"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_unit_v16_u32_generated.bend",
+     "law": "vec_uint32_16_serialize_vunit_v16_u32_range_lo_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_unit_v16_u32_generated.bend",
+     "law": "vec_uint32_16_serialize_vunit_v16_u32_range_above_68"
     },
     {
      "file": "slop/capacity/vec_uint32_16_generated.bend",
@@ -23256,6 +25200,18 @@
      "law": "vec_uint32_1_serialize_vunit_v1_u32_accept_4"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_1_unit_v1_u32_generated.bend",
+     "law": "vec_uint32_1_serialize_vunit_v1_u32_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_unit_v1_u32_generated.bend",
+     "law": "vec_uint32_1_serialize_vunit_v1_u32_range_lo_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_unit_v1_u32_generated.bend",
+     "law": "vec_uint32_1_serialize_vunit_v1_u32_range_above_8"
+    },
+    {
      "file": "slop/capacity/vec_uint32_1_generated.bend",
      "law": "vec_uint32_1_serialize_cap"
     },
@@ -23405,6 +25361,18 @@
      "law": "vec_uint32_2_serialize_vunit_v2_u32_accept_8"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_2_unit_v2_u32_generated.bend",
+     "law": "vec_uint32_2_serialize_vunit_v2_u32_range_below_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_unit_v2_u32_generated.bend",
+     "law": "vec_uint32_2_serialize_vunit_v2_u32_range_lo_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_unit_v2_u32_generated.bend",
+     "law": "vec_uint32_2_serialize_vunit_v2_u32_range_above_12"
+    },
+    {
      "file": "slop/capacity/vec_uint32_2_generated.bend",
      "law": "vec_uint32_2_serialize_cap"
     },
@@ -23548,6 +25516,18 @@
     {
      "file": "slop/validity/generic_vec_uint32_31_poison_flag_generated.bend",
      "law": "vec_uint32_31_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_unit_v31_u32_generated.bend",
+     "law": "vec_uint32_31_serialize_vunit_v31_u32_range_below_120"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_unit_v31_u32_generated.bend",
+     "law": "vec_uint32_31_serialize_vunit_v31_u32_range_lo_124"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_unit_v31_u32_generated.bend",
+     "law": "vec_uint32_31_serialize_vunit_v31_u32_range_above_128"
     },
     {
      "file": "slop/capacity/vec_uint32_31_generated.bend",
@@ -23695,6 +25675,18 @@
      "law": "vec_uint32_3_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_3_unit_v3_u32_generated.bend",
+     "law": "vec_uint32_3_serialize_vunit_v3_u32_range_below_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_unit_v3_u32_generated.bend",
+     "law": "vec_uint32_3_serialize_vunit_v3_u32_range_lo_12"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_unit_v3_u32_generated.bend",
+     "law": "vec_uint32_3_serialize_vunit_v3_u32_range_above_16"
+    },
+    {
      "file": "slop/capacity/vec_uint32_3_generated.bend",
      "law": "vec_uint32_3_serialize_cap"
     },
@@ -23840,6 +25832,18 @@
      "law": "vec_uint32_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_4_unit_v4_u32_generated.bend",
+     "law": "vec_uint32_4_serialize_vunit_v4_u32_range_below_12"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_4_unit_v4_u32_generated.bend",
+     "law": "vec_uint32_4_serialize_vunit_v4_u32_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_4_unit_v4_u32_generated.bend",
+     "law": "vec_uint32_4_serialize_vunit_v4_u32_range_above_20"
+    },
+    {
      "file": "slop/capacity/vec_uint32_4_generated.bend",
      "law": "vec_uint32_4_serialize_cap"
     },
@@ -23968,6 +25972,18 @@
      "law": "vec_uint32_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_512_unit_v512_u32_generated.bend",
+     "law": "vec_uint32_512_serialize_vunit_v512_u32_range_below_2044"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_512_unit_v512_u32_generated.bend",
+     "law": "vec_uint32_512_serialize_vunit_v512_u32_range_lo_2048"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_512_unit_v512_u32_generated.bend",
+     "law": "vec_uint32_512_serialize_vunit_v512_u32_range_above_2052"
+    },
+    {
      "file": "slop/capacity/vec_uint32_512_generated.bend",
      "law": "vec_uint32_512_serialize_cap"
     },
@@ -24090,6 +26106,18 @@
     {
      "file": "slop/validity/generic_vec_uint32_513_poison_flag_generated.bend",
      "law": "vec_uint32_513_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_unit_v513_u32_generated.bend",
+     "law": "vec_uint32_513_serialize_vunit_v513_u32_range_below_2048"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_unit_v513_u32_generated.bend",
+     "law": "vec_uint32_513_serialize_vunit_v513_u32_range_lo_2052"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_unit_v513_u32_generated.bend",
+     "law": "vec_uint32_513_serialize_vunit_v513_u32_range_above_2056"
     },
     {
      "file": "slop/capacity/vec_uint32_513_generated.bend",
@@ -24231,6 +26259,18 @@
     {
      "file": "slop/validity/generic_vec_uint32_5_poison_flag_generated.bend",
      "law": "vec_uint32_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_unit_v5_u32_generated.bend",
+     "law": "vec_uint32_5_serialize_vunit_v5_u32_range_below_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_unit_v5_u32_generated.bend",
+     "law": "vec_uint32_5_serialize_vunit_v5_u32_range_lo_20"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_unit_v5_u32_generated.bend",
+     "law": "vec_uint32_5_serialize_vunit_v5_u32_range_above_24"
     },
     {
      "file": "slop/capacity/vec_uint32_5_generated.bend",
@@ -24378,6 +26418,18 @@
      "law": "vec_uint32_8_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_8_unit_v8_u32_generated.bend",
+     "law": "vec_uint32_8_serialize_vunit_v8_u32_range_below_28"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_8_unit_v8_u32_generated.bend",
+     "law": "vec_uint32_8_serialize_vunit_v8_u32_range_lo_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_8_unit_v8_u32_generated.bend",
+     "law": "vec_uint32_8_serialize_vunit_v8_u32_range_above_36"
+    },
+    {
      "file": "slop/capacity/vec_uint32_8_generated.bend",
      "law": "vec_uint32_8_serialize_cap"
     },
@@ -24513,6 +26565,10 @@
      "law": "proglist_uint64_serialize_vunit_pl_u64_accept_16"
     },
     {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_range_lo_0"
+    },
+    {
      "file": "slop/constants/proglist_uint64_generated.bend",
      "law": "proglist_uint64_mc_poison_pl_u64"
     },
@@ -24632,6 +26688,18 @@
     {
      "file": "slop/validity/generic_vec_uint64_16_poison_flag_generated.bend",
      "law": "vec_uint64_16_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_unit_v16_u64_generated.bend",
+     "law": "vec_uint64_16_serialize_vunit_v16_u64_range_below_120"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_unit_v16_u64_generated.bend",
+     "law": "vec_uint64_16_serialize_vunit_v16_u64_range_lo_128"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_unit_v16_u64_generated.bend",
+     "law": "vec_uint64_16_serialize_vunit_v16_u64_range_above_136"
     },
     {
      "file": "slop/capacity/vec_uint64_16_generated.bend",
@@ -24783,6 +26851,18 @@
      "law": "vec_uint64_1_serialize_vunit_v1_u64_accept_8"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_1_unit_v1_u64_generated.bend",
+     "law": "vec_uint64_1_serialize_vunit_v1_u64_range_below_0"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_unit_v1_u64_generated.bend",
+     "law": "vec_uint64_1_serialize_vunit_v1_u64_range_lo_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_unit_v1_u64_generated.bend",
+     "law": "vec_uint64_1_serialize_vunit_v1_u64_range_above_16"
+    },
+    {
      "file": "slop/capacity/vec_uint64_1_generated.bend",
      "law": "vec_uint64_1_serialize_cap"
     },
@@ -24932,6 +27012,18 @@
      "law": "vec_uint64_2_serialize_vunit_v2_u64_accept_16"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_2_unit_v2_u64_generated.bend",
+     "law": "vec_uint64_2_serialize_vunit_v2_u64_range_below_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_unit_v2_u64_generated.bend",
+     "law": "vec_uint64_2_serialize_vunit_v2_u64_range_lo_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_unit_v2_u64_generated.bend",
+     "law": "vec_uint64_2_serialize_vunit_v2_u64_range_above_24"
+    },
+    {
      "file": "slop/capacity/vec_uint64_2_generated.bend",
      "law": "vec_uint64_2_serialize_cap"
     },
@@ -25075,6 +27167,18 @@
     {
      "file": "slop/validity/generic_vec_uint64_31_poison_flag_generated.bend",
      "law": "vec_uint64_31_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_unit_v31_u64_generated.bend",
+     "law": "vec_uint64_31_serialize_vunit_v31_u64_range_below_240"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_unit_v31_u64_generated.bend",
+     "law": "vec_uint64_31_serialize_vunit_v31_u64_range_lo_248"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_unit_v31_u64_generated.bend",
+     "law": "vec_uint64_31_serialize_vunit_v31_u64_range_above_256"
     },
     {
      "file": "slop/capacity/vec_uint64_31_generated.bend",
@@ -25222,6 +27326,18 @@
      "law": "vec_uint64_3_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_3_unit_v3_u64_generated.bend",
+     "law": "vec_uint64_3_serialize_vunit_v3_u64_range_below_16"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_unit_v3_u64_generated.bend",
+     "law": "vec_uint64_3_serialize_vunit_v3_u64_range_lo_24"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_unit_v3_u64_generated.bend",
+     "law": "vec_uint64_3_serialize_vunit_v3_u64_range_above_32"
+    },
+    {
      "file": "slop/capacity/vec_uint64_3_generated.bend",
      "law": "vec_uint64_3_serialize_cap"
     },
@@ -25367,6 +27483,18 @@
      "law": "vec_uint64_4_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_4_unit_v4_u64_generated.bend",
+     "law": "vec_uint64_4_serialize_vunit_v4_u64_range_below_24"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_4_unit_v4_u64_generated.bend",
+     "law": "vec_uint64_4_serialize_vunit_v4_u64_range_lo_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_4_unit_v4_u64_generated.bend",
+     "law": "vec_uint64_4_serialize_vunit_v4_u64_range_above_40"
+    },
+    {
      "file": "slop/capacity/vec_uint64_4_generated.bend",
      "law": "vec_uint64_4_serialize_cap"
     },
@@ -25495,6 +27623,18 @@
      "law": "vec_uint64_512_serialize_vflag"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_512_unit_v512_u64_generated.bend",
+     "law": "vec_uint64_512_serialize_vunit_v512_u64_range_below_4088"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_512_unit_v512_u64_generated.bend",
+     "law": "vec_uint64_512_serialize_vunit_v512_u64_range_lo_4096"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_512_unit_v512_u64_generated.bend",
+     "law": "vec_uint64_512_serialize_vunit_v512_u64_range_above_4104"
+    },
+    {
      "file": "slop/capacity/vec_uint64_512_generated.bend",
      "law": "vec_uint64_512_serialize_cap"
     },
@@ -25613,6 +27753,18 @@
     {
      "file": "slop/validity/generic_vec_uint64_513_poison_flag_generated.bend",
      "law": "vec_uint64_513_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_unit_v513_u64_generated.bend",
+     "law": "vec_uint64_513_serialize_vunit_v513_u64_range_below_4096"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_unit_v513_u64_generated.bend",
+     "law": "vec_uint64_513_serialize_vunit_v513_u64_range_lo_4104"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_unit_v513_u64_generated.bend",
+     "law": "vec_uint64_513_serialize_vunit_v513_u64_range_above_4112"
     },
     {
      "file": "slop/capacity/vec_uint64_513_symbolic_generated.bend",
@@ -25750,6 +27902,18 @@
     {
      "file": "slop/validity/generic_vec_uint64_5_poison_flag_generated.bend",
      "law": "vec_uint64_5_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_unit_v5_u64_generated.bend",
+     "law": "vec_uint64_5_serialize_vunit_v5_u64_range_below_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_unit_v5_u64_generated.bend",
+     "law": "vec_uint64_5_serialize_vunit_v5_u64_range_lo_40"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_unit_v5_u64_generated.bend",
+     "law": "vec_uint64_5_serialize_vunit_v5_u64_range_above_48"
     },
     {
      "file": "slop/capacity/vec_uint64_5_generated.bend",
@@ -25895,6 +28059,18 @@
     {
      "file": "slop/validity/generic_vec_uint64_8_poison_flag_generated.bend",
      "law": "vec_uint64_8_serialize_vflag"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_unit_v8_u64_generated.bend",
+     "law": "vec_uint64_8_serialize_vunit_v8_u64_range_below_56"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_unit_v8_u64_generated.bend",
+     "law": "vec_uint64_8_serialize_vunit_v8_u64_range_lo_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_unit_v8_u64_generated.bend",
+     "law": "vec_uint64_8_serialize_vunit_v8_u64_range_above_72"
     },
     {
      "file": "slop/capacity/vec_uint64_8_generated.bend",
@@ -26062,6 +28238,10 @@
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
      "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_accept_16"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0"
     },
     {
      "file": "slop/constants/ProgressiveTestStruct_generated.bend",
@@ -26280,6 +28460,22 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vbits_size"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vbits_size"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vbits_size"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vbits_size"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveBitsStruct_collection_bits1280_generated.bend",
      "law": "ProgressiveBitsStruct_serialize_vcoll_bits1280_first"
     },
@@ -26400,11 +28596,103 @@
      "law": "ProgressiveBitsStruct_serialize_vreject_f_L"
     },
     {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vunit_bv1280_range_below_159"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vunit_bv1280_range_lo_160"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vunit_bv1280_range_above_161"
+    },
+    {
      "file": "slop/constants/ProgressiveBitsStruct_generated.bend",
      "law": "ProgressiveBitsStruct_mc_ser"
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_63"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_63"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_63"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vbits_clear_63"
+    },
     {
      "file": "slop/offsets/ProgressiveBitsStruct_generated.bend",
      "law": "ProgressiveBitsStruct_decode_build"
@@ -26788,6 +29076,26 @@
      "law": "VarTestStruct_serialize_vreject_f_B"
     },
     {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_bx_size"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_bx_valid"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_bx_absent"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_bx_ok"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_fields_generated.bend",
+     "law": "VarTestStruct_serialize_vpoison_bx_invalid"
+    },
+    {
      "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
      "law": "VarTestStruct_serialize_vunit_l1024_u16_refuse_1"
     },
@@ -26802,6 +29110,18 @@
     {
      "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
      "law": "VarTestStruct_serialize_vunit_l1024_u16_accept_4"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_range_hi_2048"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vunit_l1024_u16_range_above_2050"
     },
     {
      "file": "slop/size/VarTestStruct_generated.bend",
@@ -26838,6 +29158,42 @@
     {
      "file": "root_gtypes.bend",
      "law": "ComplexTestStruct_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_tight_5"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_tight_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_roomy_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_slack_junk_5"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_short_5"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_junk_41"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_past_41"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_junk_73"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_past_73"
     }
    ],
    "ok_eval": [
@@ -27000,6 +29356,18 @@
      "law": "ComplexTestStruct_serialize_vreject_f_G_elem"
     },
     {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_bl256_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_bl256_range_hi_256"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_bl256_range_above_257"
+    },
+    {
      "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
      "law": "ComplexTestStruct_serialize_vunit_l128_u16_refuse_1"
     },
@@ -27014,6 +29382,18 @@
     {
      "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
      "law": "ComplexTestStruct_serialize_vunit_l128_u16_accept_4"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_range_hi_256"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vunit_l128_u16_range_above_258"
     },
     {
      "file": "slop/constants/ComplexTestStruct_generated.bend",
@@ -27252,6 +29632,10 @@
      "law": "bitlist_15_serialize_vsym"
     },
     {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vbits_size"
+    },
+    {
      "file": "slop/validity/generic_bitlist_15_bits_generated.bend",
      "law": "bitlist_15_serialize_vbits_table_0"
     },
@@ -27418,6 +29802,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
+     "law": "bitlist_15_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_15_generated.bend",
      "law": "bitlist_15_decode_build"
     }
@@ -27509,6 +29913,10 @@
     {
      "file": "slop/validity/generic_bitlist_16_generated.bend",
      "law": "bitlist_16_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_16_bits_generated.bend",
@@ -27677,6 +30085,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
+     "law": "bitlist_16_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_16_generated.bend",
      "law": "bitlist_16_decode_build"
     }
@@ -27768,6 +30196,10 @@
     {
      "file": "slop/validity/generic_bitlist_17_generated.bend",
      "law": "bitlist_17_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_17_bits_generated.bend",
@@ -27936,6 +30368,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
+     "law": "bitlist_17_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_17_generated.bend",
      "law": "bitlist_17_decode_build"
     }
@@ -28027,6 +30479,10 @@
     {
      "file": "slop/validity/generic_bitlist_1_generated.bend",
      "law": "bitlist_1_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_1_bits_generated.bend",
@@ -28187,6 +30643,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
+     "law": "bitlist_1_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_1_generated.bend",
      "law": "bitlist_1_decode_build"
     }
@@ -28278,6 +30754,10 @@
     {
      "file": "slop/validity/generic_bitlist_2_generated.bend",
      "law": "bitlist_2_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_2_bits_generated.bend",
@@ -28442,6 +30922,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
+     "law": "bitlist_2_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_2_generated.bend",
      "law": "bitlist_2_decode_build"
     }
@@ -28533,6 +31033,10 @@
     {
      "file": "slop/validity/generic_bitlist_31_generated.bend",
      "law": "bitlist_31_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_31_bits_generated.bend",
@@ -28701,6 +31205,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
+     "law": "bitlist_31_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_31_generated.bend",
      "law": "bitlist_31_decode_build"
     }
@@ -28788,6 +31312,10 @@
     {
      "file": "slop/validity/generic_bitlist_32_generated.bend",
      "law": "bitlist_32_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_32_bits_generated.bend",
@@ -28948,6 +31476,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
+     "law": "bitlist_32_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_32_generated.bend",
      "law": "bitlist_32_decode_build"
     }
@@ -29035,6 +31583,10 @@
     {
      "file": "slop/validity/generic_bitlist_33_generated.bend",
      "law": "bitlist_33_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_33_bits_generated.bend",
@@ -29195,6 +31747,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
+     "law": "bitlist_33_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_33_generated.bend",
      "law": "bitlist_33_decode_build"
     }
@@ -29286,6 +31858,10 @@
     {
      "file": "slop/validity/generic_bitlist_3_generated.bend",
      "law": "bitlist_3_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_3_bits_generated.bend",
@@ -29454,6 +32030,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
+     "law": "bitlist_3_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_3_generated.bend",
      "law": "bitlist_3_decode_build"
     }
@@ -29545,6 +32141,10 @@
     {
      "file": "slop/validity/generic_bitlist_4_generated.bend",
      "law": "bitlist_4_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_4_bits_generated.bend",
@@ -29713,6 +32313,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
+     "law": "bitlist_4_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_4_generated.bend",
      "law": "bitlist_4_decode_build"
     }
@@ -29800,6 +32420,10 @@
     {
      "file": "slop/validity/generic_bitlist_511_generated.bend",
      "law": "bitlist_511_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_511_bits_generated.bend",
@@ -29960,6 +32584,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
+     "law": "bitlist_511_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_511_generated.bend",
      "law": "bitlist_511_decode_build"
     }
@@ -30047,6 +32691,10 @@
     {
      "file": "slop/validity/generic_bitlist_512_generated.bend",
      "law": "bitlist_512_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_512_bits_generated.bend",
@@ -30207,6 +32855,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
+     "law": "bitlist_512_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_512_generated.bend",
      "law": "bitlist_512_decode_build"
     }
@@ -30294,6 +32962,10 @@
     {
      "file": "slop/validity/generic_bitlist_513_generated.bend",
      "law": "bitlist_513_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_513_bits_generated.bend",
@@ -30454,6 +33126,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
+     "law": "bitlist_513_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_513_generated.bend",
      "law": "bitlist_513_decode_build"
     }
@@ -30545,6 +33237,10 @@
     {
      "file": "slop/validity/generic_bitlist_5_generated.bend",
      "law": "bitlist_5_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_5_bits_generated.bend",
@@ -30713,6 +33409,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
+     "law": "bitlist_5_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_5_generated.bend",
      "law": "bitlist_5_decode_build"
     }
@@ -30804,6 +33520,10 @@
     {
      "file": "slop/validity/generic_bitlist_6_generated.bend",
      "law": "bitlist_6_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_6_bits_generated.bend",
@@ -30972,6 +33692,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
+     "law": "bitlist_6_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_6_generated.bend",
      "law": "bitlist_6_decode_build"
     }
@@ -31063,6 +33803,10 @@
     {
      "file": "slop/validity/generic_bitlist_7_generated.bend",
      "law": "bitlist_7_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_7_bits_generated.bend",
@@ -31231,6 +33975,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
+     "law": "bitlist_7_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_7_generated.bend",
      "law": "bitlist_7_decode_build"
     }
@@ -31322,6 +34086,10 @@
     {
      "file": "slop/validity/generic_bitlist_8_generated.bend",
      "law": "bitlist_8_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_8_bits_generated.bend",
@@ -31490,6 +34258,26 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
+     "law": "bitlist_8_decode_vbits_clear_63"
+    },
+    {
      "file": "slop/offsets/bitlist_8_generated.bend",
      "law": "bitlist_8_decode_build"
     }
@@ -31581,6 +34369,10 @@
     {
      "file": "slop/validity/generic_bitlist_9_generated.bend",
      "law": "bitlist_9_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_bitlist_9_bits_generated.bend",
@@ -31748,6 +34540,26 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
+     "law": "bitlist_9_decode_vbits_clear_63"
+    },
     {
      "file": "slop/offsets/bitlist_9_generated.bend",
      "law": "bitlist_9_decode_build"
@@ -33908,6 +36720,22 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+     "law": "CompatibleUnionBC_serialize_vreject_c0_f_C"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+     "law": "CompatibleUnionBC_serialize_vrefuse_c0_f_C"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+     "law": "CompatibleUnionBC_serialize_vreject_c1_f_B"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+     "law": "CompatibleUnionBC_serialize_vrefuse_c1_f_B"
+    },
+    {
      "file": "slop/constants/CompatibleUnionBC_generated.bend",
      "law": "CompatibleUnionBC_mc_poison_CompatibleUnionBC"
     },
@@ -33917,6 +36745,14 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_selectors_generated.bend",
+     "law": "CompatibleUnionBC_decode_vsel_outside"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_selectors_generated.bend",
+     "law": "CompatibleUnionBC_decode_vsel_empty"
+    },
     {
      "file": "slop/offsets/CompatibleUnionBC_generated.bend",
      "law": "CompatibleUnionBC_decode_build"
@@ -34064,6 +36900,22 @@
    ],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+     "law": "CompatibleUnionABCA_serialize_vreject_c1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+     "law": "CompatibleUnionABCA_serialize_vrefuse_c1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+     "law": "CompatibleUnionABCA_serialize_vreject_c2_f_B"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+     "law": "CompatibleUnionABCA_serialize_vrefuse_c2_f_B"
+    },
+    {
      "file": "slop/constants/CompatibleUnionABCA_generated.bend",
      "law": "CompatibleUnionABCA_mc_poison_CompatibleUnionABCA"
     },
@@ -34073,6 +36925,18 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vsel_outside"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vsel_empty"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vsel_arms"
+    },
     {
      "file": "slop/offsets/CompatibleUnionABCA_generated.bend",
      "law": "CompatibleUnionABCA_decode_build"
@@ -34190,6 +37054,18 @@
    ],
    "decode_offsets": [
     {
+     "file": "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
+     "law": "CompatibleUnionA_decode_vsel_outside"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
+     "law": "CompatibleUnionA_decode_vsel_empty"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
+     "law": "CompatibleUnionA_decode_vsel_arms"
+    },
+    {
      "file": "slop/offsets/CompatibleUnionA_generated.bend",
      "law": "CompatibleUnionA_decode_build"
     }
@@ -34269,6 +37145,10 @@
     {
      "file": "slop/validity/generic_progbitlist_generated.bend",
      "law": "progbitlist_serialize_vsym"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_serialize_vbits_size"
     },
     {
      "file": "slop/validity/generic_progbitlist_bits_generated.bend",
@@ -34424,6 +37304,26 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_decode_vbits_clear_0"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_decode_vbits_clear_9"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_decode_vbits_clear_33"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_decode_vbits_clear_40"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
+     "law": "progbitlist_decode_vbits_clear_63"
+    },
     {
      "file": "slop/offsets/progbitlist_generated.bend",
      "law": "progbitlist_decode_build"
@@ -34653,6 +37553,22 @@
     }
    ],
    "decode_offsets": [
+    {
+     "file": "slop/validity/generic_uint16_read_generated.bend",
+     "law": "uint16_decode_vread_u16_0"
+    },
+    {
+     "file": "slop/validity/generic_uint16_read_generated.bend",
+     "law": "uint16_decode_vread_u16_1"
+    },
+    {
+     "file": "slop/validity/generic_uint16_read_generated.bend",
+     "law": "uint16_decode_vread_u16_2"
+    },
+    {
+     "file": "slop/validity/generic_uint16_read_generated.bend",
+     "law": "uint16_decode_vread_u16_3"
+    },
     {
      "file": "slop/offsets/uint16_generated.bend",
      "law": "uint16_decode_build"

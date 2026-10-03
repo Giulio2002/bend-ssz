@@ -10,6 +10,18 @@ def BeaconBlock_serialize_vreject_default_valid()
     -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_default())) == True{} : Bool}:
   {==}
 
+def BeaconBlock_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_go(True{}, 0, FuluBeaconBlock_d.BeaconBlock_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def BeaconBlock_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_sized((FuluBeaconBlock_d.BeaconBlock_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def BeaconBlock_serialize_vreject_body()
     -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{}))) == False{} : Bool}:
+  {==}
+
+def BeaconBlock_serialize_vrefuse_body()
+    -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{}))) == O.refused() : O.Encoded}:
   {==}

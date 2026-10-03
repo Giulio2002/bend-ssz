@@ -10,6 +10,14 @@ def ProgressiveBitsStruct_serialize_vreject_default_valid()
     -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, Bool, ProgressiveBitsStruct_e.ProgressiveBitsStruct_valid(ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())) == True{} : Bool}:
   {==}
 
+def ProgressiveBitsStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, O.Encoded, ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_go(True{}, 0, ProgressiveBitsStruct_d.ProgressiveBitsStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def ProgressiveBitsStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, O.Encoded, ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_sized((ProgressiveBitsStruct_d.ProgressiveBitsStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def ProgressiveBitsStruct_serialize_vreject_f_B()
     -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, Bool, ProgressiveBitsStruct_e.ProgressiveBitsStruct_valid(ProgressiveBitsStruct_d.ProgressiveBitsStruct{ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0_set_f_B(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0_default(), O.Bits{Array.new(U32, 0n, 0), 64}), ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1_default()})) == False{} : Bool}:
   {==}

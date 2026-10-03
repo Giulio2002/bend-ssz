@@ -100,6 +100,9 @@ def proglist_uint16__serialize_valid__proglist_uint16_serialize_vunit_pl_u16_acc
 def proglist_uint16__serialize_valid__proglist_uint16_serialize_vunit_pl_u16_accept_4() -> {Pair.snd(P3_O.Words, Bool, proglist_uint16_e.pl_u16_valid(P3_O.words_new(4))) == True{} : Bool}:
   P3_PRV.proglist_uint16_serialize_vunit_pl_u16_accept_4()
 
+def proglist_uint16__serialize_valid__proglist_uint16_serialize_vunit_pl_u16_range_lo_0() -> {Pair.snd(P3_O.Words, Bool, proglist_uint16_e.pl_u16_valid(P3_O.words_new(0))) == True{} : Bool}:
+  P3_PRV.proglist_uint16_serialize_vunit_pl_u16_range_lo_0()
+
 def proglist_uint16__serialize_valid__proglist_uint16_mc_poison_pl_u16(out: Array<U32>, pos: U32, o: P4_O.Words) -> {proglist_uint16_e.pl_u16_pk(out, pos, (o, False{})) == (out, (o, P4_O.poison())) : Array<U32> & (P4_O.Words & U32)}:
   P4_PRV.proglist_uint16_mc_poison_pl_u16(out, pos, o)
 

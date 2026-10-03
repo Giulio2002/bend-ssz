@@ -42,6 +42,34 @@ def VarTestStruct_serialize_vreject_default_valid()
     -> {Pair.snd(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_e.VarTestStruct_valid(VarTestStruct_d.VarTestStruct_default())) == True{} : Bool}:
   {==}
 
+def VarTestStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_go(True{}, 0, VarTestStruct_d.VarTestStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def VarTestStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_sized((VarTestStruct_d.VarTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def VarTestStruct_serialize_vreject_f_B()
     -> {Pair.snd(VarTestStruct_d.VarTestStruct, Bool, VarTestStruct_e.VarTestStruct_valid(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
+  {==}
+
+def VarTestStruct_serialize_vreject_bx_size()
+    -> {VarTestStruct_e.VarTestStruct_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<VarTestStruct_d.VarTestStruct> & U32}:
+  {==}
+
+def VarTestStruct_serialize_vreject_bx_valid()
+    -> {VarTestStruct_e.VarTestStruct_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<VarTestStruct_d.VarTestStruct> & Bool}:
+  {==}
+
+def VarTestStruct_serialize_vpoison_bx_absent()
+    -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+  {==}
+
+def VarTestStruct_serialize_vpoison_bx_ok()
+    -> {O.is_poisoned(Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_default()))))) == False{} : Bool}:
+  {==}
+
+def VarTestStruct_serialize_vpoison_bx_invalid()
+    -> {O.is_poisoned(Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
   {==}

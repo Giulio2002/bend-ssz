@@ -12,6 +12,15 @@ def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_accept_4() -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(4))) == True{} : Bool}:
   PRV.ComplexTestStruct_serialize_vunit_l128_u16_accept_4()
 
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_range_above_258() -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(258))) == False{} : Bool}:
+  PRV.ComplexTestStruct_serialize_vunit_l128_u16_range_above_258()
+
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_range_hi_256() -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(256))) == True{} : Bool}:
+  PRV.ComplexTestStruct_serialize_vunit_l128_u16_range_hi_256()
+
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_range_lo_0() -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.ComplexTestStruct_serialize_vunit_l128_u16_range_lo_0()
+
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vunit_l128_u16_refuse_1() -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(1))) == False{} : Bool}:
   PRV.ComplexTestStruct_serialize_vunit_l128_u16_refuse_1()
 

@@ -41,6 +41,37 @@ def laws_of(X, p, lo, hi, big, U):
     return laws
 
 
+
+NR = 1 << 22      # a length the zero storage of the law can still build lazily
+
+
+def range_laws(X, p, lo, hi, big, U):
+    """the length range of the validity pass (round 3: p01/06, p05/07): one multiple of the element size below the lower bound, the bounds, one above the upper"""
+    cases = []
+    if lo >= U:
+        cases.append((f'range_below_{lo - U}', lo - U, 'False'))
+    if lo <= NR:
+        cases.append((f'range_lo_{lo}', lo, 'True'))
+    if not big and hi != lo and hi <= NR:
+        cases.append((f'range_hi_{hi}', hi, 'True'))
+    if not big and hi + U <= NR:
+        cases.append((f'range_above_{hi + U}', hi + U, 'False'))
+    return [f'def {X}_serialize_vunit_{p}_{tag}()\n    -> {{Pair.snd(O.Words, Bool, T.{p}_valid(O.words_new({n}))) == {want}{{}} : Bool}}:\n  {{==}}' for tag, n, want in cases]
+
+
+def unit_ok_law(X, U):
+    """`O.unit_ok(U, n)` at the edges of a multiple (every size has its own case in the generated definition)"""
+    ns = sorted({1, U // 2, U - 1, U, U + 1, 2 * U - 1, 2 * U, 3 * U + U // 2, 3 * U} - {0})
+
+    def nest(items):
+        return items[0] if len(items) == 1 else f'({items[0]}, {nest(items[1:])})'
+    t = 'Bool'
+    for _ in ns[1:]:
+        t = f'Bool & ({t})'
+    return (f'def {X}_serialize_vunit_ok_{U}()\n    -> {{{nest([f"O.unit_ok({U}, {n})" for n in ns])} == '
+            f'{nest(["True{}" if n % U == 0 else "False{}" for n in ns])} : {t}}}:\n  {{==}}')
+
+
 def module(tmod, X, laws):
     L = ['import Base', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '', writer.header('word_unit_validity'),
          f'# {X}: a packed list holds whole elements (manual spec-mutation audit, round 2; docs/mutation_testing/MUTATION_PROOFS.md).', '']
@@ -51,16 +82,21 @@ def module(tmod, X, laws):
 
 def outputs():
     out = {}
+    seen_units = set()
     for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
         tx = MC.Text(runtime)
         for m in VALID.finditer(tx.text):
             p, lo, hi, big, U = m.group(1), int(m.group(2)), int(m.group(3)), m.group(4) == 'True', int(m.group(5))
-            if U <= 1:
-                continue
-            for X in owners_of(tx, p):
-                laws = laws_of(X, p, lo, hi, big, U)
+            owners = owners_of(tx, p)
+            if U == 1:     # byte collections: the smallest container only (the range test is one definition)
+                owners = sorted(owners, key=lambda X: sum(1 for n in tx.blk if n.startswith(X + '_')))[:1]
+            for X in owners:
+                laws = laws_of(X, p, lo, hi, big, U) if U > 1 else []
+                laws = [l.replace(f'{X}_serialize_vunit_', f'{X}_serialize_vunit_{p}_') for l in laws] + range_laws(X, p, lo, hi, big, U)
+                if U > 1 and U not in seen_units:
+                    seen_units.add(U)
+                    laws.append(unit_ok_law(X, U))
                 if laws:
-                    laws = [l.replace(f'{X}_serialize_vunit_', f'{X}_serialize_vunit_{p}_') for l in laws]
                     out[LAYOUT.module_path('validity', f'{runtime}_{X}_unit_{p}')] = module(tmod, X, laws)
     return out
 

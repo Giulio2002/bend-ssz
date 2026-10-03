@@ -1,5 +1,6 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
 import ../../../types/FuluAggregateAndProof_encode_ssz_generated.bend as FuluAggregateAndProof_e
 
@@ -10,6 +11,26 @@ def AggregateAndProof_serialize_vreject_default_valid()
     -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, Bool, FuluAggregateAndProof_e.AggregateAndProof_valid(FuluAggregateAndProof_d.AggregateAndProof_default())) == True{} : Bool}:
   {==}
 
+def AggregateAndProof_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_senc_go(True{}, 0, FuluAggregateAndProof_d.AggregateAndProof_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def AggregateAndProof_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_senc_sized((FuluAggregateAndProof_d.AggregateAndProof_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def AggregateAndProof_serialize_vreject_aggregate()
     -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, Bool, FuluAggregateAndProof_e.AggregateAndProof_valid(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), O.BNone{}))) == False{} : Bool}:
+  {==}
+
+def AggregateAndProof_serialize_vrefuse_aggregate()
+    -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
+def AggregateAndProof_serialize_vreject_aggregate_aggregation_bits()
+    -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, Bool, FuluAggregateAndProof_e.AggregateAndProof_valid(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))))) == False{} : Bool}:
+  {==}
+
+def AggregateAndProof_serialize_vrefuse_aggregate_aggregation_bits()
+    -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))))) == O.refused() : O.Encoded}:
   {==}

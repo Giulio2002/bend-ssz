@@ -20,3 +20,15 @@ def ComplexTestStruct_serialize_vunit_l128_u16_accept_2()
 def ComplexTestStruct_serialize_vunit_l128_u16_accept_4()
     -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(4))) == True{} : Bool}:
   {==}
+
+def ComplexTestStruct_serialize_vunit_l128_u16_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def ComplexTestStruct_serialize_vunit_l128_u16_range_hi_256()
+    -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(256))) == True{} : Bool}:
+  {==}
+
+def ComplexTestStruct_serialize_vunit_l128_u16_range_above_258()
+    -> {Pair.snd(O.Words, Bool, list_uint16_128_e.l128_u16_valid(O.words_new(258))) == False{} : Bool}:
+  {==}

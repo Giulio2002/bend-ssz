@@ -13,3 +13,7 @@ def LightClientOptimisticUpdate_serialize_vreject_default_valid()
 def LightClientOptimisticUpdate_serialize_vreject_sync_aggregate()
     -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, Bool, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_valid(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), O.BNone{}))) == False{} : Bool}:
   {==}
+
+def LightClientOptimisticUpdate_serialize_vrefuse_sync_aggregate()
+    -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, O.Encoded, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_serialize(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}

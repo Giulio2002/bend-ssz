@@ -12,6 +12,15 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_acce
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_accept_4() -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(4))) == True{} : Bool}:
   PRV.VarTestStruct_serialize_vunit_l1024_u16_accept_4()
 
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_range_above_2050() -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(2050))) == False{} : Bool}:
+  PRV.VarTestStruct_serialize_vunit_l1024_u16_range_above_2050()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_range_hi_2048() -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(2048))) == True{} : Bool}:
+  PRV.VarTestStruct_serialize_vunit_l1024_u16_range_hi_2048()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_range_lo_0() -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.VarTestStruct_serialize_vunit_l1024_u16_range_lo_0()
+
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vunit_l1024_u16_refuse_1() -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(1))) == False{} : Bool}:
   PRV.VarTestStruct_serialize_vunit_l1024_u16_refuse_1()
 

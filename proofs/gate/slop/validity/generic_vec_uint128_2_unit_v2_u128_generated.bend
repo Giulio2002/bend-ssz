@@ -9,3 +9,12 @@ import ../../../slop/validity/generic_vec_uint128_2_unit_v2_u128_generated.bend 
 def vec_uint128_2__serialize_valid__vec_uint128_2_serialize_vunit_v2_u128_accept_32() -> {Pair.snd(O.Words, Bool, vec_uint128_2_e.v2_u128_valid(O.words_new(32))) == True{} : Bool}:
   PRV.vec_uint128_2_serialize_vunit_v2_u128_accept_32()
 
+def vec_uint128_2__serialize_valid__vec_uint128_2_serialize_vunit_v2_u128_range_above_48() -> {Pair.snd(O.Words, Bool, vec_uint128_2_e.v2_u128_valid(O.words_new(48))) == False{} : Bool}:
+  PRV.vec_uint128_2_serialize_vunit_v2_u128_range_above_48()
+
+def vec_uint128_2__serialize_valid__vec_uint128_2_serialize_vunit_v2_u128_range_below_16() -> {Pair.snd(O.Words, Bool, vec_uint128_2_e.v2_u128_valid(O.words_new(16))) == False{} : Bool}:
+  PRV.vec_uint128_2_serialize_vunit_v2_u128_range_below_16()
+
+def vec_uint128_2__serialize_valid__vec_uint128_2_serialize_vunit_v2_u128_range_lo_32() -> {Pair.snd(O.Words, Bool, vec_uint128_2_e.v2_u128_valid(O.words_new(32))) == True{} : Bool}:
+  PRV.vec_uint128_2_serialize_vunit_v2_u128_range_lo_32()
+

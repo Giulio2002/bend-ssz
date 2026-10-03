@@ -76,6 +76,15 @@ def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vflag(out: Array<U32>,
 def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vunit_v2_u16_accept_4() -> {Pair.snd(P6_O.Words, Bool, vec_uint16_2_e.v2_u16_valid(P6_O.words_new(4))) == True{} : Bool}:
   P6_PRV.vec_uint16_2_serialize_vunit_v2_u16_accept_4()
 
+def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vunit_v2_u16_range_below_2() -> {Pair.snd(P6_O.Words, Bool, vec_uint16_2_e.v2_u16_valid(P6_O.words_new(2))) == False{} : Bool}:
+  P6_PRV.vec_uint16_2_serialize_vunit_v2_u16_range_below_2()
+
+def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vunit_v2_u16_range_lo_4() -> {Pair.snd(P6_O.Words, Bool, vec_uint16_2_e.v2_u16_valid(P6_O.words_new(4))) == True{} : Bool}:
+  P6_PRV.vec_uint16_2_serialize_vunit_v2_u16_range_lo_4()
+
+def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_vunit_v2_u16_range_above_6() -> {Pair.snd(P6_O.Words, Bool, vec_uint16_2_e.v2_u16_valid(P6_O.words_new(6))) == False{} : Bool}:
+  P6_PRV.vec_uint16_2_serialize_vunit_v2_u16_range_above_6()
+
 def vec_uint16_2__serialize_valid__vec_uint16_2_serialize_cap() -> {vec_uint16_2_e.vec_uint16_2_serialize(vec_uint16_2_d.v2_u16_default()) == (vec_uint16_2_d.v2_u16_default(), P7_O.encoded(Pair.snd(P7_O.Words, P7_B.Buf, vec_uint16_2_e.vec_uint16_2_encode(vec_uint16_2_d.v2_u16_default())))) : P7_O.Words & P7_O.Encoded}:
   P7_PRV.vec_uint16_2_serialize_cap()
 

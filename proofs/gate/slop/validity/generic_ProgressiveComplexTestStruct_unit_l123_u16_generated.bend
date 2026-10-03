@@ -12,9 +12,21 @@ def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_accept_4() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(4))) == True{} : Bool}:
   PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_accept_4()
 
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_above_248() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(248))) == False{} : Bool}:
+  PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_above_248()
+
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_hi_246() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(246))) == True{} : Bool}:
+  PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_hi_246()
+
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_lo_0() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_range_lo_0()
+
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_1() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(1))) == False{} : Bool}:
   PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_1()
 
 def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_3() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(3))) == False{} : Bool}:
   PRV.ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_3()
+
+def ProgressiveComplexTestStruct__serialize_valid__ProgressiveComplexTestStruct_serialize_vunit_ok_2() -> {(O.unit_ok(2, 1), (O.unit_ok(2, 2), (O.unit_ok(2, 3), (O.unit_ok(2, 4), (O.unit_ok(2, 6), O.unit_ok(2, 7)))))) == (False{}, (True{}, (False{}, (True{}, (True{}, False{}))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool)))))}:
+  PRV.ProgressiveComplexTestStruct_serialize_vunit_ok_2()
 

@@ -68,8 +68,14 @@ def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_vreject_de
 def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_vreject_signed_header_1() -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, Bool, FuluProposerSlashing_e.ProposerSlashing_valid(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_1(FuluProposerSlashing_d.ProposerSlashing_default(), P4_O.BNone{}))) == False{} : Bool}:
   P4_PRV.ProposerSlashing_serialize_vreject_signed_header_1()
 
+def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_vrefuse_signed_header_1() -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, P4_O.Encoded, FuluProposerSlashing_e.ProposerSlashing_serialize(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_1(FuluProposerSlashing_d.ProposerSlashing_default(), P4_O.BNone{}))) == P4_O.refused() : P4_O.Encoded}:
+  P4_PRV.ProposerSlashing_serialize_vrefuse_signed_header_1()
+
 def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_vreject_signed_header_2() -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, Bool, FuluProposerSlashing_e.ProposerSlashing_valid(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_2(FuluProposerSlashing_d.ProposerSlashing_default(), P4_O.BNone{}))) == False{} : Bool}:
   P4_PRV.ProposerSlashing_serialize_vreject_signed_header_2()
+
+def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_vrefuse_signed_header_2() -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, P4_O.Encoded, FuluProposerSlashing_e.ProposerSlashing_serialize(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_2(FuluProposerSlashing_d.ProposerSlashing_default(), P4_O.BNone{}))) == P4_O.refused() : P4_O.Encoded}:
+  P4_PRV.ProposerSlashing_serialize_vrefuse_signed_header_2()
 
 def FuluProposerSlashing__serialize_valid__ProposerSlashing_serialize_cap() -> {FuluProposerSlashing_e.ProposerSlashing_serialize(FuluProposerSlashing_d.ProposerSlashing_default()) == (FuluProposerSlashing_d.ProposerSlashing_default(), P5_O.encoded(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, P5_B.Buf, FuluProposerSlashing_e.ProposerSlashing_encode(FuluProposerSlashing_d.ProposerSlashing_default())))) : FuluProposerSlashing_d.ProposerSlashing & P5_O.Encoded}:
   P5_PRV.ProposerSlashing_serialize_cap()

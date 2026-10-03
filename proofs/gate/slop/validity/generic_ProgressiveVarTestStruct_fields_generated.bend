@@ -10,6 +10,15 @@ import ../../../slop/validity/generic_ProgressiveVarTestStruct_fields_generated.
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_below() -> {O.is_poisoned(2147483647) == False{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vpoison_below()
 
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+  PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_absent()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_invalid() -> {O.is_poisoned(Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_invalid()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_bx_ok() -> {O.is_poisoned(Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()))))) == False{} : Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vpoison_bx_ok()
+
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vpoison_carried() -> {O.is_poisoned(O.padd(5, 2147483648)) == True{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vpoison_carried()
 
@@ -21,6 +30,12 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vrefuse_f_A() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, O.Encoded, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_serialize(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_A_go(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), 256))) == O.refused() : O.Encoded}:
   PRV.ProgressiveVarTestStruct_serialize_vrefuse_f_A()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_size() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32}:
+  PRV.ProgressiveVarTestStruct_serialize_vreject_bx_size()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_bx_valid() -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vreject_bx_valid()
 
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vreject_default_valid() -> {Pair.snd(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, Bool, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_valid(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default())) == True{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vreject_default_valid()

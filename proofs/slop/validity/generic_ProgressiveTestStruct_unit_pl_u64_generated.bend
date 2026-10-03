@@ -24,3 +24,7 @@ def ProgressiveTestStruct_serialize_vunit_pl_u64_accept_8()
 def ProgressiveTestStruct_serialize_vunit_pl_u64_accept_16()
     -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(16))) == True{} : Bool}:
   {==}
+
+def ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(0))) == True{} : Bool}:
+  {==}

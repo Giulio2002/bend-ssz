@@ -69,6 +69,9 @@ def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_acc
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_accept_16() -> {Pair.snd(P2_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P2_O.words_new(16))) == True{} : Bool}:
   P2_PRV.proglist_uint64_serialize_vunit_pl_u64_accept_16()
 
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(P2_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P2_O.words_new(0))) == True{} : Bool}:
+  P2_PRV.proglist_uint64_serialize_vunit_pl_u64_range_lo_0()
+
 def proglist_uint64__serialize_valid__proglist_uint64_mc_poison_pl_u64(out: Array<U32>, pos: U32, o: P3_O.Words) -> {proglist_uint64_e.pl_u64_pk(out, pos, (o, False{})) == (out, (o, P3_O.poison())) : Array<U32> & (P3_O.Words & U32)}:
   P3_PRV.proglist_uint64_mc_poison_pl_u64(out, pos, o)
 

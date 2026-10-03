@@ -12,6 +12,14 @@ def ProgressiveTestStruct_serialize_vreject_default_valid()
     -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, Bool, ProgressiveTestStruct_e.ProgressiveTestStruct_valid(ProgressiveTestStruct_d.ProgressiveTestStruct_default())) == True{} : Bool}:
   {==}
 
+def ProgressiveTestStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, O.Encoded, ProgressiveTestStruct_e.ProgressiveTestStruct_senc_go(True{}, 0, ProgressiveTestStruct_d.ProgressiveTestStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def ProgressiveTestStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, O.Encoded, ProgressiveTestStruct_e.ProgressiveTestStruct_senc_sized((ProgressiveTestStruct_d.ProgressiveTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def ProgressiveTestStruct_serialize_vreject_f_A()
     -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, Bool, ProgressiveTestStruct_e.ProgressiveTestStruct_valid(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_A(ProgressiveTestStruct_d.ProgressiveTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}

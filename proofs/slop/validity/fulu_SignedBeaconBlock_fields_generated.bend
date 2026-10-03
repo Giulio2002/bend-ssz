@@ -9,3 +9,11 @@ import ../../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSig
 def SignedBeaconBlock_serialize_vreject_default_valid()
     -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) == True{} : Bool}:
   {==}
+
+def SignedBeaconBlock_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_go(True{}, 0, FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def SignedBeaconBlock_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_sized((FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}

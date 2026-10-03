@@ -24,3 +24,15 @@ def DataColumnSidecar_serialize_vunit_l4096_b48_accept_48()
 def DataColumnSidecar_serialize_vunit_l4096_b48_accept_96()
     -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_48_4096_e.l4096_b48_valid(O.words_new(96))) == True{} : Bool}:
   {==}
+
+def DataColumnSidecar_serialize_vunit_l4096_b48_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_48_4096_e.l4096_b48_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def DataColumnSidecar_serialize_vunit_l4096_b48_range_hi_196608()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_48_4096_e.l4096_b48_valid(O.words_new(196608))) == True{} : Bool}:
+  {==}
+
+def DataColumnSidecar_serialize_vunit_l4096_b48_range_above_196656()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_48_4096_e.l4096_b48_valid(O.words_new(196656))) == False{} : Bool}:
+  {==}

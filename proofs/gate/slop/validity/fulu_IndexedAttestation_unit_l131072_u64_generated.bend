@@ -12,6 +12,15 @@ def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131
 def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_accept_8() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(8))) == True{} : Bool}:
   PRV.IndexedAttestation_serialize_vunit_l131072_u64_accept_8()
 
+def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(1048584))) == False{} : Bool}:
+  PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584()
+
+def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(1048576))) == True{} : Bool}:
+  PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576()
+
+def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0()
+
 def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_refuse_1() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(1))) == False{} : Bool}:
   PRV.IndexedAttestation_serialize_vunit_l131072_u64_refuse_1()
 
@@ -20,4 +29,7 @@ def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131
 
 def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_refuse_9() -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(9))) == False{} : Bool}:
   PRV.IndexedAttestation_serialize_vunit_l131072_u64_refuse_9()
+
+def IndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_ok_8() -> {(O.unit_ok(8, 1), (O.unit_ok(8, 4), (O.unit_ok(8, 7), (O.unit_ok(8, 8), (O.unit_ok(8, 9), (O.unit_ok(8, 15), (O.unit_ok(8, 16), (O.unit_ok(8, 24), O.unit_ok(8, 28))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  PRV.IndexedAttestation_serialize_vunit_ok_8()
 

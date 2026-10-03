@@ -24,3 +24,7 @@ def BeaconState_serialize_vunit_l1099511627776_u64_accept_8()
 def BeaconState_serialize_vunit_l1099511627776_u64_accept_16()
     -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.words_new(16))) == True{} : Bool}:
   {==}
+
+def BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.words_new(0))) == True{} : Bool}:
+  {==}

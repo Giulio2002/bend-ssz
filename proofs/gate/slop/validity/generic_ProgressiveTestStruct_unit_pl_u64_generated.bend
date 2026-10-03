@@ -12,6 +12,9 @@ def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vuni
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vunit_pl_u64_accept_8() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(8))) == True{} : Bool}:
   PRV.ProgressiveTestStruct_serialize_vunit_pl_u64_accept_8()
 
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0()
+
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_1() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(1))) == False{} : Bool}:
   PRV.ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_1()
 

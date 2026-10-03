@@ -24,3 +24,11 @@ def proglist_uint128_serialize_vunit_pl_u128_accept_16()
 def proglist_uint128_serialize_vunit_pl_u128_accept_32()
     -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.words_new(32))) == True{} : Bool}:
   {==}
+
+def proglist_uint128_serialize_vunit_pl_u128_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def proglist_uint128_serialize_vunit_ok_16()
+    -> {(O.unit_ok(16, 1), (O.unit_ok(16, 8), (O.unit_ok(16, 15), (O.unit_ok(16, 16), (O.unit_ok(16, 17), (O.unit_ok(16, 31), (O.unit_ok(16, 32), (O.unit_ok(16, 48), O.unit_ok(16, 56))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  {==}

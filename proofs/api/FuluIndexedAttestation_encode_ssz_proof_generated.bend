@@ -61,6 +61,21 @@ def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vrejec
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_attesting_indices() -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, Bool, FuluIndexedAttestation_e.IndexedAttestation_valid(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), P1_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P1_PRV.IndexedAttestation_serialize_vreject_attesting_indices()
 
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_bx_size() -> {FuluIndexedAttestation_e.IndexedAttestation_bx_size(P1_O.BNone{}) == (P1_O.BNone{}, 0) : P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32}:
+  P1_PRV.IndexedAttestation_serialize_vreject_bx_size()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_bx_valid() -> {FuluIndexedAttestation_e.IndexedAttestation_bx_valid(P1_O.BNone{}) == (P1_O.BNone{}, False{}) : P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool}:
+  P1_PRV.IndexedAttestation_serialize_vreject_bx_valid()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vpoison_bx_absent() -> {Pair.snd(P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 1n, 0), 0, P1_O.BNone{}))) == 2147483648 : U32}:
+  P1_PRV.IndexedAttestation_serialize_vpoison_bx_absent()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vpoison_bx_ok() -> {P1_O.is_poisoned(Pair.snd(P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 4n, 0), 0, FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_default()))))) == False{} : Bool}:
+  P1_PRV.IndexedAttestation_serialize_vpoison_bx_ok()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vpoison_bx_invalid() -> {P1_O.is_poisoned(Pair.snd(P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, P1_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 4n, 0), 0, FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), P1_O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
+  P1_PRV.IndexedAttestation_serialize_vpoison_bx_invalid()
+
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_refuse_1() -> {Pair.snd(P2_O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(P2_O.words_new(1))) == False{} : Bool}:
   P2_PRV.IndexedAttestation_serialize_vunit_l131072_u64_refuse_1()
 
@@ -75,6 +90,18 @@ def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_
 
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_accept_16() -> {Pair.snd(P2_O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(P2_O.words_new(16))) == True{} : Bool}:
   P2_PRV.IndexedAttestation_serialize_vunit_l131072_u64_accept_16()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0() -> {Pair.snd(P2_O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(P2_O.words_new(0))) == True{} : Bool}:
+  P2_PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576() -> {Pair.snd(P2_O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(P2_O.words_new(1048576))) == True{} : Bool}:
+  P2_PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584() -> {Pair.snd(P2_O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(P2_O.words_new(1048584))) == False{} : Bool}:
+  P2_PRV.IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vunit_ok_8() -> {(P2_O.unit_ok(8, 1), (P2_O.unit_ok(8, 4), (P2_O.unit_ok(8, 7), (P2_O.unit_ok(8, 8), (P2_O.unit_ok(8, 9), (P2_O.unit_ok(8, 15), (P2_O.unit_ok(8, 16), (P2_O.unit_ok(8, 24), P2_O.unit_ok(8, 28))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  P2_PRV.IndexedAttestation_serialize_vunit_ok_8()
 
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_ms_size() -> {Pair.snd(FuluIndexedAttestation_d.IndexedAttestation, U32, FuluIndexedAttestation_e.IndexedAttestation_size(FuluIndexedAttestation_d.IndexedAttestation_default())) == 228 : U32}:
   P3_PRV.IndexedAttestation_ms_size()

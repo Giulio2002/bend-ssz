@@ -16,6 +16,14 @@ def BeaconState_serialize_vreject_default_valid()
     -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState_default())) == True{} : Bool}:
   {==}
 
+def BeaconState_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluBeaconState_d.BeaconState, O.Encoded, FuluBeaconState_e.BeaconState_senc_go(True{}, 0, FuluBeaconState_d.BeaconState_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def BeaconState_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluBeaconState_d.BeaconState, O.Encoded, FuluBeaconState_e.BeaconState_senc_sized((FuluBeaconState_d.BeaconState_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def BeaconState_serialize_vreject_block_roots()
     -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_set_block_roots(FuluBeaconState_d.BeaconState_g0_default(), O.Words{Array.new(U32, 0n, 0), 5}), FuluBeaconState_d.BeaconState_g1_default(), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_default()})) == False{} : Bool}:
   {==}
@@ -30,6 +38,10 @@ def BeaconState_serialize_vreject_historical_roots()
 
 def BeaconState_serialize_vreject_eth1_data_votes()
     -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_default(), FuluBeaconState_d.BeaconState_g1_set_eth1_data_votes(FuluBeaconState_d.BeaconState_g1_default(), Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(0n), 2}), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_default()})) == False{} : Bool}:
+  {==}
+
+def BeaconState_serialize_vreject_eth1_data_votes_limit()
+    -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_default(), FuluBeaconState_d.BeaconState_g1_set_eth1_data_votes(FuluBeaconState_d.BeaconState_g1_default(), Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(12n), 2049}), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_default()})) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vreject_validators()
@@ -78,6 +90,10 @@ def BeaconState_serialize_vreject_pending_partial_withdrawals()
 
 def BeaconState_serialize_vreject_pending_consolidations()
     -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_default(), FuluBeaconState_d.BeaconState_g1_default(), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_set_pending_consolidations(FuluBeaconState_d.BeaconState_g4_default(), Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(0n), 2})})) == False{} : Bool}:
+  {==}
+
+def BeaconState_serialize_vreject_pending_consolidations_limit()
+    -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_default(), FuluBeaconState_d.BeaconState_g1_default(), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_set_pending_consolidations(FuluBeaconState_d.BeaconState_g4_default(), Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(19n), 262145})})) == False{} : Bool}:
   {==}
 
 def BeaconState_serialize_vreject_proposer_lookahead()

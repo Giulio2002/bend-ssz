@@ -64,6 +64,9 @@ def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_default_vali
 def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_body() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), P1_O.BNone{}))) == False{} : Bool}:
   P1_PRV.BeaconBlock_serialize_vreject_body()
 
+def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_body() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, P1_O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), P1_O.BNone{}))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.BeaconBlock_serialize_vrefuse_body()
+
 def FuluBeaconBlock__serialize_valid__BeaconBlock_ms_size() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, U32, FuluBeaconBlock_e.BeaconBlock_size(FuluBeaconBlock_d.BeaconBlock_default())) == 1020 : U32}:
   P2_PRV.BeaconBlock_ms_size()
 

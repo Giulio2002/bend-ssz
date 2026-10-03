@@ -12,6 +12,15 @@ def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serializ
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(4))) == True{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_accept_4()
 
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(248))) == False{} : Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_hi_246() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(246))) == True{} : Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_hi_246()
+
+def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_lo_0() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(0))) == True{} : Bool}:
+  PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_lo_0()
+
 def ProgressiveVarTestStruct__serialize_valid__ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1() -> {Pair.snd(O.Words, Bool, list_uint16_123_e.l123_u16_valid(O.words_new(1))) == False{} : Bool}:
   PRV.ProgressiveVarTestStruct_serialize_vunit_l123_u16_refuse_1()
 

@@ -1,5 +1,6 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
 import ../../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
 import ../../../types/FuluAttesterSlashing_encode_ssz_generated.bend as FuluAttesterSlashing_e
 
@@ -10,10 +11,62 @@ def AttesterSlashing_serialize_vreject_default_valid()
     -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(FuluAttesterSlashing_d.AttesterSlashing_default())) == True{} : Bool}:
   {==}
 
+def AttesterSlashing_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_senc_go(True{}, 0, FuluAttesterSlashing_d.AttesterSlashing_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def AttesterSlashing_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_senc_sized((FuluAttesterSlashing_d.AttesterSlashing_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def AttesterSlashing_serialize_vreject_attestation_1()
     -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{}))) == False{} : Bool}:
   {==}
 
+def AttesterSlashing_serialize_vrefuse_attestation_1()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_serialize(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
+def AttesterSlashing_serialize_vreject_attestation_1_attesting_indices()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), O.Words{Array.new(U32, 0n, 0), 5}))))) == False{} : Bool}:
+  {==}
+
+def AttesterSlashing_serialize_vrefuse_attestation_1_attesting_indices()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_serialize(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), O.Words{Array.new(U32, 0n, 0), 5}))))) == O.refused() : O.Encoded}:
+  {==}
+
 def AttesterSlashing_serialize_vreject_attestation_2()
     -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{}))) == False{} : Bool}:
+  {==}
+
+def AttesterSlashing_serialize_vrefuse_attestation_2()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_serialize(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
+def AttesterSlashing_serialize_vreject_attestation_2_attesting_indices()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), O.Words{Array.new(U32, 0n, 0), 5}))))) == False{} : Bool}:
+  {==}
+
+def AttesterSlashing_serialize_vrefuse_attestation_2_attesting_indices()
+    -> {Pair.snd(FuluAttesterSlashing_d.AttesterSlashing, O.Encoded, FuluAttesterSlashing_e.AttesterSlashing_serialize(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_2(FuluAttesterSlashing_d.AttesterSlashing_default(), FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), O.Words{Array.new(U32, 0n, 0), 5}))))) == O.refused() : O.Encoded}:
+  {==}
+
+def AttesterSlashing_serialize_vreject_bx_size()
+    -> {FuluAttesterSlashing_e.AttesterSlashing_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32}:
+  {==}
+
+def AttesterSlashing_serialize_vreject_bx_valid()
+    -> {FuluAttesterSlashing_e.AttesterSlashing_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool}:
+  {==}
+
+def AttesterSlashing_serialize_vpoison_bx_absent()
+    -> {Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 2147483648 : U32}:
+  {==}
+
+def AttesterSlashing_serialize_vpoison_bx_ok()
+    -> {O.is_poisoned(Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(FuluAttesterSlashing_d.AttesterSlashing_default()))))) == False{} : Bool}:
+  {==}
+
+def AttesterSlashing_serialize_vpoison_bx_invalid()
+    -> {O.is_poisoned(Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{})))))) == True{} : Bool}:
   {==}

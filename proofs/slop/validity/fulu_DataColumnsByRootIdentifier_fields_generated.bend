@@ -10,6 +10,14 @@ def DataColumnsByRootIdentifier_serialize_vreject_default_valid()
     -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, Bool, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_valid(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default())) == True{} : Bool}:
   {==}
 
+def DataColumnsByRootIdentifier_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, O.Encoded, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_go(True{}, 0, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def DataColumnsByRootIdentifier_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, O.Encoded, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_sized((FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def DataColumnsByRootIdentifier_serialize_vreject_columns()
     -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, Bool, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_valid(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_columns(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}

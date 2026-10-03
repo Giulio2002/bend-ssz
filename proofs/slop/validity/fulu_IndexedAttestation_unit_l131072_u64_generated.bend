@@ -24,3 +24,19 @@ def IndexedAttestation_serialize_vunit_l131072_u64_accept_8()
 def IndexedAttestation_serialize_vunit_l131072_u64_accept_16()
     -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(16))) == True{} : Bool}:
   {==}
+
+def IndexedAttestation_serialize_vunit_l131072_u64_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def IndexedAttestation_serialize_vunit_l131072_u64_range_hi_1048576()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(1048576))) == True{} : Bool}:
+  {==}
+
+def IndexedAttestation_serialize_vunit_l131072_u64_range_above_1048584()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint64_131072_e.l131072_u64_valid(O.words_new(1048584))) == False{} : Bool}:
+  {==}
+
+def IndexedAttestation_serialize_vunit_ok_8()
+    -> {(O.unit_ok(8, 1), (O.unit_ok(8, 4), (O.unit_ok(8, 7), (O.unit_ok(8, 8), (O.unit_ok(8, 9), (O.unit_ok(8, 15), (O.unit_ok(8, 16), (O.unit_ok(8, 24), O.unit_ok(8, 28))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
+  {==}

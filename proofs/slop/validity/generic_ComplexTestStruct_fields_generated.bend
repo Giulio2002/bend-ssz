@@ -44,6 +44,14 @@ def ComplexTestStruct_serialize_vreject_default_valid()
     -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_default())) == True{} : Bool}:
   {==}
 
+def ComplexTestStruct_serialize_vrefuse_bad_flag()
+    -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_senc_go(True{}, 0, ComplexTestStruct_d.ComplexTestStruct_default())) == O.refused() : O.Encoded}:
+  {==}
+
+def ComplexTestStruct_serialize_vrefuse_poisoned_size()
+    -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, O.Encoded, ComplexTestStruct_e.ComplexTestStruct_senc_sized((ComplexTestStruct_d.ComplexTestStruct_default(), 2147483648))) == O.refused() : O.Encoded}:
+  {==}
+
 def ComplexTestStruct_serialize_vreject_f_B()
     -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_B(ComplexTestStruct_d.ComplexTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}

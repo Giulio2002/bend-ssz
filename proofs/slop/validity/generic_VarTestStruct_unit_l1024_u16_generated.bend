@@ -20,3 +20,15 @@ def VarTestStruct_serialize_vunit_l1024_u16_accept_2()
 def VarTestStruct_serialize_vunit_l1024_u16_accept_4()
     -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(4))) == True{} : Bool}:
   {==}
+
+def VarTestStruct_serialize_vunit_l1024_u16_range_lo_0()
+    -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(0))) == True{} : Bool}:
+  {==}
+
+def VarTestStruct_serialize_vunit_l1024_u16_range_hi_2048()
+    -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(2048))) == True{} : Bool}:
+  {==}
+
+def VarTestStruct_serialize_vunit_l1024_u16_range_above_2050()
+    -> {Pair.snd(O.Words, Bool, list_uint16_1024_e.l1024_u16_valid(O.words_new(2050))) == False{} : Bool}:
+  {==}

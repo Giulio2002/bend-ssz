@@ -72,7 +72,7 @@ LAW_FORMS = {
     'decode_tree': [r'<X>_spec_decode(_[01]|_reject)?_tree'],
     'decode_input': [r'<X>_spec_input'],
     'serialize_valid': [r'<X>_serialize_valid', r'<X>_serialize_over', r'<X>_serialize_in', r'<X>_serialize_v(dom|in(_\d+)?|over|sym|flag|fields|reject_\w+|refuse_\w+|poison_\w+|bool_\w+|bits_\w+|coll_\w+|unit_\w+)', r'<X>_serialize_cap', r'<X>_serialize_capsym'],
-    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields'],
+    'decode_offsets': [r'<X>_decode_build', r'<X>_decode_fields', r'<X>_decode_v(?:read_u16_\d+|bits_clear_\d+|and_pair|sel_\w+)'],
     'decode_first_offset': [r'<X>_decode_first_offset'],
 }
 
@@ -109,9 +109,9 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes|words_blit)\(|T\.\w+_(?:append|set|get|len|len_of)\(', concl) is not None
+        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok|bx_size|bx_valid)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes|words_blit|bits_size|unit_ok)\(|T\.\w+_(?:append|set|get|len|len_of|bx_putk|putn)\(', concl) is not None
     if kind == 'decode_offsets':
-        return concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)
+        return (concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)) or re.search(r'O\.(?:rd_u16|bits_clear|and_pair)\(|T\.\w+_ok\(', concl) is not None
     if kind == 'decode_first_offset':
         return concl.startswith(f'{{T.{X}_ok(')
     return False
@@ -314,6 +314,9 @@ def scan():
             mv = re.fullmatch(r'(\w+)_serialize_v(?:fields|reject_\w+|refuse_\w+|poison_\w+|bool_\w+|bits_\w+|coll_\w+|unit_\w+)', n)    # container_field_validity / packed_boolean_validity / bit_padding_validity
             if mv:
                 xs.add(mv.group(1))
+            md = re.fullmatch(r'(\w+)_decode_v(?:read_u16_\d+|bits_clear_\d+|and_pair|sel_\w+)', n)    # codegen/proofs/slop/small_type_predicates.py
+            if md:
+                xs.add(md.group(1))
             ma = re.match(r'(\w+?)_(?:arith|cmp|okf|cf|ua)_', n)     # codegen/proofs/slop/word_positions.py: the writers' own names are not X's
             if ma:
                 xs.add(ma.group(1))
@@ -338,6 +341,10 @@ def scan():
             nb = re.fullmatch(r'(\w+)_vbits_nbytes', n) if f.parent.name == 'validity' and f.parent.parent == LAYOUT.SLOP else None
             if nb and nb.group(1) in U and k == 'def':
                 late.append(((nb.group(1), 'root'), (key, n)))
+            # codegen/proofs/slop/tight_storage_root.py, cached_list_roots.py: <X>_vroot_<p>_<tag> pin the ROOT of X (storage independence, cached trees)
+            vr = re.fullmatch(r'(\w+?)_vroot_\w+', n) if f.parent.name == 'validity' and f.parent.parent == LAYOUT.SLOP else None
+            if vr and vr.group(1) in U and k == 'def':
+                late.append(((vr.group(1), 'root'), (key, n)))
     for lkey, v in late:      # after every other law: the bridges read the first law of a kind
         ent.setdefault(lkey, []).append(v)
     return fulu, gen, ent, parsed

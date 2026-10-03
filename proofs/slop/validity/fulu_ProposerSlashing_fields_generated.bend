@@ -14,6 +14,14 @@ def ProposerSlashing_serialize_vreject_signed_header_1()
     -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, Bool, FuluProposerSlashing_e.ProposerSlashing_valid(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_1(FuluProposerSlashing_d.ProposerSlashing_default(), O.BNone{}))) == False{} : Bool}:
   {==}
 
+def ProposerSlashing_serialize_vrefuse_signed_header_1()
+    -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, O.Encoded, FuluProposerSlashing_e.ProposerSlashing_serialize(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_1(FuluProposerSlashing_d.ProposerSlashing_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
 def ProposerSlashing_serialize_vreject_signed_header_2()
     -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, Bool, FuluProposerSlashing_e.ProposerSlashing_valid(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_2(FuluProposerSlashing_d.ProposerSlashing_default(), O.BNone{}))) == False{} : Bool}:
+  {==}
+
+def ProposerSlashing_serialize_vrefuse_signed_header_2()
+    -> {Pair.snd(FuluProposerSlashing_d.ProposerSlashing, O.Encoded, FuluProposerSlashing_e.ProposerSlashing_serialize(FuluProposerSlashing_d.ProposerSlashing_set_signed_header_2(FuluProposerSlashing_d.ProposerSlashing_default(), O.BNone{}))) == O.refused() : O.Encoded}:
   {==}
