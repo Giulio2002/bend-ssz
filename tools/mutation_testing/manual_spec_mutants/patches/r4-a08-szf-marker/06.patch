@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a08-szf-marker/06
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: the storage test is strict (n < c): a list in exactly-full storage is poisoned (a decoded list has exactly n slots)
+# why: < for <=
+# file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+# sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+--- a/types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
++++ b/types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295))
++  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_lt(n, c), O.mulc(n, 121), 4294967295))
+ 

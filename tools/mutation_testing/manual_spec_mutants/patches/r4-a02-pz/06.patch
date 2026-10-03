@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a02-pz/06
+# type: vec_bool_5
+# ops: encode
+# spec: same
+# fault: poison() is the old marker 2^31 (the laws that compare a writer with O.poison() then hold for a stale writer)
+# why: the helper itself kept the stale literal
+# file: src/obj.bend
+# sym: poison,pz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1745,3 +1745,3 @@
+ # value was valid. A valid encoding is at most NMAX = 2^32 - 32 bytes there by construction.
+-def poison() -> U32: 4294967295
++def poison() -> U32: 2147483648
+ 

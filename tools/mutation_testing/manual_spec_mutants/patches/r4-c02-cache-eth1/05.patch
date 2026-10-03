@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c02-cache-eth1/05
+# type: FuluBeaconState
+# ops: root
+# spec: same
+# fault: a fresh cache starts clean (lo = 2^d - 1 + 1, hi = 0): nothing is hashed, the root is the zero tree
+# why: initialised like the post-root state
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_cache_fin,l2048_Eth1Data_cache
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -148,3 +148,3 @@
+ def l2048_Eth1Data_cache_fin(arr: Array<FuluEth1Data_d.Eth1Data>, +n: U32, +d: Nat) -> l2048_Eth1Data_Cached:
+-  l2048_Eth1Data_Cached{arr, n, d, l2048_Eth1Data_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l2048_Eth1Data_Cached{arr, n, d, l2048_Eth1Data_dfill(1n+d), n, 0}
+ 

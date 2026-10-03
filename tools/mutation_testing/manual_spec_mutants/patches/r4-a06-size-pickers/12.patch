@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-size-pickers/12
+# type: bitlist_1280
+# ops: encode
+# spec: a Bitlist[N] value has at most N bits
+# fault: the limit test ignores `big` and always holds (bits_ok(o, limit, big) accepts any count)
+# why: the guard for unbounded (progressive) bit lists applied to all
+# file: src/obj.bend
+# sym: bits_ok,bk_cap
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1771,3 +1771,3 @@
+   match o:
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(True{}, k, Array.size(U32, ws))
+ 

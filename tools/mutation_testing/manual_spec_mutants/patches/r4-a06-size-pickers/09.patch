@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-size-pickers/09
+# type: BitsStruct
+# ops: encode
+# spec: same
+# fault: the storage test is dropped (bits sized by their claim)
+# why: the size pass trusts the claimed length
+# file: src/obj.bend
+# sym: bsz_pick,bits_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1808,3 +1808,3 @@
+   (ws, +c) = pair
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/01
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[Deposit, 16]) = mix_in_length(merkleize(roots of the elements, limit 16), n); a cached root must equal the root of the object it holds after every operation
+# fault: ctake moves the element out without marking its slot dirty (the cached root keeps the old element's leaf)
+# why: a getter treated as read-only although it moves the element out (R3-01)
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_ctook,l16_Deposit_ctake,l16_Deposit_cget_in,l16_Deposit_cached_root
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -177,3 +177,3 @@
+   (arr, v) = pair
+-  (l16_Deposit_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
++  (l16_Deposit_Cached{arr, n, d, nodes, lo, hi}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
+ 

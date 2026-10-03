@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/11
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same
+# fault: after a root the dirty window is reset to (0, 0) instead of empty (n, 0): slot 0 is rehashed next time (designed equivalent: extra work, same root)
+# why: a different "empty"
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_croot_fin,l16_Deposit_cached_root
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -288,3 +288,3 @@
+   (h, +r) = pr
+-  (h, (l16_Deposit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++  (h, (l16_Deposit_Cached{arr, n, d, nodes, 0, 0}, O.mix_len(hl, r, n)))
+ 

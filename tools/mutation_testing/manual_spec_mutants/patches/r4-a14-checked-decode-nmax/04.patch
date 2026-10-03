@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a14-checked-decode-nmax/04
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: same
+# fault: the size bound is 2^32 - 1 (sizes in (NMAX, 2^32 - 1) whose (size + 3) >> 2 wraps to 0 pass the storage test)
+# why: the marker used as the bound
+# file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+# sym: BeaconBlockBody_dchw,BeaconBlockBody_decode_checked
+--- a/types/FuluBeaconBlockBody_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_decode_ssz_generated.bend
+@@ -355,3 +355,3 @@
+   (buf, +c) = pair
+-  BeaconBlockBody_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  BeaconBlockBody_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967295)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a02-pz/01
+# type: BitsStruct
+# ops: encode
+# spec: a container is valid iff every field is valid; the flag of an invalid scalar/bitvector field must poison the writer's result
+# fault: pz of an invalid field is NMAX (4294967264): not poisoned
+# why: stale or neighbouring constant
+# file: src/obj.bend
+# sym: pz,poison
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1750,3 +1750,3 @@
+     case True{}: 0
+-    case False{}: 4294967295
++    case False{}: 4294967264
+ 

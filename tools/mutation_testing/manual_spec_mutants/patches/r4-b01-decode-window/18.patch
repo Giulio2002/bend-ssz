@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/18
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+# why: words for bytes
+# file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+--- a/types/ProgressiveBitsStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_decode_ssz_generated.bend
+@@ -314,3 +314,3 @@
+ 
+-def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dwin(size, B.size(buf))
++def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dwin(size, B.stored(buf))
+ 

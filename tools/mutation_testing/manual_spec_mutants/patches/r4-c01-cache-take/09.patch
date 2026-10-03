@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/09
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same
+# fault: a fresh cache's dirty window stops one slot short (hi = 2^d - 2): the last leaf is never hashed
+# why: off by one in an inclusive bound
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_cache_fin,l16_Deposit_cache,l16_Deposit_cached_root
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -155,3 +155,3 @@
+ def l16_Deposit_cache_fin(arr: Array<O.Boxed<FuluDeposit_d.Deposit>>, +n: U32, +d: Nat) -> l16_Deposit_Cached:
+-  l16_Deposit_Cached{arr, n, d, l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l16_Deposit_Cached{arr, n, d, l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 2 : U32)}
+ 

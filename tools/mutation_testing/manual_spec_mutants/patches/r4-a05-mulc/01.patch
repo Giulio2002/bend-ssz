@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a05-mulc/01
+# type: FuluBeaconState
+# ops: encode
+# spec: the size of a list of n fixed-size elements is n * size(element); a product past NMAX (or one that wraps) must be the marker
+# fault: the bound is the marker divided by es (div(2^32 - 1, es)): a product in (NMAX, 2^32 - 1] is accepted
+# why: the wrong one of the two limits
+# file: src/obj.bend
+# sym: mulc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1767,3 +1767,3 @@
+ # n * es for a fixed element size es: the product when it does not wrap and is at most NMAX, else the marker (docs/SIZE_LIMIT_DESIGN.md).
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967295, es)), (n * es : U32), 4294967295)
+ 

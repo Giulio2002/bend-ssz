@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a13-append-bound/06
+# type: ComplexTestStruct
+# ops: encode
+# spec: List[uint16, 128]: at most 128 elements, each below 2^16, held in ceil(2n / 4) words
+# fault: the storage test of the grown list counts 2n bytes, not 2(n + 1) (the new element's word may be missing)
+# why: the size before the append used for the size after
+# file: types/list_uint16_128_def_generated.bend
+# sym: l128_u16_append,l128_u16_app_n,l128_u16_grow
+--- a/types/list_uint16_128_def_generated.bend
++++ b/types/list_uint16_128_def_generated.bend
+@@ -56,3 +56,3 @@
+   (o, +sc) = pair
+-  l128_u16_grow(Bool.and(Bool.and(U32.is_lt(n, 128), U32.is_le(v, 65535)), U32.is_le(U32.shrn(((n * 2 : U32) + 3 : U32), 2n), sc)), o, n, v)
++  l128_u16_grow(Bool.and(Bool.and(U32.is_lt(n, 128), U32.is_le(v, 65535)), U32.is_le(U32.shrn(((n * 2 : U32) + 1 : U32), 2n), sc)), o, n, v)
+ 

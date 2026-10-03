@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/11
+# type: FuluHistoricalSummary
+# ops: root
+# spec: hash_tree_root(HistoricalSummary) = H(block_summary_root, state_summary_root)
+# fault: the two fields are exchanged
+# why: field order
+# file: types/FuluHistoricalSummary_hashtreeroot_generated.bend
+# sym: HistoricalSummary_fin,HistoricalSummary_root
+--- a/types/FuluHistoricalSummary_hashtreeroot_generated.bend
++++ b/types/FuluHistoricalSummary_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+   (h, d_state_summary_root) = pair
+-  (h, D.node(hl, d_block_summary_root, d_state_summary_root))
++  (h, D.node(hl, d_state_summary_root, d_block_summary_root))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/03
+# type: ProgressiveBitsStruct
+# ops: root
+# spec: a container of 12 fields is merkleized as 16 chunks: fields 8..11 then 4 zero chunks (a zero subtree of depth 2)
+# fault: the padding of the second half is the zero chunk (depth 0) instead of the depth-2 zero subtree
+# why: wrong zero-hash level
+# file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+# sym: ProgressiveBitsStruct_g1_fin,ProgressiveBitsStruct_root
+--- a/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+@@ -65,3 +65,3 @@
+   (h, z2) = pair
+-  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), D.zero())))
+ 

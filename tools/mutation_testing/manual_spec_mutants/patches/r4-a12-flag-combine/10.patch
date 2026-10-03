@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/10
+# type: FuluExecutionPayloadHeader
+# ops: encode
+# spec: serialize refuses a value whose writer flagged it
+# fault: the serializer's poison test is dropped (it answers ok with the writer's length)
+# why: the test removed for a literal-depth type
+# file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+# sym: ExecutionPayloadHeader_senc_out,ExecutionPayloadHeader_serialize
+--- a/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+@@ -187,3 +187,3 @@
+ def ExecutionPayloadHeader_senc_out(out: Array<U32>, o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +m: U32) -> FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), m, out))
++  (o, O.ser_done(False{}, m, out))
+ 

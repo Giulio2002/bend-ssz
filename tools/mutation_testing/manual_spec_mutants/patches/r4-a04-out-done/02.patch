@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r4-a04-out-done/02
+# type: FuluLightClientHeader
+# ops: encode
+# spec: same
+# fault: the branches are swapped: a valid encoding is the empty buffer, a poisoned one is the claimed buffer
+# why: inverted boolean
+# file: src/obj.bend
+# sym: out_donep,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1761,4 +1761,4 @@
+   match bad:
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, m}
++    case False{}: B.empty()
+ 

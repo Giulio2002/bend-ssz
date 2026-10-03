@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/07
+# type: FuluExecutionRequests
+# ops: root
+# spec: a container of 3 fields is merkleized as 4 chunks, the 4th a zero chunk
+# fault: the 4th chunk repeats the 3rd field
+# why: padding by duplication (as in some Merkle tree libraries)
+# file: types/FuluExecutionRequests_hashtreeroot_generated.bend
+# sym: ExecutionRequests_fin,ExecutionRequests_root
+--- a/types/FuluExecutionRequests_hashtreeroot_generated.bend
++++ b/types/FuluExecutionRequests_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (consolidations, d_consolidations) = r
+-  (h, (FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}, D.node(hl, D.node(hl, d_deposits, d_withdrawals), D.node(hl, d_consolidations, D.zero()))))
++  (h, (FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}, D.node(hl, D.node(hl, d_deposits, d_withdrawals), D.node(hl, d_consolidations, d_consolidations))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/04
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same
+# fault: cset lowers lo to i with the pick reversed (lo = max(lo, i)): a set below the window is not rehashed
+# why: min/max confused
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_cset_in,l16_Deposit_cset
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -190,3 +190,3 @@
+   match ok:
+-    case True{}: (l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, i, FuluDeposit_d.Deposit_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, i, FuluDeposit_d.Deposit_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), i, lo), O.pick(U32.is_le(i, hi), hi, i)}, True{})
+     case False{}: (l16_Deposit_Cached{arr, n, d, nodes, lo, hi}, False{})

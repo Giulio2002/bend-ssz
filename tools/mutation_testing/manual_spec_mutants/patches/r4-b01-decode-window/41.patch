@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/41
+# type: ComplexTestStruct
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: a window equal to the whole buffer is refused (size < B.size(buf))
+# why: < for <=
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+# sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -165,3 +165,3 @@
+   (buf, +n) = pair
+-  ComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
++  ComplexTestStruct_dwgo(U32.is_lt(size, n), buf, size)
+ 

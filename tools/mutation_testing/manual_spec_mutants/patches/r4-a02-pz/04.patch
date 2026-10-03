@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r4-a02-pz/04
+# type: BitsStruct
+# ops: encode
+# spec: same
+# fault: pz answers with its branches swapped
+# why: inverted boolean
+# file: src/obj.bend
+# sym: pz,poison
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1749,4 +1749,4 @@
+   match ok:
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 4294967295
++    case False{}: 0
+ 

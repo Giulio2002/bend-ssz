@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a02-pz/05
+# type: vec_bool_5
+# ops: encode
+# spec: same
+# fault: poison() is 2^32 - 2 (still above NMAX: designed equivalent for is_poisoned, but the constants laws state the literal)
+# why: off by one in the marker
+# file: src/obj.bend
+# sym: poison,pz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1745,3 +1745,3 @@
+ # value was valid. A valid encoding is at most NMAX = 2^32 - 32 bytes there by construction.
+-def poison() -> U32: 4294967295
++def poison() -> U32: 4294967294
+ 

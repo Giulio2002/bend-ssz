@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c02-cache-eth1/04
+# type: FuluBeaconState
+# ops: root
+# spec: leaves past the length are zero chunks
+# fault: the leaf at index n is hashed as an element
+# why: <= for <
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_leaves,l2048_Eth1Data_leaf_step
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -233,3 +233,3 @@
+     case 1n+r:
+-      l2048_Eth1Data_leaves(hl, r, (i + 1 : U32), n, seg, cap, l2048_Eth1Data_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++      l2048_Eth1Data_leaves(hl, r, (i + 1 : U32), n, seg, cap, l2048_Eth1Data_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+ 

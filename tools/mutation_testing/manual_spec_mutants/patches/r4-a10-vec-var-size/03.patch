@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a10-vec-var-size/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the offsets and the elements are added with a plain U32 sum (an element's poison is lost: marker + 8 = 7)
+# why: padd replaced by +
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, ((4 * n : U32) + m : U32))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a08-szf-marker/03
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: same
+# fault: the element size is 1240 - 4 = 1236 (a Deposit is 33 * 32 proof + 184 data = 1240)
+# why: element size arithmetic
+# file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+# sym: l16_Deposit_szf,l16_Deposit_size
+--- a/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295))
++  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1236), 4294967295))
+ 

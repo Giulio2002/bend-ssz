@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a11-pvb/06
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the running offset adds the field's count with a plain U32 sum (control: a writer whose False branch IS listed)
+# why: padd replaced by +
+# file: types/list_uint16_128_encode_ssz_generated.bend
+# sym: l128_u16_pvb,l128_u16_putv
+--- a/types/list_uint16_128_encode_ssz_generated.bend
++++ b/types/list_uint16_128_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/14
+# type: proglist_uint8
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+# why: the validator skipped once the window is known to fit
+# file: types/proglist_uint8_decode_ssz_generated.bend
+# sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+--- a/types/proglist_uint8_decode_ssz_generated.bend
++++ b/types/proglist_uint8_decode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   match ok:
+-    case True{}: proglist_uint8_decode_in(buf, size)
++    case True{}: proglist_uint8_built(size, (buf, True{}))
+     case False{}: (buf, None{})

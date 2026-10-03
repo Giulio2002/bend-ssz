@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/07
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same
+# fault: capp that grows the tree keeps the depth d (the n + 1 elements do not fit 2^d leaves)
+# why: forgot to deepen
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_capp_fit,l16_Deposit_capp
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -200,3 +200,3 @@
+     case True{}: l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, n, FuluDeposit_d.Deposit_bx_wrap(v)), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, l16_Deposit_room(arr, n), n, FuluDeposit_d.Deposit_bx_wrap(v)), (n + 1 : U32), 1n+d, l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, l16_Deposit_room(arr, n), n, FuluDeposit_d.Deposit_bx_wrap(v)), (n + 1 : U32), d, l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
+ 

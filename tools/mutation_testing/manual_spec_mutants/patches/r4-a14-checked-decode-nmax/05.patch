@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a14-checked-decode-nmax/05
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: same
+# fault: the size bound is 2^32 - 1 (a window whose rounded word count wraps passes)
+# why: the marker used as the bound
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_dchw,ProgressiveTestStruct_decode_checked
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -162,3 +162,3 @@
+   (buf, +c) = pair
+-  ProgressiveTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  ProgressiveTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967295)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+ 

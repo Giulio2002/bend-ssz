@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a10-vec-var-size/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: a Vector of variable-size elements encodes as 4 * N offsets then the elements; a vector whose storage cannot hold its length is not a value
+# fault: a short-storage vector is sized with the stale marker 2^31
+# why: stale marker literal
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_ok,v2_VarTestStruct_size,v2_VarTestStruct_sz_cap
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -45,3 +45,3 @@
+     case True{}: v2_VarTestStruct_sz_nz(U32.is_eq(n, 0), arr, n)
+-    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 4294967295)
++    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 2147483648)
+ 

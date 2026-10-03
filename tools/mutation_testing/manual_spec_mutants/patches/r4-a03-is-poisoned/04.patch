@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a03-is-poisoned/04
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the threshold is the marker (2^32 - 1 < m): nothing is ever poisoned
+# why: the wrong of the two constants
+# file: src/obj.bend
+# sym: is_poisoned,ser_done,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1756,3 +1756,3 @@
+ # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967295, m)
+ 

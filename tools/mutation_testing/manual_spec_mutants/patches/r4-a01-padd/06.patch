@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a01-padd/06
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the marker test is against NMAX (a + b < NMAX): a valid sum of exactly NMAX bytes is poisoned, a sum in (NMAX, marker) too (over-strict at the boundary)
+# why: the wrong one of the two limits
+# file: src/obj.bend
+# sym: padd,is_poisoned
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1753,3 +1753,3 @@
+ # Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967264)), (a + b : U32), 4294967295)
+ 

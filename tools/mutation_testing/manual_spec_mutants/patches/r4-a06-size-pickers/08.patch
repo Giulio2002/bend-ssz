@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-size-pickers/08
+# type: BitsStruct
+# ops: encode
+# spec: the bits must be held by the storage (k >> 5) + 1 words: the writer reads word k >> 5
+# fault: the storage test is k >> 5 words (the word holding bit k is not required)
+# why: off by one in a word count
+# file: src/obj.bend
+# sym: bsz_pick,bits_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1808,3 +1808,3 @@
+   (ws, +c) = pair
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le(U32.shrn(k, 5n), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
+ 

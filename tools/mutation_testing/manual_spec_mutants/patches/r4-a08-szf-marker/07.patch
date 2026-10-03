@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a08-szf-marker/07
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the size of a short-storage list is NMAX (accepted, then allocated)
+# why: neighbouring constant
+# file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+# sym: pl_SmallTestStruct_szf,pl_SmallTestStruct_size
+--- a/types/proglist_SmallTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295))
++  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967264))
+ 

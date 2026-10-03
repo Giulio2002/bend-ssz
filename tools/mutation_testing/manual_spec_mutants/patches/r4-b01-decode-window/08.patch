@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/08
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+# why: words for bytes
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -111,3 +111,3 @@
+ 
+-def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dwin(size, B.size(buf))
++def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dwin(size, B.stored(buf))
+ 

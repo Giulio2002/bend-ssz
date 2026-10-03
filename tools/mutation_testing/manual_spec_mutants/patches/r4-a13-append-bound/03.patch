@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a13-append-bound/03
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: a progressive list has no limit: the object API bounds it by NMAX / size(element) = 1,073,741,816 SmallTestStructs
+# fault: the bound is NMAX / 4 + 1 (1,073,741,817): the appended list's size is NMAX + 4
+# why: off by one in a generated bound
+# file: types/proglist_SmallTestStruct_def_generated.bend
+# sym: pl_SmallTestStruct_append,pl_SmallTestStruct_app_in
+--- a/types/proglist_SmallTestStruct_def_generated.bend
++++ b/types/proglist_SmallTestStruct_def_generated.bend
+@@ -132,3 +132,3 @@
+   (arr, +sc) = pair
+-  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
++  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741817), U32.is_le(n, sc)), arr, n, v)
+ 

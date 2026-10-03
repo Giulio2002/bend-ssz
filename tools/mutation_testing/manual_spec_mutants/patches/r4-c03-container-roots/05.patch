@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/05
+# type: ProgressiveBitsStruct
+# ops: root
+# spec: same
+# fault: the two halves are exchanged at the top
+# why: operand swap
+# file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+# sym: ProgressiveBitsStruct_root
+--- a/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+@@ -94,3 +94,3 @@
+   (g1, r1) = r
+-  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, D.node(hl, r0, r1)))
++  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, D.node(hl, r1, r0)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c02-cache-eth1/01
+# type: FuluBeaconState
+# ops: root
+# spec: List[Eth1Data, 2048]: the element tree is padded to depth 11
+# fault: the cached root pads to depth 12
+# why: limit depth off by one
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_croot_pad,l2048_Eth1Data_cached_root
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -280,3 +280,3 @@
+ def l2048_Eth1Data_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<FuluEth1Data_d.Eth1Data>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l2048_Eth1Data_Cached & D.Digest):
+-  l2048_Eth1Data_croot_fin(hl, n, d, arr, nodes, l2048_Eth1Data_pad_go(hl, Nat.sub(11n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l2048_Eth1Data_croot_fin(hl, n, d, arr, nodes, l2048_Eth1Data_pad_go(hl, Nat.sub(12n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

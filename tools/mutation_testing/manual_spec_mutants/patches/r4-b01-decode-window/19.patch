@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/19
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+# why: the validator skipped once the window is known to fit
+# file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+--- a/types/ProgressiveBitsStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_decode_ssz_generated.bend
+@@ -307,3 +307,3 @@
+   match ok:
+-    case True{}: ProgressiveBitsStruct_decode_in(buf, size)
++    case True{}: ProgressiveBitsStruct_built(size, (buf, True{}))
+     case False{}: (buf, None{})

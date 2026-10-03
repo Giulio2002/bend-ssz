@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/10
+# type: FuluSyncAggregate
+# ops: root
+# spec: hash_tree_root(SyncAggregate) = H(root(bits), root(signature))
+# fault: the two fields are exchanged
+# why: field order
+# file: types/FuluSyncAggregate_hashtreeroot_generated.bend
+# sym: SyncAggregate_fin,SyncAggregate_root
+--- a/types/FuluSyncAggregate_hashtreeroot_generated.bend
++++ b/types/FuluSyncAggregate_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_sync_committee_signature) = pair
+-  (h, D.node(hl, d_sync_committee_bits, d_sync_committee_signature))
++  (h, D.node(hl, d_sync_committee_signature, d_sync_committee_bits))
+ 

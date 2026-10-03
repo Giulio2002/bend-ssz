@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a10-vec-var-size/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the running element sum is a plain U32 sum (an absent box's or an invalid element's marker is lost)
+# why: padd replaced by +
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_back,v2_VarTestStruct_sz,v2_VarTestStruct_size
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (v, +m) = pair
+-  v2_VarTestStruct_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, v))
++  v2_VarTestStruct_sz_ret((acc + m : U32), Array.swap(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, v))
+ 

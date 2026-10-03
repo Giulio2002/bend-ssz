@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a13-append-bound/02
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: the cached append bound is the old 2^31 bound / 121 = 17,747,799 (lists between 2 GiB and NMAX cannot grow through the cache)
+# why: stale bound
+# file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+# sym: l1099511627776_Validator_capp,l1099511627776_Validator_capp_in
+--- a/types/Fulu_list_Validator_1099511627776_def_generated.bend
++++ b/types/Fulu_list_Validator_1099511627776_def_generated.bend
+@@ -202,3 +202,3 @@
+   (arr, +sc) = pair
+-  l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 35495597), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
++  l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 17747799), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+ 

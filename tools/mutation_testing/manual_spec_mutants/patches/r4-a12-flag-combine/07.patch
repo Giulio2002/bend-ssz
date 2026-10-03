@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/07
+# type: FuluLightClientHeader
+# ops: encode
+# spec: the unchecked encoder of a literal-depth container must not claim a poisoned length
+# fault: the encoder's result uses out_done (the claimed poisoned length is returned)
+# why: the old helper kept
+# file: types/FuluLightClientHeader_encode_ssz_generated.bend
+# sym: LightClientHeader_enc_out,LightClientHeader_encode
+--- a/types/FuluLightClientHeader_encode_ssz_generated.bend
++++ b/types/FuluLightClientHeader_encode_ssz_generated.bend
+@@ -57,3 +57,3 @@
+ def LightClientHeader_enc_out(out: Array<U32>, o: FuluLightClientHeader_d.LightClientHeader, +m: U32) -> FuluLightClientHeader_d.LightClientHeader & B.Buf:
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+ 

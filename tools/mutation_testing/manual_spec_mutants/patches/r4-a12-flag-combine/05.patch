@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: the unchecked encoder must not allocate a poisoned (marker) size (CH-02)
+# fault: the unchecked encoder's pre-allocation test is dropped (it allocates out_new(marker))
+# why: the guard kept on serialize only
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_enc_sized,ComplexTestStruct_encode,ComplexTestStruct_enc_go
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -95,3 +95,3 @@
+   (o, +n) = pair
+-  ComplexTestStruct_enc_go(O.is_poisoned(n), n, o)
++  ComplexTestStruct_enc_go(False{}, n, o)
+ 

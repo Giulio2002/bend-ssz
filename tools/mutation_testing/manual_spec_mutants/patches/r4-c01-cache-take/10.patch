@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/10
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: leaves past the length are zero chunks
+# fault: the leaf at index n is hashed as an element (slot n holds the empty box)
+# why: <= for <
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_leaves,l16_Deposit_leaf_step,l16_Deposit_sweep
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -244,3 +244,3 @@
+     case 1n+r:
+-      l16_Deposit_leaves(hl, r, (i + 1 : U32), n, seg, cap, l16_Deposit_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++      l16_Deposit_leaves(hl, r, (i + 1 : U32), n, seg, cap, l16_Deposit_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+ 

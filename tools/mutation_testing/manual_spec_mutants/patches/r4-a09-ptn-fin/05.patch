@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a09-ptn-fin/05
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the writer reports n * 2 bytes (ProgressiveSingleFieldContainerTestStruct is one uint8: 1 byte)
+# why: element size arithmetic
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_ptn_fin,l10_ProgressiveSingleFieldContainerTestStruct_putn
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend
+@@ -44,3 +44,3 @@
+   (out, sq) = pair
+-  (out, (sq, O.mulc(n, 1)))
++  (out, (sq, O.mulc(n, 2)))
+ 

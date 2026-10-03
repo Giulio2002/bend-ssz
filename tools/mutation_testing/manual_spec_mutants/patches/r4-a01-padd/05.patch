@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a01-padd/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the saturating add is a plain U32 add (the marker is not absorbing: marker + 7 = 6)
+# why: the helper written as the obvious sum
+# file: src/obj.bend
+# sym: padd,is_poisoned
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1753,3 +1753,3 @@
+ # Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: (a + b : U32)
+ 

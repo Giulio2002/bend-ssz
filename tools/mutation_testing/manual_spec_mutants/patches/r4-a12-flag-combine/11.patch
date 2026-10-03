@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/11
+# type: bitlist_5
+# ops: encode
+# spec: same
+# fault: the serializer's poison test is the stale 2^31 test (is_lt(2147483647, m)): a flag of the stale marker passes... and the marker too is caught: designed near-equivalent
+# why: stale test
+# file: types/bitlist_5_encode_ssz_generated.bend
+# sym: bitlist_5_senc_out,bitlist_5_serialize
+--- a/types/bitlist_5_encode_ssz_generated.bend
++++ b/types/bitlist_5_encode_ssz_generated.bend
+@@ -44,3 +44,3 @@
+ def bitlist_5_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), m, out))
++  (o, O.ser_done(U32.is_lt(2147483647, m), m, out))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-ser-done/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: refused() answers ok = True with the empty buffer
+# why: the error record built with the wrong flag
+# file: src/obj.bend
+# sym: ser_done,refused,ser_out
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1782,3 +1782,3 @@
+ 
+-def refused() -> Encoded: Encoded{False{}, B.empty()}
++def refused() -> Encoded: Encoded{True{}, B.empty()}
+ 

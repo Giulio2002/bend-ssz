@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/09
+# type: BitsStruct
+# ops: encode
+# spec: same
+# fault: the encoder's result uses out_done
+# why: the old helper kept
+# file: types/BitsStruct_encode_ssz_generated.bend
+# sym: BitsStruct_enc_out,BitsStruct_encode
+--- a/types/BitsStruct_encode_ssz_generated.bend
++++ b/types/BitsStruct_encode_ssz_generated.bend
+@@ -56,3 +56,3 @@
+ def BitsStruct_enc_out(out: Array<U32>, o: BitsStruct_d.BitsStruct, +m: U32) -> BitsStruct_d.BitsStruct & B.Buf:
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+ 

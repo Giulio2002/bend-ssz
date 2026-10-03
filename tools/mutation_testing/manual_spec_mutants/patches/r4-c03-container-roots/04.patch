@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/04
+# type: ProgressiveBitsStruct
+# ops: root
+# spec: same
+# fault: the padding of the second half is on the left of fields 8..11
+# why: padding side
+# file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+# sym: ProgressiveBitsStruct_g1_fin,ProgressiveBitsStruct_root
+--- a/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+@@ -65,3 +65,3 @@
+   (h, z2) = pair
+-  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, z2, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)))))
+ 

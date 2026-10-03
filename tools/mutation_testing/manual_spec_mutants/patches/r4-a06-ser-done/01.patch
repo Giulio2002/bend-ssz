@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-ser-done/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize of an invalid value is refused (no bytes)
+# fault: a refused value keeps its claimed bytes (Encoded{False, B.Buf{out, m}})
+# why: refusal answers the flag but forgets to drop the buffer
+# file: src/obj.bend
+# sym: ser_done,refused
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1793,3 +1793,3 @@
+   match bad:
+-    case True{}: refused()
++    case True{}: Encoded{False{}, B.Buf{out, m}}
+     case False{}: Encoded{True{}, B.Buf{out, m}}

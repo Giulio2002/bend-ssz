@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/08
+# type: FuluExecutionPayloadHeader
+# ops: encode
+# spec: same
+# fault: the encoder's result uses out_done (the claimed poisoned length is returned)
+# why: the old helper kept
+# file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+# sym: ExecutionPayloadHeader_enc_out,ExecutionPayloadHeader_encode
+--- a/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+@@ -140,3 +140,3 @@
+ def ExecutionPayloadHeader_enc_out(out: Array<U32>, o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +m: U32) -> FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & B.Buf:
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+ 

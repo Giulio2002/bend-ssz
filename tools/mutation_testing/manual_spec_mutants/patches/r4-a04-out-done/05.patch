@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a04-out-done/05
+# type: FuluLightClientHeader
+# ops: encode
+# spec: same
+# fault: a poisoned length gives an empty buffer that keeps the storage (B.Buf{out, 0}): designed equivalent in size, different storage
+# why: a different "empty"
+# file: src/obj.bend
+# sym: out_donep,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1761,3 +1761,3 @@
+   match bad:
+-    case True{}: B.empty()
++    case True{}: B.Buf{out, 0}
+     case False{}: B.Buf{out, m}

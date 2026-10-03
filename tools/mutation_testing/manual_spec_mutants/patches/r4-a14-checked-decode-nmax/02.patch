@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a14-checked-decode-nmax/02
+# type: ComplexTestStruct
+# ops: decode
+# spec: same
+# fault: the storage test counts floor(size / 4) words
+# why: ceil vs floor
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+# sym: ComplexTestStruct_dchw,ComplexTestStruct_decode_checked
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -178,3 +178,3 @@
+   (buf, +c) = pair
+-  ComplexTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  ComplexTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn(size, 2n), c)), buf, size)
+ 

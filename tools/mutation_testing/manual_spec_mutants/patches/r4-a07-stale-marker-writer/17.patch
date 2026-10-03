@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a07-stale-marker-writer/17
+# type: FuluBeaconState
+# ops: encode
+# spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+# fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+# why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+# file: types/Fulu_list_Eth1Data_2048_encode_ssz_generated.bend
+# sym: l2048_Eth1Data_pk,l2048_Eth1Data_putk,l2048_Eth1Data_putv
+--- a/types/Fulu_list_Eth1Data_2048_encode_ssz_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_encode_ssz_generated.bend
+@@ -54,3 +54,3 @@
+     case True{}: l2048_Eth1Data_putn(out, pos, o)
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+ 

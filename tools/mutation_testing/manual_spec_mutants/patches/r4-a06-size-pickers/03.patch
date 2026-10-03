@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-size-pickers/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: a length whose storage is short is sized by its claim (the storage test is dropped)
+# why: the size pass trusts the claimed length
+# file: src/obj.bend
+# sym: wsz_pick,words_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1800,3 +1800,3 @@
+   (ws, +c) = pair
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, n)
+ 

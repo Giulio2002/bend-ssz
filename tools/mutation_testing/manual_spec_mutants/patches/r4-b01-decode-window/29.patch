@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/29
+# type: FuluAttestation
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+# why: the validator skipped once the window is known to fit
+# file: types/FuluAttestation_decode_ssz_generated.bend
+# sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+--- a/types/FuluAttestation_decode_ssz_generated.bend
++++ b/types/FuluAttestation_decode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+   match ok:
+-    case True{}: Attestation_decode_in(buf, size)
++    case True{}: Attestation_built(size, (buf, True{}))
+     case False{}: (buf, None{})

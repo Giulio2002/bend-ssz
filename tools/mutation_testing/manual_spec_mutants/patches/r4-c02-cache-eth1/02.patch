@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c02-cache-eth1/02
+# type: FuluBeaconState
+# ops: root
+# spec: same
+# fault: capp (fitting case) does not raise hi to the appended slot n
+# why: one bound of an interval forgotten
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_capp_fit,l2048_Eth1Data_capp
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -192,3 +192,3 @@
+   match fits:
+-    case True{}: l2048_Eth1Data_Cached{Array.set(FuluEth1Data_d.Eth1Data, arr, n, v), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
++    case True{}: l2048_Eth1Data_Cached{Array.set(FuluEth1Data_d.Eth1Data, arr, n, v), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), hi}
+     case False{}: l2048_Eth1Data_Cached{Array.set(FuluEth1Data_d.Eth1Data, l2048_Eth1Data_room(arr, n), n, v), (n + 1 : U32), 1n+d, l2048_Eth1Data_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}

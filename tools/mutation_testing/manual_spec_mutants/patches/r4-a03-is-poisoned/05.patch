@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a03-is-poisoned/05
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the comparison is reversed (m < NMAX): every valid size is poisoned
+# why: operand swap
+# file: src/obj.bend
+# sym: is_poisoned,ser_done,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1756,3 +1756,3 @@
+ # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(m, 4294967264)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/08
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: List[Deposit, 16]: the element tree is padded with zero subtrees up to depth log2(16) = 4
+# fault: the cached root pads to depth 5
+# why: limit depth off by one (ceil(log2(16 + 1)))
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_croot_pad,l16_Deposit_cached_root
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -291,3 +291,3 @@
+ def l16_Deposit_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<FuluDeposit_d.Deposit>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_Deposit_Cached & D.Digest):
+-  l16_Deposit_croot_fin(hl, n, d, arr, nodes, l16_Deposit_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l16_Deposit_croot_fin(hl, n, d, arr, nodes, l16_Deposit_pad_go(hl, Nat.sub(5n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

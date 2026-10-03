@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the fixed-size vector field's flag fl is dropped from the final flag
+# why: one term forgotten
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_pw4,ComplexTestStruct_putn,ComplexTestStruct_serialize
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -43,3 +43,3 @@
+   (f_F, fl) = r
+-  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, ((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)))
++  (uint8_e.u8_put(uint16_e.u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, (cur .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)))
+ 

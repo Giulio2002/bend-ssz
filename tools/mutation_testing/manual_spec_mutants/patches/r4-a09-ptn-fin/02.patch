@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a09-ptn-fin/02
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: same
+# fault: the writer reports n elements (a count, not bytes)
+# why: units confused
+# file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+# sym: l16_Deposit_ptn_fin,l16_Deposit_putn,l16_Deposit_pk
+--- a/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+@@ -56,3 +56,3 @@
+   (out, sq) = pair
+-  (out, (sq, O.mulc(n, 1240)))
++  (out, (sq, n))
+ 

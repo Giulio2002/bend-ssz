@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a13-append-bound/05
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: List[Deposit, 16] holds at most 16 deposits
+# fault: the bound is 17 (min taken against the wrong N)
+# why: off by one in a generated bound
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_append,l16_Deposit_app_in
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -140,3 +140,3 @@
+   (arr, +sc) = pair
+-  l16_Deposit_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
++  l16_Deposit_app_in(Bool.and(U32.is_lt(n, 17), U32.is_le(n, sc)), arr, n, v)
+ 

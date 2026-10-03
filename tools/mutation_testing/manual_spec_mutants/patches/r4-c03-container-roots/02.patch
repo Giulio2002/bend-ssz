@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/02
+# type: ProgressiveTestStruct
+# ops: root
+# spec: same
+# fault: the 4 fields are hashed as a left-leaning chain H(H(H(A, B), C), D)
+# why: a fold instead of a balanced tree
+# file: types/ProgressiveTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveTestStruct_fin,ProgressiveTestStruct_root
+--- a/types/ProgressiveTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveTestStruct_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (f_D, d_f_D) = r
+-  (h, (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D))))
++  (h, (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), d_f_C), d_f_D)))
+ 

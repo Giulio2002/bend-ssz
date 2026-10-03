@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a06-size-pickers/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: the size of a byte list / packed basic list is its byte length n; the object is not valid when its storage does not hold ceil(n / 4) words, and nothing that large may be allocated
+# fault: the storage test counts floor(n / 4) words (n + 3 dropped): a length whose last partial word is not stored is sized as valid
+# why: ceil vs floor
+# file: src/obj.bend
+# sym: wsz_pick,words_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1800,3 +1800,3 @@
+   (ws, +c) = pair
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_le(U32.shrn(n, 2n), c), n, 4294967295))
+ 

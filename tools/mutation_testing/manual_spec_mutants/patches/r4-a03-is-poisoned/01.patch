@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a03-is-poisoned/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize must refuse a value whose encoding is not a valid U32 size of the API (above NMAX) and every invalid value (the marker)
+# fault: only the exact marker is poisoned (is_eq(m, 2^32 - 1)): a size in (NMAX, 2^32 - 1) is accepted and allocated
+# why: testing for the sentinel instead of the range
+# file: src/obj.bend
+# sym: is_poisoned,ser_done,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1756,3 +1756,3 @@
+ # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_eq(m, 4294967295)
+ 

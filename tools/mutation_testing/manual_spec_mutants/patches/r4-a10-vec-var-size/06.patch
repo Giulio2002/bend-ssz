@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a10-vec-var-size/06
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the storage test is dropped (a vector claiming more elements than its array is sized by walking past the array)
+# why: the size pass trusts the claimed length
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_cap,v2_VarTestStruct_size
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -49,3 +49,3 @@
+   (arr, +c) = pair
+-  v2_VarTestStruct_sz_ok(U32.is_le(n, c), arr, n)
++  v2_VarTestStruct_sz_ok(True{}, arr, n)
+ 

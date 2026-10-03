@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a03-is-poisoned/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: NMAX itself is poisoned (is_le): a valid encoding of exactly NMAX bytes is refused
+# why: < for <=
+# file: src/obj.bend
+# sym: is_poisoned,ser_done,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1756,3 +1756,3 @@
+ # A size above NMAX = 2^32 - 32 (the object API's limit: the chunk rounding of an allocation stays below 2^32) is not a size: the marker or a value past it.
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_le(4294967264, m)
+ 

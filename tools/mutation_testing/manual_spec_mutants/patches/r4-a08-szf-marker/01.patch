@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a08-szf-marker/01
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: a list of fixed-size composites encodes as n * size(element) bytes; a list whose storage does not hold its count is not a value and must not be sized as one
+# fault: the size of a list whose array is shorter than its count is the stale marker 2^31 (not poisoned under NMAX)
+# why: stale marker literal in the size pass
+# file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+# sym: l16_Deposit_szf,l16_Deposit_size
+--- a/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295))
++  (Fulu_list_Deposit_16_d.l16_Deposit_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 1240), 2147483648))
+ 

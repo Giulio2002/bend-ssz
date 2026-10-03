@@ -1,0 +1,63 @@
+{
+ "baseline": {
+  "1": "pts_bad_D ok=0 size=0",
+  "2": "pa_bad_bits ok=0 size=0",
+  "3": "eph_bad_extra ok=0 size=0",
+  "4": "cts_dchk_4g decoded=none",
+  "5": "pts_dchk_4g decoded=none",
+  "6": "cts_dchk_129 decoded=none",
+  "7": "eph_default ok=1 size=584",
+  "8": "pa_default ok=1 size=149"
+ },
+ "r4-a07-stale-marker-writer/21": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "pts_bad_D ok=0 size=0",
+    "pts_bad_D ok=1 size=31"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/24": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/34": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/02": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "pa_bad_bits ok=0 size=0",
+    "pa_bad_bits ok=1 size=405"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/35": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a12-flag-combine/10": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "eph_bad_extra ok=0 size=0",
+    "eph_bad_extra ok=1 size=4294967295"
+   ]
+  }
+ },
+ "r4-a14-checked-decode-nmax/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a14-checked-decode-nmax/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a14-checked-decode-nmax/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ }
+}

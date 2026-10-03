@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a11-pvb/05
+# type: FuluAttestation
+# ops: encode
+# spec: same
+# fault: the running offset keeps cur (the field's size is not added: the next offset points at this field)
+# why: forgot to advance
+# file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+# sym: bits131072_pvb,bits131072_putv
+--- a/types/Fulu_bitlist_131072_encode_ssz_generated.bend
++++ b/types/Fulu_bitlist_131072_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, cur))
+ 

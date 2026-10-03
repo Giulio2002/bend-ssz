@@ -1427,3 +1427,84 @@ the cell laws are tight (all 6 cell faults killed); the size laws `*_ms_*` and `
 | r3-x11-reads/04 | boolean | src/obj.bend | the validity bound is v <= 2 | KILLED | vrejb_generated.bend: okb | regress_x SURVIVED; misc KILLED 40 |
 | r3-x11-reads/05 | boolean | src/obj.bend | the validity bound is v < 1 (True refused) | KILLED | vrejb_generated.bend: okb | regress_x SURVIVED; misc KILLED 41 |
 
+
+# Round 4 (agent/manual-spec-mutations-r4)
+
+Auditor: independent, fresh (round 4). Base: `origin/main` 506290081 (the size-limit merge: marker 2^32 - 1, NMAX = 2^32 - 32, saturating `O.padd`, `O.mulc`,
+`out_donep/out_donem`, the Words/Bits size pickers, the generated size pass; and before it the decode window `X_decode = X_dwin(size, B.size(buf))`).
+Exclusions: every fault of rounds 1-3 (`defs/*.txt`, `defs/r2_*`, `defs/r3_*`, `patches/r2-*`, `patches/r3-*`, `rederived_patch_ids.txt`) and the laws in `proofs/slop/*`.
+Definitions `defs/r4_01..05*.txt`, patches `patches/r4-*` (**208 faults**, 20 rule slugs, all apply), drivers `r4/` (`mk4.py`, `run4.py`, `go.sh`), probes `r4/probes/p4_size.bend`
+(24 cases) and `r4/probes/p4_more.bend` (8 cases), raw results `r4/results/` (`res_all.json` proofs, `api.json` / `api2.json` probes, `patches_index.json`).
+Machine-readable: `docs/mutation_testing/manual_round_4_survivors.json` (48 entries: every fault the proofs did not kill, with verdict).
+
+## R4.1 Result
+
+| | count |
+|---|---|
+| Faults | **208** |
+| (A) killed by a named law | **160** |
+| (A) survived every checked root | **43** |
+| (A) UNJUDGED (pinned checker overflows its stack on every root that unfolds `O.padd` / `O.is_poisoned`, also at 1 GiB ulimit / 800 MB JSC stack) | **5** |
+| Survivors + unjudged judged through the public API | 48: critical **13** demonstrated by a probe + **15** argued (same template / conditional / not demonstrated), gap **4**, gap-unreachable **5**, equivalent **11** (6 designed) |
+
+Verdict (A): `run4.py` = round 3's `run3.py` with the laws of `proofs/slop/*` (marker_poison, crash_fix_laws, constants, fields) tried first among the cheapest roots that import
+the patched file and mention a changed identifier (K = 4, cost <= 60 s), then 1 direct importer, then 1 facade; 120 s per root, STACK retried once at the big stack (CRASH = unjudged).
+Verdict (B'): API probes compiled from a hard-linked copy of the import cone with the patch applied (2.0.34 runtime), compared line by line with the unmutated build; they use ONLY
+`X_serialize`, `X_decode`, `X_decode_checked`, setters, `X_cache / _cached_root / _ctake / _capp`, `X_root`, and the record constructors (`O.Words{..}`, `O.Bits{..}`, `B.Buf{..}`,
+`O.BSome/BNone`, `ALeaf{..}`, type records). **(B) The reference corpus was not run**, for the reason round 3 gives (corpus3.py stops on the renamed objprog files and the missing `snappy`
+module); in any case it decodes, re-encodes and hashes valid values only, and none of the 43 survivors changes the result for a valid value except the two cache ones, which the corpus does
+not exercise (it has no cache operations): the corpus cannot observe any survivor of this round.
+
+Per family (killed / survived / unjudged): padd 4/0/3, pz 4/2/0, is_poisoned 4/0/2, out_done 3/2/0, mulc 6/0/0, size pickers 13/0/0, ser_done 1/1/0,
+**stale marker literals in the writers 18/22/0**, szf 8/0/0, ptn_fin 5/0/0, vector-of-variable size 6/0/0, pvb 6/0/0, flag combination and gates 8/3/0, append bounds 5/1/0,
+**checked-decode NMAX 0/5/0**, decode window 48/0/0, Deposit cache 6/6/0, Eth1Data cache 4/1/0, container roots 11/0/0.
+
+## R4.2 Findings
+
+1. **The marker_poison and encoder_constants laws list 105 writers and the encoder_constants laws a further 22 `X_pk` and all 16 `X_bx_putk`; 30 of the 157 generated checked writers `X_pk` are listed by neither, and a stale marker in them passes every proof.**
+   Unlisted: `bits1280_pk`, `bits1281_pk`, `bits131072_pk`, `bits2048_pk`, `bits256_pk`, `bits257_pk`, every `Fulu_list_<Container>_N` writer (`l16_Deposit`, `l1099511627776_Validator`,
+   `l134217728_PendingDeposit`, `l2048_Eth1Data`, `l16777216_HistoricalSummary`, `l262144_PendingConsolidation`, `l1048576_bl1073741824`, ...), `pl_SmallTestStruct`, `pl_VarTestStruct`,
+   `pl_pl_VarTestStruct`, `pl_ProgressiveVarTestStruct`, `l10_ProgressiveSingleFieldContainerTestStruct`, `v2_VarTestStruct`, `v4_FixedTestStruct`. Some are still caught by a facade
+   `serialize_vrefuse_<field>_limit` law (BeaconBlockBody, ExecutionRequests, ExecutionPayload withdrawals, Attestation bits: 14 of the 26 stale-2^31 faults), the rest are not: the
+   facades' `vreject_*` laws are statements about `X_valid`, not about the writer's flag. Demonstrated through the public API with the stale literal 2^31 (and 0):
+   `ComplexTestStruct_serialize` with `f_F[0] = FixedTestStruct{256, 0, 0}` -> ok=1 size=100 (`a07/26,29`); with `f_G = v2_VarTestStruct_Seq{fill(1n), 2}` (two absent boxes) -> ok=1 size=86 (`a07/25,28`);
+   `ProgressiveTestStruct_serialize` with `f_C = [SmallTestStruct{65536, 0}]` -> ok=1 size=20 (`a07/23,30`), with `f_D = [[VarTestStruct{0, [], 256}]]` -> ok=1 size=31 (`a07/21`);
+   `ExecutionPayload_serialize` with one transaction `O.Words{[0xFFFFFFFF], 1}` -> ok=1 size=533 (`a07/07`); `PendingAttestation_serialize` with 2049 aggregation bits -> ok=1 size=405 (`a07/02`).
+   By the same template, not probed: the BeaconState lists (`a07/08,09,15,17,18`; `a07/17` survived the 62 s BeaconState facade), ProgressiveBitsStruct's Bitlist[256] / [1280] fields
+   (`a07/03,04`), ProgressiveComplexTestStruct's lists (`a07/22,24`). A writer whose False branch is NMAX (`a07/33`) fails only when the running size is a multiple of 32 (argued).
+2. **`O.pz` (the flag of an invalid fixed-size field of a literal-depth container) is pinned only for its True branch and the swap** (`a02/01,02`). With the stale 2^31:
+   `BitsStruct_serialize(BitsStruct{.., f_B = Bitvector2{4}, ..})` -> **ok=1 size=2147483661** (a 2 GiB claim over 13 bytes of storage) and `ComplexTestStruct_serialize(ComplexTestStruct{65536, ..})` -> ok=1 size=100.
+   The 11 generated files that or `O.pz` into their flag are affected; `szpz` (BitsStruct facade) only fixes `pz(True) = 0`.
+3. **`O.refused()` is unpinned** (`a06-ser-done/02`): with `refused() = Encoded{True, empty}` every refusal reports ok=1 with 0 bytes (probe: 4 invalid values). The refusal laws compare the
+   serializer with `O.refused()` symbolically, so the constant itself is never evaluated; one law `refused() == Encoded{False{}, B.empty()}` closes it.
+4. **`ExecutionPayloadHeader_serialize`'s final poison test can be removed** (`a12/10`): `set_extra_data(default, O.Words{16 words, 33})` (ByteList[32] with 33 bytes) -> **ok=1 size=4294967295**.
+   No law states that the literal-depth serializers refuse a value whose writer flagged it (the same `ser_done(is_poisoned(m), m, out)` line is in 21 files; for ExecutionPayloadHeader nothing pins it).
+5. **The NMAX conjunct of every `X_decode_checked` is unpinned** (`a14/01,04,05`): with it dropped (or the bound raised to 2^32 - 1), `X_decode_checked(B.Buf{1 word, 2^32 - 1}, 2^32 - 1)` passes the storage
+   test because `(size + 3) >> 2` wraps to 0, and the validator then runs a 4 GiB window over one word (aliased reads). The probe's all-zero word is still refused by the validator (first offset 0), so
+   this is not demonstrated; the refusal of the lying claim (CH-05 / R2-04) then rests on the validator alone. `a14/02` (storage counted with floor) reads one aliased word past the array.
+6. **Cached roots after an append are pinned for no Fulu list of this round** (`c02/02` Eth1Data, demonstrated: cached root after `_capp` != root of the uncached list; `c01/05` Deposit, same template).
+   `c01/01,03` (`_ctake` does not mark the slot dirty) change the cached root of the taken-from list (probe case 17), an object that is not valid.
+   **Unmutated-build observation:** after `l16_Deposit_ctake(c, 1)` the cached root (`2691140158,...`) differs from `l16_Deposit_root` of `l16_Deposit_uncache(c)` (`2188094812,...`)
+   (`p4_size` case 17, baseline). The object holds an absent box, so `hash_tree_root` has no contract on it, but docs/API_CONTRACTS.md says for R3-01 "_ctake marks the slot dirty, so the cached
+   root is the root of the object it returns": the two root functions disagree on the absent box. Not a mutant: reported for the coordinator.
+7. **Checker stack overflow on any semantic edit of `O.padd` / `O.is_poisoned`** (`a01/04,06,07`, `a03/01,06`): every root that unfolds them overflows even at 1 GiB ulimit / 800 MB JSC stack
+   (a comment-only edit checks in 3 s). A full check would fail on these mutants, but by crash, not by a named law; per the brief they are unjudged. The other edits of the same functions
+   are killed by named laws (`ExecutionPayload_serialize_vrefuse_withdrawals_limit`, `complex_default_serialize_ok`, `SingleFieldTestStruct_serialize_vpoison_below`, `vec_uint16_5_wrong_length_refused`).
+
+What the new laws do catch: every `O.mulc` fault (`venc.bend: mulc_eq`), every size-picker fault, the size pass (`szf`, `ptn_fin`, vector-of-variable size, `pvb`) and the append bounds near the
+boundary (`encx_*`, `crash_fix_laws`), every one of the 48 decode-window faults (the decode_window lemma modules and the facades' `decode_build` with its `hwin` premise: the window
+test cannot be weakened, strengthened, moved to `B.stored` or bypassed), `out_donep` swaps (`var_bytes_ExecutionPayloadHeader_enc: encode_eval`), all 11 container-root faults, and the
+four control mutants on writers the marker laws list (`l128_u16_pk_false_poisoned`, `progbitlist_mc_poison_pbits`, `CompatibleUnionA_mc_poison_*`, `bitlist_5_mc_poison_bits5`).
+
+## R4.3 Not critical
+
+* Equivalent (11), in context (5): `a07/34,35` (a variable-size field's count goes through `padd(cur > 0, NMAX)`, which is poisoned), `a12/04` (flags are 0 or the marker, so `m = cur | marker`
+  is the marker), `a12/11` (bits5's flag is 1 or the marker), `c01/10` (slot n always holds the empty box, whose root is the zero chunk); designed (6): `a07/36`, `a04/05`,
+  `c01/11,12`, `a01/04,07` (the last two also unjudged).
+* gap (4): `a04/01` (unchecked `_encode` of a hand-built claim beyond NMAX: the writer walks the claim first), `a14/02`, `c01/01,03` (invalid object after `_ctake`).
+* gap-unreachable (5): `a13/02` (cached append bound 17,747,799 validators: over-strict), `a14/03` (2 GiB bound on BeaconBlockBody decode: over-strict), `a01/06`, `a03/01,06` (need
+  more than NMAX bytes of real storage; also unjudged).
+
+## R4.4 Every fault
+
+See `tools/mutation_testing/manual_spec_mutants/r4/results/run.log` (one line per fault: verdict and first killing root and law) and `res_all.json` (every root checked, seconds, laws).

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a11-pvb/01
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: a container's running offset is the size so far; an invalid variable-size field must keep the container's result poisoned
+# fault: the running offset adds the field's count with a plain U32 sum (cur + marker wraps to cur - 1)
+# why: padd replaced by +
+# file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+# sym: l16_Deposit_pvb,l16_Deposit_putv
+--- a/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+@@ -108,3 +108,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+ 

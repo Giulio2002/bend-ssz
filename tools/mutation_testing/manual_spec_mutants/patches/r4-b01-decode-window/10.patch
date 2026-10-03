@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/10
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+# why: stale limit
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -109,3 +109,3 @@
+   (buf, +n) = pair
+-  CompatibleUnionABCA_dwgo(U32.is_le(size, n), buf, size)
++  CompatibleUnionABCA_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+ 

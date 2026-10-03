@@ -1,0 +1,309 @@
+{
+ "baseline": {
+  "1": "cts_default ok=1 size=100 ck=992118177",
+  "2": "cts_bad_F ok=0 size=0 ck=0",
+  "3": "cts_bad_G ok=0 size=0 ck=0",
+  "4": "cts_bad_B ok=0 size=0 ck=0",
+  "5": "pts_default ok=1 size=16 ck=160",
+  "6": "pts_bad_C ok=0 size=0 ck=0",
+  "7": "att_default ok=1 size=237 ck=296",
+  "8": "att_bad_bits ok=0 size=0 ck=0",
+  "9": "er_default ok=1 size=12 ck=72",
+  "10": "er_bad_w ok=0 size=0 ck=0",
+  "11": "er_bad_cons ok=0 size=0 ck=0",
+  "12": "pbits_short ok=0 size=0 ck=0",
+  "13": "cts_decode_own decoded=some ok=1 size=100 ck=992118177",
+  "14": "cts_decode_claim50 decoded=none",
+  "15": "cts_decode_badoff decoded=none",
+  "16": "cp_decode_claim39 decoded=none",
+  "17": "dep_take1 cached=2691140158,2846674020,2949460348,3058017505,1988253254,2759739937,3946999212,2706546121 plain=2188094812,2215122142,2519970869,3351758885,290376975,2136097582,1747836673,3968447948",
+  "18": "dep_take_n cached=2422219823,1002682372,1672573892,3425700081,2801528952,1063294586,3296144043,1832013034 plain=2422219823,1002682372,1672573892,3425700081,2801528952,1063294586,3296144043,1832013034",
+  "19": "eth_capp cached=4080929298,2091631067,2395830989,1504032804,3754627709,1375035222,4127935825,201647238 plain=4080929298,2091631067,2395830989,1504032804,3754627709,1375035222,4127935825,201647238",
+  "20": "eth_grow cached=977351208,2181866597,506041851,473637184,1155432530,4240107298,1863568194,2949204750 plain=977351208,2181866597,506041851,473637184,1155432530,4240107298,1863568194,2949204750",
+  "21": "bs_bad_B ok=0 size=0 ck=0",
+  "22": "cts_bad_A ok=0 size=0 ck=0",
+  "23": "ep_bad_tx ok=0 size=0 ck=0",
+  "24": "ep_default ok=1 size=528 ck=192720"
+ },
+ "r4-a01-padd/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a01-padd/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a01-padd/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a02-pz/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a02-pz/02": {
+  "B2": "KILLED",
+  "diff": {
+   "21": [
+    "bs_bad_B ok=0 size=0 ck=0",
+    "bs_bad_B ok=1 size=2147483661 ck=3138912279"
+   ],
+   "22": [
+    "cts_bad_A ok=0 size=0 ck=0",
+    "cts_bad_A ok=1 size=100 ck=992118177"
+   ]
+  }
+ },
+ "r4-a03-is-poisoned/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a03-is-poisoned/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a04-out-done/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a04-out-done/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a06-ser-done/02": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "cts_bad_F ok=0 size=0 ck=0",
+    "cts_bad_F ok=1 size=0 ck=0"
+   ],
+   "3": [
+    "cts_bad_G ok=0 size=0 ck=0",
+    "cts_bad_G ok=1 size=0 ck=0"
+   ],
+   "4": [
+    "cts_bad_B ok=0 size=0 ck=0",
+    "cts_bad_B ok=1 size=0 ck=0"
+   ],
+   "6": [
+    "pts_bad_C ok=0 size=0 ck=0",
+    "pts_bad_C ok=1 size=0 ck=0"
+   ],
+   "8": [
+    "att_bad_bits ok=0 size=0 ck=0",
+    "att_bad_bits ok=1 size=0 ck=0"
+   ],
+   "10": [
+    "er_bad_w ok=0 size=0 ck=0",
+    "er_bad_w ok=1 size=0 ck=0"
+   ],
+   "11": [
+    "er_bad_cons ok=0 size=0 ck=0",
+    "er_bad_cons ok=1 size=0 ck=0"
+   ],
+   "12": [
+    "pbits_short ok=0 size=0 ck=0",
+    "pbits_short ok=1 size=0 ck=0"
+   ],
+   "21": [
+    "bs_bad_B ok=0 size=0 ck=0",
+    "bs_bad_B ok=1 size=0 ck=0"
+   ],
+   "22": [
+    "cts_bad_A ok=0 size=0 ck=0",
+    "cts_bad_A ok=1 size=0 ck=0"
+   ],
+   "23": [
+    "ep_bad_tx ok=0 size=0 ck=0",
+    "ep_bad_tx ok=1 size=0 ck=0"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/02": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/03": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/04": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/07": {
+  "B2": "KILLED",
+  "diff": {
+   "23": [
+    "ep_bad_tx ok=0 size=0 ck=0",
+    "ep_bad_tx ok=1 size=533 ck=192720"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/08": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/09": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/15": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/17": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/18": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/21": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/22": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/23": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "pts_bad_C ok=0 size=0 ck=0",
+    "pts_bad_C ok=1 size=20 ck=160"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/24": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/25": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "cts_bad_G ok=0 size=0 ck=0",
+    "cts_bad_G ok=1 size=86 ck=2437383424"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/26": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "cts_bad_F ok=0 size=0 ck=0",
+    "cts_bad_F ok=1 size=100 ck=992118177"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/28": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "cts_bad_G ok=0 size=0 ck=0",
+    "cts_bad_G ok=1 size=86 ck=2437383424"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/29": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "cts_bad_F ok=0 size=0 ck=0",
+    "cts_bad_F ok=1 size=100 ck=992118177"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/30": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "pts_bad_C ok=0 size=0 ck=0",
+    "pts_bad_C ok=1 size=20 ck=160"
+   ]
+  }
+ },
+ "r4-a07-stale-marker-writer/33": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/34": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a07-stale-marker-writer/35": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a07-stale-marker-writer/36": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a12-flag-combine/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a12-flag-combine/10": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a12-flag-combine/11": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a13-append-bound/02": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a14-checked-decode-nmax/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a14-checked-decode-nmax/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-a14-checked-decode-nmax/03": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a14-checked-decode-nmax/04": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-a14-checked-decode-nmax/05": {
+  "B2": "NOTAPPLICABLE"
+ },
+ "r4-c01-cache-take/01": {
+  "B2": "KILLED",
+  "diff": {
+   "17": [
+    "dep_take1 cached=2691140158,2846674020,2949460348,3058017505,1988253254,2759739937,3946999212,2706546121 plain=2188094812,2215122142,2519970869,3351758885,290376975,2136097582,1747836673,3968447948",
+    "dep_take1 cached=3322689362,2689904781,2470080144,2952595367,1267893281,2340270957,3453433768,1551367295 plain=2691140158,2846674020,2949460348,3058017505,1988253254,2759739937,3946999212,2706546121"
+   ]
+  }
+ },
+ "r4-c01-cache-take/03": {
+  "B2": "KILLED",
+  "diff": {
+   "17": [
+    "dep_take1 cached=2691140158,2846674020,2949460348,3058017505,1988253254,2759739937,3946999212,2706546121 plain=2188094812,2215122142,2519970869,3351758885,290376975,2136097582,1747836673,3968447948",
+    "dep_take1 cached=3322689362,2689904781,2470080144,2952595367,1267893281,2340270957,3453433768,1551367295 plain=2691140158,2846674020,2949460348,3058017505,1988253254,2759739937,3946999212,2706546121"
+   ]
+  }
+ },
+ "r4-c01-cache-take/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-c01-cache-take/10": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-c01-cache-take/11": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-c01-cache-take/12": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r4-c02-cache-eth1/02": {
+  "B2": "KILLED",
+  "diff": {
+   "19": [
+    "eth_capp cached=4080929298,2091631067,2395830989,1504032804,3754627709,1375035222,4127935825,201647238 plain=4080929298,2091631067,2395830989,1504032804,3754627709,1375035222,4127935825,201647238",
+    "eth_capp cached=2587541432,3595823747,3422034264,570302805,3845179264,1961232539,858989176,3647573817 plain=4080929298,2091631067,2395830989,1504032804,3754627709,1375035222,4127935825,201647238"
+   ]
+  }
+ }
+}

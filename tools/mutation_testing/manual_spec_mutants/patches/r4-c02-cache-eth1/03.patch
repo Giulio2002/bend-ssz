@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c02-cache-eth1/03
+# type: FuluBeaconState
+# ops: root
+# spec: same
+# fault: cset accepts index n (a set one past the end writes slot n and marks it dirty)
+# why: <= for <
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_cset,l2048_Eth1Data_cset_in
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -188,3 +188,3 @@
+   match c:
+-    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++    case l2048_Eth1Data_Cached{arr, +n, +d, nodes, +lo, +hi}: l2048_Eth1Data_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c01-cache-take/02
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same; an index at or past the length is not an element
+# fault: ctake accepts index n (one past the end: it moves out slot n and marks it dirty)
+# why: <= for <
+# file: types/Fulu_list_Deposit_16_def_generated.bend
+# sym: l16_Deposit_ctake,l16_Deposit_cget_in
+--- a/types/Fulu_list_Deposit_16_def_generated.bend
++++ b/types/Fulu_list_Deposit_16_def_generated.bend
+@@ -186,3 +186,3 @@
+   match c:
+-    case l16_Deposit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Deposit_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
++    case l16_Deposit_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_Deposit_cget_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i)
+ 

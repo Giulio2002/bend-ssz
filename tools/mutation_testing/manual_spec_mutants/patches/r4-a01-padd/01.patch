@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a01-padd/01
+# type: ComplexTestStruct
+# ops: encode
+# spec: the size of a container is the sum of its fixed part and its variable parts; a sum that overflows U32 must be the marker, and the marker must be absorbing
+# fault: the wrap test is dropped (only a + b < marker is tested): a sum that wraps past 2^32 looks like a small valid size
+# why: an implementer guards against reaching the marker but forgets that a U32 sum can wrap
+# file: src/obj.bend
+# sym: padd,is_poisoned
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1753,3 +1753,3 @@
+ # Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(U32.is_lt((a + b : U32), 4294967295), (a + b : U32), 4294967295)
+ 

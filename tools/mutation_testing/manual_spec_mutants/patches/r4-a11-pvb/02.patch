@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a11-pvb/02
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the running offset adds the field's count with a plain U32 sum
+# why: padd replaced by +
+# file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+# sym: pl_SmallTestStruct_pvb,pl_SmallTestStruct_putv
+--- a/types/proglist_SmallTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_encode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+ 

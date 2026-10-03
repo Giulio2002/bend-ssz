@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a02-pz/02
+# type: BitsStruct
+# ops: encode
+# spec: same
+# fault: pz of an invalid field is the old marker 2^31
+# why: stale marker literal
+# file: src/obj.bend
+# sym: pz,poison
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1750,3 +1750,3 @@
+     case True{}: 0
+-    case False{}: 4294967295
++    case False{}: 2147483648
+ 

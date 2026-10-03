@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a02-pz/03
+# type: BitsStruct
+# ops: encode
+# spec: same
+# fault: pz of a valid field is 1 (the flag of a valid value is not zero: or-ed into the size it changes it)
+# why: off by one in the neutral element
+# file: src/obj.bend
+# sym: pz,poison
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1749,3 +1749,3 @@
+   match ok:
+-    case True{}: 0
++    case True{}: 1
+     case False{}: 4294967295

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-c03-container-roots/09
+# type: FuluDeposit
+# ops: root
+# spec: hash_tree_root(Deposit) = H(root(proof), root(data))
+# fault: the two fields are exchanged
+# why: field order
+# file: types/FuluDeposit_hashtreeroot_generated.bend
+# sym: Deposit_fin,Deposit_root
+--- a/types/FuluDeposit_hashtreeroot_generated.bend
++++ b/types/FuluDeposit_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (data, d_data) = r
+-  (h, (FuluDeposit_d.Deposit{proof, data}, D.node(hl, d_proof, d_data)))
++  (h, (FuluDeposit_d.Deposit{proof, data}, D.node(hl, d_data, d_proof)))
+ 

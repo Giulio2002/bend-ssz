@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/04
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize refuses a value whose writer flagged it
+# fault: the final test is the exact marker (is_eq(m, 2^32 - 1)) instead of is_poisoned (a flag or-ed into a size above NMAX passes)
+# why: sentinel test instead of the range
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_senc_out,ComplexTestStruct_serialize
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -124,3 +124,3 @@
+ def ComplexTestStruct_senc_out(+n: U32, out: Array<U32>, o: ComplexTestStruct_d.ComplexTestStruct, +m: U32) -> ComplexTestStruct_d.ComplexTestStruct & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(U32.is_eq(m, 4294967295), n, out))
+ 

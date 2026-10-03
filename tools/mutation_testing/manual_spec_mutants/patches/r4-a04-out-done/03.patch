@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a04-out-done/03
+# type: FuluLightClientHeader
+# ops: encode
+# spec: same
+# fault: out_donem never treats the length as poisoned
+# why: the test dropped when inlining
+# file: src/obj.bend
+# sym: out_donep,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1764,3 +1764,3 @@
+ 
+-def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(is_poisoned(m), m, out)
++def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(False{}, m, out)
+ 

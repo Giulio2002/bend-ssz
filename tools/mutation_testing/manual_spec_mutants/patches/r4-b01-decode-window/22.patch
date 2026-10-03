@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-b01-decode-window/22
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+# fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+# why: the window check considered redundant with the validator
+# file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+# sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+--- a/types/FuluBeaconBlockBody_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_decode_ssz_generated.bend
+@@ -342,3 +342,3 @@
+   (buf, +n) = pair
+-  BeaconBlockBody_dwgo(U32.is_le(size, n), buf, size)
++  BeaconBlockBody_dwgo(True{}, buf, size)
+ 

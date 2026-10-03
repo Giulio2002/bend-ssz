@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a11-pvb/03
+# type: ComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the running offset adds the field's count with a plain U32 sum
+# why: padd replaced by +
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_pvb,v2_VarTestStruct_putv
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -153,3 +153,3 @@
+   (v, sz) = r
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+ 

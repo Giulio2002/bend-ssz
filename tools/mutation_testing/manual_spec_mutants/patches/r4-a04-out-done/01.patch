@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a04-out-done/01
+# type: FuluLightClientHeader
+# ops: encode
+# spec: the unchecked encoder of an invalid value must not claim a size past the storage it wrote (B.Buf is read by size elsewhere)
+# fault: a poisoned length is returned as a buffer of that claimed size (B.Buf{out, m})
+# why: the guard's two branches made identical
+# file: src/obj.bend
+# sym: out_donep,out_donem
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1761,3 +1761,3 @@
+   match bad:
+-    case True{}: B.empty()
++    case True{}: B.Buf{out, m}
+     case False{}: B.Buf{out, m}

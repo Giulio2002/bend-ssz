@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a05-mulc/04
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: an oversized product saturates to NMAX (not poisoned): the size claims NMAX bytes for a longer list
+# why: saturate instead of poison
+# file: src/obj.bend
+# sym: mulc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1767,3 +1767,3 @@
+ # n * es for a fixed element size es: the product when it does not wrap and is at most NMAX, else the marker (docs/SIZE_LIMIT_DESIGN.md).
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967264)
+ 

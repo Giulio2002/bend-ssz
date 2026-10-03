@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r4-a12-flag-combine/06
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the unchecked encoder's pre-allocation test is the exact marker (a size in (NMAX, marker) is allocated)
+# why: sentinel test instead of the range
+# file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveTestStruct_enc_sized,ProgressiveTestStruct_encode,ProgressiveTestStruct_enc_go
+--- a/types/ProgressiveTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_encode_ssz_generated.bend
+@@ -86,3 +86,3 @@
+   (o, +n) = pair
+-  ProgressiveTestStruct_enc_go(O.is_poisoned(n), n, o)
++  ProgressiveTestStruct_enc_go(U32.is_eq(n, 4294967295), n, o)
+ 
