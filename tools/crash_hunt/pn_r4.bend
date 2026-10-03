@@ -26,7 +26,7 @@ import ../../benchmarks/compact/objio.bend as IOx
 # Crash hunt round 4, probe N: the new size arithmetic (objects of 2^31 .. NMAX = 4294967264 bytes) and the decode window.
 # SSZ_CASE picks the case, SSZ_ARG the length or count; SSZ_D, SSZ_K, SSZ_DEPTH extra arguments. Storage of 4 GiB is a lazily
 # shared Array.new(U32, 30n, 0): nothing touches the gigabytes it describes unless it writes them.
-#  1/2  proglist_uint8 claim ARG in 4 GiB storage, dirty word 2^30-1 / clean: valid, root
+#  1/2  proglist_uint8 claim ARG in 4 GiB storage, data word 2^30-3 = 0x11223344, plus (1) a dirty word 2^30-1 / (2) clean: valid, root
 #  3/4  proglist_uint64 the same           5/6  List[uint8, 2^40] the same
 #  7    proglist_uint8 serialize / encode of a clean 4 GiB-storage claim ARG
 #  8    proglist_uint8 append at ARG (4 GiB storage), then serialize the result
@@ -39,11 +39,16 @@ import ../../benchmarks/compact/objio.bend as IOx
 #  15   proglist_uint8 decode_checked / decode of an honest 4 GiB buffer whose size field is ARG
 
 def big() -> Array<U32>: Array.new(U32, 30n, 0)
-def dirty() -> Array<U32>: Array.set(U32, big(), 1073741823, 2864434397)
+def dirty() -> Array<U32>: Array.set(U32, data(), 1073741823, 2864434397)
+def data() -> Array<U32>: Array.set(U32, big(), 1073741821, 287454020)
 def wbig(+d: Bool, +n: U32) -> O.Words:
   match d:
     case True{}: O.Words{dirty(), n}
     case False{}: O.Words{big(), n}
+def wdat(+d: Bool, +n: U32) -> O.Words:
+  match d:
+    case True{}: O.Words{dirty(), n}
+    case False{}: O.Words{data(), n}
 
 def vline(label: String, pair: O.Words & Bool) -> IO(Unit):
   (o, ok) = pair
@@ -56,16 +61,16 @@ def rline(label: String, pair: B.Buf & (O.Words & D.Digest)) -> IO(Unit):
 
 def c1(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
-    vline("pl_u8", P8E.pl_u8_valid(wbig(d, n)))
-    rline("pl_u8", P8H.proglist_uint8_hash_tree_root(O.hasher(), wbig(d, n)))
+    vline("pl_u8", P8E.pl_u8_valid(wdat(d, n)))
+    rline("pl_u8", P8H.proglist_uint8_hash_tree_root(O.hasher(), wdat(d, n)))
 def c3(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
-    vline("pl_u64", P64E.pl_u64_valid(wbig(d, n)))
-    rline("pl_u64", P64H.proglist_uint64_hash_tree_root(O.hasher(), wbig(d, n)))
+    vline("pl_u64", P64E.pl_u64_valid(wdat(d, n)))
+    rline("pl_u64", P64H.proglist_uint64_hash_tree_root(O.hasher(), wdat(d, n)))
 def c5(+d: Bool, +n: U32) -> IO(Unit):
   do IO<Unit>:
-    vline("l2^40_u8", F8E.l1099511627776_u8_valid(wbig(d, n)))
-    rline("l2^40_u8", F8H.l1099511627776_u8_root(64n, O.hasher(), wbig(d, n), 0))
+    vline("l2^40_u8", F8E.l1099511627776_u8_valid(wdat(d, n)))
+    rline("l2^40_u8", F8H.l1099511627776_u8_root(64n, O.hasher(), wdat(d, n), 0))
 
 def ser_tail(label: String, ok: Bool, pair: B.Buf & U32) -> IO(Unit):
   (b, +m) = pair
