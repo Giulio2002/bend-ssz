@@ -1,0 +1,468 @@
+## ROUND 4, family a01-a06: the shared size arithmetic of the object API (src/obj.bend: poison, pz, padd, is_poisoned, out_donep/out_donem, mulc, the Words/Bits size pickers, ser_done)
+## spec anchor for the family: serialize(value) of a valid value is its encoding; the object API must refuse (serialize) or answer the empty buffer (encode) for a value it cannot or must not write, and must never claim a size past the storage it wrote (docs/SIZE_LIMIT_DESIGN.md: sizes are U32, NMAX = 2^32 - 32, marker 2^32 - 1)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: the size of a container is the sum of its fixed part and its variable parts; a sum that overflows U32 must be the marker, and the marker must be absorbing
+fault: the wrap test is dropped (only a + b < marker is tested): a sum that wraps past 2^32 looks like a small valid size
+why: an implementer guards against reaching the marker but forgets that a U32 sum can wrap
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(U32.is_lt((a + b : U32), 4294967295), (a + b : U32), 4294967295)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the saturation value is NMAX (4294967264) instead of the marker: a saturated sum is a size the API accepts
+why: two neighbouring constants (NMAX and the marker) confused
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967264)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the no-wrap test is strict (a < a + b): adding a zero size (an empty list) saturates to the marker
+why: < for <=
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_lt(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the marker test is a <= (a sum equal to the marker is kept as is): designed equivalent (the kept value IS the marker)
+why: <= for <
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_le((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the saturating add is a plain U32 add (the marker is not absorbing: marker + 7 = 6)
+why: the helper written as the obvious sum
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: (a + b : U32)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the marker test is against NMAX (a + b < NMAX): a valid sum of exactly NMAX bytes is poisoned, a sum in (NMAX, marker) too (over-strict at the boundary)
+why: the wrong one of the two limits
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967264)), (a + b : U32), 4294967295)
+=== r4-a01-padd
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: padd,is_poisoned
+spec: same
+fault: the no-wrap test compares b instead of a (b <= a + b): equivalent for U32 (a + b wraps iff it is below both): designed equivalent
+why: operand swap
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(b, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
+=== r4-a02-pz
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: pz,poison
+spec: a container is valid iff every field is valid; the flag of an invalid scalar/bitvector field must poison the writer's result
+fault: pz of an invalid field is NMAX (4294967264): not poisoned
+why: stale or neighbouring constant
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 0
++    case False{}: 4294967264
+=== r4-a02-pz
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: pz,poison
+spec: same
+fault: pz of an invalid field is the old marker 2^31
+why: stale marker literal
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 0
++    case False{}: 2147483648
+=== r4-a02-pz
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: pz,poison
+spec: same
+fault: pz of a valid field is 1 (the flag of a valid value is not zero: or-ed into the size it changes it)
+why: off by one in the neutral element
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 1
++    case False{}: 4294967295
+=== r4-a02-pz
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: pz,poison
+spec: same
+fault: pz answers with its branches swapped
+why: inverted boolean
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 4294967295
++    case False{}: 0
+=== r4-a02-pz
+type: vec_bool_5
+ops: encode
+file: src/obj.bend
+sym: poison,pz
+spec: same
+fault: poison() is 2^32 - 2 (still above NMAX: designed equivalent for is_poisoned, but the constants laws state the literal)
+why: off by one in the marker
+-def poison() -> U32: 4294967295
++def poison() -> U32: 4294967294
+=== r4-a02-pz
+type: vec_bool_5
+ops: encode
+file: src/obj.bend
+sym: poison,pz
+spec: same
+fault: poison() is the old marker 2^31 (the laws that compare a writer with O.poison() then hold for a stale writer)
+why: the helper itself kept the stale literal
+-def poison() -> U32: 4294967295
++def poison() -> U32: 2147483648
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: serialize must refuse a value whose encoding is not a valid U32 size of the API (above NMAX) and every invalid value (the marker)
+fault: only the exact marker is poisoned (is_eq(m, 2^32 - 1)): a size in (NMAX, 2^32 - 1) is accepted and allocated
+why: testing for the sentinel instead of the range
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_eq(m, 4294967295)
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: same
+fault: NMAX itself is poisoned (is_le): a valid encoding of exactly NMAX bytes is refused
+why: < for <=
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_le(4294967264, m)
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: same
+fault: the threshold is the old 2^31 - 1: every size of 2^31 bytes or more is poisoned (the old CH-07 limit)
+why: stale limit
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(2147483647, m)
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: same
+fault: the threshold is the marker (2^32 - 1 < m): nothing is ever poisoned
+why: the wrong of the two constants
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967295, m)
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: same
+fault: the comparison is reversed (m < NMAX): every valid size is poisoned
+why: operand swap
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(m, 4294967264)
+=== r4-a03-is-poisoned
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: is_poisoned,ser_done,out_donem
+spec: same
+fault: the threshold is NMAX + 31 = 2^32 - 1 - 0 off by 31 (4294967294 < m: only the marker poisoned, sizes up to 2^32 - 2 accepted)
+why: NMAX misremembered as 2^32 - 2
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967294, m)
+=== r4-a04-out-done
+type: FuluLightClientHeader
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: the unchecked encoder of an invalid value must not claim a size past the storage it wrote (B.Buf is read by size elsewhere)
+fault: a poisoned length is returned as a buffer of that claimed size (B.Buf{out, m})
+why: the guard's two branches made identical
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, m}
++    case False{}: B.Buf{out, m}
+=== r4-a04-out-done
+type: FuluLightClientHeader
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: same
+fault: the branches are swapped: a valid encoding is the empty buffer, a poisoned one is the claimed buffer
+why: inverted boolean
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, m}
++    case False{}: B.empty()
+=== r4-a04-out-done
+type: FuluLightClientHeader
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: same
+fault: out_donem never treats the length as poisoned
+why: the test dropped when inlining
+-def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(is_poisoned(m), m, out)
++def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(False{}, m, out)
+=== r4-a04-out-done
+type: FuluLightClientHeader
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: same
+fault: out_donem tests only the exact marker (a wrapped / over-NMAX length is returned as claimed)
+why: sentinel test instead of the range
+-def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(is_poisoned(m), m, out)
++def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(U32.is_eq(m, 4294967295), m, out)
+=== r4-a04-out-done
+type: FuluLightClientHeader
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: same
+fault: a poisoned length gives an empty buffer that keeps the storage (B.Buf{out, 0}): designed equivalent in size, different storage
+why: a different "empty"
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, 0}
++    case False{}: B.Buf{out, m}
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: the size of a list of n fixed-size elements is n * size(element); a product past NMAX (or one that wraps) must be the marker
+fault: the bound is the marker divided by es (div(2^32 - 1, es)): a product in (NMAX, 2^32 - 1] is accepted
+why: the wrong one of the two limits
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967295, es)), (n * es : U32), 4294967295)
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: same
+fault: the bound is strict (n < NMAX / es): the largest count that fits is refused
+why: < for <=
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_lt(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: same
+fault: the guard is dropped: n * es wraps (the R3-03 defect: 35,495,597 validators sized 62 bytes)
+why: the product written directly
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: (n * es : U32)
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: same
+fault: an oversized product saturates to NMAX (not poisoned): the size claims NMAX bytes for a longer list
+why: saturate instead of poison
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967264)
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: same
+fault: the guard is n * es <= NMAX computed in U32 (the wrapped product passes the test)
+why: guard on the wrapped value instead of a division
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le((n * es : U32), 4294967264), (n * es : U32), 4294967295)
+=== r4-a05-mulc
+type: FuluBeaconState
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: same
+fault: the old 2^31 bound (n <= (2^31 - 1) / es): lists between 2 GiB and NMAX are poisoned
+why: stale limit
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(2147483647, es)), (n * es : U32), 4294967295)
+=== r4-a06-size-pickers
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: the size of a byte list / packed basic list is its byte length n; the object is not valid when its storage does not hold ceil(n / 4) words, and nothing that large may be allocated
+fault: the storage test counts floor(n / 4) words (n + 3 dropped): a length whose last partial word is not stored is sized as valid
+why: ceil vs floor
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_le(U32.shrn(n, 2n), c), n, 4294967295))
+=== r4-a06-size-pickers
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: same
+fault: the storage test is strict (ceil(n/4) < c): an exactly-full storage is poisoned
+why: < for <=
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_lt(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
+=== r4-a06-size-pickers
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: same
+fault: a length whose storage is short is sized by its claim (the storage test is dropped)
+why: the size pass trusts the claimed length
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, n)
+=== r4-a06-size-pickers
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: same
+fault: the poisoned size of a short storage is the stale marker 2^31
+why: stale marker literal in a shared helper
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+=== r4-a06-size-pickers
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: same
+fault: the storage is counted in bytes (n <= c words): a storage of c words accepts lengths up to c bytes only
+why: units confused
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_le(n, c), n, 4294967295))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: the encoding of a Bitlist of k bits is floor(k / 8) + 1 bytes (the delimiter bit always adds a bit)
+fault: the size is ceil(k / 8) (the delimiter byte is not counted when k is not a multiple of 8... and lost when it is)
+why: bits to bytes rounding without the delimiter
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), U32.shrn((k + 7 : U32), 3n), 4294967295))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: same
+fault: the size is ceil((k + 1) / 8) computed as (k + 8) >> 3: designed equivalent to floor(k/8) + 1
+why: an equivalent formula
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), U32.shrn((k + 8 : U32), 3n), 4294967295))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: the bits must be held by the storage (k >> 5) + 1 words: the writer reads word k >> 5
+fault: the storage test is k >> 5 words (the word holding bit k is not required)
+why: off by one in a word count
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le(U32.shrn(k, 5n), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: same
+fault: the storage test is dropped (bits sized by their claim)
+why: the size pass trusts the claimed length
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, (U32.shrn(k, 3n) + 1 : U32))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: same
+fault: the poisoned size of a short storage is the stale marker 2^31
+why: stale marker literal in a shared helper
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
+=== r4-a06-size-pickers
+type: BitsStruct
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: same
+fault: the storage test counts bytes in words ((k >> 3) + 1 <= c)
+why: units confused
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 3n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
+=== r4-a06-size-pickers
+type: bitlist_1280
+ops: encode
+file: src/obj.bend
+sym: bits_ok,bk_cap
+spec: a Bitlist[N] value has at most N bits
+fault: the limit test ignores `big` and always holds (bits_ok(o, limit, big) accepts any count)
+why: the guard for unbounded (progressive) bit lists applied to all
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(True{}, k, Array.size(U32, ws))
+=== r4-a06-size-pickers
+type: bitlist_1280
+ops: encode
+file: src/obj.bend
+sym: bits_ok,bk_cap
+spec: same
+fault: the limit test is strict (k < limit): a full Bitlist[N] is invalid
+why: < for <=
+-    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
++    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_lt(k, limit)), k, Array.size(U32, ws))
+=== r4-a06-ser-done
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: ser_done,refused
+spec: serialize of an invalid value is refused (no bytes)
+fault: a refused value keeps its claimed bytes (Encoded{False, B.Buf{out, m}})
+why: refusal answers the flag but forgets to drop the buffer
+-    case True{}: refused()
+-    case False{}: Encoded{True{}, B.Buf{out, m}}
++    case True{}: Encoded{False{}, B.Buf{out, m}}
++    case False{}: Encoded{True{}, B.Buf{out, m}}
+=== r4-a06-ser-done
+type: ComplexTestStruct
+ops: encode
+file: src/obj.bend
+sym: ser_done,refused,ser_out
+spec: same
+fault: refused() answers ok = True with the empty buffer
+why: the error record built with the wrong flag
+-def refused() -> Encoded: Encoded{False{}, B.empty()}
++def refused() -> Encoded: Encoded{True{}, B.empty()}

@@ -1,0 +1,471 @@
+## ROUND 4, family a08-a12: the generated size pass and refusal gates in types/*_generated.bend (szf, ptn_fin, sz_ok/sz_fin of a vector of variable-size elements, pvb, enc_go/senc_go gates, out_donem users, flag combination, append bounds min(N, NMAX/es), checked-decode NMAX)
+=== r4-a08-szf-marker
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_szf,l16_Deposit_size
+spec: a list of fixed-size composites encodes as n * size(element) bytes; a list whose storage does not hold its count is not a value and must not be sized as one
+fault: the size of a list whose array is shorter than its count is the stale marker 2^31 (not poisoned under NMAX)
+why: stale marker literal in the size pass
+-O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295)
++O.pick(U32.is_le(n, c), O.mulc(n, 1240), 2147483648)
+=== r4-a08-szf-marker
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_szf,l16_Deposit_size
+spec: same
+fault: the size pass multiplies without the overflow guard (n * 1240 in U32)
+why: mulc replaced by the plain product
+-O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295)
++O.pick(U32.is_le(n, c), (n * 1240 : U32), 4294967295)
+=== r4-a08-szf-marker
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_szf,l16_Deposit_size
+spec: same
+fault: the element size is 1240 - 4 = 1236 (a Deposit is 33 * 32 proof + 184 data = 1240)
+why: element size arithmetic
+-O.pick(U32.is_le(n, c), O.mulc(n, 1240), 4294967295)
++O.pick(U32.is_le(n, c), O.mulc(n, 1236), 4294967295)
+=== r4-a08-szf-marker
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: same
+fault: the size pass multiplies without the overflow guard (n * 121 wraps at 35,495,597 validators: the R3-03 defect)
+why: mulc replaced by the plain product
+-O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295)
++O.pick(U32.is_le(n, c), (n * 121 : U32), 4294967295)
+=== r4-a08-szf-marker
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: same
+fault: a list whose storage is short is sized by its claim (storage test dropped)
+why: the size pass trusts the claimed count
+-O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295)
++O.pick(True{}, O.mulc(n, 121), 4294967295)
+=== r4-a08-szf-marker
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: same
+fault: the storage test is strict (n < c): a list in exactly-full storage is poisoned (a decoded list has exactly n slots)
+why: < for <=
+-O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295)
++O.pick(U32.is_lt(n, c), O.mulc(n, 121), 4294967295)
+=== r4-a08-szf-marker
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_szf,pl_SmallTestStruct_size
+spec: same
+fault: the size of a short-storage list is NMAX (accepted, then allocated)
+why: neighbouring constant
+-O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295)
++O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967264)
+=== r4-a08-szf-marker
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_szf,pl_SmallTestStruct_size
+spec: same
+fault: the element size is 3 (SmallTestStruct is uint16 + uint16 = 4 bytes)
+why: element size arithmetic
+-O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295)
++O.pick(U32.is_le(n, c), O.mulc(n, 3), 4294967295)
+=== r4-a09-ptn-fin
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_ptn_fin,l16_Deposit_putn,l16_Deposit_pk
+spec: the writer of a list of fixed-size composites reports n * size(element) bytes written
+fault: the writer reports n * 1240 unguarded (its count can wrap while the size pass poisoned)
+why: mulc replaced by the plain product in the writer only
+-  (out, (sq, O.mulc(n, 1240)))
++  (out, (sq, (n * 1240 : U32)))
+=== r4-a09-ptn-fin
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_ptn_fin,l16_Deposit_putn,l16_Deposit_pk
+spec: same
+fault: the writer reports n elements (a count, not bytes)
+why: units confused
+-  (out, (sq, O.mulc(n, 1240)))
++  (out, (sq, n))
+=== r4-a09-ptn-fin
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_ptn_fin,l1099511627776_Validator_putn,l1099511627776_Validator_pk
+spec: same
+fault: the writer reports mulc(n, 121) + 0 via padd(mulc(n, 121), 0): designed equivalent
+why: an equivalent re-association
+-  (out, (sq, O.mulc(n, 121)))
++  (out, (sq, O.padd(O.mulc(n, 121), 0)))
+=== r4-a09-ptn-fin
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_ptn_fin,l1099511627776_Validator_putn,l1099511627776_Validator_pk
+spec: same
+fault: the writer reports n * 121 unguarded
+why: mulc replaced by the plain product in the writer only
+-  (out, (sq, O.mulc(n, 121)))
++  (out, (sq, (n * 121 : U32)))
+=== r4-a09-ptn-fin
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_ptn_fin,l10_ProgressiveSingleFieldContainerTestStruct_putn
+spec: same
+fault: the writer reports n * 2 bytes (ProgressiveSingleFieldContainerTestStruct is one uint8: 1 byte)
+why: element size arithmetic
+-  (out, (sq, O.mulc(n, 1)))
++  (out, (sq, O.mulc(n, 2)))
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_ok,v2_VarTestStruct_size,v2_VarTestStruct_sz_cap
+spec: a Vector of variable-size elements encodes as 4 * N offsets then the elements; a vector whose storage cannot hold its length is not a value
+fault: a short-storage vector is sized with the stale marker 2^31
+why: stale marker literal
+-    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 4294967295)
++    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 2147483648)
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_ok,v2_VarTestStruct_size,v2_VarTestStruct_sz_cap
+spec: same
+fault: a short-storage vector is sized 0
+why: the error case answers a neutral size
+-    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 4294967295)
++    case False{}: (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, 0)
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+spec: same
+fault: the offsets and the elements are added with a plain U32 sum (an element's poison is lost: marker + 8 = 7)
+why: padd replaced by +
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, ((4 * n : U32) + m : U32))
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+spec: same
+fault: the offset table is not counted (size = sum of the elements)
+why: forgot the fixed part of a vector of variable-size elements
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, m)
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_back,v2_VarTestStruct_sz,v2_VarTestStruct_size
+spec: same
+fault: the running element sum is a plain U32 sum (an absent box's or an invalid element's marker is lost)
+why: padd replaced by +
+-  v2_VarTestStruct_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, v))
++  v2_VarTestStruct_sz_ret((acc + m : U32), Array.swap(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, v))
+=== r4-a10-vec-var-size
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_cap,v2_VarTestStruct_size
+spec: same
+fault: the storage test is dropped (a vector claiming more elements than its array is sized by walking past the array)
+why: the size pass trusts the claimed length
+-  v2_VarTestStruct_sz_ok(U32.is_le(n, c), arr, n)
++  v2_VarTestStruct_sz_ok(True{}, arr, n)
+=== r4-a11-pvb
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_pvb,l16_Deposit_putv
+spec: a container's running offset is the size so far; an invalid variable-size field must keep the container's result poisoned
+fault: the running offset adds the field's count with a plain U32 sum (cur + marker wraps to cur - 1)
+why: padd replaced by +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r4-a11-pvb
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_pvb,pl_SmallTestStruct_putv
+spec: same
+fault: the running offset adds the field's count with a plain U32 sum
+why: padd replaced by +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r4-a11-pvb
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_pvb,v2_VarTestStruct_putv
+spec: same
+fault: the running offset adds the field's count with a plain U32 sum
+why: padd replaced by +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r4-a11-pvb
+type: FuluAttestation
+ops: encode
+file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+sym: bits131072_pvb,bits131072_putv
+spec: same
+fault: the running offset adds the field's count with a plain U32 sum
+why: padd replaced by +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r4-a11-pvb
+type: FuluAttestation
+ops: encode
+file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+sym: bits131072_pvb,bits131072_putv
+spec: same
+fault: the running offset keeps cur (the field's size is not added: the next offset points at this field)
+why: forgot to advance
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, cur))
+=== r4-a11-pvb
+type: ComplexTestStruct
+ops: encode
+file: types/list_uint16_128_encode_ssz_generated.bend
+sym: l128_u16_pvb,l128_u16_putv
+spec: same
+fault: the running offset adds the field's count with a plain U32 sum (control: a writer whose False branch IS listed)
+why: padd replaced by +
+-  (out, (v, O.padd(cur, sz)))
++  (out, (v, (cur + sz : U32)))
+=== r4-a12-flag-combine
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+sym: ComplexTestStruct_pw4,ComplexTestStruct_putn,ComplexTestStruct_serialize
+spec: a container is valid iff every field is valid; the writer's final flag must be poisoned when any field is
+fault: the flags are combined with + instead of | (marker + size wraps to a small value)
+why: arithmetic for bitwise
+-((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
++((cur + fl : U32) + O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
+=== r4-a12-flag-combine
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+sym: ComplexTestStruct_pw4,ComplexTestStruct_putn,ComplexTestStruct_serialize
+spec: same
+fault: the flags are combined with & instead of | (a poisoned field is masked by a small running size)
+why: and for or
+-((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
++((cur .&. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
+=== r4-a12-flag-combine
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+sym: ComplexTestStruct_pw4,ComplexTestStruct_putn,ComplexTestStruct_serialize
+spec: same
+fault: the fixed-size vector field's flag fl is dropped from the final flag
+why: one term forgotten
+-((cur .|. fl : U32) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
++(cur .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32)
+=== r4-a12-flag-combine
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+sym: ComplexTestStruct_senc_out,ComplexTestStruct_serialize
+spec: serialize refuses a value whose writer flagged it
+fault: the final test is the exact marker (is_eq(m, 2^32 - 1)) instead of is_poisoned (a flag or-ed into a size above NMAX passes)
+why: sentinel test instead of the range
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(U32.is_eq(m, 4294967295), n, out))
+=== r4-a12-flag-combine
+type: ComplexTestStruct
+ops: encode
+file: types/ComplexTestStruct_encode_ssz_generated.bend
+sym: ComplexTestStruct_enc_sized,ComplexTestStruct_encode,ComplexTestStruct_enc_go
+spec: the unchecked encoder must not allocate a poisoned (marker) size (CH-02)
+fault: the unchecked encoder's pre-allocation test is dropped (it allocates out_new(marker))
+why: the guard kept on serialize only
+-  ComplexTestStruct_enc_go(O.is_poisoned(n), n, o)
++  ComplexTestStruct_enc_go(False{}, n, o)
+=== r4-a12-flag-combine
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_enc_sized,ProgressiveTestStruct_encode,ProgressiveTestStruct_enc_go
+spec: same
+fault: the unchecked encoder's pre-allocation test is the exact marker (a size in (NMAX, marker) is allocated)
+why: sentinel test instead of the range
+-  ProgressiveTestStruct_enc_go(O.is_poisoned(n), n, o)
++  ProgressiveTestStruct_enc_go(U32.is_eq(n, 4294967295), n, o)
+=== r4-a12-flag-combine
+type: FuluLightClientHeader
+ops: encode
+file: types/FuluLightClientHeader_encode_ssz_generated.bend
+sym: LightClientHeader_enc_out,LightClientHeader_encode
+spec: the unchecked encoder of a literal-depth container must not claim a poisoned length
+fault: the encoder's result uses out_done (the claimed poisoned length is returned)
+why: the old helper kept
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+=== r4-a12-flag-combine
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_enc_out,ExecutionPayloadHeader_encode
+spec: same
+fault: the encoder's result uses out_done (the claimed poisoned length is returned)
+why: the old helper kept
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+=== r4-a12-flag-combine
+type: BitsStruct
+ops: encode
+file: types/BitsStruct_encode_ssz_generated.bend
+sym: BitsStruct_enc_out,BitsStruct_encode
+spec: same
+fault: the encoder's result uses out_done
+why: the old helper kept
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+=== r4-a12-flag-combine
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_senc_out,ExecutionPayloadHeader_serialize
+spec: serialize refuses a value whose writer flagged it
+fault: the serializer's poison test is dropped (it answers ok with the writer's length)
+why: the test removed for a literal-depth type
+-  (o, O.ser_done(O.is_poisoned(m), m, out))
++  (o, O.ser_done(False{}, m, out))
+=== r4-a12-flag-combine
+type: bitlist_5
+ops: encode
+file: types/bitlist_5_encode_ssz_generated.bend
+sym: bitlist_5_senc_out,bitlist_5_serialize
+spec: same
+fault: the serializer's poison test is the stale 2^31 test (is_lt(2147483647, m)): a flag of the stale marker passes... and the marker too is caught: designed near-equivalent
+why: stale test
+-  (o, O.ser_done(O.is_poisoned(m), m, out))
++  (o, O.ser_done(U32.is_lt(2147483647, m), m, out))
+=== r4-a13-append-bound
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_append,l1099511627776_Validator_app_in,l1099511627776_Validator_app_n
+spec: List[Validator, 2^40]: the object API bounds a list by min(N, NMAX / size(element)) = 35,495,597 validators so that its encoding fits a U32 size
+fault: the append bound is one more (35,495,598): the appended list's size 4,294,967,358 exceeds 2^32 (mulc poisons it: the list can be built but not serialized)
+why: off by one in a generated bound
+-l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 35495597), U32.is_le(n, sc)), arr, n, v)
++l1099511627776_Validator_app_in(Bool.and(U32.is_lt(n, 35495598), U32.is_le(n, sc)), arr, n, v)
+=== r4-a13-append-bound
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_capp,l1099511627776_Validator_capp_in
+spec: same
+fault: the cached append bound is the old 2^31 bound / 121 = 17,747,799 (lists between 2 GiB and NMAX cannot grow through the cache)
+why: stale bound
+-l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 35495597), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
++l1099511627776_Validator_capp_in(Bool.and(U32.is_lt(n, 17747799), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+=== r4-a13-append-bound
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_append,pl_SmallTestStruct_app_in
+spec: a progressive list has no limit: the object API bounds it by NMAX / size(element) = 1,073,741,816 SmallTestStructs
+fault: the bound is NMAX / 4 + 1 (1,073,741,817): the appended list's size is NMAX + 4
+why: off by one in a generated bound
+-pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
++pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741817), U32.is_le(n, sc)), arr, n, v)
+=== r4-a13-append-bound
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_append,pl_SmallTestStruct_app_in
+spec: same
+fault: the bound is 2^32 - 1 elements (the count bound only, not the size bound): the size n * 4 wraps
+why: the bound of a count used for a size
+-pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
++pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 4294967295), U32.is_le(n, sc)), arr, n, v)
+=== r4-a13-append-bound
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_append,l16_Deposit_app_in
+spec: List[Deposit, 16] holds at most 16 deposits
+fault: the bound is 17 (min taken against the wrong N)
+why: off by one in a generated bound
+-l16_Deposit_app_in(Bool.and(U32.is_lt(n, 16), U32.is_le(n, sc)), arr, n, v)
++l16_Deposit_app_in(Bool.and(U32.is_lt(n, 17), U32.is_le(n, sc)), arr, n, v)
+=== r4-a13-append-bound
+type: ComplexTestStruct
+ops: encode
+file: types/list_uint16_128_def_generated.bend
+sym: l128_u16_append,l128_u16_app_n,l128_u16_grow
+spec: List[uint16, 128]: at most 128 elements, each below 2^16, held in ceil(2n / 4) words
+fault: the storage test of the grown list counts 2n bytes, not 2(n + 1) (the new element's word may be missing)
+why: the size before the append used for the size after
+-U32.is_le(U32.shrn(((n * 2 : U32) + 3 : U32), 2n), sc)), o, n, v)
++U32.is_le(U32.shrn(((n * 2 : U32) + 1 : U32), 2n), sc)), o, n, v)
+=== r4-a14-checked-decode-nmax
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dchw,ComplexTestStruct_decode_checked
+spec: decode of bytes of unknown origin: the window must lie in the buffer and in the API's size range (NMAX) and in the stored words
+fault: the NMAX test is dropped from the checked decoder
+why: the new limit not wired in
+-U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++True{}), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+=== r4-a14-checked-decode-nmax
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dchw,ComplexTestStruct_decode_checked
+spec: same
+fault: the storage test counts floor(size / 4) words
+why: ceil vs floor
+-U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_le(size, 4294967264)), U32.is_le(U32.shrn(size, 2n), c)), buf, size)
+=== r4-a14-checked-decode-nmax
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dchw,BeaconBlockBody_decode_checked
+spec: same
+fault: the NMAX test is the old strict 2^31 bound (valid bodies between 2 GiB and NMAX refused)
+why: stale limit
+-U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+=== r4-a14-checked-decode-nmax
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dchw,BeaconBlockBody_decode_checked
+spec: same
+fault: the size bound is 2^32 - 1 (sizes in (NMAX, 2^32 - 1) whose (size + 3) >> 2 wraps to 0 pass the storage test)
+why: the marker used as the bound
+-U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_le(size, 4294967295)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+=== r4-a14-checked-decode-nmax
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_dchw,ProgressiveTestStruct_decode_checked
+spec: same
+fault: the size bound is 2^32 - 1 (a window whose rounded word count wraps passes)
+why: the marker used as the bound
+-U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++U32.is_le(size, 4294967295)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)

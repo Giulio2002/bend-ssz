@@ -1,0 +1,481 @@
+## ROUND 4, family b01: the decode window (X_decode = X_dwin(size, B.size(buf)) -> X_dwgo(size <= B.size(buf)) -> X_decode_in) and the hwin premise of the facade decode statements
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  Checkpoint_dwgo(U32.is_le(size, n), buf, size)
++  Checkpoint_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  Checkpoint_dwgo(U32.is_le(size, n), buf, size)
++  Checkpoint_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def Checkpoint_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dwin(size, B.size(buf))
++def Checkpoint_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: Checkpoint_decode_in(buf, size)
++    case True{}: Checkpoint_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  Checkpoint_dwgo(U32.is_le(size, n), buf, size)
++  Checkpoint_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  CompatibleUnionABCA_dwgo(U32.is_le(size, n), buf, size)
++  CompatibleUnionABCA_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  CompatibleUnionABCA_dwgo(U32.is_le(size, n), buf, size)
++  CompatibleUnionABCA_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dwin(size, B.size(buf))
++def CompatibleUnionABCA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: CompatibleUnionABCA_decode_in(buf, size)
++    case True{}: CompatibleUnionABCA_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_dwin,CompatibleUnionABCA_dwgo,CompatibleUnionABCA_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  CompatibleUnionABCA_dwgo(U32.is_le(size, n), buf, size)
++  CompatibleUnionABCA_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  proglist_uint8_dwgo(U32.is_le(size, n), buf, size)
++  proglist_uint8_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  proglist_uint8_dwgo(U32.is_le(size, n), buf, size)
++  proglist_uint8_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def proglist_uint8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint8_dwin(size, B.size(buf))
++def proglist_uint8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint8_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: proglist_uint8_decode_in(buf, size)
++    case True{}: proglist_uint8_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  proglist_uint8_dwgo(U32.is_le(size, n), buf, size)
++  proglist_uint8_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  ProgressiveBitsStruct_dwgo(U32.is_le(size, n), buf, size)
++  ProgressiveBitsStruct_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  ProgressiveBitsStruct_dwgo(U32.is_le(size, n), buf, size)
++  ProgressiveBitsStruct_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dwin(size, B.size(buf))
++def ProgressiveBitsStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: ProgressiveBitsStruct_decode_in(buf, size)
++    case True{}: ProgressiveBitsStruct_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dwin,ProgressiveBitsStruct_dwgo,ProgressiveBitsStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  ProgressiveBitsStruct_dwgo(U32.is_le(size, n), buf, size)
++  ProgressiveBitsStruct_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  BeaconBlockBody_dwgo(U32.is_le(size, n), buf, size)
++  BeaconBlockBody_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  BeaconBlockBody_dwgo(U32.is_le(size, n), buf, size)
++  BeaconBlockBody_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def BeaconBlockBody_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>: BeaconBlockBody_dwin(size, B.size(buf))
++def BeaconBlockBody_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>: BeaconBlockBody_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: BeaconBlockBody_decode_in(buf, size)
++    case True{}: BeaconBlockBody_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dwin,BeaconBlockBody_dwgo,BeaconBlockBody_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  BeaconBlockBody_dwgo(U32.is_le(size, n), buf, size)
++  BeaconBlockBody_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  Attestation_dwgo(U32.is_le(size, n), buf, size)
++  Attestation_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  Attestation_dwgo(U32.is_le(size, n), buf, size)
++  Attestation_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def Attestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>: Attestation_dwin(size, B.size(buf))
++def Attestation_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>: Attestation_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: Attestation_decode_in(buf, size)
++    case True{}: Attestation_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dwin,Attestation_dwgo,Attestation_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  Attestation_dwgo(U32.is_le(size, n), buf, size)
++  Attestation_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_dwin,vec_bool_5_dwgo,vec_bool_5_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  vec_bool_5_dwgo(U32.is_le(size, n), buf, size)
++  vec_bool_5_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_dwin,vec_bool_5_dwgo,vec_bool_5_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  vec_bool_5_dwgo(U32.is_le(size, n), buf, size)
++  vec_bool_5_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_dwin,vec_bool_5_dwgo,vec_bool_5_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def vec_bool_5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dwin(size, B.size(buf))
++def vec_bool_5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_dwin,vec_bool_5_dwgo,vec_bool_5_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: vec_bool_5_decode_in(buf, size)
++    case True{}: vec_bool_5_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_dwin,vec_bool_5_dwgo,vec_bool_5_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  vec_bool_5_dwgo(U32.is_le(size, n), buf, size)
++  vec_bool_5_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+sym: uint64_dwin,uint64_dwgo,uint64_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  uint64_dwgo(U32.is_le(size, n), buf, size)
++  uint64_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+sym: uint64_dwin,uint64_dwgo,uint64_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  uint64_dwgo(U32.is_le(size, n), buf, size)
++  uint64_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+sym: uint64_dwin,uint64_dwgo,uint64_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def uint64_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: uint64_dwin(size, B.size(buf))
++def uint64_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: uint64_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+sym: uint64_dwin,uint64_dwgo,uint64_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: uint64_decode_in(buf, size)
++    case True{}: uint64_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: uint64
+ops: decode
+file: types/uint64_decode_ssz_generated.bend
+sym: uint64_dwin,uint64_dwgo,uint64_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  uint64_dwgo(U32.is_le(size, n), buf, size)
++  uint64_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: a window equal to the whole buffer is refused (size < B.size(buf))
+why: < for <=
+-  ComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
++  ComplexTestStruct_dwgo(U32.is_lt(size, n), buf, size)
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is dropped (a window past the buffer's size is decoded: reads past the end)
+why: the window check considered redundant with the validator
+-  ComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
++  ComplexTestStruct_dwgo(True{}, buf, size)
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is compared with the buffer's stored word count (B.stored) instead of its byte size
+why: words for bytes
+-def ComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dwin(size, B.size(buf))
++def ComplexTestStruct_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dwin(size, B.stored(buf))
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: inside the window the bytes are built without validation (X_built(size, (buf, True)))
+why: the validator skipped once the window is known to fit
+-    case True{}: ComplexTestStruct_decode_in(buf, size)
++    case True{}: ComplexTestStruct_built(size, (buf, True{}))
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window is also capped at the stale 2^31 bound (valid windows of 2 GiB .. NMAX refused: the documented progressive premise applied to every type)
+why: stale limit
+-  ComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
++  ComplexTestStruct_dwgo(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), buf, size)
+=== r4-b01-decode-window
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dwin,Checkpoint_dwgo,Checkpoint_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is reversed (B.size(buf) <= size: only windows at least as long as the buffer)
+why: operand swap
+-  Checkpoint_dwgo(U32.is_le(size, n), buf, size)
++  Checkpoint_dwgo(U32.is_le(n, size), buf, size)
+=== r4-b01-decode-window
+type: proglist_uint8
+ops: decode
+file: types/proglist_uint8_decode_ssz_generated.bend
+sym: proglist_uint8_dwin,proglist_uint8_dwgo,proglist_uint8_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is reversed (B.size(buf) <= size: only windows at least as long as the buffer)
+why: operand swap
+-  proglist_uint8_dwgo(U32.is_le(size, n), buf, size)
++  proglist_uint8_dwgo(U32.is_le(n, size), buf, size)
+=== r4-b01-decode-window
+type: ComplexTestStruct
+ops: decode
+file: types/ComplexTestStruct_decode_ssz_generated.bend
+sym: ComplexTestStruct_dwin,ComplexTestStruct_dwgo,ComplexTestStruct_decode
+spec: deserialize(bytes) is defined on exactly the given bytes: the object API decodes the window [0, size) of a buffer, which must lie inside the buffer (size <= B.size(buf)); a window past the buffer is not a byte string the caller holds and must be None, never a read past the end
+fault: the window test is reversed (B.size(buf) <= size: only windows at least as long as the buffer)
+why: operand swap
+-  ComplexTestStruct_dwgo(U32.is_le(size, n), buf, size)
++  ComplexTestStruct_dwgo(U32.is_le(n, size), buf, size)

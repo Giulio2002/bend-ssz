@@ -1,0 +1,281 @@
+## ROUND 4, family c01-c03: cached list trees of kinds no earlier round mutated (Fulu_list_Deposit_16 with the R3-01 move-out take, Fulu_list_Eth1Data_2048), and container roots no earlier round touched (ProgressiveTestStruct, ProgressiveBitsStruct, Fulu ExecutionRequests / Deposit / SyncAggregate / HistoricalSummary)
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_ctook,l16_Deposit_ctake,l16_Deposit_cget_in,l16_Deposit_cached_root
+spec: hash_tree_root(List[Deposit, 16]) = mix_in_length(merkleize(roots of the elements, limit 16), n); a cached root must equal the root of the object it holds after every operation
+fault: ctake moves the element out without marking its slot dirty (the cached root keeps the old element's leaf)
+why: a getter treated as read-only although it moves the element out (R3-01)
+-(l16_Deposit_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
++(l16_Deposit_Cached{arr, n, d, nodes, lo, hi}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_ctake,l16_Deposit_cget_in
+spec: same; an index at or past the length is not an element
+fault: ctake accepts index n (one past the end: it moves out slot n and marks it dirty)
+why: <= for <
+-l16_Deposit_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)
++l16_Deposit_cget_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i)
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_ctook,l16_Deposit_ctake,l16_Deposit_cget_in
+spec: same
+fault: ctake marks only the low end of the dirty window (hi is not raised to i)
+why: one bound of an interval forgotten
+-(l16_Deposit_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
++(l16_Deposit_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), hi}, Some{FuluDeposit_d.Deposit_bx_unbox(v)})
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_cset_in,l16_Deposit_cset
+spec: same
+fault: cset lowers lo to i with the pick reversed (lo = max(lo, i)): a set below the window is not rehashed
+why: min/max confused
+-    case True{}: (l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, i, FuluDeposit_d.Deposit_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l16_Deposit_Cached{Array.set(O.Boxed<FuluDeposit_d.Deposit>, arr, i, FuluDeposit_d.Deposit_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), i, lo), O.pick(U32.is_le(i, hi), hi, i)}, True{})
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_capp_fit,l16_Deposit_capp
+spec: same
+fault: capp (fitting case) does not raise hi to the appended slot n
+why: one bound of an interval forgotten
+-O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
++O.pick(U32.is_le(lo, n), lo, n), hi}
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_capp_fit,l16_Deposit_capp
+spec: same
+fault: capp that grows the tree marks only the new slot dirty (lo = n, hi = n) although the new node array is all zero
+why: the growth case copied from the fitting case
+-(n + 1 : U32), 1n+d, l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++(n + 1 : U32), 1n+d, l16_Deposit_dfill(2n+d), n, n}
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_capp_fit,l16_Deposit_capp
+spec: same
+fault: capp that grows the tree keeps the depth d (the n + 1 elements do not fit 2^d leaves)
+why: forgot to deepen
+-(n + 1 : U32), 1n+d, l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++(n + 1 : U32), d, l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_croot_pad,l16_Deposit_cached_root
+spec: List[Deposit, 16]: the element tree is padded with zero subtrees up to depth log2(16) = 4
+fault: the cached root pads to depth 5
+why: limit depth off by one (ceil(log2(16 + 1)))
+-l16_Deposit_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++l16_Deposit_pad_go(hl, Nat.sub(5n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_cache_fin,l16_Deposit_cache,l16_Deposit_cached_root
+spec: same
+fault: a fresh cache's dirty window stops one slot short (hi = 2^d - 2): the last leaf is never hashed
+why: off by one in an inclusive bound
+-  l16_Deposit_Cached{arr, n, d, l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l16_Deposit_Cached{arr, n, d, l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 2 : U32)}
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_leaves,l16_Deposit_leaf_step,l16_Deposit_sweep
+spec: leaves past the length are zero chunks
+fault: the leaf at index n is hashed as an element (slot n holds the empty box)
+why: <= for <
+-l16_Deposit_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++l16_Deposit_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_croot_fin,l16_Deposit_cached_root
+spec: same
+fault: after a root the dirty window is reset to (0, 0) instead of empty (n, 0): slot 0 is rehashed next time (designed equivalent: extra work, same root)
+why: a different "empty"
+-  (h, (l16_Deposit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++  (h, (l16_Deposit_Cached{arr, n, d, nodes, 0, 0}, O.mix_len(hl, r, n)))
+=== r4-c01-cache-take
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_croot_fin,l16_Deposit_cached_root
+spec: same
+fault: after a root the dirty window is left as it was before the root was taken (kept dirty: designed equivalent, the next root rehashes it)
+why: forgot to clear
+-  (h, (l16_Deposit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++  (h, (l16_Deposit_Cached{arr, n, d, nodes, 0, (O.pow2u(d) - 1 : U32)}, O.mix_len(hl, r, n)))
+=== r4-c02-cache-eth1
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_croot_pad,l2048_Eth1Data_cached_root
+spec: List[Eth1Data, 2048]: the element tree is padded to depth 11
+fault: the cached root pads to depth 12
+why: limit depth off by one
+-l2048_Eth1Data_pad_go(hl, Nat.sub(11n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++l2048_Eth1Data_pad_go(hl, Nat.sub(12n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+=== r4-c02-cache-eth1
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_capp_fit,l2048_Eth1Data_capp
+spec: same
+fault: capp (fitting case) does not raise hi to the appended slot n
+why: one bound of an interval forgotten
+-O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
++O.pick(U32.is_le(lo, n), lo, n), hi}
+=== r4-c02-cache-eth1
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_cset,l2048_Eth1Data_cset_in
+spec: same
+fault: cset accepts index n (a set one past the end writes slot n and marks it dirty)
+why: <= for <
+-l2048_Eth1Data_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)
++l2048_Eth1Data_cset_in(U32.is_le(i, n), arr, n, d, nodes, lo, hi, i, v)
+=== r4-c02-cache-eth1
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_leaves,l2048_Eth1Data_leaf_step
+spec: leaves past the length are zero chunks
+fault: the leaf at index n is hashed as an element
+why: <= for <
+-l2048_Eth1Data_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++l2048_Eth1Data_leaf_step(hl, U32.is_le(i, n), (cap + i : U32), i, seg, ts))
+=== r4-c02-cache-eth1
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_cache_fin,l2048_Eth1Data_cache
+spec: same
+fault: a fresh cache starts clean (lo = 2^d - 1 + 1, hi = 0): nothing is hashed, the root is the zero tree
+why: initialised like the post-root state
+-  l2048_Eth1Data_Cached{arr, n, d, l2048_Eth1Data_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l2048_Eth1Data_Cached{arr, n, d, l2048_Eth1Data_dfill(1n+d), n, 0}
+=== r4-c03-container-roots
+type: ProgressiveTestStruct
+ops: root
+file: types/ProgressiveTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveTestStruct_fin,ProgressiveTestStruct_root
+spec: hash_tree_root(Container) = merkleize(field roots in declaration order)
+fault: fields C and D are exchanged in the tree
+why: field order
+-D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D))))
++D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_D, d_f_C))))
+=== r4-c03-container-roots
+type: ProgressiveTestStruct
+ops: root
+file: types/ProgressiveTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveTestStruct_fin,ProgressiveTestStruct_root
+spec: same
+fault: the 4 fields are hashed as a left-leaning chain H(H(H(A, B), C), D)
+why: a fold instead of a balanced tree
+-D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D))))
++D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), d_f_C), d_f_D)))
+=== r4-c03-container-roots
+type: ProgressiveBitsStruct
+ops: root
+file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+sym: ProgressiveBitsStruct_g1_fin,ProgressiveBitsStruct_root
+spec: a container of 12 fields is merkleized as 16 chunks: fields 8..11 then 4 zero chunks (a zero subtree of depth 2)
+fault: the padding of the second half is the zero chunk (depth 0) instead of the depth-2 zero subtree
+why: wrong zero-hash level
+-D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), D.zero())))
+=== r4-c03-container-roots
+type: ProgressiveBitsStruct
+ops: root
+file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+sym: ProgressiveBitsStruct_g1_fin,ProgressiveBitsStruct_root
+spec: same
+fault: the padding of the second half is on the left of fields 8..11
+why: padding side
+-D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++D.node(hl, z2, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)))))
+=== r4-c03-container-roots
+type: ProgressiveBitsStruct
+ops: root
+file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+sym: ProgressiveBitsStruct_root
+spec: same
+fault: the two halves are exchanged at the top
+why: operand swap
+-D.node(hl, r0, r1)))
++D.node(hl, r1, r0)))
+=== r4-c03-container-roots
+type: ProgressiveBitsStruct
+ops: root
+file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+sym: ProgressiveBitsStruct_g0_fin,ProgressiveBitsStruct_root
+spec: same
+fault: fields G and H are exchanged
+why: field order
+-D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, d_f_H)))))
++D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_H, d_f_G)))))
+=== r4-c03-container-roots
+type: FuluExecutionRequests
+ops: root
+file: types/FuluExecutionRequests_hashtreeroot_generated.bend
+sym: ExecutionRequests_fin,ExecutionRequests_root
+spec: a container of 3 fields is merkleized as 4 chunks, the 4th a zero chunk
+fault: the 4th chunk repeats the 3rd field
+why: padding by duplication (as in some Merkle tree libraries)
+-D.node(hl, d_consolidations, D.zero()))))
++D.node(hl, d_consolidations, d_consolidations))))
+=== r4-c03-container-roots
+type: FuluExecutionRequests
+ops: root
+file: types/FuluExecutionRequests_hashtreeroot_generated.bend
+sym: ExecutionRequests_fin,ExecutionRequests_root
+spec: same
+fault: deposits and withdrawals are exchanged
+why: field order
+-D.node(hl, D.node(hl, d_deposits, d_withdrawals), D.node(hl, d_consolidations, D.zero()))))
++D.node(hl, D.node(hl, d_withdrawals, d_deposits), D.node(hl, d_consolidations, D.zero()))))
+=== r4-c03-container-roots
+type: FuluDeposit
+ops: root
+file: types/FuluDeposit_hashtreeroot_generated.bend
+sym: Deposit_fin,Deposit_root
+spec: hash_tree_root(Deposit) = H(root(proof), root(data))
+fault: the two fields are exchanged
+why: field order
+-D.node(hl, d_proof, d_data)))
++D.node(hl, d_data, d_proof)))
+=== r4-c03-container-roots
+type: FuluSyncAggregate
+ops: root
+file: types/FuluSyncAggregate_hashtreeroot_generated.bend
+sym: SyncAggregate_fin,SyncAggregate_root
+spec: hash_tree_root(SyncAggregate) = H(root(bits), root(signature))
+fault: the two fields are exchanged
+why: field order
+-  (h, D.node(hl, d_sync_committee_bits, d_sync_committee_signature))
++  (h, D.node(hl, d_sync_committee_signature, d_sync_committee_bits))
+=== r4-c03-container-roots
+type: FuluHistoricalSummary
+ops: root
+file: types/FuluHistoricalSummary_hashtreeroot_generated.bend
+sym: HistoricalSummary_fin,HistoricalSummary_root
+spec: hash_tree_root(HistoricalSummary) = H(block_summary_root, state_summary_root)
+fault: the two fields are exchanged
+why: field order
+-  (h, D.node(hl, d_block_summary_root, d_state_summary_root))
++  (h, D.node(hl, d_state_summary_root, d_block_summary_root))

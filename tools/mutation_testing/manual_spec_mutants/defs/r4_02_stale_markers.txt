@@ -1,0 +1,402 @@
+## ROUND 4, family a07: stale marker literals in the invalid branch of the generated checked writers (X_pk) that the marker_poison laws (proofs/slop/validity/*_marker_poison_generated.bend) and the encoder_constants laws do not list
+=== r4-a07-stale-marker-writer
+type: FuluAttestation
+ops: encode
+file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+sym: bits131072_pk,bits131072_putk,bits131072_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluPendingAttestation
+ops: encode
+file: types/Fulu_bitlist_2048_encode_ssz_generated.bend
+sym: bits2048_pk,bits2048_putk,bits2048_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: bitlist_1280
+ops: encode
+file: types/bitlist_1280_encode_ssz_generated.bend
+sym: bits1280_pk,bits1280_putk,bits1280_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: bitlist_256
+ops: encode
+file: types/bitlist_256_encode_ssz_generated.bend
+sym: bits256_pk,bits256_putk,bits256_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_pk,l1_AttesterSlashing_putk,l1_AttesterSlashing_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_pk,l10_ProgressiveSingleFieldContainerTestStruct_putk,l10_ProgressiveSingleFieldContainerTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_pk,l1048576_bl1073741824_putk,l1048576_bl1073741824_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_pk,l1099511627776_Validator_putk,l1099511627776_Validator_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
+sym: l134217728_PendingDeposit_pk,l134217728_PendingDeposit_putk,l134217728_PendingDeposit_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Deposit_16_encode_ssz_generated.bend
+sym: l16_Deposit_pk,l16_Deposit_putk,l16_Deposit_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_ProposerSlashing_16_encode_ssz_generated.bend
+sym: l16_ProposerSlashing_pk,l16_ProposerSlashing_putk,l16_ProposerSlashing_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_SignedBLSToExecutionChange_16_encode_ssz_generated.bend
+sym: l16_SignedBLSToExecutionChange_pk,l16_SignedBLSToExecutionChange_putk,l16_SignedBLSToExecutionChange_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_pk,l16_Withdrawal_putk,l16_Withdrawal_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
+sym: l16_WithdrawalRequest_pk,l16_WithdrawalRequest_putk,l16_WithdrawalRequest_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_HistoricalSummary_16777216_encode_ssz_generated.bend
+sym: l16777216_HistoricalSummary_pk,l16777216_HistoricalSummary_putk,l16777216_HistoricalSummary_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_ConsolidationRequest_2_encode_ssz_generated.bend
+sym: l2_ConsolidationRequest_pk,l2_ConsolidationRequest_putk,l2_ConsolidationRequest_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Eth1Data_2048_encode_ssz_generated.bend
+sym: l2048_Eth1Data_pk,l2048_Eth1Data_putk,l2048_Eth1Data_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_PendingConsolidation_262144_encode_ssz_generated.bend
+sym: l262144_PendingConsolidation_pk,l262144_PendingConsolidation_putk,l262144_PendingConsolidation_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Attestation_8_encode_ssz_generated.bend
+sym: l8_Attestation_pk,l8_Attestation_putk,l8_Attestation_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_DepositRequest_8192_encode_ssz_generated.bend
+sym: l8192_DepositRequest_pk,l8192_DepositRequest_putk,l8192_DepositRequest_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_pk,pl_pl_VarTestStruct_putk,pl_pl_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/proglist_ProgressiveVarTestStruct_encode_ssz_generated.bend
+sym: pl_ProgressiveVarTestStruct_pk,pl_ProgressiveVarTestStruct_putk,pl_ProgressiveVarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_pk,pl_SmallTestStruct_putk,pl_SmallTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_VarTestStruct_pk,pl_VarTestStruct_putk,pl_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_pk,v2_VarTestStruct_putk,v2_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_FixedTestStruct_4_encode_ssz_generated.bend
+sym: v4_FixedTestStruct_pk,v4_FixedTestStruct_putk,v4_FixedTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker, not poisoned under NMAX) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: FuluAttestation
+ops: encode
+file: types/Fulu_bitlist_131072_encode_ssz_generated.bend
+sym: bits131072_pk,bits131072_putk,bits131072_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_pk,v2_VarTestStruct_putk,v2_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_FixedTestStruct_4_encode_ssz_generated.bend
+sym: v4_FixedTestStruct_pk,v4_FixedTestStruct_putk,v4_FixedTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_pk,pl_SmallTestStruct_putk,pl_SmallTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_pk,l16_Withdrawal_putk,l16_Withdrawal_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: FuluExecutionRequests
+ops: encode
+file: types/Fulu_list_ConsolidationRequest_2_encode_ssz_generated.bend
+sym: l2_ConsolidationRequest_pk,l2_ConsolidationRequest_putk,l2_ConsolidationRequest_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 0 (a valid zero count) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 0))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_FixedTestStruct_4_encode_ssz_generated.bend
+sym: v4_FixedTestStruct_pk,v4_FixedTestStruct_putk,v4_FixedTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 4294967264 (NMAX itself, the largest size that is not poisoned) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 4294967264))
+=== r4-a07-stale-marker-writer
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_VarTestStruct_pk,pl_VarTestStruct_putk,pl_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 4294967264 (NMAX itself, the largest size that is not poisoned) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 4294967264))
+=== r4-a07-stale-marker-writer
+type: FuluPendingAttestation
+ops: encode
+file: types/Fulu_bitlist_2048_encode_ssz_generated.bend
+sym: bits2048_pk,bits2048_putk,bits2048_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 4294967264 (NMAX itself, the largest size that is not poisoned) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 4294967264))
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_pk,v2_VarTestStruct_putk,v2_VarTestStruct_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 4294967265 (NMAX + 1: still poisoned, designed equivalent) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 4294967265))
+## controls: writers that ARE listed by a marker law (the law must kill these)
+=== r4-a07-stale-marker-writer
+type: ComplexTestStruct
+ops: encode
+file: types/list_uint16_128_encode_ssz_generated.bend
+sym: l128_u16_pk,l128_u16_putk,l128_u16_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker (control: listed writer)) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: progbitlist
+ops: encode
+file: types/progbitlist_encode_ssz_generated.bend
+sym: pbits_pk,pbits_putk,pbits_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker (control: listed writer)) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+sym: CompatibleUnionA_pk,CompatibleUnionA_putk,CompatibleUnionA_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker (control: listed writer)) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
+=== r4-a07-stale-marker-writer
+type: BitsStruct
+ops: encode
+file: types/bitlist_5_encode_ssz_generated.bend
+sym: bits5_pk,bits5_putk,bits5_putv
+spec: serialize(value) is defined only for a valid value (a list within its limit, every element valid); the object API's checked writer must refuse an invalid value: its flag for an invalid child must be the marker 4294967295 (above NMAX = 2^32 - 32), which every enclosing writer keeps (padd saturates) and is_poisoned tests
+fault: the invalid branch of the checked writer reports 2147483648 (the old 2^31 marker (control: listed writer)) instead of the marker 4294967295
+why: a stale marker literal in a generated writer (the class of R3 bug): the generator kept the old literal after the marker moved from 2^31 to 2^32 - 1
+-    case False{}: (out, (o, 4294967295))
++    case False{}: (out, (o, 2147483648))
