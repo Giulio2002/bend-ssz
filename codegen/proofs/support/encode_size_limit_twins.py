@@ -285,7 +285,7 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         a, b = ab
         blk = t[a:b]
         nb = blk.replace('def goW(', 'def goO(', 1).replace('+h: {OKT(', '+h: {OKTW(', 1)
-        mh = re.search(r' \+hs31: \{Nat\.is_lt\((.*?), VB\.pw\(31n\)\) == True\{\} : Bool\},', nb)
+        mh = re.search(r' \+hs31: \{Nat\.is_le\((.*?), U32\.to_nat\(VB\.NMAX\(\)\)\) == True\{\} : Bool\},', nb)
         if mh:
             X = mh.group(1)
             nb = nb.replace(mh.group(0), '', 1)

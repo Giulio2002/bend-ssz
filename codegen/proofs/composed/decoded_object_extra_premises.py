@@ -149,12 +149,12 @@ def prog_test_struct(lf):
             k = int(mk.group(1))
             if fname == 'var_winp_u8.bend':
                 return DR.WordsDec(e, any_=lambda kk: f'DZ.ct_dec({args[0]}, t, {args[3]}, {args[4]}, {kk}, {{==}}, hy{k})',
-                                   facts=[(r'Nat\.is_lt\(U32\.to_nat\(\w+\.len\(\w+\)\), VB\.pw\(31n\)\)', f'hl{k}')])
+                                   facts=[(r'Nat\.is_le\(U32\.to_nat\(\w+\.len\(\w+\)\), U32\.to_nat\(VB\.NMAX\(\)\)\)', f'hl{k}')])
             if fname == 'var_winp_pl_u64.bend':
                 Lw = args[4]
                 f = DR.u64_list_facts(Lw, f'{CH1}.CQ({Lw})', f'{CH1}.eLc(t, {args[2]}, {args[3]}, {Lw}, {hc(k)})', None, None, None, None, None)
                 return DR.WordsDec(e, any_=lambda kk: f'DZ.ct_dec({args[0]}, t, {args[3]}, {Lw}, {kk}, {{==}}, hy{k})',
-                                   facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == \w+\.e8\(\w+\.ucnt\(o\)\)', f['facts'][0][1]), (r'Nat\.is_lt\(U32\.to_nat\(\w+\.len\(\w+\)\), VB\.pw\(31n\)\)', f'hl{k}')])
+                                   facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == \w+\.e8\(\w+\.ucnt\(o\)\)', f['facts'][0][1]), (r'Nat\.is_le\(U32\.to_nat\(\w+\.len\(\w+\)\), U32\.to_nat\(VB\.NMAX\(\)\)\)', f'hl{k}')])
             if fname == 'var_winx_pl_SmallTestStruct.bend':
                 return DR.FxWords(e, {('e2e_encld.bend', 'PRL_pl_SmallTestStruct'): lambda _: f'{DFL}.sdl({a}, hl{k}, {hc(k)})',
                                       ('root_gtypes2_light.bend', 'rep_pl_SmallTestStruct'): lambda s_: f'{DFL}.rep({a}, {s_}, hl{k}, {hc(k)})'})
@@ -237,7 +237,7 @@ def prog_complex_test_struct(lf):
                 f = DR.u64_list_facts(Lw, f'{CH2}.CQ({Lw})', f'{CH2}.eLc(t, {args[2]}, {args[3]}, {Lw}, {hc(k)})', None, None, None, None, None)
                 return DR.WordsDec(e, any_=lambda kk: f'DZ.ct_dec({args[0]}, t, {args[3]}, {Lw}, {kk}, {{==}}, hy{k})',
                                    facts=[(r'U32\.to_nat\(\w+\.len\(o\)\) == \w+\.e8\(\w+\.ucnt\(o\)\)', f['facts'][0][1]),
-                                          (r'Nat\.is_lt\(U32\.to_nat\(\w+\.len\(\w+\)\), VB\.pw\(31n\)\)', f'hh{k}')])
+                                          (r'Nat\.is_le\(U32\.to_nat\(\w+\.len\(\w+\)\), U32\.to_nat\(VB\.NMAX\(\)\)\)', f'hh{k}')])
             if fname == 'var_winx_pl_SmallTestStruct.bend':
                 return DR.FxWords(e, {('e2e_encld.bend', 'PRL_pl_SmallTestStruct'): lambda _: f'{DFL}.sdl({a}, hh{k}, {hc(k)})',
                                       ('root_gtypes2_light.bend', 'rep_pl_SmallTestStruct'): lambda s_: f'{DFL}.rep({a}, {s_}, hh{k}, {hc(k)})'})

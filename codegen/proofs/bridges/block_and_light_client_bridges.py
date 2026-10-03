@@ -4643,7 +4643,7 @@ def venc_ep(R, X, mode='enc'):
     assert len(okt) == 7, okt
     # the OKW laws: the encoding below 2^31 bytes (ENDC's sum, a strict bound; no 4 * 2^28 premise)
     bnd = 'Nat.is_le(' + _re.search(r'^def ENDC\(.*?\) -> Nat: (.*)$', it, _re.M).group(1) + ', U32.to_nat(VB.NMAX()))'
-    assert bnd.startswith('Nat.is_lt(Nat.add(') and 'ENDC' not in bnd
+    assert bnd.startswith('Nat.is_le(Nat.add(') and 'ENDC' not in bnd
     szok = (bnd.replace('LY.LN(EB.ENC(m_extra_data))', f'U32.to_nat(WO.len({pj(10)}))')
                .replace('LY.LN(ET.ENCL(t_transactions, N_transactions))', f'TX.TXL({pj(13)})')
                .replace('LY.LN(EW_l16_Withdrawal.ENCL_l16_Withdrawal(A_withdrawals, N_withdrawals))', f'TX.WLL({pj(14)})'))

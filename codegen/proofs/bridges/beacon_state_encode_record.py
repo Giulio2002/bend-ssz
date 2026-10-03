@@ -707,7 +707,7 @@ BSL_OK = {
 HM = '{Nat.is_le(U32.to_nat(WO_L.len(po)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
 NMAXD = ('# n below 2^31 is within the object API\'s limit NMAX\n'
          'def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
-         '  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))\n\n')
+         '  h31\n\n')
 
 
 def _bsl_body_d():
@@ -1109,7 +1109,7 @@ def _vs_sizes_okw(it, Kt, ito, KWN, fnames, PT, out):
     oktn = [re.sub(r'K\.F_(\w+)\(wR\)', r'\1', c).replace('OB.ENDCs(wR,', 'ENDCs(wR,').replace('ENDCs(wR,', f'CI.ENDCs(K.KW{{{KWargs}}},') for c in okt]
     fact = []
     for c in oktn:
-        if c.startswith('Nat.is_lt(CI.ENDCs('):
+        if c.startswith('Nat.is_le(CI.ENDCs('):
             fact.append('hB'); continue
         if 'K.OK_bv4(' in c:
             fact.append('hv4a'); continue

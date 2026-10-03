@@ -754,6 +754,10 @@ def le_pw30_nmax(+x: Nat, +h: {Nat.is_le(x, pw(30n)) == True{} : Bool}) -> {Nat.
   F.nat__le_trans(x, pw(30n), U32.to_nat(NMAX()), h,
     le_gen(F.u32__pow2u(30n), NMAX(), pw(30n), U32.to_nat(NMAX()), F.u32__pow2u_value(30n, {==}), {==}, {==}))
 
+def le31_nmax(+x: Nat, +h: {Nat.is_le(x, pw(31n)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool}:
+  F.nat__le_trans(x, pw(31n), U32.to_nat(NMAX()), h,
+    le_gen(F.u32__pow2u(31n), NMAX(), pw(31n), U32.to_nat(NMAX()), F.u32__pow2u_value(31n, {==}), {==}, {==}))
+
 # Nat-form bounds from x <= NMAX (as le_nmax, nmax_lt, without the U32 comparison).
 def le_nmaxn(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool})
     -> {Nat.is_le(Nat.add(31n, x), U32.to_nat(UMAX())) == True{} : Bool}:

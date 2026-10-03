@@ -3022,7 +3022,7 @@ def mwp_complex(R, X, D):
     lens = {'LY.LN(EX_l128_u16.ENC(mB))': (M2B, 'lB'), 'LY.LN(EX_bl256.ENC(mD))': (LD, 'lD'),
             'LY.LN(EX_VarTestStruct.ENC(mE))': (EB, 'lE'), 'LY.LN(EX_v2_VarTestStruct.ENC(mG))': (LB, 'lG')}
     if om:   # OKTW's bound: ENDC(..) < 2^31 (ENDC's body is the sum)
-        eb = re.search(r'Nat\.is_lt\((ENDC\(.*?\)), VB\.pw\(31n\)\)', okt)
+        eb = re.search(r'Nat\.is_le\((ENDC\(.*?\)), U32\.to_nat\(VB\.NMAX\(\)\)\)', okt)
         ENDCC = eb.group(1)
         endb = re.search(r'^def ENDC\((.*?)\) -> Nat: (.*)$', ci, re.M).group(2)
         for a_, b_ in ren.items():
@@ -5765,7 +5765,7 @@ def prog_q(X, D, dm=False):
         elif f[0] == 'pb':
             lens[f'LY.LN({mod}.ENC(m{k}))'] = (None, f'l{k}')
     if dm:   # OKTW's bound: ENDC(..) < 2^31 (ENDC's body is the sum of the fixed part and the fields' bytes)
-        eb = re.search(r'Nat\.is_lt\((ENDC\(.*?\)), VB\.pw\(31n\)\)', okt)
+        eb = re.search(r'Nat\.is_le\((ENDC\(.*?\)), U32\.to_nat\(VB\.NMAX\(\)\)\)', okt)
         ENDCC = eb.group(1)
         endb = re.search(r'^def ENDC\((.*?)\) -> Nat: (.*)$', ci, re.M).group(2)
         for a_, b_ in ren.items():
@@ -6101,7 +6101,7 @@ def prog_q2(X, D, dm=False):
         steps.append(f'  %{eqs[p][1]} : {{RT.v_{X}(CI_{X}.TH({MW})) == {seq(it)} : S.Value}}')
     # the total bound: a closed start c0, closed field bounds (acc), and unbounded ones of P + 1 (acu), then fin
     if dm:   # OKTW's bound: ENDC(..) < 2^31 (ENDC's body: the fixed part and the fields' bytes)
-        ENDCC = re.search(r'Nat\.is_lt\((ENDC\(.*?\)), VB\.pw\(31n\)\)', okt).group(1)
+        ENDCC = re.search(r'Nat\.is_le\((ENDC\(.*?\)), U32\.to_nat\(VB\.NMAX\(\)\)\)', okt).group(1)
         endb = re.search(r'^def ENDC\((.*?)\) -> Nat: (.*)$', ci, re.M).group(2)
         for a_, b_ in ren.items():
             endb = re.sub(rf'\b{a_}\b', b_, endb)
@@ -6637,9 +6637,9 @@ def p1ltk(+x: Nat, +k: Nat, +hl: {Nat.is_le(x, Nat.add(VB.pw(k), 1n)) == True{} 
   +h2 = FD.nat__le_trans(x, Nat.add(1n, VB.pw(k)), Nat.double(VB.pw(k)), h1, FD.nat__double_succ_le(VB.pw(k), FD.nat__pow2_pos(k)))
   FD.nat__le_lt_trans(x, VB.pw(1n+k), VB.pw(3n+k), h2, FD.nat__lt_le_trans(VB.pw(1n+k), VB.pw(2n+k), VB.pw(3n+k), FD.nat__pow2_lt_succ(1n+k), FD.nat__pow2_mono(2n+k, 3n+k, FD.nat__lt_le(2n+k, 3n+k, FD.nat__lt_succ(2n+k)))))
 # x within P1 bytes is below 2^31 (and within the object API's limit)
-def p1lt(+x: Nat, +hl: {Nat.is_le(x, P1()) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}: p1ltk(x, 28n, hl)
+def p1lt(+x: Nat, +hl: {Nat.is_le(x, P1()) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(VB.NMAX())) == True{} : Bool}: VB.le_pw31_nmax(x, p1ltk(x, 28n, hl))
 def nmaxD(+n: U32, +h31: {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())) == True{} : Bool}:
-  FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), EMT.n31_N(n, h31))""", 1)
+  h31""", 1)
     t = t.replace('import ./e2e_encr', 'import ./e2e_emit.bend as EMT\nimport ./e2e_encr', 1)
     # (c2) the total at a strict 2^(3 + e) = 8 P: c + 1 <= P, at most 7 unbounded terms (a bit list's bytes count as two)
     FIND = """# the total within 2^(3 + e) = 8 P (P = 2^e), strictly: c + 1 <= P, at most 7 unbounded terms (e symbolic)

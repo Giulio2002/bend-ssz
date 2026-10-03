@@ -201,7 +201,7 @@ def totP(+R: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(R, 1n), P) == True{} : Bool})
 def tot29(+R: Nat, +q: Nat, +hq: {q == Nat.add(VB.pw(29n), 1n) : Nat}, +h: {Nat.is_lt(Nat.add(R, 1n), VB.pw(29n)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(R, q), U32.to_nat(VB.NMAX())) == True{} : Bool}:
   %Equal.sym(Nat, q, Nat.add(VB.pw(29n), 1n), hq) : {Nat.is_le(Nat.add(R, _), U32.to_nat(VB.NMAX())) == True{} : Bool}
-  totP(R, VB.pw(29n), h)
+  VB.le_pw31_nmax(Nat.add(R, Nat.add(VB.pw(29n), 1n)), totP(R, VB.pw(29n), h))
 
 # 2x + 2k = 2(x + k), by x's structure (a big sum rewritten into doublings the checker compares level by level)
 def dadd2(+x: Nat, +k: Nat) -> {Nat.add(Nat.double(x), Nat.double(k)) == Nat.double(Nat.add(x, k)) : Nat}:
@@ -1130,7 +1130,7 @@ class Synth:
     def tot_qp(self, q):
         """{Nat.is_le(S, U32.to_nat(VB.NMAX())) == True} for a left-nested sum S with one progressive bit list's term QP(..) = 2^29 + 1:
         QP moved last (WT.swapq, one step per later term), then WT.tot29 with the rest compared in unary (small)"""
-        m = re.match(r'^\{Nat\.is_lt\((.*), ([\w.]+)\.pw\(31n\)\) == True\{\} : Bool\}$', q, re.S)
+        m = re.match(r'^\{Nat\.is_le\((.*), U32\.to_nat\(VB\.NMAX\(\)\)\) == True\{\} : Bool\}$', q, re.S)
         terms, cur = [], m.group(1)
         while True:
             ma = re.match(r'^Nat\.add\((.*)\)$', cur, re.S)
@@ -1162,10 +1162,10 @@ class Synth:
                       f'Equal.cong(Nat, Nat, z => Nat.add(z, {terms[k]}), {U[k - 1]}, Nat.add({W}, {Q}), {pf}), {step})')
             W = Wn
         S = U[-1]
-        PW = m.group(2)
+        PW = "VB"
         body = f'WT.tot29({W}, {Q}, {{==}}, {{==}})'
         if pf is not None:
-            body = (f'{FDA}.logic__subst(Nat, z => {{Nat.is_lt(z, {PW}.pw(31n)) == True{{}} : Bool}}, Nat.add({W}, {Q}), {S}, '
+            body = (f'{FDA}.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat({PW}.NMAX())) == True{{}} : Bool}}, Nat.add({W}, {Q}), {S}, '
                     f'Equal.sym(Nat, {S}, Nat.add({W}, {Q}), {pf}), {body})')
         nm = f'TOT{len(self.lemmas)}'
         self.lemmas[f'x5{nm}'] = f'def {nm}() -> {q}:\n  {body}'
@@ -1180,7 +1180,7 @@ class Synth:
 
     def eq(self, p, env):
         subj = env.get('__subj')
-        mt = re.match(r'^\{Nat\.is_lt\((.*), (\w+)\.pw\(31n\)\) == True\{\} : Bool\}$', p, re.S)
+        mt = re.match(r'^\{Nat\.is_le\((.*), U32\.to_nat\(VB\.NMAX\(\)\)\) == True\{\} : Bool\}$', p, re.S)
         if mt and re.search(r'(?<![\w.])QP\(', mt.group(1)) and env.get('__mod'):
             r = self.tot_qp(self.subst(env['__mod'], p, env))
             if r:
@@ -1252,7 +1252,7 @@ def szr_term(syn, mod, pt, at_d):
     """the total-size premise {Nat.is_le(SZR(U32.to_nat(F), t0, ..), U32.to_nat(VB.NMAX())) == True} with a large fixed part F:
     SZR adds on its first argument, so evaluating it walks F once per term; a lemma reassociates the sum to
     t0 + .. + tn + F first (F stays a U32 in the proof term)"""
-    m = re.match(r'\{Nat\.is_lt\(SZR\((.*)\), VB\.pw\(31n\)\) == True\{\} : Bool\}$', pt, re.S)
+    m = re.match(r'\{Nat\.is_le\(SZR\((.*)\), U32\.to_nat\(VB\.NMAX\(\)\)\) == True\{\} : Bool\}$', pt, re.S)
     if not m:
         return None
     args = split_top(m.group(1))

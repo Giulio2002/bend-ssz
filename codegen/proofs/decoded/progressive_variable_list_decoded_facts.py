@@ -173,8 +173,8 @@ def _dvp_header_and_eqe(c, P, H31, H31E, H31T, WSIG, X, ELT, VD_, vl):
                '  %Equal.sym(Nat, 31n, 2n+29n, {==}) : {VB.pw(_) == A.quad(VB.pw(29n)) : Nat}\n'
                '  {==}\n\n'
                'def lt31(+len: U32, +h: {Nat.is_lt(U32.to_nat(len), VB.pw(29n)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(len), U32.to_nat(VB.NMAX())) == True{} : Bool}:\n'
-               '  FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(len), z) == True{} : Bool}, A.quad(VB.pw(29n)), VB.pw(31n), Equal.sym(Nat, VB.pw(31n), A.quad(VB.pw(29n)), bbq()),\n'
-               '    FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(29n), A.quad(VB.pw(29n)), h, A.quad_ge(VB.pw(29n))))')
+               '  VB.le_pw31_nmax(U32.to_nat(len), FD.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(len), z) == True{} : Bool}, A.quad(VB.pw(29n)), VB.pw(31n), Equal.sym(Nat, VB.pw(31n), A.quad(VB.pw(29n)), bbq()),\n'
+               '    FD.nat__lt_le_trans(U32.to_nat(len), VB.pw(29n), A.quad(VB.pw(29n)), h, A.quad_ge(VB.pw(29n)))))')
             A_('')
     SUB = ('Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a)')
     EEP = '+hEE: {V.EE(True{}, t, x, off, len, a, b) == True{} : Bool}'
