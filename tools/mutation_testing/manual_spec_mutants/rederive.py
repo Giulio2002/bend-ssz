@@ -141,8 +141,16 @@ def aligned(lines, old_line, new_line, names):
     return None, 'no line of the file is like the removed line'
 
 
-def rederive(patch, commit):
+def tr(line):
+    """an old line read in the NMAX regime (docs/SIZE_LIMIT_DESIGN.md): the decode cap, then the marker"""
+    line = line.replace('U32.is_lt(size, 2147483648)', 'U32.is_le(size, 4294967264)')
+    return re.sub(r'\b2147483648\b', '4294967295', line)
+
+
+def rederive(patch, commit, translate=False):
     head, path, pairs = parse(patch.read_text())
+    if translate:      # the size-limit change: the marker 2^31 became 2^32 - 1 and the decode cap `size < 2^31` became `size <= NMAX`
+        pairs = [([tr(x) for x in rem], [tr(x) for x in add]) for rem, add in pairs]
     target = ROOT / path
     if not target.exists():
         return None, f'the file {path} is gone'
@@ -209,7 +217,7 @@ OVERRIDES = {
     'r2-h04-element-chunks/05': ('src/obj.bend', ['er_size'], [('(4 * ew : U32)', '(4 * ew + 4 : U32)')]),
     'r2-k01-cap-cnt/10': ('src/obj.bend', ['wrp_slow', 'wrp_cap', 'wrp_fit'], [('cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz))', 'chunks_of(n)')]),
     'r3-g01-append-guard/10': ('types/Fulu_list_Validator_1099511627776_def_generated.bend', ['l1099511627776_Validator_app_sz'], [('U32.is_lt(n, 17747798)', 'U32.is_le(n, 17747798)')]),
-    'r3-g01-append-guard/12': ('types/proglist_SmallTestStruct_def_generated.bend', ['pl_SmallTestStruct_app_sz'], [('U32.is_lt(n, 536870911)', 'U32.is_le(n, 536870911)')]),
+    'r3-g01-append-guard/12': ('types/proglist_SmallTestStruct_def_generated.bend', ['pl_SmallTestStruct_app_sz'], [('U32.is_lt(n, 1073741816)', 'U32.is_le(n, 1073741816)')]),
     'r3-g01-append-guard/15': ('types/Fulu_list_ProposerSlashing_16_def_generated.bend', ['l16_ProposerSlashing_app_sz'], [('U32.is_lt(n, 16)', 'U32.is_le(n, 16)')]),
 }
 
@@ -251,6 +259,10 @@ def main():
         new, why = from_override(p, commit)
         if new is None and why is None:
             new, why = rederive(p, commit)
+            if new is None:
+                alt, why2 = rederive(p, commit, True)
+                if alt is not None:
+                    new, why = alt.replace(f"# re-derived against {commit}", f"# re-derived against {commit} (the 2^31 marker / cap read as 2^32 - 1 / NMAX)"), None
         if new is None:
             failed.append((p, why))
             continue

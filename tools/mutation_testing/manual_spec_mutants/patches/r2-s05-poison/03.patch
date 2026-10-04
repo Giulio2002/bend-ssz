@@ -6,10 +6,11 @@
 # why: constant
 # file: src/obj.bend
 # sym: pz,padd
+# re-derived against 0b80524f4
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1551,3 +1551,3 @@
-     case True{}: 0
--    case False{}: 2147483648
-+    case False{}: 1073741824
+@@ -1721,3 +1721,3 @@
+     case 30: U32.is_eq((x .&. 3221225472 : U32), 0)
+-    case _: U32.is_eq((x .&. 2147483648 : U32), 0)
++    case _: U32.is_eq((x .&. 1073741824 : U32), 0)
  

@@ -6,10 +6,11 @@
 # why: unit
 # file: types/proglist_uint128_encode_ssz_generated.bend
 # sym: pl_u128_valid,words_ok
+# re-derived against 0b80524f4
 --- a/types/proglist_uint128_encode_ssz_generated.bend
 +++ b/types/proglist_uint128_encode_ssz_generated.bend
 @@ -21,3 +21,3 @@
  
--def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 16)
-+def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 8)
+-def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 16)
++def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 8)
  

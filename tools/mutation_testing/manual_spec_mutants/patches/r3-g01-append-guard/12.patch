@@ -6,11 +6,11 @@
 # why: guard boundary
 # sym: pl_SmallTestStruct_append,pl_SmallTestStruct_app_in
 # file: types/proglist_SmallTestStruct_def_generated.bend
-# re-derived against ead59a144 (by hand: the guard moved)
+# re-derived against 0b80524f4 (by hand: the guard moved)
 --- a/types/proglist_SmallTestStruct_def_generated.bend
 +++ b/types/proglist_SmallTestStruct_def_generated.bend
 @@ -132,3 +132,3 @@
    (arr, +sc) = pair
--  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 536870911), U32.is_le(n, sc)), arr, n, v)
-+  pl_SmallTestStruct_app_in(Bool.and(U32.is_le(n, 536870911), U32.is_le(n, sc)), arr, n, v)
+-  pl_SmallTestStruct_app_in(Bool.and(U32.is_lt(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
++  pl_SmallTestStruct_app_in(Bool.and(U32.is_le(n, 1073741816), U32.is_le(n, sc)), arr, n, v)
  

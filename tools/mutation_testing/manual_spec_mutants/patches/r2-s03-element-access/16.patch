@@ -6,10 +6,11 @@
 # why: ceil written as floor
 # file: src/obj.bend
 # sym: words_slice,sl_go,sl_fin
+# re-derived against 0b80524f4
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1337,3 +1337,3 @@
- def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words:
--  sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
-+  sl_fin(n, sl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
-     zeros_for(n), words_word(o, U32.shrn(p, 2n))))
+@@ -1581,3 +1581,3 @@
+     case True{}: (o, Words{zeros_for(0), 0})
+-    case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
++    case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn(n, 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
+       zeros_for(n), words_word(o, U32.shrn(p, 2n))))

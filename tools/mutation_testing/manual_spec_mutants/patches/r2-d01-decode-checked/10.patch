@@ -6,11 +6,11 @@
 # why: off-by-one in the bound
 # file: types/VarTestStruct_decode_ssz_generated.bend
 # sym: VarTestStruct_decode_checked,VarTestStruct_dchk,VarTestStruct_dgo
-# re-derived against ead59a144
+# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
 --- a/types/VarTestStruct_decode_ssz_generated.bend
 +++ b/types/VarTestStruct_decode_ssz_generated.bend
-@@ -86,3 +86,3 @@
+@@ -97,3 +97,3 @@
    (buf, +c) = pair
--  VarTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
-+  VarTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+-  VarTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  VarTestStruct_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967295)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
  

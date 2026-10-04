@@ -6,10 +6,11 @@
 # why: constant mistyped
 # file: types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
 # sym: l16_WithdrawalRequest_putn,l16_WithdrawalRequest_ptn_fin
+# re-derived against 0b80524f4
 --- a/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
 +++ b/types/Fulu_list_WithdrawalRequest_16_encode_ssz_generated.bend
 @@ -44,3 +44,3 @@
    (out, sq) = pair
--  (out, (sq, (n * 76 : U32)))
-+  (out, (sq, (n * 75 : U32)))
+-  (out, (sq, O.mulc(n, 76)))
++  (out, (sq, O.mulc(n, 75)))
  

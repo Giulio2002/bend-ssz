@@ -6,10 +6,11 @@
 # why: strictness
 # file: src/obj.bend
 # sym: bsz_pick,bits_sizek
+# re-derived against 0b80524f4
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1597,3 +1597,3 @@
+@@ -1856,3 +1856,3 @@
    (ws, +c) = pair
--  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
-+  (Bits{ws, k}, pick(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
  

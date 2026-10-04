@@ -431,3 +431,20 @@ Base: main 8bd2fc3e1. New generator `codegen/proofs/slop/decode_literal_laws.py`
 | d02/07, d02/08 (the reader reads f_D at f_C's offset) | `..._vlit_ok_marked`, `_rt_marked`, `_ok_all`, `_rt_all` | the one-law files time out (180 s): the mutated reader loops on the misplaced window; no literal found that makes it fail by name |
 | d01/01, 02, 04, 06, 07, 09, 10, d02/01, 02, d03/02, 03, d04/02 | none of the literals | survive: argued, not demonstrated by the auditor's probe; the literals of the window and order rules do not tell them apart |
 | equivalent / gap-unreachable as judged | a01/02, 04, 07, 10, a02/*, a04/01, b01/*, b02/08, 09, 10, b04/01, 02, 04, 05, b07/*, d02/06, d03/06, d06/03 | not targeted |
+
+### Round 6 regression audit (docs/audit/ROUND6_DROPPED.md): F2, F4, F6
+
+* **F2 (a deleted regress case: the unchecked encode of a list one element past NMAX / es)**: `writer_poison_laws.py` now states, for every list of
+  fixed-size composite elements (`<kp>_szf` with `O.mulc(n, es)`) whose bound fits an array (floor(NMAX / es) + 1 < 2^31 slots), that its size pass answers
+  the marker at floor(NMAX / es) + 1 elements and the size at floor(NMAX / es) (`<X>_serialize_vpoison_size_<kp>_above / _at`, 16 modules, e.g. List[PendingDeposit]
+  at 22369622 elements), and once per runtime that `O.out_donem` of the marker and of NMAX + 1 is the empty buffer and of a size the buffer of that size
+  (`vpoison_out_done`): together, the unchecked encode of the longer list is the empty buffer. The lists whose bound is 2^31 elements or more (one-byte
+  elements) cannot be held in an array (its U32 size wraps), so their bound is the storage test's.
+* **F6**: `decode_checked_2gib_refused` is deleted from `crash_fix_laws.py`: it held only through the storage test; the size cap above NMAX is
+  `<X>_decode_vchecked_nmax_wrap` / `_nmax_above` (round 4), for every name, on a symbolic buffer.
+* **F4 (stale mutant patches)**: on main 0b80524f4, 60 of the 1221 patches no longer applied. `rederive.py` now also reads an old line in the NMAX regime
+  (the marker 2^31 as 2^32 - 1, the decode cap `size < 2^31` as `size <= NMAX`) when the plain re-derivation fails, and the hand override for
+  r3-g01/12 follows the new guard (1073741816). 55 were re-derived (`docs/mutation_testing/rederived_patch_ids_r6.txt`); 5 cannot be
+  (`docs/mutation_testing/rederive_report_r6.md`): r2-s05/01, 02 mutate the old `padd` / `is_poisoned` definitions, which no longer exist
+  (the round-4 a01 / a03 patches mutate the new ones); r3-l01/06 (the size of a fixed-element list as `n * 44`, now `O.mulc`), r3-u01/05 (the union
+  size `m + 1`, now `O.padd`) and r4-a10/04 (the vector of variable elements' `O.padd((4 * n : U32), ..)`, now a different expression) changed shape.

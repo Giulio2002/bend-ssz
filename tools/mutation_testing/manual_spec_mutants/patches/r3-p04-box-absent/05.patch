@@ -6,10 +6,11 @@
 # why: poison dropped
 # file: types/FuluAttestation_encode_ssz_generated.bend
 # sym: Attestation_bx_putk,Attestation_bx_size,Attestation_bx_valid
+# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
 --- a/types/FuluAttestation_encode_ssz_generated.bend
 +++ b/types/FuluAttestation_encode_ssz_generated.bend
 @@ -80,3 +80,3 @@
      case O.BSome{v, rest}: Attestation_bx_pk_back(Attestation_putk(out, pos, v))
--    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+-    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 +    case O.BNone{}: (out, (O.BNone{}, 0))
  

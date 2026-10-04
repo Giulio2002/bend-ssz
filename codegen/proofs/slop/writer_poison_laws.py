@@ -21,6 +21,9 @@ Laws, all by computation:
   once per runtime, in proofs/slop/validity/<runtime>_<X>_poison_generated.bend (X the first name with a checked serializer):
     <X>_serialize_vpoison_pz_false / _pz_true    `O.pz(False) == 2^32 - 1`, `O.pz(True) == 0`
     <X>_serialize_vpoison_refused         `O.refused() == O.Encoded{False, B.empty()}`
+    <X>_serialize_vpoison_out_done        `O.out_donem` of the marker and of NMAX + 1 is the empty buffer, of a size the buffer of that size
+  for every list of fixed-size composite elements (es bytes each): <X>_serialize_vpoison_size_<kp>_above / _at: the size pass at floor(NMAX / es) + 1
+    elements is the marker, at floor(NMAX / es) the size (with out_done: the unchecked encode of the longer list is the empty buffer)
     <X>_serialize_vpoison_marks           `O.is_poisoned` at 0, 2^31, NMAX, NMAX + 1, 2^32 - 2, 2^32 - 1 (closed literals)
     <X>_serialize_vpoison_padd            `O.padd` below, at and across the marker and across the wrap (closed literals)
 
@@ -41,6 +44,7 @@ from codegen.proofs.slop.collection_guards import owners_of  # noqa: E402
 
 MARK, NMAX = 4294967295, 4294967264
 PK = re.compile(r'^def (\w+)_pk\(out: Array<U32>, \+pos: U32, pair: ([\w.<>, ]+?) & Bool\) -> Array<U32> & \(([\w.<>, ]+?) & U32\):', re.M)
+SZF = re.compile(r'^def (\w+)_szf\(\+n: U32, pair: Array<[\w.<>]+> & U32\) -> \w+_Seq & U32:\n  \(arr, \+c\) = pair\n  .*O\.mulc\(n, (\d+)\)', re.M)
 SENC = re.compile(r'^def (\w+)_senc_out\(([^)]*)\) -> ([^:\n]+):', re.M)
 SENC_PAIR = re.compile(r'^def (\w+)_senc_out\(pair: Array<U32> & \(([\w.<>, ]+) & U32\)\) -> ([^:\n]+):\n  \(out, r\) = pair\n  \(o, fl\) = r\n'
                        r'  \(o, O\.ser_done\(O\.is_poisoned\(fl\), (\d+), out\)\)$', re.M)
@@ -171,6 +175,22 @@ def outputs():
                     law(f'{X}_serialize_vrefuse_writer_above', f'{snd(call(NMAX + 1))} == O.refused() : O.Encoded'),
                     law(f'{X}_serialize_vrefuse_writer_ok', f'{snd(call(0))} == O.Encoded{{True{{}}, B.Buf{{Array.new(U32, 0n, 0), 0}}}} : O.Encoded')]
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_senc')] = module(tmod, X, 'the final poison test of the checked serializer', laws)
+        # lists of fixed-size composite elements: the size pass of a list one element past floor(NMAX / es) answers the marker (O.mulc), the list at the bound
+        # its size; with `O.out_donem` (stated once below) the unchecked encode of the longer list is the empty buffer (round 6 F2: regress case 58 had pinned it)
+        for m in SZF.finditer(tx.text):
+            kp, es = m.group(1), int(m.group(2))
+            owners = smallest(tx, owners_of(tx, kp) or holders(tx, kp))
+            if not owners or f'{kp}_fill' not in tx.blk:
+                continue
+            X = owners[0]
+            top = NMAX // es
+            if top + 2 > (1 << 31):       # an array of 2^31 slots or more has no U32 size: such a list cannot be held, the bound is the storage's
+                continue
+            seq = f'T.{kp}_Seq'
+            size = lambda n: f'Pair.snd({seq}, U32, T.{kp}_size({seq}{{T.{kp}_fill({(n + 1).bit_length()}n), {n}}}))'    # noqa: E731
+            laws = [law(f'{X}_serialize_vpoison_size_{kp}_above', f'{size(top + 1)} == {MARK} : U32'),
+                    law(f'{X}_serialize_vpoison_size_{kp}_at', f'{size(top)} == {top * es} : U32')]
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}_size_{kp}')] = module(tmod, X, f'the size pass of {kp} one element past NMAX / {es}', laws)
         every = re.findall(r'^def (\w+)_senc_out\(', tx.text, re.M)
         if sorted(every) != sorted(sencs):
             raise SystemExit(f'writer_poison_laws: checked serializers of an unexpected shape: {sorted(set(every) - set(sencs))[:5]}')
@@ -182,6 +202,7 @@ def outputs():
             laws = [law(f'{X}_serialize_vpoison_pz_false', f'O.pz(False{{}}) == {MARK} : U32'),
                     law(f'{X}_serialize_vpoison_pz_true', 'O.pz(True{}) == 0 : U32'),
                     law(f'{X}_serialize_vpoison_refused', 'O.refused() == O.Encoded{False{}, B.empty()} : O.Encoded'),
+                    law(f'{X}_serialize_vpoison_out_done', f'(O.out_donem({MARK}, Array.new(U32, 0n, 0)), (O.out_donem({NMAX + 1}, Array.new(U32, 0n, 0)), O.out_donem(8, Array.new(U32, 1n, 0)))) == (B.empty(), (B.empty(), B.Buf{{Array.new(U32, 1n, 0), 8}})) : B.Buf & (B.Buf & B.Buf)'),
                     law(f'{X}_serialize_vpoison_marks', f'{nest([f"O.is_poisoned({k})" for k in marks])} == '
                         f'{nest(["True{}" if k > NMAX else "False{}" for k in marks])} : {tnest("Bool", len(marks))}'),
                     law(f'{X}_serialize_vpoison_padd', f'{nest([f"O.padd({a}, {b})" for (a, b), _ in pads])} == {nest([str(r) for _, r in pads])} : {tnest("U32", len(pads))}')]

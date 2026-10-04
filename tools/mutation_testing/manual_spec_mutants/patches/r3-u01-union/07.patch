@@ -6,10 +6,11 @@
 # why: poison dropped
 # file: types/CompatibleUnionABCA_encode_ssz_generated.bend
 # sym: CompatibleUnionABCA_pk,CompatibleUnionABCA_putk,CompatibleUnionABCA_valid
+# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
 --- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
 +++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
 @@ -73,3 +73,3 @@
      case True{}: CompatibleUnionABCA_putn(out, pos, o)
--    case False{}: (out, (o, 2147483648))
+-    case False{}: (out, (o, 4294967295))
 +    case False{}: CompatibleUnionABCA_putn(out, pos, o)
  

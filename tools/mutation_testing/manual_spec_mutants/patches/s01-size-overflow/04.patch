@@ -5,10 +5,11 @@
 # fault: the size pass of a packed collection does not check that the storage holds the length
 # why: trusting the length field
 # file: src/obj.bend
+# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1583,3 +1583,3 @@
+@@ -1848,3 +1848,3 @@
    (ws, +c) = pair
--  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
 +  (Words{ws, n}, n)
  

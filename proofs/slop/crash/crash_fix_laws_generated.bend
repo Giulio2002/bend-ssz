@@ -63,9 +63,6 @@ def pl_u8_append_max_refused() -> {PlD.pl_u8_append(O.Words{Array.new(U32, 4n, 0
 def decode_checked_empty_buffer_refused() -> {CpR.Checkpoint_decode_checked(B.empty(), 40) == (B.empty(), None{}) : B.Buf & Maybe<&1, CpD.Checkpoint>}:
   {==}
 
-def decode_checked_2gib_refused() -> {CpR.Checkpoint_decode_checked(B.Buf{Array.new(U32, 1n, 0), 2147483648}, 2147483648) == (B.Buf{Array.new(U32, 1n, 0), 2147483648}, None{}) : B.Buf & Maybe<&1, CpD.Checkpoint>}:
-  {==}
-
 def decode_checked_inside_accepted() -> {CpR.Checkpoint_decode_checked(B.alloc(40), 40) == CpR.Checkpoint_decode(B.alloc(40), 40) : B.Buf & Maybe<&1, CpD.Checkpoint>}:
   {==}
 

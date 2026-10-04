@@ -6,10 +6,11 @@
 # why: poison dropped
 # file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
 # sym: l16_Withdrawal_szf,l16_Withdrawal_size
+# re-derived against 0b80524f4
 --- a/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
 +++ b/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
 @@ -14,3 +14,3 @@
    (arr, +c) = pair
--  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 44 : U32), 2147483648))
-+  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(0, c), (n * 44 : U32), 2147483648))
+-  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 4294967295))
++  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(0, c), O.mulc(n, 44), 4294967295))
  

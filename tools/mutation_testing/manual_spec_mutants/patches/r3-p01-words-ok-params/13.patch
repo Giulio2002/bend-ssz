@@ -6,10 +6,11 @@
 # why: unit
 # file: types/Fulu_list_uint64_1099511627776_encode_ssz_generated.bend
 # sym: l1099511627776_u64_valid,words_ok
+# re-derived against 0b80524f4
 --- a/types/Fulu_list_uint64_1099511627776_encode_ssz_generated.bend
 +++ b/types/Fulu_list_uint64_1099511627776_encode_ssz_generated.bend
 @@ -21,3 +21,3 @@
  
--def l1099511627776_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 8)
-+def l1099511627776_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)
+-def l1099511627776_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 8)
++def l1099511627776_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 4)
  

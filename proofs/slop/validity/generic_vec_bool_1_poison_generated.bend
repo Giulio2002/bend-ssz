@@ -17,6 +17,10 @@ def vec_bool_1_serialize_vpoison_refused()
     -> {O.refused() == O.Encoded{False{}, B.empty()} : O.Encoded}:
   {==}
 
+def vec_bool_1_serialize_vpoison_out_done()
+    -> {(O.out_donem(4294967295, Array.new(U32, 0n, 0)), (O.out_donem(4294967265, Array.new(U32, 0n, 0)), O.out_donem(8, Array.new(U32, 1n, 0)))) == (B.empty(), (B.empty(), B.Buf{Array.new(U32, 1n, 0), 8})) : B.Buf & (B.Buf & B.Buf)}:
+  {==}
+
 def vec_bool_1_serialize_vpoison_marks()
     -> {(O.is_poisoned(0), (O.is_poisoned(2147483648), (O.is_poisoned(4294967264), (O.is_poisoned(4294967265), (O.is_poisoned(4294967294), O.is_poisoned(4294967295)))))) == (False{}, (False{}, (False{}, (True{}, (True{}, True{}))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool)))))}:
   {==}

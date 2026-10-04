@@ -9,8 +9,8 @@ proofs/slop/crash/crash_fix_laws_generated.bend (one module; the objects are tin
          64-byte cell, and append of an empty cell, each return the list unchanged and False; a 2048-byte cell is accepted.
   CH-04  a list that claims 2^32 - 1 elements is full: append to a progressive bit list, to Bitlist[2048] and to a progressive
          byte list returns the list unchanged and False (the guard `n + 1 <= limit` wrapped to 0 there and accepted).
-  CH-05, CH-06  the checked decoder refuses a window larger than its buffer and a window of 2^31 bytes or more, and accepts a
-         window inside the buffer.
+  CH-05, CH-06  the checked decoder refuses a window larger than its buffer and accepts a window inside the buffer (the size cap above NMAX is
+         `<X>_decode_vchecked_nmax_wrap / _nmax_above` of decode_checked_laws.py, for every name; the old law at 2^31 bytes held only through the storage test).
   CH-10  serialize(default) of ComplexTestStruct, whose default holds a vector of variable-size elements, is accepted and has the
          spec's 100 bytes (the absent boxes of the default used to leave 14 bytes unwritten).
 
@@ -97,9 +97,6 @@ def pl_u8_append_max_refused() -> {{PlD.pl_u8_append(O.Words{{Array.new(U32, 4n,
 
 # ---- CH-05, CH-06: the checked decoder ----
 def decode_checked_empty_buffer_refused() -> {{CpR.Checkpoint_decode_checked(B.empty(), 40) == (B.empty(), None{{}}) : B.Buf & Maybe<&1, CpD.Checkpoint>}}:
-  {{==}}
-
-def decode_checked_2gib_refused() -> {{CpR.Checkpoint_decode_checked(B.Buf{{Array.new(U32, 1n, 0), 2147483648}}, 2147483648) == (B.Buf{{Array.new(U32, 1n, 0), 2147483648}}, None{{}}) : B.Buf & Maybe<&1, CpD.Checkpoint>}}:
   {{==}}
 
 def decode_checked_inside_accepted() -> {{CpR.Checkpoint_decode_checked(B.alloc(40), 40) == CpR.Checkpoint_decode(B.alloc(40), 40) : B.Buf & Maybe<&1, CpD.Checkpoint>}}:

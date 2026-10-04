@@ -6,10 +6,11 @@
 # why: new length computed from the old
 # file: types/bytelist_256_def_generated.bend
 # sym: bl256_append,bl256_grow,words_fit,words_resize
+# re-derived against 0b80524f4
 --- a/types/bytelist_256_def_generated.bend
 +++ b/types/bytelist_256_def_generated.bend
-@@ -51,3 +51,3 @@
+@@ -56,3 +56,3 @@
    match ok:
--    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
-+    case True{}: bl256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 0 : U32) * 1 : U32)), n, v)
+-    case True{}: bl256_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: bl256_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 0 : U32) * 1 : U32)), n, v)
      case False{}: (o, False{})

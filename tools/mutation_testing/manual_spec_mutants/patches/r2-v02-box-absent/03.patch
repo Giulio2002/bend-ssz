@@ -6,10 +6,11 @@
 # why: poison constant forgotten
 # file: types/FuluIndexedAttestation_encode_ssz_generated.bend
 # sym: IndexedAttestation_bx_valid,IndexedAttestation_bx_putk
+# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
 --- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
 +++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
 @@ -78,3 +78,3 @@
      case O.BSome{v, rest}: IndexedAttestation_bx_pk_back(IndexedAttestation_putk(out, pos, v))
--    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+-    case O.BNone{}: (out, (O.BNone{}, 4294967295))
 +    case O.BNone{}: (out, (O.BNone{}, 0))
  
