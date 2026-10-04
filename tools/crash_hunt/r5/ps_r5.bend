@@ -26,7 +26,7 @@ def txs(+t: U32) -> TX.l1048576_bl1073741824_Seq:
   a1(TX.l1048576_bl1073741824_append(a1(TX.l1048576_bl1073741824_append(a1(TX.l1048576_bl1073741824_append(a1(TX.l1048576_bl1073741824_append(
     TX.l1048576_bl1073741824_default(), O.Words{big(), part(t, 0)})), O.Words{big(), part(t, 1)})), O.Words{big(), part(t, 2)})), O.Words{big(), part(t, 3)}))
 
-def sline(l: String, +m: U32, ok: Bool) -> String: l ++ "_size=" ++ U32.show(m) ++ " " ++ l ++ "_valid=" ++ O.pick_str(ok) ++ " "
+def sline(l: String, +m: U32, ok: Bool) -> String: l ++ "_size=" ++ U32.show(m) ++ " valid=" ++ O.pick_str(ok) ++ " "
 
 def ser_sz(ok: Bool, pair: B.Buf & U32) -> String:
   (b, +m) = pair
