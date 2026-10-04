@@ -62,7 +62,7 @@ def run(bindir, name, data, tmp):
     try:
         r = subprocess.run(['nice', '-n', '19', os.path.join(bindir, 'chain-f%d' % e['program']), '--threads', '1', '--gpu', 'off'], env=env,
                            capture_output=True, text=True, timeout=120)
-        so, rc = r.stdout, r.returncode
+        so, rc = r.stdout + r.stderr, r.returncode
     except subprocess.TimeoutExpired:
         so, rc = 'TIMEOUT', -9
     enc = open(out, 'rb').read() if os.path.exists(out) else None
