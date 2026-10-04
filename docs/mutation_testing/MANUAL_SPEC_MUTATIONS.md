@@ -1615,7 +1615,7 @@ validity, refusal, junk-storage or reader fault, shown by a probe instead).
 | (A) killed by a named law | **63** (narrow pass 34 + 12 budget, explicit pass 17) |
 | (A) survived every checked root | **11** |
 | (A) UNJUDGED (checker stack on var_winx / vvl / var_codec, or > 150 s) | **17** (16 decode, 1 validity) |
-| Non-killed, judged through the public API (28) | critical **13** (10 shown by a probe), unjudged-argued-critical 2, gap 1, gap-unreachable 1, equivalent / equivalent-in-context **11** |
+| Non-killed, judged through the public API (28) | critical **15** (11 shown by a probe), unjudged-argued-critical 2, gap 1, gap-unreachable 1, equivalent / equivalent-in-context **9** |
 | (a) Replay of the 55 re-derived patches | **49 killed by a named law**, 6 not: 1 **critical** (bl04/02), 5 equivalent; 2 re-derivations drifted to a different fault |
 | (d) Open round-5 decode faults (14) | 0 killed by a named law; **6 critical shown by p7d**, 1 not demonstrated, 7 equivalent / equivalent in context |
 
