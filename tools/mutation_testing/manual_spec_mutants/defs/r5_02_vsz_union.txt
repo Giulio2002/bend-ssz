@@ -1,0 +1,511 @@
+## ROUND 5, family b01-b05: the R4-05 size pass in _valid (X_vsz over X_valid_f), the R4-04 union size via O.padd, the R4-03 offset table via O.mul4c, the absent-box root
+=== r5-b01-vsz-drop
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_vsz_go,BeaconState_vsz,BeaconState_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_vsz_go,BeaconState_vsz,BeaconState_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_vsz_go,BeaconBlockBody_vsz,BeaconBlockBody_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_vsz_go,BeaconBlockBody_vsz,BeaconBlockBody_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluBeaconBlock
+ops: encode
+file: types/FuluBeaconBlock_encode_ssz_generated.bend
+sym: BeaconBlock_vsz_go,BeaconBlock_vsz,BeaconBlock_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluBeaconBlock
+ops: encode
+file: types/FuluBeaconBlock_encode_ssz_generated.bend
+sym: BeaconBlock_vsz_go,BeaconBlock_vsz,BeaconBlock_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluSignedBeaconBlock
+ops: encode
+file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+sym: SignedBeaconBlock_vsz_go,SignedBeaconBlock_vsz,SignedBeaconBlock_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluSignedBeaconBlock
+ops: encode
+file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+sym: SignedBeaconBlock_vsz_go,SignedBeaconBlock_vsz,SignedBeaconBlock_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_vsz_go,ProgressiveTestStruct_vsz,ProgressiveTestStruct_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_vsz_go,ProgressiveTestStruct_vsz,ProgressiveTestStruct_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_vsz_go,ProgressiveComplexTestStruct_vsz,ProgressiveComplexTestStruct_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_vsz_go,ProgressiveComplexTestStruct_vsz,ProgressiveComplexTestStruct_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_vsz_go,l1099511627776_Validator_vsz,l1099511627776_Validator_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_vsz_go,l1099511627776_Validator_vsz,l1099511627776_Validator_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
+sym: l134217728_PendingDeposit_vsz_go,l134217728_PendingDeposit_vsz,l134217728_PendingDeposit_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
+sym: l134217728_PendingDeposit_vsz_go,l134217728_PendingDeposit_vsz,l134217728_PendingDeposit_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b01-vsz-drop
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_vsz_go,pl_SmallTestStruct_vsz,pl_SmallTestStruct_valid
+spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+fault: the size pass is dropped: _valid is the fields' check alone
+why: the size test thought implied by the fields' limits
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r5-b02-vsz-fields
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_vsz_go,pl_SmallTestStruct_vsz,pl_SmallTestStruct_valid
+spec: same
+fault: the size pass replaces the fields' check (only the total size is tested)
+why: the accumulated flag dropped when the size test was added
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+=== r5-b03-vsz-negate
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_vsz_go,BeaconBlockBody_vsz,BeaconBlockBody_valid
+spec: same
+fault: the size pass is negated (a size within NMAX makes the value invalid)
+why: Bool.not misplaced
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, O.is_poisoned(m)))
+=== r5-b03-vsz-negate
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_vsz_go,ProgressiveTestStruct_vsz,ProgressiveTestStruct_valid
+spec: same
+fault: the size pass uses a strict marker test (only the marker itself is refused): size in (NMAX, 2^32 - 2] accepted
+why: equality with the marker instead of the range
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, Bool.not(U32.is_eq(m, 4294967295))))
+=== r5-b03-vsz-negate
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+spec: same
+fault: the size pass compares with 2^31 (the pre-NMAX limit): a payload of more than 2 GiB is invalid
+why: the old 2^31 limit kept in one place
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, U32.is_lt(m, 2147483648)))
+=== r5-b04-valid-f-call
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g1_valid,BeaconState_g1_va0,l1099511627776_Validator_valid
+spec: a container's validity is the conjunction of its fields' validity and its own size limit
+fault: the parent calls the list's _valid (with its own size pass) instead of _valid_f (stricter only above NMAX: designed equivalent in context)
+why: the renamed function not used at one call site
+-Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid_f(validators))
++Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(validators))
+=== r5-b04-valid-f-call
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_va1,ProgressiveTestStruct_valid_f
+spec: same
+fault: the parent calls proglist_SmallTestStruct's _valid instead of _valid_f (designed equivalent in context)
+why: same
+-proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_C))
++proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(f_C))
+=== r5-b04-valid-f-call
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_putk,pl_SmallTestStruct_pk
+spec: the checked writer flags an invalid value
+fault: the checked writer tests the list's element count against nothing: putk writes without the fields' check (pk gets True)
+why: the validity call dropped from the writer
+-pl_SmallTestStruct_pk(out, pos, pl_SmallTestStruct_valid_f(o))
++pl_SmallTestStruct_pk(out, pos, (o, True{}))
+=== r5-b04-valid-f-call
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g4_valid,BeaconState_g4_va0
+spec: same
+fault: the pending_deposits field's check is skipped (True is passed as its flag)
+why: a field dropped from the conjunction when the call was renamed
+-Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid_f(pending_deposits))
++(pending_deposits, True{}))
+=== r5-b04-valid-f-call
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_va2,ProgressiveComplexTestStruct_valid_f
+spec: same
+fault: the f_E field's check is skipped (True is its flag)
+why: same
+-proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_E))
++(f_E, True{}))
+=== r5-b04-valid-f-call
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_va_cap,l1099511627776_Validator_valid_f
+spec: a list value holds its n elements (n <= storage)
+fault: the list's storage test is dropped (n is not compared with the array's size)
+why: the storage bound thought implied by the 2^40 limit
+-  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
++  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, ok)
+=== r5-b04-valid-f-call
+type: FuluBeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: the size of n Validators is 121 n bytes
+fault: the element size is 120 (the slashed boolean forgotten)
+why: field miscount
+-O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295))
++O.pick(U32.is_le(n, c), O.mulc(n, 120), 4294967295))
+=== r5-b04-valid-f-call
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+sym: pl_SmallTestStruct_szf,pl_SmallTestStruct_size
+spec: the size of a list beyond its storage is the marker
+fault: szf drops the storage test (a claim n beyond the array is sized 4 n)
+why: the storage guard thought redundant with valid_f
+-  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295))
++  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.mulc(n, 4))
+=== r5-b05-union-size
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_sz0,CompatibleUnionBC_size
+spec: serialize(union) = selector byte || serialize(value): size = 1 + size(value)
+fault: arm 0's size omits the selector byte
+why: the selector forgotten in the size pass
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, m)
+=== r5-b05-union-size
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_sz1,CompatibleUnionBC_size
+spec: same
+fault: arm 1's size reverts to the wrapping add (m + 1): the marker wraps to 0 (the R4-04 regression)
+why: the pre-fix code
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, (m + 1 : U32))
+=== r5-b05-union-size
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_sz1,CompatibleUnionBC_size
+spec: same
+fault: arm 1's size counts a 4-byte selector
+why: selector width confused with an offset
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 4))
+=== r5-b05-union-size
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_sz0,CompatibleUnionBC_size
+spec: same
+fault: arm 0's size is padd(1, m) (designed equivalent: padd is commutative)
+why: control
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.padd(1, m))
+=== r5-b05-union-size
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_sz1,CompatibleUnionABCA_size
+spec: same
+fault: arm 1's size reverts to the wrapping add (m + 1)
+why: the pre-fix code
+-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, O.padd(m, 1))
++  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, (m + 1 : U32))
+=== r5-b05-union-size
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_sz2,CompatibleUnionABCA_size
+spec: same
+fault: arm 2's size omits the selector byte
+why: the selector forgotten
+-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, O.padd(m, 1))
++  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, m)
+=== r5-b05-union-size
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_sz2,CompatibleUnionABCA_size
+spec: same
+fault: arm 2's size keeps a poisoned payload size but adds the selector with a wrapping add only when not poisoned: pick(is_poisoned(m), 0, m + 1) (a poisoned arm reports size 0)
+why: saturate-to-zero
+-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, O.padd(m, 1))
++  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, O.pick(O.is_poisoned(m), 0, (m + 1 : U32)))
+=== r5-b06-mul4c-site
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_VarTestStruct_sz_fin,pl_VarTestStruct_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_sz_fin,pl_pl_VarTestStruct_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/proglist_ProgressiveVarTestStruct_encode_ssz_generated.bend
+sym: pl_ProgressiveVarTestStruct_sz_fin,pl_ProgressiveVarTestStruct_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_Attestation_8_encode_ssz_generated.bend
+sym: l8_Attestation_sz_fin,l8_Attestation_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (Fulu_list_Attestation_8_d.l8_Attestation_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_Attestation_8_d.l8_Attestation_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: FuluBeaconBlockBody
+ops: encode
+file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+sym: l1_AttesterSlashing_sz_fin,l1_AttesterSlashing_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_sz_fin,l1048576_bl1073741824_size
+spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+why: offsets thought to sit between elements
+-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+=== r5-b06-mul4c-site
+type: ProgressiveTestStruct
+ops: encode
+file: types/proglist_VarTestStruct_encode_ssz_generated.bend
+sym: pl_VarTestStruct_sz_fin,pl_VarTestStruct_size
+spec: same
+fault: the offset table size reverts to the wrapping 4 n (the R4-03 regression)
+why: the pre-fix code
+-  (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (proglist_VarTestStruct_d.pl_VarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
+=== r5-b06-mul4c-site
+type: FuluExecutionPayload
+ops: encode
+file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+sym: l1048576_bl1073741824_sz_fin,l1048576_bl1073741824_size
+spec: same
+fault: the offset table is counted with mulc(n, 4) (designed equivalent: same bound NMAX / 4)
+why: control
+-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mulc(n, 4), m))
+=== r5-b06-mul4c-site
+type: ComplexTestStruct
+ops: encode
+file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+spec: same; a Vector[VarTestStruct, 2] always has 2 offsets
+fault: the vector's offset table is the wrapping add of the element sizes only (offsets omitted)
+why: a vector thought to need no offsets
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, m)
+=== r5-b07-absent-box-root
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_bx_root
+spec: the root of an absent box has no spec value; the cached root after _ctake must equal the plain root (R4 absent-box fix)
+fault: the absent box is replaced by the default value in the returned object (the pre-fix behaviour)
+why: the pre-fix code
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default(), D.zero()))
+=== r5-b07-absent-box-root
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_bx_root
+spec: same
+fault: the absent box hashes as the default value's root (not the zero chunk)
+why: an absent element treated as the default element
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: ProgressiveVarTestStruct_bx_rt(ProgressiveVarTestStruct_root(hl, h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), seg))
+=== r5-b07-absent-box-root
+type: FuluBeaconBlockBody
+ops: root
+file: types/FuluDeposit_hashtreeroot_generated.bend
+sym: Deposit_bx_root
+spec: same
+fault: the absent Deposit box hashes as the default Deposit's root
+why: same
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: Deposit_bx_rt(Deposit_root(hl, h, FuluDeposit_d.Deposit_default(), seg))

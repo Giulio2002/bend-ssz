@@ -1,0 +1,491 @@
+## ROUND 5, family c01-c09: hash_tree_root of unions and progressive containers (active_fields), Bitvector/Bitlist at chunk boundaries (256/257/511/512/513), uint128/uint256 packing
+=== r5-c01-bitvector-chunk
+type: bitvector_257
+ops: root
+file: types/bitvector_257_hashtreeroot_generated.bend
+sym: bv257_root
+spec: hash_tree_root(Bitvector[257]) = merkleize(pack_bits(bits), limit 2 chunks): bit 256 is bit 0 of byte 0 of chunk 1
+fault: bit 256 is placed in the last word of chunk 1 (big-endian chunk)
+why: chunk filled from the right
+-D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w8)}))
+=== r5-c01-bitvector-chunk
+type: bitvector_257
+ops: root
+file: types/bitvector_257_hashtreeroot_generated.bend
+sym: bv257_root
+spec: same
+fault: the second chunk's word is not byte-swapped (bit 256 lands in byte 3 of the chunk)
+why: endianness of the spill word
+-D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
++D.D{w8, 0, 0, 0, 0, 0, 0, 0}))
+=== r5-c01-bitvector-chunk
+type: bitvector_257
+ops: root
+file: types/bitvector_257_hashtreeroot_generated.bend
+sym: bv257_root
+spec: same
+fault: the spill chunk is dropped: the root is the first chunk alone (limit counted as 1 chunk)
+why: ceil(257/256) taken as 1
+-(h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
++(h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
+=== r5-c01-bitvector-chunk
+type: bitvector_256
+ops: root
+file: types/bitvector_256_hashtreeroot_generated.bend
+sym: bv256_root
+spec: hash_tree_root(Bitvector[256]) = the single chunk of its 32 bytes
+fault: the first two words of the chunk are exchanged
+why: word order of the chunk
+-D.D{B.swap32(w0), B.swap32(w1),
++D.D{B.swap32(w1), B.swap32(w0),
+=== r5-c01-bitvector-chunk
+type: bitvector_256
+ops: root
+file: types/bitvector_256_hashtreeroot_generated.bend
+sym: bv256_root
+spec: same
+fault: the last word is not byte-swapped
+why: endianness
+-B.swap32(w6), B.swap32(w7)})
++B.swap32(w6), w7})
+=== r5-c02-bitvector-valid
+type: bitvector_257
+ops: encode
+file: types/bitvector_257_encode_ssz_generated.bend
+sym: bv257_valid
+spec: a Bitvector[257] has no bit at index >= 257 (the padding bits of the last byte are zero)
+fault: bit 257 is accepted (w8 < 4)
+why: the spill word's mask one bit too wide
+-U32.is_lt(w8, 2)
++U32.is_lt(w8, 4)
+=== r5-c02-bitvector-valid
+type: bitvector_511
+ops: encode
+file: types/bitvector_511_encode_ssz_generated.bend
+sym: bv511_valid
+spec: a Bitvector[511] has no bit 511
+fault: bit 511 is accepted (w15 <= 2^31)
+why: <= for <
+-U32.is_lt(w15, 2147483648)
++U32.is_le(w15, 2147483648)
+=== r5-c02-bitvector-valid
+type: bitvector_513
+ops: encode
+file: types/bitvector_513_encode_ssz_generated.bend
+sym: bv513_valid
+spec: a Bitvector[513] has no bit 513
+fault: the spill word is unchecked
+why: the 1-bit spill thought always clean
+-U32.is_lt(w16, 2)
++True{}
+=== r5-c03-bitvector-decode
+type: bitvector_257
+ops: decode
+file: types/bitvector_257_decode_ssz_generated.bend
+sym: bv257_ok_at,bv257_ok
+spec: the last byte of a Bitvector[257] (byte 32) has bits 1..7 zero
+fault: the padding test reads byte 31 (the last byte of the first chunk)
+why: off by one in the last byte index
+-O.ok_pad(buf, (off + 32 : U32), 1)
++O.ok_pad(buf, (off + 31 : U32), 1)
+=== r5-c03-bitvector-decode
+type: bitvector_257
+ops: decode
+file: types/bitvector_257_decode_ssz_generated.bend
+sym: bv257_ok_at,bv257_ok
+spec: same
+fault: the padding test allows 2 bits in the last byte
+why: r = 257 mod 8 miscomputed
+-O.ok_pad(buf, (off + 32 : U32), 1)
++O.ok_pad(buf, (off + 32 : U32), 2)
+=== r5-c03-bitvector-decode
+type: bitvector_257
+ops: decode
+file: types/bitvector_257_decode_ssz_generated.bend
+sym: bv257_r8,bv257_read
+spec: the decoded Bitvector[257] holds byte 32 as its spill word
+fault: the spill word keeps 2 bytes (a byte past the vector is read)
+why: byte count of the spill
+-(buf, bitvector_257_d.Bitvector257{w0, w1, w2, w3, w4, w5, w6, w7, O.keep(1, x)})
++(buf, bitvector_257_d.Bitvector257{w0, w1, w2, w3, w4, w5, w6, w7, O.keep(2, x)})
+=== r5-c03-bitvector-decode
+type: bitvector_513
+ops: decode
+file: types/bitvector_513_decode_ssz_generated.bend
+sym: bv513_ok_at,bv513_ok
+spec: the last byte of a Bitvector[513] (byte 64) has bits 1..7 zero
+fault: the padding test is on byte 63
+why: off by one
+-O.ok_pad(buf, (off + 64 : U32), 1)
++O.ok_pad(buf, (off + 63 : U32), 1)
+=== r5-c03-bitvector-decode
+type: bitvector_511
+ops: decode
+file: types/bitvector_511_decode_ssz_generated.bend
+sym: bv511_ok_at,bv511_ok
+spec: the last byte of a Bitvector[511] has bit 7 zero
+fault: the padding test allows all 8 bits (r = 0 taken for 511 mod 8 = 7 ... read as a whole byte)
+why: 511 mod 8 confused
+-O.ok_pad(buf, (off + 63 : U32), 7)
++O.ok_pad(buf, (off + 63 : U32), 0)
+=== r5-c04-bitlist-depth
+type: bitlist_257
+ops: root
+file: types/bitlist_257_hashtreeroot_generated.bend
+sym: bits257_root
+spec: hash_tree_root(Bitlist[257]) = mix_in_length(merkleize(chunks, limit ceil(257/256) = 2), n): depth 1
+fault: depth 0 (limit counted as 1 chunk)
+why: floor for ceil
+-O.bits_root(hl, h, o, 1, seg)
++O.bits_root(hl, h, o, 0, seg)
+=== r5-c04-bitlist-depth
+type: bitlist_256
+ops: root
+file: types/bitlist_256_hashtreeroot_generated.bend
+sym: bits256_root
+spec: Bitlist[256]: chunk limit 1, depth 0
+fault: depth 1 (the delimiter counted: 257 bits)
+why: delimiter counted in the limit
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+=== r5-c04-bitlist-depth
+type: bitlist_512
+ops: root
+file: types/bitlist_512_hashtreeroot_generated.bend
+sym: bits512_root
+spec: Bitlist[512]: chunk limit 2, depth 1
+fault: depth 2 (delimiter counted)
+why: same
+-O.bits_root(hl, h, o, 1, seg)
++O.bits_root(hl, h, o, 2, seg)
+=== r5-c04-bitlist-depth
+type: bitlist_511
+ops: root
+file: types/bitlist_511_hashtreeroot_generated.bend
+sym: bits511_root
+spec: Bitlist[511]: chunk limit 2, depth 1
+fault: depth 0
+why: 511/256 floored
+-O.bits_root(hl, h, o, 1, seg)
++O.bits_root(hl, h, o, 0, seg)
+=== r5-c05-bitlist-limit
+type: bitlist_257
+ops: decode
+file: types/bitlist_257_decode_ssz_generated.bend
+sym: bits257_ok
+spec: a Bitlist[257] holds at most 257 bits
+fault: the decoder accepts 258 bits
+why: limit + 1
+-O.ok_bitlist(buf, off, len, 257, False{})
++O.ok_bitlist(buf, off, len, 258, False{})
+=== r5-c05-bitlist-limit
+type: bitlist_512
+ops: decode
+file: types/bitlist_512_decode_ssz_generated.bend
+sym: bits512_ok
+spec: a Bitlist[512] holds at most 512 bits
+fault: the decoder refuses 512 bits (limit 511)
+why: the delimiter counted against the limit
+-O.ok_bitlist(buf, off, len, 512, False{})
++O.ok_bitlist(buf, off, len, 511, False{})
+=== r5-c05-bitlist-limit
+type: bitlist_256
+ops: encode
+file: types/bitlist_256_encode_ssz_generated.bend
+sym: bits256_valid
+spec: same, encode side
+fault: the checked writer accepts 257 bits
+why: limit + 1
+-O.bits_ok(o, 256, False{})
++O.bits_ok(o, 257, False{})
+=== r5-c05-bitlist-limit
+type: bitlist_511
+ops: encode
+file: types/bitlist_511_encode_ssz_generated.bend
+sym: bits511_valid
+spec: same
+fault: the limit test is lifted (big)
+why: the big flag set for a declared limit
+-O.bits_ok(o, 511, False{})
++O.bits_ok(o, 511, True{})
+=== r5-c06-uint-pack
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+sym: u128_root
+spec: hash_tree_root(uint128) = its 16 little-endian bytes padded right with zeros to 32
+fault: the 16 bytes are right-aligned in the chunk
+why: padding on the wrong side
+-D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
++D.D{0, 0, 0, 0, B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3)}
+=== r5-c06-uint-pack
+type: uint128
+ops: root
+file: types/uint128_hashtreeroot_generated.bend
+sym: u128_root
+spec: same
+fault: the two 64-bit halves are exchanged
+why: word order of a 128-bit integer
+-D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
++D.D{B.swap32(w2), B.swap32(w3), B.swap32(w0), B.swap32(w1), 0, 0, 0, 0}
+=== r5-c06-uint-pack
+type: uint256
+ops: root
+file: types/uint256_hashtreeroot_generated.bend
+sym: u256_root
+spec: hash_tree_root(uint256) = its 32 little-endian bytes
+fault: the middle words 3 and 4 are exchanged
+why: the two 128-bit halves misjoined
+-B.swap32(w3), B.swap32(w4),
++B.swap32(w4), B.swap32(w3),
+=== r5-c06-uint-pack
+type: uint256
+ops: root
+file: types/uint256_hashtreeroot_generated.bend
+sym: u256_root
+spec: same
+fault: word 7 is not byte-swapped
+why: endianness of the top word
+-B.swap32(w7)})
++w7})
+=== r5-c07-uint-vec-depth
+type: vec_uint128_3
+ops: root
+file: types/vec_uint128_3_hashtreeroot_generated.bend
+sym: v3_u128_root
+spec: Vector[uint128, 3]: 48 bytes = 2 chunks, depth 1
+fault: depth 2 (one chunk per element)
+why: elements taken as chunks
+-O.words_root(hl, h, o, 1, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r5-c07-uint-vec-depth
+type: vec_uint256_3
+ops: root
+file: types/vec_uint256_3_hashtreeroot_generated.bend
+sym: v3_u256_root
+spec: Vector[uint256, 3]: 3 chunks, depth 2
+fault: depth 1 (3 chunks floored to 2)
+why: floor of log2
+-O.words_root(hl, h, o, 2, seg)
++O.words_root(hl, h, o, 1, seg)
+=== r5-c07-uint-vec-depth
+type: vec_uint128_513
+ops: root
+file: types/vec_uint128_513_hashtreeroot_generated.bend
+sym: v513_u128_root
+spec: Vector[uint128, 513]: 8208 bytes = 257 chunks, depth 9
+fault: depth 8 (512 elements thought one chunk each pair: 256 chunks)
+why: 513/2 floored
+-O.words_root(hl, h, o, 9, seg)
++O.words_root(hl, h, o, 8, seg)
+=== r5-c07-uint-vec-depth
+type: vec_uint256_513
+ops: root
+file: types/vec_uint256_513_hashtreeroot_generated.bend
+sym: v513_u256_root
+spec: Vector[uint256, 513]: 513 chunks, depth 10
+fault: depth 9
+why: floor of log2
+-O.words_root(hl, h, o, 10, seg)
++O.words_root(hl, h, o, 9, seg)
+=== r5-c07-uint-vec-depth
+type: vec_uint128_2
+ops: root
+file: types/vec_uint128_2_hashtreeroot_generated.bend
+sym: v2_u128_root
+spec: Vector[uint128, 2]: 32 bytes = 1 chunk, depth 0
+fault: depth 1
+why: one chunk per element
+-O.words_root(hl, h, o, 0, seg)
++O.words_root(hl, h, o, 1, seg)
+=== r5-c08-uint-prog-mix
+type: proglist_uint128
+ops: root
+file: types/proglist_uint128_hashtreeroot_generated.bend
+sym: pl_u128_root
+spec: hash_tree_root(ProgressiveList[uint128]) mixes in the element count = bytes / 16
+fault: the count mixed in is bytes / 8
+why: element size 8
+-O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
++O.mix_count(hl, 3n, O.words_root_prog(hl, h, o, seg))
+=== r5-c08-uint-prog-mix
+type: proglist_uint256
+ops: root
+file: types/proglist_uint256_hashtreeroot_generated.bend
+sym: pl_u256_root
+spec: the count mixed in is bytes / 32
+fault: the count is the chunk count of a binary tree (bytes / 16)
+why: uint128 copy-paste
+-O.mix_count(hl, 5n, O.words_root_prog(hl, h, o, seg))
++O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
+=== r5-c08-uint-prog-mix
+type: proglist_uint128
+ops: root
+file: types/proglist_uint128_hashtreeroot_generated.bend
+sym: pl_u128_root
+spec: merkleize_progressive, not a binary tree
+fault: the progressive list hashes a binary tree of depth 0 (only the first chunk)
+why: progressive treated as a vector
+-O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
++O.mix_count(hl, 4n, O.words_root(hl, h, o, 0, seg))
+=== r5-c09-uint-vec-codec
+type: vec_uint128_3
+ops: decode
+file: types/vec_uint128_3_decode_ssz_generated.bend
+sym: v3_u128_read
+spec: the decoded vector holds its 48 bytes in whole chunks
+fault: the read storage is 8 words (32 bytes of 48)
+why: depth of the storage one too small
+-O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))
++O.copy_into(buf, off, 48, Array.new(U32, 3n, 0))
+=== r5-c09-uint-vec-codec
+type: vec_uint256_3
+ops: decode
+file: types/vec_uint256_3_decode_ssz_generated.bend
+sym: v3_u256_read
+spec: the decoded vector holds its 96 bytes in whole chunks (4 chunks = 32 words)
+fault: the read storage is 16 words (64 of 96 bytes)
+why: depth one too small
+-O.copy_into(buf, off, 96, Array.new(U32, 5n, 0))
++O.copy_into(buf, off, 96, Array.new(U32, 4n, 0))
+=== r5-c09-uint-vec-codec
+type: vec_uint128_3
+ops: encode
+file: types/vec_uint128_3_encode_ssz_generated.bend
+sym: v3_u128_valid,v3_u128_putk
+spec: a Vector[uint128, 3] has exactly 48 bytes
+fault: the writer accepts 0..48 bytes (lower bound dropped)
+why: a vector checked like a list
+-O.words_ok(o, 48, 48, False{}, 16)
++O.words_ok(o, 0, 48, False{}, 16)
+=== r5-c09-uint-vec-codec
+type: vec_uint128_3
+ops: encode
+file: types/vec_uint128_3_encode_ssz_generated.bend
+sym: v3_u128_valid,v3_u128_putk
+spec: same
+fault: the unit is 8 bytes (designed equivalent: the length is fixed at 48)
+why: control
+-O.words_ok(o, 48, 48, False{}, 16)
++O.words_ok(o, 48, 48, False{}, 8)
+=== r5-c09-uint-vec-codec
+type: vec_uint128_3
+ops: encode
+file: types/vec_uint128_3_encode_ssz_generated.bend
+sym: v3_u128_pa11,v3_u128_put
+spec: serialize(Vector[uint128, 3]) = the 48 bytes in order
+fault: the last word is written at q + 10 (overwrites word 10, word 11 left zero)
+why: off by one in the unrolled copy
+-(Array.set(U32, out, (q + 11 : U32), w), ws)
++(Array.set(U32, out, (q + 10 : U32), w), ws)
+=== r5-c10-union-root
+type: CompatibleUnionBC
+ops: root
+file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+sym: CompatibleUnionBC_rt0,CompatibleUnionBC_root
+spec: hash_tree_root(CompatibleUnion) = mix_in_selector(root(value), selector): arm 0 has selector 2
+fault: arm 0 mixes in its arm index 0
+why: arm index for selector
+-O.mix_len(hl, d, 2)
++O.mix_len(hl, d, 0)
+=== r5-c10-union-root
+type: CompatibleUnionBC
+ops: root
+file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+sym: CompatibleUnionBC_rt1,CompatibleUnionBC_root
+spec: arm 1 has selector 3
+fault: arm 1 mixes in selector 2
+why: copy-paste
+-O.mix_len(hl, d, 3)
++O.mix_len(hl, d, 2)
+=== r5-c10-union-root
+type: CompatibleUnionBC
+ops: root
+file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+sym: CompatibleUnionBC_rt1,CompatibleUnionBC_root
+spec: same
+fault: arm 1 returns the payload root (no selector mixed)
+why: union treated like its payload
+-(h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.mix_len(hl, d, 3)))
++(h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, d))
+=== r5-c11-prog-container
+type: ProgressiveTestStruct
+ops: root
+file: types/ProgressiveTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveTestStruct_rt3
+spec: hash_tree_root(Container) = merkleize(field roots in order)
+fault: fields C and D are exchanged
+why: field order
+-D.node(hl, d_f_C, d_f_D))))
++D.node(hl, d_f_D, d_f_C))))
+=== r5-c11-prog-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_rt2
+spec: hash_tree_root(ProgressiveContainer(active_fields=[1,0,1,0,1])) = mix_in_active_fields(merkleize_progressive([A, 0, B, 0, C]), pack_bits(active_fields))
+fault: the active_fields chunk holds the number of active fields (3) instead of the packed bits 0b10101
+why: active_fields read as a count
+-d_f_C))), d_f_A), 21)))
++d_f_C))), d_f_A), 3)))
+=== r5-c11-prog-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_rt2
+spec: same
+fault: the progressive tree's first subtree (depth 0, field A) is put on the left
+why: H(T, P(rest)) for H(P(rest), T)
+-O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)
++O.mix_len(hl, D.node(hl, d_f_A, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C)))), 21)
+=== r5-c11-prog-container
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_rt2
+spec: same
+fault: the inactive gaps are dropped: chunks [A, B, C] hashed (active_fields ignored in the tree)
+why: inactive fields thought absent from the tree
+-D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)
++D.node(hl, D.node(hl, d_f_B, d_f_C), D.zero())), d_f_A), 21)
+=== r5-c11-prog-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: active_fields of ProgressiveComplexTestStruct packed little-endian into one chunk
+fault: the active_fields value off by its top bit (bit 21 dropped)
+why: bit count of the active_fields bitvector
+-d_f_A), 3158293)))
++d_f_A), 1061141)))
+=== r5-c11-prog-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: the progressive tree of the chunks; a zero subtree of depth 1 is z1
+fault: the depth-1 zero subtree next to H is the zero chunk
+why: zero-hash level off by one
+-D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, d_f_H, D.zero()), z1), z2), z3), z4), z5)
++D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, d_f_H, D.zero()), D.zero()), z2), z3), z4), z5)
+=== r5-c11-prog-container
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: field order in the progressive tree
+fault: fields B and C exchanged
+why: field order
+-D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A)
++D.node(hl, D.node(hl, D.zero(), d_f_C), D.node(hl, D.zero(), d_f_B))), d_f_A)
+=== r5-c11-prog-container
+type: ProgressiveBitsStruct
+ops: root
+file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+sym: ProgressiveBitsStruct_g1_rt3
+spec: Container of 12 fields: 16 leaves; the right half is node(node(I..L), zero subtree of depth 2)
+fault: the zero subtree of depth 2 is the zero chunk
+why: zero-hash level off by one
+-D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)
++D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), D.zero())

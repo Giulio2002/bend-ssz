@@ -1,0 +1,121 @@
+## ROUND 5, family e01-e02: getters / setters / swaps on nested (grouped) containers
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_set_block_roots,BeaconState_set_block_roots
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_block_roots writes state_roots (same type: Vector[Root, 8192])
+why: adjacent same-type fields confused
+-: BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, v, state_roots, historical_roots}
++: BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, v, historical_roots}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g1_set_balances,BeaconState_set_balances
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_balances writes randao_mixes
+why: adjacent Words fields confused
+-: BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, v, randao_mixes, slashings, previous_epoch_participation}
++: BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, v, slashings, previous_epoch_participation}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_set_inactivity_scores,BeaconState_set_inactivity_scores
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_inactivity_scores writes current_epoch_participation (both Words)
+why: group boundary miscounted
+-: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, v, current_sync_committee, next_sync_committee}
++: BeaconState_g2{v, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_set_current_justified_checkpoint,BeaconState_set_current_justified_checkpoint
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_current_justified_checkpoint writes previous_justified_checkpoint
+why: previous/current confused
+-: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, v, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
++: BeaconState_g2{current_epoch_participation, justification_bits, v, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_set_next_sync_committee,BeaconState_set_next_sync_committee
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_next_sync_committee writes current_sync_committee
+why: current/next confused
+-: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, v}
++: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, v, next_sync_committee}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g3_set_exit_balance_to_consume,BeaconState_set_exit_balance_to_consume
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_exit_balance_to_consume writes deposit_balance_to_consume
+why: adjacent uint64 fields confused
+-: BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, v, earliest_exit_epoch}
++: BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, v, exit_balance_to_consume, earliest_exit_epoch}
+=== r5-e01-setter-slot
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g4_set_earliest_consolidation_epoch,BeaconState_set_earliest_consolidation_epoch
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_earliest_consolidation_epoch writes consolidation_balance_to_consume
+why: first field of a group
+-: BeaconState_g4{consolidation_balance_to_consume, v, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}
++: BeaconState_g4{v, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}
+=== r5-e02-swap
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g1_swap_balances,BeaconState_swap_balances
+spec: swap_f(o, v) = (o with f = v, the old f)
+fault: swap_balances returns the new value and keeps the old (no swap)
+why: swap halves exchanged
+-: (BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, v, randao_mixes, slashings, previous_epoch_participation}, balances)
++: (BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, v)
+=== r5-e02-swap
+type: FuluBeaconBlockBody
+ops: encode,root
+file: types/FuluBeaconBlockBody_def_generated.bend
+sym: BeaconBlockBody_g0_swap_deposits,BeaconBlockBody_swap_deposits
+spec: same
+fault: swap_deposits keeps the old list and returns the new one
+why: same
+-: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, v, voluntary_exits}, deposits)
++: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, v)
+=== r5-e02-swap
+type: FuluBeaconBlockBody
+ops: encode,root
+file: types/FuluBeaconBlockBody_def_generated.bend
+sym: BeaconBlockBody_set_graffiti
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_graffiti on the outer container leaves the group unchanged (the inner setter not called)
+why: the nested record rebuilt from the old group
+-BeaconBlockBody{BeaconBlockBody_g0_set_graffiti(g0, v), g1}
++BeaconBlockBody{g0, g1}
+=== r5-e02-swap
+type: FuluBeaconBlockBody
+ops: encode,root
+file: types/FuluBeaconBlockBody_def_generated.bend
+sym: BeaconBlockBody_g1_swap_blob_kzg_commitments,BeaconBlockBody_swap_blob_kzg_commitments
+spec: same
+fault: swap_blob_kzg_commitments returns the new value as the old one (both copies the new)
+why: the old binding shadowed
+-: (BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, v, execution_requests}, blob_kzg_commitments)
++: (BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, v)
+=== r5-e01-setter-slot
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_set_state_root,ExecutionPayload_set_state_root
+spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+fault: set_state_root writes parent_hash (both Bytes32)
+why: adjacent Bytes32 fields confused
+-: ExecutionPayload_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++: ExecutionPayload_g0{v, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}

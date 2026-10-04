@@ -1,0 +1,271 @@
+## ROUND 5, family a01-a04: the code that landed in the round-4 fixes in src/obj.bend (O.zeros_copy, O.mul4c) and the marker helpers the round-4 marker laws pin
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: hash_tree_root(ByteList) = mix_in_length(merkleize(pack(bytes), limit), len): the chunks are the bytes zero-padded to whole chunks
+fault: the clean copy has floor(n / 32) chunks plus the +8 slack word count dropped (no room for the partial last chunk)
+why: floor for ceil, and the slack thought redundant
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 : U32)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the clean copy's whole-chunk term counts 4 words per chunk (half a chunk)
+why: words and chunks confused (4 bytes per word, 8 words per chunk)
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 4 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the clean copy is sized in bytes shifted by 2 (words) without the chunk rounding and slack: n >> 2 words
+why: the copy holds ceil(n/4) words, so the implementer sized it by floor(n/4)
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u(U32.shrn(n, 2n)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the clean copy keeps the old wrapping formula ((n + 31) >> 5) (the R4-01 regression)
+why: the pre-fix code restored
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the clean copy is the caller's array itself (no fresh zero storage): the bytes past n in the copied words are whatever the caller left
+why: copy elided as an optimisation
+-  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
++  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, ws, Array.get(U32, ws, 0)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the clean copy copies floor(n / 4) words (the partial last word is lost)
+why: floor for ceil
+-  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
++  cc_fin(n, cc_go(Nat.div(U32.to_nat(n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the partial-chunk term rounds with + 32 (one chunk too many for every n that is a multiple of 32)
+why: off by one in the ceiling idiom
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 32 : U32), 5n) * 8 + 8 : U32)))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: zeros_copy,words_copy,wr_slow,wrp_slow
+spec: same
+fault: the slow path takes the clean copy even when the storage does not hold ceil(n / 4) words (covered test inverted)
+why: inverted guard
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+-    case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case False{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
+=== r5-a01-zeros-copy
+type: proglist_uint8
+ops: root
+file: src/obj.bend
+sym: wrp_slow,wrp_fit,words_copy,words_root_prog
+spec: hash_tree_root(ProgressiveList[uint8]) = mix_in_length(merkleize_progressive(pack(bytes)), len)
+fault: the progressive slow path hashes the caller's unclean words instead of the clean copy
+why: the progressive twin of the binary path not updated
+-    case True{}: wrp_clean(hl, h, n, words_copy(n, ws))
++    case True{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
+=== r5-a01-zeros-copy
+type: bytelist_256
+ops: root
+file: src/obj.bend
+sym: wr_clean,wr_slow,words_copy
+spec: same
+fault: the clean path returns the copy (not the caller's array) in the object it gives back
+why: the swap back to the caller's storage forgotten
+-  wr_swap(ws, wr_cnt(hl, h, depth, n, out, chunks_of(n)))
++  wr_cnt(hl, h, depth, n, out, chunks_of(n))
+=== r5-a02-mul4c
+type: proglist_VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: mul4c,pl_VarTestStruct_sz_fin
+spec: an offset table of n 4-byte offsets is 4 n bytes; a size above NMAX is the marker
+fault: mul4c bound is NMAX (not NMAX / 4): 4 n wraps for n in (2^30, NMAX]
+why: the division by the element size forgotten
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_le(n, 4294967264), (4 * n : U32), 4294967295)
+=== r5-a02-mul4c
+type: proglist_VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: mul4c,pl_VarTestStruct_sz_fin
+spec: same
+fault: mul4c bound is strict (n < NMAX / 4): n = NMAX / 4 is poisoned
+why: < for <=
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_lt(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
+=== r5-a02-mul4c
+type: proglist_VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: mul4c,pl_VarTestStruct_sz_fin
+spec: same
+fault: mul4c returns 8 n (an offset is 8 bytes)
+why: offset width confused with uint64
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 8)), (8 * n : U32), 4294967295)
+=== r5-a02-mul4c
+type: proglist_VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: mul4c,pl_VarTestStruct_sz_fin
+spec: same
+fault: mul4c's overflow value is 0 instead of the marker (an offset table too large reports size 0)
+why: saturate-to-zero
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 0)
+=== r5-a02-mul4c
+type: proglist_VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: mul4c,pl_VarTestStruct_sz_fin
+spec: same
+fault: mul4c's bound uses the marker, not NMAX (n <= (2^32 - 1) / 4)
+why: the two limits confused
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967295, 4)), (4 * n : U32), 4294967295)
+=== r5-a03-mulc
+type: Fulu_list_Validator_1099511627776
+ops: encode
+file: src/obj.bend
+sym: mulc
+spec: n elements of es bytes are n * es bytes; above NMAX the marker
+fault: mulc's poison value is NMAX itself (a size that is not poisoned)
+why: limit and marker confused
+-def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
++def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967264)
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: is_poisoned
+spec: a size above NMAX is not a size
+fault: is_poisoned compares with the marker (only 2^32 - 1 is poisoned; NMAX + 1 .. 2^32 - 2 pass as sizes)
+why: marker equality instead of the range
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_eq(m, 4294967295)
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: is_poisoned
+spec: same
+fault: is_poisoned also poisons NMAX itself (<= for <)
+why: off by one at the limit
+-def is_poisoned(+m: U32) -> Bool: U32.is_lt(4294967264, m)
++def is_poisoned(+m: U32) -> Bool: U32.is_le(4294967264, m)
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: padd
+spec: sizes add; a sum past NMAX is the marker
+fault: padd saturates only on wrap (a sum in (NMAX, 2^32 - 1) is kept)
+why: the reach-the-marker conjunct dropped
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(U32.is_le(a, (a + b : U32)), (a + b : U32), 4294967295)
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: padd
+spec: same
+fault: padd's wrap test compares the sum with b (a + b >= b), which also detects the wrap: designed equivalent
+why: control: an equivalent formulation
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(b, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: pz
+spec: an invalid field poisons the size
+fault: pz's False branch is NMAX + 1 (a poisoned value, not the marker): designed near-equivalent
+why: any value past NMAX thought enough
+-    case False{}: 4294967295
+-
+-# Add two counts
++    case False{}: 4294967265
++
++# Add two counts
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: an encoder's buffer is its bytes; an invalid value has none
+fault: out_donep returns the claimed buffer also for a poisoned length
+why: the poison test thought done by the caller
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, 0}
++    case False{}: B.Buf{out, m}
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: ser_done
+spec: serialize refuses an invalid value
+fault: ser_done answers ok with the empty buffer for a poisoned length
+why: refusal by emptiness instead of ok = False
+-    case True{}: refused()
+-    case False{}: Encoded{True{}, B.Buf{out, m}}
++    case True{}: Encoded{True{}, B.empty()}
++    case False{}: Encoded{True{}, B.Buf{out, m}}
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: wsz_pick,words_sizek
+spec: the size of a packed collection is its byte length; a claim beyond the storage is the marker
+fault: wsz_pick compares the word count with the storage strictly (a value whose storage is exactly ceil(n/4) words is poisoned)
+why: < for <=
+-  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
++  (Words{ws, n}, pick(U32.is_lt(U32.shrn((n + 3 : U32), 2n), c), n, 4294967295))
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: the size of a bit list is floor(k / 8) + 1 bytes
+fault: bsz_pick reports ceil(k / 8) (the delimiter byte forgotten when k is a multiple of 8)
+why: ceil(k/8) for floor(k/8)+1
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn((k + 7 : U32), 3n) : U32), 4294967295))
+=== r5-a04-markers
+type: FuluBeaconBlockBody
+ops: encode
+file: src/obj.bend
+sym: bsz_pick,bits_sizek
+spec: same; the storage must hold the word of bit k (the delimiter's word)
+fault: bsz_pick's storage test is (k >> 5) words (the delimiter's word not required)
+why: the delimiter not counted in storage
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le(U32.shrn(k, 5n), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))

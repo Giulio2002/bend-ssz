@@ -1,0 +1,321 @@
+## ROUND 5, family d01-d06: decode of nested variable-size containers (offset order inside nested lists, windows, first offsets), progressive containers, union selectors
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_ee,pl_pl_VarTestStruct_ok
+spec: offsets of a list of variable-size elements are non-decreasing and within the list
+fault: the non-decreasing test is dropped (a later offset may point before the previous one)
+why: only the upper bound checked
+-pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)
++pl_pl_VarTestStruct_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_ee,pl_pl_VarTestStruct_ok
+spec: same
+fault: the upper-bound test is dropped (an offset past the list's window accepted)
+why: only the order checked
+-pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)
++pl_pl_VarTestStruct_ew(Bool.and(acc, U32.is_le(a, b)), buf, off, a, b)
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_ee,pl_pl_VarTestStruct_ok
+spec: same; empty inner elements (equal offsets) are allowed
+fault: offsets must strictly increase (an empty inner list refused)
+why: < for <=
+-pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)
++pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_lt(a, b), U32.is_le(b, len))), buf, off, a, b)
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_ee
+spec: every element's window must be valid for the element type
+fault: the accumulated flag is not carried: an invalid earlier element is forgotten when a later one is valid
+why: and_pair accumulator dropped
+-pl_pl_VarTestStruct_eb(b, O.and_pair(acc, pl_pl_VarTestStruct_ew(
++pl_pl_VarTestStruct_eb(b, O.and_pair(True{}, pl_pl_VarTestStruct_ew(
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_head
+spec: the first offset of a list of variable-size elements is a multiple of 4, at least 4, at most the window
+fault: the first offset's multiple-of-4 test is dropped
+why: the element count taken as floor(first / 4)
+-Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{}))
++Bool.and(U32.is_le(first, len), Bool.and(U32.is_le(4, first), True{}))
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_head
+spec: same
+fault: first <= len is dropped (the offset table may run past the window)
+why: the bound thought implied by the later offsets
+-Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{}))
++Bool.and(U32.is_eq((first .&. 3 : U32), 0), Bool.and(U32.is_le(4, first), True{}))
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_head
+spec: same
+fault: 4 <= first is dropped (first offset 0 accepted for a non-empty window)
+why: an empty table thought fine
+-Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{}))
++Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), True{})
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_next,pl_pl_VarTestStruct_ev
+spec: element i ends at offset i + 1, the last at the window's end
+fault: the last-element test is one early (element n - 2 ends at len)
+why: off by one in the last index
+-pl_pl_VarTestStruct_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))
++pl_pl_VarTestStruct_next(U32.is_eq((i + 3 : U32), n), buf, off, len, (i + 1 : U32))
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_win_last,pl_pl_VarTestStruct_rv
+spec: the reader's element windows are the validator's
+fault: the reader's last element ends at the start of the window (len taken as the start)
+why: end and start confused
+-    case True{}: (buf, (s, len))
++    case True{}: (buf, (s, s))
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_elem_win
+spec: element windows are relative to the list's start
+fault: the inner element is read at its absolute offset s (not off + s)
+why: relative offset taken as absolute
+-proglist_VarTestStruct_r.pl_VarTestStruct_bx_read(buf, (off + s : U32), (e - s : U32))
++proglist_VarTestStruct_r.pl_VarTestStruct_bx_read(buf, s, (e - s : U32))
+=== r5-d01-nested-list-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_pl_VarTestStruct_ew
+spec: the inner element's validator sees its own window
+fault: the inner validator gets the window to the list's end (len - a) instead of (b - a)
+why: the remainder taken as the element
+-proglist_VarTestStruct_r.pl_VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++proglist_VarTestStruct_r.pl_VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_c3
+spec: the variable-size fields' offsets are non-decreasing and at most the container's length
+fault: o2 <= o3 is dropped
+why: one comparison of the chain dropped
+-ProgressiveTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++ProgressiveTestStruct_c3(U32.is_le(o3, len), buf, off, len, o0, o1, o2, o3)
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_c3
+spec: same
+fault: o3 <= len is dropped
+why: the last offset's bound forgotten
+-ProgressiveTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++ProgressiveTestStruct_c3(U32.is_le(o2, o3), buf, off, len, o0, o1, o2, o3)
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_c1
+spec: same; an empty first field (o0 = o1) is allowed
+fault: o0 < o1 required (empty f_A refused)
+why: < for <=
+-ProgressiveTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++ProgressiveTestStruct_c1(Bool.and(U32.is_lt(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_c0
+spec: the first offset equals the fixed part's size (16)
+fault: the first offset may exceed 16 (a gap after the fixed part accepted)
+why: first offset only bounded below
+-ProgressiveTestStruct_c0(U32.is_eq(o0, 16), buf, off, len, o0)
++ProgressiveTestStruct_c0(U32.is_le(16, o0), buf, off, len, o0)
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_v7,ProgressiveTestStruct_c7
+spec: the last field's window is [o3, len)
+fault: the last field is validated over [o3, o3 + (len - o2))
+why: previous offset used
+-proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_ok(buf, (off + o3 : U32), (len - o3 : U32)))
++proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_ok(buf, (off + o3 : U32), (len - o2 : U32)))
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_v5
+spec: field B's window is [o1, o2)
+fault: field B is validated at o0
+why: index off by one
+-proglist_uint64_r.pl_u64_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++proglist_uint64_r.pl_u64_ok(buf, (off + o0 : U32), (o2 - o1 : U32)))
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_rd6
+spec: the reader's windows are the validator's
+fault: the reader reads f_D at o_f_C
+why: copy-paste
+-proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_read(buf, (off + o_f_D : U32), (len - o_f_D : U32)))
++proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_read(buf, (off + o_f_C : U32), (len - o_f_D : U32)))
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_rd2
+spec: the reader reads offset D at byte 12
+fault: the reader reads offset D at byte 8 (offset C again)
+why: offset slot off by one
+-ProgressiveTestStruct_rd3(off, len, o_f_A, o_f_B, o_f_C, B.read32(buf, (off + 12 : U32)))
++ProgressiveTestStruct_rd3(off, len, o_f_A, o_f_B, o_f_C, B.read32(buf, (off + 8 : U32)))
+=== r5-d02-container-offsets
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_ok
+spec: a ProgressiveTestStruct needs at least its 16-byte fixed part
+fault: 12 bytes are enough
+why: fixed part miscounted (3 offsets)
+-ProgressiveTestStruct_ok_len(U32.is_le(16, len), buf, off, len)
++ProgressiveTestStruct_ok_len(U32.is_le(12, len), buf, off, len)
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_c0
+spec: the first offset equals the fixed part (1 + 7 * 4 = 29)
+fault: the first offset must be 28 (the uint8 field forgotten)
+why: fixed part miscounted
+-ProgressiveComplexTestStruct_c0(U32.is_eq(o0, 29), buf, off, len, o0)
++ProgressiveComplexTestStruct_c0(U32.is_eq(o0, 28), buf, off, len, o0)
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_c5
+spec: offsets non-decreasing
+fault: o4 <= o5 dropped
+why: one comparison dropped
+-ProgressiveComplexTestStruct_c5(Bool.and(U32.is_le(o4, o5), U32.is_le(o5, len)), buf, off, len, o0, o1, o2, o3, o4, o5)
++ProgressiveComplexTestStruct_c5(U32.is_le(o5, len), buf, off, len, o0, o1, o2, o3, o4, o5)
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_c2
+spec: same
+fault: o2 <= len dropped
+why: bound dropped
+-ProgressiveComplexTestStruct_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++ProgressiveComplexTestStruct_c2(U32.is_le(o1, o2), buf, off, len, o0, o1, o2)
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_v12
+spec: field G (List[ProgressiveSingleFieldContainerTestStruct, 10]) window is [o5, o6)
+fault: field G is validated over [o5, len)
+why: last-field window used
+-list_ProgressiveSingleFieldContainerTestStruct_10_r.l10_ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + o5 : U32), (o6 - o5 : U32)))
++list_ProgressiveSingleFieldContainerTestStruct_10_r.l10_ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + o5 : U32), (len - o5 : U32)))
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_v8
+spec: field C (ProgressiveBitlist) window is [o1, o2)
+fault: field C is not validated (its delimiter never checked)
+why: a bitlist thought always valid
+-progbitlist_r.pbits_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++(buf, True{}))
+=== r5-d03-pcts-offsets
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_ok
+spec: a ProgressiveComplexTestStruct needs its 29-byte fixed part
+fault: 28 bytes are enough
+why: fixed part miscounted
+-ProgressiveComplexTestStruct_ok_len(U32.is_le(29, len), buf, off, len)
++ProgressiveComplexTestStruct_ok_len(U32.is_le(28, len), buf, off, len)
+=== r5-d04-fixed-elem-list
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_ok
+spec: List[ProgressiveSingleFieldContainerTestStruct, 10]: 1-byte elements, at most 10
+fault: 11 elements accepted
+why: limit + 1
+-U32.is_le(U32.div(len, 1), 10)))
++U32.is_le(U32.div(len, 1), 11)))
+=== r5-d04-fixed-elem-list
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_rd
+spec: element i is at off + i
+fault: element i + 1 is read at off + i (each element read twice, the last lost)
+why: index off by one
+-ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + (i + 1 : U32) * 1 : U32), 1))
++ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + i * 1 : U32), 1))
+=== r5-d05-small-list
+type: ProgressiveTestStruct
+ops: decode
+file: types/proglist_SmallTestStruct_decode_ssz_generated.bend
+sym: pl_SmallTestStruct_ok
+spec: ProgressiveList[SmallTestStruct]: the window is a multiple of 4 bytes
+fault: a multiple of 2 bytes accepted
+why: element size taken as one uint16
+-(buf, Bool.and(U32.is_eq(len, (U32.div(len, 4) * 4 : U32)), True{}))
++(buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}))
+=== r5-d06-union-decode
+type: CompatibleUnionBC
+ops: decode
+file: types/CompatibleUnionBC_decode_ssz_generated.bend
+sym: CompatibleUnionBC_ok_sel,CompatibleUnionBC_ok0
+spec: CompatibleUnionBC's selectors are 2 and 3
+fault: selector 1 accepted for arm 0
+why: zero-based / one-based confusion
+-CompatibleUnionBC_ok0(U32.is_eq(s, 2), s, buf, off, len)
++CompatibleUnionBC_ok0(U32.is_le(s, 2), s, buf, off, len)
+=== r5-d06-union-decode
+type: CompatibleUnionBC
+ops: decode
+file: types/CompatibleUnionBC_decode_ssz_generated.bend
+sym: CompatibleUnionBC_ok1
+spec: the payload of arm 1 is the bytes after the selector
+fault: the payload of arm 1 is validated over the whole window (selector included)
+why: selector not skipped
+-    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, off, len)
+=== r5-d06-union-decode
+type: CompatibleUnionBC
+ops: decode
+file: types/CompatibleUnionBC_decode_ssz_generated.bend
+sym: CompatibleUnionBC_ok
+spec: a union needs at least its selector byte
+fault: an empty window is accepted (selector read as 0... past the end)
+why: nonempty test dropped
+-CompatibleUnionBC_ok_nz(U32.is_le(1, len), buf, off, len)
++CompatibleUnionBC_ok_nz(True{}, buf, off, len)
