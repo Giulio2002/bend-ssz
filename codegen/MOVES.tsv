@@ -2234,3 +2234,4 @@ codegen/decode_window_laws.py	codegen/proofs/laws/decode_window_laws.py
 codegen/writer_poison_laws.py	codegen/proofs/slop/writer_poison_laws.py
 codegen/decode_literal_laws.py	codegen/proofs/slop/decode_literal_laws.py
 codegen/element_access_laws.py	codegen/proofs/slop/element_access_laws.py
+codegen/element_api_laws.py	codegen/proofs/slop/element_api_laws.py

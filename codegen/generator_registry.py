@@ -74,6 +74,7 @@ GENERATORS = (
     Gen('tight_storage_root', 'proofs/slop'),
     Gen('cached_list_roots', 'proofs/slop'),
     Gen('element_access_laws', 'proofs/slop'),
+    Gen('element_api_laws', 'proofs/slop'),
     Gen('small_type_predicates', 'proofs/slop'),
     Gen('decode_checked_laws', 'proofs/slop'),
     Gen('append_guard_bounds', 'proofs/slop'),
