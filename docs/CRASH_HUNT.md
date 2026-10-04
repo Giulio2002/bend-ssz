@@ -621,3 +621,93 @@ storage tests `(n + 3) >> 2` of `wsz_pick` / `wk_cap` (n > NMAX is now refused b
 `want + 31` (the append's `(n + 1) * es`, bounded by the append guard); `grow_sized` / `scratch_base` (the hash scratch of a buffer); the writers' cursors
 `pos + cur` (they run only after a size pass within NMAX).
 
+
+
+# Round 5 (agent/crash-hunt-r5, off origin/main 8bd2fc3e1)
+
+Fresh auditor, same rule, last planned round. Focus: bypasses of the round-4 fixes (`O.zeros_copy` in the root's clean copy, `_valid` vs `_serialize`
+around NMAX for every kind with a size check and the containers that nest them, union sizes, `O.mul4c`, `_take` / `_ctake` with the zero-leaf root),
+a differential run of objects built through the public setters, and hostile decode with the decode window. Exclusions: CH-01 .. CH-12, R2-01 .. R2-06,
+R3-01 .. R3-04, R4-01 .. R4-06; accepted by Giulio and not reported: R4-02 and out-of-memory on huge VALID inputs, the ProgressiveTestStruct /
+ProgressiveComplexTestStruct 2^31 decode premise, standalone lists of variable-size elements keeping `_valid` 1 above NMAX. Machine-readable: the
+`round5` key of `docs/crash_hunt_findings.json`. No library file was changed. Everything ran on the server under `agents/crashhunt-r5/`, nice 19, at
+most 4 programs at a time, stack 16384 KB, 120 s per run (300 s for the 4 GiB-storage runs), one big object at a time. Probes, generators and runners:
+`tools/crash_hunt/r5/`. `df /srv`: 14 GB free during the run; built programs deleted at the end.
+
+## R5.1 Result in one page
+
+| | |
+|---|---|
+| New findings | **1** low (WRONG) and **1** info |
+| CRASH (abort / OOM / hang) | **0** |
+| WRONG | **1** (R5-01: `_append` into a VALID object with spare storage that is not zero answers `ok` and returns an object `_serialize` refuses) |
+| INFO | **1** (R5-02: `O.words_slice(o, p, 0)` runs a 2^32-iteration loop, 2 s, for an empty slice) |
+| Regression of the earlier fixes (`regress.sh`, 66 cases incl. the 4 GiB ones, on 8bd2fc3e1) | **66 of 66 pass** |
+| (a) root clean copy, every packed kind (`gen_dirty.py`: the 102 packed collections of `gen_packed_diff.SPECS` - bit lists, progressive bit list, bool / uint8 .. uint256 lists and vectors, byte lists, the transaction, lists / vectors of Bytes32, Bytes48 and cells - at 0..69 bytes, the chunk and word boundaries up to 4097 bytes / 8193 bits, the limit and limit - 1, storage depths tight, tight + 1 and tight + 3; every word of storage past the data `0xA5A5A5A5` / `0x01010101` / all ones) | **5,757 runs: 0 abort, 0 root differing from the root of the same bytes in clean roomy storage** (the 297 `valid differs` are bit lists of a multiple of 32 bits whose delimiter word is dirty: not valid by the representation rule, `bits_ok`) |
+| (a) `_valid` / `_size` / `_serialize` of the nested containers around NMAX (`ps_r5.bend`: four transactions in lazily shared 1 GiB storage inside ExecutionPayload -> BeaconBlockBody -> BeaconBlock -> SignedBeaconBlock, totals putting each level at NMAX and NMAX + 1, and 2^32 - 1) | each level: size NMAX `valid=1`, NMAX + 1 `valid=0` and the marker above it; the levels below stay valid; `SignedBeaconBlock_serialize` refuses every total above NMAX without allocating (2.4 to 3 s, 4.2 GB RSS of shared storage). OK |
+| (a) plain and cached lists in LOCKSTEP (`gen_lock.py`: the 5 boxed kinds with `_take` / `_ctake` and the 13 unboxed cached kinds with `_get` / `_cget`; 400 random steps of append / capp, set / cset, take / ctake (get / cget) at indices 0..19, `root(L) == cached_root(C)` after every step, `root(L) == root(uncache(C))` at the end) | **boxed: 1,500 runs (300 seeds x 5 kinds), unboxed: 1,950 runs (150 seeds x 13 kinds), 0 disagreement** (the cached root is the plain root after take, set, append and take again, through every growth of the array) |
+| (a) twin lists for the boxed kinds without a cache (`gen_twin.py`: `proglist_VarTestStruct`, `proglist_ProgressiveVarTestStruct`, `proglist_proglist_VarTestStruct`, `vec_VarTestStruct_2`; one list gets `take(i)` before every `set(i)`) | **800 runs, 0 root differing, both lists valid at the end** |
+| (a) union sizes, `O.mul4c`, `O.padd` | read: every union size adds its selector with `O.padd`; no union payload can reach NMAX (largest union: 536,870,917 bytes); the offset tables use `O.mul4c` in the size pass and the writers run only after it (no new site) |
+| (b) setter / append CHAINS in one process (`chain.bend.in` + `chain_run.py`: the 28 Fulu fuzz groups compiled with a driver that decodes the start value and then applies the whole chain of `types/obj_fuzz_ops.json` operations without re-decoding; the mirror of `tests_generated/fuzz_objects.py` gives the expected acceptance of every step, bytes and root) | **64 names with operations, 6,400 chains of 30 to 600 steps (about 1.5 million operations), 0 differences** in flags, checked encoding or root; every append op run from the empty value to its limit + 2 for the limits up to 8,192 (`--to-limit`: 8 lists incl. the 4,096-cell `DataColumnSidecar.column` and the 8,192 deposit requests): the two past-limit appends refused, OK |
+| (c) hostile decode (`hostile_r5.py`: valid values of every name, every offset slot rewritten to 0, 1, 3, 4, its neighbours, len - 1, len, len + 1, 2^31, NMAX - 1, NMAX, NMAX + 1, 2^32 - 4, 2^32 - 1, a cut at every slot and the middle, one and four trailing bytes; the oracle decides) | **Fulu: 17,615 + 76,480 + RUN3 cases, generic (131 names through a decode-only driver of the 18 generic groups): 33,843 cases: 0 abort, 0 disagreement with the oracle, every accepted input re-encodes to itself with the oracle's root** |
+
+The round-4 fixes hold where they were aimed: the clean copy is right at every size and kind tried, the nested size checks agree level by level, the cached roots
+follow every take. The one new WRONG is in the appends, which the R2-02 (b) / CH-11 change (valid objects may carry non-zero spare storage) did not revisit.
+
+## R5.2 Findings, ranked
+
+### R5-01 (LOW, WRONG): `_append` into a valid object whose storage past its length is not zero returns `ok` and an object `_serialize` refuses
+Entry points: `_append` of every packed list of 1- and 2-byte elements (`proglist_uint8`, `proglist_uint16`, `proglist_bool`, `List[uint8, 2^40]`, `list_uint16_*`,
+the byte lists `bytelist_256`, `Fulu_bytelist_32`, `FuluTransaction`) when the length is a multiple of 4, and of every bit list (`bitlist_N`, `Fulu_bitlist_2048`,
+`Fulu_bitlist_131072`, `progbitlist`) when the bit count is 31 mod 32; through them the field appends of the containers.
+Repro (`tools/crash_hunt/r5/pq_r5.bend`, `SSZ_CASE=1..4`, `SSZ_D=0` dirty / `1` the same data in zero storage):
+`pl_u8_append(O.Words{[0xA5A5A5A5 x 4], 4}, 7)`: `valid0=1 append=1 valid1=0 ser_ok=0 ser_size=0`; clean storage: `valid1=1 ser_ok=1 ser_size=5`.
+`pl_u16_append` at 4 bytes: the same (clean: 6 bytes). `bits33_append(O.Bits{[0x7FFFFFFF, all ones x 3], 31}, True)` and `pbits_append` of the same:
+`valid0=1 append=1 valid1=0 ser_ok=0` (clean: `ser_ok=1 ser_size=5`).
+Chain: `X_append` -> `app_c` (guard true) -> `grow` -> `O.words_fit` (`fit_pick` roomy: the array is kept as it is) -> `words_write` at byte n, which merges only
+the element's bytes into word n >> 2 (`merge_word`); the other bytes of that word are the old spare storage. The new length makes them bytes of the last word past
+the length, which `words_ok` (`tail_zero`) requires to be zero. For a bit list the push of bit 31 of a word makes the next word the delimiter word, which `bits_ok`
+requires to be zero above the length.
+Why it is reachable: `_valid` accepts non-zero storage past the length (only the rest of the last word must be zero), and the contract says so: "For a valid
+object the root is the spec root whatever spare storage it has" (docs/API_CONTRACTS.md, CH-11, R2-02 (b)). Such an object comes from the public constructors
+(`O.Words{..}`, `O.Bits{..}`, a container's `set_<field>`); objects built by `_decode` and `_append` alone keep their storage zero, so honest use does not get there.
+The result is silent: the append answers `ok`, the root of the new object is right (the clean copy), and only the later `_serialize` refuses (`_valid` 0) a value
+the specification encodes.
+Fix (runtime): in the roomy branch of the append, clear the spare part of the word the element goes into, i.e. write the element with the mask that also covers the
+bytes above it when the new element starts a word (`n & 3 == 0` for 1- and 2-byte elements; `words_setw` of the element instead of `merge_word`), and for a bit
+list zero word `(k + 1) >> 5` when the push fills bit 31 of a word. Alternative: take the copying branch (`grow_to`, which copies only `ceil(n / 4)` words into
+zero storage) when the word past the data is not zero. Proof impact: for a represented object (zero storage past the length, `words_canon.bend`) the extra clear
+writes zero over zero, so the append and read-after-write laws keep their statements; the text of the append writer changes (the per-kind append guard laws
+regenerate, as in R2-01).
+
+### R5-02 (INFO): `O.words_slice(o, p, 0)` runs 2^32 iterations for an empty slice
+`words_slice` loops `(n + 3 >> 2) - 1` times: for `n = 0` that is 2^32 - 1 iterations (and for `n >= 2^32 - 3`, where `n + 3` wraps, the same). Measured
+(`tools/crash_hunt/r5/pr_r5.bend`): `SSZ_CASE=1 SSZ_ARG=0` returns `n=0` after 2.1 s (7.7 MB); `n = 8`: 0.11 s. CH-01 added the empty guard to its sibling
+`words_blit` (`bl_some`) but not here. The only generated caller passes 2048 (the cell getter), so no typed entry point reaches it; `O.*` is documented as assuming
+the representation invariant of its arguments, which `n = 0` does not violate. Fix: the same guard as `bl_some` (`U32.is_eq(n, 0)` returns the empty Words) and the
+wrap-free word count `(n >> 2) + ((n & 3) + 3 >> 2)`; `proofs/obj/cell_rw.bend` states it for `n = 2048` only.
+
+## R5.3 Not findings (checked, behaves)
+* Nested NMAX: every container that can pass NMAX has the size test in `_valid` (`maxsize.py`: the 240 names, largest encoding against NMAX: BeaconState,
+  BeaconBlockBody, BeaconBlock, SignedBeaconBlock, ExecutionPayload, ProgressiveTestStruct, ProgressiveComplexTestStruct and the 7 progressive packed lists; all
+  have it, or `words_ok` with `hi = NMAX`); unions cannot reach NMAX.
+* `O.zeros_copy` and `wr_slow` / `wrp_slow`: tight storage (`ceil(n / 4)` words), exactly full storage and spare dirty words, for every packed kind: the root of the bytes.
+* The writers read only the `ceil(n / 4)` words of a valid object (`put_words`, the shifted copies stop at `mid <= nw - 1`), so spare storage never reaches an encoding.
+* `_decode` (plain) now has the window test `size <= B.size(buf)`; with it and the oracle's verdict, no offset at or near NMAX, no cut and no trailing byte is accepted
+  wrongly in any of the 240 names.
+* Bit lists of a multiple of 32 bits need a zero delimiter word in storage (`bits_ok`), so a dirty word there makes the object invalid rather than changing its root: by design.
+
+## R5.4 What was run
+
+| run | size | result |
+|---|---|---|
+| `regress.sh` | 66 cases | 66 of 66 pass on 8bd2fc3e1 |
+| `gen_dirty.py` (102 programs) | 5,757 runs | 0 CRASH, 0 WRONG (first pass had a probe bug: a whole last word written at index `n >> 2` past exactly full storage; fixed, rerun) |
+| `gen_lock.py` (18 programs) | 3,450 runs x 400 steps | 0 disagreement |
+| `gen_twin.py` (4 programs) | 800 runs x 400 steps | 0 disagreement |
+| `chain_run.py` (28 chain drivers) | CHAINS | 0 difference |
+| `hostile_r5.py` (28 chain drivers + 18 generic decode drivers) | HOSTILE | 0 CRASH, 0 WRONG |
+| `pq_r5.bend`, `pr_r5.bend`, `ps_r5.bend` | 8 + 6 + 11 runs | R5-01, R5-02, the nested NMAX rows |
+
+Not run: the 131 generic names through setter chains (they have no fuzz-operation table; their setters were covered by round 3's `gen_packed_diff.py` for the
+packed kinds and by the lockstep / twin probes above for the composite lists); appends to the limits above 8,192 (the mirror copies the whole value per step).
