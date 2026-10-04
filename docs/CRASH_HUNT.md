@@ -725,3 +725,124 @@ The append laws (`read_append`, `read_append_grow` of the three byte lists and t
 new storage exactly (`O.app_old`, `BV2.close_t`); for zero spare storage it is the old storage (zero over zero), and the `view_append` laws keep their
 statements. List: docs/crash_fix6_statement_diff.md.
 packed kinds and by the lockstep / twin probes above for the composite lists); appends to the limits above 8,192 (the 131,072-bit `aggregation_bits` run was stopped at 900 s: the Python mirror copies the whole value per step).
+
+
+
+# Round 6 (agent/crash-hunt-r6, off e1b65e26f = agent/slop-laws-r6; the decode budget of agent/decode-amplification 5c1f48b93 included)
+
+Fresh auditor, same rule, final planned round. Focus: (a) the decode budget (`X_decode_checked_budget`, `X_dcost(size) = ((size >> 3) + 1) * K + 524288`
+words, K measured per name in codegen/decode_cost.json): any valid input whose real decode heap exceeds its bound; (b) decode time per input byte;
+(c) bypasses of the round-5 fixes; (d) setter / getter / append chains on the 131 generic names against the mirror. Exclusions: CH-01 .. CH-12,
+R2-01 .. R2-06, R3-01 .. R3-04, R4-01 .. R4-06, R5-01 .. R5-02; accepted and not reported: out-of-memory on huge valid inputs per se (R4-02), the
+progressive decode proof gap, standalone variable-element lists keeping `_valid` 1 above NMAX. Machine-readable: the `round6` key of
+docs/crash_hunt_findings.json; raw rows: docs/crash_hunt_evidence/r6/. No library file was changed. Everything ran on the server under
+`agents/crashhunt-r6/`, nice 19, at most 4 programs at a time, every measured program inside `systemd-run --scope -p MemoryMax=16G -p MemorySwapMax=0`
+(12G for the 200-256 MB inputs), stack 16384 KB, 300 s per run, one big input at a time. `df /srv`: 15 GB free at the end; built programs deleted.
+
+Method of (a). `tools/crash_hunt/r6/amp.py` + `shapes.py` (written independently of tools/decode_amp): every shape is checked against the independent
+oracle at a small count, encoded at a count of 2^k + 1 elements (the array then has twice the slots it needs) near the target size, decoded once by the
+object program of its group built with the stock 2.0.34 compiler (`benchmarks/objprog`, SSZ_MODE 1: `_decode`, object forced, as the Prysm library is
+built), under `/usr/bin/time`; the same input given to a fixed-size name of the same program (refused at once) is the baseline; decoded = peak - refused.
+margin = X_dcost(size) x 8 bytes / decoded (below 1: over the bound). Shapes: transactions of every length 0..64 bytes (and 0xFF fill, 0/1 alternating,
+2^k and 2^k + 1 counts, the 2^20 limit) in ExecutionPayload / BeaconBlockBody / BeaconBlock / SignedBeaconBlock; every list of BeaconState at 3, 12, 48,
+192 and 384 MiB; DataColumnSidecar (each list, all three at the 4096 limit); ExecutionRequests; ProgressiveComplexTestStruct / ProgressiveTestStruct:
+inner lists of 0..4 VarTestStructs with f_B of 0..3 elements, one inner list of many VarTestStructs, f_H with f_B 0..2 elements x f_C 0, 1, 7, 8, 9, 31,
+32, 33 bits, f_E, f_D, f_C, f_A; ProgressiveBitsStruct, CompatibleUnionABCA, at 2, 3, 32 and 64 MiB. Then the same shapes through SSZ_MODE 5 (decode,
+then the library's byte-granular `X_dump`), and through the Prysm shim's word-granular `X_flat` (`make_flat_tree.py`: a scratch tree whose O.dump_*
+primitives take the bodies of the shim's O.flat_* from prysm-ffi `bendssz/flat-generate.patch`, so every generated `X_dump` computes `X_flat`).
+
+## R6.1 Result in one page
+
+| | |
+|---|---|
+| New findings | **1** low (WRONG: the budget's bound saturates to a value the largest budget accepts) and **3** info |
+| CRASH (abort / OOM / hang) | **0** |
+| (a) decode heap against X_dcost: 166 accepted shape runs (162 of 1 MiB or more), decode only | **0 over the bound**. Largest density / K: 0.72 (BeaconBlockBody, 2^19 + 1 one-byte transactions: 28.8 heap bytes per input byte, K 40); lowest margin 1.42 (incl. the constant); ProgressiveComplexTestStruct of empty inner lists: 21.96 at 2, 16 and 32 MiB (constant in N), K 31; the densest BeaconState list 2.54 (slope 4.4), K 7; every list length 0..64 of a transaction below the 1-byte one (2 bytes 22.3, 4 bytes 17.2, 33 bytes 5.2, 64 bytes < 2). Fixer A's worst shapes are the worst found here too |
+| (a) decode + `X_flat` (the shim's path; not what K measures) | under the bound but at its edge: BeaconState pending_partial_withdrawals / pending_deposits 6.91 heap bytes per input byte at 204 MB (K 7, margin 1.016 with the constant, rising 6.6 -> 6.85 -> 6.9 with size), DataColumnSidecar at its limits 6.09 to 6.14 (K 6: per byte ABOVE K, inside the bound only by the 4 MiB constant, margin 1.06 at the largest legal sidecar); transactions 29.0 (K 40); progressive 21.8 (K 31). R6-02 |
+| (a) decode + `X_dump` (the library's public byte dump) | over the bound: BeaconState 18.9 to 19.1 (K 7, margin 0.39), DataColumnSidecar 18.3 (K 6, 0.44), transactions 38.8 (K 40, 1.07), progressive 30.6 (K 31, 1.08). R6-02 |
+| (a) X_dcost arithmetic (`pt_r6.bend` case 1) | exact, no wrap: K 40 is 4,294,967,288 at 858,888,599 bytes and saturates from 858,888,600; K 31 from about 1.108 GB; K 7 never (3,758,620,672 at 2^32 - 1); K 0 is 524,288 for every size. Zero budget: refused for every size (bound >= 524,288). Saturation: R6-01 |
+| (b) decode time (in-program timer, decode + force) | slowest: one-byte transactions 0.047 s per MiB (3 MiB payloads in 0.09 to 0.12 s; the 5 MiB block of 2^20 one-byte transactions extrapolates to about 0.24 s; round 1 measured about 2 s), empty inner progressive lists 0.037 to 0.043 s/MiB at 2 to 32 MiB, every BeaconState list 0.001 to 0.002 s/MiB, packed and bit lists 0.001. Linear: no shape's time per byte grows with N |
+| (c) round-5 fixes | `words_write_app` is generated exactly for the 1- and 2-byte packed lists and the byte lists; every list without it has elements of 4, 8, 16, 32, 48 or 2048 bytes (whole words); bit pushes all end in `bits_close`; no other length-changing operation exists. The `words_slice` guard covers n = 0 only: R6-03 |
+| (d) generic chains (`gen_generic_fuzz.py` + `gchain.bend.in` + `gchain_run.py`: the generator's own `emit_fuzz` emitted for the 131 generic names in a scratch tree; 108 names have operations: field writes, element writes, appends through the public setters) | **4,320 chains (3,240 of 200 steps, 1,080 of 600: 1,296,000 operations) and 26 appends-to-limit + 2 runs (every append op with a limit <= 1,100): 0 differences** in acceptance flags, checked encoding or root against the fuzz_objects mirror (extended for pbits / plist / pcontainer) |
+| Regression (`regress.sh` on agent/decode-amplification 5c1f48b93) | **76 of 76 pass** (cases 73-76 are the budget's) |
+
+## R6.2 Findings, ranked
+
+### R6-01 (LOW, WRONG): the bound saturates at 2^32 - 1, which is also the largest budget, so the budget 2^32 - 1 refuses nothing
+Entry points: every `X_decode_checked_budget` whose K is at least 8 (ExecutionPayload and the blocks, K 40, from 858,888,600 bytes; ProgressiveComplexTestStruct /
+ProgressiveTestStruct, K 31, from about 1.108 GB).
+Repro (`tools/crash_hunt/r6/pt_r6.bend`, built on 5c1f48b93, `SSZ_CASE=1`): `ProgressiveComplexTestStruct_dcost(2147483648) = 4294967295`, so
+`ProgressiveComplexTestStruct_decode_checked_budget(buf, 2147483648, 4294967295)` takes the `_budget_agree` branch (`U32.is_le(4294967295, 4294967295)`).
+The true bound of that size is 31 x 2 GiB + 4 MiB, about 66.6 GB, twice what 2^32 - 1 words (32 GiB) can say. With the R4-02 input (case 18 of
+`pn_r4.bend`: 4,294,967,262 bytes of empty inner lists, `bend: out of memory` at 61.9 GB) and budget 2^32 - 1, the budget decode is that same abort.
+Why it matters: the budget is a U32 count of words, so an embedder whose heap is above 32 GiB (the native runtime's own heap stops at 61.9 GB, R4-02)
+must clamp; clamping to 2^32 - 1 is the natural choice and the one value at which the saturated bound passes. The law `_budget_accept` states this
+behaviour ("the budget 2^32 - 1 decodes it"), so it is by construction, but the documentation presents the budget as the protection against R4-02 and
+says nothing about clamping. Fix (generator, `O.dcost` users): refuse a saturated bound whatever the budget (`Bool.and(U32.is_lt(dcost, 4294967295),
+U32.is_le(dcost, budget))`), so the largest budget means "up to 32 GiB", or state in docs/API_CONTRACTS.md that a heap of 32 GiB or more must pass
+2^32 - 2. Proof impact: the first changes `_budget_agree` / `_budget_accept` to sizes whose bound fits (the 4096-byte `_budget_cost` and `_budget_zero`
+laws keep their statements); the second is documentation only.
+
+### R6-02 (INFO): K measures `_decode` alone; the deployed path (decode, then `X_flat`) runs at 99 % of the bound, and decode + `X_dump` is 2.6 times over it
+The K table is measured on SSZ_MODE 1 (decode, object forced) and the documentation sizes the Prysm shim with it ("8 GiB is 2^30 words: ... any
+BeaconState of up to about 1 GB ... get through"). The shim answers a decode with `X_flat(o, [])`, a list of one cell per 32-bit word, built
+while the object is consumed. Measured (rows in docs/crash_hunt_evidence/r6/amp_flat.jsonl, amp_dump.jsonl):
+
+| name / shape | input | decode only | decode + X_flat | decode + X_dump | K |
+|---|---:|---:|---:|---:|---:|
+| BeaconState pending_partial_withdrawals, 2^k + 1 | 204,064,425 | 2.54 (9 MB) | **6.91** (margin 1.016) | - | 7 |
+| BeaconState pending_deposits, 2^k + 1 | 204,064,593 | 2.52 (9 MB) | **6.91** (margin 1.016) | - | 7 |
+| BeaconState validators, 2^k + 1 | 256,493,322 / 10,667,786 | 2.07 | 6.47 | **19.05** (margin 0.39) | 7 |
+| DataColumnSidecar, every list at 4096 | 8,782,180 | 2.01 | **6.09** (margin 1.063) | - | 6 |
+| DataColumnSidecar column at 4096 | 8,388,964 | 1.95 | **6.14** (margin 1.059) | 18.34 (2 MB) | 6 |
+| ExecutionPayload, 2^19 + 1 one-byte transactions | 2,621,973 | 28.36 | 28.77 | 38.83 (margin 1.07) | 40 |
+| ProgressiveComplexTestStruct f_F, empty inner lists | 2,097,186 | 21.56 | 21.77 | 30.59 (margin 1.08) | 31 |
+
+The flat stream adds 4 heap bytes per packed input byte (16-byte cells, one per word); the decoded lists of boxed elements are consumed as they are
+flattened, so the dense shapes gain almost nothing, while BeaconState and DataColumnSidecar (packed, about 2 bytes of object per byte) double. A
+BeaconState of 1 GB passes the budget of an 8 GiB heap (bound 7.5 GB) and its decode + flatten needs about 6.9 GB of the heap, plus the input buffer:
+inside, by about 1 %. DataColumnSidecar's density (6.09 to 6.14) is above its K of 6 and stays inside only because the largest legal sidecar is 8.8 MB.
+`X_dump` (one cell per byte) is a public entry point of the typed object API; after a budgeted decode it is up to 2.6 times the bound. Not a crash of
+the decode the budget guards, so INFO. Proposal: measure K on the path the embedder runs (mode 5 with the flat primitives; K about 9 for BeaconState and
+8 for DataColumnSidecar), or document that the budget is for `_decode` alone and that a caller flattening the object reserves about 4 more heap bytes per
+input byte (16 with `X_dump`). No proof impact (K is data).
+
+### R6-03 (INFO, variant of R5-02): `O.words_slice` still loops 2^32 times for n = 2^32 - 3 .. 2^32 - 1
+crash-fix6 guards n = 0 only (`sl_some`); the word count `(n + 3 >> 2) - 1` still wraps for n >= 2^32 - 3, and `zeros_for(n)` wraps to a 16-word array.
+`pt_r6.bend` case 2 (`O.words_slice(Words{2 words, 8}, 0, n)`): n = 4294967293, 4294967294, 4294967295: 1.8 to 2.0 s each and a `Words` that claims n
+bytes over 16 words; n = 4294967292: 2^30 iterations, 0.5 s; n = 0 and 8: 0.1 s. R5-02's text named this range ("and for n >= 2^32 - 3, where n + 3 wraps,
+the same") and its fix proposal had the wrap-free count, which was not applied. The only generated caller passes 2048 (the cell getter). Fix: the
+word count `(n >> 2) + ((n & 3) + 3 >> 2)` and `O.zeros_copy(n)` (or a guard `n <= NMAX`). Proof impact: none (proofs/obj/cell_rw.bend states n = 2048).
+
+### R6-04 (INFO): "a name's K is at least that of every name nested in it" does not hold through aliases
+BlobSidecar has K 3 and holds a `blob: Blob` (K 5). The schema loader resolves aliases to anonymous types (`ft.name` is None for `blob`), so the
+inheritance in k_table.py follows container fields only; no container-field or list-element pair with a named type breaks (checked by script; aliases only by reading). No bound is
+exceeded: BlobSidecar is fixed at 131,928 bytes, its bound 4.59 MB, its decode under 0.4 MB. Fix: inherit by structure (or by the alias names in
+codegen/fulu.yaml), or drop the sentence.
+
+## R6.3 Not findings (checked, behaves)
+* No shape found decodes denser than fixer A's worst measurements; the ratio of the dense shapes is constant from 2 to 32 MiB (empty inner lists 21.96,
+  21.97), so the bound's margin does not shrink with N for decode alone.
+* The zero budget refuses every size (the bound is at least 524,288 words); K 0 names: the bound is the constant 4 MiB for every size, and their largest
+  encodings (at most 26,936 bytes) decode in well under it.
+* `X_decode_checked_budget` is `X_decode_checked` behind one comparison of two U32 values computed without wrap (`dcost_go` tests `w <= (2^32 - 1 - 524288) / K`
+  before the product; `w = (size >> 3) + 1 <= 2^29`).
+* The append clear of R5-01 is complete: `put_app` is generated wherever an element of 1 or 2 bytes is written by `O.words_write`, bit pushes always end in
+  `O.bits_close`, and the other appends write whole words.
+* Generic setters, getters and appends: 0 differences in 4,320 chains (R6.1); the `_set_<field>` of every generic container, `set_elem` / `append` of every
+  generic list, bit list and progressive list kind that a seed can build.
+
+## R6.4 What was run
+
+| run | size | result |
+|---|---|---|
+| `amp.py` decode only (amp1, amp_bs, amp_big) | 167 shape runs x 3 programs (decode, refused baseline, quarter count) | 0 over the bound; R6.1 |
+| `amp.py --mode 5` with `X_dump` (amp_dump) and with `X_flat` (`make_flat_tree.py`, amp_flat) | 8 + 19 runs, up to 256 MB inputs | R6-02 |
+| `pt_r6.bend` (on 5c1f48b93) | 10 sizes x 4 bounds, 6 slice lengths | R6-01, R6-03 |
+| `gchain_run.py` (33 generic chain drivers) | 4,320 chains + 26 to-limit runs | 0 differences |
+| `regress.sh` on 5c1f48b93 | 76 cases | 76 of 76 pass |
+
+Not run: decodes of more than 400 MB (the ratio is constant in N; R6-01's abort is R4-02's measured one); the shim itself (its `X_flat` was reproduced in a
+scratch tree from its patch, the C side and the input copy were not); appends to limits above 1,100 for the generic names (the Python mirror copies the
+value per step).
+Note: the R5.4 "Not run" sentence of round 5 is split by the R5.5 table (its second half is the last line before this section).

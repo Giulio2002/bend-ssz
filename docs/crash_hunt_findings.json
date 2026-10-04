@@ -625,5 +625,68 @@
    "R5-01": "FIXED (crash-fix6): O.words_write_app / O.put_in_app (bytes, roomy and copying branch) and O.bits_close (bits); the read_append laws state the new storage (O.app_old, BV2.close_t), docs/crash_fix6_statement_diff.md",
    "R5-02": "FIXED (crash-fix6): the empty guard of words_slice (sl_some)"
   }
+ },
+ "round6": {
+  "branch": "agent/crash-hunt-r6",
+  "base": "e1b65e26f (agent/slop-laws-r6); decode budget: agent/decode-amplification 5c1f48b93",
+  "counts": {"findings": 1, "info": 3, "high": 0, "medium": 0, "low": 1, "CRASH": 0, "WRONG": 1},
+  "ok_suites": [
+   "regress.sh: 76 of 76 pass on 5c1f48b93",
+   "amp.py decode only: 166 accepted shape runs (162 of 1 MiB or more; transactions of 0..64 bytes in the payload and the three blocks, every BeaconState list to 384 MiB, DataColumnSidecar at its limits, ExecutionRequests, nested progressive shapes, progressive bit lists, a union): 0 over X_dcost; largest density / K 0.72 (one-byte transactions, 28.8 / 40), lowest margin 1.42",
+   "decode time: at most 0.047 s per MiB (one-byte transactions), linear in N",
+   "pt_r6.bend case 1: X_dcost exact and wrap-free for K 0, 7, 31, 40 at 0, 7, 8, the saturation edge 858,888,599 / 600, 1.108e9, 2^31, NMAX, 2^32 - 1; zero budget refuses",
+   "round-5 fixes: put_app generated for every 1- and 2-byte packed and byte list, bits_close on every bit push",
+   "gchain_run.py: 131 generic names (108 with operations), 4,320 chains (1,296,000 setter / element-write / append operations) and 26 append-to-limit + 2 runs against the fuzz_objects mirror: 0 differences"
+  ],
+  "findings": [
+   {
+    "id": "R6-01",
+    "severity": "low",
+    "class": "WRONG",
+    "entry_point": "X_decode_checked_budget of every name with K >= 8: ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock (K 40, sizes from 858,888,600), ProgressiveComplexTestStruct, ProgressiveTestStruct (K 31, from about 1.108e9)",
+    "input": "budget = 4294967295 (the largest U32; the clamp of any heap of 32 GiB or more) and a valid input whose bound does not fit U32, e.g. R4-02 case 18 (4,294,967,262 bytes of empty inner lists)",
+    "repro": "tools/crash_hunt/r6/pt_r6.bend on 5c1f48b93, SSZ_CASE=1 SSZ_ARG=2147483648: PC=4294967295 (true bound about 8.3e9 words); the budget check U32.is_le(4294967295, 4294967295) takes the decode branch; R4-02 case 18 measured that decode: bend: out of memory at 61.9 GB",
+    "observed": "the saturated bound equals the largest budget and passes; the budget refuses nothing at 2^32 - 1",
+    "expected": "a bound that does not fit U32 is above every budget",
+    "fix": "refuse a saturated bound: Bool.and(U32.is_lt(dcost, 4294967295), U32.is_le(dcost, budget)); or document that a heap of 32 GiB or more passes 2^32 - 2",
+    "proof_impact": "_budget_agree / _budget_accept restricted to sizes whose bound fits (the _budget_cost and _budget_zero laws unchanged); or documentation only"
+   },
+   {
+    "id": "R6-02",
+    "severity": "info",
+    "class": "OK (decode within bound; the embedder path is not)",
+    "entry_point": "X_decode_checked_budget followed by X_flat (the Prysm shim) or X_dump (public structural dump)",
+    "input": "BeaconState with 2^k + 1 pending_partial_withdrawals / pending_deposits (204 MB), DataColumnSidecar with every list at 4096 (8.8 MB), BeaconState validators (10.7 MB)",
+    "repro": "tools/crash_hunt/r6/amp.py --mode 5 on a scratch tree from make_flat_tree.py (X_flat) or the plain tree (X_dump); rows docs/crash_hunt_evidence/r6/amp_flat.jsonl, amp_dump.jsonl",
+    "observed": "decode + X_flat: BeaconState 6.91 heap bytes per input byte (K 7, margin 1.016), DataColumnSidecar 6.09 to 6.14 (K 6, above K per byte, inside only by the 4 MiB constant); decode + X_dump: BeaconState 19.05 (margin 0.39), DataColumnSidecar 18.34 (0.44), transactions 38.83 (1.07), progressive 30.59 (1.08)",
+    "expected": "the budget the documentation gives the Prysm shim bounds what the shim does with the object",
+    "fix": "measure K on decode + flatten (about 9 for BeaconState, 8 for DataColumnSidecar), or document that the budget covers _decode only and a flattening caller reserves about 4 (X_flat) / 16 (X_dump) more heap bytes per input byte",
+    "proof_impact": "none (K is data)"
+   },
+   {
+    "id": "R6-03",
+    "severity": "info",
+    "class": "CRASH-class (time) on an O.* helper, variant of R5-02",
+    "entry_point": "O.words_slice(o, p, n) for n = 2^32 - 3 .. 2^32 - 1 (2^30 iterations for 2^32 - 4); the only generated caller passes 2048",
+    "input": "O.words_slice(O.Words{Array.new(U32, 1n, 7), 8}, 0, 4294967294)",
+    "repro": "tools/crash_hunt/r6/pt_r6.bend SSZ_CASE=2 SSZ_ARG=4294967293 / 4294967294 / 4294967295 / 4294967292",
+    "observed": "1.8 / 1.8 / 2.0 / 0.5 s, and a Words claiming n bytes over a 16-word array (n = 0, 8: 0.1 s)",
+    "expected": "no 2^32 loop; R5-02's fix proposal had the wrap-free word count",
+    "fix": "(n >> 2) + ((n & 3) + 3 >> 2) and O.zeros_copy(n), or a guard n <= NMAX",
+    "proof_impact": "none (proofs/obj/cell_rw.bend states n = 2048)"
+   },
+   {
+    "id": "R6-04",
+    "severity": "info",
+    "class": "documentation",
+    "entry_point": "codegen/decode_cost.json, docs/DECODE_AMPLIFICATION.md, docs/API_CONTRACTS.md ('a name's K is at least the K of every name nested in it')",
+    "input": "BlobSidecar (K 3) holds blob: Blob (K 5); the loader resolves the alias to an anonymous type, so k_table.py's inheritance skips it",
+    "repro": "codegen/decode_cost.json on 5c1f48b93",
+    "observed": "K(BlobSidecar) = 3 < K(Blob) = 5; no bound exceeded (bound 4.59 MB, decode under 0.4 MB)",
+    "expected": "the stated invariant",
+    "fix": "inherit by structure or by alias name, or drop the sentence",
+    "proof_impact": "none"
+   }
+  ]
  }
 }
