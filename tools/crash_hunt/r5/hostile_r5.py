@@ -55,12 +55,13 @@ def muts(data, slots, rng):
     yield 'trail4', data + b'\x00\x00\x00\x00'
 
 def run(bindir, name, data, tmp):
-    e = F.FUZZ_OPS[name]
+    prog_path, index, fam = F.PROGRAM[name]
+    exe = os.path.join(bindir, ('chain-f%d' % F.FUZZ_OPS[name]['program']) if fam == 'fulu' else ('dec-g%s' % prog_path.split('obj-x')[1]))
     fd, inp = tempfile.mkstemp(dir=tmp); os.write(fd, data + bytes((-len(data)) % 4)); os.close(fd)
     out = inp + '.out'
-    env = {**os.environ, 'SSZ_INDEX': str(e['index']), 'SSZ_SIZE': str(len(data)), 'SSZ_NOPS': '0', 'SSZ_INPUT': inp, 'SSZ_OUTPUT': out}
+    env = {**os.environ, 'SSZ_INDEX': str(index), 'SSZ_SIZE': str(len(data)), 'SSZ_NOPS': '0', 'SSZ_INPUT': inp, 'SSZ_OUTPUT': out}
     try:
-        r = subprocess.run(['nice', '-n', '19', os.path.join(bindir, 'chain-f%d' % e['program']), '--threads', '1', '--gpu', 'off'], env=env,
+        r = subprocess.run(['nice', '-n', '19', exe, '--threads', '1', '--gpu', 'off'], env=env,
                            capture_output=True, text=True, timeout=120)
         so, rc = r.stdout + r.stderr, r.returncode
     except subprocess.TimeoutExpired:
@@ -75,7 +76,8 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--bin', required=True); ap.add_argument('--values', type=int, default=6)
     ap.add_argument('--jobs', type=int, default=2); ap.add_argument('--only', default=''); ap.add_argument('--seed', type=int, default=53)
     a = ap.parse_args()
-    names = [n for n in F.FUZZ_OPS if n in F.TY and (not a.only or n in a.only.split(','))]
+    fam = os.environ.get('H5_FAMILY', 'fulu')
+    names = [n for n in F.PROGRAM if F.PROGRAM[n][2] == fam and n in F.TY and (not a.only or n in a.only.split(','))]
     tmp = tempfile.mkdtemp(prefix='h5-')
     cases = []
     for n in names:
