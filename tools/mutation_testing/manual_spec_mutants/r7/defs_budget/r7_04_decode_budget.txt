@@ -1,0 +1,190 @@
+## ROUND 7, family d (focus c): fixer A's decode budget (branch agent/decode-amplification 5c1f48b93): O.dcost, X_dcost (K), X_decode_checked_budget.
+## Base tree: 5c1f48b93 (not the round-6 tip). The laws: <X>_decode_vchecked_budget_cost (X_dcost(4096) literal), _refuse / _agree (the comparison),
+## _zero (budget 0 refuses), _accept (budget 2^32 - 1 decodes W).
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_go,dcost_k
+base: 5c1f48b93
+spec: the budget bounds the decode's heap: a size whose bound does not fit U32 is the saturated 2^32 - 1 (refused below the maximal budget)
+fault: the saturation bound ignores the constant (w <= (2^32 - 1) / k): w * k + 524288 wraps to a small bound for w in ((2^32 - 1 - 524288) / k, (2^32 - 1) / k]
+why: the constant forgotten in the overflow guard
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294967295, k)), ((w * k : U32) + 524288 : U32), 4294967295)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_go,dcost_k
+base: 5c1f48b93
+spec: same
+fault: no saturation (the product wraps for every large size)
+why: guard dropped
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  ((w * k : U32) + 524288 : U32)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_go,dcost_k
+base: 5c1f48b93
+spec: same
+fault: the saturation bound is strict (w < (2^32 - 1 - 524288) / k): the largest w that fits saturates (over-strict by one step)
+why: < for <=
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_lt(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_go,dcost_k
+base: 5c1f48b93
+spec: same
+fault: a saturated bound is the constant 524288 (an unaffordable size passes every budget of 4 MiB)
+why: wrong default
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 524288)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost
+base: 5c1f48b93
+spec: the bound covers every input byte
+fault: the words are size >> 4 (+1): half the input charged
+why: shift 4 for 3
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 4n) + 1 : U32), k)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost
+base: 5c1f48b93
+spec: same
+fault: the + 1 word is dropped (size >> 3: a size below 8 bytes is charged only the constant)
+why: rounding dropped
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), U32.shrn(size, 3n), k)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost
+base: 5c1f48b93
+spec: same
+fault: (size >> 3) + 1 is computed as (size + 1) >> 3 (rounding moved: a size of 4096 gives 512 words, sizes 8m - 1 lose a word)
+why: parenthesis
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), U32.shrn((size + 1 : U32), 3n), k)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_k
+base: 5c1f48b93
+spec: same: a name with K = 0 is charged the constant
+fault: the K = 0 test is k <= 1 (a name with K = 1 is charged only the constant)
+why: wrong threshold
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(1, k), (U32.shrn(size, 3n) + 1 : U32), k)
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost_k
+base: 5c1f48b93
+spec: same
+fault: the constant of a K = 0 name is 0 (every budget, also 0, accepts a fixed-size name)
+why: wrong constant
+-    case False{}: 524288
++    case False{}: 0
+=== r7-d01-dcost
+type: Transaction,Checkpoint,ExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost_go
+base: 5c1f48b93
+spec: same
+fault: the constant is 4 MiB in bytes counted as words / 8 (65536)
+why: unit slip
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 65536 : U32), 4294967295)
+=== r7-d02-dcost-k
+type: Transaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_dcost
+base: 5c1f48b93
+spec: X_dcost charges the name's measured K (codegen/decode_cost.json: Transaction 5)
+fault: K = 4 (one below the table)
+why: table drift
+-def Transaction_dcost(+size: U32) -> U32: O.dcost(size, 5)
++def Transaction_dcost(+size: U32) -> U32: O.dcost(size, 4)
+=== r7-d02-dcost-k
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_dcost
+base: 5c1f48b93
+spec: same; a name's K is at least the K of every name nested in it (List[Transaction] in ExecutionPayload)
+fault: ExecutionPayload charged its own fixed-part K 0 (the nested-K rule not applied)
+why: nested names ignored
+-def ExecutionPayload_dcost(+size: U32) -> U32: O.dcost(size, 40)
++def ExecutionPayload_dcost(+size: U32) -> U32: O.dcost(size, 0)
+=== r7-d02-dcost-k
+type: BeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_dcost
+base: 5c1f48b93
+spec: same
+fault: BeaconState's K is 1 (charged a byte per byte)
+why: table drift
+-def BeaconState_dcost(+size: U32) -> U32: O.dcost(size, 7)
++def BeaconState_dcost(+size: U32) -> U32: O.dcost(size, 1)
+=== r7-d03-budget-cmp
+type: Transaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_decode_checked_budget,Transaction_dcb
+base: 5c1f48b93
+spec: X_decode_checked_budget decodes exactly when the bound is within the budget
+fault: the bound must be strictly below the budget (a bound equal to the budget is refused)
+why: < for <=
+-def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(size), budget), buf, size)
++def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_lt(Transaction_dcost(size), budget), buf, size)
+=== r7-d03-budget-cmp
+type: Transaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_decode_checked_budget,Transaction_dcb
+base: 5c1f48b93
+spec: same
+fault: the comparison is reversed (budget <= bound: decodes only when the bound is at least the budget)
+why: argument order
+-def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(size), budget), buf, size)
++def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(budget, Transaction_dcost(size)), buf, size)
+=== r7-d03-budget-cmp
+type: Transaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_dcb
+base: 5c1f48b93
+spec: same: within the budget it is the checked decode
+fault: within the budget the unchecked _decode runs (the buffer's storage test of _decode_checked skipped)
+why: wrong callee
+-    case True{}: Transaction_decode_checked(buf, size)
++    case True{}: Transaction_decode(buf, size)
+=== r7-d03-budget-cmp
+type: Transaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_decode_checked_budget
+base: 5c1f48b93
+spec: the bound is the cost of the requested size
+fault: the bound is charged for the buffer's size field instead of the requested size: the budget compares the cost of 0 bytes (dcost(0))
+why: wrong argument
+-def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(size), budget), buf, size)
++def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(0), budget), buf, size)
