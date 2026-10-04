@@ -69,7 +69,7 @@ def rc2(+x: U32, +bad: U32, +first: U32, +j: U32, +okf: U32, pl: B.Buf & (L.%(P)
   mark(l, c, x, bad, first, j, (okf .&. deqv(d1, d2) : U32))
 
 def rootcmp(l: L.%(P)s_Seq, c: L.%(P)s_Cached, +x: U32, +bad: U32, +first: U32, +j: U32, +okf: U32) -> S:
-  rc2(x, bad, first, j, okf, LH.%(P)s_root(64n, O.hasher(), l, 0), LH.%(P)s_cached_root(64n, O.hasher(), c, 0))
+  rc2(x, bad, first, j, okf, LH.%(P)s_root(64n, O.hasher(), l, 0), L.%(P)s_cached_root(64n, O.hasher(), c, 0))
 
 def flagf(+x: U32, +bad: U32, +first: U32, +j: U32, pl: L.%(P)s_Seq & Bool, pc: L.%(P)s_Cached & Bool) -> S:
   (l, a) = pl
