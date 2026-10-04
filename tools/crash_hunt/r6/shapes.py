@@ -65,6 +65,7 @@ def SHAPES(target):
     for f in ('column', 'kzg_commitments', 'kzg_proofs'):
         e = dict(T['DataColumnSidecar'][0].fields)[f].elem
         add('DataColumnSidecar', '%s.[]' % f, (f,), lambda i, e=e: minval(e))
+    add('DataColumnSidecar', 'column.[] at the 4096 limit', ('column',), lambda i: minval(dict(T['DataColumnSidecar'][0].fields)['column'].elem), mode='n')
     for f, ft in T['ExecutionRequests'][0].fields:
         add('ExecutionRequests', '%s.[]' % f, (f,), lambda i, e=ft.elem: minval(e))
     # progressive containers
