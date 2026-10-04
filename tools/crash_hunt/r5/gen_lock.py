@@ -101,12 +101,15 @@ def run(k: Nat, s: S) -> S:
     case 0n: s
     case 1n+q: run(q, stp(s))
 
+def fin4(+bad: U32, +first: U32, +d1: D.Digest, +d2: D.Digest) -> IO(Unit):
+  IO.print("bad=" ++ U32.show(bad) ++ " first=" ++ U32.show(first) ++ " final_uncache_eq=" ++ U32.show(deqv(d1, d2)) ++ " root=" ++ IOx.words(d1))
+
 def fin3(+bad: U32, +first: U32, pl: B.Buf & (L.%(P)s_Seq & D.Digest), pu: B.Buf & (L.%(P)s_Seq & D.Digest)) -> IO(Unit):
   (h1, r1) = pl
   (l, d1) = r1
   (h2, r2) = pu
   (u, d2) = r2
-  IO.print("bad=" ++ U32.show(bad) ++ " first=" ++ U32.show(first) ++ " final_uncache_eq=" ++ U32.show(deqv(d1, d2)) ++ " root=" ++ IOx.words(d1))
+  fin4(bad, first, d1, d2)
 
 def fin(s: S) -> IO(Unit):
   match s:
