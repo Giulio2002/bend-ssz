@@ -1663,3 +1663,67 @@ but did not finish in 150 s on the mutant), `r7-c06/02` (the message window not 
 What the laws catch this round: every clean-chunk word skip (`pbits_obj` `lcchain` / `lcs`, 13/14; the 14th by `vroot_bl256_past_41`), the partial-word and copy-path
 faults, the size pass at NMAX / es and out_done, the signed wrappers' OR-ed flags (`vreject_message_body`, `vreject_aggregate`), 9 of 13 ExecutionPayload validator
 faults by the literal laws, the transactions list's alignment / order / accumulator, and 12 of 17 decode-budget faults.
+
+## Round 7 fixes (agent/r7-fixes)
+
+Scope: the 21 critical survivors (R7.2: the replay `bl04-bitlist-size/02`, the crash-fix-6 append clearing `r7-b01/02, b02/01, b03/01, b03/02`, the
+ExecutionPayload / transactions-list / SignedBeaconBlock readers and validators `r7-c03/01, c04/10..13, c05/01, c05/07, c05/08, c06/02, c06/03`, and the
+open round-5 decode faults `r5-d01/09, d01/10, d02/01, d02/07, d02/08, d04/02`). The decode-budget faults `r7-d01/*` are fixer A's
+(agent/decode-amplification). No code was wrong: every fault is closed by a law; no frozen statement and no lock changed.
+
+**Triage (existing theorems first).** Each mutant was checked against the end-to-end theorems of its type that import the mutated file
+(`e2e/<Name>_e2e_{comp,dec,decode_witness,decrep,...}_generated.bend`) and the facades `proofs/api/<Name>_{decode_ssz,encode_ssz,hashtreeroot}_proof_generated.bend`,
+with the pinned settings (`tools/check.sh`: 16384 KB stack, 10 MB JSC budget); a stack overflow or a timeout was retried once with the same settings and
+then counted as surviving. Result: `bl04-bitlist-size/02` is killed by an existing theorem, `e2e/bitlist_32_e2e_comp_generated.bend` (its `encode_eval`
+step: the checked encoder's size pass is `O.bits_sizek`); the auditor had run only the slop and facade roots. Every decode mutant (c04, c05, c06, r5-d*)
+overflows the pinned stack on the decode facade and on the comp / dec / decode_witness / decrep theorems, twice: not a kill. The append-clearing mutants
+survive the Transaction / ComplexTestStruct / bitlist_32 theorems (they speak about values whose storage is clean), and `r7-c03/01` survives
+`FuluSignedBeaconBlock_e2e_comp` (309 s) and the witnesses.
+
+**New laws (all generated; every new file checks in a few seconds on the unmutated tree):**
+
+| Generator | Law (file under proofs/slop/validity/) | Pins |
+|---|---|---|
+| collection_guards | `<X>_serialize_vcoll_<p>_append_clear` (packed U32 lists; `<runtime>_<X>_collection_<p>`) | appending 1 to 4 / U zero elements whose spare word 1 holds 0xDEADBEEF (a valid value, CH-11) is accepted and word 1 is exactly 1: the cleared spare word (R5-01) |
+| collection_guards | `<X>_serialize_vcoll_bits<N>_append_clear` (bit lists with N >= 32 or progressive) | pushing True onto 31 one bits with junk in word 1: word 1 (the delimiter word) is 0, word 0 all ones, and `O.bits_sizek` is 5 bytes |
+| small_type_predicates | `<X>_serialize_vbits_sizek` (every bit list; `<runtime>_<X>_bitops_<p>`) | the checked serializer's size pass `O.bits_sizek` is floor(k / 8) + 1 bytes (k = 0, 7, 8, 9, 64, 127) and the marker at k = 128 on 4 words |
+| container_field_validity | `<X>_serialize_vreject_bx_present_default` / `_bx_present_<field>` (every boxed X; `<runtime>_<X>_fields`) | a present box is valid exactly when its value is (the default's box valid, the box of a value with one invalid field invalid) |
+| decode_literal_laws | `<X>_decode_vlit_ok_fixed` / `_rt_fixed` (variable-size containers) | the default with every fixed leaf a distinct small mark decodes and serializes back to the same size and first 192 words (a field read at a neighbour's position) |
+| decode_literal_laws | `<X>_decode_vlit_ok_wide` / `_rt_wide` | the same with every variable part three levels deep non-empty; byte lists and lists of fixed elements open with the word 4, so a window read at a wrong offset parses as a short table instead of looping |
+| decode_literal_laws | `<X>_decode_vlit_bad_size_<path>` | one size rule broken deep inside a variable field, every offset right, is refused (a validator that skips a child window accepts it, and its reader stops) |
+| decode_literal_laws | `<X>_decode_vlit_bad_count_<p>` (lists of variable elements with a limit N) | symbolic: an aligned first offset in the window that counts more than N elements is refused by the head; no closed term over the 4 MiB offset (the offset is a variable) |
+| decode_literal_laws | `<X>_decode_vlit_bad_order_sym_o<i>` (variable-size containers) | symbolic: o_i < o_{i-1} makes the validator refuse (the test is rewritten to False) |
+| decode_literal_laws | `<X>_decode_vlit_win_<step>` / `_win_elem_<p>` | symbolic: each reader step that reads an offset slot or a variable field reads the slot / window the schema gives (the generator checks the generated reader against the schema); element i of a list of variable elements is read at off + s_i up to e_i |
+
+The decode literal laws of round 5 keep their statements; their modules now carry only the word readers they use (`rw1 .. rwK`), and the round-7 laws are
+not subject to the 64-law cap of the earlier ones.
+
+**Replay.** Every critical survivor, re-applied on this branch and checked with the pinned settings (`tools/check.sh`, 120 s, one retry), is killed by a
+named law:
+
+| Survivor | Existing theorems (triage) | Killed by (law, file) |
+|---|---|---|
+| bl04-bitlist-size/02 | KILLED: e2e/bitlist_32_e2e_comp_generated.bend (`encode_eval`) | also `bitlist_32_serialize_vbits_sizek`, generic_bitlist_32_bitops_bits32 |
+| r7-b01-app-clear/02 | survive | `Transaction_serialize_vcoll_bl1073741824_append_clear`, fulu_Transaction_collection_bl1073741824 |
+| r7-b02-put-app-gen/01 | survive | `ComplexTestStruct_serialize_vcoll_bl256_append_clear`, generic_ComplexTestStruct_collection_bl256 |
+| r7-b03-bits-close/01 | survive | `bitlist_32_serialize_vcoll_bits32_append_clear`, generic_bitlist_32_collection_bits32 |
+| r7-b03-bits-close/02 | survive | `bitlist_32_serialize_vcoll_bits32_append_clear`, generic_bitlist_32_collection_bits32 |
+| r7-c03-signed-child/01 | survive | `BeaconBlockBody_serialize_vreject_bx_present_proposer_slashings`, fulu_BeaconBlockBody_fields |
+| r7-c04-execpayload-decode/10 | stack (unjudged) | `ExecutionPayload_decode_vlit_rt_wide`, fulu_ExecutionPayload_decode_literal_rt_wide |
+| r7-c04-execpayload-decode/11 | stack | `ExecutionPayload_decode_vlit_rt_wide` |
+| r7-c04-execpayload-decode/12 | stack | `ExecutionPayload_decode_vlit_rt_wide` |
+| r7-c04-execpayload-decode/13 | stack | `ExecutionPayload_decode_vlit_rt_fixed`, fulu_ExecutionPayload_decode_literal_rt_fixed |
+| r7-c05-txlist-decode/01 | stack | `ExecutionPayload_decode_vlit_bad_count_l1048576_bl1073741824`, fulu_ExecutionPayload_decode_literal_count_l1048576_bl1073741824 |
+| r7-c05-txlist-decode/07 | stack | `ExecutionPayload_decode_vlit_rt_wide` |
+| r7-c05-txlist-decode/08 | stack | `ExecutionPayload_decode_vlit_rt_wide` |
+| r7-c06-signed-decode/02 | stack | `SignedBeaconBlock_decode_vlit_bad_size_message_body_proposer_slashings_ragged`, fulu_SignedBeaconBlock_decode_literal_bad_size_message_body_proposer_slashings_ragged |
+| r7-c06-signed-decode/03 | stack | `SignedBeaconBlock_decode_vlit_rt_fixed`, fulu_SignedBeaconBlock_decode_literal_rt_fixed |
+| r5-d01-nested-list-offsets/09 | stack | `ProgressiveTestStruct_decode_vlit_rt_wide`, generic_ProgressiveTestStruct_decode_literal_rt_wide |
+| r5-d01-nested-list-offsets/10 | stack | `ProgressiveTestStruct_decode_vlit_win_elem_pl_pl_VarTestStruct`, generic_ProgressiveTestStruct_decode_literal_win (rt_wide times out: the mutant loops on it) |
+| r5-d02-container-offsets/01 | stack | `ProgressiveTestStruct_decode_vlit_bad_order_sym_o3`, generic_ProgressiveTestStruct_decode_literal_order_sym |
+| r5-d02-container-offsets/07 | stack | `ProgressiveTestStruct_decode_vlit_win_rd6`, generic_ProgressiveTestStruct_decode_literal_win (rt_wide times out) |
+| r5-d02-container-offsets/08 | stack | `ProgressiveTestStruct_decode_vlit_win_rd2`, generic_ProgressiveTestStruct_decode_literal_win (rt_wide times out) |
+| r5-d04-fixed-elem-list/02 | stack | `ProgressiveComplexTestStruct_decode_vlit_rt_wide`, generic_ProgressiveComplexTestStruct_decode_literal_rt_wide |
+
+Machine-readable: the `status` field of each entry of `manual_round_7_survivors.json` (`r7_fix`, `killed_by`, `file`, `triage_existing`, `replay`).
+Statement or lock changes: none.
