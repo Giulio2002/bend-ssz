@@ -30,4 +30,4 @@ docs/size_limit_statement_diff.md section 4): `X_decode` of `ProgressiveTestStru
 of `ProgressiveComplexTestStruct` below 2^29 (`258 + n < 2^29`), and of `ProgressiveVarTestStruct` and
 `ProgressiveSingleListContainerTestStruct` below 2^29 (`n < 2^29`); the decode window facts of the progressive record lists
 (`pl_SmallTestStruct`, `l10_*`, `pl_VarTestStruct`, `pl_pl_VarTestStruct`, `pl_ProgressiveVarTestStruct`) hold below 2^31 bytes. Between those
-bounds and NMAX the same entry points accept and decode, and that range is checked by execution only (the runtime suites), not by a proof.
+bounds and NMAX the same entry points accept and decode; that range is not covered by any standing suite: no regression case, invalid-object, runtime or conformance run decodes these types above their proved bound. The only execution there was the one-off round-4 hunter probe (`tools/crash_hunt/pn_r4.bend`, docs/CRASH_HUNT.md R4.1 "big honest record lists": `ProgressiveComplexTestStruct_decode_checked` up to a 4.29 GB input answered `Some`), which is not part of any gate (audit round 7, G4).

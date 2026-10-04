@@ -299,7 +299,7 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
   pre-size-limit bound on the input: `ProgressiveTestStruct` (`h31: 1 + n < 2^31`), `ProgressiveComplexTestStruct` (`h31: 258 + n < 2^29`),
   `ProgressiveVarTestStruct` and `ProgressiveSingleListContainerTestStruct` (`h31: n < 2^29`), and the decode window facts of the progressive
   record-list families (`pl_SmallTestStruct`, `l10_*`, `pl_VarTestStruct`, `pl_pl_VarTestStruct`, `pl_ProgressiveVarTestStruct`) stay at
-  `len < 2^31` and tree depth below 30. Their decode is proved below those bounds and checked by execution only between them and NMAX
+  `len < 2^31` and tree depth below 30. Their decode is proved below those bounds; between them and NMAX it is checked only by the one-off round-4 hunter probe (no standing suite)
   (docs/size_limit_statement_diff.md section 4, docs/TRUST.md, docs/API_CONTRACTS.md).
 - **Per-part budgets, derived (no longer premises)**: the attester-slashings and attestations
   lists of FuluBeaconBlockBody, FuluBeaconBlock and FuluSignedBeaconBlock must encode within
