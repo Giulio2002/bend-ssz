@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/07
+# type: ProgressiveTestStruct
+# ops: root
+# spec: mix_in_length with the list's length
+# fault: the outer progressive list mixes length + 1
+# why: off-by-one count
+# file: types/proglist_proglist_VarTestStruct_hashtreeroot_generated.bend
+# sym: pl_pl_VarTestStruct_rt_fin
+--- a/types/proglist_proglist_VarTestStruct_hashtreeroot_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_hashtreeroot_generated.bend
+@@ -84,3 +84,3 @@
+   (arr, d) = r
+-  (h, (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.mix_len(hl, d, n)))
++  (h, (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.mix_len(hl, d, (n + 1 : U32))))
+ 

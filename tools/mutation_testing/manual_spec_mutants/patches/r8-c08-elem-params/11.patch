@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/11
+# type: vec_uint128_4
+# ops: root
+# spec: Vector[uint128, 4]: 64 bytes = 2 chunks (depth 1)
+# fault: depth 0 (only the first chunk)
+# why: chunk count from 64 / 64
+# file: types/vec_uint128_4_hashtreeroot_generated.bend
+# sym: v4_u128_root
+--- a/types/vec_uint128_4_hashtreeroot_generated.bend
++++ b/types/vec_uint128_4_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v4_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
++def v4_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
+ 

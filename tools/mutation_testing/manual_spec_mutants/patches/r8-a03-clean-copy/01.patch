@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a03-clean-copy/01
+# type: FuluTransaction,ComplexTestStruct
+# ops: root
+# spec: storage bytes past the length do not enter the root
+# fault: a length of 4m + 1 tests bytes 2..3 only (byte 1 may hold junk)
+# why: wrong shift in one tail case
+# file: src/obj.bend
+# sym: tail_zero,wcn_tz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -925,3 +925,3 @@
+     case 0: True{}
+-    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
++    case 1: U32.is_eq(U32.shrn(x, 16n), 0)
+     case 2: U32.is_eq(U32.shrn(x, 16n), 0)

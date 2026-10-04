@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c01-prog-active/06
+# type: ProgressiveVarTestStruct
+# ops: root
+# spec: progressive container: inactive slots are zero chunks between the active ones
+# fault: the inactive slots are dropped (fields B and C occupy slots 1 and 2)
+# why: the merkleized sequence built from the present fields only
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveVarTestStruct_fin
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+ def ProgressiveVarTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest):
+-  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
++  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, d_f_B, d_f_C), D.node(hl, D.zero(), D.zero()))), d_f_A), 21)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c06-bitvector-root/01
+# type: bitvector_33,BitsStruct
+# ops: root
+# spec: Bitvector[33] root: pack_bits gives 5 bytes, the 33rd bit is in word 1
+# fault: the second word is dropped (bit 32 never enters the root)
+# why: one 32-bit word assumed
+# file: types/bitvector_33_hashtreeroot_generated.bend
+# sym: bv33_root
+--- a/types/bitvector_33_hashtreeroot_generated.bend
++++ b/types/bitvector_33_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_33_d.Bitvector33{+w0, +w1}: (h, D.D{B.swap32(w0), B.swap32(w1), 0, 0, 0, 0, 0, 0})
++    case bitvector_33_d.Bitvector33{+w0, +w1}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
+ 

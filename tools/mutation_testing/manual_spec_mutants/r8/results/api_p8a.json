@@ -1,0 +1,21 @@
+{
+ "baseline": {
+  "1": "c1 tx1 junk-byte1 valid=0 ser ok=0 size=0 ck=7 root=1488297322,974581513,3903836319",
+  "2": "c2 tx1 clean valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+  "3": "c3 tx5 junk-byte5 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157",
+  "4": "c4 tx5 clean valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157"
+ },
+ "r8-a03-clean-copy/01": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "c1 tx1 junk-byte1 valid=0 ser ok=0 size=0 ck=7 root=1488297322,974581513,3903836319",
+    "c1 tx1 junk-byte1 valid=1 ser ok=1 size=1 ck=48858 root=390158544,1556686682,3384656918"
+   ],
+   "3": [
+    "c3 tx5 junk-byte5 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157",
+    "c3 tx5 junk-byte5 valid=1 ser ok=1 size=5 ck=2086540907 root=2698056240,758534521,497799616"
+   ]
+  }
+ }
+}

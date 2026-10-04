@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c03-container-pad/06
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: container root: field roots in declaration order
+# fault: deposits and voluntary_exits exchanged in the body's first half
+# why: field order
+# file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+# sym: BeaconBlockBody_g0_rt7
+--- a/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+@@ -38,3 +38,3 @@
+   (voluntary_exits, d_voluntary_exits) = r
+-  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, D.node(hl, D.node(hl, D.node(hl, d_randao_reveal, d_eth1_data), D.node(hl, d_graffiti, d_proposer_slashings)), D.node(hl, D.node(hl, d_attester_slashings, d_attestations), D.node(hl, d_deposits, d_voluntary_exits)))))
++  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, D.node(hl, D.node(hl, D.node(hl, d_randao_reveal, d_eth1_data), D.node(hl, d_graffiti, d_proposer_slashings)), D.node(hl, D.node(hl, d_attester_slashings, d_attestations), D.node(hl, d_voluntary_exits, d_deposits)))))
+ 

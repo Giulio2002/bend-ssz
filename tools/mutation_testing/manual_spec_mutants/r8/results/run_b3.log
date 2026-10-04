@@ -1,0 +1,6 @@
+r8-c07-group-roots/01 KILLED [('root_state_generated.bend', ['st_BeaconState'])]
+r8-c07-group-roots/02 KILLED [('root_state_generated.bend', ['st_BeaconState'])]
+r8-c07-group-roots/03 KILLED [('root_state_generated.bend', ['stg_BeaconState_4'])]
+r8-c07-group-roots/04 KILLED [('root_state_generated.bend', ['st_BeaconState'])]
+r8-c07-group-roots/05 KILLED [('root_types_generated.bend', ['st_SignedBeaconBlock'])]
+done

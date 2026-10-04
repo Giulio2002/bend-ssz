@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c03-container-pad/04
+# type: FuluAttestation
+# ops: root
+# spec: container root: field roots in declaration order
+# fault: signature and committee_bits exchanged
+# why: field order in the leaf list
+# file: types/FuluAttestation_hashtreeroot_generated.bend
+# sym: Attestation_rt3
+--- a/types/FuluAttestation_hashtreeroot_generated.bend
++++ b/types/FuluAttestation_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, d_committee_bits) = pair
+-  (h, (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, D.node(hl, D.node(hl, d_aggregation_bits, d_data), D.node(hl, d_signature, d_committee_bits))))
++  (h, (FuluAttestation_d.Attestation{aggregation_bits, data, signature, committee_bits}, D.node(hl, D.node(hl, d_aggregation_bits, d_data), D.node(hl, d_committee_bits, d_signature))))
+ 

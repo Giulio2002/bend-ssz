@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/06
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: (API, docs/DECODE_AMPLIFICATION.md) K of a name is at least the K of every name nested in it (the body holds the payload, K = 40)
+# fault: the body's K is 7 (its own fixed part; the nested-K rule not applied)
+# why: the nested payload's density ignored
+# file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+# sym: BeaconBlockBody_dk,BeaconBlockBody_dcost
+--- a/types/FuluBeaconBlockBody_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_decode_ssz_generated.bend
+@@ -363,3 +363,3 @@
+ 
+-def BeaconBlockBody_dk() -> U32: 40
++def BeaconBlockBody_dk() -> U32: 7
+ 

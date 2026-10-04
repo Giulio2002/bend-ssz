@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/16
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: List[C, 10] holds at most 10 elements
+# fault: the cached append accepts an 11th element
+# why: <= for <
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_capp_sz
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+@@ -202,3 +202,3 @@
+   (arr, +sc) = pair
+-  l10_ProgressiveSingleFieldContainerTestStruct_capp_in(Bool.and(U32.is_lt(n, 10), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
++  l10_ProgressiveSingleFieldContainerTestStruct_capp_in(Bool.and(U32.is_le(n, 10), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d02-cache-depth/02
+# type: FuluExecutionRequests
+# ops: root
+# spec: List[DepositRequest, 8192]: depth 13
+# fault: depth 14
+# why: depth from N + 1
+# file: types/Fulu_list_DepositRequest_8192_def_generated.bend
+# sym: l8192_DepositRequest_croot_pad
+--- a/types/Fulu_list_DepositRequest_8192_def_generated.bend
++++ b/types/Fulu_list_DepositRequest_8192_def_generated.bend
+@@ -280,3 +280,3 @@
+ def l8192_DepositRequest_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<FuluDepositRequest_d.DepositRequest>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l8192_DepositRequest_Cached & D.Digest):
+-  l8192_DepositRequest_croot_fin(hl, n, d, arr, nodes, l8192_DepositRequest_pad_go(hl, Nat.sub(13n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l8192_DepositRequest_croot_fin(hl, n, d, arr, nodes, l8192_DepositRequest_pad_go(hl, Nat.sub(14n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

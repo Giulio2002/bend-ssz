@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/09
+# type: CompatibleUnionBC
+# ops: decode
+# spec: (API) K of a union is at least the K of every option
+# fault: K = 5
+# why: one option's K taken
+# file: types/CompatibleUnionBC_decode_ssz_generated.bend
+# sym: CompatibleUnionBC_dk
+--- a/types/CompatibleUnionBC_decode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_decode_ssz_generated.bend
+@@ -100,3 +100,3 @@
+ 
+-def CompatibleUnionBC_dk() -> U32: 7
++def CompatibleUnionBC_dk() -> U32: 5
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/07
+# type: FuluBeaconState
+# ops: root
+# spec: Vector[Bytes32, 65536] (randao_mixes): depth 16
+# fault: depth 15
+# why: off-by-one log2
+# file: types/Fulu_vec_bytevec_32_65536_hashtreeroot_generated.bend
+# sym: v65536_b32_root
+--- a/types/Fulu_vec_bytevec_32_65536_hashtreeroot_generated.bend
++++ b/types/Fulu_vec_bytevec_32_65536_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v65536_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 16, seg)
++def v65536_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 15, seg)
+ 

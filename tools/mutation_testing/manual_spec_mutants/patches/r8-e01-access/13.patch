@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/13
+# type: FuluExecutionPayload
+# ops: root,encode
+# spec: a getter returns its own field
+# fault: get_state_root returns receipts_root (both Bytes32)
+# why: copy-paste of the neighbouring getter
+# file: types/FuluExecutionPayload_def_generated.bend
+# sym: ExecutionPayload_g0_get_state_root
+--- a/types/FuluExecutionPayload_def_generated.bend
++++ b/types/FuluExecutionPayload_def_generated.bend
+@@ -52,3 +52,3 @@
+   match o:
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, state_root)
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, receipts_root)
+ 

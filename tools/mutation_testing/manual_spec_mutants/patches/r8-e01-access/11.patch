@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/11
+# type: FuluBeaconState
+# ops: root,encode
+# spec: a setter writes its own field
+# fault: the outer set_finalized_checkpoint calls the group's current_justified_checkpoint setter
+# why: copy-paste of the neighbouring outer setter
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_set_finalized_checkpoint,BeaconState_g2_set_current_justified_checkpoint
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -731,3 +731,3 @@
+   match o:
+-    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{g0, g1, BeaconState_g2_set_finalized_checkpoint(g2, v), g3, g4}
++    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{g0, g1, BeaconState_g2_set_current_justified_checkpoint(g2, v), g3, g4}
+ 

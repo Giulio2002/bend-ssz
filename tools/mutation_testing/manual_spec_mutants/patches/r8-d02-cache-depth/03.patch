@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d02-cache-depth/03
+# type: FuluBeaconState
+# ops: root
+# spec: List[PendingConsolidation, 262144]: depth 18
+# fault: depth 17
+# why: off-by-one log2
+# file: types/Fulu_list_PendingConsolidation_262144_def_generated.bend
+# sym: l262144_PendingConsolidation_croot_pad
+--- a/types/Fulu_list_PendingConsolidation_262144_def_generated.bend
++++ b/types/Fulu_list_PendingConsolidation_262144_def_generated.bend
+@@ -280,3 +280,3 @@
+ def l262144_PendingConsolidation_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<FuluPendingConsolidation_d.PendingConsolidation>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l262144_PendingConsolidation_Cached & D.Digest):
+-  l262144_PendingConsolidation_croot_fin(hl, n, d, arr, nodes, l262144_PendingConsolidation_pad_go(hl, Nat.sub(18n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l262144_PendingConsolidation_croot_fin(hl, n, d, arr, nodes, l262144_PendingConsolidation_pad_go(hl, Nat.sub(17n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

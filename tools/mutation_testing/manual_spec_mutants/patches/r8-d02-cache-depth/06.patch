@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d02-cache-depth/06
+# type: FuluExecutionPayload
+# ops: root
+# spec: node j = hash(node 2j, node 2j + 1)
+# fault: the left child is read at 2j + 1 (each node hashes its right child twice)
+# why: sibling index
+# file: types/Fulu_list_Withdrawal_16_def_generated.bend
+# sym: l16_Withdrawal_node_go
+--- a/types/Fulu_list_Withdrawal_16_def_generated.bend
++++ b/types/Fulu_list_Withdrawal_16_def_generated.bend
+@@ -245,3 +245,3 @@
+   match ts:
+-    case l16_Withdrawal_TS{h, arr, nodes}: l16_Withdrawal_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))
++    case l16_Withdrawal_TS{h, arr, nodes}: l16_Withdrawal_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
+ 

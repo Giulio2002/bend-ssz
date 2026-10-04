@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c07-group-roots/04
+# type: FuluBeaconState
+# ops: root
+# spec: the zero subtree of depth 4
+# fault: z4 is filled with Z(5)
+# why: zero-table index
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -247,3 +247,3 @@
+   (h, z3) = pair
+-  BeaconState_rt6(hl, seg, g0, g1, g2, g3, g4, r0, r1, r2, r3, r4, z3, (h, D.zconst(4n)))
++  BeaconState_rt6(hl, seg, g0, g1, g2, g3, g4, r0, r1, r2, r3, r4, z3, (h, D.zconst(5n)))
+ 

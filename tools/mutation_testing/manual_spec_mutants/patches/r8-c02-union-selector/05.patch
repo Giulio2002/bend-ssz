@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c02-union-selector/05
+# type: CompatibleUnionBC
+# ops: root
+# spec: mix_in_selector with the declared selector (3 for the second option of BC)
+# fault: the second option is mixed with 1 (index + 1)
+# why: selectors renumbered from 1 per union
+# file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+# sym: CompatibleUnionBC_rt1
+--- a/types/CompatibleUnionBC_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionBC_hashtreeroot_generated.bend
+@@ -22,3 +22,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.mix_len(hl, d, 3)))
++  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.mix_len(hl, d, 1)))
+ 

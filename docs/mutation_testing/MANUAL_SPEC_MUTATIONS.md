@@ -1727,3 +1727,67 @@ named law:
 
 Machine-readable: the `status` field of each entry of `manual_round_7_survivors.json` (`r7_fix`, `killed_by`, `file`, `triage_existing`, `replay`).
 Statement or lock changes: none.
+
+# Round 8 (base 66ffd3047, agent/manual-spec-mutations-r8)
+
+Focus (brief): hash_tree_root and merkleization (mix_in_length, padding, limits, progressive subtrees, active-fields and selector mix-ins,
+bitvector chunks), the cached Merkle trees and incremental roots, setters / take on containers inside lists, and the decode budget.
+Definitions `defs/r8_01..05*.txt`, patches `patches/r8-*` (**162 faults** in 20 rule families; 14 more were dropped by `r8/mk8.py` as exact
+duplicates of earlier rounds; three patches whose hunk touches a file's last line were regenerated with `diff -u`, `r8/fixp.py`),
+runner `r8/run8.py` (run4.py, with the checker-stack retry at the PINNED settings, never a larger stack), `r8/go.sh`; results `r8/results/`
+(`run_b1..b4.log`, `res_b*.json` narrow pass; `run_p2.log` / `res_p2.json` explicit-root pass on the narrow survivors; `api_p8{a,b,c}.json`
+API probes `r8/probes/p8a.bend` (junk storage), `p8b.bend` (caches, take / set / append), `p8c.bend` (X_dcost); `corpus_b.json` reference corpus,
+`r8/corpus8.py`). Machine-readable survivors: `manual_round_8_survivors.json`.
+
+## R8.1 Result
+
+| | count |
+|---|---|
+| New faults | **162** (merkleization core in src/obj.bend 35, generated roots 62, cached trees 28, accessors 17, decode budget 13, zero-subtree constants 3, src/merkle_fast.bend 4) |
+| (A) killed by a named law | **149** (narrow pass 143; explicit-root pass on 14 narrow survivors and the one patch error, 6: d01/07, d01/16, d02/01, e01/02, f01/10, f01/12) |
+| (A) UNJUDGED (stack / timeout) | **0** |
+| (A) survived every checked root | **13** |
+| Survivors judged through the public API | **critical 8** (7 shown by a probe, 1 argued), **equivalent in context 5** (dead or unreachable code) |
+| (B) corpus, 15 proof-killed faults sampled + 1 survivor | 9 killed by the corpus, 6 not (5 corpus-invisible: all but 2 accepted ComplexTestStruct values in the corpus hold at most 2 list elements, so chunk words 6..7, element trees and junk storage are never exercised; 1 bitvector_1280 has no corpus entry) |
+
+Every fault family on the merkleization core (mtree / ctree / ptree recursion, chunk readers, uint chunks, length chunk, active-fields and
+selector mix-ins, container padding, BeaconState's group roots, packed-list depths and counts, element-tree parameters, bitvectors), the
+zero-subtree constants, 25 of 28 cached-tree faults and every decode-budget fault are killed by a named law. The laws that
+did the work: `mtree_run` / `prog_root` / `pt_run` / `chunk_read`, the `root_*types*` / `root_state` per-type root theorems (`st_<Name>`),
+`<X>_vroot_<p>_cache_*`, `cached_<kind>` / `cache.bend`, the `fields_*` read-after-write / unchanged laws, `coll_api_*`, and
+`<X>_decode_vchecked_budget_{cost,refuse}` (including the new `_cost_858888592` and the Checkpoint K = 0 cost law).
+
+## R8.2 Findings (critical: reachable through the public API, no named law kills them, a probe shows the wrong answer)
+
+1. **`r8-a03-clean-copy/01`: `tail_zero` case 1 tests bytes 2..3 only** (src/obj.bend:927). `tail_zero` is shared by the root's clean-storage
+   test and by the packed validity (src/obj.bend:1728). A Transaction `O.Words{[0x0000BE01], 1}` (record constructor; junk in byte 1 of its
+   only word) is refused by the unmutated `bl1073741824_valid` / `Transaction_serialize`; the mutant answers valid = 1, serializes 1 byte,
+   and `Transaction_hash_tree_root` hashes the junk (390158544,... instead of the root of [0x01]). The junk laws `<X>_vroot_<p>_j_tail` use
+   0xDEADBE01, junk in bytes 1..3 together, which a test of bytes 2..3 still sees (p8a cases 1, 3; the same at n = 5).
+2. **The cached tree of `List[ProgressiveSingleFieldContainerTestStruct, 10]` has no law** (`r8-d01/14` padding depth 3 instead of 4,
+   `r8-d01/15` the limit 10 mixed instead of the length). `proofs/obj/cached_*` cover eleven Fulu kinds; the `l10` kind (ProgressiveComplexTestStruct.f_G)
+   is pinned only on its append size (`appb_c`). p8b case 1: cached root of a 1-element list 1037339034,... / 2394927061,... vs 2261265607,....
+3. **`r8-d01/18`: `ctake` on the transactions list does not mark its slot dirty.** docs/API_CONTRACTS.md states that after `_ctake` the
+   cached root is the root of the returned object. p8b case 4: after `cached_root`, `ctake(c, 0)`, the cached root stays 1473557429,... while
+   the plain root of `uncache(c)` is 2248133444,.... The same fault on `Fulu_list_Deposit_16` (round 4) is killed; no law covers it for the
+   transactions kind.
+4. **`r8-e01/04`: `Fulu_list_Attestation_8` growth copies n - 1 elements.** The second `l8_Attestation_append` from the default grows the
+   storage and leaves the last old element as an empty box: `l8_Attestation_valid` 0, root changed (p8b case 6). `coll_seq` /
+   `coll_api_*` state appends on a list whose storage already has room.
+5. **`vec_VarTestStruct_2` (ComplexTestStruct.f_G) accessors:** `r8-e02/01` (`take` tests i <= n: `take(v, 2)` answers Some, moving element 0
+   out through the index wrap of the 2-slot array; p8b case 7), `r8-e02/02` (`set(v, 2, x)` answers ok = 1 and overwrites element 0; p8b case 8),
+   `r8-e02/03` (`set` writes slot 0 whatever i; argued: `set(v, 1, x)` changes element 0). No api law exists for this vector kind's take / set.
+
+## R8.3 Not critical (reasoned)
+
+* equivalent in context (dead code for the object API): `r8-a05/03` (`O.elems_root_prog` has no caller in types/ or src/),
+  `r8-b02/01..04` (src/merkle_fast.bend's streaming merkleizer: the object API imports it only for `M.ready`, `M.shl_by`, `M.shr_by`;
+  every root goes through obj.bend's `mtree` / `ptree` and `D.zconst`).
+* Killed only in the explicit-root pass (the narrow pass's K = 3 mentioning roots missed the right file; each is a named-law kill):
+  `r8-d01/16` (`ProgressiveComplexTestStruct_serialize_vcoll_l10_..._appb_at`), `r8-d02/01` (`cached_l2_ConsolidationRequest`: `croot_full`),
+  `r8-e01/02` (`coll_api_5`: `l8_Attestation_api_set_flag`), `r8-f01/10` (`Checkpoint_decode_vchecked_budget_cost`: a K = 0 name charged
+  through `dcost_go(w, 0)` saturates, p8c case 1 shows 4294967295), `r8-f01/12` (`ExecutionPayload_decode_vchecked_budget_cost_858888592`),
+  `r8-d01/07` (`BeaconBlockBody_vroot_l8_Attestation_cache_app_1`).
+* Corpus (B): the corpus cannot observe any of the 13 survivors (it decodes valid bytes: clean storage, no cache, no take / set / append),
+  and among the proof-killed sample it misses chunk words 6..7 (`r8-a02/03`), the byte-vector element trees (`r8-a01/09`), the clean-copy
+  path (`r8-a03/03`), the bit-list chunk mix (`r8-a04/02`) and the registry depth (`r8-c05/02`: BeaconState cases exceed the size cap).

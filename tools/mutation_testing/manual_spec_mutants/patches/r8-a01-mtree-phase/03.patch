@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/03
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: merkleize: node = hash(left, right)
+# fault: the left half's root is passed as the right subtree's start state but the join takes the zero digest as the left sibling
+# why: the state's digest dropped when the phase-1 state is rebuilt
+# file: src/obj.bend
+# sym: mtree,wr_cnt,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -893,3 +893,3 @@
+           (ws, dl) = r
+-          mt_join(hl, dl, mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, D.zero(), mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, dl))))
+ 

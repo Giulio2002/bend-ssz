@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b02-merkle-fast/01
+# type: FuluBeaconState
+# ops: root
+# spec: merkleize: the zero subtree Z(k) is the right sibling where bit k of the count is clear
+# fault: the ascent reads the stack slot when bit k + 1 is clear and the zero table when it is set
+# why: slot_pick arguments swapped
+# file: src/merkle_fast.bend
+# sym: ascend,close_pick
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -299,3 +299,3 @@
+             climb(bit(n, k), other, acc),
+-            B.get_digest(buf, slot_pick(bit(n, (k + 1 : U32)), (seg + k + 1 : U32), (960 + k + 1 : U32))))
++            B.get_digest(buf, slot_pick(bit(n, (k + 1 : U32)), (960 + k + 1 : U32), (seg + k + 1 : U32))))
+ 

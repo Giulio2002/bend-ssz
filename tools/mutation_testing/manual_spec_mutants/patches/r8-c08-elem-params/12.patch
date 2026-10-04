@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/12
+# type: FuluBeaconState
+# ops: root
+# spec: Vector[uint64, 8192] (slashings): 2048 chunks (depth 11)
+# fault: depth 13 (element count)
+# why: element count for chunk count
+# file: types/Fulu_vec_uint64_8192_hashtreeroot_generated.bend
+# sym: v8192_u64_root
+--- a/types/Fulu_vec_uint64_8192_hashtreeroot_generated.bend
++++ b/types/Fulu_vec_uint64_8192_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v8192_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 11, seg)
++def v8192_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 13, seg)
+ 

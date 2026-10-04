@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/10
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: a heap-layout tree of depth d has 2^(d + 1) node slots
+# fault: a fresh cache allocates 2^d node slots (the leaf level does not fit)
+# why: depth of the node array off by one
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_cache_fin,l8_Attestation_dfill
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -155,3 +155,3 @@
+ def l8_Attestation_cache_fin(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat) -> l8_Attestation_Cached:
+-  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(d), 0, (O.pow2u(d) - 1 : U32)}
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c05-packed-depth/03
+# type: FuluBeaconState
+# ops: root
+# spec: chunk_count(List[uint8, 2^40]) = 2^35
+# fault: depth 34 (limit / 64)
+# why: chunk size 64 bytes
+# file: types/Fulu_list_uint8_1099511627776_hashtreeroot_generated.bend
+# sym: l1099511627776_u8_root
+--- a/types/Fulu_list_uint8_1099511627776_hashtreeroot_generated.bend
++++ b/types/Fulu_list_uint8_1099511627776_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l1099511627776_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 35, seg))
++def l1099511627776_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 34, seg))
+ 

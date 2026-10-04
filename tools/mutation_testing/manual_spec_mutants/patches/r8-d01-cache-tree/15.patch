@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/15
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: mix_in_length with the length
+# fault: the cached root mixes the limit 10
+# why: limit for length
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_croot_fin
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+@@ -277,3 +277,3 @@
+   (h, +r) = pr
+-  (h, (l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++  (h, (l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, 10)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/07
+# type: ComplexTestStruct,FuluBeaconState
+# ops: root
+# spec: the element tree of an element with nce chunks has depth ed
+# fault: an element's tree is built at depth ed + 1 (pow2n width doubled)
+# why: element depth computed from ceil-log of the chunk count plus one
+# file: src/obj.bend
+# sym: ctree,leaf_at
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -859,3 +859,3 @@
+     case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(1n+ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(1n+ed), 0n, nce, (h, (ws, D.zero())))
+ 

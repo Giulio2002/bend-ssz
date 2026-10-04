@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/01
+# type: ComplexTestStruct
+# ops: root
+# spec: Vector[C, 2] root: merkleize of 2 element roots (depth 1)
+# fault: the vector of two containers is built at depth 2
+# why: depth from N + 1
+# file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+# sym: v2_VarTestStruct_rt_ct,v2_VarTestStruct_mt0
+--- a/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
++++ b/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+@@ -78,3 +78,3 @@
+ 
+-def v2_VarTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest): v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(1n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
++def v2_VarTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>) -> B.Buf & (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & D.Digest): v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(2n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+ 

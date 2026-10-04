@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r8-f01-budget/05
+# type: FuluBeaconState
+# ops: decode
+# spec: (API) within the budget the result is exactly X_decode_checked
+# fault: the branches are exchanged (decodes when refused, refuses when admitted)
+# why: match arm order
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_dcb
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -577,4 +577,4 @@
+   match ok:
+-    case True{}: BeaconState_decode_checked(buf, size)
+-    case False{}: (buf, None{})
++    case False{}: BeaconState_decode_checked(buf, size)
++    case True{}: (buf, None{})
+ 

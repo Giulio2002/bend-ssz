@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/02
+# type: ComplexTestStruct
+# ops: root
+# spec: an all-empty top subtree of depth q + 1 is Z(q + 1)
+# fault: mt0's empty case answers Z(q)
+# why: off-by-one on the predecessor
+# file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+# sym: v2_VarTestStruct_mt0
+--- a/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
++++ b/types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+@@ -68,3 +68,3 @@
+           (arr, dl) = r
+-          (h, (arr, D.zconst(1n+q)))
++          (h, (arr, D.zconst(q)))
+         case True{}:

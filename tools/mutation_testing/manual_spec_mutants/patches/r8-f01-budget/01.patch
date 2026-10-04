@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r8-f01-budget/01
+# type: FuluExecutionPayload
+# ops: decode
+# spec: (API) a saturated bound (X_dcost = 2^32 - 1) is refused whatever the budget (R6-01)
+# fault: the saturation test is dropped (a budget of 2^32 - 1 admits any size)
+# why: the saturated value taken as an ordinary bound
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_decode_checked_budget
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -244,4 +244,4 @@
+     case True{}: ExecutionPayload_decode_checked(buf, size)
+     case False{}: (buf, None{})
+ 
+-def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(Bool.and(U32.is_lt(ExecutionPayload_dcost(size), 4294967295), U32.is_le(ExecutionPayload_dcost(size), budget)), buf, size)
++def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(U32.is_le(ExecutionPayload_dcost(size), budget), buf, size)

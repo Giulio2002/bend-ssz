@@ -1,0 +1,17 @@
+r8-z00-control/00 SURVIVED 0 0 
+r8-a01-mtree-phase/01 KILLED 269 0 
+r8-a01-mtree-phase/09 SURVIVED 0 0 
+r8-a02-chunk-words/03 SURVIVED 0 0 
+r8-a03-clean-copy/03 SURVIVED 0 0 
+r8-a04-bits-mix/02 SURVIVED 0 0 
+r8-c01-prog-active/01 KILLED 171 0 
+r8-c01-prog-active/06 KILLED 114 0 
+r8-c02-union-selector/01 KILLED 1 0 
+r8-c02-union-selector/05 KILLED 15 0 
+r8-c03-container-pad/02 KILLED 56 0 
+r8-c04-composite-tree/01 KILLED 100 0 
+r8-c04-composite-tree/05 KILLED 41 0 
+r8-c05-packed-depth/02 SURVIVED 0 0 
+r8-c06-bitvector-root/01 KILLED 60 0 
+r8-c06-bitvector-root/04 ERROR None None 'bitvector_1280'
+r8-a03-clean-copy/01 SURVIVED 0 0 

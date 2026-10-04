@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c01-prog-active/11
+# type: ProgressiveSingleFieldContainerTestStruct
+# ops: root
+# spec: merkleize_progressive of one chunk is hash(zero chunk, chunk), not the chunk
+# fault: the progressive root of the single field is the field's root itself
+# why: the binary single-chunk rule applied
+# file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleFieldContainerTestStruct_fin
+--- a/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleFieldContainerTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, d_f_A, 1))
+ 

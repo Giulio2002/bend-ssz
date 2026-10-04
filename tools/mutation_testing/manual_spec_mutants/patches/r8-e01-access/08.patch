@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/08
+# type: FuluBeaconState
+# ops: root,encode
+# spec: a getter returns its own field
+# fault: get_slot returns genesis_time
+# why: copy-paste of the neighbouring getter
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g0_get_slot
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -74,3 +74,3 @@
+   match o:
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, slot)
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, genesis_time)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c05-packed-depth/04
+# type: FuluBeaconState
+# ops: root
+# spec: List[Bytes32, N] mixes the element count: byte length / 32
+# fault: the mixed count is the byte length
+# why: shift 0 for byte lists reused
+# file: types/Fulu_list_bytevec_32_16777216_hashtreeroot_generated.bend
+# sym: l16777216_b32_root
+--- a/types/Fulu_list_bytevec_32_16777216_hashtreeroot_generated.bend
++++ b/types/Fulu_list_bytevec_32_16777216_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l16777216_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 5n, O.words_root(hl, h, o, 24, seg))
++def l16777216_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 24, seg))
+ 

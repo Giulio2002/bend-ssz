@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c03-container-pad/02
+# type: BitsStruct
+# ops: root
+# spec: zero subtree of depth 1
+# fault: z1 is filled with Z(2)
+# why: zero-table index
+# file: types/BitsStruct_hashtreeroot_generated.bend
+# sym: BitsStruct_rt4
+--- a/types/BitsStruct_hashtreeroot_generated.bend
++++ b/types/BitsStruct_hashtreeroot_generated.bend
+@@ -24,3 +24,3 @@
+   (h, d_f_E) = pair
+-  BitsStruct_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, (h, D.zconst(1n)))
++  BitsStruct_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, (h, D.zconst(2n)))
+ 

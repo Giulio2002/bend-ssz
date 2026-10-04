@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/06
+# type: FuluBeaconState
+# ops: root,encode
+# spec: a getter returns its own field
+# fault: get_previous_justified_checkpoint returns current_justified_checkpoint (same type)
+# why: copy-paste of the neighbouring getter
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g2_get_previous_justified_checkpoint,BeaconState_get_previous_justified_checkpoint
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -268,3 +268,3 @@
+   match o:
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, previous_justified_checkpoint)
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, current_justified_checkpoint)
+ 

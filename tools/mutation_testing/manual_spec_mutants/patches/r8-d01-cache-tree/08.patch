@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/08
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: a cached tree of depth d holds 2^d leaves; the (2^d + 1)-th append must grow it
+# fault: an append at n = 2^d stays in the depth-d tree (written past its leaves)
+# why: <= for <
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_capp_in,l8_Attestation_capp_fit
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -204,3 +204,3 @@
+   match ok:
+-    case True{}: (l8_Attestation_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
++    case True{}: (l8_Attestation_capp_fit(U32.is_le(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
+     case False{}: (l8_Attestation_Cached{arr, n, d, nodes, lo, hi}, False{})

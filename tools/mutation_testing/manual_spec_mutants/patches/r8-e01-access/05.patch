@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/05
+# type: FuluBeaconBlockBody
+# ops: root,encode
+# spec: append keeps the existing elements
+# fault: the grown storage has room for n elements only (the appended slot n is past it)
+# why: capacity of n instead of n + 1
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_room_pick,l8_Attestation_cap
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -125,3 +125,3 @@
+     case True{}: arr
+-    case False{}: l8_Attestation_copy(U32.to_nat(n), 0, (l8_Attestation_fill(l8_Attestation_cap((n + 1 : U32))), arr))
++    case False{}: l8_Attestation_copy(U32.to_nat(n), 0, (l8_Attestation_fill(l8_Attestation_cap(n)), arr))
+ 

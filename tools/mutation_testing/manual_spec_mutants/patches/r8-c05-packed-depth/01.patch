@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c05-packed-depth/01
+# type: FuluBeaconState
+# ops: root
+# spec: List[uint64, N] mixes the element count: byte length / 8
+# fault: the mixed count is byte length / 4
+# why: element size shift for uint32
+# file: types/Fulu_list_uint64_128_hashtreeroot_generated.bend
+# sym: l128_u64_root
+--- a/types/Fulu_list_uint64_128_hashtreeroot_generated.bend
++++ b/types/Fulu_list_uint64_128_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l128_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root(hl, h, o, 5, seg))
++def l128_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 2n, O.words_root(hl, h, o, 5, seg))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a03-clean-copy/02
+# type: FuluTransaction,ComplexTestStruct
+# ops: root
+# spec: storage bytes past the length do not enter the root
+# fault: the partial word is read at word n >> 3 (the byte length taken as a 64-bit word count)
+# why: wrong shift
+# file: src/obj.bend
+# sym: wcn_tz,wcn_t
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -986,3 +986,3 @@
+ def wcn_t(+n: U32, +c: U32, +q: Nat, +rN: Nat, ws: Array<U32>) -> Array<U32> & Bool:
+-  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 2n))))
++  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 3n))))
+ 

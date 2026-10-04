@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/13
+# type: ProgressiveTestStruct,proglist_uint64
+# ops: root
+# spec: merkleize_progressive of no remaining chunks is the zero chunk
+# fault: an exhausted rest (inside = False) answers Z(dep) instead of the zero chunk
+# why: the binary tree's padding rule applied to the progressive spine
+# file: src/obj.bend
+# sym: ptree,pt_right,prog_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1075,3 +1075,3 @@
+           (ws, dl) = r
+-          (h, (ws, D.zero()))
++          (h, (ws, D.zconst(dep)))
+         case True{}:

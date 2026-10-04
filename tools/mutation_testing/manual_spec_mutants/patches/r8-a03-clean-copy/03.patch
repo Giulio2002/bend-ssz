@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a03-clean-copy/03
+# type: FuluTransaction,ComplexTestStruct
+# ops: root
+# spec: storage bytes past the length do not enter the root
+# fault: when the partial word is unclean the last chunk is still scanned and its verdict replaces the partial word's
+# why: the short-circuit made an and of the wrong operand
+# file: src/obj.bend
+# sym: wcn_c
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -983,3 +983,3 @@
+     case True{}: lc_s0(q, rN, (ws, True{}))
+-    case False{}: (ws, False{})
++    case False{}: lc_s0(q, rN, (ws, True{}))
+ 

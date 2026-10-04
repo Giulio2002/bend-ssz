@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/04
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: (API) the budget compares the bound of the requested size
+# fault: the budget test compares the budget with the bound (reversed: decodes only when budget <= bound)
+# why: operand order
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_decode_checked_budget
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -179,3 +179,3 @@
+ 
+-def ProgressiveTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: ProgressiveTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_dcost(size), budget)), buf, size)
++def ProgressiveTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: ProgressiveTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(budget, ProgressiveTestStruct_dcost(size))), buf, size)
+ 

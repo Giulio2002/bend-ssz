@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c01-prog-active/10
+# type: ProgressiveSingleListContainerTestStruct
+# ops: root
+# spec: merkleize_progressive: segment 1 is a full depth-2 tree over slots 1..4; slots 1 and 2 are a depth-1 zero pair Z(1)
+# fault: the empty pair of slots 1 and 2 is the zero chunk Z(0)
+# why: zero-subtree level off by one
+# file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_fin
+--- a/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+ def ProgressiveSingleListContainerTestStruct_fin(+hl: Nat, +d_f_C: D.Digest, +z1: D.Digest, h: B.Buf, f_C: O.Bits) -> B.Buf & (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & D.Digest):
+-  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C))), D.zero()), 16)))
++  (h, (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.zero(), D.node(hl, D.zero(), d_f_C))), D.zero()), 16)))
+ 

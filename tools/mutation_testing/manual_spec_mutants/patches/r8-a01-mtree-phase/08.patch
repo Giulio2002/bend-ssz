@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/08
+# type: ComplexTestStruct,FuluBeaconState
+# ops: root
+# spec: element i of a packed sequence of ew-word elements starts at word i * ew
+# fault: element i is read at word 8 i (the chunk stride, not the element stride)
+# why: chunk index and element index confused
+# file: src/obj.bend
+# sym: ctree,leaf_at
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -859,3 +859,3 @@
+     case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, e8(i), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
+ 

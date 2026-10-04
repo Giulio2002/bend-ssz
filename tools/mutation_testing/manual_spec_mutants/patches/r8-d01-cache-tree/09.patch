@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/09
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: after growing the cached tree every leaf is dirty
+# fault: the grown tree marks only the old 2^d leaves dirty (the appended leaf 2^d is never hashed)
+# why: the old depth's window
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_capp_fit
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -200,3 +200,3 @@
+     case True{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, arr, n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, l8_Attestation_room(arr, n), n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), 1n+d, l8_Attestation_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, l8_Attestation_room(arr, n), n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), 1n+d, l8_Attestation_dfill(2n+d), 0, (O.pow2u(d) - 1 : U32)}
+ 

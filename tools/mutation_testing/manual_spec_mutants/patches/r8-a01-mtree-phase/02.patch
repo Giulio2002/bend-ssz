@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/02
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: merkleize: the right half of a node of depth p + 1 is a tree of depth p
+# fault: phase 1 at depth p + 1 computes the right subtree at depth p (one level short) before joining
+# why: the depth of the recursive call copied from the case-0 arm
+# file: src/obj.bend
+# sym: mtree,wr_cnt,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -893,3 +893,3 @@
+           (ws, dl) = r
+-          mt_join(hl, dl, mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, dl, mtree(p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
+ 

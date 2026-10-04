@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/09
+# type: ComplexTestStruct,bitlist_9,FuluTransaction
+# ops: root
+# spec: mix_in_length: the length is serialized as a uint256 (little-endian), not 32 bits in the last word
+# fault: the length is put in the last word of the chunk
+# why: big-endian uint256 instead of little-endian
+# file: src/obj.bend
+# sym: len_chunk,mix_len
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -715,3 +715,3 @@
+ 
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{0, 0, 0, 0, 0, 0, 0, n}
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c02-union-selector/01
+# type: CompatibleUnionABCA
+# ops: root
+# spec: CompatibleUnion root: mix_in_selector(hash_tree_root(value), selector) with the option's declared selector
+# fault: option 3 (selector 4) is mixed with selector 3 (its index)
+# why: index for selector
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt3,CompatibleUnionABCA_root
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -32,3 +32,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 4)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 3)))
+ 

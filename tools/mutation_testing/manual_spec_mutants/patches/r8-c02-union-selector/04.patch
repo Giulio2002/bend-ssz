@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c02-union-selector/04
+# type: CompatibleUnionABCA
+# ops: root
+# spec: a CompatibleUnion root always mixes in the selector
+# fault: option 1 answers the payload's root without the selector
+# why: the union treated as transparent
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt1
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, O.mix_len(hl, d, 2)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, d))
+ 

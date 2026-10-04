@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/04
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: mix_in_length with the list's length, not its limit
+# fault: the limit 10 is mixed in
+# why: limit for length
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_rt_fin
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+@@ -75,3 +75,3 @@
+   (arr, d) = r
+-  (h, (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, O.mix_len(hl, d, n)))
++  (h, (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{arr, n}, O.mix_len(hl, d, 10)))
+ 

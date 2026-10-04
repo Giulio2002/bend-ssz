@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/08
+# type: FuluBlobSidecar
+# ops: root
+# spec: Blob = ByteVector[131072]: 4096 chunks (depth 12)
+# fault: depth 17 (byte count's log)
+# why: bytes for chunks
+# file: types/FuluBlob_hashtreeroot_generated.bend
+# sym: b131072_root
+--- a/types/FuluBlob_hashtreeroot_generated.bend
++++ b/types/FuluBlob_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def b131072_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 12, seg)
++def b131072_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 17, seg)
+ 

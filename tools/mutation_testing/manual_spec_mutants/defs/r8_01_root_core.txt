@@ -1,0 +1,509 @@
+## ROUND 8, families a01..a05: the object API's merkleization core in src/obj.bend (mtree / ctree / leaf_at / ptree recursion, chunk readers,
+## the clean-copy slow path, the bit-list length mix, the uint chunks). Every type's hash_tree_root reaches these through words_root,
+## words_root_prog, elems_root, elems_root_prog, bits_root and bits_root_prog (types/*_hashtreeroot_generated.bend).
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: mtree,wr_cnt,words_root
+spec: merkleize: a subtree that lies wholly past the chunk count is the zero subtree of its own depth
+fault: an empty right subtree of depth p + 1 is answered as Z(p) (one level short)
+why: off-by-one on the Nat predecessor in the match arm
+-              (h, (ws, D.zconst(1n+p)))
+-            case True{}:
+-              mtree(p, 1n,
++              (h, (ws, D.zconst(p)))
++            case True{}:
++              mtree(p, 1n,
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: mtree,wr_cnt,words_root
+spec: merkleize: the right half of a node of depth p + 1 is a tree of depth p
+fault: phase 1 at depth p + 1 computes the right subtree at depth p (one level short) before joining
+why: the depth of the recursive call copied from the case-0 arm
+-          mt_join(hl, dl, mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, dl, mtree(p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: mtree,wr_cnt,words_root
+spec: merkleize: node = hash(left, right)
+fault: the left half's root is passed as the right subtree's start state but the join takes the zero digest as the left sibling
+why: the state's digest dropped when the phase-1 state is rebuilt
+-          mt_join(hl, dl, mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, D.zero(), mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, dl))))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: mtree,wr_cnt,words_root
+spec: merkleize: the left half of a node covers chunks [s, s + w/2)
+fault: the left half of an inside node is computed with inside = (s < n) replaced by False when s = 0 is not the first chunk: the left half is always treated as inside only for s = 0 (written as Nat.is_lt(s, 1n))
+why: confusing the first-chunk test with the in-range test
+-                mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))
++                mtree(p, 0n, Nat.is_lt(s, 1n), hl, lf, Nat.div(w, 2n), s, n, st))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: mtree,wr_cnt,words_root
+spec: merkleize: a depth-0 node outside the chunk count is the zero chunk
+fault: a leaf past the count is read as the chunk anyway (leaf_at at s >= n: storage words past the length enter the root)
+why: the inside test at depth 0 dropped
+-            case False{}:
+-              (h, r) = st
+-              (ws, dl) = r
+-              (h, (ws, D.zconst(0n)))
+-            case True{}:
+-              (h, r) = st
+-              (ws, dl) = r
+-              leaf_at(hl, lf, h, ws, s)
++            case False{}:
++              (h, r) = st
++              (ws, dl) = r
++              leaf_at(hl, lf, h, ws, s)
++            case True{}:
++              (h, r) = st
++              (ws, dl) = r
++              leaf_at(hl, lf, h, ws, s)
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: ctree,leaf_at,elems_root,er_cnt
+spec: merkleize of a byte vector element: an all-past subtree is the zero subtree of its depth
+fault: ctree answers an empty right subtree of depth p + 1 with Z(p)
+why: off-by-one copied between the two trees
+-              (h, (ws, D.zconst(1n+p)))
+-            case True{}:
+-              ctree(p, 1n,
++              (h, (ws, D.zconst(p)))
++            case True{}:
++              ctree(p, 1n,
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: ctree,leaf_at,elems_root,er_cnt
+spec: node = hash(left, right) inside an element's own tree
+fault: ctree's phase 1 at depth p + 1 recomputes the right subtree at depth p
+why: depth of the recursive call copied from the case-0 arm
+-          mt_join(hl, dl, ctree(1n+p, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, dl, ctree(p, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: ctree,leaf_at
+spec: the element tree of an element with nce chunks has depth ed
+fault: an element's tree is built at depth ed + 1 (pow2n width doubled)
+why: element depth computed from ceil-log of the chunk count plus one
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(1n+ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(1n+ed), 0n, nce, (h, (ws, D.zero())))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: ctree,leaf_at
+spec: element i of a packed sequence of ew-word elements starts at word i * ew
+fault: element i is read at word 8 i (the chunk stride, not the element stride)
+why: chunk index and element index confused
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, e8(i), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: ctree,leaf_at
+spec: an element's root is its own chunk tree, the element's words only
+fault: the element's word count passed to the chunk reader is the chunk count nce (words past nce read as zero)
+why: two Nat parameters of LElems swapped
+-    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
++    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), nce, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
+=== r8-a01-mtree-phase
+type: ComplexTestStruct,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: leaf_at,chunkn
+spec: chunk i of packed words is words 8i .. 8i + 7
+fault: chunk i of a packed list is read at word 4 i (16-byte stride)
+why: e8 written as two doublings
+-    case LWords{}: mt_leaf(h, chunkn(ws, e8(i)))
++    case LWords{}: mt_leaf(h, chunkn(ws, Nat.double(Nat.double(i))))
+=== r8-a01-mtree-phase
+type: ProgressiveTestStruct,proglist_uint64
+ops: root
+file: src/obj.bend
+sym: ptree,pt_right,prog_root
+spec: merkleize_progressive: H(P(rest), T) with T the tree over the first 2^dep chunks, rest at depth dep + 2
+fault: the later segments are built at depth dep + 1 (segment sizes 1, 2, 4, ... instead of 1, 4, 16, ...)
+why: base 2 for a base-4 progression
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 1n), Nat.add(s, pow2n(dep)), n, st))
+=== r8-a01-mtree-phase
+type: ProgressiveTestStruct,proglist_uint64
+ops: root
+file: src/obj.bend
+sym: ptree,pt_right,prog_root
+spec: merkleize_progressive: the rest starts after the 2^dep chunks of this segment
+fault: the next segment starts at s + 2^(dep + 2) (its own size, not the current one)
+why: next and current segment sizes confused
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(Nat.add(dep, 2n))), n, st))
+=== r8-a01-mtree-phase
+type: ProgressiveTestStruct,proglist_uint64
+ops: root
+file: src/obj.bend
+sym: ptree,pt_right,prog_root
+spec: merkleize_progressive of no remaining chunks is the zero chunk
+fault: an exhausted rest (inside = False) answers Z(dep) instead of the zero chunk
+why: the binary tree's padding rule applied to the progressive spine
+-        case False{}:
+-          (h, r) = st
+-          (ws, dl) = r
+-          (h, (ws, D.zero()))
+-        case True{}:
+-          pt_right(
++        case False{}:
++          (h, r) = st
++          (ws, dl) = r
++          (h, (ws, D.zconst(dep)))
++        case True{}:
++          pt_right(
+=== r8-a01-mtree-phase
+type: ProgressiveTestStruct,proglist_uint64
+ops: root
+file: src/obj.bend
+sym: pt_right,ptree
+spec: each progressive segment's tree is over chunks [s, s + 2^dep)
+fault: the segment tree starts at chunk 0 (every segment hashes the first chunks)
+why: the segment start not threaded through
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), 0n, n, (h, (ws, D.zero()))))
+=== r8-a02-chunk-words
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: cn4,cn3,chunkn
+spec: pack: a chunk is 32 consecutive bytes
+fault: word 5 of a chunk reads word 4 again (word 5 never enters the root)
+why: index copy-paste in the unrolled reader
+-  cn5(b, a0, a1, a2, a3, a4, Array.get(U32, ws, U32.from_nat(Nat.add(b, 5n))))
++  cn5(b, a0, a1, a2, a3, a4, Array.get(U32, ws, U32.from_nat(Nat.add(b, 4n))))
+=== r8-a02-chunk-words
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: cn7,chunkn
+spec: SHA-256 consumes the chunk's bytes in order (big-endian words of the little-endian storage)
+fault: the last word of every chunk is not byte-swapped
+why: one swap32 forgotten in the unrolled record
+-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
+-def cn6(
++  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), a7})
++def cn6(
+=== r8-a02-chunk-words
+type: ComplexTestStruct,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: cn7,chunkn
+spec: a chunk's words are in storage order
+fault: words 6 and 7 of a chunk are exchanged
+why: argument order in the unrolled record
+-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
+-def cn6(
++  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a7), B.swap32(a6)})
++def cn6(
+=== r8-a02-chunk-words
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: ec2,ec3,echunkn
+spec: an element chunk holds the element's words 8c .. 8c + 7, zero past the element
+fault: word 3 of an element chunk reads word 2 of the element
+why: index copy-paste in the unrolled element reader
+-  ec3(b, j, ew, a0, a1, a2, rdc(Nat.is_lt(Nat.add(j, 3n), ew), ws, Nat.add(b, Nat.add(j, 3n))))
++  ec3(b, j, ew, a0, a1, a2, rdc(Nat.is_lt(Nat.add(j, 3n), ew), ws, Nat.add(b, Nat.add(j, 2n))))
+=== r8-a02-chunk-words
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: ec6,ec7,echunkn
+spec: an element chunk is zero past the element's words
+fault: word 7 of an element chunk is read even past the element (the neighbouring element's word enters the root)
+why: the inside test of the last word dropped
+-  ec7(b, j, ew, a0, a1, a2, a3, a4, a5, a6, rdc(Nat.is_lt(Nat.add(j, 7n), ew), ws, Nat.add(b, Nat.add(j, 7n))))
++  ec7(b, j, ew, a0, a1, a2, a3, a4, a5, a6, rdc(True{}, ws, Nat.add(b, Nat.add(j, 7n))))
+=== r8-a02-chunk-words
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: ec0,ec1,echunkn
+spec: an element chunk is zero past the element's words
+fault: word 1 of an element chunk tests j + 1 <= ew (one word past the element read)
+why: < written as <=
+-  ec1(b, j, ew, a0, rdc(Nat.is_lt(Nat.add(j, 1n), ew), ws, Nat.add(b, Nat.add(j, 1n))))
++  ec1(b, j, ew, a0, rdc(Nat.is_le(Nat.add(j, 1n), ew), ws, Nat.add(b, Nat.add(j, 1n))))
+=== r8-a02-chunk-words
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: rdc,echunkn
+spec: an element chunk is zero past the element's words
+fault: a word past the element reads all ones instead of zero
+why: wrong padding constant
+-    case False{}: (ws, 0)
+-def ec7(
++    case False{}: (ws, 4294967295)
++def ec7(
+=== r8-a02-chunk-words
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: echunkn,ec0
+spec: chunk c of an element starts at the element's word 8c
+fault: chunk c of an element starts at word 4c
+why: e8 replaced by a word-to-u64 conversion
+-  ec0(b, e8(c), ew, rdc(Nat.is_lt(Nat.add(e8(c), 0n), ew), ws, Nat.add(b, Nat.add(e8(c), 0n))))
++  ec0(b, Nat.double(Nat.double(c)), ew, rdc(Nat.is_lt(Nat.add(Nat.double(Nat.double(c)), 0n), ew), ws, Nat.add(b, Nat.add(Nat.double(Nat.double(c)), 0n))))
+=== r8-a02-chunk-words
+type: FuluBeaconState,FuluCheckpoint
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: uint64 root: the 8 little-endian bytes then zero padding
+fault: the two halves of a uint64 are exchanged in its chunk
+why: hi/lo order of the U64 record misread
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+=== r8-a02-chunk-words
+type: FuluBeaconState,FuluCheckpoint
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: uint64 root: the 8 little-endian bytes then zero padding
+fault: the high half of a uint64 is dropped from its chunk
+why: a 32-bit chunk writer reused
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(lo), 0, 0, 0, 0, 0, 0, 0}
+=== r8-a02-chunk-words
+type: uint32,FuluBeaconState
+ops: root
+file: src/obj.bend
+sym: u32_chunk
+spec: uint32 root: the 4 little-endian bytes then zero padding
+fault: a uint32 chunk is not byte-swapped
+why: SHA word order forgotten
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{v, 0, 0, 0, 0, 0, 0, 0}
+=== r8-a02-chunk-words
+type: ComplexTestStruct,bitlist_9,FuluTransaction
+ops: root
+file: src/obj.bend
+sym: len_chunk,mix_len
+spec: mix_in_length: the length is serialized as a uint256 (little-endian), not 32 bits in the last word
+fault: the length is put in the last word of the chunk
+why: big-endian uint256 instead of little-endian
+-def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
++def len_chunk(+n: U32) -> D.Digest: D.D{0, 0, 0, 0, 0, 0, 0, n}
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: words_copy,cc_go,wr_slow,wr_clean
+spec: hash_tree_root of a byte list of n bytes covers ceil(n / 4) words (the partial last word included)
+fault: the clean copy copies floor(n / 4) words: the partial last word is dropped from the root
+why: ceil written as floor
+-  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
++  cc_fin(n, cc_go(Nat.div(U32.to_nat(n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: words_copy,cc_fin,mask_last
+spec: storage bytes past the length do not enter the root
+fault: the clean copy keeps the junk bytes of the partial last word (mask_last not applied)
+why: the copy is assumed clean already
+-  (mask_last(n, out), ws)
++  (out, ws)
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: cc_go,words_copy
+spec: the clean copy holds the value's words in order
+fault: the copy writes word j at position j + 1 (shifted by one word)
+why: index advanced before the write
+-    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, j, x), Array.get(U32, ws, (j + 1 : U32)))
++    case 1n+q Tuple{ws, +x}: cc_go(q, (j + 1 : U32), Array.set(U32, out, (j + 1 : U32), x), Array.get(U32, ws, (j + 1 : U32)))
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: tail_zero,wcn_tz
+spec: storage bytes past the length do not enter the root
+fault: a length of 4m + 2 tests only the top byte of the partial word (byte 2 may hold junk and the fast path hashes it)
+why: wrong shift in one tail case
+-    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
++    case 2: U32.is_eq(U32.shrn(x, 24n), 0)
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: tail_zero,wcn_tz
+spec: storage bytes past the length do not enter the root
+fault: a length of 4m + 1 tests bytes 2..3 only (byte 1 may hold junk)
+why: wrong shift in one tail case
+-    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
++    case 1: U32.is_eq(U32.shrn(x, 16n), 0)
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: wcn_k,e32
+spec: storage bytes past the length do not enter the root
+fault: the remainder rN of the last chunk is computed with 16 q (e32 as e8 doubled once): rN is too large, every word of the last chunk counts as data
+why: e32 = 4 * e8 miswritten
+-def e32(+x: Nat) -> Nat: Nat.double(Nat.double(e8(x)))
++def e32(+x: Nat) -> Nat: Nat.double(e8(x))
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: wcn_tz,wcn_t
+spec: storage bytes past the length do not enter the root
+fault: the partial word is read at word n >> 3 (the byte length taken as a 64-bit word count)
+why: wrong shift
+-  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 2n))))
++  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 3n))))
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: wcn_c
+spec: storage bytes past the length do not enter the root
+fault: when the partial word is unclean the last chunk is still scanned and its verdict replaces the partial word's
+why: the short-circuit made an and of the wrong operand
+-    case False{}: (ws, False{})
+-
+-def wcn_t(
++    case False{}: lc_s0(q, rN, (ws, True{}))
++
++def wcn_t(
+=== r8-a03-clean-copy
+type: FuluTransaction,ComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: wr_fit,wr_slow
+spec: a root reads whole chunks; storage shorter than the chunks must be padded with zeros
+fault: storage that is not roomy goes straight to the bounded count path (wr_cnt over ws) even when it covers the bytes (no zero-padded copy: words past the storage read out of range)
+why: the covered branch merged into the fallback
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+=== r8-a04-bits-mix
+type: bitlist_9,bitlist_513,BitsStruct
+ops: root
+file: src/obj.bend
+sym: bits_rooted,bits_root
+spec: Bitlist root: mix_in_length(merkleize(pack_bits(value), limit), len(value)) with len the bit count, without the delimiter
+fault: the delimiter is counted in the mixed length (k + 1)
+why: wire length (with delimiter) used for the root
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, (k + 1 : U32))))
+=== r8-a04-bits-mix
+type: bitlist_9,bitlist_513,BitsStruct
+ops: root
+file: src/obj.bend
+sym: bits_rooted,bits_root
+spec: Bitlist root mixes the bit count
+fault: the mixed length is the word count of the chunked bytes (n from the Words, i.e. ceil(k / 8))
+why: the Words' n field reused
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, n)))
+=== r8-a04-bits-mix
+type: bitlist_9,bitlist_513,BitsStruct
+ops: root
+file: src/obj.bend
+sym: bits_root,bits_nbytes
+spec: pack_bits: ceil(k / 8) bytes of bits, the delimiter not included
+fault: the bit chunks cover k / 8 + 1 bytes (the wire size, including the delimiter's byte)
+why: wire size reused for the root
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, (U32.shrn(k, 3n) + 1 : U32)}, depth, seg))
+=== r8-a04-bits-mix
+type: progbitlist,ProgressiveBitsStruct
+ops: root
+file: src/obj.bend
+sym: bits_root_prog,bits_nbytes
+spec: ProgressiveBitlist root: merkleize_progressive(pack_bits(value)) mixed with the bit count
+fault: the progressive bit list hashes floor(k / 8) bytes (the last partial byte dropped)
+why: floor for ceil
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, U32.shrn(k, 3n)}, seg))
+=== r8-a04-bits-mix
+type: bitlist_9,bitlist_513
+ops: root
+file: src/obj.bend
+sym: bits_nbytes
+spec: pack_bits: ceil(k / 8) bytes
+fault: bits_nbytes rounds with (k & 7) + 8 (one byte too many for every k that is a multiple of 8)
+why: rounding constant off by one
+-def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
++def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 8 : U32), 3n) : U32)
+=== r8-a05-prog-cnt
+type: proglist_uint64,ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: wrp_fit,wrp_cnt
+spec: merkleize_progressive over ceil(n / 32) chunks
+fault: the progressive packed root counts floor(n / 32) chunks on the fast path (a partial last chunk dropped)
+why: floor for ceil
+-    case True{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
++    case True{}: wrp_cnt(hl, h, n, ws, Nat.div(U32.to_nat(n), 32n))
+=== r8-a05-prog-cnt
+type: proglist_uint64,ProgressiveTestStruct
+ops: root
+file: src/obj.bend
+sym: prog_root,ptree
+spec: merkleize_progressive of n chunks
+fault: the progressive tree of a single chunk is H(zero, chunk) skipped: n = 1 answers the chunk itself (inside test on n > 1)
+why: the binary tree's single-chunk shortcut applied to the progressive tree
+-  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
++  ptree(1n+n, Nat.is_lt(1n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
+=== r8-a05-prog-cnt
+type: ProgressiveComplexTestStruct
+ops: root
+file: src/obj.bend
+sym: erp_size,elems_root_prog
+spec: a progressive list of byte vectors: each element's own tree is binary of depth ed
+fault: the element trees of a progressive list of byte vectors are built at depth 0 (only the first chunk of each element)
+why: the progressive flag propagated into the element tree
+-  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
++  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), 0n, U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+=== r8-a05-prog-cnt
+type: FuluBeaconState,FuluSyncCommittee
+ops: root
+file: src/obj.bend
+sym: er_cnt,elems_root
+spec: a list/vector of byte vectors: the sequence tree has the depth of its limit
+fault: the sequence tree of byte vectors is built at the element depth ed instead of depth
+why: the two depth parameters swapped
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
+-    LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+-    pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++  mt_words(n, mtree(U32.to_nat(ed), 0n, Nat.is_lt(0n, k), hl,
++    LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
++    pow2n(U32.to_nat(ed)), 0n, k, (h, (ws, D.zero()))))
+=== r8-a05-prog-cnt
+type: FuluBeaconState,FuluSyncCommittee
+ops: root
+file: src/obj.bend
+sym: er_size,elems_root
+spec: the number of elements of a packed sequence of ew-word elements is n / (4 ew)
+fault: the element count is n / ew (bytes divided by words: four times too many elements, zero elements hashed in)
+why: byte and word units confused
+-  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))
++  er_cnt(hl, h, ew, ed, depth, n, ws, cap_cnt(U32.to_nat(U32.div(n, ew)), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)))

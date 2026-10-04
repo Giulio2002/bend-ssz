@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/05
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: an element chunk is zero past the element's words
+# fault: word 7 of an element chunk is read even past the element (the neighbouring element's word enters the root)
+# why: the inside test of the last word dropped
+# file: src/obj.bend
+# sym: ec6,ec7,echunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -762,3 +762,3 @@
+   (ws, +a6) = pair
+-  ec7(b, j, ew, a0, a1, a2, a3, a4, a5, a6, rdc(Nat.is_lt(Nat.add(j, 7n), ew), ws, Nat.add(b, Nat.add(j, 7n))))
++  ec7(b, j, ew, a0, a1, a2, a3, a4, a5, a6, rdc(True{}, ws, Nat.add(b, Nat.add(j, 7n))))
+ def ec5(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

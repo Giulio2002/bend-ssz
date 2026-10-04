@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a04-bits-mix/03
+# type: progbitlist,ProgressiveBitsStruct
+# ops: root
+# spec: ProgressiveBitlist root: merkleize_progressive(pack_bits(value)) mixed with the bit count
+# fault: the progressive bit list hashes floor(k / 8) bytes (the last partial byte dropped)
+# why: floor for ceil
+# file: src/obj.bend
+# sym: bits_root_prog,bits_nbytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1199,3 +1199,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, U32.shrn(k, 3n)}, seg))
+ 

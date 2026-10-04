@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a04-bits-mix/02
+# type: bitlist_9,bitlist_513,BitsStruct
+# ops: root
+# spec: pack_bits: ceil(k / 8) bytes of bits, the delimiter not included
+# fault: the bit chunks cover k / 8 + 1 bytes (the wire size, including the delimiter's byte)
+# why: wire size reused for the root
+# file: src/obj.bend
+# sym: bits_root,bits_nbytes
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1194,3 +1194,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
++    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, (U32.shrn(k, 3n) + 1 : U32)}, depth, seg))
+ 

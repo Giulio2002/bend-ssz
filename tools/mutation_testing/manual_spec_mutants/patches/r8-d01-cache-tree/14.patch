@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/14
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: List[C, 10]: the cached tree is padded to depth 4
+# fault: padded to depth 3
+# why: floor(log2 10)
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_croot_pad
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+@@ -280,3 +280,3 @@
+ def l10_ProgressiveSingleFieldContainerTestStruct_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l10_ProgressiveSingleFieldContainerTestStruct_Cached & D.Digest):
+-  l10_ProgressiveSingleFieldContainerTestStruct_croot_fin(hl, n, d, arr, nodes, l10_ProgressiveSingleFieldContainerTestStruct_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l10_ProgressiveSingleFieldContainerTestStruct_croot_fin(hl, n, d, arr, nodes, l10_ProgressiveSingleFieldContainerTestStruct_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

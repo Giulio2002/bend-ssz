@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/17
+# type: FuluBeaconState
+# ops: root
+# spec: List[HistoricalSummary, 2^24] holds at most 2^24 elements
+# fault: the cached append accepts element 2^24 + 1
+# why: <= for <
+# file: types/Fulu_list_HistoricalSummary_16777216_def_generated.bend
+# sym: l16777216_HistoricalSummary_capp_sz
+--- a/types/Fulu_list_HistoricalSummary_16777216_def_generated.bend
++++ b/types/Fulu_list_HistoricalSummary_16777216_def_generated.bend
+@@ -202,3 +202,3 @@
+   (arr, +sc) = pair
+-  l16777216_HistoricalSummary_capp_in(Bool.and(U32.is_lt(n, 16777216), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
++  l16777216_HistoricalSummary_capp_in(Bool.and(U32.is_le(n, 16777216), U32.is_le(n, sc)), arr, n, d, nodes, lo, hi, v)
+ 

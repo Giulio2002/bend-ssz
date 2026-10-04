@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/03
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: List[C, 10] root: merkleize to chunk_count = 10 (depth 4), then mix_in_length
+# fault: depth 3 (limit rounded down to a power of two)
+# why: floor(log2 10)
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_rt_ct
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+@@ -77,3 +77,3 @@
+ 
+-def l10_ProgressiveSingleFieldContainerTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> B.Buf & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & D.Digest): l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(4n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
++def l10_ProgressiveSingleFieldContainerTestStruct_rt_ct(+hl: Nat, +n: U32, h: B.Buf, +seg: U32, +m: U32, arr: Array<ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct>) -> B.Buf & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq & D.Digest): l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(3n, Nat.is_lt(0n, U32.to_nat(m)), hl, seg, U32.to_nat(m), (h, (arr, D.zero()))))
+ 

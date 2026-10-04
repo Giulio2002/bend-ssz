@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c01-prog-active/05
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: zero subtree of depth 5 is Z(5)
+# fault: the z5 binder is filled with Z(4)
+# why: zero-table index copy-paste
+# file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveComplexTestStruct_rt11
+--- a/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+@@ -31,3 +31,3 @@
+   (h, z4) = pair
+-  ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(5n)))
++  ProgressiveComplexTestStruct_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(4n)))
+ 

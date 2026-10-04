@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c06-bitvector-root/05
+# type: bitvector_9,BitsStruct
+# ops: root
+# spec: pack_bits: byte 0 holds bits 0..7 (little-endian bit order); SHA reads big-endian words
+# fault: the word is not byte-swapped
+# why: SHA word order forgotten for the bitvector
+# file: types/bitvector_9_hashtreeroot_generated.bend
+# sym: bv9_root
+--- a/types/bitvector_9_hashtreeroot_generated.bend
++++ b/types/bitvector_9_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_9_d.Bitvector9{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++    case bitvector_9_d.Bitvector9{+w0}: (h, D.D{w0, 0, 0, 0, 0, 0, 0, 0})
+ 

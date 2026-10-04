@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/07
+# type: FuluBeaconState
+# ops: root,encode
+# spec: a getter returns its own field
+# fault: get_next_withdrawal_index returns next_withdrawal_validator_index (both uint64)
+# why: copy-paste of the neighbouring getter
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g3_get_next_withdrawal_index
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -345,3 +345,3 @@
+   match o:
+-    case BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: (BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, next_withdrawal_index)
++    case BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: (BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, next_withdrawal_validator_index)
+ 

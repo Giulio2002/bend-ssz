@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c06-bitvector-root/04
+# type: bitvector_1280
+# ops: root
+# spec: Bitvector[1280]: 5 chunks padded to 8 (depth 3)
+# fault: depth 2
+# why: chunk count from 1280 / 512
+# file: types/bitvector_1280_hashtreeroot_generated.bend
+# sym: bv1280_root
+--- a/types/bitvector_1280_hashtreeroot_generated.bend
++++ b/types/bitvector_1280_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bv1280_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
++def bv1280_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
+ 

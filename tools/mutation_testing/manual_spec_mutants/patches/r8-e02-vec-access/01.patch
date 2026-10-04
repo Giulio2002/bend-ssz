@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e02-vec-access/01
+# type: ComplexTestStruct
+# ops: root,encode
+# spec: Vector index access is defined for i < N
+# fault: take accepts i = 2
+# why: <= for <
+# file: types/vec_VarTestStruct_2_def_generated.bend
+# sym: v2_VarTestStruct_take
+--- a/types/vec_VarTestStruct_2_def_generated.bend
++++ b/types/vec_VarTestStruct_2_def_generated.bend
+@@ -102,3 +102,3 @@
+   match o:
+-    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
++    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_get_in(U32.is_le(i, n), arr, n, i)
+ 

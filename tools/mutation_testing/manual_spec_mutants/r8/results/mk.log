@@ -1,0 +1,15 @@
+DUP of an earlier round: r8-a01-mtree-phase ctree answers an empty right subtree of depth p + 1 with Z(p)
+DUP of an earlier round: r8-a02-chunk-words the two halves of a uint64 are exchanged in its chunk
+DUP of an earlier round: r8-a02-chunk-words the high half of a uint64 is dropped from its chunk
+DUP of an earlier round: r8-a02-chunk-words a uint32 chunk is not byte-swapped
+DUP of an earlier round: r8-a03-clean-copy the clean copy copies floor(n / 4) words: the partial last word is dropped from 
+DUP of an earlier round: r8-a03-clean-copy the clean copy keeps the junk bytes of the partial last word (mask_last not appl
+DUP of an earlier round: r8-a03-clean-copy the copy writes word j at position j + 1 (shifted by one word)
+DUP of an earlier round: r8-a03-clean-copy a length of 4m + 2 tests only the top byte of the partial word (byte 2 may hold 
+DUP of an earlier round: r8-a03-clean-copy the remainder rN of the last chunk is computed with 16 q (e32 as e8 doubled once
+DUP of an earlier round: r8-a03-clean-copy storage that is not roomy goes straight to the bounded count path (wr_cnt over w
+DUP of an earlier round: r8-a04-bits-mix the delimiter is counted in the mixed length (k + 1)
+DUP of an earlier round: r8-c01-prog-active the active-fields chunk is 7 (three present fields packed densely)
+DUP of an earlier round: r8-c05-packed-depth the mixed count is bytes / 16
+DUP of an earlier round: r8-c05-packed-depth depth 5
+faults 162 bad 14

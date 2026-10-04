@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/02
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: SHA-256 consumes the chunk's bytes in order (big-endian words of the little-endian storage)
+# fault: the last word of every chunk is not byte-swapped
+# why: one swap32 forgotten in the unrolled record
+# file: src/obj.bend
+# sym: cn7,chunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -727,3 +727,3 @@
+   (ws, +a7) = pair
+-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
++  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), a7})
+ def cn6(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

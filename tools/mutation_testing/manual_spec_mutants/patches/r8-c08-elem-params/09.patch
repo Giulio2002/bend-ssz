@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/09
+# type: vec_bool_513
+# ops: root
+# spec: Vector[boolean, 513]: 513 bytes = 17 chunks (depth 5)
+# fault: depth 4
+# why: floor of the chunk count
+# file: types/vec_bool_513_hashtreeroot_generated.bend
+# sym: v513_bool_root
+--- a/types/vec_bool_513_hashtreeroot_generated.bend
++++ b/types/vec_bool_513_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v513_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
++def v513_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 4, seg)
+ 

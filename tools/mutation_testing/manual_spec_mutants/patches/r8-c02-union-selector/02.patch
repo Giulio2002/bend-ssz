@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c02-union-selector/02
+# type: CompatibleUnionABCA
+# ops: root
+# spec: mix_in_selector with the declared selector (1 for the first option)
+# fault: the first option is mixed with selector 0
+# why: zero-based selector
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt0
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v}, O.mix_len(hl, d, 1)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v}, O.mix_len(hl, d, 0)))
+ 

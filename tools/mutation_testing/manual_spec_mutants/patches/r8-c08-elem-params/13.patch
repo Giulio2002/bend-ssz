@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/13
+# type: vec_uint16_512
+# ops: root
+# spec: Vector[uint16, 512]: 32 chunks (depth 5)
+# fault: depth 6
+# why: uint8 chunk count
+# file: types/vec_uint16_512_hashtreeroot_generated.bend
+# sym: v512_u16_root
+--- a/types/vec_uint16_512_hashtreeroot_generated.bend
++++ b/types/vec_uint16_512_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v512_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
++def v512_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 6, seg)
+ 

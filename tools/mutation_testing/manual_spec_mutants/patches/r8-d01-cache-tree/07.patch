@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/07
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: an incremental root must rehash a single dirty leaf
+# fault: the sweep runs only when the dirty window holds two or more leaves (lo < hi)
+# why: strict comparison for a closed interval
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_cached_root
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -302,4 +302,4 @@
+ def l8_Attestation_cached_root(+hl: Nat, h: B.Buf, c: l8_Attestation_Cached, +seg: U32) -> B.Buf & (l8_Attestation_Cached & D.Digest):
+   match c:
+     case l8_Attestation_Cached{arr, +n, +d, nodes, +lo, +hi}:
+-      l8_Attestation_croot_top(hl, n, d, l8_Attestation_sweep_pick(hl, U32.is_le(lo, hi), d, lo, hi, n, seg, l8_Attestation_TS{h, arr, nodes}))
++      l8_Attestation_croot_top(hl, n, d, l8_Attestation_sweep_pick(hl, U32.is_lt(lo, hi), d, lo, hi, n, seg, l8_Attestation_TS{h, arr, nodes}))

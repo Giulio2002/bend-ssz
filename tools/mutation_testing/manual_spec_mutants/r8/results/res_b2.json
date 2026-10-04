@@ -1,0 +1,1472 @@
+[
+ {
+  "id": "r8-b01-zconst/01",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/digest.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/obj_support.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 7.3,
+    "laws": [
+     "zhex"
+    ],
+    "msg": "- expected : SH.HS{SH.W8{SH.X3{}, SH.X4{}, SH.XD{}, SH.XF{}, SH.X5{}, SH.XA{}, SH.X5{}, SH.XF{}}, SH.W8{SH.X0{}, SH.X3{}, SH.X0{}, SH.X2{}, SH.XA{}, SH.X6{}, SH.X1{}, SH.XD{}}, SH.W8{SH.XE{}, SH.X6{}, SH.XF{}, SH.XE{}, SH.X8{}, SH.X9{}, SH.X7{}, SH.X2{}}, SH.W8{SH.XB{}, SH.X9{}, SH.X7{}, SH.X9{}, SH",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-b01-zconst/02",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/digest.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/obj_support.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 7.9,
+    "laws": [
+     "zhex"
+    ],
+    "msg": "- expected : SH.HS{SH.W8{SH.XE{}, SH.X4{}, SH.X1{}, SH.X1{}, SH.X6{}, SH.X5{}, SH.XB{}, SH.XD{}}, SH.W8{SH.X1{}, SH.XC{}, SH.X4{}, SH.XD{}, SH.XD{}, SH.XF{}, SH.X0{}, SH.X0{}}, SH.W8{SH.XB{}, SH.X2{}, SH.X9{}, SH.X8{}, SH.XC{}, SH.X5{}, SH.X8{}, SH.XF{}}, SH.W8{SH.X8{}, SH.XA{}, SH.X9{}, SH.XC{}, SH",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-b01-zconst/03",
+  "type": "FuluBeaconState",
+  "file": "src/digest.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/obj_support.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 7.8,
+    "laws": [
+     "zhex"
+    ],
+    "msg": "- expected : SH.HS{SH.W8{SH.X2{}, SH.X4{}, SH.XD{}, SH.XF{}, SH.X5{}, SH.XA{}, SH.X5{}, SH.XF{}}, SH.W8{SH.X0{}, SH.X3{}, SH.X0{}, SH.X2{}, SH.XA{}, SH.X6{}, SH.X1{}, SH.XD{}}, SH.W8{SH.XE{}, SH.X6{}, SH.XF{}, SH.XE{}, SH.X8{}, SH.X9{}, SH.X7{}, SH.X2{}}, SH.W8{SH.XB{}, SH.X9{}, SH.X7{}, SH.X9{}, SH",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-b02-merkle-fast/01",
+  "type": "FuluBeaconState",
+  "file": "src/merkle_fast.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "src/obj.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 38.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-b02-merkle-fast/02",
+  "type": "FuluBeaconState",
+  "file": "src/merkle_fast.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "benchmarks/compact/objio.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/arr_copy_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "native_bench/driver.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "src/obj.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 36.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-b02-merkle-fast/03",
+  "type": "FuluBeaconState",
+  "file": "src/merkle_fast.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "src/obj.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 36.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-b02-merkle-fast/04",
+  "type": "FuluBeaconState",
+  "file": "src/merkle_fast.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "src/obj.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 36.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d01-cache-tree/01",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.8,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_set_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/02",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.1,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_set_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/03",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.1,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_set_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/04",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 83.5,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/05",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 83.2,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/06",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 82.1,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/07",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [],
+  "A": "ERROR",
+  "msg": "patch failed: 1 out of 1 hunk FAILED -- saving rejects to file types/Fulu_list_Attestation_8_def_generated.bend.rej\n"
+ },
+ {
+  "id": "r8-d01-cache-tree/08",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 82.6,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/09",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 83.7,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/10",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_appb_l8_Attestation_c_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 79.5,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_clean"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/11",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 81.9,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/12",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 19.0,
+    "laws": [
+     "BeaconState_vroot_l1099511627776_Validator_cache_app_fold"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/13",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_PendingDeposit_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.6,
+    "laws": [
+     "cnode"
+    ],
+    "msg": "- expected : {Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_TS{h, arr, Array.set.fin(D.Digest, Array.swap.at(D.Digest, j, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(64n, Arr",
+    "root": "proofs/obj/cached_l134217728_PendingDeposit_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/14",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 6.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d01-cache-tree/15",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d01-cache-tree/16",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 6.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d01-cache-tree/17",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_HistoricalSummary_16777216_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.0,
+    "laws": [
+     "capp_eq"
+    ],
+    "msg": "- expected : {Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_capp_in(Bool.and(Cmp.is_le(U32.cmp(n, 16777216)), Cmp.is_le(U32.cmp(n, F.u32__pow2u(dw)))), F.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v) == (Fulu_list_Histor",
+    "root": "proofs/obj/cached_l16777216_HistoricalSummary_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d01-cache-tree/18",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d01-cache-tree/19",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Eth1Data_2048_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.9,
+    "laws": [
+     "cache_eq"
+    ],
+    "msg": "- expected : {Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Cached{F.array__thaw(FuluEth1Data_d.Eth1Data, ta), n, B.words_depth_nz(Cmp.is_eq(U32.cmp(n, 0)), n), ANode{Array.new(D.Digest, B.words_depth_nz(Cmp.is_eq(U32.cmp(n, 0)), n), D.D{0, 0, 0, 0, 0, 0, 0, 0}), Array.new(D.Digest, B.words_depth_nz(Cmp.",
+    "root": "proofs/obj/cached_l2048_Eth1Data_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/01",
+  "type": "FuluExecutionRequests",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 18.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-d02-cache-depth/02",
+  "type": "FuluExecutionRequests",
+  "file": "types/Fulu_list_DepositRequest_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 14.2,
+    "laws": [
+     "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluExecutionRequests_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/03",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_PendingConsolidation_262144_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 22.7,
+    "laws": [
+     "BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/04",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 21.3,
+    "laws": [
+     "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/05",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_Withdrawal_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 17.6,
+    "laws": [
+     "ExecutionPayload_vroot_l16_Withdrawal_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/06",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_Withdrawal_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.7,
+    "laws": [
+     "cnode"
+    ],
+    "msg": "- expected : {Fulu_list_Withdrawal_16_d.l16_Withdrawal_node_go(64n, j, h, arr, Array.get.at(D.Digest, U32.add(U32.mul(2, j), 1), Array.size(D.Digest, F.array__thaw(D.Digest, t)))) == Fulu_list_Withdrawal_16_d.l16_Withdrawal_TS{h, arr, F.array__thaw(D.Digest, F.array__tupd(D.Digest, 1n+d, t, Nat.add(",
+    "root": "proofs/obj/cached_l16_Withdrawal_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/07",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.6,
+    "laws": [
+     "clevels"
+    ],
+    "msg": "- expected : {Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_levels(64n, r, klo, U32.shr(khi), Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_level(64n, U32.to_nat(U32.add(U32.sub(U32.shr(khi), U32.shr(klo)), 1)), U32.shr(klo), Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVol",
+    "root": "proofs/obj/cached_l16_SignedVoluntaryExit_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/08",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "validators_croot_mixes_len"
+    ],
+    "msg": "- expected : (h, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached{arr, n, d, nodes, 0, n}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(r, D",
+    "root": "proofs/obj/cache.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-d02-cache-depth/09",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "validators_cset_accepted"
+    ],
+    "msg": "- expected : (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Cached{Array.set.fin(FuluValidator_d.Validator, Array.swap.at(FuluValidator_d.Validator, i, v, Array.size(FuluValidator_d.Validator, arr))), n, d, nodes, lo, O.pick(Cmp.is_le(U32.cmp(i, hi)), hi, i)}, True{})\n- observed : (Fu",
+    "root": "proofs/obj/cache.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/01",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 4.9,
+    "laws": [
+     "l8_Attestation_api_get_outside"
+    ],
+    "msg": "- expected : {l8_Attestation_c.l8_Attestation_get_in(Cmp.is_le(U32.cmp(i, n)), arr, n, i) == (l8_Attestation_c.l8_Attestation_Seq{arr, n}, None{}) : Sigma<&1, &1, l8_Attestation_c.l8_Attestation_Seq, _ => Maybe<&1, FuluAttestation_d.Attestation>>}\n- observed : {l8_Attestation_c.l8_Attestation_get_in",
+    "root": "e2e/l8_Attestation_api_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/02",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 88.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-e01-access/03",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.9,
+    "laws": [
+     "l8_Attestation_api_read_append"
+    ],
+    "msg": "- expected : {l8_Attestation_c.l8_Attestation_take(Pair.fst(l8_Attestation_c.l8_Attestation_Seq, Bool, l8_Attestation_c.l8_Attestation_app_in(Bool.and(Cmp.is_le(U32.cmp(n, 8)), Cmp.is_le(U32.cmp(n, sc))), arr, n, v)), n) == (l8_Attestation_c.l8_Attestation_Seq{Array.set.fin(O.Boxed<FuluAttestation_d",
+    "root": "proofs/obj/coll_seq_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/04",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 6.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/coll_seq_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 81.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-e01-access/05",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/vvl_l8_Attestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 45.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/e2e_dvl_l8_Attestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/coll_seq_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/collections_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 77.8,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/06",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "BeaconState_g2_unchanged_justification_bits_previous_justified_checkpoint"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState_g2{x0, v, x2, x3, x4, x5, x6, x7}, x3)\n- observed : (FuluBeaconState_d.BeaconState_g2{x0, v, x2, x3, x4, x5, x6, x7}, x2)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/07",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "BeaconState_g3_read_after_write_next_withdrawal_index"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState_g3{x0, v, x2, x3, x4, x5, x6, x7}, x2)\n- observed : (FuluBeaconState_d.BeaconState_g3{x0, v, x2, x3, x4, x5, x6, x7}, v)",
+    "root": "proofs/obj/fields_5_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/08",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_g0_unchanged_genesis_time_slot"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState_g0{v, x1, x2, x3, x4, x5, x6, x7}, v)\n- observed : (FuluBeaconState_d.BeaconState_g0{v, x1, x2, x3, x4, x5, x6, x7}, x2)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/09",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "BeaconState_g3_unchanged_next_withdrawal_index_earliest_exit_epoch"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState_g3{x0, v, x2, x3, x4, x5, x6, x7}, x6)\n- observed : (FuluBeaconState_d.BeaconState_g3{x0, v, x2, x3, x4, x5, x6, x7}, x7)",
+    "root": "proofs/obj/fields_5_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/10",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_obj_g0_read_after_write_slot"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, x5, x6, x7}, g1, g2, g3, g4}, x2)\n- observed : (FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, v, x3, x4, x5, x6, x7}, g1, g2, g3, g4}, v)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/11",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_4_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "BeaconState_obj_g2_read_after_write_finalized_checkpoint"
+    ],
+    "msg": "- expected : (FuluBeaconState_d.BeaconState{g0, g1, FuluBeaconState_d.BeaconState_g2{x0, x1, x2, v, x4, x5, x6, x7}, g3, g4}, x4)\n- observed : (FuluBeaconState_d.BeaconState{g0, g1, FuluBeaconState_d.BeaconState_g2{x0, x1, x2, x3, v, x5, x6, x7}, g3, g4}, v)",
+    "root": "proofs/obj/fields_5_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/12",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "ExecutionPayload_g1_read_after_write_gas_used"
+    ],
+    "msg": "- expected : (FuluExecutionPayload_d.ExecutionPayload_g1{v, x1, x2, x3, x4, x5, x6, x7}, x1)\n- observed : (FuluExecutionPayload_d.ExecutionPayload_g1{v, x1, x2, x3, x4, x5, x6, x7}, v)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/13",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "ExecutionPayload_g0_unchanged_parent_hash_state_root"
+    ],
+    "msg": "- expected : (FuluExecutionPayload_d.ExecutionPayload_g0{v, x1, x2, x3, x4, x5, x6, x7}, x3)\n- observed : (FuluExecutionPayload_d.ExecutionPayload_g0{v, x1, x2, x3, x4, x5, x6, x7}, x2)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e01-access/14",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ExecutionPayload_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "ExecutionPayload_obj_g1_read_after_write_block_hash"
+    ],
+    "msg": "- expected : (FuluExecutionPayload_d.ExecutionPayload{g0, FuluExecutionPayload_d.ExecutionPayload_g1{x0, x1, x2, x3, x4, x5, x6, x7}, g2}, x4)\n- observed : (FuluExecutionPayload_d.ExecutionPayload{g0, FuluExecutionPayload_d.ExecutionPayload_g1{x0, x1, x2, x3, v, x5, x6, x7}, g2}, v)",
+    "root": "proofs/obj/fields_4_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-e02-vec-access/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-e02-vec-access/02",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 6.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-e02-vec-access/03",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prep_setters_g1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-f01-budget/01",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ExecutionPayload_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluExecutionPayload_r.ExecutionPayload_dcb(Cmp.is_le(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 107361075)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 40), 524288), 4294967295), budget)), buf, size) == (buf, None{}) : Sigma<&1, &1,",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/02",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluBeaconState_r.BeaconState_dcb(Bool.or(Cmp.is_lt(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 613491858)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 7), 524288), 4294967295), 4294967295)), Cmp.is_le(U32.cmp(O.pick(Cmp.is_le(U32.cmp",
+    "root": "proofs/slop/validity/fulu_BeaconState_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/03",
+  "type": "FuluSignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.4,
+    "laws": [
+     "SignedBeaconBlock_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcb(Bool.and(Cmp.is_le(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 107361075)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 40), 524288), 4294967295), 4294967295)), Cmp.is_le(U32.cmp(O.pick(Cmp",
+    "root": "proofs/slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/04",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ProgressiveTestStruct_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {ProgressiveTestStruct_r.ProgressiveTestStruct_dcb(Bool.and(Cmp.is_lt(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 138530419)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 31), 524288), 4294967295), 4294967295)), Cmp.is_le(U32.cmp(budget",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/05",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : FuluBeaconState_r.BeaconState_dchk(size, B.size(buf))\n- observed : (buf, None{})",
+    "root": "proofs/slop/validity/fulu_BeaconState_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/06",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.9,
+    "laws": [
+     "BeaconBlockBody_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 527879\n- observed : 544808",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/07",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ProgressiveTestStruct_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 527879\n- observed : 540191",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/08",
+  "type": "FuluDataColumnSidecar",
+  "file": "types/FuluDataColumnSidecar_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/var_codec_DataColumnSidecar_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 6.7,
+    "laws": [
+     "DataColumnSidecar_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 524288\n- observed : 527366",
+    "root": "proofs/api/FuluDataColumnSidecar_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/09",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "CompatibleUnionBC_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 526853\n- observed : 527879",
+    "root": "proofs/slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/10",
+  "type": "FuluTransaction,FuluCheckpoint,FuluExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-f01-budget/11",
+  "type": "FuluTransaction,FuluCheckpoint,FuluExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 7.0,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 526848\n- observed : 526853",
+    "root": "proofs/api/FuluTransaction_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-f01-budget/12",
+  "type": "FuluTransaction,FuluCheckpoint,FuluExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-f01-budget/13",
+  "type": "FuluTransaction,FuluCheckpoint,FuluExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 6.4,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 524806\n- observed : 526853",
+    "root": "proofs/api/FuluTransaction_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

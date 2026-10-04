@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/10
+# type: ComplexTestStruct,FuluBeaconState
+# ops: root
+# spec: chunk i of packed words is words 8i .. 8i + 7
+# fault: chunk i of a packed list is read at word 4 i (16-byte stride)
+# why: e8 written as two doublings
+# file: src/obj.bend
+# sym: leaf_at,chunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -857,3 +857,3 @@
+   match lf:
+-    case LWords{}: mt_leaf(h, chunkn(ws, e8(i)))
++    case LWords{}: mt_leaf(h, chunkn(ws, Nat.double(Nat.double(i))))
+     case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))

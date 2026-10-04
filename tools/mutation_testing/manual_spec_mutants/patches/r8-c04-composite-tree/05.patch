@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/05
+# type: ProgressiveTestStruct
+# ops: root
+# spec: merkleize_progressive: segment sizes 1, 4, 16, ... (depth + 2 per step)
+# fault: the generated progressive list of containers grows its segments by depth + 1
+# why: base 2 for base 4
+# file: types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+# sym: pl_SmallTestStruct_ptr,pl_SmallTestStruct_prr
+--- a/types/proglist_SmallTestStruct_hashtreeroot_generated.bend
++++ b/types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+@@ -78,3 +78,3 @@
+           pl_SmallTestStruct_prr(hl, seg, dep, s, n,
+-            pl_SmallTestStruct_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
++            pl_SmallTestStruct_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 1n), Nat.add(s, O.pow2n(dep)), n, st))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/02
+# type: FuluBeaconBlockBody
+# ops: root,encode
+# spec: List index update is defined for i < len
+# fault: set accepts i = n (writes the slot past the end; the length is unchanged)
+# why: <= for <
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_set,l8_Attestation_put_in
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -107,3 +107,3 @@
+   match o:
+-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case l8_Attestation_Seq{arr, +n}: l8_Attestation_put_in(U32.is_le(i, n), arr, n, i, v)
+ 

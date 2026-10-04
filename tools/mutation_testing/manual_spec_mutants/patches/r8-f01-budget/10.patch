@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/10
+# type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+# ops: decode
+# spec: (API) a name with K = 0 is charged the constant only
+# fault: the K = 0 test is dropped (dcost_go runs with k = 0: a division by zero in the saturation bound)
+# why: the zero case taken as covered by the product
+# file: src/obj.bend
+# sym: dcost,dcost_k,dcost_go
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1830,3 +1830,3 @@
+ 
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_le(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
+ 

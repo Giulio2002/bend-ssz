@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/14
+# type: FuluExecutionPayload
+# ops: root,encode
+# spec: a setter on the outer container updates its own group
+# fault: set_block_hash leaves group 1 unchanged
+# why: the inner setter not called
+# file: types/FuluExecutionPayload_def_generated.bend
+# sym: ExecutionPayload_set_block_hash
+--- a/types/FuluExecutionPayload_def_generated.bend
++++ b/types/FuluExecutionPayload_def_generated.bend
+@@ -367,3 +367,3 @@
+   match o:
+-    case ExecutionPayload{g0, g1, +g2}: ExecutionPayload{g0, ExecutionPayload_g1_set_block_hash(g1, v), g2}
++    case ExecutionPayload{g0, g1, +g2}: ExecutionPayload{g0, g1, g2}
+ 

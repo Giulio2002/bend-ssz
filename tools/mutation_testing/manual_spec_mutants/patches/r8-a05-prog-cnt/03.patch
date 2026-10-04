@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a05-prog-cnt/03
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: a progressive list of byte vectors: each element's own tree is binary of depth ed
+# fault: the element trees of a progressive list of byte vectors are built at depth 0 (only the first chunk of each element)
+# why: the progressive flag propagated into the element tree
+# file: src/obj.bend
+# sym: erp_size,elems_root_prog
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1273,3 +1273,3 @@
+   (ws, +sz) = pair
+-  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
++  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), 0n, U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+     cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)), h, ws))

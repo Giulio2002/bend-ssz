@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a05-prog-cnt/01
+# type: proglist_uint64,ProgressiveTestStruct
+# ops: root
+# spec: merkleize_progressive over ceil(n / 32) chunks
+# fault: the progressive packed root counts floor(n / 32) chunks on the fast path (a partial last chunk dropped)
+# why: floor for ceil
+# file: src/obj.bend
+# sym: wrp_fit,wrp_cnt
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1098,3 +1098,3 @@
+   match roomy:
+-    case True{}: wrp_cnt(hl, h, n, ws, chunks_of(n))
++    case True{}: wrp_cnt(hl, h, n, ws, Nat.div(U32.to_nat(n), 32n))
+     case False{}: wrp_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, n, sz, ws)

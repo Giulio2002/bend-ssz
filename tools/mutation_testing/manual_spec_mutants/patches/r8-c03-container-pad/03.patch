@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c03-container-pad/03
+# type: ComplexTestStruct
+# ops: root
+# spec: merkleize pads with zero chunks
+# fault: the padding leaf after field G repeats G's root (odd node duplicated, Bitcoin-style)
+# why: a different merkle convention
+# file: types/ComplexTestStruct_hashtreeroot_generated.bend
+# sym: ComplexTestStruct_rt6
+--- a/types/ComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ComplexTestStruct_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (f_G, d_f_G) = r
+-  (h, (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, D.zero())))))
++  (h, (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, d_f_G)))))
+ 

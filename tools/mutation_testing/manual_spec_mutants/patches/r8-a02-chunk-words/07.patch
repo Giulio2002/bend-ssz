@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/07
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: an element chunk is zero past the element's words
+# fault: a word past the element reads all ones instead of zero
+# why: wrong padding constant
+# file: src/obj.bend
+# sym: rdc,echunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -756,3 +756,3 @@
+     case True{}: Array.get(U32, ws, U32.from_nat(pos))
+-    case False{}: (ws, 0)
++    case False{}: (ws, 4294967295)
+ def ec7(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

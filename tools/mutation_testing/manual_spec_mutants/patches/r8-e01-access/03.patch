@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/03
+# type: FuluBeaconBlockBody
+# ops: root,encode
+# spec: List[Attestation, 8] holds at most 8 elements
+# fault: append accepts a 9th attestation
+# why: <= for <
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_app_sz
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -140,3 +140,3 @@
+   (arr, +sc) = pair
+-  l8_Attestation_app_in(Bool.and(U32.is_lt(n, 8), U32.is_le(n, sc)), arr, n, v)
++  l8_Attestation_app_in(Bool.and(U32.is_le(n, 8), U32.is_le(n, sc)), arr, n, v)
+ 

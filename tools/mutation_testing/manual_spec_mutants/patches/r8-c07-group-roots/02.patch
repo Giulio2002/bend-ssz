@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c07-group-roots/02
+# type: FuluBeaconState
+# ops: root
+# spec: container root: groups in field order
+# fault: groups 2 and 3 exchanged at the top
+# why: group order
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_rt4,BeaconState_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -243,3 +243,3 @@
+   (h, z4) = pair
+-  (h, (FuluBeaconState_d.BeaconState{g0, g1, g2, g3, g4}, D.node(hl, D.node(hl, D.node(hl, r0, r1), D.node(hl, r2, r3)), D.node(hl, D.node(hl, r4, z3), z4))))
++  (h, (FuluBeaconState_d.BeaconState{g0, g1, g2, g3, g4}, D.node(hl, D.node(hl, D.node(hl, r0, r1), D.node(hl, r3, r2)), D.node(hl, D.node(hl, r4, z3), z4))))
+ 

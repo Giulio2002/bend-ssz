@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b02-merkle-fast/04
+# type: FuluBeaconState
+# ops: root
+# spec: a bit list's delimiter is cleared before chunking
+# fault: byte 1's mask keeps the byte unmasked
+# why: mask constant
+# file: src/merkle_fast.bend
+# sym: mask_sel
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -48,3 +48,3 @@
+     case 0: ((w .&. 4294967040 : U32) .|. ((w .&. 255 : U32) .&. mask : U32) : U32)
+-    case 1: ((w .&. 4294902015 : U32) .|. U32.shln(((U32.shrn(w, 8n) .&. 255 : U32) .&. mask : U32), 8n) : U32)
++    case 1: w
+     case 2: ((w .&. 4278255615 : U32) .|. U32.shln(((U32.shrn(w, 16n) .&. 255 : U32) .&. mask : U32), 16n) : U32)

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/01
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: merkleize: a subtree that lies wholly past the chunk count is the zero subtree of its own depth
+# fault: an empty right subtree of depth p + 1 is answered as Z(p) (one level short)
+# why: off-by-one on the Nat predecessor in the match arm
+# file: src/obj.bend
+# sym: mtree,wr_cnt,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -886,3 +886,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(1n+p)))
++              (h, (ws, D.zconst(p)))
+             case True{}:

@@ -1,0 +1,132 @@
+## ROUND 8, batch 4: element-tree and sequence-tree parameters of packed vectors / lists of byte vectors (elems_root's ew, ed, depth),
+## and vector depths where chunk_count needs a ceiling.
+=== r8-c08-elem-params
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+sym: l4096_b2048_root
+spec: List[Bytes2048, 4096] (cells): each element is a 64-chunk tree (depth 6)
+fault: the element tree has depth 5 (half the cell hashed)
+why: chunk count of 2048 bytes taken as 32
+-O.elems_root(hl, h, o, 512, 6, 12
++O.elems_root(hl, h, o, 512, 5, 12
+=== r8-c08-elem-params
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+sym: l4096_b2048_root
+spec: List[Bytes2048, 4096]: the sequence tree has depth 12
+fault: depth 11
+why: off-by-one log2
+-O.elems_root(hl, h, o, 512, 6, 12
++O.elems_root(hl, h, o, 512, 6, 11
+=== r8-c08-elem-params
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+sym: l4096_b48_root
+spec: List[Bytes48, 4096]: a 48-byte element is 2 chunks, a depth-1 tree
+fault: the element tree has depth 0 (only its first chunk)
+why: one chunk assumed per element
+-O.elems_root(hl, h, o, 12, 1, 12
++O.elems_root(hl, h, o, 12, 0, 12
+=== r8-c08-elem-params
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+sym: l4096_b48_root
+spec: List[Bytes48, 4096]: elements are 12 words apart
+fault: elements are read 16 words apart (the 64-byte padded stride)
+why: padded element size used as stride
+-O.elems_root(hl, h, o, 12, 1, 12
++O.elems_root(hl, h, o, 16, 1, 12
+=== r8-c08-elem-params
+type: FuluSyncCommittee
+ops: root
+file: types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
+sym: v512_b48_root
+spec: Vector[Bytes48, 512]: the sequence tree has depth 9
+fault: depth 10
+why: chunk count of the packed bytes used for a composite vector
+-O.elems_root(hl, h, o, 12, 1, 9
++O.elems_root(hl, h, o, 12, 1, 10
+=== r8-c08-elem-params
+type: FuluBlobSidecar
+ops: root
+file: types/Fulu_vec_bytevec_32_17_hashtreeroot_generated.bend
+sym: v17_b32_root
+spec: Vector[Bytes32, 17]: 17 chunks padded to 32 (depth 5)
+fault: depth 4 (16 leaves: chunk 16 dropped)
+why: floor(log2 17)
+-O.words_root(hl, h, o, 5
++O.words_root(hl, h, o, 4
+=== r8-c08-elem-params
+type: FuluBeaconState
+ops: root
+file: types/Fulu_vec_bytevec_32_65536_hashtreeroot_generated.bend
+sym: v65536_b32_root
+spec: Vector[Bytes32, 65536] (randao_mixes): depth 16
+fault: depth 15
+why: off-by-one log2
+-O.words_root(hl, h, o, 16
++O.words_root(hl, h, o, 15
+=== r8-c08-elem-params
+type: FuluBlobSidecar
+ops: root
+file: types/FuluBlob_hashtreeroot_generated.bend
+sym: b131072_root
+spec: Blob = ByteVector[131072]: 4096 chunks (depth 12)
+fault: depth 17 (byte count's log)
+why: bytes for chunks
+-O.words_root(hl, h, o, 12
++O.words_root(hl, h, o, 17
+=== r8-c08-elem-params
+type: vec_bool_513
+ops: root
+file: types/vec_bool_513_hashtreeroot_generated.bend
+sym: v513_bool_root
+spec: Vector[boolean, 513]: 513 bytes = 17 chunks (depth 5)
+fault: depth 4
+why: floor of the chunk count
+-O.words_root(hl, h, o, 5
++O.words_root(hl, h, o, 4
+=== r8-c08-elem-params
+type: vec_uint128_5
+ops: root
+file: types/vec_uint128_5_hashtreeroot_generated.bend
+sym: v5_u128_root
+spec: Vector[uint128, 5]: 80 bytes = 3 chunks (depth 2)
+fault: depth 3 (element count 5 padded to 8)
+why: element count for chunk count
+-O.words_root(hl, h, o, 2
++O.words_root(hl, h, o, 3
+=== r8-c08-elem-params
+type: vec_uint128_4
+ops: root
+file: types/vec_uint128_4_hashtreeroot_generated.bend
+sym: v4_u128_root
+spec: Vector[uint128, 4]: 64 bytes = 2 chunks (depth 1)
+fault: depth 0 (only the first chunk)
+why: chunk count from 64 / 64
+-O.words_root(hl, h, o, 1
++O.words_root(hl, h, o, 0
+=== r8-c08-elem-params
+type: FuluBeaconState
+ops: root
+file: types/Fulu_vec_uint64_8192_hashtreeroot_generated.bend
+sym: v8192_u64_root
+spec: Vector[uint64, 8192] (slashings): 2048 chunks (depth 11)
+fault: depth 13 (element count)
+why: element count for chunk count
+-O.words_root(hl, h, o, 11
++O.words_root(hl, h, o, 13
+=== r8-c08-elem-params
+type: vec_uint16_512
+ops: root
+file: types/vec_uint16_512_hashtreeroot_generated.bend
+sym: v512_u16_root
+spec: Vector[uint16, 512]: 32 chunks (depth 5)
+fault: depth 6
+why: uint8 chunk count
+-O.words_root(hl, h, o, 5
++O.words_root(hl, h, o, 6

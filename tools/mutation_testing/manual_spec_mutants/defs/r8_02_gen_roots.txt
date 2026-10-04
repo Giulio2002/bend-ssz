@@ -1,0 +1,473 @@
+## ROUND 8, families c01..c06: generated hash_tree_root code (types/*_hashtreeroot_generated.bend): progressive containers' active-field
+## mix-in and chunk placement, compatible-union selector mix-in, container padding, composite vector/list trees, packed-list depths and
+## mixed counts, bitvector chunks.
+=== r8-c01-prog-active
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin,ProgressiveComplexTestStruct_root
+spec: ProgressiveContainer root: mix_in_active_fields(merkleize_progressive(field roots), active_fields) with active_fields packed as a bitvector (bit i = field slot i)
+fault: bit 0 of the active-fields bitvector is dropped (3158292)
+why: active fields counted from slot 1
+-, d_f_A), 3158293)))
++, d_f_A), 3158292)))
+=== r8-c01-prog-active
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin,ProgressiveComplexTestStruct_root
+spec: active_fields is packed with all its bits (22 slots: 3 bytes)
+fault: the active-fields chunk keeps only its first two bytes (fields in slots 20 and 21 not marked)
+why: the bitvector packed into a 16-bit integer
+-, d_f_A), 3158293)))
++, d_f_A), 12565)))
+=== r8-c01-prog-active
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: progressive container: field roots sit at their slot index in the progressive chunk sequence
+fault: fields F and G exchange slots
+why: slot order from the declaration list misread
+-D.node(hl, D.node(hl, D.node(hl, d_f_F, D.zero()), z1), D.node(hl, z1, D.node(hl, D.zero(), d_f_G)))
++D.node(hl, D.node(hl, D.node(hl, d_f_G, D.zero()), z1), D.node(hl, z1, D.node(hl, D.zero(), d_f_F)))
+=== r8-c01-prog-active
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_fin
+spec: merkleize_progressive: an all-empty segment subtree of 4^k chunks is the zero subtree of depth 2k
+fault: the deepest empty padding of segment 3 (depth 5 sibling) uses Z(4)
+why: off-by-one in the zero-subtree level
+-z3), z4), z5)), D.node
++z3), z4), z4)), D.node
+=== r8-c01-prog-active
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_rt11
+spec: zero subtree of depth 5 is Z(5)
+fault: the z5 binder is filled with Z(4)
+why: zero-table index copy-paste
+-z1, z2, z3, z4, (h, D.zconst(5n)))
++z1, z2, z3, z4, (h, D.zconst(4n)))
+=== r8-c01-prog-active
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_fin
+spec: active_fields is positional (bit i = slot i), not a count of the present fields
+fault: the active-fields chunk is 7 (three present fields packed densely)
+why: active fields compacted
+-, d_f_A), 21)))
++, d_f_A), 7)))
+=== r8-c01-prog-active
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_fin
+spec: progressive container: inactive slots are zero chunks between the active ones
+fault: the inactive slots are dropped (fields B and C occupy slots 1 and 2)
+why: the merkleized sequence built from the present fields only
+-D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))
++D.node(hl, D.node(hl, d_f_B, d_f_C), D.node(hl, D.zero(), D.zero()))
+=== r8-c01-prog-active
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_fin
+spec: merkleize_progressive: an exhausted rest is the zero chunk, not a zero subtree
+fault: the rest after segment 1 is Z(4) (the binary padding rule)
+why: binary merkleization's padding applied to the progressive spine
+-O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B)
++O.mix_len(hl, D.node(hl, D.node(hl, D.zconst(4n), D.node(hl, D.node(hl, D.zero(), d_f_B)
+=== r8-c01-prog-active
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_fin
+spec: mix_in_active_fields = hash(root, active_fields chunk)
+fault: the active-fields chunk is on the left
+why: operand order of the mix
+-O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)
++D.node(hl, O.len_chunk(21), D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A))
+=== r8-c01-prog-active
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin
+spec: active_fields is positional: one field in slot 4 is 0b10000
+fault: the active-fields chunk is 1 (the number of fields)
+why: count for bitmap
+-, D.zero()), 16)))
++, D.zero()), 1)))
+=== r8-c01-prog-active
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_fin
+spec: merkleize_progressive: segment 1 is a full depth-2 tree over slots 1..4; slots 1 and 2 are a depth-1 zero pair Z(1)
+fault: the empty pair of slots 1 and 2 is the zero chunk Z(0)
+why: zero-subtree level off by one
+-D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C)))
++D.node(hl, D.zero(), D.node(hl, D.zero(), D.node(hl, D.zero(), d_f_C)))
+=== r8-c01-prog-active
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleFieldContainerTestStruct_fin
+spec: merkleize_progressive of one chunk is hash(zero chunk, chunk), not the chunk
+fault: the progressive root of the single field is the field's root itself
+why: the binary single-chunk rule applied
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, O.mix_len(hl, d_f_A, 1))
+=== r8-c01-prog-active
+type: ProgressiveSingleFieldContainerTestStruct
+ops: root
+file: types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleFieldContainerTestStruct_fin
+spec: a ProgressiveContainer always mixes in its active fields
+fault: no active-fields mix for a container whose every slot is active
+why: the mix taken as a marker of gaps only
+-  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
++  (h, D.node(hl, D.zero(), d_f_A))
+=== r8-c02-union-selector
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt3,CompatibleUnionABCA_root
+spec: CompatibleUnion root: mix_in_selector(hash_tree_root(value), selector) with the option's declared selector
+fault: option 3 (selector 4) is mixed with selector 3 (its index)
+why: index for selector
+-O.mix_len(hl, d, 4)))
++O.mix_len(hl, d, 3)))
+=== r8-c02-union-selector
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt0
+spec: mix_in_selector with the declared selector (1 for the first option)
+fault: the first option is mixed with selector 0
+why: zero-based selector
+-O.mix_len(hl, d, 1)))
++O.mix_len(hl, d, 0)))
+=== r8-c02-union-selector
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt2
+spec: mix_in_selector = hash(root, selector chunk)
+fault: the selector chunk is on the left
+why: operand order
+-O.mix_len(hl, d, 3)))
++D.node(hl, O.len_chunk(3), d)))
+=== r8-c02-union-selector
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt1
+spec: a CompatibleUnion root always mixes in the selector
+fault: option 1 answers the payload's root without the selector
+why: the union treated as transparent
+-O.mix_len(hl, d, 2)))
++d))
+=== r8-c02-union-selector
+type: CompatibleUnionBC
+ops: root
+file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+sym: CompatibleUnionBC_rt1
+spec: mix_in_selector with the declared selector (3 for the second option of BC)
+fault: the second option is mixed with 1 (index + 1)
+why: selectors renumbered from 1 per union
+-O.mix_len(hl, d, 3)))
++O.mix_len(hl, d, 1)))
+=== r8-c02-union-selector
+type: CompatibleUnionBC
+ops: root
+file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+sym: CompatibleUnionBC_rt0
+spec: mix_in_selector with the declared selector (2)
+fault: the selector is put in the high byte of the chunk's first word (selector << 24)
+why: byte order of the selector chunk
+-O.mix_len(hl, d, 2)))
++O.mix_len(hl, d, 33554432)))
+=== r8-c03-container-pad
+type: BitsStruct
+ops: root
+file: types/BitsStruct_hashtreeroot_generated.bend
+sym: BitsStruct_rt5,BitsStruct_rt4
+spec: merkleize pads the 5 field roots to 8 leaves with zero chunks: the empty pair (leaves 6, 7) is Z(1)
+fault: the empty pair is the zero chunk
+why: padding level off by one
+-D.node(hl, D.node(hl, d_f_E, D.zero()), z1))))
++D.node(hl, D.node(hl, d_f_E, D.zero()), D.zero()))))
+=== r8-c03-container-pad
+type: BitsStruct
+ops: root
+file: types/BitsStruct_hashtreeroot_generated.bend
+sym: BitsStruct_rt4
+spec: zero subtree of depth 1
+fault: z1 is filled with Z(2)
+why: zero-table index
+-d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, (h, D.zconst(1n)))
++d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, (h, D.zconst(2n)))
+=== r8-c03-container-pad
+type: ComplexTestStruct
+ops: root
+file: types/ComplexTestStruct_hashtreeroot_generated.bend
+sym: ComplexTestStruct_rt6
+spec: merkleize pads with zero chunks
+fault: the padding leaf after field G repeats G's root (odd node duplicated, Bitcoin-style)
+why: a different merkle convention
+-D.node(hl, d_f_G, D.zero())
++D.node(hl, d_f_G, d_f_G)
+=== r8-c03-container-pad
+type: FuluAttestation
+ops: root
+file: types/FuluAttestation_hashtreeroot_generated.bend
+sym: Attestation_rt3
+spec: container root: field roots in declaration order
+fault: signature and committee_bits exchanged
+why: field order in the leaf list
+-D.node(hl, d_signature, d_committee_bits)
++D.node(hl, d_committee_bits, d_signature)
+=== r8-c03-container-pad
+type: FuluBeaconBlockBody
+ops: root
+file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+sym: BeaconBlockBody_g1_rt4,BeaconBlockBody_root
+spec: merkleize pads 13 field roots to 16 leaves: leaves 14, 15 are the empty pair Z(1)
+fault: the last empty pair of the body's second half is the zero chunk
+why: padding level off by one
+-D.node(hl, D.node(hl, d_execution_requests, D.zero()), z1))))
++D.node(hl, D.node(hl, d_execution_requests, D.zero()), D.zero()))))
+=== r8-c03-container-pad
+type: FuluBeaconBlockBody
+ops: root
+file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+sym: BeaconBlockBody_g0_rt7
+spec: container root: field roots in declaration order
+fault: deposits and voluntary_exits exchanged in the body's first half
+why: field order
+-D.node(hl, d_deposits, d_voluntary_exits)
++D.node(hl, d_voluntary_exits, d_deposits)
+=== r8-c04-composite-tree
+type: ComplexTestStruct
+ops: root
+file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+sym: v2_VarTestStruct_rt_ct,v2_VarTestStruct_mt0
+spec: Vector[C, 2] root: merkleize of 2 element roots (depth 1)
+fault: the vector of two containers is built at depth 2
+why: depth from N + 1
+-v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(1n,
++v2_VarTestStruct_rt_fin(hl, n, v2_VarTestStruct_mt0(2n,
+=== r8-c04-composite-tree
+type: ComplexTestStruct
+ops: root
+file: types/vec_VarTestStruct_2_hashtreeroot_generated.bend
+sym: v2_VarTestStruct_mt0
+spec: an all-empty top subtree of depth q + 1 is Z(q + 1)
+fault: mt0's empty case answers Z(q)
+why: off-by-one on the predecessor
+-          (h, (arr, D.zconst(1n+q)))
++          (h, (arr, D.zconst(q)))
+=== r8-c04-composite-tree
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_rt_ct
+spec: List[C, 10] root: merkleize to chunk_count = 10 (depth 4), then mix_in_length
+fault: depth 3 (limit rounded down to a power of two)
+why: floor(log2 10)
+-rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(4n,
++rt_fin(hl, n, l10_ProgressiveSingleFieldContainerTestStruct_mt0(3n,
+=== r8-c04-composite-tree
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_rt_fin
+spec: mix_in_length with the list's length, not its limit
+fault: the limit 10 is mixed in
+why: limit for length
+-Seq{arr, n}, O.mix_len(hl, d, n)))
++Seq{arr, n}, O.mix_len(hl, d, 10)))
+=== r8-c04-composite-tree
+type: ProgressiveTestStruct
+ops: root
+file: types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+sym: pl_SmallTestStruct_ptr,pl_SmallTestStruct_prr
+spec: merkleize_progressive: segment sizes 1, 4, 16, ... (depth + 2 per step)
+fault: the generated progressive list of containers grows its segments by depth + 1
+why: base 2 for base 4
+-            pl_SmallTestStruct_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
++            pl_SmallTestStruct_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 1n), Nat.add(s, O.pow2n(dep)), n, st))
+=== r8-c04-composite-tree
+type: ProgressiveTestStruct
+ops: root
+file: types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+sym: pl_SmallTestStruct_rt_fin
+spec: ProgressiveList root: mix_in_length(merkleize_progressive(...), len)
+fault: the progressive list of containers is not length-mixed
+why: progressive taken as length-free
+-Seq{arr, n}, O.mix_len(hl, d, n)))
++Seq{arr, n}, d))
+=== r8-c04-composite-tree
+type: ProgressiveTestStruct
+ops: root
+file: types/proglist_proglist_VarTestStruct_hashtreeroot_generated.bend
+sym: pl_pl_VarTestStruct_rt_fin
+spec: mix_in_length with the list's length
+fault: the outer progressive list mixes length + 1
+why: off-by-one count
+-Seq{arr, n}, O.mix_len(hl, d, n)))
++Seq{arr, n}, O.mix_len(hl, d, (n + 1 : U32))))
+=== r8-c04-composite-tree
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Validator_1099511627776_hashtreeroot_generated.bend
+sym: l1099511627776_Validator_rt_ct
+spec: List[Validator, 2^40] root: merkleize to depth 40, then mix_in_length
+fault: the validator registry tree is built at depth 32 (limit clamped to 32 bits)
+why: a U32 depth computation saturates at 32
+-rt_fin(hl, n, l1099511627776_Validator_mt0(40n,
++rt_fin(hl, n, l1099511627776_Validator_mt0(32n,
+=== r8-c05-packed-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_uint64_128_hashtreeroot_generated.bend
+sym: l128_u64_root
+spec: List[uint64, N] mixes the element count: byte length / 8
+fault: the mixed count is byte length / 4
+why: element size shift for uint32
+-O.mix_count(hl, 3n,
++O.mix_count(hl, 2n,
+=== r8-c05-packed-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_uint64_1099511627776_hashtreeroot_generated.bend
+sym: l1099511627776_u64_root
+spec: chunk_count(List[uint64, 2^40]) = 2^40 * 8 / 32 = 2^38
+fault: the balances tree has depth 40 (element limit, not chunk limit)
+why: chunk count of a packed list taken as its element limit
+-O.words_root(hl, h, o, 38, seg)
++O.words_root(hl, h, o, 40, seg)
+=== r8-c05-packed-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_uint8_1099511627776_hashtreeroot_generated.bend
+sym: l1099511627776_u8_root
+spec: chunk_count(List[uint8, 2^40]) = 2^35
+fault: depth 34 (limit / 64)
+why: chunk size 64 bytes
+-O.words_root(hl, h, o, 35, seg)
++O.words_root(hl, h, o, 34, seg)
+=== r8-c05-packed-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_bytevec_32_16777216_hashtreeroot_generated.bend
+sym: l16777216_b32_root
+spec: List[Bytes32, N] mixes the element count: byte length / 32
+fault: the mixed count is the byte length
+why: shift 0 for byte lists reused
+-O.mix_count(hl, 5n,
++O.mix_count(hl, 0n,
+=== r8-c05-packed-depth
+type: FuluSignedBeaconBlock
+ops: root
+file: types/Fulu_list_uint64_131072_hashtreeroot_generated.bend
+sym: l131072_u64_root
+spec: chunk_count(List[uint64, 131072]) = 32768 (depth 15)
+fault: depth 17 (element limit)
+why: chunk count taken as the element limit
+-O.words_root(hl, h, o, 15, seg)
++O.words_root(hl, h, o, 17, seg)
+=== r8-c05-packed-depth
+type: FuluTransaction,FuluExecutionPayload
+ops: root
+file: types/FuluTransaction_hashtreeroot_generated.bend
+sym: bl1073741824_root
+spec: chunk_count(ByteList[2^30]) = 2^25
+fault: depth 30
+why: byte limit used as chunk limit
+-O.words_root(hl, h, o, 25, seg)
++O.words_root(hl, h, o, 30, seg)
+=== r8-c05-packed-depth
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/proglist_uint256_hashtreeroot_generated.bend
+sym: pl_u256_root
+spec: ProgressiveList[uint256] mixes the element count: bytes / 32
+fault: the mixed count is bytes / 16
+why: uint128 shift
+-O.mix_count(hl, 5n,
++O.mix_count(hl, 4n,
+=== r8-c05-packed-depth
+type: ProgressiveVarTestStruct
+ops: root
+file: types/list_uint16_123_hashtreeroot_generated.bend
+sym: l123_u16_root
+spec: chunk_count(List[uint16, 123]) = ceil(246 / 32) = 8 (depth 3)
+fault: depth 2 (chunk count rounded down: 246 // 32 = 7, then floor log2)
+why: floor division for the chunk count
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r8-c05-packed-depth
+type: ComplexTestStruct
+ops: root
+file: types/list_uint16_1024_hashtreeroot_generated.bend
+sym: l1024_u16_root
+spec: chunk_count(List[uint16, 1024]) = 64 (depth 6)
+fault: depth 5
+why: chunk count halved (uint32 width)
+-O.words_root(hl, h, o, 6, seg)
++O.words_root(hl, h, o, 5, seg)
+=== r8-c06-bitvector-root
+type: bitvector_33,BitsStruct
+ops: root
+file: types/bitvector_33_hashtreeroot_generated.bend
+sym: bv33_root
+spec: Bitvector[33] root: pack_bits gives 5 bytes, the 33rd bit is in word 1
+fault: the second word is dropped (bit 32 never enters the root)
+why: one 32-bit word assumed
+-B.swap32(w1), 0, 0, 0, 0, 0, 0})
++0, 0, 0, 0, 0, 0, 0})
+=== r8-c06-bitvector-root
+type: bitvector_513
+ops: root
+file: types/bitvector_513_hashtreeroot_generated.bend
+sym: bv513_root
+spec: Bitvector[513]: 3 chunks padded to 4 (depth 2); the last chunk holds bit 512
+fault: the third chunk is the zero chunk (bit 512 dropped; 2 chunks assumed)
+why: chunk count from floor(513 / 256)
+-D.node(hl, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.zero())))
++D.node(hl, D.zero(), D.zero())))
+=== r8-c06-bitvector-root
+type: bitvector_513
+ops: root
+file: types/bitvector_513_hashtreeroot_generated.bend
+sym: bv513_root
+spec: Bitvector[513]: the 4th leaf is a zero chunk
+fault: the 4th leaf repeats the 3rd chunk
+why: odd node duplicated
+-D.node(hl, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.zero())))
++D.node(hl, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0})))
+=== r8-c06-bitvector-root
+type: bitvector_1280
+ops: root
+file: types/bitvector_1280_hashtreeroot_generated.bend
+sym: bv1280_root
+spec: Bitvector[1280]: 5 chunks padded to 8 (depth 3)
+fault: depth 2
+why: chunk count from 1280 / 512
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r8-c06-bitvector-root
+type: bitvector_9,BitsStruct
+ops: root
+file: types/bitvector_9_hashtreeroot_generated.bend
+sym: bv9_root
+spec: pack_bits: byte 0 holds bits 0..7 (little-endian bit order); SHA reads big-endian words
+fault: the word is not byte-swapped
+why: SHA word order forgotten for the bitvector
+-(h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++(h, D.D{w0, 0, 0, 0, 0, 0, 0, 0})

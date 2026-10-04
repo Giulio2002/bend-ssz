@@ -1,0 +1,538 @@
+## ROUND 8, families d01 (cached Merkle trees of composite lists: sweep, levels, node indices, padding, growth, dirty window),
+## e01 (boxed take / set / append guards, group getters and nested setters), f01 (decode budget: X_dk, X_dcost, the saturation
+## test of X_decode_checked_budget, O.dcost), b01 (zero-subtree constants in src/digest.bend) and b02 (src/merkle_fast.bend's
+## streaming merkleizer: not reached by the object API, which uses only M.ready / shl_by / shr_by from it).
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_node_go,l8_Attestation_cached_root
+spec: merkleize: node j = hash(node 2j, node 2j + 1)
+fault: the cached tree's right child is read at 2j (every node hashes its left child twice)
+why: index of the right sibling
+-  l8_Attestation_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
++  l8_Attestation_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j : U32)))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_levels,l8_Attestation_cached_root
+spec: an incremental root must rehash every ancestor of every dirty leaf
+fault: each level rehashes one parent fewer (the parent of the highest dirty leaf is stale)
+why: inclusive range counted exclusive
+-l8_Attestation_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
++l8_Attestation_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) : U32)), U32.shrn(klo, 1n), ts))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_sweep,l8_Attestation_cached_root
+spec: an incremental root must rehash every dirty leaf
+fault: the sweep rehashes hi - lo leaves (the highest dirty leaf keeps its stale digest)
+why: inclusive range counted exclusive
+-l8_Attestation_leaves(hl, U32.to_nat((hi - lo + 1 : U32)), lo, n, seg, O.pow2u(d), ts))
++l8_Attestation_leaves(hl, U32.to_nat((hi - lo : U32)), lo, n, seg, O.pow2u(d), ts))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_pad_go,l8_Attestation_croot_pad
+spec: padding a depth-d cached tree up to the limit's depth: level l's right sibling is Z(l)
+fault: each padding step uses the zero subtree of the level below (Z(l - 1))
+why: the level counter advanced after use
+-      l8_Attestation_pad_go(hl, q, (lvl + 1 : U32), D.node(hl, r, z), (h, D.zconst(U32.to_nat((lvl + 1 : U32)))))
++      l8_Attestation_pad_go(hl, q, (lvl + 1 : U32), D.node(hl, r, z), (h, D.zconst(U32.to_nat(lvl))))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_croot_pad
+spec: padding starts at the cached tree's depth d: the first sibling is Z(d)
+fault: the first padding sibling is the zero chunk Z(0)
+why: zero table indexed from 0
+-l8_Attestation_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++l8_Attestation_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(0n))))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_croot_top
+spec: the root of the cached tree is node 1 (heap layout, root at 1)
+fault: the root is read at node 0 (an unused slot)
+why: 0-based heap indexing
+-l8_Attestation_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 1))
++l8_Attestation_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 0))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_cached_root
+spec: an incremental root must rehash a single dirty leaf
+fault: the sweep runs only when the dirty window holds two or more leaves (lo < hi)
+why: strict comparison for a closed interval
+-l8_Attestation_sweep_pick(hl, U32.is_le(lo, hi), d, lo, hi, n, seg, l8_Attestation_TS{h, arr, nodes}))
++l8_Attestation_sweep_pick(hl, U32.is_lt(lo, hi), d, lo, hi, n, seg, l8_Attestation_TS{h, arr, nodes}))
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_capp_in,l8_Attestation_capp_fit
+spec: a cached tree of depth d holds 2^d leaves; the (2^d + 1)-th append must grow it
+fault: an append at n = 2^d stays in the depth-d tree (written past its leaves)
+why: <= for <
+-    case True{}: (l8_Attestation_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
++    case True{}: (l8_Attestation_capp_fit(U32.is_le(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{})
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_capp_fit
+spec: after growing the cached tree every leaf is dirty
+fault: the grown tree marks only the old 2^d leaves dirty (the appended leaf 2^d is never hashed)
+why: the old depth's window
+-(n + 1 : U32), 1n+d, l8_Attestation_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++(n + 1 : U32), 1n+d, l8_Attestation_dfill(2n+d), 0, (O.pow2u(d) - 1 : U32)}
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_cache_fin,l8_Attestation_dfill
+spec: a heap-layout tree of depth d has 2^(d + 1) node slots
+fault: a fresh cache allocates 2^d node slots (the leaf level does not fit)
+why: depth of the node array off by one
+-  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(d), 0, (O.pow2u(d) - 1 : U32)}
+=== r8-d01-cache-tree
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_leaves,l8_Attestation_leaf_step
+spec: leaf i of a depth-d heap tree is node 2^d + i
+fault: leaf i is stored at node 2^d + i + 1
+why: 1-based leaf index
+-l8_Attestation_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
++l8_Attestation_leaf_step(hl, U32.is_lt(i, n), (cap + i + 1 : U32), i, seg, ts))
+=== r8-d01-cache-tree
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_croot_pad
+spec: List[Validator, 2^40]: the cached tree is padded to depth 40
+fault: padded to depth 32
+why: U32 depth bound
+-pad_go(hl, Nat.sub(40n, d)
++pad_go(hl, Nat.sub(32n, d)
+=== r8-d01-cache-tree
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_PendingDeposit_134217728_def_generated.bend
+sym: l134217728_PendingDeposit_node_fin
+spec: node = hash(left, right)
+fault: the cached tree hashes (right, left)
+why: operand order
+-l134217728_PendingDeposit_ts_store(l134217728_PendingDeposit_TS{h, arr, nodes}, j, D.node(hl, dl, dr))
++l134217728_PendingDeposit_ts_store(l134217728_PendingDeposit_TS{h, arr, nodes}, j, D.node(hl, dr, dl))
+=== r8-d01-cache-tree
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_croot_pad
+spec: List[C, 10]: the cached tree is padded to depth 4
+fault: padded to depth 3
+why: floor(log2 10)
+-pad_go(hl, Nat.sub(4n, d)
++pad_go(hl, Nat.sub(3n, d)
+=== r8-d01-cache-tree
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_croot_fin
+spec: mix_in_length with the length
+fault: the cached root mixes the limit 10
+why: limit for length
+-l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, 10)))
+=== r8-d01-cache-tree
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_capp_sz
+spec: List[C, 10] holds at most 10 elements
+fault: the cached append accepts an 11th element
+why: <= for <
+-capp_in(Bool.and(U32.is_lt(n, 10), U32.is_le(n, sc))
++capp_in(Bool.and(U32.is_le(n, 10), U32.is_le(n, sc))
+=== r8-d01-cache-tree
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_HistoricalSummary_16777216_def_generated.bend
+sym: l16777216_HistoricalSummary_capp_sz
+spec: List[HistoricalSummary, 2^24] holds at most 2^24 elements
+fault: the cached append accepts element 2^24 + 1
+why: <= for <
+-capp_in(Bool.and(U32.is_lt(n, 16777216), U32.is_le(n, sc))
++capp_in(Bool.and(U32.is_le(n, 16777216), U32.is_le(n, sc))
+=== r8-d01-cache-tree
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+sym: l1048576_bl1073741824_ctook,l1048576_bl1073741824_ctake
+spec: an incremental root must rehash a leaf whose element was moved out (ctake) and possibly changed
+fault: ctake on the transactions list leaves the dirty window unchanged
+why: a getter assumed read-only
+-  (l1048576_bl1073741824_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
++  (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
+=== r8-d01-cache-tree
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_cache_sz
+spec: a cache depth must fit the array (docs/CRASH_HUNT.md R2-03)
+fault: the cache depth is taken from the claimed length without the cache_dok test
+why: the guard taken as redundant
+-O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
++d)
+=== r8-e01-access
+type: FuluBeaconBlockBody
+ops: root,encode
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_take,l8_Attestation_get_in
+spec: List index access is defined for i < len
+fault: take accepts i = n (moves out the empty slot past the end)
+why: <= for <
+-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_get_in(U32.is_lt(i, n), arr, n, i)
++    case l8_Attestation_Seq{arr, +n}: l8_Attestation_get_in(U32.is_le(i, n), arr, n, i)
+=== r8-e01-access
+type: FuluBeaconBlockBody
+ops: root,encode
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_set,l8_Attestation_put_in
+spec: List index update is defined for i < len
+fault: set accepts i = n (writes the slot past the end; the length is unchanged)
+why: <= for <
+-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case l8_Attestation_Seq{arr, +n}: l8_Attestation_put_in(U32.is_le(i, n), arr, n, i, v)
+=== r8-e01-access
+type: FuluBeaconBlockBody
+ops: root,encode
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_app_sz
+spec: List[Attestation, 8] holds at most 8 elements
+fault: append accepts a 9th attestation
+why: <= for <
+-  l8_Attestation_app_in(Bool.and(U32.is_lt(n, 8), U32.is_le(n, sc)), arr, n, v)
++  l8_Attestation_app_in(Bool.and(U32.is_le(n, 8), U32.is_le(n, sc)), arr, n, v)
+=== r8-e01-access
+type: FuluBeaconBlockBody
+ops: root,encode
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_room_pick,l8_Attestation_copy
+spec: append keeps the existing elements
+fault: growing the storage copies n - 1 elements (the last one is lost)
+why: off-by-one in the copy count
+-    case False{}: l8_Attestation_copy(U32.to_nat(n), 0, (l8_Attestation_fill(l8_Attestation_cap((n + 1 : U32))), arr))
++    case False{}: l8_Attestation_copy(U32.to_nat((n - 1 : U32)), 0, (l8_Attestation_fill(l8_Attestation_cap((n + 1 : U32))), arr))
+=== r8-e01-access
+type: FuluBeaconBlockBody
+ops: root,encode
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_room_pick,l8_Attestation_cap
+spec: append keeps the existing elements
+fault: the grown storage has room for n elements only (the appended slot n is past it)
+why: capacity of n instead of n + 1
+-    case False{}: l8_Attestation_copy(U32.to_nat(n), 0, (l8_Attestation_fill(l8_Attestation_cap((n + 1 : U32))), arr))
++    case False{}: l8_Attestation_copy(U32.to_nat(n), 0, (l8_Attestation_fill(l8_Attestation_cap(n)), arr))
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_get_previous_justified_checkpoint,BeaconState_get_previous_justified_checkpoint
+spec: a getter returns its own field
+fault: get_previous_justified_checkpoint returns current_justified_checkpoint (same type)
+why: copy-paste of the neighbouring getter
+-}, previous_justified_checkpoint)
++}, current_justified_checkpoint)
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g3_get_next_withdrawal_index
+spec: a getter returns its own field
+fault: get_next_withdrawal_index returns next_withdrawal_validator_index (both uint64)
+why: copy-paste of the neighbouring getter
+-}, next_withdrawal_index)
++}, next_withdrawal_validator_index)
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_get_slot
+spec: a getter returns its own field
+fault: get_slot returns genesis_time
+why: copy-paste of the neighbouring getter
+-}, slot)
++}, genesis_time)
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g3_get_earliest_exit_epoch
+spec: a getter returns its own field
+fault: get_earliest_exit_epoch returns exit_balance_to_consume (uint64 / Gwei and Epoch: both U64)
+why: copy-paste of the neighbouring getter
+-}, earliest_exit_epoch)
++}, exit_balance_to_consume)
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_set_slot
+spec: a setter on the outer container updates its own group
+fault: set_slot leaves the group unchanged (the inner setter not called)
+why: the group rebuilt from the old value
+-    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_slot(g0, v), g1, g2, g3, g4}
++    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{g0, g1, g2, g3, g4}
+=== r8-e01-access
+type: FuluBeaconState
+ops: root,encode
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_set_finalized_checkpoint,BeaconState_g2_set_current_justified_checkpoint
+spec: a setter writes its own field
+fault: the outer set_finalized_checkpoint calls the group's current_justified_checkpoint setter
+why: copy-paste of the neighbouring outer setter
+-BeaconState{g0, g1, BeaconState_g2_set_finalized_checkpoint(g2, v), g3, g4}
++BeaconState{g0, g1, BeaconState_g2_set_current_justified_checkpoint(g2, v), g3, g4}
+=== r8-e01-access
+type: FuluExecutionPayload
+ops: root,encode
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g1_get_gas_used,ExecutionPayload_get_gas_used
+spec: a getter returns its own field
+fault: get_gas_used returns timestamp (both uint64)
+why: copy-paste of the neighbouring getter
+-}, gas_used)
++}, timestamp)
+=== r8-e01-access
+type: FuluExecutionPayload
+ops: root,encode
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_get_state_root
+spec: a getter returns its own field
+fault: get_state_root returns receipts_root (both Bytes32)
+why: copy-paste of the neighbouring getter
+-}, state_root)
++}, receipts_root)
+=== r8-e01-access
+type: FuluExecutionPayload
+ops: root,encode
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_set_block_hash
+spec: a setter on the outer container updates its own group
+fault: set_block_hash leaves group 1 unchanged
+why: the inner setter not called
+-    case ExecutionPayload{g0, g1, +g2}: ExecutionPayload{g0, ExecutionPayload_g1_set_block_hash(g1, v), g2}
++    case ExecutionPayload{g0, g1, +g2}: ExecutionPayload{g0, g1, g2}
+=== r8-f01-budget
+type: FuluExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_decode_checked_budget
+spec: (API) a saturated bound (X_dcost = 2^32 - 1) is refused whatever the budget (R6-01)
+fault: the saturation test is dropped (a budget of 2^32 - 1 admits any size)
+why: the saturated value taken as an ordinary bound
+-ExecutionPayload_dcb(Bool.and(U32.is_lt(ExecutionPayload_dcost(size), 4294967295), U32.is_le(ExecutionPayload_dcost(size), budget)), buf, size)
++ExecutionPayload_dcb(U32.is_le(ExecutionPayload_dcost(size), budget), buf, size)
+=== r8-f01-budget
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_decode_checked_budget
+spec: (API) decode only when the bound is not saturated AND within the budget
+fault: the two conditions are or-ed
+why: and/or confusion
+-BeaconState_dcb(Bool.and(U32.is_lt(BeaconState_dcost(size), 4294967295), U32.is_le(BeaconState_dcost(size), budget)), buf, size)
++BeaconState_dcb(Bool.or(U32.is_lt(BeaconState_dcost(size), 4294967295), U32.is_le(BeaconState_dcost(size), budget)), buf, size)
+=== r8-f01-budget
+type: FuluSignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_decode_checked_budget
+spec: (API) a saturated bound is refused
+fault: the saturation test is <= (2^32 - 1 passes)
+why: <= for <
+-SignedBeaconBlock_dcb(Bool.and(U32.is_lt(SignedBeaconBlock_dcost(size), 4294967295)
++SignedBeaconBlock_dcb(Bool.and(U32.is_le(SignedBeaconBlock_dcost(size), 4294967295)
+=== r8-f01-budget
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_decode_checked_budget
+spec: (API) the budget compares the bound of the requested size
+fault: the budget test compares the budget with the bound (reversed: decodes only when budget <= bound)
+why: operand order
+-U32.is_le(ProgressiveTestStruct_dcost(size), budget)), buf, size)
++U32.is_le(budget, ProgressiveTestStruct_dcost(size))), buf, size)
+=== r8-f01-budget
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_dcb
+spec: (API) within the budget the result is exactly X_decode_checked
+fault: the branches are exchanged (decodes when refused, refuses when admitted)
+why: match arm order
+-    case True{}: BeaconState_decode_checked(buf, size)
+-    case False{}: (buf, None{})
++    case False{}: BeaconState_decode_checked(buf, size)
++    case True{}: (buf, None{})
+=== r8-f01-budget
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_dk,BeaconBlockBody_dcost
+spec: (API, docs/DECODE_AMPLIFICATION.md) K of a name is at least the K of every name nested in it (the body holds the payload, K = 40)
+fault: the body's K is 7 (its own fixed part; the nested-K rule not applied)
+why: the nested payload's density ignored
+-def BeaconBlockBody_dk() -> U32: 40
++def BeaconBlockBody_dk() -> U32: 7
+=== r8-f01-budget
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_dk
+spec: (API) K is the measured density of the name (31 for ProgressiveTestStruct)
+fault: K = 7 (the K of its progressive list fields)
+why: the nested-list density taken for the container
+-def ProgressiveTestStruct_dk() -> U32: 31
++def ProgressiveTestStruct_dk() -> U32: 7
+=== r8-f01-budget
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_dk
+spec: (API) K is the measured density of the name (6)
+fault: K = 0 (treated as a name whose largest encoding fits the constant)
+why: the fixed-size rule applied to a variable-size name
+-def DataColumnSidecar_dk() -> U32: 6
++def DataColumnSidecar_dk() -> U32: 0
+=== r8-f01-budget
+type: CompatibleUnionBC
+ops: decode
+file: types/CompatibleUnionBC_decode_ssz_generated.bend
+sym: CompatibleUnionBC_dk
+spec: (API) K of a union is at least the K of every option
+fault: K = 5
+why: one option's K taken
+-def CompatibleUnionBC_dk() -> U32: 7
++def CompatibleUnionBC_dk() -> U32: 5
+=== r8-f01-budget
+type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost,dcost_k,dcost_go
+spec: (API) a name with K = 0 is charged the constant only
+fault: the K = 0 test is dropped (dcost_go runs with k = 0: a division by zero in the saturation bound)
+why: the zero case taken as covered by the product
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_le(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
+=== r8-f01-budget
+type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost_go
+spec: (API) X_dcost(size) = ((size >> 3) + 1) * K + 524288
+fault: the product uses (size >> 3) words without the + 1 (w - 1)
+why: the + 1 applied only in the saturation bound
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), (((w - 1 : U32) * k : U32) + 524288 : U32), 4294967295)
+=== r8-f01-budget
+type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost_go
+spec: (API) the bound saturates exactly when ((size >> 3) + 1) * K + 524288 does not fit U32
+fault: the saturation bound divides by k + 1 (over-strict: sizes near the top saturate early)
+why: rounding guard
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, (k + 1 : U32))), ((w * k : U32) + 524288 : U32), 4294967295)
+=== r8-f01-budget
+type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+ops: decode
+file: src/obj.bend
+sym: dcost_go
+spec: (API) X_dcost is in words of 8 bytes: K * words + 524288
+fault: the product is computed as w + k (sum for product)
+why: operator slip
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), ((w + k : U32) + 524288 : U32), 4294967295)
+=== r8-b01-zconst
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: Z(1) = SHA-256(Z(0) ++ Z(0))
+fault: the first word of Z(1) is off by one
+why: a constant mistyped
+-      case 0n: D{4121296194, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
++      case 0n: D{4121296195, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
+=== r8-b01-zconst
+type: FuluBeaconState,ComplexTestStruct
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: Z(2) = SHA-256(Z(1) ++ Z(1))
+fault: the last word of Z(2) is zero (table truncated)
+why: a constant mistyped
+-        case 0n: D{3679850830, 16635073, 4166813995, 4082813352, 2458495724, 2985021609, 1826513002, 1955290481}
++        case 0n: D{3679850830, 16635073, 4166813995, 4082813352, 2458495724, 2985021609, 1826513002, 0}
+=== r8-b01-zconst
+type: FuluBeaconState
+ops: root
+file: src/digest.bend
+sym: zconst
+spec: Z(0) is the zero chunk
+fault: Z(0) is Z(1) (the table shifted by one level)
+why: the table starts at the first hash
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
+-    case 1n+k1:
++    case 0n: D{4121296194, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
++    case 1n+k1:
+=== r8-b02-merkle-fast
+type: FuluBeaconState
+ops: root
+file: src/merkle_fast.bend
+sym: ascend,close_pick
+spec: merkleize: the zero subtree Z(k) is the right sibling where bit k of the count is clear
+fault: the ascent reads the stack slot when bit k + 1 is clear and the zero table when it is set
+why: slot_pick arguments swapped
+-            B.get_digest(buf, slot_pick(bit(n, (k + 1 : U32)), (seg + k + 1 : U32), (960 + k + 1 : U32))))
++            B.get_digest(buf, slot_pick(bit(n, (k + 1 : U32)), (960 + k + 1 : U32), (seg + k + 1 : U32))))
+=== r8-b02-merkle-fast
+type: FuluBeaconState
+ops: root
+file: src/merkle_fast.bend
+sym: close,full_in
+spec: a full tree's root is its top stack entry
+fault: a tree is taken as full when n = 2^depth - 1
+why: off-by-one capacity
+-    case True{}: U32.is_eq(n, shl_by(1, depth))
++    case True{}: U32.is_eq((n + 1 : U32), shl_by(1, depth))
+=== r8-b02-merkle-fast
+type: FuluBeaconState
+ops: root
+file: src/merkle_fast.bend
+sym: seal_if,push_prog_at
+spec: merkleize_progressive: a finished segment's root is kept
+fault: the segment is sealed one chunk early (j = cap - 2)
+why: off-by-one
+-  seal_if(U32.is_eq(j, (prog_cap(k) - 1 : U32)), k, seg,
++  seal_if(U32.is_eq(j, (prog_cap(k) - 2 : U32)), k, seg,
+=== r8-b02-merkle-fast
+type: FuluBeaconState
+ops: root
+file: src/merkle_fast.bend
+sym: mask_sel
+spec: a bit list's delimiter is cleared before chunking
+fault: byte 1's mask keeps the byte unmasked
+why: mask constant
+-    case 1: ((w .&. 4294902015 : U32) .|. U32.shln(((U32.shrn(w, 8n) .&. 255 : U32) .&. mask : U32), 8n) : U32)
++    case 1: w

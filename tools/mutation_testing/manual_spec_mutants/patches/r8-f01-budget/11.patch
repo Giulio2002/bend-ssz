@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/11
+# type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+# ops: decode
+# spec: (API) X_dcost(size) = ((size >> 3) + 1) * K + 524288
+# fault: the product uses (size >> 3) words without the + 1 (w - 1)
+# why: the + 1 applied only in the saturation bound
+# file: src/obj.bend
+# sym: dcost_go
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1823,3 +1823,3 @@
+ def dcost_go(+w: U32, +k: U32) -> U32:
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), (((w - 1 : U32) * k : U32) + 524288 : U32), 4294967295)
+ 

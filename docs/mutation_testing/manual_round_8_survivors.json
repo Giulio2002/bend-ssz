@@ -1,0 +1,145 @@
+[
+ {
+  "id": "r8-a03-clean-copy/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-a03-clean-copy/01.patch",
+  "type": "FuluTransaction (every packed byte list / vector of byte length 4m + 1)",
+  "file": "src/obj.bend (tail_zero, case 1)",
+  "rule": "hash_tree_root(List[byte, N]) = mix_in_length(merkleize(pack(value), limit), len): only the value's bytes enter the chunks; the checked serializer refuses an invalid value",
+  "counterexample": "O.Words{Array.set(U32, Array.new(U32, 3n, 0), 0, 0x0000BE01), 1} (one byte 0x01, junk in byte 1 of its word only). Unmutated: bl1073741824_valid = 0, Transaction_serialize refuses, Transaction_hash_tree_root = root of [0x01]. Mutant: valid = 1, Transaction_serialize answers ok with 1 byte, Transaction_hash_tree_root = 390158544,... instead of 1488297322,... (root of [0x01]). Same at n = 5 (word 1 = 0x0000BE05).",
+  "reachability": "public: the record constructor O.Words{array, n} (documented as public, src/obj.bend:1420) then Transaction_hash_tree_root / bl1073741824_valid / Transaction_serialize. tail_zero is shared by the root's clean-storage test (wcn_tz, src/obj.bend:978, reached from words_root -> wr_size -> wr_cap -> wcn_k -> wcn_t) and by the packed validity (src/obj.bend:1728). No public setter writes such storage.",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow pass (5 roots) and the explicit pass over all 65 vrootj junk-storage laws + words_root/words_canon (res_p2.json). The j_tail law's witness (0xDEADBE01) has junk in bytes 1..3 together, so a test of bytes 2..3 alone still sees it. API probe r8/probes/p8a.bend cases 1, 3 (api_p8a.json). B: corpus SURVIVED (569 cases; the corpus decodes bytes, its storage is always clean: it cannot observe this fault)."
+ },
+ {
+  "id": "r8-a05-prog-cnt/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-a05-prog-cnt/03.patch",
+  "type": "none (O.elems_root_prog)",
+  "file": "src/obj.bend (erp_size)",
+  "rule": "ProgressiveList of byte vectors: each element's own tree is binary of its depth",
+  "counterexample": "none through the API",
+  "reachability": "O.elems_root_prog / erp_size have no caller: grep of types/*.bend and src/*.bend finds no use (no name is a progressive list of byte vectors)",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": "A: SURVIVED (u32bits, ProgressiveComplexTestStruct facade). grep elems_root_prog types/ src/: only its definition."
+ },
+ {
+  "id": "r8-b02-merkle-fast/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/01.patch",
+  "type": "none (src/merkle_fast.bend streaming merkleizer)",
+  "file": "src/merkle_fast.bend (ascend)",
+  "rule": "merkleize: the zero subtree is the right sibling where the count's bit is clear",
+  "counterexample": "none through the API",
+  "reachability": "the object API imports merkle_fast only for M.ready, M.shl_by, M.shr_by (src/obj.bend; types/*_hashtreeroot use the same three); every root goes through obj.bend's mtree / ptree and D.zconst. ascend / close / push / leaves / merkleize_* have no caller in types/ or src/obj.bend",
+  "verdict": "equivalent (in context: unreachable from the object API)",
+  "evidence": "A: SURVIVED narrow pass."
+ },
+ {
+  "id": "r8-b02-merkle-fast/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/02.patch",
+  "type": "none",
+  "file": "src/merkle_fast.bend (full_in)",
+  "rule": "a full tree's root is the stack top",
+  "counterexample": "none through the API",
+  "reachability": "as r8-b02-merkle-fast/01",
+  "verdict": "equivalent (in context: unreachable from the object API)",
+  "evidence": "A: SURVIVED narrow pass."
+ },
+ {
+  "id": "r8-b02-merkle-fast/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/03.patch",
+  "type": "none",
+  "file": "src/merkle_fast.bend (push_prog_at)",
+  "rule": "merkleize_progressive: a finished segment is sealed after its last chunk",
+  "counterexample": "none through the API",
+  "reachability": "as r8-b02-merkle-fast/01",
+  "verdict": "equivalent (in context: unreachable from the object API)",
+  "evidence": "A: SURVIVED narrow pass."
+ },
+ {
+  "id": "r8-b02-merkle-fast/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/04.patch",
+  "type": "none",
+  "file": "src/merkle_fast.bend (mask_sel)",
+  "rule": "a bit list's delimiter is cleared before chunking",
+  "counterexample": "none through the API",
+  "reachability": "as r8-b02-merkle-fast/01",
+  "verdict": "equivalent (in context: unreachable from the object API)",
+  "evidence": "A: SURVIVED narrow pass."
+ },
+ {
+  "id": "r8-d01-cache-tree/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/14.patch",
+  "type": "list_ProgressiveSingleFieldContainerTestStruct_10 (field f_G of ProgressiveComplexTestStruct)",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend (croot_pad: Nat.sub(4n, d) -> Nat.sub(3n, d))",
+  "rule": "List[C, 10]: merkleize to chunk_count 10 (depth 4), then mix_in_length",
+  "counterexample": "l10_..._cached_root(64n, O.hasher(), l10_..._cache(l10_..._append(l10_..._default(), ProgressiveSingleFieldContainerTestStruct_default()).0), 0): mutant 1037339034,... ; the plain l10_..._root of the same list (and the unmutated cached root) 2261265607,...",
+  "reachability": "public: X_default, X_append, X_cache, X_cached_root (types/runtime_index.json; docs/API_CONTRACTS.md X_cget/X_ctake rows). cached_root -> croot_top -> croot_read -> croot_pad",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow pass and the explicit pass over 14 roots (the PCTS appb / size / var_winx laws of l10, coll_api_*, coll_root, cache.bend, capi.bend): no cached-root law exists for this list kind (proofs/obj/cached_* cover 11 Fulu kinds, not l10_ProgressiveSingleFieldContainerTestStruct). API probe p8b case 1. B: the corpus protocol never builds a cache: cannot observe."
+ },
+ {
+  "id": "r8-d01-cache-tree/15",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/15.patch",
+  "type": "list_ProgressiveSingleFieldContainerTestStruct_10",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend (croot_fin mixes 10)",
+  "rule": "mix_in_length(root, len(value)), not the limit",
+  "counterexample": "same calls as r8-d01-cache-tree/14: mutant cached root 2394927061,... vs 2261265607,...",
+  "reachability": "public: X_cache, X_cached_root -> croot_top -> croot_read -> croot_pad -> croot_fin",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow and explicit (14 roots) passes. API probe p8b case 1. B: cannot observe (no cache in the corpus protocol)."
+ },
+ {
+  "id": "r8-d01-cache-tree/18",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/18.patch",
+  "type": "Fulu_list_bytelist_1073741824_1048576 (ExecutionPayload.transactions)",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend (ctook keeps lo, hi)",
+  "rule": "docs/API_CONTRACTS.md: X_ctake marks the slot dirty, so the cached root is the root of the object it returns (an absent box is a zero leaf)",
+  "counterexample": "c = cache(append(append(default, [0x01]), [0x02])); cached_root(c); (c, _) = ctake(c, 0); cached_root(c) = 1473557429,... (stale: still hashes transaction 0) while the plain root of uncache(c) is 2248133444,... (the unmutated cached root)",
+  "reachability": "public: l1048576_bl1073741824_append / _cache / _cached_root / _ctake / _uncache and the list's root; ctake -> cget_in -> ctook",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow pass and the explicit pass over 9 roots (coll_seq, coll_api_*, coll_root, ...). Round 4 planted the same fault on Fulu_list_Deposit_16 (killed); no law states ctake's dirty mark for the transactions list. API probe p8b case 4. B: cannot observe."
+ },
+ {
+  "id": "r8-e01-access/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e01-access/04.patch",
+  "type": "Fulu_list_Attestation_8 (BeaconBlockBody.attestations)",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend (room_pick copies n - 1 elements)",
+  "rule": "append(list, v) keeps the existing elements",
+  "counterexample": "l8_Attestation_append(l8_Attestation_append(l8_Attestation_default(), Attestation_default()).0, Attestation_default()).0: unmutated l8_Attestation_valid = 1, root 2393116867,...; mutant valid = 0 (the last old element is left as an empty box when the storage grows), root 3290566421,...",
+  "reachability": "public: X_default, X_append (-> app_sz -> app_in -> room -> room_sized -> room_pick -> copy) on the second append, whenever the storage must grow",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow pass and the explicit pass over 10 roots (coll_seq, coll_api_1..5, l8 appb laws). API probe p8b case 6. B: cannot observe (the corpus decodes, it never appends)."
+ },
+ {
+  "id": "r8-e02-vec-access/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/01.patch",
+  "type": "vec_VarTestStruct_2 (ComplexTestStruct.f_G)",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend (take tests i <= n)",
+  "rule": "docs/API_CONTRACTS.md: X_take answers None for i >= length",
+  "counterexample": "v2_VarTestStruct_take(v2_VarTestStruct_default(), 2): unmutated None, vector still valid; mutant Some (index 2 wraps to slot 0 of the 2-slot array: element 0 is moved out), v2_VarTestStruct_valid = 0 and the root changes (3363073847,... vs 4290265434,...)",
+  "reachability": "public: v2_VarTestStruct_default, v2_VarTestStruct_take -> get_in -> at",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow pass and the explicit pass over 10 roots (coll_seq, coll_api_*): no api law states the out-of-range take for this vector kind. API probe p8b case 7. B: cannot observe."
+ },
+ {
+  "id": "r8-e02-vec-access/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/02.patch",
+  "type": "vec_VarTestStruct_2",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend (set tests i <= n)",
+  "rule": "docs/API_CONTRACTS.md: X_set answers False and leaves the object unchanged for i >= length",
+  "counterexample": "v2_VarTestStruct_set(v2_VarTestStruct_default(), 2, VarTestStruct{5, O.Words{Array.new(U32, 0n, 0), 0}, 7}): unmutated ok = 0, root unchanged 4290265434,...; mutant ok = 1 and element 0 overwritten (root 2070652627,...)",
+  "reachability": "public: v2_VarTestStruct_set -> put_in; the element is built with the record constructor VarTestStruct{...}",
+  "verdict": "critical",
+  "evidence": "A: SURVIVED narrow and explicit (10 roots) passes. API probe p8b case 8. B: cannot observe."
+ },
+ {
+  "id": "r8-e02-vec-access/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/03.patch",
+  "type": "vec_VarTestStruct_2",
+  "file": "types/vec_VarTestStruct_2_def_generated.bend (put_in writes slot 0)",
+  "rule": "set(v, i, x) changes element i only",
+  "counterexample": "v2_VarTestStruct_set(v2_VarTestStruct_default(), 1, VarTestStruct{5, [], 7}): the mutant writes element 0 (root of [x, default] instead of [default, x]). Argued, not run: probe case 8 uses i = 2, which both builds refuse.",
+  "reachability": "public: v2_VarTestStruct_set -> put_in",
+  "verdict": "critical (argued, not demonstrated by a probe)",
+  "evidence": "A: SURVIVED narrow and explicit (10 roots) passes. p8b case 8 does not distinguish it (i = 2 refused in both)."
+ }
+]

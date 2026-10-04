@@ -1,0 +1,171 @@
+## ROUND 8, batch 3: group-split container roots (BeaconState's 5 groups), the signed wrapper, more cached-tree depths, vector take / set.
+=== r8-c07-group-roots
+type: FuluBeaconState
+ops: root
+file: types/FuluBeaconState_hashtreeroot_generated.bend
+sym: BeaconState_rt4,BeaconState_root
+spec: BeaconState (37 fields) is merkleized to 64 leaves; the group roots are depth-3 subtrees and the padding siblings are Z(3) then Z(4)
+fault: the two padding siblings are exchanged
+why: padding order
+-D.node(hl, D.node(hl, r4, z3), z4))))
++D.node(hl, D.node(hl, r4, z4), z3))))
+=== r8-c07-group-roots
+type: FuluBeaconState
+ops: root
+file: types/FuluBeaconState_hashtreeroot_generated.bend
+sym: BeaconState_rt4,BeaconState_root
+spec: container root: groups in field order
+fault: groups 2 and 3 exchanged at the top
+why: group order
+-D.node(hl, D.node(hl, D.node(hl, r0, r1), D.node(hl, r2, r3))
++D.node(hl, D.node(hl, D.node(hl, r0, r1), D.node(hl, r3, r2))
+=== r8-c07-group-roots
+type: FuluBeaconState
+ops: root
+file: types/FuluBeaconState_hashtreeroot_generated.bend
+sym: BeaconState_g4_root
+spec: group 4 (6 fields) is padded to 8 leaves: leaves 6, 7 are Z(1)
+fault: the padding pair of group 4 is the zero chunk
+why: padding level off by one
+-D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), z1))))
++D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), D.zero()))))
+=== r8-c07-group-roots
+type: FuluBeaconState
+ops: root
+file: types/FuluBeaconState_hashtreeroot_generated.bend
+sym: BeaconState_root
+spec: the zero subtree of depth 4
+fault: z4 is filled with Z(5)
+why: zero-table index
+-zconst(4n)
++zconst(5n)
+=== r8-c07-group-roots
+type: FuluSignedBeaconBlock
+ops: root
+file: types/FuluSignedBeaconBlock_hashtreeroot_generated.bend
+sym: SignedBeaconBlock_rt1,SignedBeaconBlock_root
+spec: container root: message then signature
+fault: message and signature exchanged
+why: field order
+-SignedBeaconBlock{message, signature}, D.node(hl, d_message, d_signature)))
++SignedBeaconBlock{message, signature}, D.node(hl, d_signature, d_message)))
+=== r8-d02-cache-depth
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_ConsolidationRequest_2_def_generated.bend
+sym: l2_ConsolidationRequest_croot_pad
+spec: List[ConsolidationRequest, 2]: depth 1
+fault: the cached tree is padded to depth 2
+why: depth from N + 1
+-pad_go(hl, Nat.sub(1n, d)
++pad_go(hl, Nat.sub(2n, d)
+=== r8-d02-cache-depth
+type: FuluExecutionRequests
+ops: root
+file: types/Fulu_list_DepositRequest_8192_def_generated.bend
+sym: l8192_DepositRequest_croot_pad
+spec: List[DepositRequest, 8192]: depth 13
+fault: depth 14
+why: depth from N + 1
+-pad_go(hl, Nat.sub(13n, d)
++pad_go(hl, Nat.sub(14n, d)
+=== r8-d02-cache-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_PendingConsolidation_262144_def_generated.bend
+sym: l262144_PendingConsolidation_croot_pad
+spec: List[PendingConsolidation, 262144]: depth 18
+fault: depth 17
+why: off-by-one log2
+-pad_go(hl, Nat.sub(18n, d)
++pad_go(hl, Nat.sub(17n, d)
+=== r8-d02-cache-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend
+sym: l134217728_PendingPartialWithdrawal_croot_pad
+spec: List[PendingPartialWithdrawal, 2^27]: depth 27
+fault: depth 26
+why: off-by-one log2
+-pad_go(hl, Nat.sub(27n, d)
++pad_go(hl, Nat.sub(26n, d)
+=== r8-d02-cache-depth
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_Withdrawal_16_def_generated.bend
+sym: l16_Withdrawal_croot_pad
+spec: List[Withdrawal, 16]: depth 4
+fault: depth 5
+why: depth from N + 1
+-pad_go(hl, Nat.sub(4n, d)
++pad_go(hl, Nat.sub(5n, d)
+=== r8-d02-cache-depth
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_Withdrawal_16_def_generated.bend
+sym: l16_Withdrawal_node_go
+spec: node j = hash(node 2j, node 2j + 1)
+fault: the left child is read at 2j + 1 (each node hashes its right child twice)
+why: sibling index
+-l16_Withdrawal_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))
++l16_Withdrawal_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
+=== r8-d02-cache-depth
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend
+sym: l16_SignedVoluntaryExit_levels
+spec: an incremental root walks up d levels
+fault: the parents' range is computed from the leaf range without halving the low end (klo stays, khi halves)
+why: one shift forgotten
+-l16_SignedVoluntaryExit_levels(hl, q, U32.shrn(klo, 1n), U32.shrn(khi, 1n), l16_SignedVoluntaryExit_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
++l16_SignedVoluntaryExit_levels(hl, q, klo, U32.shrn(khi, 1n), l16_SignedVoluntaryExit_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
+=== r8-d02-cache-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_croot_fin
+spec: after a root the dirty window is empty
+fault: after a root the window is (0, n) (everything stays dirty: designed equivalent, slower)
+why: reset to full instead of empty
+-l1099511627776_Validator_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++l1099511627776_Validator_Cached{arr, n, d, nodes, 0, n}, O.mix_len(hl, r, n)))
+=== r8-d02-cache-depth
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_cset_in
+spec: an incremental root must rehash a leaf after set
+fault: cset raises only hi (a set below the window leaves lo above i)
+why: one end of the window
+-    case True{}: (l1099511627776_Validator_Cached{Array.set(FuluValidator_d.Validator, arr, i, v), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l1099511627776_Validator_Cached{Array.set(FuluValidator_d.Validator, arr, i, v), n, d, nodes, lo, O.pick(U32.is_le(i, hi), hi, i)}, True{})
+=== r8-e02-vec-access
+type: ComplexTestStruct
+ops: root,encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_take
+spec: Vector index access is defined for i < N
+fault: take accepts i = 2
+why: <= for <
+-    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
++    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_get_in(U32.is_le(i, n), arr, n, i)
+=== r8-e02-vec-access
+type: ComplexTestStruct
+ops: root,encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_set
+spec: Vector index update is defined for i < N
+fault: set accepts i = 2
+why: <= for <
+-    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case v2_VarTestStruct_Seq{arr, +n}: v2_VarTestStruct_put_in(U32.is_le(i, n), arr, n, i, v)
+=== r8-e02-vec-access
+type: ComplexTestStruct
+ops: root,encode
+file: types/vec_VarTestStruct_2_def_generated.bend
+sym: v2_VarTestStruct_put_in
+spec: set writes index i
+fault: set writes index 0 whatever i
+why: index dropped
+-    case True{}: (v2_VarTestStruct_Seq{Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_wrap(v)), n}, True{})
++    case True{}: (v2_VarTestStruct_Seq{Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, 0, VarTestStruct_d.VarTestStruct_bx_wrap(v)), n}, True{})

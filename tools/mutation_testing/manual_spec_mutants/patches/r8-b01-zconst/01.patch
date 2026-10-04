@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b01-zconst/01
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: Z(1) = SHA-256(Z(0) ++ Z(0))
+# fault: the first word of Z(1) is off by one
+# why: a constant mistyped
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -109,3 +109,3 @@
+     match k1:
+-      case 0n: D{4121296194, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
++      case 0n: D{4121296195, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
+       case 1n+k2:

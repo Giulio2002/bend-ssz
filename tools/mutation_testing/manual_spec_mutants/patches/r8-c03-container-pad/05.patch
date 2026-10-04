@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c03-container-pad/05
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: merkleize pads 13 field roots to 16 leaves: leaves 14, 15 are the empty pair Z(1)
+# fault: the last empty pair of the body's second half is the zero chunk
+# why: padding level off by one
+# file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+# sym: BeaconBlockBody_g1_rt4,BeaconBlockBody_root
+--- a/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+@@ -78,3 +78,3 @@
+   (h, z1) = pair
+-  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_execution_payload), D.node(hl, d_bls_to_execution_changes, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), z1))))
++  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_execution_payload), D.node(hl, d_bls_to_execution_changes, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), D.zero()))))
+ 

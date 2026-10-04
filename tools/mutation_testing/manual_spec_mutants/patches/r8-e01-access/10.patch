@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/10
+# type: FuluBeaconState
+# ops: root,encode
+# spec: a setter on the outer container updates its own group
+# fault: set_slot leaves the group unchanged (the inner setter not called)
+# why: the group rebuilt from the old value
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_set_slot
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -515,3 +515,3 @@
+   match o:
+-    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_slot(g0, v), g1, g2, g3, g4}
++    case BeaconState{g0, g1, g2, g3, g4}: BeaconState{g0, g1, g2, g3, g4}
+ 

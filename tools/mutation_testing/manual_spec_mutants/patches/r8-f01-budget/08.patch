@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/08
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: (API) K is the measured density of the name (6)
+# fault: K = 0 (treated as a name whose largest encoding fits the constant)
+# why: the fixed-size rule applied to a variable-size name
+# file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+# sym: DataColumnSidecar_dk
+--- a/types/FuluDataColumnSidecar_decode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_decode_ssz_generated.bend
+@@ -156,3 +156,3 @@
+ 
+-def DataColumnSidecar_dk() -> U32: 6
++def DataColumnSidecar_dk() -> U32: 0
+ 

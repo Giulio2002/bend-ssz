@@ -1,0 +1,87 @@
+[
+ {
+  "id": "r8-c07-group-roots/01",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.5,
+    "laws": [
+     "st_BeaconState"
+    ],
+    "msg": "- expected : (h, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, LV.pj_BeaconState_5(o), LV.pj_BeaconState_6(o), LV.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, LV.pj_BeaconState_9(o), x10, LV.pj_BeaconState_11(o), LV.pj_BeaconState_12(o), LV.pj_Beaco",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c07-group-roots/02",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.3,
+    "laws": [
+     "st_BeaconState"
+    ],
+    "msg": "- expected : (h, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, LV.pj_BeaconState_5(o), LV.pj_BeaconState_6(o), LV.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, LV.pj_BeaconState_9(o), x10, LV.pj_BeaconState_11(o), LV.pj_BeaconState_12(o), LV.pj_Beaco",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c07-group-roots/03",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.2,
+    "laws": [
+     "stg_BeaconState_4"
+    ],
+    "msg": "- expected : (h, FuluBeaconState_d.BeaconState_g4{x32, x33, x34, x35, x36, x37}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c07-group-roots/04",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.0,
+    "laws": [
+     "st_BeaconState"
+    ],
+    "msg": "- expected : (h, FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0{x0, x1, x2, x3, x4, LV.pj_BeaconState_5(o), LV.pj_BeaconState_6(o), LV.pj_BeaconState_7(o)}, FuluBeaconState_d.BeaconState_g1{x8, LV.pj_BeaconState_9(o), x10, LV.pj_BeaconState_11(o), LV.pj_BeaconState_12(o), LV.pj_Beaco",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c07-group-roots/05",
+  "type": "FuluSignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "st_SignedBeaconBlock"
+    ],
+    "msg": "- expected : (h, FuluSignedBeaconBlock_d.SignedBeaconBlock{LV.pj_SignedBeaconBlock_0(o), x1}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fa",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

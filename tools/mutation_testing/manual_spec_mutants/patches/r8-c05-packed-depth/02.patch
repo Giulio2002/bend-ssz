@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c05-packed-depth/02
+# type: FuluBeaconState
+# ops: root
+# spec: chunk_count(List[uint64, 2^40]) = 2^40 * 8 / 32 = 2^38
+# fault: the balances tree has depth 40 (element limit, not chunk limit)
+# why: chunk count of a packed list taken as its element limit
+# file: types/Fulu_list_uint64_1099511627776_hashtreeroot_generated.bend
+# sym: l1099511627776_u64_root
+--- a/types/Fulu_list_uint64_1099511627776_hashtreeroot_generated.bend
++++ b/types/Fulu_list_uint64_1099511627776_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def l1099511627776_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root(hl, h, o, 38, seg))
++def l1099511627776_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root(hl, h, o, 40, seg))
+ 

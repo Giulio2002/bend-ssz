@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r8-f01-budget/02
+# type: FuluBeaconState
+# ops: decode
+# spec: (API) decode only when the bound is not saturated AND within the budget
+# fault: the two conditions are or-ed
+# why: and/or confusion
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_decode_checked_budget
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -578,4 +578,4 @@
+     case True{}: BeaconState_decode_checked(buf, size)
+     case False{}: (buf, None{})
+ 
+-def BeaconState_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dcb(Bool.and(U32.is_lt(BeaconState_dcost(size), 4294967295), U32.is_le(BeaconState_dcost(size), budget)), buf, size)
++def BeaconState_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dcb(Bool.or(U32.is_lt(BeaconState_dcost(size), 4294967295), U32.is_le(BeaconState_dcost(size), budget)), buf, size)

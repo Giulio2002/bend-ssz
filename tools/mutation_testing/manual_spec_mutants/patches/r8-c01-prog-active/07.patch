@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c01-prog-active/07
+# type: ProgressiveVarTestStruct
+# ops: root
+# spec: merkleize_progressive: an exhausted rest is the zero chunk, not a zero subtree
+# fault: the rest after segment 1 is Z(4) (the binary padding rule)
+# why: binary merkleization's padding applied to the progressive spine
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveVarTestStruct_fin
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+ def ProgressiveVarTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest):
+-  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
++  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zconst(4n), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/02
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: an incremental root must rehash every ancestor of every dirty leaf
+# fault: each level rehashes one parent fewer (the parent of the highest dirty leaf is stale)
+# why: inclusive range counted exclusive
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_levels,l8_Attestation_cached_root
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -267,3 +267,3 @@
+     case 1n+q:
+-      l8_Attestation_levels(hl, q, U32.shrn(klo, 1n), U32.shrn(khi, 1n), l8_Attestation_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
++      l8_Attestation_levels(hl, q, U32.shrn(klo, 1n), U32.shrn(khi, 1n), l8_Attestation_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) : U32)), U32.shrn(klo, 1n), ts))
+ 

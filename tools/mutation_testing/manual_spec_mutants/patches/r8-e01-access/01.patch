@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/01
+# type: FuluBeaconBlockBody
+# ops: root,encode
+# spec: List index access is defined for i < len
+# fault: take accepts i = n (moves out the empty slot past the end)
+# why: <= for <
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_take,l8_Attestation_get_in
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -98,3 +98,3 @@
+   match o:
+-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_get_in(U32.is_lt(i, n), arr, n, i)
++    case l8_Attestation_Seq{arr, +n}: l8_Attestation_get_in(U32.is_le(i, n), arr, n, i)
+ 

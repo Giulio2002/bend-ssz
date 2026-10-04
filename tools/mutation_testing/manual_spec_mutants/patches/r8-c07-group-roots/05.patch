@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c07-group-roots/05
+# type: FuluSignedBeaconBlock
+# ops: root
+# spec: container root: message then signature
+# fault: message and signature exchanged
+# why: field order
+# file: types/FuluSignedBeaconBlock_hashtreeroot_generated.bend
+# sym: SignedBeaconBlock_rt1,SignedBeaconBlock_root
+--- a/types/FuluSignedBeaconBlock_hashtreeroot_generated.bend
++++ b/types/FuluSignedBeaconBlock_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_signature) = pair
+-  (h, (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, D.node(hl, d_message, d_signature)))
++  (h, (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, D.node(hl, d_signature, d_message)))
+ 

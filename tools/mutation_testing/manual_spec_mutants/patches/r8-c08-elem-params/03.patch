@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/03
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: List[Bytes48, 4096]: a 48-byte element is 2 chunks, a depth-1 tree
+# fault: the element tree has depth 0 (only its first chunk)
+# why: one chunk assumed per element
+# file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+# sym: l4096_b48_root
+--- a/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
++++ b/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+ 
+-def l4096_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b48_mix(hl, O.elems_root(hl, h, o, 12, 1, 12, seg))
++def l4096_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b48_mix(hl, O.elems_root(hl, h, o, 12, 0, 12, seg))
+ 

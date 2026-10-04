@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c07-group-roots/03
+# type: FuluBeaconState
+# ops: root
+# spec: group 4 (6 fields) is padded to 8 leaves: leaves 6, 7 are Z(1)
+# fault: the padding pair of group 4 is the zero chunk
+# why: padding level off by one
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_g4_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -207,3 +207,3 @@
+   (h, z1) = pair
+-  (h, (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, D.node(hl, D.node(hl, D.node(hl, d_consolidation_balance_to_consume, d_earliest_consolidation_epoch), D.node(hl, d_pending_deposits, d_pending_partial_withdrawals)), D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), z1))))
++  (h, (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, D.node(hl, D.node(hl, D.node(hl, d_consolidation_balance_to_consume, d_earliest_consolidation_epoch), D.node(hl, d_pending_deposits, d_pending_partial_withdrawals)), D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), D.zero()))))
+ 

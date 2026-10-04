@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e01-access/12
+# type: FuluExecutionPayload
+# ops: root,encode
+# spec: a getter returns its own field
+# fault: get_gas_used returns timestamp (both uint64)
+# why: copy-paste of the neighbouring getter
+# file: types/FuluExecutionPayload_def_generated.bend
+# sym: ExecutionPayload_g1_get_gas_used,ExecutionPayload_get_gas_used
+--- a/types/FuluExecutionPayload_def_generated.bend
++++ b/types/FuluExecutionPayload_def_generated.bend
+@@ -125,3 +125,3 @@
+   match o:
+-    case ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: (ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, gas_used)
++    case ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: (ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, timestamp)
+ 

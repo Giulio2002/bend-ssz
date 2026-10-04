@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/04
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: an element chunk holds the element's words 8c .. 8c + 7, zero past the element
+# fault: word 3 of an element chunk reads word 2 of the element
+# why: index copy-paste in the unrolled element reader
+# file: src/obj.bend
+# sym: ec2,ec3,echunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -774,3 +774,3 @@
+   (ws, +a2) = pair
+-  ec3(b, j, ew, a0, a1, a2, rdc(Nat.is_lt(Nat.add(j, 3n), ew), ws, Nat.add(b, Nat.add(j, 3n))))
++  ec3(b, j, ew, a0, a1, a2, rdc(Nat.is_lt(Nat.add(j, 3n), ew), ws, Nat.add(b, Nat.add(j, 2n))))
+ def ec1(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b02-merkle-fast/02
+# type: FuluBeaconState
+# ops: root
+# spec: a full tree's root is its top stack entry
+# fault: a tree is taken as full when n = 2^depth - 1
+# why: off-by-one capacity
+# file: src/merkle_fast.bend
+# sym: close,full_in
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -326,3 +326,3 @@
+   match small:
+-    case True{}: U32.is_eq(n, shl_by(1, depth))
++    case True{}: U32.is_eq((n + 1 : U32), shl_by(1, depth))
+     case False{}: False{}

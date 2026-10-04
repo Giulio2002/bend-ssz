@@ -1,0 +1,4 @@
+baseline {1: 'c1 dcost 524288 524288 524288', 2: 'c2 budget524288=Some budgetmax=Some', 3: 'c3 EP dcost 4280524288'}
+r8-f01-budget/10 KILLED [('1', ['c1 dcost 524288 524288 524288', 'c1 dcost 4294967295 4294967295 4294967295'])]
+r8-f01-budget/12 KILLED [('3', ['c3 EP dcost 4280524288', 'c3 EP dcost 4294967295'])]
+done

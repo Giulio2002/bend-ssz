@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a04-bits-mix/01
+# type: bitlist_9,bitlist_513,BitsStruct
+# ops: root
+# spec: Bitlist root mixes the bit count
+# fault: the mixed length is the word count of the chunked bytes (n from the Words, i.e. ceil(k / 8))
+# why: the Words' n field reused
+# file: src/obj.bend
+# sym: bits_rooted,bits_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1179,3 +1179,3 @@
+   match w:
+-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
++    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, n)))
+ 

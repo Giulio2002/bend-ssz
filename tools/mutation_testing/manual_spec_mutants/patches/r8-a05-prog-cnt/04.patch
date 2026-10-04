@@ -1,0 +1,18 @@
+# MANUAL SPEC MUTANT r8-a05-prog-cnt/04
+# type: FuluBeaconState,FuluSyncCommittee
+# ops: root
+# spec: a list/vector of byte vectors: the sequence tree has the depth of its limit
+# fault: the sequence tree of byte vectors is built at the element depth ed instead of depth
+# why: the two depth parameters swapped
+# file: src/obj.bend
+# sym: er_cnt,elems_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1257,5 +1257,5 @@
+ def er_cnt(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +depth: U32, +n: U32, ws: Array<U32>, +k: Nat) -> B.Buf & (Words & D.Digest):
+-  mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, k), hl,
++  mt_words(n, mtree(U32.to_nat(ed), 0n, Nat.is_lt(0n, k), hl,
+     LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+-    pow2n(U32.to_nat(depth)), 0n, k, (h, (ws, D.zero()))))
++    pow2n(U32.to_nat(ed)), 0n, k, (h, (ws, D.zero()))))
+ 

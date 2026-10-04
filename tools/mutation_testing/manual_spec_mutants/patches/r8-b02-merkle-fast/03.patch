@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b02-merkle-fast/03
+# type: FuluBeaconState
+# ops: root
+# spec: merkleize_progressive: a finished segment's root is kept
+# fault: the segment is sealed one chunk early (j = cap - 2)
+# why: off-by-one
+# file: src/merkle_fast.bend
+# sym: seal_if,push_prog_at
+--- a/src/merkle_fast.bend
++++ b/src/merkle_fast.bend
+@@ -392,3 +392,3 @@
+ def push_prog_at(+k: U32, +j: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+-  seal_if(U32.is_eq(j, (prog_cap(k) - 1 : U32)), k, seg,
++  seal_if(U32.is_eq(j, (prog_cap(k) - 2 : U32)), k, seg,
+     push(64n, bit(j, 0), j, 0, seg, d, B.get_digest(buf, seg)))

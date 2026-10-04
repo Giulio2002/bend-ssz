@@ -1,0 +1,307 @@
+[
+ {
+  "id": "r8-c08-elem-params/01",
+  "type": "FuluDataColumnSidecar",
+  "file": "types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 13.1,
+    "laws": [
+     "st_l4096_b2048"
+    ],
+    "msg": "- expected : {Fulu_list_bytevec_2048_4096_h.l4096_b2048_mix(hl, O.er_size(hl, h, 512, 5, 12, N, Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Words{F.array__thaw(U32, t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/02",
+  "type": "FuluDataColumnSidecar",
+  "file": "types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.0,
+    "laws": [
+     "st_l4096_b2048"
+    ],
+    "msg": "- expected : {Fulu_list_bytevec_2048_4096_h.l4096_b2048_mix(hl, O.er_size(hl, h, 512, 6, 11, N, Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Words{F.array__thaw(U32, t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/03",
+  "type": "FuluDataColumnSidecar",
+  "file": "types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.6,
+    "laws": [
+     "st_l4096_b48"
+    ],
+    "msg": "- expected : {Fulu_list_bytevec_48_4096_h.l4096_b48_mix(hl, O.er_size(hl, h, 12, 0, 12, N, Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Words{F.array__thaw(U32, t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/cryp",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/04",
+  "type": "FuluDataColumnSidecar",
+  "file": "types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.2,
+    "laws": [
+     "st_l4096_b48"
+    ],
+    "msg": "- expected : {Fulu_list_bytevec_48_4096_h.l4096_b48_mix(hl, O.er_size(hl, h, 16, 1, 12, N, Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Words{F.array__thaw(U32, t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/cryp",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/05",
+  "type": "FuluSyncCommittee",
+  "file": "types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.8,
+    "laws": [
+     "st_SyncCommittee"
+    ],
+    "msg": "- expected : {O.elems_root(hl, h, LV.pj_SyncCommittee_0(o), 12, 1, 10, seg) == (h, LV.pj_SyncCommittee_0(o), E48.edig(hl, LV.pj_SyncCommittee_0(o), 9n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.elems_root(hl, h, LV.pj_SyncCommittee_0(o), 12, 1, 9, seg) == (",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/06",
+  "type": "FuluBlobSidecar",
+  "file": "types/Fulu_vec_bytevec_32_17_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BlobSidecar_vrootj_v17_b32_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 11.9,
+    "laws": [
+     "st_BlobSidecar"
+    ],
+    "msg": "- expected : {O.words_root(hl, h, LV.pj_BlobSidecar_5(o), 4, seg) == (h, LV.pj_BlobSidecar_5(o), WO_L.wdig(hl, LV.pj_BlobSidecar_5(o), 5n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.words_root(hl, h, LV.pj_BlobSidecar_5(o), 5, seg) == (h, LV.pj_BlobSidecar_5",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/07",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_bytevec_32_65536_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.8,
+    "laws": [
+     "stg_BeaconState_1"
+    ],
+    "msg": "- expected : {O.words_root(hl, h, x13, 15, seg) == (h, x13, WO_L.wdig(hl, x13, 16n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.words_root(hl, h, x13, 16, seg) == (h, x13, WO_L.wdig(hl, x13, 16n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Dige",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/08",
+  "type": "FuluBlobSidecar",
+  "file": "types/FuluBlob_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/Blob_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 11.6,
+    "laws": [
+     "st_BlobSidecar"
+    ],
+    "msg": "- expected : {O.words_root(hl, h, LV.pj_BlobSidecar_1(o), 17, seg) == (h, LV.pj_BlobSidecar_1(o), WO_L.wdig(hl, LV.pj_BlobSidecar_1(o), 12n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.words_root(hl, h, LV.pj_BlobSidecar_1(o), 12, seg) == (h, LV.pj_BlobSideca",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/09",
+  "type": "vec_bool_513",
+  "file": "types/vec_bool_513_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/vec_bool_513_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 6.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_513_vrootj_v513_bool_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/vec_bool_513_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 16.0,
+    "laws": [
+     "vec_bool_513_root_correct"
+    ],
+    "msg": "- expected : RR.roots(PB_L.vviewb(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _ => D.Digest>, O.words_root(64n, h, o, 4, 0))), [])])\n- observed : RR.roots(PB_L.vviewb(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _",
+    "root": "proofs/obj/root_gtypes_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/10",
+  "type": "vec_uint128_5",
+  "file": "types/vec_uint128_5_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/vec_uint128_5_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_uint128_5_vrootj_v5_u128_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/vec_uint128_5_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 23.9,
+    "laws": [
+     "vec_uint128_5_root_correct"
+    ],
+    "msg": "- expected : RR.roots(PK_L.vview16(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _ => D.Digest>, O.words_root(64n, h, o, 3, 0))), [])])\n- observed : RR.roots(PK_L.vview16(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words,",
+    "root": "e2e/vec_uint128_5_e2e_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/11",
+  "type": "vec_uint128_4",
+  "file": "types/vec_uint128_4_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/vec_uint128_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/vec_uint128_4_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 22.7,
+    "laws": [
+     "vec_uint128_4_root_correct"
+    ],
+    "msg": "- expected : RR.roots(PK_L.vview16(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _ => D.Digest>, O.words_root(64n, h, o, 0, 0))), [])])\n- observed : RR.roots(PK_L.vview16(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words,",
+    "root": "e2e/vec_uint128_4_e2e_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/12",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_uint64_8192_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.6,
+    "laws": [
+     "stg_BeaconState_1"
+    ],
+    "msg": "- expected : {O.words_root(hl, h, x14, 13, seg) == (h, x14, WO_L.wdig(hl, x14, 11n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.words_root(hl, h, x14, 11, seg) == (h, x14, WO_L.wdig(hl, x14, 11n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Dige",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c08-elem-params/13",
+  "type": "vec_uint16_512",
+  "file": "types/vec_uint16_512_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/vec_uint16_512_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/vec_uint16_512_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 15.9,
+    "laws": [
+     "vec_uint16_512_root_correct"
+    ],
+    "msg": "- expected : RR.roots(PB_L.vview2(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _ => D.Digest>, O.words_root(64n, h, o, 6, 0))), [])])\n- observed : RR.roots(PB_L.vview2(o), s, [D.bytes_onto(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Words, _",
+    "root": "proofs/obj/root_gtypes_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

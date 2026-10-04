@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/08
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: chunk c of an element starts at the element's word 8c
+# fault: chunk c of an element starts at word 4c
+# why: e8 replaced by a word-to-u64 conversion
+# file: src/obj.bend
+# sym: echunkn,ec0
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -782,3 +782,3 @@
+ def echunkn(ws: Array<U32>, +b: Nat, +c: Nat, +ew: Nat) -> Array<U32> & D.Digest:
+-  ec0(b, e8(c), ew, rdc(Nat.is_lt(Nat.add(e8(c), 0n), ew), ws, Nat.add(b, Nat.add(e8(c), 0n))))
++  ec0(b, Nat.double(Nat.double(c)), ew, rdc(Nat.is_lt(Nat.add(Nat.double(Nat.double(c)), 0n), ew), ws, Nat.add(b, Nat.add(Nat.double(Nat.double(c)), 0n))))
+ 

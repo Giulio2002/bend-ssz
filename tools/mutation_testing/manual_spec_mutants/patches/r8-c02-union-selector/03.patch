@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c02-union-selector/03
+# type: CompatibleUnionABCA
+# ops: root
+# spec: mix_in_selector = hash(root, selector chunk)
+# fault: the selector chunk is on the left
+# why: operand order
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt2
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -28,3 +28,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, O.mix_len(hl, d, 3)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, D.node(hl, O.len_chunk(3), d)))
+ 

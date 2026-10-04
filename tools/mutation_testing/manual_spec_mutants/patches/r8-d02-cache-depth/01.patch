@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d02-cache-depth/01
+# type: FuluExecutionRequests
+# ops: root
+# spec: List[ConsolidationRequest, 2]: depth 1
+# fault: the cached tree is padded to depth 2
+# why: depth from N + 1
+# file: types/Fulu_list_ConsolidationRequest_2_def_generated.bend
+# sym: l2_ConsolidationRequest_croot_pad
+--- a/types/Fulu_list_ConsolidationRequest_2_def_generated.bend
++++ b/types/Fulu_list_ConsolidationRequest_2_def_generated.bend
+@@ -280,3 +280,3 @@
+ def l2_ConsolidationRequest_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<FuluConsolidationRequest_d.ConsolidationRequest>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l2_ConsolidationRequest_Cached & D.Digest):
+-  l2_ConsolidationRequest_croot_fin(hl, n, d, arr, nodes, l2_ConsolidationRequest_pad_go(hl, Nat.sub(1n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l2_ConsolidationRequest_croot_fin(hl, n, d, arr, nodes, l2_ConsolidationRequest_pad_go(hl, Nat.sub(2n, d), O.nat_u32(d), r, (h, D.zconst(d))))
+ 

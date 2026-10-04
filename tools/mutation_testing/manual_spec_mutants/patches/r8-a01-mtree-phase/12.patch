@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/12
+# type: ProgressiveTestStruct,proglist_uint64
+# ops: root
+# spec: merkleize_progressive: the rest starts after the 2^dep chunks of this segment
+# fault: the next segment starts at s + 2^(dep + 2) (its own size, not the current one)
+# why: next and current segment sizes confused
+# file: src/obj.bend
+# sym: ptree,pt_right,prog_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1078,3 +1078,3 @@
+           pt_right(hl, lf, dep, s, n,
+-            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
++            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(Nat.add(dep, 2n))), n, st))
+ 

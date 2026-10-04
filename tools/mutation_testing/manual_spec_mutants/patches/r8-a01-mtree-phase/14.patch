@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/14
+# type: ProgressiveTestStruct,proglist_uint64
+# ops: root
+# spec: each progressive segment's tree is over chunks [s, s + 2^dep)
+# fault: the segment tree starts at chunk 0 (every segment hashes the first chunks)
+# why: the segment start not threaded through
+# file: src/obj.bend
+# sym: pt_right,ptree
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1062,3 +1062,3 @@
+   (ws, dl) = r
+-  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
++  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), 0n, n, (h, (ws, D.zero()))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/04
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: merkleize: the left half of a node covers chunks [s, s + w/2)
+# fault: the left half of an inside node is computed with inside = (s < n) replaced by False when s = 0 is not the first chunk: the left half is always treated as inside only for s = 0 (written as Nat.is_lt(s, 1n))
+# why: confusing the first-chunk test with the in-range test
+# file: src/obj.bend
+# sym: mtree,wr_cnt,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -889,3 +889,3 @@
+               mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+-                mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))
++                mtree(p, 0n, Nat.is_lt(s, 1n), hl, lf, Nat.div(w, 2n), s, n, st))
+         case 1n+q:

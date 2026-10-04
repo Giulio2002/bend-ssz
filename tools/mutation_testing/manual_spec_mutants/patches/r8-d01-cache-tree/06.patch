@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/06
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: the root of the cached tree is node 1 (heap layout, root at 1)
+# fault: the root is read at node 0 (an unused slot)
+# why: 0-based heap indexing
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_croot_top
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -299,3 +299,3 @@
+   match ts:
+-    case l8_Attestation_TS{h, arr, nodes}: l8_Attestation_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 1))
++    case l8_Attestation_TS{h, arr, nodes}: l8_Attestation_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 0))
+ 

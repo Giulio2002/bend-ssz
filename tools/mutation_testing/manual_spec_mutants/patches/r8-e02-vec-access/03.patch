@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-e02-vec-access/03
+# type: ComplexTestStruct
+# ops: root,encode
+# spec: set writes index i
+# fault: set writes index 0 whatever i
+# why: index dropped
+# file: types/vec_VarTestStruct_2_def_generated.bend
+# sym: v2_VarTestStruct_put_in
+--- a/types/vec_VarTestStruct_2_def_generated.bend
++++ b/types/vec_VarTestStruct_2_def_generated.bend
+@@ -106,3 +106,3 @@
+   match ok:
+-    case True{}: (v2_VarTestStruct_Seq{Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, i, VarTestStruct_d.VarTestStruct_bx_wrap(v)), n}, True{})
++    case True{}: (v2_VarTestStruct_Seq{Array.set(O.Boxed<VarTestStruct_d.VarTestStruct>, arr, 0, VarTestStruct_d.VarTestStruct_bx_wrap(v)), n}, True{})
+     case False{}: (v2_VarTestStruct_Seq{arr, n}, False{})

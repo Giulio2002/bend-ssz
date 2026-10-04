@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/07
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: (API) K is the measured density of the name (31 for ProgressiveTestStruct)
+# fault: K = 7 (the K of its progressive list fields)
+# why: the nested-list density taken for the container
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_dk
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -170,3 +170,3 @@
+ 
+-def ProgressiveTestStruct_dk() -> U32: 31
++def ProgressiveTestStruct_dk() -> U32: 7
+ 

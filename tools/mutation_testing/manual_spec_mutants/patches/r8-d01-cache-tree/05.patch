@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/05
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: padding starts at the cached tree's depth d: the first sibling is Z(d)
+# fault: the first padding sibling is the zero chunk Z(0)
+# why: zero table indexed from 0
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_croot_pad
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -291,3 +291,3 @@
+ def l8_Attestation_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l8_Attestation_Cached & D.Digest):
+-  l8_Attestation_croot_fin(hl, n, d, arr, nodes, l8_Attestation_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))))
++  l8_Attestation_croot_fin(hl, n, d, arr, nodes, l8_Attestation_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(0n))))
+ 

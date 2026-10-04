@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b01-zconst/02
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: Z(2) = SHA-256(Z(1) ++ Z(1))
+# fault: the last word of Z(2) is zero (table truncated)
+# why: a constant mistyped
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -112,3 +112,3 @@
+       match k2:
+-        case 0n: D{3679850830, 16635073, 4166813995, 4082813352, 2458495724, 2985021609, 1826513002, 1955290481}
++        case 0n: D{3679850830, 16635073, 4166813995, 4082813352, 2458495724, 2985021609, 1826513002, 0}
+         case 1n+k3:

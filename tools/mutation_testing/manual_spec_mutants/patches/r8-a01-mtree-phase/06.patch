@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/06
+# type: ComplexTestStruct,FuluBeaconState
+# ops: root
+# spec: node = hash(left, right) inside an element's own tree
+# fault: ctree's phase 1 at depth p + 1 recomputes the right subtree at depth p
+# why: depth of the recursive call copied from the case-0 arm
+# file: src/obj.bend
+# sym: ctree,leaf_at,elems_root,er_cnt
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -853,3 +853,3 @@
+           (ws, dl) = r
+-          mt_join(hl, dl, ctree(1n+p, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
++          mt_join(hl, dl, ctree(p, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a01-mtree-phase/05
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: merkleize: a depth-0 node outside the chunk count is the zero chunk
+# fault: a leaf past the count is read as the chunk anyway (leaf_at at s >= n: storage words past the length enter the root)
+# why: the inside test at depth 0 dropped
+# file: src/obj.bend
+# sym: mtree,wr_cnt,words_root
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -870,3 +870,3 @@
+               (ws, dl) = r
+-              (h, (ws, D.zconst(0n)))
++              leaf_at(hl, lf, h, ws, s)
+             case True{}:

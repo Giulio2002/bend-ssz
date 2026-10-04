@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-f01-budget/13
+# type: FuluTransaction,FuluCheckpoint,FuluExecutionPayload
+# ops: decode
+# spec: (API) X_dcost is in words of 8 bytes: K * words + 524288
+# fault: the product is computed as w + k (sum for product)
+# why: operator slip
+# file: src/obj.bend
+# sym: dcost_go
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1823,3 +1823,3 @@
+ def dcost_go(+w: U32, +k: U32) -> U32:
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), ((w + k : U32) + 524288 : U32), 4294967295)
+ 

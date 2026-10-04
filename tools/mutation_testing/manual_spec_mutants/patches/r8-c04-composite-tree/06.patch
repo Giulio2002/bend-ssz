@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c04-composite-tree/06
+# type: ProgressiveTestStruct
+# ops: root
+# spec: ProgressiveList root: mix_in_length(merkleize_progressive(...), len)
+# fault: the progressive list of containers is not length-mixed
+# why: progressive taken as length-free
+# file: types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+# sym: pl_SmallTestStruct_rt_fin
+--- a/types/proglist_SmallTestStruct_hashtreeroot_generated.bend
++++ b/types/proglist_SmallTestStruct_hashtreeroot_generated.bend
+@@ -83,3 +83,3 @@
+   (arr, d) = r
+-  (h, (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.mix_len(hl, d, n)))
++  (h, (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, d))
+ 

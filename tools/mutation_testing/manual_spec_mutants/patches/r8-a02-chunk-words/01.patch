@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/01
+# type: ComplexTestStruct,FuluTransaction
+# ops: root
+# spec: pack: a chunk is 32 consecutive bytes
+# fault: word 5 of a chunk reads word 4 again (word 5 never enters the root)
+# why: index copy-paste in the unrolled reader
+# file: src/obj.bend
+# sym: cn4,cn3,chunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -736,3 +736,3 @@
+   (ws, +a4) = pair
+-  cn5(b, a0, a1, a2, a3, a4, Array.get(U32, ws, U32.from_nat(Nat.add(b, 5n))))
++  cn5(b, a0, a1, a2, a3, a4, Array.get(U32, ws, U32.from_nat(Nat.add(b, 4n))))
+ def cn3(+b: Nat, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:

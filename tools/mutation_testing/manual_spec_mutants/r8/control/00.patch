@@ -1,0 +1,13 @@
+# MANUAL SPEC MUTANT r8-z00-control/00
+# type: ComplexTestStruct,FuluBeaconBlockBody
+# ops: root
+# spec: control: a comment-only edit (the unmutated program)
+# fault: none
+# why: control for the corpus runner
+# file: types/ComplexTestStruct_hashtreeroot_generated.bend
+--- a/types/ComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ComplexTestStruct_hashtreeroot_generated.bend
+@@ -1,2 +1,3 @@
++# control
+ import Base
+ import ../src/buffer.bend as B

@@ -1,0 +1,276 @@
+[
+ {
+  "id": "r8-z00-control/00",
+  "type": "ComplexTestStruct,FuluBeaconBlockBody",
+  "cases": 797,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 82.7
+ },
+ {
+  "id": "r8-a01-mtree-phase/01",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "cases": 569,
+  "official": 0,
+  "corpus_bad": 269,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 269
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 38.7
+ },
+ {
+  "id": "r8-a01-mtree-phase/09",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 78.1
+ },
+ {
+  "id": "r8-a02-chunk-words/03",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "cases": 569,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 39.4
+ },
+ {
+  "id": "r8-a03-clean-copy/03",
+  "type": "FuluTransaction,ComplexTestStruct",
+  "cases": 569,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 38.6
+ },
+ {
+  "id": "r8-a04-bits-mix/02",
+  "type": "bitlist_9,bitlist_513,BitsStruct",
+  "cases": 485,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 32.3
+ },
+ {
+  "id": "r8-c01-prog-active/01",
+  "type": "ProgressiveComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 171,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 171
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveComplexTestStruct#21270: root differs",
+   "ProgressiveComplexTestStruct#21271: root differs",
+   "ProgressiveComplexTestStruct#21272: root differs",
+   "ProgressiveComplexTestStruct#21273: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 13.6
+ },
+ {
+  "id": "r8-c01-prog-active/06",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 0,
+  "corpus_bad": 114,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 14.8
+ },
+ {
+  "id": "r8-c02-union-selector/01",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 0,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6613: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 9.4
+ },
+ {
+  "id": "r8-c02-union-selector/05",
+  "type": "CompatibleUnionBC",
+  "cases": 190,
+  "official": 0,
+  "corpus_bad": 15,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 15
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionBC#6680: root differs",
+   "CompatibleUnionBC#6744: root differs",
+   "CompatibleUnionBC#6746: root differs",
+   "CompatibleUnionBC#6776: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 9.6
+ },
+ {
+  "id": "r8-c03-container-pad/02",
+  "type": "BitsStruct",
+  "cases": 350,
+  "official": 0,
+  "corpus_bad": 56,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 56
+  },
+  "timeouts": 0,
+  "examples": [
+   "BitsStruct#3366: root differs",
+   "BitsStruct#3367: root differs",
+   "BitsStruct#3368: root differs",
+   "BitsStruct#3369: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 16.2
+ },
+ {
+  "id": "r8-c04-composite-tree/01",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 100,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: root differs",
+   "ComplexTestStruct#6870: root differs",
+   "ComplexTestStruct#6871: root differs",
+   "ComplexTestStruct#6872: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 16.2
+ },
+ {
+  "id": "r8-c04-composite-tree/05",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 41,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 41
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21895: root differs",
+   "ProgressiveTestStruct#21896: root differs",
+   "ProgressiveTestStruct#21897: root differs",
+   "ProgressiveTestStruct#21898: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "r8-c05-packed-depth/02",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 60.5
+ },
+ {
+  "id": "r8-c06-bitvector-root/01",
+  "type": "bitvector_33,BitsStruct",
+  "cases": 483,
+  "official": 0,
+  "corpus_bad": 60,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 60
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitvector_33#31197: root differs",
+   "bitvector_33#31199: root differs",
+   "bitvector_33#31200: root differs",
+   "bitvector_33#31221: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 23.6
+ },
+ {
+  "id": "r8-c06-bitvector-root/04",
+  "type": "bitvector_1280",
+  "B": "ERROR",
+  "msg": "'bitvector_1280'"
+ },
+ {
+  "id": "r8-a03-clean-copy/01",
+  "type": "FuluTransaction,ComplexTestStruct",
+  "cases": 569,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 40.0
+ }
+]

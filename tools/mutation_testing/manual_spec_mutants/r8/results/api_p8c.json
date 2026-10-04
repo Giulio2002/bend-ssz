@@ -1,0 +1,29 @@
+{
+ "baseline": {
+  "1": "c1 dcost 524288 524288 524288",
+  "2": "c2 budget524288=Some budgetmax=Some",
+  "3": "c3 EP dcost 4280524288"
+ },
+ "r8-f01-budget/10": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "c1 dcost 524288 524288 524288",
+    "c1 dcost 4294967295 4294967295 4294967295"
+   ],
+   "2": [
+    "c2 budget524288=Some budgetmax=Some",
+    "c2 budget524288=None budgetmax=None"
+   ]
+  }
+ },
+ "r8-f01-budget/12": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 EP dcost 4280524288",
+    "c3 EP dcost 4294967295"
+   ]
+  }
+ }
+}

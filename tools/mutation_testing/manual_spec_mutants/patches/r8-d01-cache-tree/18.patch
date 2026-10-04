@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/18
+# type: FuluExecutionPayload
+# ops: root
+# spec: an incremental root must rehash a leaf whose element was moved out (ctake) and possibly changed
+# fault: ctake on the transactions list leaves the dirty window unchanged
+# why: a getter assumed read-only
+# file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+# sym: l1048576_bl1073741824_ctook,l1048576_bl1073741824_ctake
+--- a/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+@@ -177,3 +177,3 @@
+   (arr, v) = pair
+-  (l1048576_bl1073741824_Cached{arr, n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
++  (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, Some{FuluTransaction_d.bl1073741824_bx_unbox(v)})
+ 

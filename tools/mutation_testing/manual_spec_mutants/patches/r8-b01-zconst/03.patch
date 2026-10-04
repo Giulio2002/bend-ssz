@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-b01-zconst/03
+# type: FuluBeaconState
+# ops: root
+# spec: Z(0) is the zero chunk
+# fault: Z(0) is Z(1) (the table shifted by one level)
+# why: the table starts at the first hash
+# file: src/digest.bend
+# sym: zconst
+--- a/src/digest.bend
++++ b/src/digest.bend
+@@ -106,3 +106,3 @@
+   match k:
+-    case 0n: D{0, 0, 0, 0, 0, 0, 0, 0}
++    case 0n: D{4121296194, 3513393200, 664334190, 3540621211, 1124089123, 551153896, 3935842729, 660208459}
+     case 1n+k1:

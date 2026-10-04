@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-d01-cache-tree/19
+# type: FuluBeaconState
+# ops: root
+# spec: a cache depth must fit the array (docs/CRASH_HUNT.md R2-03)
+# fault: the cache depth is taken from the claimed length without the cache_dok test
+# why: the guard taken as redundant
+# file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+# sym: l2048_Eth1Data_cache_sz
+--- a/types/Fulu_list_Eth1Data_2048_def_generated.bend
++++ b/types/Fulu_list_Eth1Data_2048_def_generated.bend
+@@ -152,3 +152,3 @@
+   (arr, +c) = pair
+-  l2048_Eth1Data_cache_fin(arr, n, O.npick(O.cache_dok(Nat.is_lt(d, 32n), d, c), d, 0n))
++  l2048_Eth1Data_cache_fin(arr, n, d)
+ 

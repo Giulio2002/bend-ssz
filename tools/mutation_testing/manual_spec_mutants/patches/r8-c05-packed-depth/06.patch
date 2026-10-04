@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c05-packed-depth/06
+# type: FuluTransaction,FuluExecutionPayload
+# ops: root
+# spec: chunk_count(ByteList[2^30]) = 2^25
+# fault: depth 30
+# why: byte limit used as chunk limit
+# file: types/FuluTransaction_hashtreeroot_generated.bend
+# sym: bl1073741824_root
+--- a/types/FuluTransaction_hashtreeroot_generated.bend
++++ b/types/FuluTransaction_hashtreeroot_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def bl1073741824_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 25, seg))
++def bl1073741824_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 30, seg))
+ 

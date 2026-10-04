@@ -1,0 +1,1691 @@
+[
+ {
+  "id": "r8-a01-mtree-phase/01",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.1,
+    "laws": [
+     "mt_words"
+    ],
+    "msg": "- expected : (h, F.array__thaw(U32, t), D.zconst(p))\n- observed : (h, F.array__thaw(U32, t), D.zconst(1n+p))",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/02",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "mt_phase1"
+    ],
+    "msg": "- expected : O.mt_join(hl, dl, O.mtree(p, 0n, b, hl, lf, v, s, n, (h, ws, D.D{0, 0, 0, 0, 0, 0, 0, 0})))\n- observed : O.mt_join(hl, dl, O.mtree(1n+p, 0n, b, hl, lf, v, s, n, (h, ws, D.D{0, 0, 0, 0, 0, 0, 0, 0})))",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/03",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "mt_phase1"
+    ],
+    "msg": "- expected : O.mt_join(hl, D.D{0, 0, 0, 0, 0, 0, 0, 0}, O.mtree(1n+p, 0n, b, hl, lf, v, s, n, (h, ws, dl)))\n- observed : O.mt_join(hl, dl, O.mtree(1n+p, 0n, b, hl, lf, v, s, n, (h, ws, D.D{0, 0, 0, 0, 0, 0, 0, 0})))",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/04",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "mt_words"
+    ],
+    "msg": "- expected : {O.mtree(p, 1n, Cmp.is_lt(Nat.cmp(Nat.add(s, Pair.fst(Nat, Nat, Nat.divmod.go(Nat.double(O.pow2n(p)), 1n, 0n, 0n))), n)), hl, O.LWords{}, Pair.fst(Nat, Nat, Nat.divmod.go(Nat.double(O.pow2n(p)), 1n, 0n, 0n)), Nat.add(s, Pair.fst(Nat, Nat, Nat.divmod.go(Nat.double(O.pow2n(p)), 1n, 0n, 0n",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/05",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "BeaconState_vroot_l1099511627776_u8_j_past"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/06",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/mtree_defs.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/vdepth.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "ct_phase1"
+    ],
+    "msg": "- expected : O.mt_join(hl, dl, O.ctree(p, 0n, c, hl, b, ew, v, s, n, (h, ws, D.D{0, 0, 0, 0, 0, 0, 0, 0})))\n- observed : O.mt_join(hl, dl, O.ctree(1n+p, 0n, c, hl, b, ew, v, s, n, (h, ws, D.D{0, 0, 0, 0, 0, 0, 0, 0})))",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/07",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/mtree_defs.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/vdepth.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "mt_elems"
+    ],
+    "msg": "- expected : {O.ctree(1n+ed, 0n, Cmp.is_lt(Nat.cmp(0n, nce)), hl, Nat.mul(s, ew), ew, Nat.double(O.pow2n(ed)), 0n, nce, (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0})) == (h, F.array__thaw(U32, t), MS.dhead(MS.ddrop(s, elist(n, F.array__slots(U32, t), 0n, ew, ed, nce, hl)))) : Sigma<&1, &1,",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/08",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/mtree_defs.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/vdepth.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "mt_elems"
+    ],
+    "msg": "- expected : {O.ctree(ed, 0n, Cmp.is_lt(Nat.cmp(0n, nce)), hl, Nat.double(Nat.double(Nat.double(s))), ew, O.pow2n(ed), 0n, nce, (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0})) == (h, F.array__thaw(U32, t), MS.dhead(MS.ddrop(s, elist(n, F.array__slots(U32, t), 0n, ew, ed, nce, hl)))) : Sigma",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/09",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/mtree_defs.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/vdepth.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "mt_elems"
+    ],
+    "msg": "- expected : {O.ctree(ed, 0n, Cmp.is_lt(Nat.cmp(0n, nce)), hl, Nat.mul(s, ew), nce, O.pow2n(ed), 0n, nce, (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0})) == (h, F.array__thaw(U32, t), MS.dhead(MS.ddrop(s, elist(n, F.array__slots(U32, t), 0n, ew, ed, nce, hl)))) : Sigma<&1, &1, B.Buf, _ => S",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/10",
+  "type": "ComplexTestStruct,FuluBeaconState",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "mt_words"
+    ],
+    "msg": "- expected : {O.mt_leaf(h, O.cn0(Nat.double(Nat.double(s)), Array.get.at(U32, U32.from_nat(Nat.add(Nat.double(Nat.double(s)), 0n)), Array.size(U32, F.array__thaw(U32, t))))) == (h, F.array__thaw(U32, t), MS.dhead(MS.ddrop(s, clist(n, F.array__slots(U32, t), 0n)))) : Sigma<&1, &1, B.Buf, _ => Sigma<&",
+    "root": "proofs/obj/mtree_run.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/11",
+  "type": "ProgressiveTestStruct,proglist_uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.6,
+    "laws": [
+     "pt_run"
+    ],
+    "msg": "- expected : {O.pt_right(hl, O.LWords{}, dep, s, n, O.ptree(k, Cmp.is_lt(Nat.cmp(Nat.add(s, O.pow2n(dep)), n)), hl, O.LWords{}, Nat.add(dep, 1n), Nat.add(s, O.pow2n(dep)), n, (h, F.array__thaw(U32, t), junk))) == (h, F.array__thaw(U32, t), D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sh",
+    "root": "proofs/obj/prog_root.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/12",
+  "type": "ProgressiveTestStruct,proglist_uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.2,
+    "laws": [
+     "pt_run"
+    ],
+    "msg": "- expected : {O.pt_right(hl, O.LWords{}, dep, s, n, O.ptree(k, Cmp.is_lt(Nat.cmp(Nat.add(s, O.pow2n(dep)), n)), hl, O.LWords{}, Nat.add(dep, 2n), Nat.add(s, O.pow2n(Nat.add(dep, 2n))), n, (h, F.array__thaw(U32, t), junk))) == (h, F.array__thaw(U32, t), D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/",
+    "root": "proofs/obj/prog_root.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/13",
+  "type": "ProgressiveTestStruct,proglist_uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.4,
+    "laws": [
+     "pt_run"
+    ],
+    "msg": "- expected : (h, F.array__thaw(U32, t), D.zconst(dep))\n- observed : (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0})",
+    "root": "proofs/obj/prog_root.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a01-mtree-phase/14",
+  "type": "ProgressiveTestStruct,proglist_uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.2,
+    "laws": [
+     "pt_run"
+    ],
+    "msg": "- expected : {O.mt_join(hl, pr(k, Cmp.is_lt(Nat.cmp(Nat.add(s, O.pow2n(dep)), n)), hl, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, MR.clist(n, F.array__slots(U32, t), 0n)), O.mtree(dep, 0n, True{}, hl, O.LWords{}, O.pow2n(dep), 0n, n, (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0}))) == (",
+    "root": "proofs/obj/prog_root.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/01",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "chunk_read"
+    ],
+    "msg": "- expected : {O.cn5(b, F.flat__nthc(F.array__slots(U32, t), Nat.add(b, 0n)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, 1n)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, 2n)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, 3n)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, 4n)), Array.g",
+    "root": "proofs/obj/mtree_run.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/02",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "chunk_read"
+    ],
+    "msg": "- expected : (F.array__thaw(U32, t), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(F.flat__nthc(F.array__slots(U32, t), N",
+    "root": "proofs/obj/mtree_run.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/03",
+  "type": "ComplexTestStruct,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "chunk_read"
+    ],
+    "msg": "- expected : (F.array__thaw(U32, t), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(F.flat__nthc(F.array__slots(U32, t), N",
+    "root": "proofs/obj/mtree_run.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/04",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "echunk_read"
+    ],
+    "msg": "- expected : {O.ec3(b, Nat.double(Nat.double(Nat.double(c))), ew, Bool.pick(U32, Cmp.is_lt(Nat.cmp(Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n), ew)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n))), 0), Bool.pick(U32, Cmp.is_lt(Nat.cmp(Nat.",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/05",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "echunk_read"
+    ],
+    "msg": "- expected : {O.ec7(b, Nat.double(Nat.double(Nat.double(c))), ew, Bool.pick(U32, Cmp.is_lt(Nat.cmp(Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n), ew)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n))), 0), Bool.pick(U32, Cmp.is_lt(Nat.cmp(Nat.",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/06",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "echunk_read"
+    ],
+    "msg": "- expected : {O.ec1(b, Nat.double(Nat.double(Nat.double(c))), ew, Bool.pick(U32, Cmp.is_lt(Nat.cmp(Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n), ew)), F.flat__nthc(F.array__slots(U32, t), Nat.add(b, Nat.add(Nat.double(Nat.double(Nat.double(c))), 0n))), 0), O.rdc(Cmp.is_le(Nat.cmp(Nat.add(Nat.d",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/07",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "rd_get"
+    ],
+    "msg": "- expected : (F.array__thaw(U32, t), 4294967295)\n- observed : (F.array__thaw(U32, t), 0)",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/08",
+  "type": "FuluBeaconState,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.9,
+    "laws": [
+     "echunk_read"
+    ],
+    "msg": "- expected : {O.ec0(b, Nat.double(Nat.double(c)), ew, O.rdc(Cmp.is_lt(Nat.cmp(Nat.add(Nat.double(Nat.double(c)), 0n), ew)), F.array__thaw(U32, t), Nat.add(b, Nat.add(Nat.double(Nat.double(c)), 0n)))) == (F.array__thaw(U32, t), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/obj/elems_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a02-chunk-words/09",
+  "type": "ComplexTestStruct,bitlist_9,FuluTransaction",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_fold_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 11.4,
+    "laws": [
+     "mix_bytes"
+    ],
+    "msg": "- expected : {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, U32.and(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(N",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a03-clean-copy/01",
+  "type": "FuluTransaction,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/arr_copy_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/venc.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/cell_rw.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-a03-clean-copy/02",
+  "type": "FuluTransaction,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.6,
+    "laws": [
+     "canon1"
+    ],
+    "msg": "- expected : {O.wcn_c(q, r, O.wcn_tz(N, F.u32__pow2u(dw), Array.get.at(U32, U32.shr(U32.shr(U32.shr(N))), Array.size(U32, F.array__thaw(U32, t))))) == (F.array__thaw(U32, t), True{}) : Sigma<&1, &1, Array<U32>, _ => Bool>}\n- observed : {O.wcn_c(q, r, O.wcn_tz(N, F.u32__pow2u(dw), Array.get.at(U32, U",
+    "root": "proofs/obj/words_canon.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a03-clean-copy/03",
+  "type": "FuluTransaction,ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 10.0,
+    "laws": [
+     "Transaction_vroot_bl1073741824_j_tail"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a04-bits-mix/01",
+  "type": "bitlist_9,bitlist_513,BitsStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.4,
+    "laws": [
+     "bst"
+    ],
+    "msg": "- expected : {(h, O.Bits{F.array__thaw(U32, t), K}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(MD.rtree(depth, True{}, hl, D.D{U32.or(U32.or(U32.or(U32.shl(U",
+    "root": "proofs/obj/pbits_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a04-bits-mix/02",
+  "type": "bitlist_9,bitlist_513,BitsStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_15_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_32_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_6_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 11.9,
+    "laws": [
+     "bst"
+    ],
+    "msg": "- expected : {O.bits_rooted(hl, 0, O.wr_size(hl, h, dU, 1, Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Bits{F.array__thaw(U32, t), 0}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Ar",
+    "root": "proofs/api/bitlist_9_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a04-bits-mix/03",
+  "type": "progbitlist,ProgressiveBitsStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_15_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_32_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_6_bits_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 14.7,
+    "laws": [
+     "pst"
+    ],
+    "msg": "- expected : {O.bits_rooted(hl, K, O.wrp_size(hl, h, U32.shr(U32.shr(U32.shr(K))), Array.size(U32, F.array__thaw(U32, t)))) == (h, O.Bits{F.array__thaw(U32, t), K}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/pa",
+    "root": "proofs/api/progbitlist_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a04-bits-mix/04",
+  "type": "bitlist_9,bitlist_513",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "bitlist_15_serialize_vbits_nbytes"
+    ],
+    "msg": "- expected : False{}\n- observed : True{}",
+    "root": "proofs/slop/validity/generic_bitlist_15_bits_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a05-prog-cnt/01",
+  "type": "proglist_uint64,ProgressiveTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 4.5,
+    "laws": [
+     "wrp_unfold"
+    ],
+    "msg": "- expected : O.mt_words(N, O.ptree(1n+Pair.fst(Nat, Nat, Nat.divmod.go(U32.to_nat(N), 31n, 0n, 0n)), Cmp.is_lt(Nat.cmp(0n, Pair.fst(Nat, Nat, Nat.divmod.go(U32.to_nat(N), 31n, 0n, 0n)))), hl, O.LWords{}, 0n, 0n, Pair.fst(Nat, Nat, Nat.divmod.go(U32.to_nat(N), 31n, 0n, 0n)), (h, F.array__thaw(U32, t)",
+    "root": "proofs/api/proglist_uint64_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a05-prog-cnt/02",
+  "type": "proglist_uint64,ProgressiveTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/prog_root.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 10.9,
+    "laws": [
+     "pst"
+    ],
+    "msg": "- expected : {O.bits_rooted(hl, K, O.mt_words(U32.add(U32.shr(U32.shr(U32.shr(K))), U32.shr(U32.shr(U32.shr(U32.add(U32.and(K, 7), 7))))), O.ptree(1n+Pair.fst(Nat, Nat, Nat.divmod.go(Nat.add(U32.to_nat(U32.add(U32.shr(U32.shr(U32.shr(K))), U32.shr(U32.shr(U32.shr(U32.add(U32.and(K, 7), 7)))))), 31n)",
+    "root": "proofs/obj/pbits_obj.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a05-prog-cnt/03",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/u32bits.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r8-a05-prog-cnt/04",
+  "type": "FuluBeaconState,FuluSyncCommittee",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/elems_obj.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 9.9,
+    "laws": [
+     "ev_st"
+    ],
+    "msg": "- expected : {O.mt_words(N, O.mtree(6n, 0n, Cmp.is_lt(Nat.cmp(0n, U32.to_nat(U32.div(N, 2048)))), hl, O.LElems{512n, 6n, 64n}, 64n, 0n, U32.to_nat(U32.div(N, 2048)), (h, F.array__thaw(U32, t), D.D{0, 0, 0, 0, 0, 0, 0, 0}))) == (h, O.Words{F.array__thaw(U32, t), N}, MD.rtree(depth, Cmp.is_lt(Nat.cmp(",
+    "root": "proofs/obj/cells.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-a05-prog-cnt/05",
+  "type": "FuluBeaconState,FuluSyncCommittee",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/elems_obj.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 9.2,
+    "laws": [
+     "er_unfold"
+    ],
+    "msg": "- expected : {O.mt_words(N, O.mtree(U32.to_nat(dU), 0n, Cmp.is_lt(Nat.cmp(0n, O.cap_cnt_go(Cmp.is_le(Nat.cmp(Nat.mul(U32.to_nat(U32.div(N, U32.mul(4, ew))), U32.to_nat(ew)), U32.to_nat(F.u32__pow2u(dw)))), U32.to_nat(U32.div(N, ew)), U32.to_nat(ew), U32.to_nat(F.u32__pow2u(dw))))), hl, O.LElems{U32.",
+    "root": "proofs/obj/cells.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/01",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.3,
+    "laws": [
+     "st_ProgressiveComplexTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{x0, LV.pj_ProgressiveComplexTestStruct_1(o), LV.pj_ProgressiveComplexTestStruct_2(o), LV.pj_ProgressiveComplexTestStruct_3(o), LV.pj_ProgressiveComplexTestStruct_4(o), LV.pj_ProgressiveComplexTestStruct_5(o), LV.pj_Progress",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/02",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.8,
+    "laws": [
+     "st_ProgressiveComplexTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{x0, LV.pj_ProgressiveComplexTestStruct_1(o), LV.pj_ProgressiveComplexTestStruct_2(o), LV.pj_ProgressiveComplexTestStruct_3(o), LV.pj_ProgressiveComplexTestStruct_4(o), LV.pj_ProgressiveComplexTestStruct_5(o), LV.pj_Progress",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/03",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 25.4,
+    "laws": [
+     "st_ProgressiveComplexTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{x0, LV.pj_ProgressiveComplexTestStruct_1(o), LV.pj_ProgressiveComplexTestStruct_2(o), LV.pj_ProgressiveComplexTestStruct_3(o), LV.pj_ProgressiveComplexTestStruct_4(o), LV.pj_ProgressiveComplexTestStruct_5(o), LV.pj_Progress",
+    "root": "e2e/ProgressiveComplexTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/04",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 23.5,
+    "laws": [
+     "st_ProgressiveComplexTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{x0, LV.pj_ProgressiveComplexTestStruct_1(o), LV.pj_ProgressiveComplexTestStruct_2(o), LV.pj_ProgressiveComplexTestStruct_3(o), LV.pj_ProgressiveComplexTestStruct_4(o), LV.pj_ProgressiveComplexTestStruct_5(o), LV.pj_Progress",
+    "root": "e2e/ProgressiveComplexTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/05",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 24.1,
+    "laws": [
+     "st_ProgressiveComplexTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{x0, LV.pj_ProgressiveComplexTestStruct_1(o), LV.pj_ProgressiveComplexTestStruct_2(o), LV.pj_ProgressiveComplexTestStruct_3(o), LV.pj_ProgressiveComplexTestStruct_4(o), LV.pj_ProgressiveComplexTestStruct_5(o), LV.pj_Progress",
+    "root": "e2e/ProgressiveComplexTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/06",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 24.3,
+    "laws": [
+     "st_ProgressiveVarTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, LV.pj_ProgressiveVarTestStruct_1(o), LV.pj_ProgressiveVarTestStruct_2(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized",
+    "root": "e2e/ProgressiveVarTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/07",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 24.0,
+    "laws": [
+     "st_ProgressiveVarTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, LV.pj_ProgressiveVarTestStruct_1(o), LV.pj_ProgressiveVarTestStruct_2(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized",
+    "root": "e2e/ProgressiveVarTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/08",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 24.4,
+    "laws": [
+     "st_ProgressiveVarTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{x0, LV.pj_ProgressiveVarTestStruct_1(o), LV.pj_ProgressiveVarTestStruct_2(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized",
+    "root": "e2e/ProgressiveVarTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/09",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 24.3,
+    "laws": [
+     "st_ProgressiveSingleListContainerTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{LV.pj_ProgressiveSingleListContainerTestStruct_0(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packe",
+    "root": "e2e/ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/10",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 23.5,
+    "laws": [
+     "st_ProgressiveSingleListContainerTestStruct"
+    ],
+    "msg": "- expected : (h, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{LV.pj_ProgressiveSingleListContainerTestStruct_0(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packe",
+    "root": "e2e/ProgressiveSingleListContainerTestStruct_e2e_set_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/11",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.5,
+    "laws": [
+     "st_ProgressiveSingleFieldContainerTestStruct"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/gate/g__root_gnames_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c01-prog-active/12",
+  "type": "ProgressiveSingleFieldContainerTestStruct",
+  "file": "types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.1,
+    "laws": [
+     "st_ProgressiveSingleFieldContainerTestStruct"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [0, 0, 0, 0, 0, 0, 0, 0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/gate/g__root_gnames_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/01",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.4,
+    "laws": [
+     "stc_CompatibleUnionABCA_3"
+    ],
+    "msg": "- expected : (h, CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(RN.d_ProgressiveSingleFieldContainerTestStruct(h",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/02",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.5,
+    "laws": [
+     "stc_CompatibleUnionABCA_0"
+    ],
+    "msg": "- expected : (h, CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(RN.d_ProgressiveSingleFieldContainerTestStruct(h",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/03",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.2,
+    "laws": [
+     "stc_CompatibleUnionABCA_2"
+    ],
+    "msg": "- expected : (h, CompatibleUnionABCA_d.CompatibleUnionABCA_c2{LV.pju_CompatibleUnionABCA_2(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.D{50331648, 0, 0",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/04",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.2,
+    "laws": [
+     "stc_CompatibleUnionABCA_1"
+    ],
+    "msg": "- expected : (h, CompatibleUnionABCA_d.CompatibleUnionABCA_c1{LV.pju_CompatibleUnionABCA_1(o)}, d_ProgressiveSingleListContainerTestStruct(hl, LV.pju_CompatibleUnionABCA_1(o)))\n- observed : (h, CompatibleUnionABCA_d.CompatibleUnionABCA_c1{LV.pju_CompatibleUnionABCA_1(o)}, D.of_result(0xd9a2fae439ac7",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/05",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.3,
+    "laws": [
+     "stc_CompatibleUnionBC_1"
+    ],
+    "msg": "- expected : (h, CompatibleUnionBC_d.CompatibleUnionBC_c1{LV.pju_CompatibleUnionBC_1(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(d_ProgressiveVarTestStru",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c02-union-selector/06",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.0,
+    "laws": [
+     "stc_CompatibleUnionBC_0"
+    ],
+    "msg": "- expected : (h, CompatibleUnionBC_d.CompatibleUnionBC_c0{LV.pju_CompatibleUnionBC_0(o)}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(d_ProgressiveSingleListC",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/01",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.8,
+    "laws": [
+     "st_BitsStruct"
+    ],
+    "msg": "- expected : (h, BitsStruct_d.BitsStruct{LV.pj_BitsStruct_0(o), x1, x2, LV.pj_BitsStruct_3(o), x4}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0x",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/02",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.1,
+    "laws": [
+     "st_BitsStruct"
+    ],
+    "msg": "- expected : (h, BitsStruct_d.BitsStruct{LV.pj_BitsStruct_0(o), x1, x2, LV.pj_BitsStruct_3(o), x4}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0x",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/03",
+  "type": "ComplexTestStruct",
+  "file": "types/ComplexTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "ComplexTestStruct_rt6"
+    ],
+    "msg": "- expected : d_f_G\n- observed : d_f_G (consumed more than once)",
+    "root": "proofs/obj/root_gtypes_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/04",
+  "type": "FuluAttestation",
+  "file": "types/FuluAttestation_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.6,
+    "laws": [
+     "st_Attestation"
+    ],
+    "msg": "- expected : (h, FuluAttestation_d.Attestation{LV.pj_Attestation_0(o), x1, x2, x3}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/05",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.6,
+    "laws": [
+     "stg_BeaconBlockBody_1"
+    ],
+    "msg": "- expected : (h, FuluBeaconBlockBody_d.BeaconBlockBody_g1{x8, x9, x10, x11, x12}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e2",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c03-container-pad/06",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.1,
+    "laws": [
+     "stg_BeaconBlockBody_0"
+    ],
+    "msg": "- expected : (h, FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, x3, x4, x5, x6, x7}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae43",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_VarTestStruct_2_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.7,
+    "laws": [
+     "st_v2_VarTestStruct"
+    ],
+    "msg": "- expected : {vec_VarTestStruct_2_h.v2_VarTestStruct_rt_fin(hl, N, vec_VarTestStruct_2_h.v2_VarTestStruct_mt0(2n, Cmp.is_lt(Nat.cmp(0n, U32.to_nat(N))), hl, seg, U32.to_nat(N), (h, LV.am_v2_VarTestStruct(t), D.D{0, 0, 0, 0, 0, 0, 0, 0}))) == (h, vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{LV.am_v2_Va",
+    "root": "proofs/obj/root_gtypes_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/02",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_VarTestStruct_2_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.7,
+    "laws": [
+     "xmt0_v2_VarTestStruct"
+    ],
+    "msg": "- expected : (h, LV.am_v2_VarTestStruct(t), D.zconst(q))\n- observed : (h, LV.am_v2_VarTestStruct(t), D.zconst(1n+q))",
+    "root": "proofs/obj/root_gtypes_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/03",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.0,
+    "laws": [
+     "st_l10_ProgressiveSingleFieldContainerTestStruct"
+    ],
+    "msg": "- expected : {list_ProgressiveSingleFieldContainerTestStruct_10_h.l10_ProgressiveSingleFieldContainerTestStruct_rt_fin(hl, N, list_ProgressiveSingleFieldContainerTestStruct_10_h.l10_ProgressiveSingleFieldContainerTestStruct_mt0(3n, Cmp.is_lt(Nat.cmp(0n, U32.to_nat(N))), hl, seg, U32.to_nat(N), (h, F",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/04",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.7,
+    "laws": [
+     "st_l10_ProgressiveSingleFieldContainerTestStruct"
+    ],
+    "msg": "- expected : {(h, list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{F.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/bu",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/05",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.0,
+    "laws": [
+     "xpt_pl_SmallTestStruct"
+    ],
+    "msg": "- expected : {proglist_SmallTestStruct_h.pl_SmallTestStruct_prr(hl, seg, dep, s, n, proglist_SmallTestStruct_h.pl_SmallTestStruct_ptr(k, Cmp.is_lt(Nat.cmp(Nat.add(s, O.pow2n(dep)), n)), hl, seg, Nat.add(dep, 1n), Nat.add(s, O.pow2n(dep)), n, (h, F.array__thaw(SmallTestStruct_d.SmallTestStruct, t), j",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/06",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.6,
+    "laws": [
+     "st_pl_SmallTestStruct"
+    ],
+    "msg": "- expected : {(h, proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{F.array__thaw(SmallTestStruct_d.SmallTestStruct, t), N}, PR.pr(1n+U32.to_nat(N), Cmp.is_lt(Nat.cmp(0n, U32.to_nat(N))), hl, 0n, 0n, U32.to_nat(N), xl_pl_SmallTestStruct(U32.to_nat(N), F.array__slots(SmallTestStruct_d.SmallTestStruct",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/07",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.8,
+    "laws": [
+     "st_pl_pl_VarTestStruct"
+    ],
+    "msg": "- expected : {(h, proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{LV.am_pl_pl_VarTestStruct(t), N}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(PR.p",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c04-composite-tree/08",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.8,
+    "laws": [
+     "st_l1099511627776_Validator"
+    ],
+    "msg": "- expected : {Fulu_list_Validator_1099511627776_h.l1099511627776_Validator_rt_fin(hl, N, Fulu_list_Validator_1099511627776_h.l1099511627776_Validator_mt0(32n, Cmp.is_lt(Nat.cmp(0n, U32.to_nat(N))), hl, seg, U32.to_nat(N), (h, F.array__thaw(FuluValidator_d.Validator, t), D.D{0, 0, 0, 0, 0, 0, 0, 0}))",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/01",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_uint64_128_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_DataColumnsByRootIdentifier_vrootj_l128_u64_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 13.4,
+    "laws": [
+     "st_DataColumnsByRootIdentifier"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 2n, O.words_root(hl, h, LV.pj_DataColumnsByRootIdentifier_1(o), 5, seg)) == (h, LV.pj_DataColumnsByRootIdentifier_1(o), UL.udig(hl, LV.pj_DataColumnsByRootIdentifier_1(o), 5n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/02",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_uint64_1099511627776_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.2,
+    "laws": [
+     "stg_BeaconState_1"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 3n, O.words_root(hl, h, x12, 40, seg)) == (h, x12, UL.udig(hl, x12, 38n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl, 3n, O.words_root(hl, h, x12, 38, seg)) == (h, x12, UL.udig(hl, x12, 38n)) : Sigma<&1, &1, B.Buf, _",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/03",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_uint8_1099511627776_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.6,
+    "laws": [
+     "stg_BeaconState_1"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 0n, O.words_root(hl, h, x15, 34, seg)) == (h, x15, BLI.bdig(hl, x15, 35n, 0n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl, 0n, O.words_root(hl, h, x15, 35, seg)) == (h, x15, BLI.bdig(hl, x15, 35n, 0n)) : Sigma<&1, &1",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/04",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_bytevec_32_16777216_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.5,
+    "laws": [
+     "stg_BeaconState_0"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 0n, O.words_root(hl, h, x7, 24, seg)) == (h, x7, BLI.bdig(hl, x7, 24n, 5n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl, 5n, O.words_root(hl, h, x7, 24, seg)) == (h, x7, BLI.bdig(hl, x7, 24n, 5n)) : Sigma<&1, &1, B.Bu",
+    "root": "proofs/obj/root_state_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/05",
+  "type": "FuluSignedBeaconBlock",
+  "file": "types/Fulu_list_uint64_131072_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "st_IndexedAttestation"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 3n, O.words_root(hl, h, LV.pj_IndexedAttestation_0(o), 17, seg)) == (h, LV.pj_IndexedAttestation_0(o), UL.udig(hl, LV.pj_IndexedAttestation_0(o), 15n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl, 3n, O.words_root(hl,",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/06",
+  "type": "FuluTransaction,FuluExecutionPayload",
+  "file": "types/FuluTransaction_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.3,
+    "laws": [
+     "st_bl1073741824_bx"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 0n, O.words_root(hl, h, LV.pjb_bl1073741824_bx(o), 30, seg)) == (h, LV.pjb_bl1073741824_bx(o), LO.ldig(hl, LV.pjb_bl1073741824_bx(o), 25n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl, 0n, O.words_root(hl, h, LV.pjb_b",
+    "root": "proofs/obj/root_types_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c05-packed-depth/07",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/list_uint16_123_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveVarTestStruct_vrootj_l123_u16_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 16.0,
+    "laws": [
+     "st_ProgressiveVarTestStruct"
+    ],
+    "msg": "- expected : {O.mix_count(hl, 1n, O.words_root(hl, h, LV.pj_ProgressiveVarTestStruct_1(o), 2, seg)) == (h, LV.pj_ProgressiveVarTestStruct_1(o), BLI.bdig(hl, LV.pj_ProgressiveVarTestStruct_1(o), 3n, 1n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.mix_count(hl,",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c06-bitvector-root/01",
+  "type": "bitvector_33,BitsStruct",
+  "file": "types/bitvector_33_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.5,
+    "laws": [
+     "bitvector_33_st"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/obj/gbits_small_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c06-bitvector-root/02",
+  "type": "bitvector_513",
+  "file": "types/bitvector_513_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.1,
+    "laws": [
+     "bitvector_513_st"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/obj/gbits_bitvector_513_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c06-bitvector-root/03",
+  "type": "bitvector_513",
+  "file": "types/bitvector_513_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.5,
+    "laws": [
+     "bitvector_513_st"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/obj/gbits_bitvector_513_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c06-bitvector-root/04",
+  "type": "bitvector_1280",
+  "file": "types/bitvector_1280_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_vrootj_bv1280_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 15.3,
+    "laws": [
+     "stg_ProgressiveBitsStruct_0"
+    ],
+    "msg": "- expected : {O.words_root(hl, h, x6, 2, seg) == (h, x6, WO.wdig(hl, x6, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}\n- observed : {O.words_root(hl, h, x6, 3, seg) == (h, x6, WO.wdig(hl, x6, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Words, _ => D.Digest>>}",
+    "root": "proofs/obj/root_gtypes2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r8-c06-bitvector-root/05",
+  "type": "bitvector_9,BitsStruct",
+  "file": "types/bitvector_9_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.2,
+    "laws": [
+     "bitvector_9_st"
+    ],
+    "msg": "- expected : (h, D.D{U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}",
+    "root": "proofs/obj/gbits_small_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

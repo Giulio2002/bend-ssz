@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-a02-chunk-words/06
+# type: FuluBeaconState,ComplexTestStruct
+# ops: root
+# spec: an element chunk is zero past the element's words
+# fault: word 1 of an element chunk tests j + 1 <= ew (one word past the element read)
+# why: < written as <=
+# file: src/obj.bend
+# sym: ec0,ec1,echunkn
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -780,3 +780,3 @@
+   (ws, +a0) = pair
+-  ec1(b, j, ew, a0, rdc(Nat.is_lt(Nat.add(j, 1n), ew), ws, Nat.add(b, Nat.add(j, 1n))))
++  ec1(b, j, ew, a0, rdc(Nat.is_le(Nat.add(j, 1n), ew), ws, Nat.add(b, Nat.add(j, 1n))))
+ def echunkn(ws: Array<U32>, +b: Nat, +c: Nat, +ew: Nat) -> Array<U32> & D.Digest:

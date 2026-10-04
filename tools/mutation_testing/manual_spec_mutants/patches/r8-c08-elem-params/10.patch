@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r8-c08-elem-params/10
+# type: vec_uint128_5
+# ops: root
+# spec: Vector[uint128, 5]: 80 bytes = 3 chunks (depth 2)
+# fault: depth 3 (element count 5 padded to 8)
+# why: element count for chunk count
+# file: types/vec_uint128_5_hashtreeroot_generated.bend
+# sym: v5_u128_root
+--- a/types/vec_uint128_5_hashtreeroot_generated.bend
++++ b/types/vec_uint128_5_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v5_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
++def v5_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
+ 
