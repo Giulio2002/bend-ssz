@@ -56,6 +56,8 @@ def muts(data, slots, rng):
 
 def run(bindir, name, data, tmp):
     prog_path, index, fam = F.PROGRAM[name]
+    if fam == 'fulu':
+        index = F.FUZZ_OPS[name]['index']      # the chain drivers dispatch on the fuzz-group index
     exe = os.path.join(bindir, ('chain-f%d' % F.FUZZ_OPS[name]['program']) if fam == 'fulu' else ('dec-g%s' % prog_path.split('obj-x')[1]))
     fd, inp = tempfile.mkstemp(dir=tmp); os.write(fd, data + bytes((-len(data)) % 4)); os.close(fd)
     out = inp + '.out'
