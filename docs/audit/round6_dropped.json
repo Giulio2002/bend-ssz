@@ -1,0 +1,266 @@
+{
+ "audit": "round6-dropped",
+ "findings": [
+  {
+   "id": "F1",
+   "severity": "coverage-of-public-behaviour",
+   "documented": "partial",
+   "intended": true,
+   "commits": [
+    "30a79a922",
+    "28b4d95a2"
+   ],
+   "what": "Composed DECODE theorems of ProgressiveTestStruct / ProgressiveComplexTestStruct (2^31, 2^29 premises) and ProgressiveVarTestStruct / ProgressiveSingleListContainerTestStruct (h31: n < 2^29) and the progressive record-list decode window facts stay below 2^31 while the runtime accepts up to NMAX; the gap is named only in size_limit_statement_diff.md section 4 (2 of the 4 types), not in TRUST.md / API_CONTRACTS.md",
+   "restore": "lift progressive decode window facts to NMAX (CC29, PDW, wd_min depth-30 lemmas) in deep_tree_list_children.py / progressive_variable_list_decoded_facts.py and restate the four *_e2e_comp decode premises; meanwhile list the gap in TRUST.md"
+  },
+  {
+   "id": "F2",
+   "severity": "lost-test",
+   "documented": false,
+   "intended": "unknown",
+   "commits": [
+    "c9214f106",
+    "3ac5a98d8"
+   ],
+   "what": "regress case 58 pd_encode_22369622_len=0 (unchecked _encode of an over-NMAX fixed-composite list returns B.empty, CH-02) deleted; number 58 reused later; no law states X_encode of a poisoned size returns B.empty",
+   "restore": "re-add as case 72 or add by-computation _encode poison laws in writer_poison_laws.py"
+  },
+  {
+   "id": "F3",
+   "severity": "weakened-evidence",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "range"
+   ],
+   "what": "benchmarks/evidence runtime stamps (10 files) still at 42a429cd; provenance.py fails at origin/main; decode window, size limit, crash-fix5/6 not run through oracle harnesses",
+   "restore": "tools/run_evidence.sh on the server after crash-fix6 lands"
+  },
+  {
+   "id": "F4",
+   "severity": "weakened-check",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "39dfc8ed2..3ac5a98d8",
+    "312db971c"
+   ],
+   "what": "55 of 1054 manual spec-mutant patches no longer apply at main (61 at crash-fix6) after 873dc8633 made all apply",
+   "restore": "rederive.py on the post-crash-fix6 tree"
+  },
+  {
+   "id": "F5",
+   "severity": "gate-process",
+   "documented": null,
+   "intended": null,
+   "commits": [
+    "312db971c"
+   ],
+   "what": "crash-fix6 carries main's full-check stamp; check_stamp verify fails (frozen lock and sources changed); needs its own cold full check",
+   "restore": "check_fast.sh --no-cache with localization plus strictcheck on the crash-fix6 tree before merge"
+  },
+  {
+   "id": "F6",
+   "severity": "weakened-law-low",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "28b4d95a2"
+   ],
+   "what": "decode_checked_2gib_refused no longer pins a size cap (refused by the storage test only); misleading name and CH-05 citation",
+   "restore": "rename/restate it at a storage-sufficient buffer above NMAX or drop it for _vchecked_limit"
+  },
+  {
+   "id": "F7",
+   "severity": "undocumented-widening-low",
+   "documented": false,
+   "intended": true,
+   "commits": [
+    "c1046db54",
+    "28b4d95a2"
+   ],
+   "what": "pl_SmallTestStruct append guard 536870911 -> 1073741816 (correct, floor(NMAX/4)) missing from size_limit_statement_diff.md; CRASH_HUNT.md:449 stale",
+   "restore": "add to the diff doc, fix the CRASH_HUNT row"
+  },
+  {
+   "id": "F8",
+   "severity": "doc-drift-medium",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "size-limit series"
+   ],
+   "what": "docs/PREMISES.md still describes the 2^31 regime (lines 97, 259-261, 277, 282, 284-286, 295)",
+   "restore": "rewrite at NMAX keeping only the F1 exceptions"
+  },
+  {
+   "id": "F9",
+   "severity": "doc-drift-low",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "size-limit, decode-window series"
+   ],
+   "what": "CRASH_HUNT.md CH-05 row (line 21) and R3-03 row (line 449) stale; superseded sections unmarked; API_CONTRACTS.md:20 lists X_get for boxed kinds",
+   "restore": "update rows, mark superseded sections"
+  },
+  {
+   "id": "F10",
+   "severity": "doc-error-low",
+   "documented": "wrong",
+   "intended": null,
+   "commits": [
+    "28b4d95a2"
+   ],
+   "what": "size_limit_statement_diff.md calls x<2^31 -> x<=NMAX \"stronger as a conclusion\"; it is weaker (246 lemma conclusions, 2 of them the BeaconState non-vacuity witnesses)",
+   "restore": "correct the sentence"
+  },
+  {
+   "id": "F11",
+   "severity": "stale-probe-low",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "e67546033 (pre-range)"
+   ],
+   "what": "tools/mutation_testing/manual_spec_mutants/r3/probes/p3_cache.bend:78-79 calls removed l16_ProposerSlashing_cget",
+   "restore": "rename to _ctake"
+  },
+  {
+   "id": "F12",
+   "severity": "doc-loss-low",
+   "documented": false,
+   "intended": false,
+   "commits": [
+    "c78765bb0"
+   ],
+   "what": "MUTATION_PROOFS.md lost the \"Manual spec-mutation audit, round 3\" section (~25 kill-map rows, limitations paragraph)",
+   "restore": "restore the section from 26ad79b4a"
+  }
+ ],
+ "counts": {
+  "range": {
+   "base": "26ad79b4a",
+   "main": "8bd2fc3e1",
+   "crash_fix6": "312db971c",
+   "slop_laws_r5": "not on origin",
+   "commits_main": 50,
+   "commits_cf6": 32
+  },
+  "items_extracted": {
+   "old": [
+    10471,
+    138013
+   ],
+   "main": [
+    12019,
+    150718
+   ],
+   "crash_fix6": [
+    12022,
+    150818
+   ]
+  },
+  "law_blocks_lost": 0,
+  "defs_lost": 39,
+  "defs_lost_kind": "internal 2^31 helper lemmas (documented)",
+  "signatures_changed_old_to_main": 4214,
+  "explained_by_normalisation": 3877,
+  "residual_reviewed": 337,
+  "residual_unexplained": 0,
+  "signatures_changed_main_to_cf6": 12,
+  "e2e_statements": {
+   "header": "5240 statements in 1334 files",
+   "names": [
+    5827,
+    5827,
+    5827
+   ]
+  },
+  "frozen": {
+   "statement_defs": 1915,
+   "files": 42,
+   "roots": 4,
+   "changed_main": 23,
+   "verify_frozen_main": "pass",
+   "verify_frozen_cf6": "pass"
+  },
+  "hwin_premise": {
+   "decode_build": 240,
+   "decode_fields": 42,
+   "places": 3
+  },
+  "generators": {
+   "old": 142,
+   "main": 146,
+   "crash_fix6": 146,
+   "removed": 0
+  },
+  "generated_outputs": {
+   "old": {
+    "files": 9694,
+    "laws": 3018,
+    "defs": 110074
+   },
+   "main": {
+    "files": 11229,
+    "laws": 3134,
+    "defs": 121777
+   },
+   "crash_fix6": {
+    "files": 11231,
+    "laws": 3134,
+    "defs": 121806
+   },
+   "generators_with_fewer_defs": [
+    "deep_tree_list_children 764->729 (documented)"
+   ]
+  },
+  "deleted_files": 0,
+  "renamed_files": 0,
+  "coverage_gate": {
+   "entries": [
+    7320,
+    10102,
+    10102
+   ],
+   "dropped": 0,
+   "emptied_cells": 0,
+   "missing": "0 of 2160",
+   "validators": [
+    240,
+    240,
+    240
+   ]
+  },
+  "strictcheck": {
+   "old": 145,
+   "main": 149,
+   "crash_fix6": 149,
+   "failed": 0,
+   "added": [
+    "decode_window_laws",
+    "append_guard_bounds",
+    "decode_checked_laws",
+    "writer_poison_laws"
+   ],
+   "removed": []
+  },
+  "full_check_stamp": {
+   "old": {
+    "files": 10065,
+    "umbrellas": 84,
+    "roots": 4199,
+    "reused": 0
+   },
+   "main": {
+    "tested": "3ac5a98d8",
+    "files": 11609,
+    "umbrellas": 88,
+    "roots": 4860,
+    "reused": 0
+   }
+  },
+  "gate_tools_changed_in_range": []
+ }
+}
