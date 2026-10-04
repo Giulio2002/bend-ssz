@@ -589,8 +589,8 @@
    "ps_r5.bend: ExecutionPayload -> BeaconBlockBody -> BeaconBlock -> SignedBeaconBlock with 4 transactions in shared 1 GiB storage, each level at NMAX (valid 1) and NMAX + 1 (valid 0, marker above), 2^32 - 1: valid / size / serialize agree, no allocation for a refused total",
    "gen_lock.py: plain and cached lists in lockstep, 5 boxed kinds (take / ctake) x 300 seeds and 13 unboxed cached kinds (get / cget) x 150 seeds, 400 steps each: root == cached root after every step, root == root(uncache) at the end",
    "gen_twin.py: 4 uncached boxed kinds, take before set vs set alone, 800 runs x 400 steps: equal roots, valid at the end",
-   "chain_run.py: in-process setter / append chains on the 64 Fulu names with operations, CHAINS, against the fuzz_objects mirror: 0 differences; appends from empty to limit + 2 for every append op with limit <= 8192: past-limit appends refused",
-   "hostile_r5.py: every offset slot set to 0..4, neighbours, len-1..len+1, 2^31, NMAX-1..NMAX+1, 2^32-4, 2^32-1, cuts, trailing bytes: HOSTILE, 0 abort, 0 disagreement with the oracle"
+   "chain_run.py: in-process setter / append chains on the 64 Fulu names with operations, 5,120 chains (1,356,800 operations), against the fuzz_objects mirror: 0 differences; appends from empty to limit + 2 for every append op with limit <= 8192: past-limit appends refused",
+   "hostile_r5.py: every offset slot set to 0..4, neighbours, len-1..len+1, 2^31, NMAX-1..NMAX+1, 2^32-4, 2^32-1, cuts, trailing bytes: 281,210 cases over the 240 names, 0 abort, 0 disagreement with the oracle"
   ],
   "findings": [
    {

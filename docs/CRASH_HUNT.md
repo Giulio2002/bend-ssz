@@ -7,7 +7,7 @@ frozen files (`spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN, PROOF, HASH_PROOF, `
 Machine-readable list: `docs/crash_hunt_findings.json`. Raw outputs: `docs/crash_hunt_evidence/`. Probes and runners: `tools/crash_hunt/`.
 
 
-Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3),
+Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3), the round-5 hunter report (R5.1 to R5.4, R5-01, R5-02, last section),
 section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12), the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04) and the round-4 hunter report (R4.1 to R4.4, R4-01 to R4-06, last section) update the table below.
 
 ## 0. Status after the fix series (agent/crash-fix)
@@ -648,8 +648,8 @@ most 4 programs at a time, stack 16384 KB, 120 s per run (300 s for the 4 GiB-st
 | (a) plain and cached lists in LOCKSTEP (`gen_lock.py`: the 5 boxed kinds with `_take` / `_ctake` and the 13 unboxed cached kinds with `_get` / `_cget`; 400 random steps of append / capp, set / cset, take / ctake (get / cget) at indices 0..19, `root(L) == cached_root(C)` after every step, `root(L) == root(uncache(C))` at the end) | **boxed: 1,500 runs (300 seeds x 5 kinds), unboxed: 1,950 runs (150 seeds x 13 kinds), 0 disagreement** (the cached root is the plain root after take, set, append and take again, through every growth of the array) |
 | (a) twin lists for the boxed kinds without a cache (`gen_twin.py`: `proglist_VarTestStruct`, `proglist_ProgressiveVarTestStruct`, `proglist_proglist_VarTestStruct`, `vec_VarTestStruct_2`; one list gets `take(i)` before every `set(i)`) | **800 runs, 0 root differing, both lists valid at the end** |
 | (a) union sizes, `O.mul4c`, `O.padd` | read: every union size adds its selector with `O.padd`; no union payload can reach NMAX (largest union: 536,870,917 bytes); the offset tables use `O.mul4c` in the size pass and the writers run only after it (no new site) |
-| (b) setter / append CHAINS in one process (`chain.bend.in` + `chain_run.py`: the 28 Fulu fuzz groups compiled with a driver that decodes the start value and then applies the whole chain of `types/obj_fuzz_ops.json` operations without re-decoding; the mirror of `tests_generated/fuzz_objects.py` gives the expected acceptance of every step, bytes and root) | **64 names with operations, 6,400 chains of 30 to 600 steps (about 1.5 million operations), 0 differences** in flags, checked encoding or root; every append op run from the empty value to its limit + 2 for the limits up to 8,192 (`--to-limit`: 8 lists incl. the 4,096-cell `DataColumnSidecar.column` and the 8,192 deposit requests): the two past-limit appends refused, OK |
-| (c) hostile decode (`hostile_r5.py`: valid values of every name, every offset slot rewritten to 0, 1, 3, 4, its neighbours, len - 1, len, len + 1, 2^31, NMAX - 1, NMAX, NMAX + 1, 2^32 - 4, 2^32 - 1, a cut at every slot and the middle, one and four trailing bytes; the oracle decides) | **Fulu: 17,615 + 76,480 + RUN3 cases, generic (131 names through a decode-only driver of the 18 generic groups): 33,843 cases: 0 abort, 0 disagreement with the oracle, every accepted input re-encodes to itself with the oracle's root** |
+| (b) setter / append CHAINS in one process (`chain.bend.in` + `chain_run.py`: the 28 Fulu fuzz groups compiled with a driver that decodes the start value and then applies the whole chain of `types/obj_fuzz_ops.json` operations without re-decoding; the mirror of `tests_generated/fuzz_objects.py` gives the expected acceptance of every step, bytes and root) | **64 names with operations, 5,120 chains of 60, 200 and 600 steps (1,356,800 operations), 0 differences** in flags, checked encoding or root; every append op run from the empty value to its limit + 2 for the limits up to 8,192 (`--to-limit`: 8 lists incl. the 4,096-cell `DataColumnSidecar.column` and the 8,192 deposit requests): the two past-limit appends refused, OK |
+| (c) hostile decode (`hostile_r5.py`: valid values of every name, every offset slot rewritten to 0, 1, 3, 4, its neighbours, len - 1, len, len + 1, 2^31, NMAX - 1, NMAX, NMAX + 1, 2^32 - 4, 2^32 - 1, a cut at every slot and the middle, one and four trailing bytes; the oracle decides) | **Fulu (109 names): 17,615 + 76,480 + 153,272 cases, generic (131 names through a decode-only driver of the 18 generic groups): 33,843 cases; 281,210 in all: 0 abort, 0 disagreement with the oracle, every accepted input re-encodes to itself with the oracle's root** |
 
 The round-4 fixes hold where they were aimed: the clean copy is right at every size and kind tried, the nested size checks agree level by level, the cached roots
 follow every take. The one new WRONG is in the appends, which the R2-02 (b) / CH-11 change (valid objects may carry non-zero spare storage) did not revisit.
@@ -705,9 +705,9 @@ wrap-free word count `(n >> 2) + ((n & 3) + 3 >> 2)`; `proofs/obj/cell_rw.bend` 
 | `gen_dirty.py` (102 programs) | 5,757 runs | 0 CRASH, 0 WRONG (first pass had a probe bug: a whole last word written at index `n >> 2` past exactly full storage; fixed, rerun) |
 | `gen_lock.py` (18 programs) | 3,450 runs x 400 steps | 0 disagreement |
 | `gen_twin.py` (4 programs) | 800 runs x 400 steps | 0 disagreement |
-| `chain_run.py` (28 chain drivers) | CHAINS | 0 difference |
-| `hostile_r5.py` (28 chain drivers + 18 generic decode drivers) | HOSTILE | 0 CRASH, 0 WRONG |
+| `chain_run.py` (28 chain drivers) | 5,120 chains, 1,356,800 operations; 8 append-to-limit runs | 0 difference |
+| `hostile_r5.py` (28 chain drivers + 18 generic decode drivers) | 281,210 cases (240 names) | 0 CRASH, 0 WRONG |
 | `pq_r5.bend`, `pr_r5.bend`, `ps_r5.bend` | 8 + 6 + 11 runs | R5-01, R5-02, the nested NMAX rows |
 
 Not run: the 131 generic names through setter chains (they have no fuzz-operation table; their setters were covered by round 3's `gen_packed_diff.py` for the
-packed kinds and by the lockstep / twin probes above for the composite lists); appends to the limits above 8,192 (the mirror copies the whole value per step).
+packed kinds and by the lockstep / twin probes above for the composite lists); appends to the limits above 8,192 (the 131,072-bit `aggregation_bits` run was stopped at 900 s: the Python mirror copies the whole value per step).
