@@ -47,9 +47,14 @@ def bl32_set_n(+i: U32, +v: U32, pair: O.Words & U32) -> O.Words & Bool:
 
 def bl32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: bl32_set_n(i, v, bl32_len(o))
 
+def bl32_put_app(ok: Bool, o: O.Words, +i: U32, +v: U32) -> O.Words & Bool:
+  match ok:
+    case True{}: (O.words_write_app(o, (i * 1 : U32), v, 1), True{})
+    case False{}: (o, False{})
+
 def bl32_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
   match ok:
-    case True{}: bl32_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
+    case True{}: bl32_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
     case False{}: (o, False{})
 
 def bl32_app_c(+v: U32, +n: U32, pair: O.Words & U32) -> O.Words & Bool:

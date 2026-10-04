@@ -259,7 +259,44 @@ def it1_snoc(+xs: +List<U32>, +v: U32)
         {S.Items{S.UnsignedValue{P.UInt{x, 0, 0, 0, 0, 0, 0, 0}}, _} == VS.items_snoc(PB.it1(1n+F.spec_common__length(U32, t), Con{x, t}), S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}) : S.Value}
       {==}
 ''')
+    # an appended byte in the runtime's append (O.words_write_app): byte 0 of a word starts from zero (O.app_old), so
+    # the bytes of the word past the new length are zero; the bytes up to and including the new one are the same
+    w('# appending a byte at offset s of word q (s = 0: the word starts from zero): the bytes up to the new one')
+    for s_ in range(4):
+        S_ = '%d' % s_
+        MA = lambda W, q: 'O.merge_word(O.app_old(WR.at(%s, %s), %s), v, %s, 1)' % (W, q, S_, S_)
+        IX = lambda q: 'Nat.add(Nat.double(Nat.double(%s)), %dn)' % (q, s_)
+        ST = lambda W, q: '{WS.btake(1n+%s, FX.limbs(F.spec_common__update(U32, %s, %s, %s))) == VS.list_snoc(WS.btake(%s, FX.limbs(%s)), v) : +List<U32>}' % (IX(q), W, q, MA(W, q), IX(q), W)
+        E = [elem(k, 'x') for k in range(4)]
+        w('def btake_app_%d(+W: List<&2, U32>, +q: Nat, +v: U32, %s, +h: {Nat.is_lt(q, F.spec_common__length(U32, W)) == True{} : Bool})' % (s_, hv))
+        w('    -> %s:' % ST('W', 'q'))
+        w('  match W q:')
+        w('    case Nil{} 0n: Empty.absurd(%s, F.nat__lt_zero_absurd(0n, h))' % ST('Nil{}', '0n'))
+        w('    case Nil{} 1n+p: Empty.absurd(%s, F.nat__lt_zero_absurd(1n+p, h))' % ST('Nil{}', '1n+p'))
+        w('    case Con{x, t} 0n:')
+        w('      %%Equal.sym(+List<U32>, I.limb(O.merge_word(O.app_old(x, %s), v, %s, 1)), VS.list_set(I.limb(O.app_old(x, %s)), %dn, v), limb_set_%d(O.app_old(x, %s), v, hv)) :' % (S_, S_, S_, s_, s_, S_))
+        w('        {WS.btake(1n+%dn, List.append(&2, U32, _, FX.limbs(t))) == VS.list_snoc(WS.btake(%dn, List.append(&2, U32, I.limb(x), FX.limbs(t))), v) : +List<U32>}' % (s_, s_))
+        w('      {==}')
+        w('    case Con{x, t} 1n+p:')
+        w('      %%Equal.sym(+List<U32>, WS.btake(1n+%s, FX.limbs(F.spec_common__update(U32, t, p, %s))), VS.list_snoc(WS.btake(%s, FX.limbs(t)), v), btake_app_%d(t, p, v, hv, h)) :' % (IX('p'), MA('t', 'p'), IX('p'), s_))
+        w('        {Con{%s, Con{%s, Con{%s, Con{%s, _}}}} == VS.list_snoc(Con{%s, Con{%s, Con{%s, Con{%s, WS.btake(%s, FX.limbs(t))}}}}, v) : +List<U32>}' % tuple(E + E + [IX('p')]))
+        w('      {==}')
+        w('')
+    IXP = 'Nat.add(Nat.double(Nat.double(q)), U32.to_nat(U32.and(p, 3)))'
+    w('def btake_app_p(+W: List<&2, U32>, +q: Nat, +p: U32, +v: U32, %s, +h: {Nat.is_lt(q, F.spec_common__length(U32, W)) == True{} : Bool})' % hv)
+    w('    -> {WS.btake(1n+%s, FX.limbs(F.spec_common__update(U32, W, q, O.merge_word(O.app_old(WR.at(W, q), U32.and(p, 3)), v, U32.and(p, 3), 1)))) == VS.list_snoc(WS.btake(%s, FX.limbs(W)), v) : +List<U32>}:' % (IXP, IXP))
+    w('  match p:')
+    for s_ in range(4):
+        lits = ['True{}' if (s_ >> j) & 1 else 'False{}' for j in range(2)]
+        kk = 'U32{%s}' % wpat(lits, '_')
+        w('    case U32{%s}:' % wpat(lits, '+r'))
+        ixk = 'Nat.add(Nat.double(Nat.double(q)), U32.to_nat(%s))' % kk
+        w('      %%Equal.sym(Word(30n), Word.and(30n, r, Word.zero(30n)), Word.zero(30n), UB.wand_zero(30n, r)) :\n        {WS.btake(1n+%s, FX.limbs(F.spec_common__update(U32, W, q, O.merge_word(O.app_old(WR.at(W, q), %s), v, %s, 1)))) == VS.list_snoc(WS.btake(%s, FX.limbs(W)), v) : +List<U32>}' % (ixk, kk, kk, ixk))
+        w('      btake_app_%d(W, q, v, hv, h)' % s_)
+    w('')
     # the views
+    TW = 'F.array__upd(U32, d, t, q, O.merge_word(O.app_old(WR.at(F.array__slots(U32, t), q), U32.and(p, 3)), v, U32.and(p, 3), 1))'
+    UPDW = 'F.spec_common__update(U32, %s, q, O.merge_word(O.app_old(WR.at(%s, q), U32.and(p, 3)), v, U32.and(p, 3), 1))' % (SL('t'), SL('t'))
     premA = prem.replace('+n: U32, +p: U32,', '+n: U32, +nb: U32, +p: U32,') + ', +hp: {U32.to_nat(p) == U32.to_nat(n) : Nat}, +hnb: {U32.to_nat(nb) == 1n+U32.to_nat(n) : Nat}'
     OWn = lambda T: 'O.Words{F.array__thaw(U32, %s), nb}' % T
     hidx = 'Equal.trans(Nat, U32.to_nat(n), U32.to_nat(p), %s, Equal.sym(Nat, U32.to_nat(p), U32.to_nat(n), hp), idx(p, q, hq))' % IDX
@@ -274,18 +311,16 @@ def it1_snoc(+xs: +List<U32>, +v: U32)
     {S.BytesValue{WS.btake(%(tnb)s, FX.limbs(F.array__slots(U32, _)))} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, FX.limbs(F.array__slots(U32, %(ft)s)))}, v) : S.Value}
   %%Equal.sym(F.array__Tree<U32>, %(ft)s, t, F.array__freeze_thaw(U32, t)) :
     {S.BytesValue{WS.btake(%(tnb)s, FX.limbs(F.array__slots(U32, %(tw)s)))} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, FX.limbs(F.array__slots(U32, _)))}, v) : S.Value}
-  %%Equal.sym(List<&2, U32>, %(slw)s, %(upd)s, F.array__upd_slots(U32, d, t, q, O.merge_word(WR.at(%(slt)s, q), v, U32.and(p, 3), 1), hk, pf)) :
+  %%Equal.sym(List<&2, U32>, %(slw)s, %(upd)s, F.array__upd_slots(U32, d, t, q, O.merge_word(O.app_old(WR.at(%(slt)s, q), U32.and(p, 3)), v, U32.and(p, 3), 1), hk, pf)) :
     {S.BytesValue{WS.btake(%(tnb)s, FX.limbs(_))} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, FX.limbs(%(slt)s))}, v) : S.Value}
-  %%Equal.sym(+List<U32>, %(limu)s, VS.list_set(%(limw)s, %(idx)s, v), limbs_upd_p(%(slt)s, q, p, v, hv)) :
-    {S.BytesValue{WS.btake(%(tnb)s, _)} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, %(limw)s)}, v) : S.Value}
   %%Equal.sym(Nat, %(tnb)s, 1n+%(tn)s, hnb) :
-    {S.BytesValue{WS.btake(_, VS.list_set(%(limw)s, %(idx)s, v))} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, %(limw)s)}, v) : S.Value}
+    {S.BytesValue{WS.btake(_, %(limu)s)} == VS.bytes_snoc(S.BytesValue{WS.btake(%(tn)s, %(limw)s)}, v) : S.Value}
   %%Equal.sym(Nat, %(tn)s, %(idx)s, %(hidx)s) :
-    {S.BytesValue{WS.btake(1n+_, VS.list_set(%(limw)s, %(idx)s, v))} == VS.bytes_snoc(S.BytesValue{WS.btake(_, %(limw)s)}, v) : S.Value}
-  %%Equal.sym(+List<U32>, WS.btake(1n+%(idx)s, VS.list_set(%(limw)s, %(idx)s, v)), VS.list_snoc(WS.btake(%(idx)s, %(limw)s), v), btake_snoc(%(idx)s, %(limw)s, v, %(roomL)s)) :
+    {S.BytesValue{WS.btake(1n+_, %(limu)s)} == VS.bytes_snoc(S.BytesValue{WS.btake(_, %(limw)s)}, v) : S.Value}
+  %%Equal.sym(+List<U32>, WS.btake(1n+%(idx)s, %(limu)s), VS.list_snoc(WS.btake(%(idx)s, %(limw)s), v), btake_app_p(%(slt)s, q, p, v, hv, %(room)s)) :
     {S.BytesValue{_} == VS.bytes_snoc(S.BytesValue{WS.btake(%(idx)s, %(limw)s)}, v) : S.Value}
   {==}
-''' % dict(ftw=FTh(TW), tw=TW, ft=FTh('t'), slw=SL(TW), upd=UPDW, slt=SL('t'), limu=LIM(UPDW), limw=Lw, idx=IDX, tn=tn, tnb=tnb, hidx=hidx, roomL=roomL))
+''' % dict(ftw=FTh(TW), tw=TW, ft=FTh('t'), slw=SL(TW), upd=UPDW, slt=SL('t'), limu=LIM(UPDW), limw=Lw, idx=IDX, tn=tn, tnb=tnb, hidx=hidx, roomL=roomL, room=room))
 
     UIV = 'S.UnsignedValue{P.UInt{v, 0, 0, 0, 0, 0, 0, 0}}'
     Bt = 'WS.btake(%s, %s)' % (IDX, Lw)
@@ -294,18 +329,16 @@ def it1_snoc(+xs: +List<U32>, +v: U32)
     {S.Sequence{PB.it1(%(tnb)s, WS.btake(%(tnb)s, FX.limbs(F.array__slots(U32, _))))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, FX.limbs(F.array__slots(U32, %(ft)s))))}, %(uiv)s) : S.Value}
   %%Equal.sym(F.array__Tree<U32>, %(ft)s, t, F.array__freeze_thaw(U32, t)) :
     {S.Sequence{PB.it1(%(tnb)s, WS.btake(%(tnb)s, FX.limbs(F.array__slots(U32, %(tw)s))))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, FX.limbs(F.array__slots(U32, _))))}, %(uiv)s) : S.Value}
-  %%Equal.sym(List<&2, U32>, %(slw)s, %(upd)s, F.array__upd_slots(U32, d, t, q, O.merge_word(WR.at(%(slt)s, q), v, U32.and(p, 3), 1), hk, pf)) :
+  %%Equal.sym(List<&2, U32>, %(slw)s, %(upd)s, F.array__upd_slots(U32, d, t, q, O.merge_word(O.app_old(WR.at(%(slt)s, q), U32.and(p, 3)), v, U32.and(p, 3), 1), hk, pf)) :
     {S.Sequence{PB.it1(%(tnb)s, WS.btake(%(tnb)s, FX.limbs(_)))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, FX.limbs(%(slt)s)))}, %(uiv)s) : S.Value}
-  %%Equal.sym(+List<U32>, %(limu)s, VS.list_set(%(limw)s, %(idx)s, v), limbs_upd_p(%(slt)s, q, p, v, hv)) :
-    {S.Sequence{PB.it1(%(tnb)s, WS.btake(%(tnb)s, _))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, %(limw)s))}, %(uiv)s) : S.Value}
   %%Equal.sym(Nat, %(tnb)s, 1n+%(tn)s, hnb) :
-    {S.Sequence{PB.it1(_, WS.btake(_, VS.list_set(%(limw)s, %(idx)s, v)))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, %(limw)s))}, %(uiv)s) : S.Value}
+    {S.Sequence{PB.it1(_, WS.btake(_, %(limu)s))} == VS.seq_append(S.Sequence{PB.it1(%(tn)s, WS.btake(%(tn)s, %(limw)s))}, %(uiv)s) : S.Value}
   %%Equal.sym(Nat, %(tn)s, %(idx)s, %(hidx)s) :
-    {S.Sequence{PB.it1(1n+_, WS.btake(1n+_, VS.list_set(%(limw)s, %(idx)s, v)))} == VS.seq_append(S.Sequence{PB.it1(_, WS.btake(_, %(limw)s))}, %(uiv)s) : S.Value}
-  %%Equal.sym(+List<U32>, WS.btake(1n+%(idx)s, VS.list_set(%(limw)s, %(idx)s, v)), VS.list_snoc(%(bt)s, v), btake_snoc(%(idx)s, %(limw)s, v, %(roomL)s)) :
+    {S.Sequence{PB.it1(1n+_, WS.btake(1n+_, %(limu)s))} == VS.seq_append(S.Sequence{PB.it1(_, WS.btake(_, %(limw)s))}, %(uiv)s) : S.Value}
+  %%Equal.sym(+List<U32>, WS.btake(1n+%(idx)s, %(limu)s), VS.list_snoc(%(bt)s, v), btake_app_p(%(slt)s, q, p, v, hv, %(room)s)) :
     {S.Sequence{PB.it1(1n+%(idx)s, _)} == VS.seq_append(S.Sequence{PB.it1(%(idx)s, %(bt)s)}, %(uiv)s) : S.Value}
   Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PB.it1(1n+%(idx)s, VS.list_snoc(%(bt)s, v)), VS.items_snoc(PB.it1(%(idx)s, %(bt)s), %(uiv)s),
     F.logic__subst(Nat, z => {PB.it1(1n+z, VS.list_snoc(%(bt)s, v)) == VS.items_snoc(PB.it1(z, %(bt)s), %(uiv)s) : S.Value}, F.spec_common__length(U32, %(bt)s), %(idx)s,
       btake_len(%(idx)s, %(limw)s, F.nat__lt_le(%(idx)s, F.spec_common__length(U32, %(limw)s), %(roomL)s)), it1_snoc(%(bt)s, v)))
-''' % dict(ftw=FTh(TW), tw=TW, ft=FTh('t'), slw=SL(TW), upd=UPDW, slt=SL('t'), limu=LIM(UPDW), limw=Lw, idx=IDX, tn=tn, tnb=tnb, hidx=hidx, roomL=roomL, uiv=UIV, bt=Bt))
+''' % dict(ftw=FTh(TW), tw=TW, ft=FTh('t'), slw=SL(TW), upd=UPDW, slt=SL('t'), limu=LIM(UPDW), limw=Lw, idx=IDX, tn=tn, tnb=tnb, hidx=hidx, roomL=roomL, room=room, uiv=UIV, bt=Bt))
     return '\n'.join(out)

@@ -710,4 +710,15 @@ wrap-free word count `(n >> 2) + ((n & 3) + 3 >> 2)`; `proofs/obj/cell_rw.bend` 
 | `pq_r5.bend`, `pr_r5.bend`, `ps_r5.bend` | 8 + 6 + 11 runs | R5-01, R5-02, the nested NMAX rows |
 
 Not run: the 131 generic names through setter chains (they have no fuzz-operation table; their setters were covered by round 3's `gen_packed_diff.py` for the
+
+## R5.5 crash-fix6 (agent/crash-fix6): status
+
+| finding | status | fix | evidence |
+|---|---|---|---|
+| R5-01 | FIXED | bytes: the append of a 1- or 2-byte element writes with `O.words_write_app` (`O.put_in_app`), which merges into `O.app_old(old, s)` = 0 when the element starts its word (`s = p & 3 = 0`), the old word otherwise; the set keeps `words_write`. Bits: the push ends with `O.bits_close(k, b)`, which writes word `(k >> 5) + 1` back as `O.app_old31(x, k & 31)` = 0 when bit 31 of a word was pushed, the old word otherwise, when that word is inside the storage (after the fit it always is). Both the roomy branch and the copying branch go through it | `regress.sh` cases 67-70 (`pl_u8` / `pl_u16` at 4 bytes and `bits33` / `progbitlist` at 31 bits in `0xA5A5A5A5` / all-ones storage, append: `valid=1 ser_ok=1`, 5 / 6 / 5 / 5 bytes; before: `valid1=0 ser_ok=0`) |
+| R5-02 | FIXED | `O.words_slice(o, p, n)` returns `(o, empty)` for `n = 0` (`sl_some`, the guard of `bl_some`) | `regress.sh` case 71 (`words_slice(o, 5, 0)`: `n=0` at once; before: 2.1 s) |
+
+The append laws (`read_append`, `read_append_grow` of the three byte lists and the two bit lists in `proofs/obj/coll_bytes.bend` / `coll_bits.bend`) state the
+new storage exactly (`O.app_old`, `BV2.close_t`); for zero spare storage it is the old storage (zero over zero), and the `view_append` laws keep their
+statements. List: docs/crash_fix6_statement_diff.md.
 packed kinds and by the lockstep / twin probes above for the composite lists); appends to the limits above 8,192 (the 131,072-bit `aggregation_bits` run was stopped at 900 s: the Python mirror copies the whole value per step).

@@ -1373,6 +1373,18 @@ def put_in(+j: U32, +x: U32, +s: U32, +bytes: U32, pair: Words & U32) -> Words:
   (w, +old) = pair
   words_setw(w, j, merge_word(old, x, s, bytes))
 
+# The old word under an appended element (docs/CRASH_HUNT.md R5-01): a word the element starts (byte s = 0 of it) lies past the old
+# length, and a valid object may hold anything there (CH-11): it is cleared, so the bytes past the new length are zero.
+def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
+
+def put_in_app(+j: U32, +x: U32, +s: U32, +bytes: U32, pair: Words & U32) -> Words:
+  (w, +old) = pair
+  words_setw(w, j, merge_word(app_old(old, s), x, s, bytes))
+
+# The append's write of `bytes` (1 or 2) bytes at byte position p: words_write over the cleared word when p starts it.
+def words_write_app(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
+  put_in_app(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+
 # Replace `bytes` (1..4) bytes at byte position p inside the packed value.
 
 def words_write(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
@@ -1499,9 +1511,32 @@ def bits_of_words(+k: U32, w: Words) -> Bits:
 
 # Append one bit: the storage grows by whole chunks, so it is amortised O(1).
 
+# After the push of bit k: when it is bit 31 of its word, the next word is the delimiter word of the k + 1 bits and must be zero; a valid
+# object may hold anything there (CH-11), so it is cleared (docs/CRASH_HUNT.md R5-01). Otherwise the next word is written back as it is.
+# The next word is touched only when it is inside the storage (after the fit it always is).
+def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 31), 0, old)
+
+def bits_close_go(+k: U32, pair: Bits & U32) -> Bits:
+  (b, +x) = pair
+  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, (k .&. 31 : U32)))
+
+def bits_close_if(inside: Bool, +k: U32, b: Bits) -> Bits:
+  match inside:
+    case True{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
+    case False{}: b
+
+def bits_close_sz(+k: U32, +k1: U32, pair: Array<U32> & U32) -> Bits:
+  (ws, +sz) = pair
+  bits_close_if(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), sz), k, Bits{ws, k1})
+
+def bits_close(+k: U32, b: Bits) -> Bits:
+  match b:
+    case Bits{ws, +k1}: bits_close_sz(k, k1, Array.size(U32, ws))
+
 def bits_push(b: Bits, v: Bool) -> Bits:
   match b:
-    case Bits{ws, +k}: bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v)
+    case Bits{ws, +k}: bits_close(k, bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v))
+
 
 # A bit per element, all clear: the clean marks of a fresh root cache, where
 # nothing has been hashed yet.
@@ -1540,9 +1575,14 @@ def sl_fin(+n: U32, pair: Words & Array<U32>) -> Words & Words:
   (o, out) = pair
   (o, Words{out, n})
 
-def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words:
-  sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
-    zeros_for(n), words_word(o, U32.shrn(p, 2n))))
+# An empty slice copies nothing: its word count minus one would wrap to 2^32 - 1 iterations (docs/CRASH_HUNT.md R5-02, as bl_some for CH-01).
+def sl_some(empty: Bool, o: Words, +p: U32, +n: U32) -> Words & Words:
+  match empty:
+    case True{}: (o, Words{zeros_for(0), 0})
+    case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
+      zeros_for(n), words_word(o, U32.shrn(p, 2n))))
+
+def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_eq(n, 0), o, p, n)
 
 def bl_go(+k: Nat, +j: U32, +base: U32, o: Words, pair: Array<U32> & U32) -> Words & Array<U32>:
   match k:

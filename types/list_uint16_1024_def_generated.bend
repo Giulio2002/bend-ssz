@@ -47,9 +47,14 @@ def l1024_u16_set_n(+i: U32, +v: U32, pair: O.Words & U32) -> O.Words & Bool:
 
 def l1024_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: l1024_u16_set_n(i, v, l1024_u16_len(o))
 
+def l1024_u16_put_app(ok: Bool, o: O.Words, +i: U32, +v: U32) -> O.Words & Bool:
+  match ok:
+    case True{}: (O.words_write_app(o, (i * 2 : U32), v, 2), True{})
+    case False{}: (o, False{})
+
 def l1024_u16_grow(ok: Bool, o: O.Words, +n: U32, +v: U32) -> O.Words & Bool:
   match ok:
-    case True{}: l1024_u16_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2 : U32)), ((n + 1 : U32) * 2 : U32)), n, v)
+    case True{}: l1024_u16_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2 : U32)), ((n + 1 : U32) * 2 : U32)), n, v)
     case False{}: (o, False{})
 
 def l1024_u16_app_c(+v: U32, +n: U32, pair: O.Words & U32) -> O.Words & Bool:

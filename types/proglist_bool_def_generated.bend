@@ -51,9 +51,14 @@ def pl_bool_set_n(+i: U32, +v: Bool, pair: O.Words & U32) -> O.Words & Bool:
 
 def pl_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: pl_bool_set_n(i, v, pl_bool_len(o))
 
+def pl_bool_put_app(ok: Bool, o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool:
+  match ok:
+    case True{}: (O.words_write_app(o, i, O.pick(v, 1, 0), 1), True{})
+    case False{}: (o, False{})
+
 def pl_bool_grow(ok: Bool, o: O.Words, +n: U32, +v: Bool) -> O.Words & Bool:
   match ok:
-    case True{}: pl_bool_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
+    case True{}: pl_bool_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
     case False{}: (o, False{})
 
 def pl_bool_app_c(+v: Bool, +n: U32, pair: O.Words & U32) -> O.Words & Bool:

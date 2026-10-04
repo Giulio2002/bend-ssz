@@ -9,6 +9,9 @@ The spec's view of the list is its first k bits (BK.btk(k, BK.bitsof(slots))). T
                           are the bits of W with bit 32 q + k replaced
     bt_set(n, L, i, v): the first n bits of L with bit i replaced are the first n bits of L, bit i replaced, for i < n
 
+    close_thaw / at_close / view_close: the push's close of the next word (O.bits_close, docs/CRASH_HUNT.md R5-01) as the tree close_t;
+                          it keeps word n >> 5 and the first n + 1 bits
+
 codegen/proofs/collections/collection_api_laws.py's `..._api_view_set` of the bit lists composes them (proofs/obj/coll_bits.bend). The word-level case split is the one of
 bit_rw_go (coll_bits.bend): the five low bits of i are literal, the mask is then a literal word and its bits are the unit list of the position.
 
@@ -610,8 +613,150 @@ def kcov(+n: U32, +N1: U32, +q: Nat, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True
 '''
 
 
+VIEW_CLOSE = r'''
+# ---- the push closes the next word (docs/CRASH_HUNT.md R5-01): O.bits_close(n, b) writes word j = (n >> 5) + 1 back, zero when n & 31 = 31,
+# when j is inside the storage. close_t is the storage tree after it; it keeps the words 0 .. n >> 5, so the bits up to n + 1 are unchanged ----
+def close_g(inside: Bool, +d: Nat, +T: F.array__Tree<U32>, +n: U32) -> F.array__Tree<U32>:
+  match inside:
+    case True{}: F.array__upd(U32, d, T, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat((U32.shrn(n, 5n) + 1 : U32))), U32.and(n, 31)))
+    case False{}: T
+
+def close_t(+d: Nat, +T: F.array__Tree<U32>, +n: U32) -> F.array__Tree<U32>: close_g(U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), d, T, n)
+
+# the next word inside the storage, as a Nat
+def guard_lt(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +e: {U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)) == True{} : Bool})
+    -> {Nat.is_lt(U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), F.spec_common__pow2(d)) == True{} : Bool}:
+  +hl = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), Nat.is_lt(U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), U32.to_nat(F.u32__pow2u(d))),
+    F.u32__is_lt_nat((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), e)
+  F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), z) == True{} : Bool}, U32.to_nat(F.u32__pow2u(d)), F.spec_common__pow2(d), F.u32__pow2u_value(d, hd), hl)
+
+# the next word is word q + 1 (no wrap: q is below 2^d, d < 32)
+def nowrap(+n: U32, +q: Nat, +d: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hk: {Nat.is_lt(q, F.spec_common__pow2(d)) == True{} : Bool})
+    -> {U32.to_nat((U32.shrn(n, 5n) + 1 : U32)) == 1n+q : Nat}:
+  +h0 = F.nat__lt_succ_le_succ(q, F.spec_common__pow2(d), hk)
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(1n+z, F.spec_common__pow2(d)) == True{} : Bool}, q, U32.to_nat(U32.shrn(n, 5n)), Equal.sym(Nat, U32.to_nat(U32.shrn(n, 5n)), q, hq), h0)
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(1n+U32.to_nat(U32.shrn(n, 5n)), z) == True{} : Bool}, F.spec_common__pow2(d), U32.to_nat(F.u32__pow2u(d)),
+    Equal.sym(Nat, U32.to_nat(F.u32__pow2u(d)), F.spec_common__pow2(d), F.u32__pow2u_value(d, hd)), h1)
+  Equal.trans(Nat, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), 1n+U32.to_nat(U32.shrn(n, 5n)), 1n+q, VVU.addk(U32.shrn(n, 5n), 1, F.u32__pow2u(d), h2),
+    F.nat__succ_cong(U32.to_nat(U32.shrn(n, 5n)), q, hq))
+
+def succ_ne(+q: Nat) -> {Nat.is_eq(1n+q, q) == False{} : Bool}:
+  match q:
+    case 0n: {==}
+    case 1n+p: succ_ne(p)
+
+# the storage after the close: the runtime's close of the thawed tree is the thaw of close_t
+def close_thaw_g(inside: Bool, +d: Nat, +T: F.array__Tree<U32>, +n: U32, +N1: U32, +e: {U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)) == inside : Bool},
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {O.bits_close_if(inside, n, O.Bits{F.array__thaw(U32, T), N1}) == O.Bits{F.array__thaw(U32, close_g(inside, d, T, n)), N1} : O.Bits}:
+  match inside:
+    case True{}:
+      +J = (U32.shrn(n, 5n) + 1 : U32)
+      +hJ = guard_lt(d, n, hd, e)
+      %Equal.sym(O.Bits & U32, O.bits_word(O.Bits{F.array__thaw(U32, T), N1}, J), (O.Bits{F.array__thaw(U32, T), N1}, WR.at(F.array__slots(U32, T), U32.to_nat(J))), WR.bword_thaw(d, T, N1, J, U32.to_nat(J), hd, {==}, hJ, pf)) :
+        {O.bits_close_go(n, _) == O.Bits{F.array__thaw(U32, close_g(True{}, d, T, n)), N1} : O.Bits}
+      %Equal.sym(O.Bits, O.bits_setw(O.Bits{F.array__thaw(U32, T), N1}, J, O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat(J)), U32.and(n, 31))),
+          O.Bits{F.array__thaw(U32, F.array__upd(U32, d, T, U32.to_nat(J), O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat(J)), U32.and(n, 31)))), N1},
+          WR.bsetw_thaw(d, T, N1, J, U32.to_nat(J), O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat(J)), U32.and(n, 31)), hd, {==}, hJ, pf)) :
+        {_ == O.Bits{F.array__thaw(U32, close_g(True{}, d, T, n)), N1} : O.Bits}
+      {==}
+    case False{}: {==}
+
+def close_thaw(+d: Nat, +T: F.array__Tree<U32>, +n: U32, +N1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {O.bits_close(n, O.Bits{F.array__thaw(U32, T), N1}) == O.Bits{F.array__thaw(U32, close_t(d, T, n)), N1} : O.Bits}:
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(d)), F.array__size_thaw(U32, d, T, pf)) :
+    {O.bits_close_sz(n, N1, _) == O.Bits{F.array__thaw(U32, close_t(d, T, n)), N1} : O.Bits}
+  close_thaw_g(U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), d, T, n, N1, {==}, hd, pf)
+
+def close_perfect_g(inside: Bool, +d: Nat, +T: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {F.array__perfect(U32, d, close_g(inside, d, T, n)) == True{} : Bool}:
+  match inside:
+    case True{}: F.array__upd_perfect(U32, d, T, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat((U32.shrn(n, 5n) + 1 : U32))), U32.and(n, 31)), pf)
+    case False{}: pf
+
+def close_perfect(+d: Nat, +T: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, T) == True{} : Bool}) -> {F.array__perfect(U32, d, close_t(d, T, n)) == True{} : Bool}:
+  close_perfect_g(U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), d, T, n, pf)
+
+# word q of the storage is unchanged by the close
+def at_close_g(inside: Bool, +d: Nat, +T: F.array__Tree<U32>, +n: U32, +q: Nat, +e: {U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)) == inside : Bool},
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +nw: {U32.to_nat((U32.shrn(n, 5n) + 1 : U32)) == 1n+q : Nat}, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {WR.at(F.array__slots(U32, close_g(inside, d, T, n)), q) == WR.at(F.array__slots(U32, T), q) : U32}:
+  match inside:
+    case True{}:
+      +ne = F.logic__subst(Nat, z => {Nat.is_eq(z, q) == False{} : Bool}, 1n+q, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), Equal.sym(Nat, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), 1n+q, nw), succ_ne(q))
+      WR.at_upd_other(d, T, U32.to_nat((U32.shrn(n, 5n) + 1 : U32)), q, O.app_old31(WR.at(F.array__slots(U32, T), U32.to_nat((U32.shrn(n, 5n) + 1 : U32))), U32.and(n, 31)), ne, guard_lt(d, n, hd, e), pf)
+    case False{}: {==}
+
+def at_close(+d: Nat, +T: F.array__Tree<U32>, +n: U32, +q: Nat, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +nw: {U32.to_nat((U32.shrn(n, 5n) + 1 : U32)) == 1n+q : Nat},
+    +pf: {F.array__perfect(U32, d, T) == True{} : Bool}) -> {WR.at(F.array__slots(U32, close_t(d, T, n)), q) == WR.at(F.array__slots(U32, T), q) : U32}:
+  at_close_g(U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), d, T, n, q, {==}, hd, nw, pf)
+
+# the first 32 q + r bits (r <= 32) do not see word q + 1
+def btk_upd(+q: Nat, +r: Nat, +W: List<&2, U32>, +x: U32, +hr: {Nat.is_le(r, 32n) == True{} : Bool})
+    -> {BK.btk(Nat.add(WS.e32(q), r), BK.bitsof(F.spec_common__update(U32, W, 1n+q, x))) == BK.btk(Nat.add(WS.e32(q), r), BK.bitsof(W)) : +List<Bool>}:
+  match q W:
+    case _ Nil{}: {==}
+    case 0n Con{+y, +ry}:
+      +hy = F.logic__subst(Nat, z => {Nat.is_le(r, z) == True{} : Bool}, 32n, len_(BLf.wbits(y)), Equal.sym(Nat, len_(BLf.wbits(y)), 32n, wlen_u(y)), hr)
+      Equal.trans(+List<Bool>, BK.btk(r, List.append(&2, Bool, BLf.wbits(y), BK.bitsof(F.spec_common__update(U32, ry, 0n, x)))), BK.btk(r, BLf.wbits(y)), BK.btk(r, List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))),
+        btk_short(BLf.wbits(y), BK.bitsof(F.spec_common__update(U32, ry, 0n, x)), r, hy),
+        Equal.sym(+List<Bool>, BK.btk(r, List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))), BK.btk(r, BLf.wbits(y)), btk_short(BLf.wbits(y), BK.bitsof(ry), r, hy)))
+    case 1n+ +q1 Con{+y, +ry}:
+      +j = Nat.add(WS.e32(q1), r)
+      +U = BK.bitsof(F.spec_common__update(U32, ry, 1n+q1, x))
+      +ih = btk_upd(q1, r, ry, x, hr)
+      +el = Equal.sym(Nat, len_(BLf.wbits(y)), 32n, wlen_u(y))
+      +a1 = Equal.trans(+List<Bool>, BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), U)), BK.btk(Nat.add(len_(BLf.wbits(y)), j), List.append(&2, Bool, BLf.wbits(y), U)),
+        List.append(&2, Bool, BLf.wbits(y), BK.btk(j, U)),
+        Equal.cong(Nat, +List<Bool>, z => BK.btk(Nat.add(z, j), List.append(&2, Bool, BLf.wbits(y), U)), 32n, len_(BLf.wbits(y)), el),
+        btk_long(BLf.wbits(y), U, j))
+      +a3 = Equal.trans(+List<Bool>, BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))), BK.btk(Nat.add(len_(BLf.wbits(y)), j), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))),
+        List.append(&2, Bool, BLf.wbits(y), BK.btk(j, BK.bitsof(ry))),
+        Equal.cong(Nat, +List<Bool>, z => BK.btk(Nat.add(z, j), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))), 32n, len_(BLf.wbits(y)), el),
+        btk_long(BLf.wbits(y), BK.bitsof(ry), j))
+      Equal.trans(+List<Bool>, BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), U)), List.append(&2, Bool, BLf.wbits(y), BK.btk(j, U)),
+        BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))), a1,
+        Equal.trans(+List<Bool>, List.append(&2, Bool, BLf.wbits(y), BK.btk(j, U)), List.append(&2, Bool, BLf.wbits(y), BK.btk(j, BK.bitsof(ry))),
+          BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))),
+          Equal.cong(+List<Bool>, +List<Bool>, z => List.append(&2, Bool, BLf.wbits(y), z), BK.btk(j, U), BK.btk(j, BK.bitsof(ry)), ih),
+          Equal.sym(+List<Bool>, BK.btk(Nat.add(WS.e32(1n+q1), r), List.append(&2, Bool, BLf.wbits(y), BK.bitsof(ry))), List.append(&2, Bool, BLf.wbits(y), BK.btk(j, BK.bitsof(ry))), a3)))
+
+# the bits of the bit list (n + 1 bits) after the close are the bits before it
+def view_close_g(inside: Bool, +d: Nat, +T: F.array__Tree<U32>, +n: U32, +q: Nat, +N1: U32, +e: {U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)) == inside : Bool},
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat}, +hN: {U32.to_nat(N1) == 1n+U32.to_nat(n) : Nat},
+    +nw: {U32.to_nat((U32.shrn(n, 5n) + 1 : U32)) == 1n+q : Nat}, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {BO.bview(O.Bits{F.array__thaw(U32, close_g(inside, d, T, n)), N1}) == BO.bview(O.Bits{F.array__thaw(U32, T), N1}) : +List<Bool>}:
+  match inside:
+    case True{}:
+      +J = U32.to_nat((U32.shrn(n, 5n) + 1 : U32))
+      +X = O.app_old31(WR.at(F.array__slots(U32, T), J), U32.and(n, 31))
+      +U = F.array__upd(U32, d, T, J, X)
+      +k = U32.to_nat(U32.and(n, 31))
+      +hN2 = Equal.trans(Nat, U32.to_nat(N1), 1n+Nat.add(WS.e32(q), k), Nat.add(WS.e32(q), 1n+k),
+        Equal.trans(Nat, U32.to_nat(N1), 1n+U32.to_nat(n), 1n+Nat.add(WS.e32(q), k), hN, F.nat__succ_cong(U32.to_nat(n), Nat.add(WS.e32(q), k), Equal.sym(Nat, Nat.add(WS.e32(q), k), U32.to_nat(n), nsplit(n, q, hq)))),
+        Equal.sym(Nat, Nat.add(WS.e32(q), 1n+k), 1n+Nat.add(WS.e32(q), k), F.nat__add_succ(WS.e32(q), k)))
+      %Equal.sym(+List<Bool>, BO.bview(O.Bits{F.array__thaw(U32, U), N1}), BK.btk(U32.to_nat(N1), BK.bitsof(F.array__slots(U32, U))), bview_thaw(U, N1)) :
+        {_ == BO.bview(O.Bits{F.array__thaw(U32, T), N1}) : +List<Bool>}
+      %Equal.sym(+List<Bool>, BO.bview(O.Bits{F.array__thaw(U32, T), N1}), BK.btk(U32.to_nat(N1), BK.bitsof(F.array__slots(U32, T))), bview_thaw(T, N1)) :
+        {BK.btk(U32.to_nat(N1), BK.bitsof(F.array__slots(U32, U))) == _ : +List<Bool>}
+      %Equal.sym(List<&2, U32>, F.array__slots(U32, U), F.spec_common__update(U32, F.array__slots(U32, T), J, X), F.array__upd_slots(U32, d, T, J, X, guard_lt(d, n, hd, e), pf)) :
+        {BK.btk(U32.to_nat(N1), BK.bitsof(_)) == BK.btk(U32.to_nat(N1), BK.bitsof(F.array__slots(U32, T))) : +List<Bool>}
+      %Equal.sym(Nat, J, 1n+q, nw) :
+        {BK.btk(U32.to_nat(N1), BK.bitsof(F.spec_common__update(U32, F.array__slots(U32, T), _, X))) == BK.btk(U32.to_nat(N1), BK.bitsof(F.array__slots(U32, T))) : +List<Bool>}
+      %Equal.sym(Nat, U32.to_nat(N1), Nat.add(WS.e32(q), 1n+k), hN2) :
+        {BK.btk(_, BK.bitsof(F.spec_common__update(U32, F.array__slots(U32, T), 1n+q, X))) == BK.btk(_, BK.bitsof(F.array__slots(U32, T))) : +List<Bool>}
+      btk_upd(q, 1n+k, F.array__slots(U32, T), X, F.nat__lt_succ_le_succ(k, 32n, lt32(n)))
+    case False{}: {==}
+
+def view_close(+d: Nat, +T: F.array__Tree<U32>, +n: U32, +q: Nat, +N1: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hq: {U32.to_nat(U32.shrn(n, 5n)) == q : Nat},
+    +hN: {U32.to_nat(N1) == 1n+U32.to_nat(n) : Nat}, +nw: {U32.to_nat((U32.shrn(n, 5n) + 1 : U32)) == 1n+q : Nat}, +pf: {F.array__perfect(U32, d, T) == True{} : Bool})
+    -> {BO.bview(O.Bits{F.array__thaw(U32, close_t(d, T, n)), N1}) == BO.bview(O.Bits{F.array__thaw(U32, T), N1}) : +List<Bool>}:
+  view_close_g(U32.is_lt((U32.shrn(n, 5n) + 1 : U32), F.u32__pow2u(d)), d, T, n, q, N1, {==}, hd, hq, hN, nw, pf)
+'''
+
+
 def text():
-    return HEAD + dispatcher() + VIEW_SET + VIEW_APPEND + VIEW_GROW
+    return HEAD + dispatcher() + VIEW_SET + VIEW_APPEND + VIEW_GROW + VIEW_CLOSE
 
 
 def main():

@@ -604,7 +604,8 @@
     "call_chain": "X_append -> app_c -> grow -> O.words_fit (roomy: array kept) -> O.words_write at byte n (merge_word writes only the element's bytes); bits: push of bit 31 makes the next (spare, non-zero) word the delimiter word",
     "why": "_valid admits non-zero spare storage (docs/API_CONTRACTS.md: the root of a valid object is the spec root whatever spare storage it has, CH-11 / R2-02 (b)); the append turns spare bytes into bytes of the last word past the new length, which words_ok / bits_ok require to be zero. The append answers ok, the root is right (clean copy), only the later _serialize refuses a value the spec encodes",
     "fix": "clear the spare part of the word in the roomy branch of the append (write the element with the mask covering the bytes above it when it starts a word; zero word (k + 1) >> 5 when a bit-list push fills bit 31), or take the copying branch (grow_to copies ceil(n/4) words into zero storage) when the word past the data is not zero",
-    "proof_impact": "none semantically for represented objects (zero over zero, words_canon.bend); the append writer text and the regenerated per-kind append laws change"
+    "proof_impact": "none semantically for represented objects (zero over zero, words_canon.bend); the append writer text and the regenerated per-kind append laws change",
+    "status": "FIXED (crash-fix6): the byte append merges into O.app_old (zero when the element starts its word), the bit push closes the next word (O.bits_close: zero after bit 31 of a word); regress.sh cases 67-70"
    },
    {
     "id": "R5-02",
@@ -616,8 +617,13 @@
     "observed": "returns the empty Words after 2.1 s (2^32 - 1 iterations of the copy loop), 7.7 MB; n = 8: 0.11 s",
     "why": "the loop count (n + 3 >> 2) - 1 wraps for n = 0; CH-01 added the empty guard to words_blit (bl_some) only",
     "fix": "the bl_some guard (n = 0 returns the empty Words) and the wrap-free count (n >> 2) + ((n & 3) + 3 >> 2)",
-    "proof_impact": "none (proofs/obj/cell_rw.bend states n = 2048)"
+    "proof_impact": "none (proofs/obj/cell_rw.bend states n = 2048)",
+    "status": "FIXED (crash-fix6): O.words_slice returns the empty Words for n = 0 (sl_some); regress.sh case 71"
    }
-  ]
+  ],
+  "fix_status": {
+   "R5-01": "FIXED (crash-fix6): O.words_write_app / O.put_in_app (bytes, roomy and copying branch) and O.bits_close (bits); the read_append laws state the new storage (O.app_old, BV2.close_t), docs/crash_fix6_statement_diff.md",
+   "R5-02": "FIXED (crash-fix6): the empty guard of words_slice (sl_some)"
+  }
  }
 }

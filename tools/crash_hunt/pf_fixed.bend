@@ -47,6 +47,10 @@ import ../../types/Fulu_list_Deposit_16_def_generated.bend as LdD
 import ../../types/Fulu_list_Deposit_16_hashtreeroot_generated.bend as LdH
 import ../../types/FuluDeposit_def_generated.bend as DpD
 import ../../types/FuluDepositData_def_generated.bend as DdD
+import ../../types/proglist_uint16_encode_ssz_generated.bend as P16E
+import ../../types/bitlist_33_def_generated.bend as B33
+import ../../types/bitlist_33_encode_ssz_generated.bend as B33E
+import ../../types/progbitlist_encode_ssz_generated.bend as PbE
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -333,6 +337,55 @@ def dafter(pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
   dtake(LdD.l16_Deposit_ctake(c, 1))
 def case66() -> IO(Unit): dafter(dcroot(LdD.l16_Deposit_cache(dbuild(3n, 0, LdD.l16_Deposit_default()))))
 
+# R5-01: an append into a valid object whose storage past its length is not zero (4 bytes / 31 bits, the next word dirty); R5-02: an empty slice
+def r5w() -> Array<U32>: Array.new(U32, 2n, 2779096485)
+def r5b() -> Array<U32>: Array.set(U32, Array.new(U32, 2n, 4294967295), 0, 2147483647)
+def r5_ser(ok: Bool, pair: B.Buf & U32) -> String:
+  (b, +m) = pair
+  " ser_ok=" ++ O.pick_str(ok) ++ " ser_size=" ++ U32.show(m)
+def r5_enc(e: O.Encoded) -> String:
+  match e:
+    case O.Encoded{ok, b}: r5_ser(ok, B.size(b))
+def r5_wenc(pair: O.Words & O.Encoded) -> String:
+  (o, e) = pair
+  r5_enc(e)
+def r5_benc(pair: O.Bits & O.Encoded) -> String:
+  (o, e) = pair
+  r5_enc(e)
+def r5_u8v(label: String, +fl: U32, pair: O.Words & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ " append=" ++ U32.show(fl) ++ " valid=" ++ O.pick_str(ok) ++ r5_wenc(PlE.proglist_uint8_serialize(o)))
+def r5_u8(label: String, pair: O.Words & Bool) -> IO(Unit):
+  (o, fl) = pair
+  r5_u8v(label, O.pick(fl, 1, 0), PlE.pl_u8_valid(o))
+def case67() -> IO(Unit): r5_u8("r5_pl_u8_append_dirty", PlD.pl_u8_append(O.Words{r5w(), 4}, 7))
+def r5_u16v(label: String, +fl: U32, pair: O.Words & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ " append=" ++ U32.show(fl) ++ " valid=" ++ O.pick_str(ok) ++ r5_wenc(P16E.proglist_uint16_serialize(o)))
+def r5_u16(label: String, pair: O.Words & Bool) -> IO(Unit):
+  (o, fl) = pair
+  r5_u16v(label, O.pick(fl, 1, 0), P16E.pl_u16_valid(o))
+def case68() -> IO(Unit): r5_u16("r5_pl_u16_append_dirty", P16.pl_u16_append(O.Words{r5w(), 4}, 7))
+def r5_b33v(label: String, +fl: U32, pair: O.Bits & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ " append=" ++ U32.show(fl) ++ " valid=" ++ O.pick_str(ok) ++ r5_benc(B33E.bitlist_33_serialize(o)))
+def r5_b33(label: String, pair: O.Bits & Bool) -> IO(Unit):
+  (o, fl) = pair
+  r5_b33v(label, O.pick(fl, 1, 0), B33E.bits33_valid(o))
+def case69() -> IO(Unit): r5_b33("r5_bits33_append_dirty", B33.bits33_append(O.Bits{r5b(), 31}, True{}))
+def r5_pbv(label: String, +fl: U32, pair: O.Bits & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ " append=" ++ U32.show(fl) ++ " valid=" ++ O.pick_str(ok) ++ r5_benc(PbE.progbitlist_serialize(o)))
+def r5_pb(label: String, pair: O.Bits & Bool) -> IO(Unit):
+  (o, fl) = pair
+  r5_pbv(label, O.pick(fl, 1, 0), PbE.pbits_valid(o))
+def case70() -> IO(Unit): r5_pb("r5_progbits_append_dirty", PbD.pbits_append(O.Bits{r5b(), 31}, True{}))
+def r5_sl(label: String, pair: O.Words & O.Words) -> IO(Unit):
+  (o, sl) = pair
+  match sl:
+    case O.Words{ws, +n}: IO.print(label ++ " n=" ++ U32.show(n))
+def case71() -> IO(Unit): r5_sl("r5_words_slice_empty", O.words_slice(O.Words{r5w(), 16}, 5, 0))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -400,6 +453,11 @@ def dispatch(+c: U32) -> IO(Unit):
     case 64: case64()
     case 65: case65()
     case 66: case66()
+    case 67: case67()
+    case 68: case68()
+    case 69: case69()
+    case 70: case70()
+    case 71: case71()
     case _: case12()
 
 def main() -> IO(Unit):

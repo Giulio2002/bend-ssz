@@ -1845,6 +1845,17 @@ def wpat(bits, tail='WNil{}'):
     return s_
 
 
+def _close_view(L, DD, T1, N1, HD, PF1, HN, VG, OB, RHS, fin):
+    """the push's close of the next word (O.bits_close): rewritten to the tree BV2.close_t, whose first n + 1 bits are those of the
+    tree before it (BV2.view_close); `fin` (or the next line) proves the view of the tree before the close"""
+    CT = 'BV2.close_t(%s, %s, n)' % (DD, T1)
+    L.append('  %%Equal.sym(O.Bits, O.bits_close(n, %s), %s, BV2.close_thaw(%s, %s, n, %s, %s, %s)) : {%s == %s : +List<Bool>}' % (OB(T1), OB(CT), DD, T1, N1, HD, PF1, VG('_'), RHS))
+    L.append('  Equal.trans(+List<Bool>, %s, %s, %s, BV2.view_close(%s, %s, n, q, %s, %s, hq, %s, BV2.nowrap(n, q, %s, %s, hq, hk), %s),'
+             % (VG(OB(CT)), VG(OB(T1)), RHS, DD, T1, N1, HD, HN, DD, HD, PF1))
+    if fin:
+        L.append('    %s)' % fin)
+
+
 def coll_bits(cs):
     L = []
     TESTZ = lambda w, k: 'M.shr_by(O.bit_merge(v, %s, M.shl_by(1, %s)), %s)' % (w, k, k)
@@ -1933,13 +1944,17 @@ def coll_bits(cs):
         X = 'WR.at(F.array__slots(U32, t), q)'
         L.append('# ---- %s ----' % c)
 
-        def emit(name, NBT, IX, prem, first, opening, TT='t', DD='d', PF='pf', HD='hd'):
+        def emit(name, NBT, IX, prem, first, opening, TT='t', DD='d', PF='pf', HD='hd', app=False):
+            """app: the push, which closes the next word after the bit is set (O.bits_close, BV2.close_t; docs/CRASH_HUNT.md R5-01)"""
             X = 'WR.at(F.array__slots(U32, %s), q)' % TT
             OBJT = lambda t_: 'O.Bits{F.array__thaw(U32, %s), %s}' % (t_, NBT)
             NEWW = 'O.bit_merge(v, %s, M.shl_by(1, U32.and(%s, 31)))' % (X, IX)
             T1 = 'F.array__upd(U32, %s, %s, q, %s)' % (DD, TT, NEWW)
+            PF1 = 'F.array__upd_perfect(U32, %s, %s, q, %s, %s)' % (DD, TT, NEWW, PF)
+            CT = 'BV2.close_t(%s, %s, %s)' % (DD, T1, IX) if app else T1
+            CL = (lambda x: 'O.bits_close(%s, %s)' % (IX, x)) if app else (lambda x: x)
             JW = 'U32.shrn(%s, 5n)' % IX
-            RES = '(%s, Some{v}) : O.Bits & Maybe<&1, Bool>' % OBJT(T1)
+            RES = '(%s, Some{v}) : O.Bits & Maybe<&1, Bool>' % OBJT(CT)
             GET = lambda o: '%s.%s_get(%s, %s)' % (DA, c, o, IX)
             gg = 'U32.is_lt(%s, %s)' % (IX, NBT)
             L.append('def %s_api_%s(+d: Nat, +t: F.array__Tree<U32>, +n: U32, %s+q: Nat, +v: Bool, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, '
@@ -1949,16 +1964,23 @@ def coll_bits(cs):
             for eq, goal in opening:
                 L.append('  %s : {%s == %s}' % (eq, GET(goal), RES))
             L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(%s, %s, %s, %s, q, %s, hq, hk, %s)) : {%s == %s}'
-                     % (OBJT(TT), JW, OBJT(TT), X, DD, TT, NBT, JW, HD, PF, GET('O.bit_put(%s, v, _)' % IX), RES))
+                     % (OBJT(TT), JW, OBJT(TT), X, DD, TT, NBT, JW, HD, PF, GET(CL('O.bit_put(%s, v, _)' % IX)), RES))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, %s, hq, hk, %s)) : {%s == %s}'
-                     % (OBJT(TT), JW, NEWW, OBJT(T1), DD, TT, NBT, JW, NEWW, HD, PF, GET('_'), RES))
-            L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s.%s_get_in(_, %s, %s) == %s}' % (gg, DA, c, OBJT(T1), IX, RES))
-            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.bword_thaw(%s, %s, %s, %s, q, %s, hq, hk, F.array__upd_perfect(U32, %s, %s, q, %s, %s))) : {%s.%s_some(O.bit_of(%s, _)) == %s}'
-                     % (OBJT(T1), JW, OBJT(T1), T1, DD, T1, NBT, JW, HD, DD, TT, NEWW, PF, DA, c, IX, RES))
+                     % (OBJT(TT), JW, NEWW, OBJT(T1), DD, TT, NBT, JW, NEWW, HD, PF, GET(CL('_')), RES))
+            if app:
+                L.append('  %%Equal.sym(O.Bits, O.bits_close(%s, %s), %s, BV2.close_thaw(%s, %s, %s, %s, %s, %s)) : {%s == %s}'
+                         % (IX, OBJT(T1), OBJT(CT), DD, T1, IX, NBT, HD, PF1, GET('_'), RES))
+            L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s.%s_get_in(_, %s, %s) == %s}' % (gg, DA, c, OBJT(CT), IX, RES))
+            PFC = 'BV2.close_perfect(%s, %s, %s, %s)' % (DD, T1, IX, PF1) if app else PF1
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, WR.at(F.array__slots(U32, %s), q)), WR.bword_thaw(%s, %s, %s, %s, q, %s, hq, hk, %s)) : {%s.%s_some(O.bit_of(%s, _)) == %s}'
+                     % (OBJT(CT), JW, OBJT(CT), CT, DD, CT, NBT, JW, HD, PFC, DA, c, IX, RES))
+            if app:
+                L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), WR.at(F.array__slots(U32, %s), q), BV2.at_close(%s, %s, %s, q, %s, BV2.nowrap(%s, q, %s, %s, hq, hk), %s)) : {%s.%s_some((%s, U32.is_eq(U32.and(M.shr_by(_, U32.and(%s, 31)), 1), 1))) == %s}'
+                         % (CT, T1, DD, T1, IX, HD, IX, DD, HD, PF1, DA, c, OBJT(CT), IX, RES))
             L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(%s, %s, q, %s, hk, %s)) : {%s.%s_some((%s, U32.is_eq(U32.and(M.shr_by(_, U32.and(%s, 31)), 1), 1))) == %s}'
-                     % (T1, NEWW, DD, TT, NEWW, PF, DA, c, OBJT(T1), IX, RES))
+                     % (T1, NEWW, DD, TT, NEWW, PF, DA, c, OBJT(CT), IX, RES))
             L.append('  %%Equal.sym(Bool, U32.is_eq(U32.and(M.shr_by(%s, U32.and(%s, 31)), 1), 1), v, bit_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
-                     % (NEWW, IX, X, IX, DA, c, OBJT(T1), RES))
+                     % (NEWW, IX, X, IX, DA, c, OBJT(CT), RES))
             L.append('  {==}')
         O0 = 'O.Bits{F.array__thaw(U32, t), n}'
         emit('read_set', 'n', 'i', '', 'Pair.fst(O.Bits, Bool, %s.%s_set(%s, i, v))' % (DA, c, O0),
@@ -2038,7 +2060,8 @@ def coll_bits(cs):
                  'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
                  [SZB, ('%%Equal.sym(Bool, %s, True{}, ha)' % GAB, 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom))' % (WB, NBY, WB, NBY, NBY),
-                   'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)])
+                   'O.bits_close(n, O.bits_set(O.bits_of_words(%s, _), n, v))' % N1)], app=True)
+            imps['BV2'] = 'proofs/obj/bits_view.bend'
             n += 1
             # the spec value: the bits of the list after a roomy append are the bits before and the new bit
             mlim = re.match(r'Bool\.and\((U32\.is_lt\(n, (\d+)\)), (.*)\)$', GAB)
@@ -2059,10 +2082,11 @@ def coll_bits(cs):
             L.append('    -> {%s == %s : +List<Bool>}:' % (VGn('Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0)), RHSn))
             L.append('  %s : {%s == %s : +List<Bool>}' % (SZB[0], VGn(SZB[1]), RHSn))
             L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (GAB, VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
-            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom)) : {%s == %s : +List<Bool>}' % (WB, NBY, WB, NBY, NBY, VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
-            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, OBn('t'), Xn, N1, JWn, VGn('O.bit_put(n, v, _)'), RHSn))
-            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, NWn, OBn(T1n), N1, JWn, NWn, VGn('_'), RHSn))
-            L.append('  BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, %s), hg, hq, hk)' % (N1, mlim.group(2), LE1))
+            L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, %s, %s, pf, hroom)) : {%s == %s : +List<Bool>}' % (WB, NBY, WB, NBY, NBY, VGn('O.bits_close(n, O.bits_set(O.bits_of_words(%s, _), n, v))' % N1), RHSn))
+            L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, OBn('t'), Xn, N1, JWn, VGn('O.bits_close(n, O.bit_put(n, v, _))'), RHSn))
+            L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : +List<Bool>}' % (OBn('t'), JWn, NWn, OBn(T1n), N1, JWn, NWn, VGn('O.bits_close(n, _)'), RHSn))
+            _close_view(L, 'd', T1n, N1, 'hd', 'F.array__upd_perfect(U32, d, t, q, %s, pf)' % NWn, 'BV2.n1(n, %s, hg, %s)' % (mlim.group(2), LE1), VGn, OBn, RHSn,
+                        'BV2.view_snoc(d, t, n, %s, q, v, pf, BV2.n1(n, %s, hg, %s), hg, hq, hk)' % (N1, mlim.group(2), LE1))
             L.append('')
             n += 1
             GW = grow_parts(NBY, NBY)
@@ -2072,8 +2096,8 @@ def coll_bits(cs):
                  'Pair.fst(O.Bits, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
                  [SZB, ('%%Equal.sym(Bool, %s, True{}, ha)' % GAB, 'Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)),
                   ('%%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s)' % (WB, NBY, GW['G'], NBY, GW['call']),
-                   'O.bits_set(O.bits_of_words(%s, _), n, v)' % N1)],
-                 TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')
+                   'O.bits_close(n, O.bits_set(O.bits_of_words(%s, _), n, v))' % N1)],
+                 TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2', app=True)
             n += 1
             # the spec value after an append that reallocates the storage: the bits before and the new bit (the grown tree keeps the old words: bits_view.bend's view_snoc_grow)
             KK = 'U32.to_nat(U32.shrn((%s + 3 : U32), 2n))' % NBY
@@ -2089,12 +2113,14 @@ def coll_bits(cs):
             L.append('  %s : {%s == %s : +List<Bool>}' % (SZB[0], VGn(SZB[1]), RHSn))
             L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : +List<Bool>}' % (GAB, VGn('Pair.fst(O.Bits, Bool, %s.%s(_, %s, v))' % (DA, I['afn'], O0)), RHSn))
             L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), %s}, %s) : {%s == %s : +List<Bool>}'
-                     % (WB, NBY, Gg, NBY, GW['call'], VGn('O.bits_set(O.bits_of_words(%s, _), n, v)' % N1), RHSn))
+                     % (WB, NBY, Gg, NBY, GW['call'], VGn('O.bits_close(n, O.bits_set(O.bits_of_words(%s, _), n, v))' % N1), RHSn))
             L.append('  %%Equal.sym(O.Bits & U32, O.bits_word(%s, %s), (%s, %s), WR.bword_thaw(%s, %s, %s, %s, q, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
-                     % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bit_put(n, v, _)'), RHSn))
+                     % (OBn(Gg), JWn, OBn(Gg), Xg, D2g, Gg, N1, JWn, GW['pfG'], VGn('O.bits_close(n, O.bit_put(n, v, _))'), RHSn))
             L.append('  %%Equal.sym(O.Bits, O.bits_setw(%s, %s, %s), %s, WR.bsetw_thaw(%s, %s, %s, %s, q, %s, hd2, hq, hk, %s)) : {%s == %s : +List<Bool>}'
-                     % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('_'), RHSn))
-            L.append('  BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, %s), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, %s, {==}), BV2.n1(n, %s, hg, %s), hq))' % (D2g, KK, N1, mlim.group(2), LE1, N1, KB, N1, mlim.group(2), KB, LE1, mlim.group(2), LE1))
+                     % (OBn(Gg), JWn, NWg, OBn(T1g), D2g, Gg, N1, JWn, NWg, GW['pfG'], VGn('O.bits_close(n, _)'), RHSn))
+            _close_view(L, D2g, T1g, N1, 'hd2', 'F.array__upd_perfect(U32, %s, %s, q, %s, %s)' % (D2g, Gg, NWg, GW['pfG']), 'BV2.n1(n, %s, hg, %s)' % (mlim.group(2), LE1), VGn, OBn, RHSn,
+                        None)
+            L.append('    BV2.view_snoc_grow(d, %s, t, %s, n, %s, q, v, pf, b1, b2, BV2.n1(n, %s, hg, %s), hg, hq, hk, BV2.kcov(n, %s, q, %dn, {==}, BV2.hk_of(%s, %s, %dn, %s, {==}), BV2.n1(n, %s, hg, %s), hq)))' % (D2g, KK, N1, mlim.group(2), LE1, N1, KB, N1, mlim.group(2), KB, LE1, mlim.group(2), LE1))
             L.append('')
             n += 1
         L.append('')
@@ -2222,14 +2248,17 @@ def _cb_byte_lemmas():
 
 def _cb_read_set(L, n, c, I, P, DA, GG, LE):
     """read_set: the element read back after the set, for this list"""
-    def emit(name, NB, IX, prem, opening, TT='t', DD='d', PF='pf', HD='hd'):
+    def emit(name, NB, IX, prem, opening, TT='t', DD='d', PF='pf', HD='hd', app=False):
         """get(.., IX) after the byte write at IX into storage of NB bytes; opening: the rewrites that
-            expose the write (from the public call), as (equation, goal-with-hole builder) pairs"""
+            expose the write (from the public call), as (equation, goal-with-hole builder) pairs; app: the append's
+            write (O.words_write_app: the word starts from O.app_old, zero when the byte is byte 0 of its word, R5-01)"""
         Px = re.sub(r'(?<![\w.])i(?![\w.])', IX, P)
         OBJT = lambda t_: 'O.Words{F.array__thaw(U32, %s), %s}' % (t_, NB)
         S3 = 'U32.and(%s, 3)' % Px
         XX = 'WR.at(F.array__slots(U32, %s), q)' % TT
-        NEWW = 'O.merge_word(%s, v, %s, 1)' % (XX, S3)
+        XO = 'O.app_old(%s, %s)' % (XX, S3) if app else XX
+        NEWW = 'O.merge_word(%s, v, %s, 1)' % (XO, S3)
+        PUTIN = 'O.put_in_app' if app else 'O.put_in'
         T1 = 'F.array__upd(U32, %s, %s, q, %s)' % (DD, TT, NEWW)
         JW = 'U32.shrn(%s, 2n)' % Px
         RES = '(%s, Some{v}) : O.Words & Maybe<&1, U32>' % OBJT(T1)
@@ -2242,7 +2271,7 @@ def _cb_read_set(L, n, c, I, P, DA, GG, LE):
         for eq, goal in opening[1]:
             L.append('  %s : {%s == %s}' % (eq, GET(goal), RES))
         L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(%s, %s, %s, %s, q, %s, hq, hk, %s)) : {%s == %s}'
-                 % (OBJT(TT), JW, OBJT(TT), XX, DD, TT, NB, JW, HD, PF, GET('O.put_in(%s, v, %s, 1, _)' % (JW, S3)), RES))
+                 % (OBJT(TT), JW, OBJT(TT), XX, DD, TT, NB, JW, HD, PF, GET('%s(%s, v, %s, 1, _)' % (PUTIN, JW, S3)), RES))
         L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(%s, %s, %s, %s, q, %s, %s, hq, hk, %s)) : {%s == %s}'
                  % (OBJT(TT), JW, NEWW, OBJT(T1), DD, TT, NB, JW, NEWW, HD, PF, GET('_'), RES))
         L.append('  %%Equal.sym(Bool, %s, True{}, hg) : {%s.%s_get_in(_, %s, %s) == %s}' % (gg, DA, c, OBJT(T1), IX, RES))
@@ -2251,7 +2280,7 @@ def _cb_read_set(L, n, c, I, P, DA, GG, LE):
         L.append('  %%Equal.sym(U32, WR.at(F.array__slots(U32, %s), q), %s, WR.at_upd_same(%s, %s, q, %s, hk, %s)) : {%s.%s_some((%s, U32.and(O.shr_bytes(_, %s), 255))) == %s}'
                  % (T1, NEWW, DD, TT, NEWW, PF, DA, c, OBJT(T1), S3, RES))
         L.append('  %%Equal.sym(U32, U32.and(O.shr_bytes(%s, %s), 255), U32.and(v, 255), BB.byte_rw(%s, %s, v)) : {%s.%s_some((%s, _)) == %s}'
-                 % (NEWW, S3, XX, Px, DA, c, OBJT(T1), RES))
+                 % (NEWW, S3, XO, Px, DA, c, OBJT(T1), RES))
         L.append('  %%Equal.sym(U32, U32.and(v, 255), v, UB.byte_id(v, hv)) : {%s.%s_some((%s, _)) == %s}' % (DA, c, OBJT(T1), RES))
         L.append('  {==}')
     O0 = 'O.Words{F.array__thaw(U32, t), n}'
@@ -2376,13 +2405,13 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
              ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
               [SZP, ('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
                ('%%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom))' % (O0, NB, O0, NB),
-                'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]))
+                'Pair.fst(O.Words, Bool, %s.%s_put_app(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]), app=True)
         n += 1
         # the spec value of an append with room: the view before with the new byte at the end
         PA = re.sub(r'(?<![\w.])i(?![\w.])', LN, P)
         JWa = 'U32.shrn(%s, 2n)' % PA
         S3a = 'U32.and(%s, 3)' % PA
-        NEWWa = 'O.merge_word(%s, v, %s, 1)' % (X, S3a)
+        NEWWa = 'O.merge_word(O.app_old(%s, %s), v, %s, 1)' % (X, S3a, S3a)
         T1a = 'F.array__upd(U32, d, t, q, %s)' % NEWWa
         OBJa = lambda t_: 'O.Words{F.array__thaw(U32, %s), %s}' % (t_, NB)
         if c.endswith('_u8'):
@@ -2402,9 +2431,9 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
         L.append('  %s : {%s == %s : S.Value}' % (SZP[0], VWa(SZP[1]), RESa))
         L.append('  %%Equal.sym(Bool, %s, True{}, ha) : {%s == %s : S.Value}' % (GA, VWa('Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)), RESa))
         L.append('  %%Equal.sym(O.Words, O.words_fit(%s, %s), %s, WR.fit_roomy(d, t, n, %s, pf, hroom)) : {%s == %s : S.Value}'
-                 % (O0, NB, O0, NB, VWa('Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN)), RESa))
+                 % (O0, NB, O0, NB, VWa('Pair.fst(O.Words, Bool, %s.%s_put_app(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN)), RESa))
         L.append('  %%Equal.sym(O.Words & U32, O.words_word(%s, %s), (%s, %s), WR.word_thaw(d, t, %s, %s, q, hd, hq, hk, pf)) : {%s == %s : S.Value}'
-                 % (OBJa('t'), JWa, OBJa('t'), X, NB, JWa, VWa('O.put_in(%s, v, %s, 1, _)' % (JWa, S3a)), RESa))
+                 % (OBJa('t'), JWa, OBJa('t'), X, NB, JWa, VWa('O.put_in_app(%s, v, %s, 1, _)' % (JWa, S3a)), RESa))
         L.append('  %%Equal.sym(O.Words, O.words_setw(%s, %s, %s), %s, WR.setw_thaw(d, t, %s, %s, q, %s, hd, hq, hk, pf)) : {%s == %s : S.Value}'
                  % (OBJa('t'), JWa, NEWWa, OBJa(T1a), NB, JWa, NEWWa, VWa('_'), RESa))
         L.append('  %s(d, t, n, %s, %s, q, v, hv, hq, hk, pf, hp, hnb)' % (fina, NB, PA))
@@ -2416,8 +2445,8 @@ def _cb_append_laws(L, imps, n, c, I, P, DA, LE, X, emit, O0):
              ('Pair.fst(O.Words, Bool, %s.%s_append(%s, v))' % (DA, c, O0),
               [SZP, ('%%Equal.sym(Bool, %s, True{}, ha)' % GA, 'Pair.fst(O.Words, Bool, %s.%s(_, %s, %s, v))' % (DA, I['afn'], O0, LN)),
                ('%%Equal.sym(O.Words, O.words_fit(%s, %s), O.Words{F.array__thaw(U32, %s), n}, %s)' % (O0, NB, GW['G'], GW['call']),
-                'Pair.fst(O.Words, Bool, %s.%s_put_at(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]),
-             TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2')
+                'Pair.fst(O.Words, Bool, %s.%s_put_app(True{}, O.words_resize(_, %s), %s, v))' % (DA, c, NB, LN))]),
+             TT=GW['G'], DD=GW['D2'], PF=GW['pfG'], HD='hd2', app=True)
         n += 1
     return n
 

@@ -64,3 +64,8 @@
 64 union_size_invalid_payload=4294967295
 65 plpl_offset_table_2_pow_30=4294967295
 66 deposit_ctake_cached_root_eq_plain=1
+67 r5_pl_u8_append_dirty append=1 valid=1 ser_ok=1 ser_size=5
+68 r5_pl_u16_append_dirty append=1 valid=1 ser_ok=1 ser_size=6
+69 r5_bits33_append_dirty append=1 valid=1 ser_ok=1 ser_size=5
+70 r5_progbits_append_dirty append=1 valid=1 ser_ok=1 ser_size=5
+71 r5_words_slice_empty n=0

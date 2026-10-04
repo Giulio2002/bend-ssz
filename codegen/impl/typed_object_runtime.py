@@ -764,9 +764,16 @@ def emit_access(s, w):
             w(f'  {p}_put_at({cond}, o, i, v)')
         w(f'def {p}_set(o: O.Words, +i: U32, {pl}v: {er}) -> O.Words & Bool: {p}_set_n(i, v, {p}_len(o))')
         if is_list:
+            # an element of 1 or 2 bytes that starts a word clears the rest of it (spare storage past the old length: docs/CRASH_HUNT.md R5-01)
+            app = wr.startswith('O.words_write(') and wr.endswith((', 1)', ', 2)'))
+            if app:
+                w(f'def {p}_put_app(ok: Bool, o: O.Words, +i: U32, {pl}v: {er}) -> O.Words & Bool:')
+                w('  match ok:')
+                w(f'    case True{{}}: ({wr.replace("O.words_write(", "O.words_write_app(", 1)}, True{{}})')
+                w('    case False{}: (o, False{})')
             w(f'def {p}_grow(ok: Bool, o: O.Words, +n: U32, {pl}v: {er}) -> O.Words & Bool:')
             w('  match ok:')
-            w(f'    case True{{}}: {p}_put_at(True{{}}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * {es} : U32)), ((n + 1 : U32) * {es} : U32)), n, v)')
+            w(f'    case True{{}}: {p}_put_{"app" if app else "at"}(True{{}}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * {es} : U32)), ((n + 1 : U32) * {es} : U32)), n, v)')
             w('    case False{}: (o, False{})')
             # every list kind: the append is guarded by a count below both the limit and the largest count whose byte length
             # (n + 1) * es, and its rounding up to a chunk (+ 31), do not wrap in U32 (CH-04, R2-01, R2-06; a limit above U32 used to leave the guard True{})
