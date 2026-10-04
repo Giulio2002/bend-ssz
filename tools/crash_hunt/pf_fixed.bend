@@ -51,6 +51,8 @@ import ../../types/proglist_uint16_encode_ssz_generated.bend as P16E
 import ../../types/bitlist_33_def_generated.bend as B33
 import ../../types/bitlist_33_encode_ssz_generated.bend as B33E
 import ../../types/progbitlist_encode_ssz_generated.bend as PbE
+import ../../types/FuluBeaconState_def_generated.bend as BSD
+import ../../types/FuluBeaconState_encode_ssz_generated.bend as BSE
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -386,6 +388,16 @@ def r5_sl(label: String, pair: O.Words & O.Words) -> IO(Unit):
     case O.Words{ws, +n}: IO.print(label ++ " n=" ++ U32.show(n))
 def case71() -> IO(Unit): r5_sl("r5_words_slice_empty", O.words_slice(O.Words{r5w(), 16}, 5, 0))
 
+# Case 72 (restores case 58, dropped in c9214f106; docs/audit/ROUND6_DROPPED.md F2): the unchecked encode of an object holding a
+# fixed-composite list one element past NMAX/192 (a PendingDeposit list of 22369622 elements: 192 * 22369622 > NMAX) returns the
+# empty buffer (CH-02: the size pass poisons the size, `_enc_go` then emits B.empty). A list has no `_encode` of its own; the entry
+# point is the BeaconState that holds it as pending_deposits (as tools/spec_audit/size_limit_rt/size_probe.bend does).
+def bs_pd(+n: U32) -> BSD.BeaconState: Pair.fst(BSD.BeaconState, LPD.l134217728_PendingDeposit_Seq, BSD.BeaconState_swap_pending_deposits(BSD.BeaconState_default(), pds(n)))
+def bs_enc_len_line(label: String, pair: BSD.BeaconState & B.Buf) -> IO(Unit):
+  (o, b) = pair
+  IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
+def case72() -> IO(Unit): bs_enc_len_line("pd_encode_22369622", BSE.BeaconState_encode(bs_pd(22369622)))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -458,6 +470,7 @@ def dispatch(+c: U32) -> IO(Unit):
     case 69: case69()
     case 70: case70()
     case 71: case71()
+    case 72: case72()
     case _: case12()
 
 def main() -> IO(Unit):
