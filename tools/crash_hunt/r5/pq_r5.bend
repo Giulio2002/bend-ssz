@@ -24,12 +24,12 @@ def fillw(+d: U32) -> U32: O.pick(U32.is_eq(d, 1), 0, 2779096485)
 def wsx(+d: U32) -> Array<U32>: Array.set(U32, Array.new(U32, 2n, fillw(d)), 0, 2779096485)
 def bsx(+d: U32) -> Array<U32>: Array.set(U32, Array.new(U32, 2n, O.pick(U32.is_eq(d, 1), 0, 4294967295)), 0, 2147483647)
 
-def ser_line(e: O.Encoded) -> String:
-  match e:
-    case O.Encoded{ok, b}: ser_sz(ok, B.size(b))
 def ser_sz(ok: Bool, pair: B.Buf & U32) -> String:
   (b, +m) = pair
   " ser_ok=" ++ O.pick_str(ok) ++ " ser_size=" ++ U32.show(m)
+def ser_line(e: O.Encoded) -> String:
+  match e:
+    case O.Encoded{ok, b}: ser_sz(ok, B.size(b))
 
 def w_ser(pair: O.Words & O.Encoded) -> String:
   (o, e) = pair
