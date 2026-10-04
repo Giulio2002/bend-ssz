@@ -13,15 +13,15 @@ ROOT = pathlib.Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'tests_generated'))
 import fuzz_objects as F  # noqa: E402  (chdirs to ROOT)
 
-def plan(name, rng, L):
+def plan(name, rng, L, only_app=None):
     t = F.TY[name]; ops = F.FUZZ_OPS[name]['ops']
-    mode = rng.choice(['random', 'zero', 'short', 'full', 'max', 'empty'])
+    mode = rng.choice(['random', 'zero', 'short', 'full', 'max', 'empty']) if only_app is None else 'empty'
     value = F.gen(t, rng, mode)
     start = F.oracle.serialize(t, value)
     apps = [i for i, o in enumerate(ops) if o['kind'] == 'append']
     steps, h, v = [], 0, value
     for _ in range(L):
-        sel = rng.choice(apps) if apps and rng.random() < 0.5 else rng.randrange(len(ops))
+        sel = only_app if only_app is not None else (rng.choice(apps) if apps and rng.random() < 0.5 else rng.randrange(len(ops)))
         op = ops[sel]
         ct = dict(t.fields)[op['field']] if op['field'] is not None else t
         tgt = v[op['field']] if op['field'] is not None else v
@@ -61,6 +61,7 @@ def main():
     ap.add_argument('--bin', required=True); ap.add_argument('--chains', type=int, default=4); ap.add_argument('--len', type=int, default=40)
     ap.add_argument('--seed', type=int, default=5); ap.add_argument('--only', default=''); ap.add_argument('--jobs', type=int, default=4)
     ap.add_argument('--programs', default='')
+    ap.add_argument('--to-limit', type=int, default=0, help='instead of random chains: per append op, limit + 2 appends from the empty value (limits up to this)')
     a = ap.parse_args()
     names = [n for n in F.FUZZ_OPS if F.FUZZ_OPS[n]['ops']]
     if a.only: names = [n for n in names if n in a.only.split(',')]
@@ -69,6 +70,15 @@ def main():
     tmp = tempfile.mkdtemp(prefix='ch5-')
     jobs = []
     for n in names:
+        if a.to_limit:
+            t = F.TY[n]
+            for sel, op in enumerate(F.FUZZ_OPS[n]['ops']):
+                if op['kind'] != 'append': continue
+                ct = dict(t.fields)[op['field']] if op['field'] is not None else t
+                if ct.size + 2 > a.to_limit: continue
+                rng = random.Random('%d/%s/app%d' % (a.seed, n, sel))
+                jobs.append((n, 'app%d' % sel) + plan(n, rng, ct.size + 2, sel))
+            continue
         for c in range(a.chains):
             rng = random.Random('%d/%s/%d' % (a.seed, n, c))
             jobs.append((n, c) + plan(n, rng, a.len))
