@@ -83,6 +83,15 @@ Trusted (not proved here):
   built separately with Lean v4.34.0, which `toolchain.lock.json` does not pin, and its cost on a
   full check (about 5,700 files) has not been measured. So "checks" means "accepted by bend2's
   checker at c55a7f03 under `--check-only`", not the kernel's verdict.
+- **What the proofs cover of the size range: a documented decode gap for four progressive types.** The runtime accepts, encodes
+  and decodes objects up to NMAX = 4294967264 bytes. The composed DECODE theorems of four types were not lifted with it and keep a
+  bound on the input length: `ProgressiveTestStruct` (`h31: 1 + n < 2^31`), `ProgressiveComplexTestStruct` (`h31: 258 + n < 2^29`),
+  `ProgressiveVarTestStruct` and `ProgressiveSingleListContainerTestStruct` (`h31: n < 2^29`); and the decode window facts of the
+  progressive record-list families (`pl_SmallTestStruct`, `l10_*`, `pl_VarTestStruct`, `pl_pl_VarTestStruct`,
+  `pl_ProgressiveVarTestStruct`) stay at `len < 2^31` with output tree depth below 30. So the decode of these types is PROVED for
+  inputs below 2^31 bytes (2^29 for the last three types) and only CHECKED BY EXECUTION (the regression, invalid-object and runtime
+  suites) between that bound and NMAX. Their encode side is proved up to NMAX. Lifting it needs the depth-30 tree lemmas (`CC29`,
+  `PDW`, `wd_min`) named in docs/size_limit_statement_diff.md section 4 (audit round 6, F1).
 - **The frozen specification.** `spec/*.bend` (an independent transcription of
   `vendor/consensus-specs/ssz/simple-serialize.md`, mapped in `spec/CORRESPONDENCE.md`),
   `spec/fulu_schemas.bend` and `schemas/fulu_mainnet.json`, and the statements of

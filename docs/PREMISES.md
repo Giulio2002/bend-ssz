@@ -94,7 +94,7 @@ with a variable-size or packed-vector field (`Attestation`, `BeaconBlock`, `Beac
 `LightClient*`, `ExecutionPayload`, ...). Their serializer is a size pass and per-field checked writers (`putk`; the fixed-size containers of packed vectors
 (`BlobSidecar`, `Deposit`, `HistoricalBatch`, `MatrixEntry`, `SyncCommittee`, `ProposerSlashing`, `ContributionAndProof`,
 `SignedContributionAndProof`, the four Branches) have the writer chain only). The result of a checked writer is `poisoned` past
-2^31, and its equality with the encoder needs a bound on the size the writer returns (`O.put_bits_n`, `O.put_words`,
+NMAX (the marker 4294967295; `O.is_poisoned(m)` is `m > 4294967264`, docs/size_limit_statement_diff.md), and its equality with the encoder needs a bound on the size the writer returns (`O.put_bits_n`, `O.put_words`,
 the per-field `_size`) that no law states; proving it is a proof per writer shape, not one statement per name, and is
 not done. The same 70 names are the ones whose `rep`/`hs*` premises
 cannot be derived from validity.
@@ -256,9 +256,10 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 
 ## 2. Runtime limits
 
-- **Container encode limit, 2^31 - 1 bytes.** The encode laws for containers with unbounded
-  parts are on the OKW laws and the D twins (`deep_tree_list_children.py`, bound of OKT at 2^31 - 1): the
-  encoding is below 2^31 bytes. The manifest calls it the object API's own limit.
+- **Container encode limit, NMAX = 4294967264 bytes.** The encode laws for containers with unbounded
+  parts are on the OKW laws and the variable-size list twins (`deep_tree_list_children.py`, OKT at `LL <= NMAX`): the
+  encoding is at most NMAX bytes (the size limit; it was 2^31 - 1 before, docs/size_limit_statement_diff.md). The manifest
+  calls it the object API's own limit. Exceptions that keep the old bound, on the DECODE side only: section 3, the last item.
 - **Decode NMAX = 2^32 - 32.** The decode laws hold for inputs `n <= VB.NMAX()` (premise `hS`,
   written `hN` in the decode_view statements: `U32.is_le(n, VB.NMAX()) == True`). The bounds
   the manifest records (`input_bounds`): <!-- fig:input_bounds -->NMAX = 2^32 - 32: 16 names; 2^30: FuluExecutionPayloadHeader, FuluLightClientBootstrap, FuluLightClientHeader, FuluLightClientOptimisticUpdate; 2^29: FuluLightClientFinalityUpdate<!-- /fig -->; and 2^29 for
@@ -274,26 +275,32 @@ says what each binder asserts). <!-- fig:premise_free -->117<!-- /fig --> names 
 
 ## 3. Total-size premises (encode, section (i))
 
-- **`hZ`**: the encoding is below 2^31 bytes (each part's byte count is a witness; `SZW` /
+- **`hZ`**: the encoding is at most NMAX bytes (each part's byte count is a witness; `SZW` /
   `SZOK` / `SZR` of the record). On FuluBeaconState, FuluBeaconBlockBody, FuluBeaconBlock,
   FuluSignedBeaconBlock, FuluExecutionPayload. Nothing in the object bounds a list's length, so
   it stays a premise.
 - **`hm<j>`** (`hm7`, `hm12`, ...; the manifest writes `hM_j`): FuluBeaconState only. Each byte-storage
-  list `j` has its bytes below 2^31, its share of the total that `hZ` bounds.
+  list `j` has its bytes at most NMAX, its share of the total that `hZ` bounds.
 - **`h31` in the composed theorems (FuluBeaconState).** `<Name>_e2e_decode_encode` and `_decode_root` of
-  a name with `hZ` take the explicit hypothesis `h31: U32.to_nat(n) < 2^31` on the input length. It is `hZ`
+  a name with `hZ` take the explicit hypothesis `h31: U32.to_nat(n) <= NMAX` on the input length (the name is historical: it was `n < 2^31`). It is `hZ`
   restated on the input: the decoded object re-encodes to exactly the input (that is the theorem), so
-  its encoding size is `n`, and `e2e/e2e_dbs_generated.bend` (`szr`, `hz`) proves `hZ` from `n < 2^31` by the telescoping
-  of the codec's offsets. The bound is the encode laws' own (section 2, the container encode limit); it is not the
-  API's U32 byte length, which is `hS` (`n <= NMAX = 2^32 - 32`) and is also a hypothesis of the composed theorem.
+  its encoding size is `n`, and `e2e/e2e_dbs_generated.bend` (`szr`, `hz`) proves `hZ` from `n <= NMAX` by the telescoping
+  of the codec's offsets. The bound is the encode laws' own (section 2, the container encode limit); since the size limit it
+  equals the API's U32 byte length `hS` (`n <= NMAX = 2^32 - 32`), which is also a hypothesis of the composed theorem.
   Non-vacuity: `<Name>_e2e_witness_size` (and `_nonempty`) in `e2e/<Name>_e2e_witness_generated.bend` states `hZ`
   of the default and the non-empty object, so the bound holds of real objects (the default state encodes to
   2,737,809 bytes); every other premise of the composed theorem is proved of the decoder's object for every accepted
   input (`e2e/<Name>_e2e_decrep_generated.bend`). Not computed: the decode of the default state's encoding itself
   (a 2.7 MB input whose word positions are unary Nats in the checker).
 - **Per-object totals `TOT_<Name>`**: ProgressiveTestStruct, ProgressiveComplexTestStruct: the
-  fixed part plus the measures of the list fields below 2^31, plus one size measure per unbounded
+  fixed part plus the measures of the list fields, the total at most NMAX, plus one size measure per unbounded
   list field (word-list length, 4 N of a record list, `EL.LL` of a variable-element list).
+- **The decode premises kept at the old bound (a proof gap, documented).** Four types' composed DECODE theorems still carry the
+  pre-size-limit bound on the input: `ProgressiveTestStruct` (`h31: 1 + n < 2^31`), `ProgressiveComplexTestStruct` (`h31: 258 + n < 2^29`),
+  `ProgressiveVarTestStruct` and `ProgressiveSingleListContainerTestStruct` (`h31: n < 2^29`), and the decode window facts of the progressive
+  record-list families (`pl_SmallTestStruct`, `l10_*`, `pl_VarTestStruct`, `pl_pl_VarTestStruct`, `pl_ProgressiveVarTestStruct`) stay at
+  `len < 2^31` and tree depth below 30. Their decode is proved below those bounds and checked by execution only between them and NMAX
+  (docs/size_limit_statement_diff.md section 4, docs/TRUST.md, docs/API_CONTRACTS.md).
 - **Per-part budgets, derived (no longer premises)**: the attester-slashings and attestations
   lists of FuluBeaconBlockBody, FuluBeaconBlock and FuluSignedBeaconBlock must encode within
   4 * 2^28 bytes for their own encode records. This is now proved from `rep`: at most 1 attester

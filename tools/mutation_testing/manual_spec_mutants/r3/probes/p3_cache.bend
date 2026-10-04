@@ -8,7 +8,7 @@ import ../../../../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as 
 import ../../../../../types/Fulu_list_ProposerSlashing_16_hashtreeroot_generated.bend as LH
 import ../../../../../benchmarks/compact/objio.bend as IOx
 
-# Round-3 probe: the cached tree of List[ProposerSlashing, 16] through the public X_cache, X_cached_root, X_cset, X_capp, X_cget.
+# Round-3 probe: the cached tree of List[ProposerSlashing, 16] through the public X_cache, X_cached_root, X_cset, X_capp, X_ctake (was X_cget; renamed in crash-fix4).
 # SSZ_CASE: 1..6 cached root of build(k) for k = 0, 1, 3, 5, 9, 16 (elements with distinct seeds); 7 plain root of build(9) (reference);
 # 8 cache(build(3)), 6 cached appends, cached root; 9 cache(build(5)), root, cset(2, new), root; 10 cget(5) of build(5); 11 cget(4) of build(5);
 # 12 capp at 16; 13 cset(i = n); 14 cache(build(5)), root, cset(0), cset(4), root; 15 cache(build(0)), capp x9, root.
@@ -75,8 +75,8 @@ def c6() -> IO(Unit): rk("k16", 16n)
 def c7() -> IO(Unit): plain(LH.l16_ProposerSlashing_root(64n, O.hasher(), build(9n, 0, LP.l16_ProposerSlashing_default()), 0))
 def c8() -> IO(Unit): cr("k3_capp6", capp_n(6n, 50, cb(3n)))
 def c9() -> IO(Unit): cr("k5_cset2", cset_c(cached_root_of(cb(5n)), 2, 99))
-def c10() -> IO(Unit): get_c("cget5_of5", LP.l16_ProposerSlashing_cget(cb(5n), 5))
-def c11() -> IO(Unit): get_c("cget4_of5", LP.l16_ProposerSlashing_cget(cb(5n), 4))
+def c10() -> IO(Unit): get_c("cget5_of5", LP.l16_ProposerSlashing_ctake(cb(5n), 5))
+def c11() -> IO(Unit): get_c("cget4_of5", LP.l16_ProposerSlashing_ctake(cb(5n), 4))
 def c12() -> IO(Unit): flag_c("capp_at_16", LP.l16_ProposerSlashing_capp(cb(16n), el(77)))
 def c13() -> IO(Unit): flag_c("cset_at_n", LP.l16_ProposerSlashing_cset(cb(5n), 5, el(77)))
 def c14() -> IO(Unit): cr("k5_cset04", cset_c(cset_c(cached_root_of(cb(5n)), 0, 61), 4, 62))

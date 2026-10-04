@@ -18,7 +18,7 @@ section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12), the round-3 hunter r
 | CH-02 | FIXED by agent/size-limit (docs/size_limit_statement_diff.md; the blocking statement rule was lifted by the authorized lift of the 2^31 premises; the older text below is the history) | `_encode` has the precondition `X_valid(o)`; `_serialize` refuses before allocating. Any guard on the size pass answer falsifies a frozen END_TO_END encode theorem for objects of 2^31 .. 2^32 - 32 bytes | - |
 | CH-03 | FIXED (`src/obj.bend` moved, statements unchanged) | every root clamps its chunk count to the storage: `O.cap_cnt`; identical root for every storage-valid object (proved), work bounded by the allocation for an invalid one | `regress.sh` cases 13-14; `proofs/obj/words_cap.bend` |
 | CH-04 | FIXED (statements and lock moved, authorized) | `n + 1 <= N` became `n < min(N, 2^32 - 1)` for every list that can reach 2^32 - 1 | `regress.sh` cases 6-8; `proofs/slop/crash/` laws; regenerated `*_api_append_*` statements |
-| CH-05 | FIXED in the checked entry | `X_decode_checked` refuses a window of 2^31 bytes or more; `_decode` itself is unchanged (its statements are frozen and it is the subject of the decode bridges) | `regress.sh` case 11; slop law `decode_checked_2gib_refused` |
+| CH-05 | FIXED in the checked entry | `X_decode_checked` / `X_dchw` refuse a window above NMAX (`size > 4294967264`, the size limit); `_decode` refuses a window outside the buffer (the decode window, `hwin`). (Before the size limit: "refuses a window of 2^31 bytes or more; `_decode` itself is unchanged".) The cap is pinned by `*_decode_vchecked_nmax_above` / `_limit`; the older law `decode_checked_2gib_refused` keeps its statement but now holds only because its one-word storage cannot hold 2^31 bytes (audit round 6 F6) | `regress.sh` case 11; slop laws `*_decode_vchecked_nmax_above`, `*_decode_vchecked_limit` |
 | CH-06 | FIXED in `_decode` itself (agent/decode-window) | `X_decode(buf, size)` answers `(buf, None{})` when `size > B.size(buf)` (a U32 comparison with the buffer's size field: nothing wraps, no size cap); otherwise it is `X_decode_in` (the old body). `X_decode_checked` stays (it also tests the storage and the 2^31 bound) | `regress.sh` cases 9-10 and 40-45; `proofs/obj/decode_window_*_generated.bend` (`X_win_out`: outside the buffer the result is None); docs/decode_window_statement_diff.md |
 | CH-07 | FIXED by agent/size-limit | no 2^31 cap: the marker is 4294967295, `O.padd` saturates, a valid object is at most NMAX = 4294967264 bytes; theorem premises lifted from `x < 2^31` to `x <= NMAX` (docs/size_limit_statement_diff.md); `regress.sh` cases 46-57 | docs/SIZE_LIMIT_DESIGN.md |
 | CH-08 | DOCUMENTED | `_hash_tree_root` precondition `X_valid(o)`; no error channel | - |
@@ -168,6 +168,7 @@ For a storage-valid object the root is the old one, and that is proved, not assu
 `frozen.lock.json` did not move (`verify_frozen` passes without `--update`).
 
 ### CH-02: `_encode` allocation from the invalid marker (NOT FIXED: it would weaken a frozen theorem)
+> **Superseded (size limit, docs/size_limit_statement_diff.md; audit round 6 F9):** the text below describes the 2^31 regime of its time. Since the size limit the marker is 4294967295, a valid object may have up to NMAX = 4294967264 bytes, `_encode` of an invalid object returns the empty buffer (CH-02 fixed, regress case 72) and every fixed-count product is `O.mulc` (R3-03 closed).
 The two ways the brief names were both tried on paper against the frozen statements and fail the "stronger or equivalent" rule:
 * Guard `enc_sized` on `O.is_poisoned(n)` (bit 31, as `_serialize` does). The END_TO_END encode theorems of the byte lists
   (`proglist_uint8_e2e_encode`, hypotheses `hM: len <= VB.NMAX() = 4294967264`, `hs: sdk(o, 31)`) hold for objects of 2^31 .. 2^32 - 32
@@ -314,7 +315,7 @@ boxes hold fixed-size content, which `valid` already refused). The size answer o
 * `words_ok` / `bits_ok` / `X_valid`. The sizes of R2-02 (b) and (c) are decided in the root, where the proofs have the representation invariant (room for whole chunks,
   zero bytes past the length), not in `valid`: strengthening `valid` would add a premise to every frozen `X_e2e_serialize(o, v: valid(o))` theorem (a narrowing)
   and an OKT conjunct to about 20 encoder-law generators. The wrap of (a) is in the text of `wk_cap`, which about 60 encoder proof files unfold.
-* `_encode` of an invalid object still allocates the marker (CH-02, section 6): a guard would falsify the e2e encode theorems for 2^31 .. 2^32 - 32 bytes.
+* `_encode` of an invalid object still allocates the marker (CH-02, section 6): a guard would falsify the e2e encode theorems for 2^31 .. 2^32 - 32 bytes. *(Superseded: fixed by the size limit, `_encode` of an invalid object returns the empty buffer; regress case 72.)*
 * `_decode` itself (CH-06, section 6).
 
 
@@ -388,6 +389,7 @@ representable object the storage test is the identity, `n <= size`), regenerated
 (abort only) is the `n < floor((2^31 - 1) / es)` bound, which changes the guard of two lists.
 
 ### R3-03 (MEDIUM, WRONG, variant of CH-07): `n * element size` wraps for a VALID list of fixed-size composites, and `_serialize` answers ok with a wrong, short encoding
+> **Superseded (size limit, docs/size_limit_statement_diff.md; audit round 6 F9):** the text below describes the 2^31 regime of its time. Since the size limit the marker is 4294967295, a valid object may have up to NMAX = 4294967264 bytes, `_encode` of an invalid object returns the empty buffer (CH-02 fixed, regress case 72) and every fixed-count product is `O.mulc` (R3-03 closed).
 Entry points: `l134217728_PendingDeposit_size` / `_valid` / `_putk` and `l1099511627776_Validator_*` (so `BeaconState_serialize` through `pending_deposits` and `validators`); 192-byte and
 121-byte elements.
 Repro (`pm_r3.bend`, server, 8.4 GB for the storage of 2^25 slots): the size pass of `Seq{fill(25n), n}` (default pending deposits, `n <= storage`, `n <= limit`: a valid object) prints
@@ -446,7 +448,7 @@ proportion to a claim).
 |---|---|---|---|
 | R3-01 | FIXED by renaming the boxed getters | `_get` / `_cget` of the nine kinds with boxed elements are `_take` / `_ctake`; `_ctake` marks the slot dirty; `_get` / `_cget` stay for the copyable kinds | `regress.sh` cases 38, 39; laws `unboxed_get_keeps_the_list`, `boxed_take_leaves_a_hole`; probes `pl_r3`, `pm_r3` (renamed) |
 | R3-02 | FIXED | every append guard also tests the storage: `n <= Array.size(arr)` (composite lists, cached `_capp`), `ceil(n * es / 4) <= words of storage` (packed lists, cells), `ceil(ceil(k / 8) / 4) <= words` (bit lists); `_force` and `_dump` visit `min(n, storage)` elements; `O.dump_bytes` clamps to the storage | `regress.sh` cases 31-37; laws `*_claim_over_storage_refused`, `pl_u8_append_tight_storage_accepted`; `test_append_guards.py` |
-| R3-03 | PARTIAL | the append / `_capp` guard of a list of fixed-size composites is bounded by the count whose encoding stays below 2^31 bytes (17,747,798 validators, 11,184,810 pending deposits, 89,478,485 pending partial withdrawals, and 536,870,911 for the progressive list of 4-byte records): the API can no longer build a list beyond it. `valid` / `szf` of a HAND-BUILT list beyond the bound are unchanged: see 8.3 | `test_append_guards.py` (`test_composite_count_bound_keeps_the_encoding_below_2_31_bytes`) |
+| R3-03 | CLOSED (size limit) | every fixed-count product is the checked `O.mulc(n, es)` (the marker above floor(NMAX / es)); the append / `_capp` guard of a list of fixed-size composites is the count whose encoding stays within NMAX: 35,495,597 validators (121 bytes), 22,369,621 pending deposits (192), the list limit 134,217,728 for pending partial withdrawals (24), and 1,073,741,816 for the progressive list of 4-byte records `pl_SmallTestStruct` (was 536,870,911 under the 2^31 regime). A hand-built list beyond the bound is refused by `_valid` / `_serialize` and encodes to the empty buffer (regress case 72) | `test_append_guards.py`; regress cases 51-57, 72 |
 | R3-04 | DOCUMENTED | lying objects (claim larger than storage) answer `_set` / `_get` / `_cache_at` from aliased storage; nothing allocates in proportion to the claim and no honest object reaches it: `docs/API_CONTRACTS.md` | - |
 
 ### 8.1 R3-01: why a rename, and what it costs
@@ -477,6 +479,7 @@ supply `sc` (the 2^d slots of the concrete array); the number of witnessed colle
 Not done: the setter and getter guards (R3-04).
 
 ### 8.3 R3-03: what was done and what was not
+> **Superseded (size limit, docs/size_limit_statement_diff.md; audit round 6 F9):** the text below describes the 2^31 regime of its time. Since the size limit the marker is 4294967295, a valid object may have up to NMAX = 4294967264 bytes, `_encode` of an invalid object returns the empty buffer (CH-02 fixed, regress case 72) and every fixed-count product is `O.mulc` (R3-03 closed).
 `n * element size` is U32 arithmetic in the size pass (`szf`), the validity of the list (`va_cap`) and the writer positions (`pt`: `pos + i * es`) of a list of fixed-size composites,
 and it wraps for n >= 2^32 / es (35,495,597 validators of 121 bytes; 22,369,621 pending deposits of 192 bytes). Done: the guard of `_append` and `_capp` for such a list is the
 count whose encoding stays below 2^31 bytes (so the API never builds a list that can wrap; `_decode` cannot, the buffer is below 2^32 bytes and refused from 2^31; the setters keep the length).

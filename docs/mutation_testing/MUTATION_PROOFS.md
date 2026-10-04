@@ -296,6 +296,42 @@ Generator `codegen/proofs/slop/cell_list_guards.py`, one law per module `proofs/
 | a07-words-blit/07 (source length n + 1) | `cell_blit` | killed | killed |
 | guard probes (not in the audit): set accepts a short cell, set without the storage test, `i <= n` in set, append without the storage test | `refuse_set_short/tight/end`, `refuse_app_tight` | killed | not run |
 
+## Manual spec-mutation audit, round 3 (storage-independent roots, cached trees, absent boxes, small predicates)
+(Restored from 26ad79b4a: the section was lost when c78765bb0 replaced it by the second branch below; audit round 6 F12.)
+
+
+Generators in `codegen/proofs/slop/` (outputs `proofs/slop/validity/*_generated.bend`, filed by api_gate): `tight_storage_root.py`, `cached_list_roots.py`, `small_type_predicates.py`, and the extended `container_field_validity.py` and `word_unit_validity.py`. The gate's law forms and shapes grew for them (`<X>_vroot_*` is a late law of the ROOT facade; `<X>_decode_vread_u16_*|vbits_clear_*|vand_pair|vsel_*` of the decode facade; `vcoll_*_cell`, `bx_*`, `unit_ok`, `bits_size`, `len_of`, `words_blit`, `putn` shapes of the encode facade). Base: main ead59a144. Every proof file stays under 25 s (the slowest facade of a changed name: FuluBeaconState encode 40 s, root 31 s; the baseline `tools/check_costs.tsv` has 62 s and 44 s). No frozen file is touched (`verify_frozen` without `--update`), 143 generators converge in one pass, `tools/test_codegen.sh` is green, and a `check_fast.sh --files` run over the 480 changed `.bend` files (5 umbrellas, every importer and its imports) passes.
+
+**The root laws are stated symbolically in the hash length.** `D.node(hl, l, r)` is `SHA256(l, r)` with the step budget `hl`; with `hl` a variable it is a stuck term, so `root(tight storage) == root(roomy storage)` holds exactly when the same chunks are hashed in the same tree, and costs nothing (a concrete SHA costs minutes). Only trees of at most 2^8 chunks are built concretely (the width is a unary `Nat`).
+
+| group | faults | law (module) | module | facade |
+|---|---|---|---|---|
+| tight and junk storage roots | w02/06, w02/07 | `vroot_<p>_past_41`, `_past_73`: junk in a word wholly past the length, clean tail word (`generic_ComplexTestStruct_vroot_bl256`) | killed | killed (ComplexTestStruct root) |
+| | w03/03, w03/04, w03/06 | `vroot_<p>_tight_5`, `_tight_junk_5`, `_roomy_junk_5`, `_slack_junk_5`, `_short_5` (the same bytes in two words, with junk, in a whole chunk, in four words; one word for 5 bytes hashes the stored chunks, none) | killed | killed |
+| | w04/01..04 (`words_copy`) | the same laws (the copy moves ceil(n / 4) words, in place, one step at a time, masked) | killed | killed |
+| | w05/02, w05/04 (progressive lists) | the same on `proglist_uint8` (`generic_proglist_uint8_vroot_pl_u8`) | killed | killed |
+| cached trees | g02/01..07, g02/09, g02/10 | `cache_app_<n>` (n = 1..4: the cached root after n appends is the plain root), `cache_set_3`, `_set_0`, `_set_1_3` (a clean tree, then cset: the dirty range moves at both ends), `cache_end` (cget / cset at the length) on ProposerSlashing_16 and the 15 other kinds | killed | killed (BeaconBlockBody root, 22 s) |
+| | x08/03 | `cache_dok`: `O.cache_dok` never accepts a depth of 32 or more | killed | killed |
+| | g02/11 | `cache_limit` (capp at limit - 1 elements accepted, at the limit refused; kinds up to 16): the patch is stale since crash-fix 3 (the guard moved to `capp_sz`), its re-derived form is in the second branch | see branch r3b | see branch r3b |
+| absent boxes (CH-12) | p04/03, p04/06, p04/09 | `vreject_bx_size`: the size pass keeps an absent box absent | killed | killed |
+| | p04/04, p04/07 | `vreject_bx_valid`: the validity pass of an absent box is `False` | killed | killed |
+| | p04/08 | `vpoison_bx_invalid`: the checked writer of a present box reports the poison of its value | killed | killed |
+| | p04/15 | `vrefuse_bad_flag`: `X_senc_go(True, ..)` refuses before the allocation (CH-02) | killed | killed |
+| | p04/16, p04/17 | `vrefuse_<boxfield>` (absent box: the writer's flag) | killed | killed |
+| | p04/18 | the pre-write test at bit 30 instead of 31: not observable (a refusal at a valid size of 2^30 bytes); gap-unreachable as judged | survives | survives |
+| small predicates | x09/02, x09/03 | `vunit_ok_<U>`: `O.unit_ok(U, n)` at the edges of a multiple (every size has its own case) | killed | killed |
+| | p01/06, p05/07 | `vunit_<p>_range_below_<n>`, `_range_lo_`, `_range_hi_`, `_range_above_`: the length range of every `words_ok` (one multiple of the element size outside each bound) | killed | killed (BeaconState encode) |
+| | x11/01 | `uint16_decode_vread_u16_<off>`: the low two bytes at offsets 0..3 | killed | killed |
+| | x02/02, 03, 04 | `<X>_decode_vbits_clear_<k>` (k = 0, 9, 33, 40, 63) on every bit list | killed | killed |
+| | x03/04 | `<X>_serialize_vbits_size`: floor(k / 8) + 1 bytes | killed | stack overflow of the mutated facade (a failed check) |
+| | x07/08 | `<X>_decode_vand_pair`: the guarded child validation is a conjunction | killed | killed |
+| | u01/08 | `vreject_c<i>_<field>`, `vrefuse_c<i>_<field>` for the arms of every union | killed | killed |
+| | u01/15 | `<X>_decode_vsel_outside`, `_empty`, `_arms`: selectors 0, one past the last arm, 255 and the empty window are refused, each fixed payload arm is accepted | killed | stack overflow of the mutated facade (a failed check) |
+| | l01/10 | `vreject_<field>_limit`, `vrefuse_<field>_limit`: one element past the limit on a storage that holds it | killed | killed |
+| | l01/04, l01/05 | `<X>_serialize_vcoll_<kp>_enc`: `putn` of [b, a, b] on a fixed-size element list writes the one non-zero byte of each variant element where its position says | killed | stack overflow of the mutated facade (a failed check) |
+
+Equivalent (judged by the auditor, the laws leave them alone): g02/08, g02/12, b01/06, b01/08, d01/01, u01/16, w01/07, w02/01..04, w03/05, w04/05..07. Limitations: b01/03, b01/04, b01/05, b01/07 (the offsets of the FuluBeaconState decoder: a statement about them needs a valid 2.7 MB state, and the mutated decode facade overflows the checker's stack); the cached tree laws skip the list of byte lists (its elements root over a tree of 2^25 chunks, a unary `Nat`) and the list of progressive containers (the setters of a progressive container answer pairs); the deep limits (above 2^13) have no plain root the checker can unfold, so `cache_app_fold` states the root of one element as the fold of its leaf with the zero subtrees of every level, and the set laws compare with a fresh cache; the serializing refusal laws (`vrefuse_*`) skip containers whose default encodes to more than 3000 bytes (a 130 KB sidecar, the state). Not in this branch: g01 (append-guard bounds) and d01 (the checked decoder), which wait for the second branch.
+
 ### Round 3, second branch: append-guard bounds (g01), the checked decoder (d01), and the stale mutant patches
 
 Base: main ead59a144 (crash-fix 3: every append guard is `n < min(N, bound)` AND the storage holds n; `_take` / `_ctake` for the boxed getters). New generators in `codegen/proofs/slop/`: `append_guard_bounds.py`, `decode_checked_laws.py` (and the deep-limit part of `cached_list_roots.py`); `tools/mutation_testing/manual_spec_mutants/rederive.py`.

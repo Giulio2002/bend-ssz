@@ -24,3 +24,10 @@ Two limits are part of the contract: a size is a U32 and the value 4294967295 is
 NMAX = 4294967264 bytes (2^32 - 32: the chunk rounding of the allocation stays below 2^32) is encodable (CH-07, closed by agent/size-limit: it was 2^31 - 1 before);
 an element count times a fixed element size is checked (`O.mulc`), so it never wraps (R3-03); `_encode` of an invalid object returns the empty buffer and never
 allocates from the marker (CH-02). Lists count in U32, so a list holds at most 2^32 - 2 elements (CH-04). The decode window accepts `size <= 4294967264`.
+
+The proofs do not yet cover the whole accepted range for four types (a documented gap, docs/TRUST.md and
+docs/size_limit_statement_diff.md section 4): `X_decode` of `ProgressiveTestStruct` is proved for inputs below 2^31 bytes (`1 + n < 2^31`),
+of `ProgressiveComplexTestStruct` below 2^29 (`258 + n < 2^29`), and of `ProgressiveVarTestStruct` and
+`ProgressiveSingleListContainerTestStruct` below 2^29 (`n < 2^29`); the decode window facts of the progressive record lists
+(`pl_SmallTestStruct`, `l10_*`, `pl_VarTestStruct`, `pl_pl_VarTestStruct`, `pl_ProgressiveVarTestStruct`) hold below 2^31 bytes. Between those
+bounds and NMAX the same entry points accept and decode, and that range is checked by execution only (the runtime suites), not by a proof.
