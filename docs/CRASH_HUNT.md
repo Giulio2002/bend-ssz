@@ -7,8 +7,8 @@ frozen files (`spec/`, `schemas/`, END_TO_END, ROOT_DOMAIN, PROOF, HASH_PROOF, `
 Machine-readable list: `docs/crash_hunt_findings.json`. Raw outputs: `docs/crash_hunt_evidence/`. Probes and runners: `tools/crash_hunt/`.
 
 
-Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3), the round-5 hunter report (R5.1 to R5.4, R5-01, R5-02, last section),
-section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12), the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04) and the round-4 hunter report (R4.1 to R4.4, R4-01 to R4-06, last section) update the table below.
+Later passes: section 6 (agent/crash-fix2: CH-03 fixed, CH-02 and CH-06 measured), the round-2 hunter report (R2.1 to R2.3),
+section 7 (agent/crash-fix3: R2-01 to R2-06, CH-11, CH-12), the round-3 hunter report (R3.1 to R3.4, R3-01 to R3-04), the round-4 hunter report (R4.1 to R4.4, R4-01 to R4-06) and the round-5 hunter report (R5.1 to R5.4, R5-01, R5-02, last section) update the table below.
 
 ## 0. Status after the fix series (agent/crash-fix)
 
