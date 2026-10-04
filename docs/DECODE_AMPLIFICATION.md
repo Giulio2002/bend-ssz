@@ -5,7 +5,7 @@ a list of variable-size elements costs an array slot and a boxed element per 4-b
 (1,048,576 empty transactions, a 4 MiB offset table) takes about 30 times its size. The deployed runtime (the Prysm FFI shim) reserves
 an 8 GiB Bend heap and exits on out-of-memory, so a few hundred MB of such valid input would kill the node. This document measures the
 amplification of every one of the 240 names, explains why the per-element cost cannot be cut below a few heap bytes per input byte in
-this representation, and describes the fix: a decode budget.
+this representation, and describes the mitigation: an opt-in decode budget.
 
 ## 1. Measurement
 
@@ -65,7 +65,12 @@ input byte is therefore not reachable for these shapes without a different repre
 array of offsets into one byte store, say), which is a redesign of the runtime and of its proofs; the decoder is unchanged, and the
 protection is the budget.
 
-## 3. The fix: a decode budget
+## 3. The mitigation: an opt-in decode budget
+
+The protection is opt-in: only callers of `X_decode_checked_budget` get it. `X_decode_checked` and `_decode` are unchanged and have no
+memory limit. The bound is a MEASURED estimate, not a proved bound: K = ceil(1.25 x the worst density measured over the name's shapes + 1);
+the laws state what the budget does with the bound, not that the bound is the decode's true cost. A budget of 2^32 - 1, or any budget at
+least the saturated `X_dcost(size)`, means no limit and accepts everything `X_decode_checked` accepts, by design.
 
 Every name X has (types/<Name>_decode_ssz_generated.bend):
 
