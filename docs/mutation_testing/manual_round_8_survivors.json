@@ -1,6 +1,7 @@
 [
  {
   "id": "r8-a03-clean-copy/01",
+  "status": {"r8_fix": "KILLED", "killed_by": "Transaction_vroot_bl1073741824_j1_n1_b1", "file": "proofs/slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend", "also": "ComplexTestStruct_vroot_bl256_j1_n1_b1 (proofs/slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend)", "generator": "tight_storage_root", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-a03-clean-copy/01.patch",
   "type": "FuluTransaction (every packed byte list / vector of byte length 4m + 1)",
   "file": "src/obj.bend (tail_zero, case 1)",
@@ -12,6 +13,7 @@
  },
  {
   "id": "r8-a05-prog-cnt/03",
+  "status": {"r8_fix": "REMOVED", "note": "O.elems_root_prog and erp_size removed as dead code (docs/r8_statement_diff.md); the patch no longer applies (patch -p1: 1 out of 1 hunk FAILED)"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-a05-prog-cnt/03.patch",
   "type": "none (O.elems_root_prog)",
   "file": "src/obj.bend (erp_size)",
@@ -23,6 +25,7 @@
  },
  {
   "id": "r8-b02-merkle-fast/01",
+  "status": {"r8_fix": "REMOVED", "note": "the streaming merkleizer of src/merkle_fast.bend removed as dead code (docs/r8_statement_diff.md); the patch no longer applies (patch -p1: 1 out of 1 hunk FAILED)"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/01.patch",
   "type": "none (src/merkle_fast.bend streaming merkleizer)",
   "file": "src/merkle_fast.bend (ascend)",
@@ -34,6 +37,7 @@
  },
  {
   "id": "r8-b02-merkle-fast/02",
+  "status": {"r8_fix": "REMOVED", "note": "the streaming merkleizer of src/merkle_fast.bend removed as dead code (docs/r8_statement_diff.md); the patch no longer applies (patch -p1: 1 out of 1 hunk FAILED)"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/02.patch",
   "type": "none",
   "file": "src/merkle_fast.bend (full_in)",
@@ -45,6 +49,7 @@
  },
  {
   "id": "r8-b02-merkle-fast/03",
+  "status": {"r8_fix": "REMOVED", "note": "the streaming merkleizer of src/merkle_fast.bend removed as dead code (docs/r8_statement_diff.md); the patch no longer applies (patch -p1: 1 out of 1 hunk FAILED)"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/03.patch",
   "type": "none",
   "file": "src/merkle_fast.bend (push_prog_at)",
@@ -56,6 +61,7 @@
  },
  {
   "id": "r8-b02-merkle-fast/04",
+  "status": {"r8_fix": "REMOVED", "note": "the streaming merkleizer of src/merkle_fast.bend removed as dead code (docs/r8_statement_diff.md); the patch no longer applies (patch -p1: 1 out of 1 hunk FAILED)"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-b02-merkle-fast/04.patch",
   "type": "none",
   "file": "src/merkle_fast.bend (mask_sel)",
@@ -67,6 +73,7 @@
  },
  {
   "id": "r8-d01-cache-tree/14",
+  "status": {"r8_fix": "KILLED", "killed_by": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1", "file": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend", "generator": "cached_list_roots", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/14.patch",
   "type": "list_ProgressiveSingleFieldContainerTestStruct_10 (field f_G of ProgressiveComplexTestStruct)",
   "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend (croot_pad: Nat.sub(4n, d) -> Nat.sub(3n, d))",
@@ -78,6 +85,7 @@
  },
  {
   "id": "r8-d01-cache-tree/15",
+  "status": {"r8_fix": "KILLED", "killed_by": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1", "file": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend", "generator": "cached_list_roots", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/15.patch",
   "type": "list_ProgressiveSingleFieldContainerTestStruct_10",
   "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend (croot_fin mixes 10)",
@@ -89,6 +97,7 @@
  },
  {
   "id": "r8-d01-cache-tree/18",
+  "status": {"r8_fix": "KILLED", "killed_by": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0", "file": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend", "generator": "cached_list_roots", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-d01-cache-tree/18.patch",
   "type": "Fulu_list_bytelist_1073741824_1048576 (ExecutionPayload.transactions)",
   "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend (ctook keeps lo, hi)",
@@ -100,6 +109,7 @@
  },
  {
   "id": "r8-e01-access/04",
+  "status": {"r8_fix": "KILLED", "killed_by": "BeaconBlockBody_serialize_vcoll_l8_Attestation_append_grow", "file": "proofs/slop/validity/fulu_BeaconBlockBody_access_l8_Attestation_generated.bend", "generator": "element_access_laws", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e01-access/04.patch",
   "type": "Fulu_list_Attestation_8 (BeaconBlockBody.attestations)",
   "file": "types/Fulu_list_Attestation_8_def_generated.bend (room_pick copies n - 1 elements)",
@@ -111,6 +121,7 @@
  },
  {
   "id": "r8-e02-vec-access/01",
+  "status": {"r8_fix": "KILLED", "killed_by": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_out_of_range", "file": "proofs/slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend", "generator": "element_access_laws", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/01.patch",
   "type": "vec_VarTestStruct_2 (ComplexTestStruct.f_G)",
   "file": "types/vec_VarTestStruct_2_def_generated.bend (take tests i <= n)",
@@ -122,6 +133,7 @@
  },
  {
   "id": "r8-e02-vec-access/02",
+  "status": {"r8_fix": "KILLED", "killed_by": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_out_of_range", "file": "proofs/slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend", "generator": "element_access_laws", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/02.patch",
   "type": "vec_VarTestStruct_2",
   "file": "types/vec_VarTestStruct_2_def_generated.bend (set tests i <= n)",
@@ -133,6 +145,7 @@
  },
  {
   "id": "r8-e02-vec-access/03",
+  "status": {"r8_fix": "KILLED", "killed_by": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_read_set_1", "file": "proofs/slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend", "generator": "element_access_laws", "replay": "patch -p1 on the regenerated tree, tools/check.sh (pinned): SOME PROOFS FAIL at the named law"},
   "patch": "tools/mutation_testing/manual_spec_mutants/patches/r8-e02-vec-access/03.patch",
   "type": "vec_VarTestStruct_2",
   "file": "types/vec_VarTestStruct_2_def_generated.bend (put_in writes slot 0)",

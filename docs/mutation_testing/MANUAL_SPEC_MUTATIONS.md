@@ -1791,3 +1791,36 @@ did the work: `mtree_run` / `prog_root` / `pt_run` / `chunk_read`, the `root_*ty
 * Corpus (B): the corpus cannot observe any of the 13 survivors (it decodes valid bytes: clean storage, no cache, no take / set / append),
   and among the proof-killed sample it misses chunk words 6..7 (`r8-a02/03`), the byte-vector element trees (`r8-a01/09`), the clean-copy
   path (`r8-a03/03`), the bit-list chunk mix (`r8-a04/02`) and the registry depth (`r8-c05/02`: BeaconState cases exceed the size cap).
+
+## Round 8 fixes (agent/r8-fixes)
+
+Scope: the 8 critical survivors of R8.2 and the 5 equivalent ones of R8.3 (dead code). No survivor was a code bug: each is closed by a
+generated law; the dead code they lived in is removed (Giulio's request; docs/r8_statement_diff.md lists the 168 removed definitions).
+No frozen statement and no lock changed.
+
+**New laws (all generated; every new file checks in under 16 s on the unmutated tree, the slowest the 513-element vectors' `vrootj1`):**
+
+| Generator | Law (file under proofs/slop/validity/) | Pins |
+|---|---|---|
+| tight_storage_root | `<X>_vroot_<p>_j1_n<n>_b<b>`, `<X>_serialize_vreject_j1_<p>_n<n>_b<b>`, `<X>_serialize_vrefuse_j1_<p>_n<n>_b<b>` (`<runtime>_<X>_vrootj1_<p>`; the 27 packed lists and vectors of the `j_tail` laws) | a valid value whose tail word holds ONE junk byte 0xBE at position b, for every tail length r = n mod 4 in 1..3 the range allows and every b in r..3: the root is the clean value's, `p_valid` is False, X's checked serializer refuses it (not for BeaconState's 2^40 list: its default is above the 3000-byte serializer cap) |
+| cached_list_roots | `<X>_vroot_<kp>_cache_*` for the four cached kinds that had none: `l10_ProgressiveSingleFieldContainerTestStruct` (a progressive container, varied through its `_go` setter), `l16777216_HistoricalSummary` and `l2_ConsolidationRequest` (byte-vector fields only: the first word of the first vector), `l1048576_bl1073741824` (the transactions: empty byte lists, whose root is the zero subtree at once) | the cached root after appends, sets and a clean append equals the plain root (the fresh cache's for the deep limits); the generator now stops if any `_cached_root` kind has no laws (the coverage gate) |
+| cached_list_roots | `<X>_vroot_<kp>_cache_take_<i>` (every kind with `_ctake`: transactions, Deposit_16, ProposerSlashing_16, Attestation_8, AttesterSlashing_1) | ctake i on a clean tree, then the cached root = the root of the list the plain `_take` leaves (the slot marked dirty) |
+| element_access_laws (new) | `<X>_serialize_vcoll_<kp>_append_grow` (`<runtime>_<X>_access_<kp>`; every list kind with a growing append and limit >= 2: 21 kinds) | min(L, 3) appends of a non-default element from the default (storage growths at 1 and 2): accepted, valid, length k, every element reads back; the generator stops if a kind has no variable element |
+| element_access_laws | `<X>_serialize_vcoll_<kp>_read_set_<i>`, `_other_set_<i>`, `_out_of_range` (`<runtime>_<X>_vaccess_<kp>`; every vector with a boxed take: `v2_VarTestStruct`) | set(d, i, v) is accepted and take(., i) is v; the other slots keep the default; set(d, N, v) is refused and changes nothing; take(d, N) is None and changes nothing |
+
+**Replay** (the patches applied with `patch -p1` on the regenerated tree, the law file checked with the pinned settings, `tools/check.sh`):
+
+| Survivor | Killed by (law, file) |
+|---|---|
+| r8-a03-clean-copy/01 | `Transaction_vroot_bl1073741824_j1_n1_b1`, fulu_Transaction_vrootj1_bl1073741824 (and `ComplexTestStruct_vroot_bl256_j1_n1_b1`, generic_ComplexTestStruct_vrootj1_bl256) |
+| r8-d01-cache-tree/14 | `ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1`, generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1 |
+| r8-d01-cache-tree/15 | `ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1`, the same file |
+| r8-d01-cache-tree/18 | `ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0`, fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0 |
+| r8-e01-access/04 | `BeaconBlockBody_serialize_vcoll_l8_Attestation_append_grow`, fulu_BeaconBlockBody_access_l8_Attestation |
+| r8-e02-vec-access/01 | `ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_out_of_range`, generic_ComplexTestStruct_vaccess_v2_VarTestStruct |
+| r8-e02-vec-access/02 | `ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_out_of_range`, the same file |
+| r8-e02-vec-access/03 | `ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_read_set_1`, the same file |
+| r8-a05-prog-cnt/03 (equivalent) | does not apply: `O.elems_root_prog` / `erp_size` were removed |
+| r8-b02-merkle-fast/01..04 (equivalent) | do not apply: the streaming merkleizer of src/merkle_fast.bend was removed |
+
+Machine-readable: the `status` field of each entry of `manual_round_8_survivors.json`.
