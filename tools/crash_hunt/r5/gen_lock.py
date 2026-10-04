@@ -24,6 +24,22 @@ KINDS = {
      mk='Ed.AttesterSlashing_set_attestation_2(Ed.AttesterSlashing_default(), Ee.IndexedAttestation_bx_wrap(Ee.IndexedAttestation_set_data(Ee.IndexedAttestation_default(), Ef.AttestationData_seed(x))))'),
 }
 
+UNBOXED = [('Fulu_list_Validator_1099511627776','l1099511627776_Validator','FuluValidator','Validator'),
+ ('Fulu_list_HistoricalSummary_16777216','l16777216_HistoricalSummary','FuluHistoricalSummary','HistoricalSummary'),
+ ('Fulu_list_Eth1Data_2048','l2048_Eth1Data','FuluEth1Data','Eth1Data'),
+ ('Fulu_list_PendingDeposit_134217728','l134217728_PendingDeposit','FuluPendingDeposit','PendingDeposit'),
+ ('Fulu_list_Withdrawal_16','l16_Withdrawal','FuluWithdrawal','Withdrawal'),
+ ('list_ProgressiveSingleFieldContainerTestStruct_10','l10_ProgressiveSingleFieldContainerTestStruct','ProgressiveSingleFieldContainerTestStruct','ProgressiveSingleFieldContainerTestStruct'),
+ ('Fulu_list_ConsolidationRequest_2','l2_ConsolidationRequest','FuluConsolidationRequest','ConsolidationRequest'),
+ ('Fulu_list_DepositRequest_8192','l8192_DepositRequest','FuluDepositRequest','DepositRequest'),
+ ('Fulu_list_PendingConsolidation_262144','l262144_PendingConsolidation','FuluPendingConsolidation','PendingConsolidation'),
+ ('Fulu_list_PendingPartialWithdrawal_134217728','l134217728_PendingPartialWithdrawal','FuluPendingPartialWithdrawal','PendingPartialWithdrawal'),
+ ('Fulu_list_SignedBLSToExecutionChange_16','l16_SignedBLSToExecutionChange','FuluSignedBLSToExecutionChange','SignedBLSToExecutionChange'),
+ ('Fulu_list_SignedVoluntaryExit_16','l16_SignedVoluntaryExit','FuluSignedVoluntaryExit','SignedVoluntaryExit'),
+ ('Fulu_list_WithdrawalRequest_16','l16_WithdrawalRequest','FuluWithdrawalRequest','WithdrawalRequest')]
+for f, P, mod, T in UNBOXED:
+    KINDS[f] = dict(P=P, E='Ed.' + T, imp='import ../../../../types/%s_def_generated.bend as Ed' % mod, mk='Ed.%s_seed(x)' % T, GET='get')
+
 PROG = '''import Base
 import ../../../../src/buffer.bend as B
 import ../../../../src/digest.bend as D
@@ -88,8 +104,8 @@ def dispatch(+op: U32, +i: U32, l: L.%(P)s_Seq, c: L.%(P)s_Cached, +x: U32, +bad
     case 2: flagf(x, bad, first, j, L.%(P)s_append(l, mk(x)), L.%(P)s_capp(c, mk(x)))
     case 3: flagf(x, bad, first, j, L.%(P)s_set(l, i, mk(x)), L.%(P)s_cset(c, i, mk(x)))
     case 4: flagf(x, bad, first, j, L.%(P)s_set(l, i, mk(x)), L.%(P)s_cset(c, i, mk(x)))
-    case 5: takef(x, bad, first, j, L.%(P)s_take(l, i), L.%(P)s_ctake(c, i))
-    case 6: takef(x, bad, first, j, L.%(P)s_take(l, i), L.%(P)s_ctake(c, i))
+    case 5: takef(x, bad, first, j, L.%(P)s_%(GET)s(l, i), L.%(P)s_c%(GET)s(c, i))
+    case 6: takef(x, bad, first, j, L.%(P)s_%(GET)s(l, i), L.%(P)s_c%(GET)s(c, i))
     case _: rootcmp(l, c, x, bad, first, j, 1)
 
 def stp(s: S) -> S:
@@ -125,7 +141,7 @@ def main() -> IO(Unit):
 def main():
     od = os.path.join(HERE, 'lock'); os.makedirs(od, exist_ok=True)
     for f, k in KINDS.items():
-        open(os.path.join(od, 'lk_%s.bend' % f), 'w').write(PROG % dict(F=f, IMOD=20, **k))
+        open(os.path.join(od, 'lk_%s.bend' % f), 'w').write(PROG % dict(F=f, IMOD=20, **{'GET': 'take', **k}))
     print('generated', len(KINDS))
 
 if __name__ == '__main__':
