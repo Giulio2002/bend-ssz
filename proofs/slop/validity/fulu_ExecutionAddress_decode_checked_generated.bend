@@ -53,3 +53,25 @@ def ExecutionAddress_decode_vchecked_short()
 def ExecutionAddress_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(B.Buf{Array.new(U32, 0n, 0), 20}, 20)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   {==}
+
+def ExecutionAddress_decode_vchecked_budget_cost()
+    -> {FuluExecutionAddress_r.ExecutionAddress_dcost(4096) == 524288 : U32}:
+  {==}
+
+def ExecutionAddress_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionAddress_r.ExecutionAddress_dcost(size), 4294967295), U32.is_le(FuluExecutionAddress_r.ExecutionAddress_dcost(size), budget)) == False{} : Bool})
+    -> {FuluExecutionAddress_r.ExecutionAddress_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionAddress_r.ExecutionAddress_dcost(size), 4294967295), U32.is_le(FuluExecutionAddress_r.ExecutionAddress_dcost(size), budget)), False{}, h) : {FuluExecutionAddress_r.ExecutionAddress_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}
+  {==}
+
+def ExecutionAddress_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionAddress_r.ExecutionAddress_dcost(size), 4294967295), U32.is_le(FuluExecutionAddress_r.ExecutionAddress_dcost(size), budget)) == True{} : Bool})
+    -> {FuluExecutionAddress_r.ExecutionAddress_decode_checked_budget(buf, size, budget) == FuluExecutionAddress_r.ExecutionAddress_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionAddress_r.ExecutionAddress_dcost(size), 4294967295), U32.is_le(FuluExecutionAddress_r.ExecutionAddress_dcost(size), budget)), True{}, h) : {FuluExecutionAddress_r.ExecutionAddress_dcb(_, buf, size) == FuluExecutionAddress_r.ExecutionAddress_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}
+  {==}
+
+def ExecutionAddress_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
+  {==}
+
+def ExecutionAddress_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 20}, 20, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
+  {==}

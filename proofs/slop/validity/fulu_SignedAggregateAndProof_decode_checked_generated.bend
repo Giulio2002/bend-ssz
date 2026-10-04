@@ -53,3 +53,25 @@ def SignedAggregateAndProof_decode_vchecked_short()
 def SignedAggregateAndProof_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 100), 445}, 445)) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   {==}
+
+def SignedAggregateAndProof_decode_vchecked_budget_cost()
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(4096) == 524288 : U32}:
+  {==}
+
+def SignedAggregateAndProof_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), budget)) == False{} : Bool})
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), budget)), False{}, h) : {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
+  {==}
+
+def SignedAggregateAndProof_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), budget)) == True{} : Bool})
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(buf, size, budget) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), budget)), True{}, h) : {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcb(_, buf, size) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
+  {==}
+
+def SignedAggregateAndProof_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  {==}
+
+def SignedAggregateAndProof_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 445, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 445))) == (True{}, True{}) : Bool & Bool}:
+  {==}

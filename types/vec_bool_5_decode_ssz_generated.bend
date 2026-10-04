@@ -73,3 +73,14 @@ def vec_bool_5_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>
   vec_bool_5_dchw(size, n, B.stored(buf))
 
 def vec_bool_5_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dchk(size, B.size(buf))
+
+def vec_bool_5_dk() -> U32: 0
+
+def vec_bool_5_dcost(+size: U32) -> U32: O.dcost(size, vec_bool_5_dk())
+
+def vec_bool_5_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_bool_5_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def vec_bool_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dcb(Bool.and(U32.is_lt(vec_bool_5_dcost(size), 4294967295), U32.is_le(vec_bool_5_dcost(size), budget)), buf, size)

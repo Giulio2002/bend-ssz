@@ -52,3 +52,25 @@ def BlobIndex_decode_vchecked_short()
 def BlobIndex_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   {==}
+
+def BlobIndex_decode_vchecked_budget_cost()
+    -> {FuluBlobIndex_r.BlobIndex_dcost(4096) == 524288 : U32}:
+  {==}
+
+def BlobIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)) == False{} : Bool})
+    -> {FuluBlobIndex_r.BlobIndex_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)), False{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def BlobIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)) == True{} : Bool})
+    -> {FuluBlobIndex_r.BlobIndex_decode_checked_budget(buf, size, budget) == FuluBlobIndex_r.BlobIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)), True{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == FuluBlobIndex_r.BlobIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def BlobIndex_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def BlobIndex_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_decode_checked_budget(B.Buf{Array.new(U32, 1n, 0), 8}, 8, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
+  {==}

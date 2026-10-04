@@ -48,3 +48,14 @@ def BlobIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   BlobIndex_dchw(size, n, B.stored(buf))
 
 def BlobIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: BlobIndex_dchk(size, B.size(buf))
+
+def BlobIndex_dk() -> U32: 0
+
+def BlobIndex_dcost(+size: U32) -> U32: O.dcost(size, BlobIndex_dk())
+
+def BlobIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: BlobIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def BlobIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: BlobIndex_dcb(Bool.and(U32.is_lt(BlobIndex_dcost(size), 4294967295), U32.is_le(BlobIndex_dcost(size), budget)), buf, size)

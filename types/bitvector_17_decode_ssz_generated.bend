@@ -63,3 +63,14 @@ def bitvector_17_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvec
   bitvector_17_dchw(size, n, B.stored(buf))
 
 def bitvector_17_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>: bitvector_17_dchk(size, B.size(buf))
+
+def bitvector_17_dk() -> U32: 0
+
+def bitvector_17_dcost(+size: U32) -> U32: O.dcost(size, bitvector_17_dk())
+
+def bitvector_17_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>:
+  match ok:
+    case True{}: bitvector_17_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_17_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>: bitvector_17_dcb(Bool.and(U32.is_lt(bitvector_17_dcost(size), 4294967295), U32.is_le(bitvector_17_dcost(size), budget)), buf, size)

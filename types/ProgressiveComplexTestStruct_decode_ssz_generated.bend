@@ -255,3 +255,14 @@ def ProgressiveComplexTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & 
   ProgressiveComplexTestStruct_dchw(size, n, B.stored(buf))
 
 def ProgressiveComplexTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dchk(size, B.size(buf))
+
+def ProgressiveComplexTestStruct_dk() -> U32: 31
+
+def ProgressiveComplexTestStruct_dcost(+size: U32) -> U32: O.dcost(size, ProgressiveComplexTestStruct_dk())
+
+def ProgressiveComplexTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>:
+  match ok:
+    case True{}: ProgressiveComplexTestStruct_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_dcost(size), budget)), buf, size)

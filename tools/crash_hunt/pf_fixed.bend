@@ -53,6 +53,10 @@ import ../../types/bitlist_33_encode_ssz_generated.bend as B33E
 import ../../types/progbitlist_encode_ssz_generated.bend as PbE
 import ../../types/FuluBeaconState_def_generated.bend as BSD
 import ../../types/FuluBeaconState_encode_ssz_generated.bend as BSE
+import ../../types/FuluExecutionPayload_decode_ssz_generated.bend as EPR
+import ../../types/FuluExecutionPayload_def_generated.bend as EPD
+import ../../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as PCR
+import ../../types/ProgressiveComplexTestStruct_def_generated.bend as PCD
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -398,6 +402,36 @@ def bs_enc_len_line(label: String, pair: BSD.BeaconState & B.Buf) -> IO(Unit):
   IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
 def case72() -> IO(Unit): bs_enc_len_line("pd_encode_22369622", BSE.BeaconState_encode(bs_pd(22369622)))
 
+# The decode budget (docs/DECODE_AMPLIFICATION.md): an ExecutionPayload of 65,537 empty transactions (262,676 bytes, the worst shape of the
+# Fulu names, about 28 heap bytes per input byte) is refused one word below its bound and decoded at its bound; a 600 MiB
+# ProgressiveComplexTestStruct of empty inner lists is above the 2^30 words (8 GiB) of a heap like the Prysm shim's.
+def ep_fill(+k: Nat, +i: U32, a: Array<U32>) -> Array<U32>:
+  match k:
+    case 0n: a
+    case 1n+p: ep_fill(p, (i + 1 : U32), Array.set(U32, a, i, 262148))
+def ep_buf() -> B.Buf: B.Buf{ep_fill(U32.to_nat(65537), 132, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 17n, 0), 109, 528), 126, 528), 127, 262676)), 262676}
+def ep_some(m: Maybe<&1, EPD.ExecutionPayload>) -> U32:
+  match m:
+    case Some{v}: 1
+    case None{}: 0
+def ep_line(label: String, +budget: U32, pair: B.Buf & Maybe<&1, EPD.ExecutionPayload>) -> IO(Unit):
+  (b, m) = pair
+  IO.print(label ++ " some=" ++ U32.show(ep_some(m)))
+def case73() -> IO(Unit): IO.print("ep_empty_txs_dcost_262676=" ++ U32.show(EPR.ExecutionPayload_dcost(262676)))
+def case74() -> IO(Unit): ep_line("ep_empty_txs_budget_below", 0, EPR.ExecutionPayload_decode_checked_budget(ep_buf(), 262676, (EPR.ExecutionPayload_dcost(262676) - 1 : U32)))
+def case75() -> IO(Unit): ep_line("ep_empty_txs_budget_at", 0, EPR.ExecutionPayload_decode_checked_budget(ep_buf(), 262676, EPR.ExecutionPayload_dcost(262676)))
+def case76() -> IO(Unit): IO.print("pcts_600MiB_dcost=" ++ U32.show(PCR.ProgressiveComplexTestStruct_dcost(629145600)) ++ " within_2^30_words=" ++ O.pick_str(U32.is_le(PCR.ProgressiveComplexTestStruct_dcost(629145600), 1073741824)))
+
+# Round 6: a ProgressiveComplexTestStruct of 2^31 bytes has a saturated bound, refused even with the largest budget (R6-01); a slice longer than
+# NMAX is the empty slice at once (R6-03)
+def pc_line(pair: B.Buf & Maybe<&1, PCD.ProgressiveComplexTestStruct>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: IO.print("pcts_2^31_budget_max some=1")
+    case None{}: IO.print("pcts_2^31_budget_max some=0")
+def case77() -> IO(Unit): pc_line(PCR.ProgressiveComplexTestStruct_decode_checked_budget(B.empty(), 2147483648, 4294967295))
+def case78() -> IO(Unit): r5_sl("r6_words_slice_max", O.words_slice(O.Words{r5w(), 16}, 0, 4294967295))
+
 # round 7 G1: the checked decoder ACCEPTS a window between 2^31 and NMAX (an honest 4 GiB buffer: the storage holds NMAX bytes)
 def dec_w_line(label: String, pair: B.Buf & Maybe<&1, O.Words>) -> IO(Unit):
   (b, m) = pair
@@ -482,6 +516,12 @@ def dispatch(+c: U32) -> IO(Unit):
     case 70: case70()
     case 71: case71()
     case 72: case72()
+    case 73: case73()
+    case 74: case74()
+    case 75: case75()
+    case 76: case76()
+    case 77: case77()
+    case 78: case78()
     case 80: case80()
     case 81: case81()
     case _: case12()

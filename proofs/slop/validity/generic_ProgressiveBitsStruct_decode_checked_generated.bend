@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
 import ../../../types/ProgressiveBitsStruct_decode_ssz_generated.bend as ProgressiveBitsStruct_r
 
@@ -52,4 +53,42 @@ def ProgressiveBitsStruct_decode_vchecked_short()
 
 def ProgressiveBitsStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 426}, 426)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_cost()
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(4096) == 527879 : U32}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), 4294967295), U32.is_le(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), budget)) == False{} : Bool})
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), 4294967295), U32.is_le(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), budget)), False{}, h) : {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), 4294967295), U32.is_le(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), budget)) == True{} : Bool})
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked_budget(buf, size, budget) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), 4294967295), U32.is_le(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), budget)), True{}, h) : {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcb(_, buf, size) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_cost_858980000()
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_cost_2147483648()
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_cost_4294967264()
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_covers_progbitlist()
+    -> {U32.is_le(progbitlist_r.progbitlist_dk(), ProgressiveBitsStruct_r.ProgressiveBitsStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426, 4294967295)), Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == (True{}, True{}) : Bool & Bool}:
   {==}

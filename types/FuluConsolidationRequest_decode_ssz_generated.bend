@@ -75,3 +75,14 @@ def ConsolidationRequest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
   ConsolidationRequest_dchw(size, n, B.stored(buf))
 
 def ConsolidationRequest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>: ConsolidationRequest_dchk(size, B.size(buf))
+
+def ConsolidationRequest_dk() -> U32: 0
+
+def ConsolidationRequest_dcost(+size: U32) -> U32: O.dcost(size, ConsolidationRequest_dk())
+
+def ConsolidationRequest_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>:
+  match ok:
+    case True{}: ConsolidationRequest_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ConsolidationRequest_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>: ConsolidationRequest_dcb(Bool.and(U32.is_lt(ConsolidationRequest_dcost(size), 4294967295), U32.is_le(ConsolidationRequest_dcost(size), budget)), buf, size)

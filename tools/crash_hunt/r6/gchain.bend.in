@@ -1,0 +1,88 @@
+import Base
+import ../../../src/buffer.bend as B
+import ../../../src/digest.bend as D
+import ../../../src/obj.bend as O
+import ../../../types/generic_obj_f@K@.bend as G
+import ../../../benchmarks/compact/objio.bend as IOx
+
+# Crash hunt round 6 (d), the generic names (tools/crash_hunt/r6/gen_generic_fuzz.py); from round 5 (b): a CHAIN of setter / append operations in ONE process (no re-decode between them, unlike
+# tests_generated/fuzz_objects.py, whose histories re-decode after every step). SSZ_INPUT holds the start encoding
+# (SSZ_SIZE bytes) and then, at the next multiple of 4, SSZ_NOPS operations of three little-endian words (sel, idx, seed)
+# of the name's table (types/obj_fuzz_ops.json). Prints FLAGS (h = 31 h + accepted, over the chain), then the checked
+# encoding of the result (SSZ_OUTPUT) and its root.
+
+def check_show(out: B.Buf, d: D.Digest) -> IO(Unit):
+  do IO<Unit>:
+    IO.print("ROOTWORDS=" ++ IOx.words(d))
+    IOx.emit_encoding(B.size(out))
+
+def check_root(out: B.Buf, pair: B.Buf & (G.Any & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (a, d) = r
+  check_show(out, d)
+
+def check_enc(pair: G.Any & B.Buf) -> IO(Unit):
+  (a, out) = pair
+  check_root(out, G.root(O.hasher(), a))
+
+type CS is Type:
+  CS{buf: B.Buf, a: G.Any, j: U32, base: U32, h: U32}
+
+def st4(+j: U32, +base: U32, +h: U32, buf: B.Buf, pr: G.Any & Bool) -> CS:
+  (a, ok) = pr
+  CS{buf, a, (j + 1 : U32), base, (h * 31 + O.pick(ok, 1, 0) : U32)}
+
+def st3(+j: U32, +base: U32, +h: U32, +sel: U32, +idx: U32, a: G.Any, pair: B.Buf & U32) -> CS:
+  (buf, +seed) = pair
+  st4(j, base, h, buf, G.fuzz(a, sel, idx, seed))
+
+def st2(+j: U32, +base: U32, +h: U32, +sel: U32, a: G.Any, pair: B.Buf & U32) -> CS:
+  (buf, +idx) = pair
+  st3(j, base, h, sel, idx, a, B.read32(buf, (base + 12 * j + 8 : U32)))
+
+def st1(+j: U32, +base: U32, +h: U32, a: G.Any, pair: B.Buf & U32) -> CS:
+  (buf, +sel) = pair
+  st2(j, base, h, sel, a, B.read32(buf, (base + 12 * j + 4 : U32)))
+
+def step(cs: CS) -> CS:
+  match cs:
+    case CS{buf, a, +j, +base, +h}: st1(j, base, h, a, B.read32(buf, (base + 12 * j : U32)))
+
+def chain(k: Nat, cs: CS) -> CS:
+  match k:
+    case 0n: cs
+    case 1n+q: chain(q, step(cs))
+
+def chained_p(a: G.Any, +h: U32) -> IO(Unit):
+  do IO<Unit>:
+    IO.print("FLAGS=" ++ U32.show(h))
+    check_enc(G.encode(a))
+
+def chained(cs: CS) -> IO(Unit):
+  match cs:
+    case CS{buf, a, +j, +base, +h}: chained_p(a, h)
+
+
+def on_decoded(m: Maybe<&1, G.Any>, buf: B.Buf, +nops: U32, +base: U32) -> IO(Unit):
+  match m:
+    case None{}: IO.die(Unit, 1, "DECODED=0")
+    case Some{a}:
+      do IO<Unit>:
+        IO.print("DECODED=1")
+        chained(chain(U32.to_nat(nops), CS{buf, a, 0, base, 0}))
+
+def decoded(+nops: U32, +base: U32, pair: B.Buf & Maybe<&1, G.Any>) -> IO(Unit):
+  (buf, m) = pair
+  on_decoded(m, buf, nops, base)
+
+def with_input(+i: U32, +size: U32, +nops: U32, pair: B.Buf & U32) -> IO(Unit):
+  (buf, +total) = pair
+  decoded(nops, ((size + 3 : U32) .&. 4294967292 : U32), G.decode(i, buf, size))
+
+def main() -> IO(Unit):
+  do IO<Unit>:
+    +index : U32 <- IOx.env_u32("SSZ_INDEX")
+    +size : U32 <- IOx.env_u32("SSZ_SIZE")
+    +nops : U32 <- IOx.env_u32("SSZ_NOPS")
+    input : B.Buf & U32 <- IOx.load()
+    with_input(index, size, nops, input)

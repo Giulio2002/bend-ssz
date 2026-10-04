@@ -53,3 +53,25 @@ def SingleAttestation_decode_vchecked_short()
 def SingleAttestation_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked(B.Buf{Array.new(U32, 0n, 0), 240}, 240)) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
   {==}
+
+def SingleAttestation_decode_vchecked_budget_cost()
+    -> {FuluSingleAttestation_r.SingleAttestation_dcost(4096) == 524288 : U32}:
+  {==}
+
+def SingleAttestation_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSingleAttestation_r.SingleAttestation_dcost(size), 4294967295), U32.is_le(FuluSingleAttestation_r.SingleAttestation_dcost(size), budget)) == False{} : Bool})
+    -> {FuluSingleAttestation_r.SingleAttestation_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSingleAttestation_r.SingleAttestation_dcost(size), 4294967295), U32.is_le(FuluSingleAttestation_r.SingleAttestation_dcost(size), budget)), False{}, h) : {FuluSingleAttestation_r.SingleAttestation_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}
+  {==}
+
+def SingleAttestation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSingleAttestation_r.SingleAttestation_dcost(size), 4294967295), U32.is_le(FuluSingleAttestation_r.SingleAttestation_dcost(size), budget)) == True{} : Bool})
+    -> {FuluSingleAttestation_r.SingleAttestation_decode_checked_budget(buf, size, budget) == FuluSingleAttestation_r.SingleAttestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSingleAttestation_r.SingleAttestation_dcost(size), 4294967295), U32.is_le(FuluSingleAttestation_r.SingleAttestation_dcost(size), budget)), True{}, h) : {FuluSingleAttestation_r.SingleAttestation_dcb(_, buf, size) == FuluSingleAttestation_r.SingleAttestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}
+  {==}
+
+def SingleAttestation_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  {==}
+
+def SingleAttestation_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 240}, 240, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked(B.Buf{Array.new(U32, 6n, 0), 240}, 240))) == (True{}, True{}) : Bool & Bool}:
+  {==}

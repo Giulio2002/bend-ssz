@@ -110,6 +110,9 @@ def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_storage() -> {P
 def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   P3_PRV.BlobSidecar_decode_vchecked_real()
 
+def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobSidecar_r.BlobSidecar_dcost(size), 4294967295), U32.is_le(FuluBlobSidecar_r.BlobSidecar_dcost(size), budget)) == True{} : Bool}) -> {FuluBlobSidecar_r.BlobSidecar_decode_checked_budget(buf, size, budget) == FuluBlobSidecar_r.BlobSidecar_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  P3_PRV.BlobSidecar_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def FuluBlobSidecar__decode_offsets__BlobSidecar_decode_build(buf: P4_B.Buf, +size: U32, b2: P4_B.Buf, e: {FuluBlobSidecar_r.BlobSidecar_ok(buf, 0, size) == (b2, True{}) : P4_B.Buf & Bool}, hwin: {U32.is_le(size, P4_DWL.bsz(buf)) == True{} : Bool}) -> {FuluBlobSidecar_r.BlobSidecar_decode(buf, size) == FuluBlobSidecar_r.BlobSidecar_some(FuluBlobSidecar_r.BlobSidecar_build(b2, size)) : P4_B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   P4_PRV.BlobSidecar_decode_build(buf, size, b2, e, hwin)
 

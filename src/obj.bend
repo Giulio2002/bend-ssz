@@ -1582,7 +1582,9 @@ def sl_some(empty: Bool, o: Words, +p: U32, +n: U32) -> Words & Words:
     case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
       zeros_for(n), words_word(o, U32.shrn(p, 2n))))
 
-def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_eq(n, 0), o, p, n)
+# A slice longer than NMAX is not one either (docs/CRASH_HUNT.md R6-03): its word count (n + 3) >> 2 and its storage zeros_for(n) wrap for
+# n >= 2^32 - 3; it is answered as the empty slice.
+def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(Bool.or(U32.is_eq(n, 0), U32.is_lt(4294967264, n)), o, p, n)
 
 def bl_go(+k: Nat, +j: U32, +base: U32, o: Words, pair: Array<U32> & U32) -> Words & Array<U32>:
   match k:
@@ -1814,6 +1816,19 @@ def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), 
 
 # 4 * n, the offset table of a list of variable-size elements: the product when n <= NMAX / 4, else the marker (docs/CRASH_HUNT.md R4-03).
 def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
+
+# The decode budget (docs/DECODE_AMPLIFICATION.md, X_decode_checked_budget): an upper bound, in heap words of 8 bytes, of what the
+# decode of `size` input bytes allocates, for a type whose decode allocates at most k heap bytes per input byte and the constant
+# 4 MiB: ((size >> 3) + 1) * k + 524288 words, 2^32 - 1 when that does not fit U32. k is the type's (codegen/decode_cost.json).
+def dcost_go(+w: U32, +k: U32) -> U32:
+  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
+
+def dcost_k(nz: Bool, +w: U32, +k: U32) -> U32:
+  match nz:
+    case True{}: dcost_go(w, k)
+    case False{}: 524288
+
+def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
 
 def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
   match o:

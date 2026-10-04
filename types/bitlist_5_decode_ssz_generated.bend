@@ -51,3 +51,14 @@ def bitlist_5_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
   bitlist_5_dchw(size, n, B.stored(buf))
 
 def bitlist_5_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_5_dchk(size, B.size(buf))
+
+def bitlist_5_dk() -> U32: 0
+
+def bitlist_5_dcost(+size: U32) -> U32: O.dcost(size, bitlist_5_dk())
+
+def bitlist_5_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  match ok:
+    case True{}: bitlist_5_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def bitlist_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_5_dcb(Bool.and(U32.is_lt(bitlist_5_dcost(size), 4294967295), U32.is_le(bitlist_5_dcost(size), budget)), buf, size)

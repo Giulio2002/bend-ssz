@@ -75,3 +75,14 @@ def uint128_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, uint128_d.U
   uint128_dchw(size, n, B.stored(buf))
 
 def uint128_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>: uint128_dchk(size, B.size(buf))
+
+def uint128_dk() -> U32: 0
+
+def uint128_dcost(+size: U32) -> U32: O.dcost(size, uint128_dk())
+
+def uint128_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>:
+  match ok:
+    case True{}: uint128_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def uint128_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>: uint128_dcb(Bool.and(U32.is_lt(uint128_dcost(size), 4294967295), U32.is_le(uint128_dcost(size), budget)), buf, size)

@@ -48,3 +48,14 @@ def ColumnIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   ColumnIndex_dchw(size, n, B.stored(buf))
 
 def ColumnIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: ColumnIndex_dchk(size, B.size(buf))
+
+def ColumnIndex_dk() -> U32: 0
+
+def ColumnIndex_dcost(+size: U32) -> U32: O.dcost(size, ColumnIndex_dk())
+
+def ColumnIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: ColumnIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ColumnIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: ColumnIndex_dcb(Bool.and(U32.is_lt(ColumnIndex_dcost(size), 4294967295), U32.is_le(ColumnIndex_dcost(size), budget)), buf, size)

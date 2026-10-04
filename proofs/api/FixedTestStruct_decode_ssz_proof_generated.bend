@@ -125,6 +125,12 @@ def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_short() -> 
 def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_real() -> {Pair.snd(P4_B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 13}, 13)) == None{} : Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
   P4_PRV.FixedTestStruct_decode_vchecked_real()
 
+def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FixedTestStruct_r.FixedTestStruct_dcost(size), 4294967295), U32.is_le(FixedTestStruct_r.FixedTestStruct_dcost(size), budget)) == True{} : Bool}) -> {FixedTestStruct_r.FixedTestStruct_decode_checked_budget(buf, size, budget) == FixedTestStruct_r.FixedTestStruct_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
+  P4_PRV.FixedTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_budget_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_decode_checked_budget(P4_B.Buf{Array.new(U32, 2n, 0), 13}, 13, 4294967295)), Pair.snd(P4_B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_decode_checked(P4_B.Buf{Array.new(U32, 2n, 0), 13}, 13))) == (True{}, True{}) : Bool & Bool}:
+  P4_PRV.FixedTestStruct_decode_vchecked_budget_accept()
+
 def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vlit_bad_short() -> {P5_PRV.some1(Pair.snd(P5_B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_decode(P5_B.Buf{Array.new(U32, 2n, 0), 12}, 12))) == False{} : Bool}:
   P5_PRV.FixedTestStruct_decode_vlit_bad_short()
 

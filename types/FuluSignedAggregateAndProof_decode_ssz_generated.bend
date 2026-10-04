@@ -91,3 +91,14 @@ def SignedAggregateAndProof_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe
   SignedAggregateAndProof_dchw(size, n, B.stored(buf))
 
 def SignedAggregateAndProof_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>: SignedAggregateAndProof_dchk(size, B.size(buf))
+
+def SignedAggregateAndProof_dk() -> U32: 0
+
+def SignedAggregateAndProof_dcost(+size: U32) -> U32: O.dcost(size, SignedAggregateAndProof_dk())
+
+def SignedAggregateAndProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>:
+  match ok:
+    case True{}: SignedAggregateAndProof_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SignedAggregateAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>: SignedAggregateAndProof_dcb(Bool.and(U32.is_lt(SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(SignedAggregateAndProof_dcost(size), budget)), buf, size)

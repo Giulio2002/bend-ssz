@@ -127,3 +127,14 @@ def CompatibleUnionABCA_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1,
   CompatibleUnionABCA_dchw(size, n, B.stored(buf))
 
 def CompatibleUnionABCA_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dchk(size, B.size(buf))
+
+def CompatibleUnionABCA_dk() -> U32: 7
+
+def CompatibleUnionABCA_dcost(+size: U32) -> U32: O.dcost(size, CompatibleUnionABCA_dk())
+
+def CompatibleUnionABCA_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>:
+  match ok:
+    case True{}: CompatibleUnionABCA_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def CompatibleUnionABCA_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dcb(Bool.and(U32.is_lt(CompatibleUnionABCA_dcost(size), 4294967295), U32.is_le(CompatibleUnionABCA_dcost(size), budget)), buf, size)

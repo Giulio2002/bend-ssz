@@ -173,6 +173,12 @@ def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 36}, 36)) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_real()
 
+def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dcost(size), 4294967295), U32.is_le(FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dcost(size), budget)) == True{} : Bool}) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked_budget(buf, size, budget) == FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_budget_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked_budget(P3_B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 36, 4294967295)), Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 36))) == (True{}, True{}) : Bool & Bool}:
+  P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_budget_accept()
+
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vlit_bad_columns_over() -> {P4_PRV.some1(Pair.snd(P4_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(P4_B.Buf{Array.set(U32, Array.new(U32, 9n, 0), 8, 36), 1068}, 1068))) == False{} : Bool}:
   P4_PRV.DataColumnsByRootIdentifier_decode_vlit_bad_columns_over()
 

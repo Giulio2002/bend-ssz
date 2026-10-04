@@ -68,3 +68,14 @@ def HistoricalBatch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Ful
   HistoricalBatch_dchw(size, n, B.stored(buf))
 
 def HistoricalBatch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>: HistoricalBatch_dchk(size, B.size(buf))
+
+def HistoricalBatch_dk() -> U32: 4
+
+def HistoricalBatch_dcost(+size: U32) -> U32: O.dcost(size, HistoricalBatch_dk())
+
+def HistoricalBatch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>:
+  match ok:
+    case True{}: HistoricalBatch_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def HistoricalBatch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>: HistoricalBatch_dcb(Bool.and(U32.is_lt(HistoricalBatch_dcost(size), 4294967295), U32.is_le(HistoricalBatch_dcost(size), budget)), buf, size)

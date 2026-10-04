@@ -48,3 +48,14 @@ def CustodyIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>
   CustodyIndex_dchw(size, n, B.stored(buf))
 
 def CustodyIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: CustodyIndex_dchk(size, B.size(buf))
+
+def CustodyIndex_dk() -> U32: 0
+
+def CustodyIndex_dcost(+size: U32) -> U32: O.dcost(size, CustodyIndex_dk())
+
+def CustodyIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: CustodyIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def CustodyIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CustodyIndex_dcb(Bool.and(U32.is_lt(CustodyIndex_dcost(size), 4294967295), U32.is_le(CustodyIndex_dcost(size), budget)), buf, size)

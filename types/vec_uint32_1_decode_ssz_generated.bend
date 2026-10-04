@@ -58,3 +58,14 @@ def vec_uint32_1_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Word
   vec_uint32_1_dchw(size, n, B.stored(buf))
 
 def vec_uint32_1_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_1_dchk(size, B.size(buf))
+
+def vec_uint32_1_dk() -> U32: 0
+
+def vec_uint32_1_dcost(+size: U32) -> U32: O.dcost(size, vec_uint32_1_dk())
+
+def vec_uint32_1_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: vec_uint32_1_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def vec_uint32_1_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_1_dcb(Bool.and(U32.is_lt(vec_uint32_1_dcost(size), 4294967295), U32.is_le(vec_uint32_1_dcost(size), budget)), buf, size)

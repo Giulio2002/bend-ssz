@@ -93,6 +93,9 @@ def FuluTransaction__decode_offsets__Transaction_decode_vchecked_storage() -> {P
 def FuluTransaction__decode_offsets__Transaction_decode_vchecked_real() -> {Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_decode_checked(P1_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P1_O.Words>}:
   P1_PRV.Transaction_decode_vchecked_real()
 
+def FuluTransaction__decode_offsets__Transaction_decode_vchecked_budget_agree(buf: P1_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluTransaction_r.Transaction_dcost(size), 4294967295), U32.is_le(FuluTransaction_r.Transaction_dcost(size), budget)) == True{} : Bool}) -> {FuluTransaction_r.Transaction_decode_checked_budget(buf, size, budget) == FuluTransaction_r.Transaction_decode_checked(buf, size) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
+  P1_PRV.Transaction_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def FuluTransaction__decode_offsets__Transaction_decode_vlit_ok_default() -> {P2_PRV.some1(Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, FuluTransaction_r.Transaction_decode(P2_B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == True{} : Bool}:
   P2_PRV.Transaction_decode_vlit_ok_default()
 

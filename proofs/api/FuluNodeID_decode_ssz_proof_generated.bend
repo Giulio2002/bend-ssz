@@ -142,6 +142,12 @@ def FuluNodeID__decode_offsets__NodeID_decode_vchecked_short() -> {Pair.snd(P7_B
 def FuluNodeID__decode_offsets__NodeID_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, uint256_d.Uint256>}:
   P7_PRV.NodeID_decode_vchecked_real()
 
+def FuluNodeID__decode_offsets__NodeID_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluNodeID_r.NodeID_dcost(size), 4294967295), U32.is_le(FuluNodeID_r.NodeID_dcost(size), budget)) == True{} : Bool}) -> {FuluNodeID_r.NodeID_decode_checked_budget(buf, size, budget) == FuluNodeID_r.NodeID_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  P7_PRV.NodeID_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluNodeID__decode_offsets__NodeID_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked_budget(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.NodeID_decode_vchecked_budget_accept()
+
 def FuluNodeID__decode_offsets__NodeID_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode(P8_B.Buf{Array.new(U32, 3n, 0), 31}, 31))) == False{} : Bool}:
   P8_PRV.NodeID_decode_vlit_bad_short()
 

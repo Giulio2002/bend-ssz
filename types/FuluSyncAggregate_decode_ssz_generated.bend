@@ -77,3 +77,14 @@ def SyncAggregate_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluS
   SyncAggregate_dchw(size, n, B.stored(buf))
 
 def SyncAggregate_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>: SyncAggregate_dchk(size, B.size(buf))
+
+def SyncAggregate_dk() -> U32: 0
+
+def SyncAggregate_dcost(+size: U32) -> U32: O.dcost(size, SyncAggregate_dk())
+
+def SyncAggregate_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
+  match ok:
+    case True{}: SyncAggregate_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SyncAggregate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>: SyncAggregate_dcb(Bool.and(U32.is_lt(SyncAggregate_dcost(size), 4294967295), U32.is_le(SyncAggregate_dcost(size), budget)), buf, size)

@@ -48,3 +48,14 @@ def SubnetID_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   SubnetID_dchw(size, n, B.stored(buf))
 
 def SubnetID_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dchk(size, B.size(buf))
+
+def SubnetID_dk() -> U32: 0
+
+def SubnetID_dcost(+size: U32) -> U32: O.dcost(size, SubnetID_dk())
+
+def SubnetID_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: SubnetID_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SubnetID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dcb(Bool.and(U32.is_lt(SubnetID_dcost(size), 4294967295), U32.is_le(SubnetID_dcost(size), budget)), buf, size)

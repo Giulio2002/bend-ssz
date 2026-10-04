@@ -49,3 +49,14 @@ def DomainType_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluByte
   DomainType_dchw(size, n, B.stored(buf))
 
 def DomainType_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: DomainType_dchk(size, B.size(buf))
+
+def DomainType_dk() -> U32: 0
+
+def DomainType_dcost(+size: U32) -> U32: O.dcost(size, DomainType_dk())
+
+def DomainType_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  match ok:
+    case True{}: DomainType_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def DomainType_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: DomainType_dcb(Bool.and(U32.is_lt(DomainType_dcost(size), 4294967295), U32.is_le(DomainType_dcost(size), budget)), buf, size)

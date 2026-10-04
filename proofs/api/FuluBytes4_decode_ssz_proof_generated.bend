@@ -137,6 +137,12 @@ def FuluBytes4__decode_offsets__Bytes4_decode_vchecked_storage() -> {Pair.snd(P7
 def FuluBytes4__decode_offsets__Bytes4_decode_vchecked_short() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluBytes4_r.Bytes4_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   P7_PRV.Bytes4_decode_vchecked_short()
 
+def FuluBytes4__decode_offsets__Bytes4_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBytes4_r.Bytes4_dcost(size), 4294967295), U32.is_le(FuluBytes4_r.Bytes4_dcost(size), budget)) == True{} : Bool}) -> {FuluBytes4_r.Bytes4_decode_checked_budget(buf, size, budget) == FuluBytes4_r.Bytes4_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  P7_PRV.Bytes4_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluBytes4__decode_offsets__Bytes4_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluBytes4_r.Bytes4_decode_checked_budget(P7_B.Buf{Array.new(U32, 0n, 0), 4}, 4, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluBytes4_r.Bytes4_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.Bytes4_decode_vchecked_budget_accept()
+
 def FuluBytes4__decode_offsets__Bytes4_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluBytes4_r.Bytes4_decode(P8_B.Buf{Array.new(U32, 0n, 0), 3}, 3))) == False{} : Bool}:
   P8_PRV.Bytes4_decode_vlit_bad_short()
 

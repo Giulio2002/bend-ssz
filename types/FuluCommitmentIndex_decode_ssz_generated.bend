@@ -48,3 +48,14 @@ def CommitmentIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U
   CommitmentIndex_dchw(size, n, B.stored(buf))
 
 def CommitmentIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: CommitmentIndex_dchk(size, B.size(buf))
+
+def CommitmentIndex_dk() -> U32: 0
+
+def CommitmentIndex_dcost(+size: U32) -> U32: O.dcost(size, CommitmentIndex_dk())
+
+def CommitmentIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: CommitmentIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def CommitmentIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CommitmentIndex_dcb(Bool.and(U32.is_lt(CommitmentIndex_dcost(size), 4294967295), U32.is_le(CommitmentIndex_dcost(size), budget)), buf, size)

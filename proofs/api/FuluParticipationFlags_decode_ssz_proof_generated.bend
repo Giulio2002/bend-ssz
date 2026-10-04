@@ -127,6 +127,12 @@ def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_s
 def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_short() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, U32>}:
   P5_PRV.ParticipationFlags_decode_vchecked_short()
 
+def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluParticipationFlags_r.ParticipationFlags_dcost(size), 4294967295), U32.is_le(FuluParticipationFlags_r.ParticipationFlags_dcost(size), budget)) == True{} : Bool}) -> {FuluParticipationFlags_r.ParticipationFlags_decode_checked_budget(buf, size, budget) == FuluParticipationFlags_r.ParticipationFlags_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.ParticipationFlags_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked_budget(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.ParticipationFlags_decode_vchecked_budget_accept()
+
 def FuluParticipationFlags__decode_offsets__ParticipationFlags_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode(P6_B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == False{} : Bool}:
   P6_PRV.ParticipationFlags_decode_vlit_bad_short()
 

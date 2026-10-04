@@ -96,3 +96,14 @@ def LightClientHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
   LightClientHeader_dchw(size, n, B.stored(buf))
 
 def LightClientHeader_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>: LightClientHeader_dchk(size, B.size(buf))
+
+def LightClientHeader_dk() -> U32: 0
+
+def LightClientHeader_dcost(+size: U32) -> U32: O.dcost(size, LightClientHeader_dk())
+
+def LightClientHeader_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>:
+  match ok:
+    case True{}: LightClientHeader_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientHeader_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>: LightClientHeader_dcb(Bool.and(U32.is_lt(LightClientHeader_dcost(size), 4294967295), U32.is_le(LightClientHeader_dcost(size), budget)), buf, size)

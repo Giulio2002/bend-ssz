@@ -53,3 +53,25 @@ def Deposit_decode_vchecked_short()
 def Deposit_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1240}, 1240)) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
   {==}
+
+def Deposit_decode_vchecked_budget_cost()
+    -> {FuluDeposit_r.Deposit_dcost(4096) == 524288 : U32}:
+  {==}
+
+def Deposit_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDeposit_r.Deposit_dcost(size), 4294967295), U32.is_le(FuluDeposit_r.Deposit_dcost(size), budget)) == False{} : Bool})
+    -> {FuluDeposit_r.Deposit_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDeposit_r.Deposit_dcost(size), 4294967295), U32.is_le(FuluDeposit_r.Deposit_dcost(size), budget)), False{}, h) : {FuluDeposit_r.Deposit_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}
+  {==}
+
+def Deposit_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDeposit_r.Deposit_dcost(size), 4294967295), U32.is_le(FuluDeposit_r.Deposit_dcost(size), budget)) == True{} : Bool})
+    -> {FuluDeposit_r.Deposit_decode_checked_budget(buf, size, budget) == FuluDeposit_r.Deposit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDeposit_r.Deposit_dcost(size), 4294967295), U32.is_le(FuluDeposit_r.Deposit_dcost(size), budget)), True{}, h) : {FuluDeposit_r.Deposit_dcb(_, buf, size) == FuluDeposit_r.Deposit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}
+  {==}
+
+def Deposit_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
+  {==}
+
+def Deposit_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked_budget(B.Buf{Array.new(U32, 9n, 0), 1240}, 1240, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(B.Buf{Array.new(U32, 9n, 0), 1240}, 1240))) == (True{}, True{}) : Bool & Bool}:
+  {==}

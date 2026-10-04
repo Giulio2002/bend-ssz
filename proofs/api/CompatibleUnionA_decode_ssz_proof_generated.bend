@@ -143,6 +143,12 @@ def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_storage()
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_short() -> {Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 2)) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   P4_PRV.CompatibleUnionA_decode_vchecked_short()
 
+def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(CompatibleUnionA_r.CompatibleUnionA_dcost(size), 4294967295), U32.is_le(CompatibleUnionA_r.CompatibleUnionA_dcost(size), budget)) == True{} : Bool}) -> {CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(buf, size, budget) == CompatibleUnionA_r.CompatibleUnionA_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  P4_PRV.CompatibleUnionA_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_budget_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2, 4294967295)), Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
+  P4_PRV.CompatibleUnionA_decode_vchecked_budget_accept()
+
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vlit_bad_selector() -> {P5_PRV.some1(Pair.snd(P5_B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode(P5_B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == False{} : Bool}:
   P5_PRV.CompatibleUnionA_decode_vlit_bad_selector()
 

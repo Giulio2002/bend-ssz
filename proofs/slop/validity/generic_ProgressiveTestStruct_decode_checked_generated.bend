@@ -1,6 +1,8 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
+import ../../../types/proglist_uint8_decode_ssz_generated.bend as proglist_uint8_r
 import ../../../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
 import ../../../types/ProgressiveTestStruct_decode_ssz_generated.bend as ProgressiveTestStruct_r
 
@@ -52,4 +54,58 @@ def ProgressiveTestStruct_decode_vchecked_short()
 
 def ProgressiveTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 16), 16}, 16)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(4096) == 540191 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget)) == False{} : Bool})
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget)), False{}, h) : {ProgressiveTestStruct_r.ProgressiveTestStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget)) == True{} : Bool})
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget)), True{}, h) : {ProgressiveTestStruct_r.ProgressiveTestStruct_dcb(_, buf, size) == ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost_858980000()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(858980000) == 3329071819 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost_2147483648()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost_4294967264()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost_1108243344()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(1108243344) == 4294967277 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_cost_1108243352()
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(1108243352) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_covers_proglist_uint64()
+    -> {U32.is_le(proglist_uint64_r.proglist_uint64_dk(), ProgressiveTestStruct_r.ProgressiveTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_covers_proglist_uint8()
+    -> {U32.is_le(proglist_uint8_r.proglist_uint8_dk(), ProgressiveTestStruct_r.ProgressiveTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_saturated()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(B.empty(), 4294967264, 4294967295)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  {==}
+
+def ProgressiveTestStruct_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16, 4294967295)), Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   {==}

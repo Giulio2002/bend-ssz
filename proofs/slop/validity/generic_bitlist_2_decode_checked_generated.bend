@@ -48,3 +48,25 @@ def bitlist_2_decode_vchecked_storage()
 def bitlist_2_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, O.Bits>}:
   {==}
+
+def bitlist_2_decode_vchecked_budget_cost()
+    -> {bitlist_2_r.bitlist_2_dcost(4096) == 524288 : U32}:
+  {==}
+
+def bitlist_2_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitlist_2_r.bitlist_2_dcost(size), 4294967295), U32.is_le(bitlist_2_r.bitlist_2_dcost(size), budget)) == False{} : Bool})
+    -> {bitlist_2_r.bitlist_2_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitlist_2_r.bitlist_2_dcost(size), 4294967295), U32.is_le(bitlist_2_r.bitlist_2_dcost(size), budget)), False{}, h) : {bitlist_2_r.bitlist_2_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}
+  {==}
+
+def bitlist_2_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitlist_2_r.bitlist_2_dcost(size), 4294967295), U32.is_le(bitlist_2_r.bitlist_2_dcost(size), budget)) == True{} : Bool})
+    -> {bitlist_2_r.bitlist_2_decode_checked_budget(buf, size, budget) == bitlist_2_r.bitlist_2_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitlist_2_r.bitlist_2_dcost(size), 4294967295), U32.is_le(bitlist_2_r.bitlist_2_dcost(size), budget)), True{}, h) : {bitlist_2_r.bitlist_2_dcb(_, buf, size) == bitlist_2_r.bitlist_2_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}
+  {==}
+
+def bitlist_2_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Bits>}:
+  {==}
+
+def bitlist_2_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode_checked_budget(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_2_r.bitlist_2_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
+  {==}
