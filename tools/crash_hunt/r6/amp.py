@@ -153,14 +153,16 @@ def with_field(t, base, path, val):
     return [with_field(e, cur, rest, val)] + list(base[1:])
 
 
-def run(tree, prog, index, path, cap):
-    env = {**os.environ, 'SSZ_MODE': '1', 'SSZ_INDEX': str(index), 'SSZ_OPS': '1', 'SSZ_INPUT': path}
+def run(tree, prog, index, path, cap, mode='1'):
+    env = {**os.environ, 'SSZ_MODE': mode, 'SSZ_INDEX': str(index), 'SSZ_OPS': '1', 'SSZ_INPUT': path, 'SSZ_OUTPUT': path + '.out'}
     cmd = ['systemd-run', '--quiet', '--scope', '-p', 'MemoryMax=%s' % cap, '-p', 'MemorySwapMax=0', '--',
            'nice', '-n', '19', 'bash', '-c', 'ulimit -s 16384; exec /usr/bin/time -f "PEAK_KB=%M ELAPSED=%e" timeout 300 "$0" --threads 1 --gpu off',
            os.path.join(tree, prog)]
     r = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=900)
+    if os.path.exists(path + '.out'):
+        os.unlink(path + '.out')
     m = re.search(r'PEAK_KB=(\d+) ELAPSED=([\d.]+)', r.stderr)
-    return {'rc': r.returncode, 'accepted': 'ACCEPTED=1' in r.stdout, 'peak_kb': int(m.group(1)) if m else None,
+    return {'rc': r.returncode, 'accepted': 'ACCEPTED=1' in r.stdout or (mode == '5' and 'DECODED=1' in r.stdout and r.returncode == 0), 'peak_kb': int(m.group(1)) if m else None,
             'sec': float(m.group(2)) if m else None, 'ms': int(re.search(r'MS=(\d+)', r.stdout).group(1)) if 'MS=' in r.stdout else None,
             'tail': (r.stdout + r.stderr)[-160:]}
 
@@ -181,6 +183,7 @@ def main():
     ap.add_argument('--cap', default='16G')
     ap.add_argument('-j', type=int, default=3)
     ap.add_argument('--no-slope', action='store_true')
+    ap.add_argument('--mode', default='1', help='SSZ_MODE of the object program: 1 decode (forced), 5 decode then the structural dump (the Prysm shim path)')
     a = ap.parse_args()
     tree = os.path.abspath(a.tree)
     T = types(tree)
@@ -207,7 +210,7 @@ def main():
         data = enc(t, build(n))
         p = os.path.join(tmp, 'in%d.ssz' % i)
         open(p, 'wb').write(data)
-        r = run(tree, prog, idx, p, a.cap)
+        r = run(tree, prog, idx, p, a.cap, a.mode)
         rr = run(tree, prog, refuse[prog][0], p, a.cap)
         row = {'name': name, 'shape': label, 'n': n, 'bytes': len(data), 'peak_kb': r['peak_kb'], 'refused_kb': rr['peak_kb'],
                'accepted': r['accepted'], 'rc': r['rc'], 'sec': r['sec'], 'ms': r['ms'], 'refused_sec': rr['sec']}
