@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/uint64_def_generated.bend as uint64_d
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
 import ../../types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend as FuluLightClientOptimisticUpdate_e
 import ../../types/schema.bend as P0_S
@@ -69,6 +70,12 @@ def FuluLightClientOptimisticUpdate__encode_spec__encode_spec(+ow1: U32, +ow2: U
 
 def FuluLightClientOptimisticUpdate__serialize_valid__LightClientOptimisticUpdate_serialize_vreject_default_valid() -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, Bool, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_valid(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default())) == True{} : Bool}:
   P2_PRV.LightClientOptimisticUpdate_serialize_vreject_default_valid()
+
+def FuluLightClientOptimisticUpdate__serialize_valid__LightClientOptimisticUpdate_serialize_vreject_attested_header_execution() -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, Bool, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_valid(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientOptimisticUpdate_serialize_vreject_attested_header_execution()
+
+def FuluLightClientOptimisticUpdate__serialize_valid__LightClientOptimisticUpdate_serialize_vrefuse_attested_header_execution() -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, P2_O.Encoded, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_serialize(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_attested_header(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.LightClientOptimisticUpdate_serialize_vrefuse_attested_header_execution()
 
 def FuluLightClientOptimisticUpdate__serialize_valid__LightClientOptimisticUpdate_serialize_vreject_sync_aggregate() -> {Pair.snd(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, Bool, FuluLightClientOptimisticUpdate_e.LightClientOptimisticUpdate_valid(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_set_sync_aggregate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate_default(), P2_O.BNone{}))) == False{} : Bool}:
   P2_PRV.LightClientOptimisticUpdate_serialize_vreject_sync_aggregate()

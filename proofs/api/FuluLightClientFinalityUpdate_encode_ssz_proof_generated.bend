@@ -3,6 +3,7 @@ import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
 import ../../types/uint64_def_generated.bend as uint64_d
 import ../../types/FuluFinalityBranch_encode_ssz_generated.bend as FuluFinalityBranch_e
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
 import ../../types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend as FuluLightClientFinalityUpdate_e
 import ../../types/schema.bend as P0_S
@@ -76,6 +77,18 @@ def FuluLightClientFinalityUpdate__encode_spec__encode_spec(+m: P0_CI.MW, +hok: 
 
 def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vreject_default_valid() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default())) == True{} : Bool}:
   P2_PRV.LightClientFinalityUpdate_serialize_vreject_default_valid()
+
+def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vreject_attested_header_execution() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientFinalityUpdate_serialize_vreject_attested_header_execution()
+
+def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vrefuse_attested_header_execution() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, P2_O.Encoded, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.LightClientFinalityUpdate_serialize_vrefuse_attested_header_execution()
+
+def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vreject_finalized_header_execution() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientFinalityUpdate_serialize_vreject_finalized_header_execution()
+
+def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vrefuse_finalized_header_execution() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, P2_O.Encoded, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.LightClientFinalityUpdate_serialize_vrefuse_finalized_header_execution()
 
 def FuluLightClientFinalityUpdate__serialize_valid__LightClientFinalityUpdate_serialize_vreject_finality_branch() -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finality_branch(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P2_PRV.LightClientFinalityUpdate_serialize_vreject_finality_branch()

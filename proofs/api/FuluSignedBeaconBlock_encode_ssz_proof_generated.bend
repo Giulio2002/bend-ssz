@@ -2,6 +2,7 @@ import Base
 import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
 import ../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSignedBeaconBlock_e
 import ../../types/schema.bend as P0_S
@@ -68,6 +69,12 @@ def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_
 
 def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, P1_O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_sized((FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 4294967295))) == P1_O.refused() : P1_O.Encoded}:
   P1_PRV.SignedBeaconBlock_serialize_vrefuse_poisoned_size()
+
+def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vreject_message_body() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_message(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), P1_O.BNone{})))) == False{} : Bool}:
+  P1_PRV.SignedBeaconBlock_serialize_vreject_message_body()
+
+def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_message_body() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, P1_O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_serialize(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_message(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), P1_O.BNone{})))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.SignedBeaconBlock_serialize_vrefuse_message_body()
 
 def FuluSignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_writer_marker() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, P2_O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_out(0, Array.new(U32, 0n, 0), FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 4294967295)) == P2_O.refused() : P2_O.Encoded}:
   P2_PRV.SignedBeaconBlock_serialize_vrefuse_writer_marker()

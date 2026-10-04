@@ -390,3 +390,44 @@ and `vrefuse_poisoned_size` laws were checked as modules but not filed to their 
 | c01/05 (List[Deposit, 16]: a fitting capp does not raise hi) | `cache_app_clean` | killed | killed (BeaconBlockBody root) |
 | a01/06, a03/01, a03/06 (padd at NMAX, is_poisoned only at the marker, threshold off by 31: unjudged in round 4) | `vpoison_padd`, `vpoison_marks` | killed (a 1 s file) | killed |
 | a01/04, a01/07 | designed equivalent | survive | not run |
+
+## Manual spec-mutation audit, round 5 (binary roots over junk storage, signed containers, decoders on literal bytes)
+
+Base: main 8bd2fc3e1. New generator `codegen/proofs/slop/decode_literal_laws.py`; extended `tight_storage_root.py` (binary twin of the progressive law) and
+`container_field_validity.py` (invalid values reached through child containers); the gate files `<X>_decode_vlit_*` under decode_offsets.
+
+* **Binary roots with junk in spare storage** (`<X>_vroot_<p>_j_past / _j_tail / _j_tight / _j_tight_tail`, 65 modules `*_vrootj_*`): for every packed list or vector
+  whose root is `O.words_root` (binary) or `O.words_root_prog`, a valid value of the first valid length (one element, or the vector's size) with junk words past
+  its length, junk in the rest of its tail word, or held in exactly ceil(n / 4) words hashes like the same bytes in clean storage. Symbolic in the hash length,
+  as in round 3; a tree deeper than 2^8 chunks (Transaction, the 2^40 lists) is stated on `O.words_root` at depth 8 (the same code path).
+* **Invalid values through child containers** (`invalid_value` in `container_field_validity.py`): a field whose type is a container (boxed or not) gets
+  `vreject_<field>_<path>` and `vrefuse_<field>_<path>` from the first field, up to three levels down, that has a cheap invalid value: SignedBeaconBlock
+  (`message_body`: an absent body box), SignedAggregateAndProof (`message_aggregate`). The 31 containers that still have only the default-value law have
+  no field that can be invalid (fixed containers of uints, byte vectors, booleans and full bit vectors: AttestationData, BeaconBlockHeader, Checkpoint,
+  Validator, Withdrawal, ...).
+* **Decoders on literal bytes** (`<X>_decode_vlit_ok_<tag>`, `_bad_<tag>`, `_rt_<tag>`, 1058 modules for 224 names): the default encoding and non-empty
+  variants (each list with one and two elements, every variable field non-empty at once, fixed-element lists whose bytes start with 4) decode, and
+  re-encode to the same bytes (`rt`, word by word, up to 128 bytes); one invalid literal per rule does not decode: one byte short / long, a boolean 2,
+  bit-vector padding, every length that is no multiple of the element size (1, 2, e/2, e-1, e+1, e+2), one element past the limit, a first offset 5 or 0,
+  a table running past the window, a second offset before the first or past the window, no delimiter, one bit past the limit, the first offset plus or
+  minus one, each pair of consecutive offsets out of order, every field holding each invalid literal of its type, a selector that is no option. A
+  variable-size container or union gets one module per law (a mutated validator can loop on one literal before the checker reaches the law that names
+  it); other types one module per kind.
+
+| faults | law (module) | module |
+|---|---|---|
+| a01/08 (the binary slow path's `covered` test inverted) | `vroot_bl1073741824_j_past` (Transaction), `vroot_bl256_tight_5` | killed |
+| b02/04, f01/01, f01/02 (SignedBeaconBlock ignores the message) | `SignedBeaconBlock_serialize_vreject_message_body` | killed |
+| f01/03 (SignedAggregateAndProof) | `SignedAggregateAndProof_serialize_vreject_message_aggregate` | killed |
+| d01/05 (nested first offset 5 accepted) | `ProgressiveTestStruct_decode_vlit_bad_f_D_off5` | killed |
+| d01/03, d02/05, d03/01, d03/04 (refuse valid) | `..._vlit_ok_all` | killed |
+| d01/08 (f_D = [[], []] refused) | `ProgressiveTestStruct_decode_vlit_ok_f_D_n2` | killed |
+| d02/03 (the default refused) | `ProgressiveTestStruct_decode_vlit_ok_default` | killed |
+| d03/05 (bit list without delimiter accepted) | `ProgressiveComplexTestStruct_decode_vlit_bad_f_C_nodelim` | killed |
+| d04/01 (11 elements of a List[.., 10]) | `ProgressiveComplexTestStruct_decode_vlit_bad_f_G_over` | killed |
+| d05/01 (a 2-byte SmallTestStruct list) | `ProgressiveTestStruct_decode_vlit_bad_f_C_ragged_6` | killed |
+| d06/01 (CompatibleUnionBC selector 1) | `CompatibleUnionBC_decode_vlit_bad_selector` | killed |
+| c05/01 (Bitlist[257] of 258 bits) | `ProgressiveBitsStruct_decode_vlit_bad_f_E_over` | killed |
+| d02/07, d02/08 (the reader reads f_D at f_C's offset) | `..._vlit_ok_marked`, `_rt_marked`, `_ok_all`, `_rt_all` | the one-law files time out (180 s): the mutated reader loops on the misplaced window; no literal found that makes it fail by name |
+| d01/01, 02, 04, 06, 07, 09, 10, d02/01, 02, d03/02, 03, d04/02 | none of the literals | survive: argued, not demonstrated by the auditor's probe; the literals of the window and order rules do not tell them apart |
+| equivalent / gap-unreachable as judged | a01/02, 04, 07, 10, a02/*, a04/01, b01/*, b02/08, 09, 10, b04/01, 02, 04, 05, b07/*, d02/06, d03/06, d06/03 | not targeted |

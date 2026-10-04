@@ -116,8 +116,68 @@ def outputs():
     return out
 
 
+VALID_ANY = re.compile(r'^def (\w+)_valid\(o: O\.Words\) -> O\.Words & Bool: (O\.bools_ok\()?O\.words_ok\(o, (\d+), (\d+), (True|False)\{\}, (\d+)\)\)?$', re.M)
+
+
+def junk_cases(n, bools):
+    """[(tag, observed, clean)] for a valid value of n bytes: junk words past the length, junk in the tail word, the same bytes in tight storage"""
+    data = bytes(1 if bools else (i % 250) + 1 for i in range(n))
+    w = (n + 3) // 4
+    vals = {i: int.from_bytes(data[4 * i:4 * i + 4].ljust(4, b'\0'), 'little') for i in range(w)}
+    E = 8 * ((n + 31) // 32)
+    log = (E - 1).bit_length()
+    clean = words(log, n, vals)
+    out = []
+    if (1 << log) > w:
+        out.append(('j_past', words(log, n, {**vals, w: JUNK, (1 << log) - 1: FILL}), clean))
+    if n % 4:
+        tail = {**vals, w - 1: vals[w - 1] | (JUNK & ~((1 << (8 * (n % 4))) - 1) & 0xFFFFFFFF)}
+        out.append(('j_tail', words(log, n, tail), clean))
+    if w & (w - 1) == 0 and w < E:
+        tl = (w - 1).bit_length()
+        out.append(('j_tight', words(tl, n, vals), clean))
+        if n % 4:
+            out.append(('j_tight_tail', words(tl, n, {**vals, w - 1: tail[w - 1]}), clean))
+    return out
+
+
+def junk_outputs(out):
+    """every packed list or vector whose root is O.words_root (binary) or O.words_root_prog: a valid value with junk in its spare storage hashes like
+    the same value in clean storage (round 5: a01/08, the binary twin of the progressive law). A type whose tree is deeper than 2^8 chunks is stated on
+    O.words_root at depth 8 (the same code path; its width is a unary Nat in the checker)."""
+    for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
+        tx = MC.Text(runtime)
+        valid = {m.group(1): (bool(m.group(2)), int(m.group(3)), int(m.group(4)), m.group(5) == 'True', int(m.group(6))) for m in VALID_ANY.finditer(tx.text)}
+        for m in ROOT.finditer(tx.text):
+            p = m.group(1)
+            if p not in valid:
+                continue
+            bools, lo, hi, big, U = valid[p]
+            n = lo if lo > 0 else U
+            if n > 2048 or (not big and n > hi) or n % U:
+                continue
+            owners = owners_of_root(tx, p)
+            if not owners:
+                continue
+            X = owners[0]
+            prog = bool(m.group(2))
+            depth = None if prog else int(m.group(3))
+            if prog:
+                fn = 'O.words_root_prog(hl, B.empty(), w, 0)'
+            elif depth <= 8:
+                fn = f'T.{p}_root(hl, B.empty(), w, 0)'
+            else:
+                fn = 'O.words_root(hl, B.empty(), w, 8, 0)'
+            obs = f'Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, {fn}))'
+            laws = [f'def {X}_vroot_{p}_{tag}(+hl: Nat)\n    -> {{{obs.replace("w,", got + ",", 1)} == {obs.replace("w,", want + ",", 1)} : D.Digest}}:\n  {{==}}'
+                    for tag, got, want in junk_cases(n, bools)]
+            if laws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_vrootj_{p}')] = module(tmod, X, p, '\n\n'.join(laws))
+    return out
+
+
 def main():
-    out = outputs()
+    out = junk_outputs(outputs())
     if LAYOUT.finish(RR.rewire_out(out), 'tight_storage_root', ('validity',), 'stale tight storage root laws: ', 'tight storage root laws are current', '--check' in sys.argv):
         print(f'{len(out)} modules')
 

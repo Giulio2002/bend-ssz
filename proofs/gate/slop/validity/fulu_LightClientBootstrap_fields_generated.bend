@@ -1,5 +1,7 @@
 import Base
 import ../../../../src/obj.bend as O
+import ../../../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
 import ../../../../types/FuluLightClientBootstrap_encode_ssz_generated.bend as FuluLightClientBootstrap_e
 import ../../../slop/validity/fulu_LightClientBootstrap_fields_generated.bend as PRV
@@ -10,6 +12,12 @@ import ../../../slop/validity/fulu_LightClientBootstrap_fields_generated.bend as
 def LightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_current_sync_committee_branch() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_current_sync_committee_branch(FuluLightClientBootstrap_d.LightClientBootstrap_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   PRV.LightClientBootstrap_serialize_vreject_current_sync_committee_branch()
 
+def LightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_current_sync_committee_pubkeys() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_current_sync_committee(FuluLightClientBootstrap_d.LightClientBootstrap_default(), FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  PRV.LightClientBootstrap_serialize_vreject_current_sync_committee_pubkeys()
+
 def LightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_default_valid() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_default())) == True{} : Bool}:
   PRV.LightClientBootstrap_serialize_vreject_default_valid()
+
+def LightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_header_execution() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_header(FuluLightClientBootstrap_d.LightClientBootstrap_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == False{} : Bool}:
+  PRV.LightClientBootstrap_serialize_vreject_header_execution()
 

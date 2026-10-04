@@ -27,6 +27,9 @@
     "spec_repr_small.bend",
     "slop/size/boolean_generated.bend",
     "slop/validity/fulu_boolean_decode_checked_generated.bend",
+    "slop/validity/fulu_boolean_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_boolean_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_boolean_decode_literal_rt_generated.bend",
     "slop/offsets/boolean_generated.bend"
    ]
   },
@@ -60,6 +63,9 @@
     "spec_repr_small.bend",
     "slop/size/uint8_generated.bend",
     "slop/validity/fulu_uint8_decode_checked_generated.bend",
+    "slop/validity/fulu_uint8_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_uint8_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_uint8_decode_literal_rt_generated.bend",
     "slop/offsets/uint8_generated.bend"
    ]
   },
@@ -96,6 +102,9 @@
     "spec_input_uint32.bend",
     "slop/size/uint32_generated.bend",
     "slop/validity/fulu_uint32_decode_checked_generated.bend",
+    "slop/validity/fulu_uint32_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_uint32_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_uint32_decode_literal_rt_generated.bend",
     "slop/offsets/uint32_generated.bend"
    ]
   },
@@ -132,6 +141,9 @@
     "spec_input_uint64.bend",
     "slop/size/uint64_generated.bend",
     "slop/validity/fulu_uint64_decode_checked_generated.bend",
+    "slop/validity/fulu_uint64_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_uint64_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_uint64_decode_literal_rt_generated.bend",
     "slop/offsets/uint64_generated.bend"
    ]
   },
@@ -171,6 +183,9 @@
     "spec_input_uint256.bend",
     "slop/size/uint256_generated.bend",
     "slop/validity/fulu_uint256_decode_checked_generated.bend",
+    "slop/validity/fulu_uint256_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_uint256_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_uint256_decode_literal_rt_generated.bend",
     "slop/offsets/uint256_generated.bend"
    ]
   },
@@ -207,6 +222,9 @@
     "spec_repr_small.bend",
     "slop/size/Bytes1_generated.bend",
     "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes1_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes1_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes1_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes1_generated.bend"
    ]
   },
@@ -246,6 +264,9 @@
     "spec_input_Bytes4.bend",
     "slop/size/Bytes4_generated.bend",
     "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes4_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes4_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes4_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes4_generated.bend"
    ]
   },
@@ -286,6 +307,9 @@
     "spec_input_Bytes32.bend",
     "slop/size/Bytes32_generated.bend",
     "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes32_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes32_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes32_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes32_generated.bend"
    ]
   },
@@ -326,6 +350,9 @@
     "spec_input_Bytes48.bend",
     "slop/size/Bytes48_generated.bend",
     "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes48_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes48_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes48_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes48_generated.bend"
    ]
   },
@@ -365,6 +392,9 @@
     "spec_input_Bytes96.bend",
     "slop/size/Bytes96_generated.bend",
     "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes96_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes96_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes96_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes96_generated.bend"
    ]
   },
@@ -405,6 +435,9 @@
     "spec_input_Bytes8.bend",
     "slop/size/Bytes8_generated.bend",
     "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes8_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes8_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes8_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes8_generated.bend"
    ]
   },
@@ -445,6 +478,9 @@
     "spec_input_Bytes20.bend",
     "slop/size/Bytes20_generated.bend",
     "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
+    "slop/validity/fulu_Bytes20_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Bytes20_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Bytes20_decode_literal_rt_generated.bend",
     "slop/offsets/Bytes20_generated.bend"
    ]
   },
@@ -481,6 +517,9 @@
     "spec_input_Slot.bend",
     "slop/size/Slot_generated.bend",
     "slop/validity/fulu_Slot_decode_checked_generated.bend",
+    "slop/validity/fulu_Slot_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Slot_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Slot_decode_literal_rt_generated.bend",
     "slop/offsets/Slot_generated.bend"
    ]
   },
@@ -517,6 +556,9 @@
     "spec_input_Epoch.bend",
     "slop/size/Epoch_generated.bend",
     "slop/validity/fulu_Epoch_decode_checked_generated.bend",
+    "slop/validity/fulu_Epoch_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Epoch_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Epoch_decode_literal_rt_generated.bend",
     "slop/offsets/Epoch_generated.bend"
    ]
   },
@@ -553,6 +595,9 @@
     "spec_input_Gwei.bend",
     "slop/size/Gwei_generated.bend",
     "slop/validity/fulu_Gwei_decode_checked_generated.bend",
+    "slop/validity/fulu_Gwei_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Gwei_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Gwei_decode_literal_rt_generated.bend",
     "slop/offsets/Gwei_generated.bend"
    ]
   },
@@ -592,6 +637,9 @@
     "spec_input_Hash32.bend",
     "slop/size/Hash32_generated.bend",
     "slop/validity/fulu_Hash32_decode_checked_generated.bend",
+    "slop/validity/fulu_Hash32_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Hash32_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Hash32_decode_literal_rt_generated.bend",
     "slop/offsets/Hash32_generated.bend"
    ]
   },
@@ -631,6 +679,9 @@
     "spec_input_Version.bend",
     "slop/size/Version_generated.bend",
     "slop/validity/fulu_Version_decode_checked_generated.bend",
+    "slop/validity/fulu_Version_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Version_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Version_decode_literal_rt_generated.bend",
     "slop/offsets/Version_generated.bend"
    ]
   },
@@ -670,6 +721,9 @@
     "spec_input_DomainType.bend",
     "slop/size/DomainType_generated.bend",
     "slop/validity/fulu_DomainType_decode_checked_generated.bend",
+    "slop/validity/fulu_DomainType_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_DomainType_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_DomainType_decode_literal_rt_generated.bend",
     "slop/offsets/DomainType_generated.bend"
    ]
   },
@@ -709,6 +763,9 @@
     "spec_input_BLSSignature.bend",
     "slop/size/BLSSignature_generated.bend",
     "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
+    "slop/validity/fulu_BLSSignature_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BLSSignature_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BLSSignature_decode_literal_rt_generated.bend",
     "slop/offsets/BLSSignature_generated.bend"
    ]
   },
@@ -750,6 +807,8 @@
     "spec_repr_FinalityBranch.bend",
     "spec_input_FinalityBranch.bend",
     "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
+    "slop/validity/fulu_FinalityBranch_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_FinalityBranch_decode_literal_ok_generated.bend",
     "slop/offsets/FinalityBranch_generated.bend"
    ]
   },
@@ -759,6 +818,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_words.bend",
+    "slop/validity/fulu_FinalityBranch_vrootj_v7_b32_generated.bend",
     "slop/constants/FinalityBranch_generated.bend"
    ]
   },
@@ -790,6 +850,9 @@
     "spec_input_VersionedHash.bend",
     "slop/size/VersionedHash_generated.bend",
     "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
+    "slop/validity/fulu_VersionedHash_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_VersionedHash_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_VersionedHash_decode_literal_rt_generated.bend",
     "slop/offsets/VersionedHash_generated.bend"
    ]
   },
@@ -829,6 +892,9 @@
     "spec_input_G1Point.bend",
     "slop/size/G1Point_generated.bend",
     "slop/validity/fulu_G1Point_decode_checked_generated.bend",
+    "slop/validity/fulu_G1Point_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_G1Point_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_G1Point_decode_literal_rt_generated.bend",
     "slop/offsets/G1Point_generated.bend"
    ]
   },
@@ -868,6 +934,9 @@
     "spec_input_G2Point.bend",
     "slop/size/G2Point_generated.bend",
     "slop/validity/fulu_G2Point_decode_checked_generated.bend",
+    "slop/validity/fulu_G2Point_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_G2Point_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_G2Point_decode_literal_rt_generated.bend",
     "slop/offsets/G2Point_generated.bend"
    ]
   },
@@ -906,6 +975,9 @@
     "spec_input_Fork.bend",
     "slop/size/Fork_generated.bend",
     "slop/validity/fulu_Fork_decode_checked_generated.bend",
+    "slop/validity/fulu_Fork_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Fork_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Fork_decode_literal_rt_generated.bend",
     "slop/offsets/Fork_generated.bend"
    ]
   },
@@ -946,6 +1018,8 @@
     "spec_input_SyncAggregate.bend",
     "slop/size/SyncAggregate_generated.bend",
     "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
+    "slop/validity/fulu_SyncAggregate_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SyncAggregate_decode_literal_ok_generated.bend",
     "slop/offsets/SyncAggregate_generated.bend"
    ]
   },
@@ -984,6 +1058,9 @@
     "spec_input_SyncAggregatorSelectionData.bend",
     "slop/size/SyncAggregatorSelectionData_generated.bend",
     "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
+    "slop/validity/fulu_SyncAggregatorSelectionData_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SyncAggregatorSelectionData_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_SyncAggregatorSelectionData_decode_literal_rt_generated.bend",
     "slop/offsets/SyncAggregatorSelectionData_generated.bend"
    ]
   },
@@ -1022,6 +1099,9 @@
     "spec_input_PowBlock.bend",
     "slop/size/PowBlock_generated.bend",
     "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
+    "slop/validity/fulu_PowBlock_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_PowBlock_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_PowBlock_decode_literal_rt_generated.bend",
     "slop/offsets/PowBlock_generated.bend"
    ]
   },
@@ -1058,6 +1138,9 @@
     "spec_input_CommitteeIndex.bend",
     "slop/size/CommitteeIndex_generated.bend",
     "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_CommitteeIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_CommitteeIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_CommitteeIndex_decode_literal_rt_generated.bend",
     "slop/offsets/CommitteeIndex_generated.bend"
    ]
   },
@@ -1094,6 +1177,9 @@
     "spec_input_ValidatorIndex.bend",
     "slop/size/ValidatorIndex_generated.bend",
     "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_ValidatorIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ValidatorIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ValidatorIndex_decode_literal_rt_generated.bend",
     "slop/offsets/ValidatorIndex_generated.bend"
    ]
   },
@@ -1132,6 +1218,9 @@
     "spec_input_PendingConsolidation.bend",
     "slop/size/PendingConsolidation_generated.bend",
     "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
+    "slop/validity/fulu_PendingConsolidation_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_PendingConsolidation_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_PendingConsolidation_decode_literal_rt_generated.bend",
     "slop/offsets/PendingConsolidation_generated.bend"
    ]
   },
@@ -1170,6 +1259,9 @@
     "spec_input_PendingPartialWithdrawal.bend",
     "slop/size/PendingPartialWithdrawal_generated.bend",
     "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
+    "slop/validity/fulu_PendingPartialWithdrawal_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_PendingPartialWithdrawal_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_PendingPartialWithdrawal_decode_literal_rt_generated.bend",
     "slop/offsets/PendingPartialWithdrawal_generated.bend"
    ]
   },
@@ -1208,6 +1300,9 @@
     "spec_input_VoluntaryExit.bend",
     "slop/size/VoluntaryExit_generated.bend",
     "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
+    "slop/validity/fulu_VoluntaryExit_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_VoluntaryExit_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_VoluntaryExit_decode_literal_rt_generated.bend",
     "slop/offsets/VoluntaryExit_generated.bend"
    ]
   },
@@ -1246,6 +1341,9 @@
     "spec_input_SignedVoluntaryExit.bend",
     "slop/size/SignedVoluntaryExit_generated.bend",
     "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedVoluntaryExit_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SignedVoluntaryExit_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_SignedVoluntaryExit_decode_literal_rt_generated.bend",
     "slop/offsets/SignedVoluntaryExit_generated.bend"
    ]
   },
@@ -1285,6 +1383,9 @@
     "spec_input_Root.bend",
     "slop/size/Root_generated.bend",
     "slop/validity/fulu_Root_decode_checked_generated.bend",
+    "slop/validity/fulu_Root_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Root_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Root_decode_literal_rt_generated.bend",
     "slop/offsets/Root_generated.bend"
    ]
   },
@@ -1323,6 +1424,9 @@
     "spec_input_HistoricalSummary.bend",
     "slop/size/HistoricalSummary_generated.bend",
     "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
+    "slop/validity/fulu_HistoricalSummary_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_HistoricalSummary_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_HistoricalSummary_decode_literal_rt_generated.bend",
     "slop/offsets/HistoricalSummary_generated.bend"
    ]
   },
@@ -1363,6 +1467,8 @@
     "spec_input_SyncCommitteeContribution.bend",
     "slop/size/SyncCommitteeContribution_generated.bend",
     "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
+    "slop/validity/fulu_SyncCommitteeContribution_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SyncCommitteeContribution_decode_literal_ok_generated.bend",
     "slop/offsets/SyncCommitteeContribution_generated.bend"
    ]
   },
@@ -1400,6 +1506,8 @@
     "spec_repr_ContributionAndProof.bend",
     "spec_input_ContributionAndProof.bend",
     "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
+    "slop/validity/fulu_ContributionAndProof_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ContributionAndProof_decode_literal_ok_generated.bend",
     "slop/offsets/ContributionAndProof_generated.bend"
    ]
   },
@@ -1437,6 +1545,8 @@
     "spec_repr_SignedContributionAndProof.bend",
     "spec_input_SignedContributionAndProof.bend",
     "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedContributionAndProof_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SignedContributionAndProof_decode_literal_ok_generated.bend",
     "slop/offsets/SignedContributionAndProof_generated.bend"
    ]
   },
@@ -1475,6 +1585,8 @@
     "spec_input_SyncCommitteeMessage.bend",
     "slop/size/SyncCommitteeMessage_generated.bend",
     "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
+    "slop/validity/fulu_SyncCommitteeMessage_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SyncCommitteeMessage_decode_literal_ok_generated.bend",
     "slop/offsets/SyncCommitteeMessage_generated.bend"
    ]
   },
@@ -1513,6 +1625,9 @@
     "spec_input_Eth1Block.bend",
     "slop/size/Eth1Block_generated.bend",
     "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
+    "slop/validity/fulu_Eth1Block_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Eth1Block_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Eth1Block_decode_literal_rt_generated.bend",
     "slop/offsets/Eth1Block_generated.bend"
    ]
   },
@@ -1551,6 +1666,9 @@
     "spec_input_BeaconBlockHeader.bend",
     "slop/size/BeaconBlockHeader_generated.bend",
     "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
+    "slop/validity/fulu_BeaconBlockHeader_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BeaconBlockHeader_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BeaconBlockHeader_decode_literal_rt_generated.bend",
     "slop/offsets/BeaconBlockHeader_generated.bend"
    ]
   },
@@ -1591,6 +1709,8 @@
     "spec_input_SignedBeaconBlockHeader.bend",
     "slop/size/SignedBeaconBlockHeader_generated.bend",
     "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlockHeader_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlockHeader_decode_literal_ok_generated.bend",
     "slop/offsets/SignedBeaconBlockHeader_generated.bend"
    ]
   },
@@ -1629,6 +1749,8 @@
     "spec_repr_ProposerSlashing.bend",
     "spec_input_ProposerSlashing.bend",
     "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
+    "slop/validity/fulu_ProposerSlashing_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ProposerSlashing_decode_literal_ok_generated.bend",
     "slop/offsets/ProposerSlashing_generated.bend"
    ]
   },
@@ -1702,6 +1824,9 @@
     "spec_input_Eth1Data.bend",
     "slop/size/Eth1Data_generated.bend",
     "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
+    "slop/validity/fulu_Eth1Data_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Eth1Data_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Eth1Data_decode_literal_rt_generated.bend",
     "slop/offsets/Eth1Data_generated.bend"
    ]
   },
@@ -1740,6 +1865,9 @@
     "spec_input_Checkpoint.bend",
     "slop/size/Checkpoint_generated.bend",
     "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+    "slop/validity/fulu_Checkpoint_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Checkpoint_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Checkpoint_decode_literal_rt_generated.bend",
     "slop/offsets/Checkpoint_generated.bend"
    ]
   },
@@ -1778,6 +1906,9 @@
     "spec_input_AttestationData.bend",
     "slop/size/AttestationData_generated.bend",
     "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
+    "slop/validity/fulu_AttestationData_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_AttestationData_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_AttestationData_decode_literal_rt_generated.bend",
     "slop/offsets/AttestationData_generated.bend"
    ]
   },
@@ -1816,6 +1947,8 @@
     "spec_input_SingleAttestation.bend",
     "slop/size/SingleAttestation_generated.bend",
     "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
+    "slop/validity/fulu_SingleAttestation_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SingleAttestation_decode_literal_ok_generated.bend",
     "slop/offsets/SingleAttestation_generated.bend"
    ]
   },
@@ -1854,6 +1987,11 @@
     "var_bitc_Attestation_rej.bend",
     "slop/validity/fulu_Attestation_bitops_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_decode_checked_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_ok_default_generated.bend",
     "slop/offsets/Attestation_generated.bend"
    ]
   },
@@ -1885,6 +2023,12 @@
     "var_win_AggregateAndProof_top.bend",
     "var_win_AggregateAndProof_unique.bend",
     "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_bad_aggregate_aggregation_bits_nodelim_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_bad_aggregate_off_minus_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_bad_aggregate_off_plus_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_ok_default_generated.bend",
     "slop/offsets/AggregateAndProof_generated.bend"
    ]
   },
@@ -1917,6 +2061,14 @@
     "var_win_SignedAggregateAndProof_top.bend",
     "var_win_SignedAggregateAndProof_unique.bend",
     "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_aggregate_aggregation_bits_nodelim_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_aggregate_off_minus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_aggregate_off_plus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_off_minus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_off_plus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_ok_default_generated.bend",
     "slop/offsets/SignedAggregateAndProof_generated.bend"
    ]
   },
@@ -1955,6 +2107,12 @@
     "var_bitc_PendingAttestation_rej.bend",
     "slop/validity/fulu_PendingAttestation_bitops_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_bad_aggregation_bits_over_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_ok_default_generated.bend",
     "slop/offsets/PendingAttestation_generated.bend"
    ]
   },
@@ -1991,6 +2149,18 @@
     "var_codec_IndexedAttestation_unique.bend",
     "var_codec_IndexedAttestation_rej.bend",
     "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_1_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_10_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_2_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_4_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_7_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_attesting_indices_n1_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_attesting_indices_n2_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend",
     "slop/offsets/IndexedAttestation_generated.bend"
    ]
   },
@@ -1999,7 +2169,8 @@
    "generated_name": "IndexedAttestation",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_IndexedAttestation_vrootj_l131072_u64_generated.bend"
    ]
   },
   "FuluAttesterSlashing_encode_ssz_proof_generated.bend": {
@@ -2023,6 +2194,29 @@
     "var_codec_AttesterSlashing_unique.bend",
     "var_codec_AttesterSlashing_rej.bend",
     "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_1_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_10_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_2_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_7_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_off_minus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_off_plus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_1_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_10_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_2_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_4_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_attesting_indices_ragged_7_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_off_minus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_2_off_plus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_bad_order_attestation_2_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_all_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_1_marked_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_default_generated.bend",
     "slop/offsets/AttesterSlashing_generated.bend"
    ]
   },
@@ -2061,6 +2255,9 @@
     "spec_input_ForkData.bend",
     "slop/size/ForkData_generated.bend",
     "slop/validity/fulu_ForkData_decode_checked_generated.bend",
+    "slop/validity/fulu_ForkData_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ForkData_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ForkData_decode_literal_rt_generated.bend",
     "slop/offsets/ForkData_generated.bend"
    ]
   },
@@ -2100,6 +2297,9 @@
     "spec_input_ForkDigest.bend",
     "slop/size/ForkDigest_generated.bend",
     "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
+    "slop/validity/fulu_ForkDigest_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ForkDigest_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ForkDigest_decode_literal_rt_generated.bend",
     "slop/offsets/ForkDigest_generated.bend"
    ]
   },
@@ -2139,6 +2339,9 @@
     "spec_input_Domain.bend",
     "slop/size/Domain_generated.bend",
     "slop/validity/fulu_Domain_decode_checked_generated.bend",
+    "slop/validity/fulu_Domain_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Domain_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Domain_decode_literal_rt_generated.bend",
     "slop/offsets/Domain_generated.bend"
    ]
   },
@@ -2177,6 +2380,9 @@
     "spec_input_SigningData.bend",
     "slop/size/SigningData_generated.bend",
     "slop/validity/fulu_SigningData_decode_checked_generated.bend",
+    "slop/validity/fulu_SigningData_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SigningData_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_SigningData_decode_literal_rt_generated.bend",
     "slop/offsets/SigningData_generated.bend"
    ]
   },
@@ -2216,6 +2422,9 @@
     "spec_input_BLSPubkey.bend",
     "slop/size/BLSPubkey_generated.bend",
     "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
+    "slop/validity/fulu_BLSPubkey_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BLSPubkey_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BLSPubkey_decode_literal_rt_generated.bend",
     "slop/offsets/BLSPubkey_generated.bend"
    ]
   },
@@ -2254,6 +2463,8 @@
     "spec_input_DepositRequest.bend",
     "slop/size/DepositRequest_generated.bend",
     "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
+    "slop/validity/fulu_DepositRequest_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_DepositRequest_decode_literal_ok_generated.bend",
     "slop/offsets/DepositRequest_generated.bend"
    ]
   },
@@ -2292,6 +2503,8 @@
     "spec_input_PendingDeposit.bend",
     "slop/size/PendingDeposit_generated.bend",
     "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
+    "slop/validity/fulu_PendingDeposit_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_PendingDeposit_decode_literal_ok_generated.bend",
     "slop/offsets/PendingDeposit_generated.bend"
    ]
   },
@@ -2367,6 +2580,8 @@
     "spec_input_DepositData.bend",
     "slop/size/DepositData_generated.bend",
     "slop/validity/fulu_DepositData_decode_checked_generated.bend",
+    "slop/validity/fulu_DepositData_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_DepositData_decode_literal_ok_generated.bend",
     "slop/offsets/DepositData_generated.bend"
    ]
   },
@@ -2407,6 +2622,8 @@
     "spec_repr_Deposit.bend",
     "spec_input_Deposit.bend",
     "slop/validity/fulu_Deposit_decode_checked_generated.bend",
+    "slop/validity/fulu_Deposit_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Deposit_decode_literal_ok_generated.bend",
     "slop/offsets/Deposit_generated.bend"
    ]
   },
@@ -2415,7 +2632,8 @@
    "generated_name": "Deposit",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_Deposit_vrootj_v33_b32_generated.bend"
    ]
   },
   "FuluDepositMessage_encode_ssz_proof_generated.bend": {
@@ -2445,6 +2663,9 @@
     "spec_input_DepositMessage.bend",
     "slop/size/DepositMessage_generated.bend",
     "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
+    "slop/validity/fulu_DepositMessage_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_DepositMessage_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_DepositMessage_decode_literal_rt_generated.bend",
     "slop/offsets/DepositMessage_generated.bend"
    ]
   },
@@ -2478,6 +2699,9 @@
     "spec_rec_unique_Validator.bend",
     "slop/size/Validator_generated.bend",
     "slop/validity/fulu_Validator_decode_checked_generated.bend",
+    "slop/validity/fulu_Validator_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Validator_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Validator_decode_literal_rt_generated.bend",
     "slop/offsets/Validator_generated.bend"
    ]
   },
@@ -2517,6 +2741,9 @@
     "spec_input_NodeID.bend",
     "slop/size/NodeID_generated.bend",
     "slop/validity/fulu_NodeID_decode_checked_generated.bend",
+    "slop/validity/fulu_NodeID_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_NodeID_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_NodeID_decode_literal_rt_generated.bend",
     "slop/offsets/NodeID_generated.bend"
    ]
   },
@@ -2553,6 +2780,9 @@
     "spec_input_SubnetID.bend",
     "slop/size/SubnetID_generated.bend",
     "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
+    "slop/validity/fulu_SubnetID_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SubnetID_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_SubnetID_decode_literal_rt_generated.bend",
     "slop/offsets/SubnetID_generated.bend"
    ]
   },
@@ -2589,6 +2819,9 @@
     "spec_input_Ether.bend",
     "slop/size/Ether_generated.bend",
     "slop/validity/fulu_Ether_decode_checked_generated.bend",
+    "slop/validity/fulu_Ether_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Ether_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Ether_decode_literal_rt_generated.bend",
     "slop/offsets/Ether_generated.bend"
    ]
   },
@@ -2622,6 +2855,9 @@
     "spec_repr_small.bend",
     "slop/size/ParticipationFlags_generated.bend",
     "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
+    "slop/validity/fulu_ParticipationFlags_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ParticipationFlags_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ParticipationFlags_decode_literal_rt_generated.bend",
     "slop/offsets/ParticipationFlags_generated.bend"
    ]
   },
@@ -2663,6 +2899,8 @@
     "spec_repr_CurrentSyncCommitteeBranch.bend",
     "spec_input_CurrentSyncCommitteeBranch.bend",
     "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
+    "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_literal_ok_generated.bend",
     "slop/offsets/CurrentSyncCommitteeBranch_generated.bend"
    ]
   },
@@ -2672,6 +2910,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_words.bend",
+    "slop/validity/fulu_CurrentSyncCommitteeBranch_vrootj_v6_b32_generated.bend",
     "slop/constants/CurrentSyncCommitteeBranch_generated.bend"
    ]
   },
@@ -2704,6 +2943,8 @@
     "spec_repr_NextSyncCommitteeBranch.bend",
     "spec_input_NextSyncCommitteeBranch.bend",
     "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
+    "slop/validity/fulu_NextSyncCommitteeBranch_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_NextSyncCommitteeBranch_decode_literal_ok_generated.bend",
     "slop/offsets/NextSyncCommitteeBranch_generated.bend"
    ]
   },
@@ -2739,6 +2980,8 @@
    "files": [
     "var_codec_Transaction.bend",
     "slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    "slop/validity/fulu_Transaction_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Transaction_decode_literal_rt_generated.bend",
     "slop/offsets/Transaction_generated.bend"
    ]
   },
@@ -2747,7 +2990,8 @@
    "generated_name": "Transaction",
    "op": "hashtreeroot",
    "files": [
-    "root_Transaction.bend"
+    "root_Transaction.bend",
+    "slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
    ]
   },
   "FuluExecutionAddress_encode_ssz_proof_generated.bend": {
@@ -2778,6 +3022,9 @@
     "spec_input_ExecutionAddress.bend",
     "slop/size/ExecutionAddress_generated.bend",
     "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
+    "slop/validity/fulu_ExecutionAddress_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ExecutionAddress_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ExecutionAddress_decode_literal_rt_generated.bend",
     "slop/offsets/ExecutionAddress_generated.bend"
    ]
   },
@@ -2816,6 +3063,9 @@
     "spec_input_ConsolidationRequest.bend",
     "slop/size/ConsolidationRequest_generated.bend",
     "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
+    "slop/validity/fulu_ConsolidationRequest_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ConsolidationRequest_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ConsolidationRequest_decode_literal_rt_generated.bend",
     "slop/offsets/ConsolidationRequest_generated.bend"
    ]
   },
@@ -2854,6 +3104,9 @@
     "spec_input_WithdrawalRequest.bend",
     "slop/size/WithdrawalRequest_generated.bend",
     "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
+    "slop/validity/fulu_WithdrawalRequest_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_WithdrawalRequest_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_WithdrawalRequest_decode_literal_rt_generated.bend",
     "slop/offsets/WithdrawalRequest_generated.bend"
    ]
   },
@@ -2890,6 +3143,42 @@
    "files": [
     "var_codec_ExecutionRequests.bend",
     "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_over_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_115_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_118_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_ragged_58_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_191_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_194_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_deposits_ragged_96_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_order_consolidations_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_order_withdrawals_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_over_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_38_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_75_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_78_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_all_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_consolidations_n1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_consolidations_n2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_deposits_n1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_deposits_n2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_withdrawals_n1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_withdrawals_n2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_rt_consolidations_n1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_rt_default_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_rt_withdrawals_n1_generated.bend",
     "slop/offsets/ExecutionRequests_generated.bend"
    ]
   },
@@ -2949,6 +3238,9 @@
     "spec_input_BLSToExecutionChange.bend",
     "slop/size/BLSToExecutionChange_generated.bend",
     "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
+    "slop/validity/fulu_BLSToExecutionChange_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BLSToExecutionChange_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BLSToExecutionChange_decode_literal_rt_generated.bend",
     "slop/offsets/BLSToExecutionChange_generated.bend"
    ]
   },
@@ -2987,6 +3279,8 @@
     "spec_input_SignedBLSToExecutionChange.bend",
     "slop/size/SignedBLSToExecutionChange_generated.bend",
     "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedBLSToExecutionChange_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_SignedBLSToExecutionChange_decode_literal_ok_generated.bend",
     "slop/offsets/SignedBLSToExecutionChange_generated.bend"
    ]
   },
@@ -3027,6 +3321,11 @@
     "var_bytes_ExecutionPayloadHeader_unique.bend",
     "var_bytes_ExecutionPayloadHeader_rej.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_bad_extra_data_over_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_extra_data_n1_generated.bend",
     "slop/offsets/ExecutionPayloadHeader_generated.bend"
    ]
   },
@@ -3036,7 +3335,8 @@
    "op": "hashtreeroot",
    "files": [
     "root_types.bend",
-    "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend"
+    "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_vrootj_bl32_generated.bend"
    ]
   },
   "FuluPayloadId_encode_ssz_proof_generated.bend": {
@@ -3067,6 +3367,9 @@
     "spec_input_PayloadId.bend",
     "slop/size/PayloadId_generated.bend",
     "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
+    "slop/validity/fulu_PayloadId_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_PayloadId_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_PayloadId_decode_literal_rt_generated.bend",
     "slop/offsets/PayloadId_generated.bend"
    ]
   },
@@ -3103,6 +3406,9 @@
     "spec_input_WithdrawalIndex.bend",
     "slop/size/WithdrawalIndex_generated.bend",
     "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_WithdrawalIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_WithdrawalIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_WithdrawalIndex_decode_literal_rt_generated.bend",
     "slop/offsets/WithdrawalIndex_generated.bend"
    ]
   },
@@ -3141,6 +3447,9 @@
     "spec_input_Withdrawal.bend",
     "slop/size/Withdrawal_generated.bend",
     "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
+    "slop/validity/fulu_Withdrawal_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Withdrawal_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_Withdrawal_decode_literal_rt_generated.bend",
     "slop/offsets/Withdrawal_generated.bend"
    ]
   },
@@ -3179,6 +3488,31 @@
     "var_codec_ExecutionPayload.bend",
     "slop/validity/fulu_ExecutionPayload_and_pair_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_extra_data_over_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_order_transactions_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_order_withdrawals_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_first_past_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off0_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off5_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off_desc_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off_past_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_over_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_22_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_43_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_all_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_extra_data_n1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_withdrawals_n1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_withdrawals_n2_generated.bend",
     "slop/offsets/ExecutionPayload_generated.bend"
    ]
   },
@@ -3312,7 +3646,9 @@
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_end_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend",
-    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend"
+    "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend",
+    "slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
    ]
   },
   "FuluExecutionBranch_encode_ssz_proof_generated.bend": {
@@ -3345,6 +3681,9 @@
     "spec_repr_ExecutionBranch.bend",
     "spec_input_ExecutionBranch.bend",
     "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
+    "slop/validity/fulu_ExecutionBranch_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ExecutionBranch_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ExecutionBranch_decode_literal_rt_generated.bend",
     "slop/offsets/ExecutionBranch_generated.bend"
    ]
   },
@@ -3382,6 +3721,12 @@
     "var_bytes_LightClientHeader_unique.bend",
     "var_bytes_LightClientHeader_rej.bend",
     "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_bad_execution_extra_data_over_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_bad_execution_off_minus_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_bad_execution_off_plus_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_ok_default_generated.bend",
     "slop/offsets/LightClientHeader_generated.bend"
    ]
   },
@@ -3416,6 +3761,14 @@
     "var_bytes_LightClientOptimisticUpdate_unique.bend",
     "var_bytes_LightClientOptimisticUpdate_rej.bend",
     "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_execution_extra_data_over_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_execution_off_minus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_execution_off_plus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_off_minus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_off_plus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_ok_default_generated.bend",
     "slop/offsets/LightClientOptimisticUpdate_generated.bend"
    ]
   },
@@ -3550,6 +3903,9 @@
     "spec_input_BlobIndex.bend",
     "slop/size/BlobIndex_generated.bend",
     "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_BlobIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BlobIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BlobIndex_decode_literal_rt_generated.bend",
     "slop/offsets/BlobIndex_generated.bend"
    ]
   },
@@ -3588,6 +3944,9 @@
     "spec_input_BlobIdentifier.bend",
     "slop/size/BlobIdentifier_generated.bend",
     "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
+    "slop/validity/fulu_BlobIdentifier_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_BlobIdentifier_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_BlobIdentifier_decode_literal_rt_generated.bend",
     "slop/offsets/BlobIdentifier_generated.bend"
    ]
   },
@@ -3627,6 +3986,9 @@
     "spec_input_KZGCommitment.bend",
     "slop/size/KZGCommitment_generated.bend",
     "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
+    "slop/validity/fulu_KZGCommitment_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_KZGCommitment_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_KZGCommitment_decode_literal_rt_generated.bend",
     "slop/offsets/KZGCommitment_generated.bend"
    ]
   },
@@ -3675,6 +4037,70 @@
     "var_codec_BeaconBlockBody.bend",
     "slop/validity/fulu_BeaconBlockBody_and_pair_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_elem_aggregation_bits_nodelim_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_elem_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_elem_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_first_past_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_off0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_off5_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_off_desc_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_off_past_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_attestation_1_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_order_attestation_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_first_past_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_off0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_off5_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_off_desc_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_off_past_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_over_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_deposits_ragged_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_deposits_ragged_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_deposits_ragged_620_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_extra_data_over_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_order_transactions_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_order_withdrawals_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_transactions_off0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_execution_payload_transactions_off5_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_attestations_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_attester_slashings_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_bls_to_execution_changes_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_deposits_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_execution_payload_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_execution_requests_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_208_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_415_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_418_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_111_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_114_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_56_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_attestations_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_attestations_n2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_attester_slashings_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_blob_kzg_commitments_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_blob_kzg_commitments_n2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_bls_to_execution_changes_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_bls_to_execution_changes_n2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_execution_payload_marked_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_execution_requests_marked_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_proposer_slashings_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_proposer_slashings_n2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_voluntary_exits_n1_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_voluntary_exits_n2_generated.bend",
     "slop/offsets/BeaconBlockBody_generated.bend"
    ]
   },
@@ -3764,6 +4190,19 @@
    "files": [
     "var_codec_BeaconBlock.bend",
     "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attestations_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attester_slashings_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_blob_kzg_commitments_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_bls_to_execution_changes_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_deposits_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_execution_payload_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_execution_requests_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_voluntary_exits_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_ok_default_generated.bend",
     "slop/offsets/BeaconBlock_generated.bend"
    ]
   },
@@ -3795,6 +4234,19 @@
     "slop/offsets/fulu_SignedBeaconBlock_first_offset_generated.bend",
     "var_codec_SignedBeaconBlock.bend",
     "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_off_minus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_off_plus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_attestations_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_attester_slashings_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_bls_to_execution_changes_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_deposits_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_execution_payload_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_order_voluntary_exits_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_off_minus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_off_plus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_ok_default_generated.bend",
     "slop/offsets/SignedBeaconBlock_generated.bend"
    ]
   },
@@ -3834,6 +4286,9 @@
     "spec_input_KZGProof.bend",
     "slop/size/KZGProof_generated.bend",
     "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
+    "slop/validity/fulu_KZGProof_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_KZGProof_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_KZGProof_decode_literal_rt_generated.bend",
     "slop/offsets/KZGProof_generated.bend"
    ]
   },
@@ -3916,7 +4371,8 @@
    "generated_name": "BlobSidecar",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_BlobSidecar_vrootj_v17_b32_generated.bend"
    ]
   },
   "FuluCell_encode_ssz_proof_generated.bend": {
@@ -3948,6 +4404,8 @@
     "spec_repr_Cell.bend",
     "spec_input_Cell.bend",
     "slop/validity/fulu_Cell_decode_checked_generated.bend",
+    "slop/validity/fulu_Cell_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_Cell_decode_literal_ok_generated.bend",
     "slop/offsets/Cell_generated.bend"
    ]
   },
@@ -3986,6 +4444,9 @@
     "spec_input_CellIndex.bend",
     "slop/size/CellIndex_generated.bend",
     "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_CellIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_CellIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_CellIndex_decode_literal_rt_generated.bend",
     "slop/offsets/CellIndex_generated.bend"
    ]
   },
@@ -4022,6 +4483,9 @@
     "spec_input_CommitmentIndex.bend",
     "slop/size/CommitmentIndex_generated.bend",
     "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_CommitmentIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_CommitmentIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_CommitmentIndex_decode_literal_rt_generated.bend",
     "slop/offsets/CommitmentIndex_generated.bend"
    ]
   },
@@ -4058,6 +4522,9 @@
     "spec_input_RowIndex.bend",
     "slop/size/RowIndex_generated.bend",
     "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_RowIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_RowIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_RowIndex_decode_literal_rt_generated.bend",
     "slop/offsets/RowIndex_generated.bend"
    ]
   },
@@ -4094,6 +4561,9 @@
     "spec_input_ColumnIndex.bend",
     "slop/size/ColumnIndex_generated.bend",
     "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_ColumnIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_ColumnIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_ColumnIndex_decode_literal_rt_generated.bend",
     "slop/offsets/ColumnIndex_generated.bend"
    ]
   },
@@ -4129,6 +4599,23 @@
     "var_codec_DataColumnsByRootIdentifier_unique.bend",
     "var_codec_DataColumnsByRootIdentifier_rej.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_over_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_1_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_10_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_2_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_4_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_ragged_7_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_columns_n1_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_columns_n2_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_columns_n1_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_columns_n2_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_default_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_marked_generated.bend",
     "slop/offsets/DataColumnsByRootIdentifier_generated.bend"
    ]
   },
@@ -4137,7 +4624,8 @@
    "generated_name": "DataColumnsByRootIdentifier",
    "op": "hashtreeroot",
    "files": [
-    "root_types.bend"
+    "root_types.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_vrootj_l128_u64_generated.bend"
    ]
   },
   "FuluMatrixEntry_encode_ssz_proof_generated.bend": {
@@ -4221,6 +4709,30 @@
     "var_codec_DataColumnSidecar_unique.bend",
     "var_codec_DataColumnSidecar_rej.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_column_ragged_1_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_column_ragged_1024_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_column_ragged_2_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_1_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_2_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_24_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_47_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_commitments_ragged_50_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_1_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_2_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_24_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_47_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_kzg_proofs_ragged_50_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_order_kzg_commitments_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_order_kzg_proofs_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_commitments_n1_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_commitments_n2_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_proofs_n1_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_proofs_n2_generated.bend",
     "slop/offsets/DataColumnSidecar_generated.bend"
    ]
   },
@@ -4257,6 +4769,9 @@
     "spec_input_CustodyIndex.bend",
     "slop/size/CustodyIndex_generated.bend",
     "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
+    "slop/validity/fulu_CustodyIndex_decode_literal_bad_generated.bend",
+    "slop/validity/fulu_CustodyIndex_decode_literal_ok_generated.bend",
+    "slop/validity/fulu_CustodyIndex_decode_literal_rt_generated.bend",
     "slop/offsets/CustodyIndex_generated.bend"
    ]
   },
@@ -4289,6 +4804,13 @@
     "var_codec_ProgressiveSingleListContainerTestStruct.bend",
     "var_codec_ProgressiveSingleListContainerTestStruct_unique.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_bad_f_C_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_rt_f_C_n1_generated.bend",
     "slop/offsets/ProgressiveSingleListContainerTestStruct_generated.bend"
    ]
   },
@@ -4331,6 +4853,70 @@
     "var_codec_ProgressiveComplexTestStruct.bend",
     "var_codec_ProgressiveComplexTestStruct_unique.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_B_over_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_C_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_10_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_4_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_D_ragged_7_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_E_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_E_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_E_ragged_2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_E_ragged_3_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_E_ragged_6_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_elem_first_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_elem_off0_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_elem_off5_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_elem_off_desc_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_elem_off_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_first_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_off0_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_off5_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_off_desc_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_F_off_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_G_over_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_f_B_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_order_f_C_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_first_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_off0_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_off5_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_off_desc_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_off_past_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_C_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_D_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_E_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_F_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_G_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_H_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_C_n1_generated.bend",
     "slop/offsets/ProgressiveComplexTestStruct_generated.bend"
    ]
   },
@@ -4368,6 +4954,25 @@
     "var_codec_ProgressiveVarTestStruct.bend",
     "var_codec_ProgressiveVarTestStruct_unique.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_f_B_over_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_f_C_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_order_f_C_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_all_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_marked_generated.bend",
     "slop/offsets/ProgressiveVarTestStruct_generated.bend"
    ]
   },
@@ -4376,7 +4981,8 @@
    "generated_name": "ProgressiveVarTestStruct",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes2.bend"
+    "root_gtypes2.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_vrootj_l123_u16_generated.bend"
    ]
   },
   "ProgressiveSingleFieldContainerTestStruct_encode_ssz_proof_generated.bend": {
@@ -4399,6 +5005,9 @@
     "sub_unique_ProgressiveSingleFieldContainerTestStruct.bend",
     "slop/size/ProgressiveSingleFieldContainerTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_literal_bad_generated.bend",
+    "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_literal_ok_generated.bend",
+    "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_literal_rt_generated.bend",
     "slop/offsets/ProgressiveSingleFieldContainerTestStruct_generated.bend"
    ]
   },
@@ -4434,6 +5043,9 @@
     "slop/validity/proglist_bool_length_refusal_generated.bend",
     "var_plist_proglist_bool_top_unique.bend",
     "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_bool_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_bool_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_bool_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_bool_generated.bend"
    ]
   },
@@ -4442,7 +5054,8 @@
    "generated_name": "proglist_bool",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_bool_vrootj_pl_bool_generated.bend"
    ]
   },
   "vec_bool_16_encode_ssz_proof_generated.bend": {
@@ -4475,6 +5088,9 @@
     "sub_unique_vec_bool_16.bend",
     "slop/validity/generic_vec_bool_16_and_pair_generated.bend",
     "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_16_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_16_generated.bend"
    ]
   },
@@ -4484,6 +5100,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_16_vrootj_v16_bool_generated.bend",
     "slop/constants/vec_bool_16_generated.bend"
    ]
   },
@@ -4516,6 +5133,9 @@
     "sub_unique_vec_bool_1.bend",
     "slop/validity/generic_vec_bool_1_and_pair_generated.bend",
     "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_1_generated.bend"
    ]
   },
@@ -4525,6 +5145,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_1_vrootj_v1_bool_generated.bend",
     "slop/constants/vec_bool_1_generated.bend"
    ]
   },
@@ -4556,6 +5177,9 @@
     "sub_unique_vec_bool_2.bend",
     "slop/validity/generic_vec_bool_2_and_pair_generated.bend",
     "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_2_generated.bend"
    ]
   },
@@ -4565,6 +5189,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_2_vrootj_v2_bool_generated.bend",
     "slop/constants/vec_bool_2_generated.bend"
    ]
   },
@@ -4595,6 +5220,9 @@
     "sub_vec_bool_31.bend",
     "sub_unique_vec_bool_31.bend",
     "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_31_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_31_generated.bend"
    ]
   },
@@ -4604,6 +5232,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_31_vrootj_v31_bool_generated.bend",
     "slop/constants/vec_bool_31_generated.bend"
    ]
   },
@@ -4634,6 +5263,9 @@
     "sub_vec_bool_3.bend",
     "sub_unique_vec_bool_3.bend",
     "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_3_generated.bend"
    ]
   },
@@ -4643,6 +5275,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_3_vrootj_v3_bool_generated.bend",
     "slop/constants/vec_bool_3_generated.bend"
    ]
   },
@@ -4675,6 +5308,9 @@
     "sub_vec_bool_4.bend",
     "sub_unique_vec_bool_4.bend",
     "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_4_generated.bend"
    ]
   },
@@ -4684,6 +5320,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_4_vrootj_v4_bool_generated.bend",
     "slop/constants/vec_bool_4_generated.bend"
    ]
   },
@@ -4714,6 +5351,8 @@
     "sub_vec_bool_512.bend",
     "sub_unique_vec_bool_512.bend",
     "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_512_decode_literal_ok_generated.bend",
     "slop/offsets/vec_bool_512_generated.bend"
    ]
   },
@@ -4753,6 +5392,8 @@
     "sub_vec_bool_513.bend",
     "sub_unique_vec_bool_513.bend",
     "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_513_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_513_decode_literal_ok_generated.bend",
     "slop/offsets/vec_bool_513_generated.bend"
    ]
   },
@@ -4762,6 +5403,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_513_vrootj_v513_bool_generated.bend",
     "slop/constants/vec_bool_513_generated.bend"
    ]
   },
@@ -4792,6 +5434,9 @@
     "sub_vec_bool_5.bend",
     "sub_unique_vec_bool_5.bend",
     "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_5_generated.bend"
    ]
   },
@@ -4801,6 +5446,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_5_vrootj_v5_bool_generated.bend",
     "slop/constants/vec_bool_5_generated.bend"
    ]
   },
@@ -4833,6 +5479,9 @@
     "sub_vec_bool_8.bend",
     "sub_unique_vec_bool_8.bend",
     "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_bool_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_bool_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_bool_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_bool_8_generated.bend"
    ]
   },
@@ -4842,6 +5491,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_8_vrootj_v8_bool_generated.bend",
     "slop/constants/vec_bool_8_generated.bend"
    ]
   },
@@ -4867,6 +5517,9 @@
     "var_plist_proglist_uint128_unique.bend",
     "var_plist_proglist_uint128_rej.bend",
     "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint128_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_uint128_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint128_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint128_generated.bend"
    ]
   },
@@ -4875,7 +5528,8 @@
    "generated_name": "proglist_uint128",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint128_vrootj_pl_u128_generated.bend"
    ]
   },
   "vec_uint128_16_encode_ssz_proof_generated.bend": {
@@ -4908,6 +5562,8 @@
     "spec_grepr_vec_uint128_16.bend",
     "spec_ginput_vec_uint128_16.bend",
     "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_16_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint128_16_generated.bend"
    ]
   },
@@ -4950,6 +5606,9 @@
     "spec_grepr_vec_uint128_1.bend",
     "spec_ginput_vec_uint128_1.bend",
     "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_1_generated.bend"
    ]
   },
@@ -4959,6 +5618,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint128_1_vrootj_v1_u128_generated.bend",
     "slop/constants/vec_uint128_1_generated.bend"
    ]
   },
@@ -4992,6 +5652,9 @@
     "spec_grepr_vec_uint128_2.bend",
     "spec_ginput_vec_uint128_2.bend",
     "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_2_generated.bend"
    ]
   },
@@ -5032,6 +5695,8 @@
     "spec_grepr_vec_uint128_31.bend",
     "spec_ginput_vec_uint128_31.bend",
     "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_31_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint128_31_generated.bend"
    ]
   },
@@ -5041,6 +5706,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint128_31_vrootj_v31_u128_generated.bend",
     "slop/constants/vec_uint128_31_generated.bend"
    ]
   },
@@ -5074,6 +5740,9 @@
     "spec_grepr_vec_uint128_3.bend",
     "spec_ginput_vec_uint128_3.bend",
     "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_3_generated.bend"
    ]
   },
@@ -5083,6 +5752,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint128_3_vrootj_v3_u128_generated.bend",
     "slop/constants/vec_uint128_3_generated.bend"
    ]
   },
@@ -5116,6 +5786,9 @@
     "spec_grepr_vec_uint128_4.bend",
     "spec_ginput_vec_uint128_4.bend",
     "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_4_generated.bend"
    ]
   },
@@ -5232,6 +5905,9 @@
     "spec_grepr_vec_uint128_5.bend",
     "spec_ginput_vec_uint128_5.bend",
     "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_5_generated.bend"
    ]
   },
@@ -5241,6 +5917,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint128_5_vrootj_v5_u128_generated.bend",
     "slop/constants/vec_uint128_5_generated.bend"
    ]
   },
@@ -5274,6 +5951,9 @@
     "spec_grepr_vec_uint128_8.bend",
     "spec_ginput_vec_uint128_8.bend",
     "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint128_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint128_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint128_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint128_8_generated.bend"
    ]
   },
@@ -5309,6 +5989,8 @@
     "var_plist_proglist_uint8_top.bend",
     "var_plist_proglist_uint8_top_unique.bend",
     "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint8_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint8_generated.bend"
    ]
   },
@@ -5318,7 +6000,8 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
-    "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend"
+    "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+    "slop/validity/generic_proglist_uint8_vrootj_pl_u8_generated.bend"
    ]
   },
   "vec_uint8_16_encode_ssz_proof_generated.bend": {
@@ -5350,6 +6033,9 @@
     "sub_vec_uint8_16.bend",
     "sub_unique_vec_uint8_16.bend",
     "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_16_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_16_generated.bend"
    ]
   },
@@ -5359,6 +6045,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_16_vrootj_v16_u8_generated.bend",
     "slop/constants/vec_uint8_16_generated.bend"
    ]
   },
@@ -5389,6 +6076,9 @@
     "sub_vec_uint8_1.bend",
     "sub_unique_vec_uint8_1.bend",
     "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_1_generated.bend"
    ]
   },
@@ -5398,6 +6088,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_1_vrootj_v1_u8_generated.bend",
     "slop/constants/vec_uint8_1_generated.bend"
    ]
   },
@@ -5428,6 +6119,9 @@
     "sub_vec_uint8_2.bend",
     "sub_unique_vec_uint8_2.bend",
     "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_2_generated.bend"
    ]
   },
@@ -5437,6 +6131,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_2_vrootj_v2_u8_generated.bend",
     "slop/constants/vec_uint8_2_generated.bend"
    ]
   },
@@ -5467,6 +6162,9 @@
     "sub_vec_uint8_31.bend",
     "sub_unique_vec_uint8_31.bend",
     "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_31_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_31_generated.bend"
    ]
   },
@@ -5476,6 +6174,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_31_vrootj_v31_u8_generated.bend",
     "slop/constants/vec_uint8_31_generated.bend"
    ]
   },
@@ -5506,6 +6205,9 @@
     "sub_vec_uint8_3.bend",
     "sub_unique_vec_uint8_3.bend",
     "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_3_generated.bend"
    ]
   },
@@ -5515,6 +6217,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_3_vrootj_v3_u8_generated.bend",
     "slop/constants/vec_uint8_3_generated.bend"
    ]
   },
@@ -5547,6 +6250,9 @@
     "sub_vec_uint8_4.bend",
     "sub_unique_vec_uint8_4.bend",
     "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_4_generated.bend"
    ]
   },
@@ -5556,6 +6262,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_4_vrootj_v4_u8_generated.bend",
     "slop/constants/vec_uint8_4_generated.bend"
    ]
   },
@@ -5586,6 +6293,8 @@
     "sub_vec_uint8_512.bend",
     "sub_unique_vec_uint8_512.bend",
     "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_512_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint8_512_generated.bend"
    ]
   },
@@ -5625,6 +6334,8 @@
     "sub_vec_uint8_513.bend",
     "sub_unique_vec_uint8_513.bend",
     "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_513_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_513_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint8_513_generated.bend"
    ]
   },
@@ -5634,6 +6345,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_513_vrootj_v513_u8_generated.bend",
     "slop/constants/vec_uint8_513_generated.bend"
    ]
   },
@@ -5664,6 +6376,9 @@
     "sub_vec_uint8_5.bend",
     "sub_unique_vec_uint8_5.bend",
     "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_5_generated.bend"
    ]
   },
@@ -5673,6 +6388,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_5_vrootj_v5_u8_generated.bend",
     "slop/constants/vec_uint8_5_generated.bend"
    ]
   },
@@ -5705,6 +6421,9 @@
     "sub_vec_uint8_8.bend",
     "sub_unique_vec_uint8_8.bend",
     "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint8_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint8_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint8_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint8_8_generated.bend"
    ]
   },
@@ -5714,6 +6433,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_8_vrootj_v8_u8_generated.bend",
     "slop/constants/vec_uint8_8_generated.bend"
    ]
   },
@@ -5740,6 +6460,9 @@
     "var_plist_proglist_uint16_top.bend",
     "var_plist_proglist_uint16_top_unique.bend",
     "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_uint16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint16_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint16_generated.bend"
    ]
   },
@@ -5748,7 +6471,8 @@
    "generated_name": "proglist_uint16",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint16_vrootj_pl_u16_generated.bend"
    ]
   },
   "vec_uint16_16_encode_ssz_proof_generated.bend": {
@@ -5779,6 +6503,9 @@
     "sub_vec_uint16_16.bend",
     "sub_unique_vec_uint16_16.bend",
     "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_16_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_16_generated.bend"
    ]
   },
@@ -5817,6 +6544,9 @@
     "sub_vec_uint16_1.bend",
     "sub_unique_vec_uint16_1.bend",
     "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_1_generated.bend"
    ]
   },
@@ -5826,6 +6556,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_1_vrootj_v1_u16_generated.bend",
     "slop/constants/vec_uint16_1_generated.bend"
    ]
   },
@@ -5857,6 +6588,9 @@
     "sub_vec_uint16_2.bend",
     "sub_unique_vec_uint16_2.bend",
     "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_2_generated.bend"
    ]
   },
@@ -5866,6 +6600,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_2_vrootj_v2_u16_generated.bend",
     "slop/constants/vec_uint16_2_generated.bend"
    ]
   },
@@ -5895,6 +6630,9 @@
     "sub_vec_uint16_31.bend",
     "sub_unique_vec_uint16_31.bend",
     "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_31_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_31_generated.bend"
    ]
   },
@@ -5904,6 +6642,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_31_vrootj_v31_u16_generated.bend",
     "slop/constants/vec_uint16_31_generated.bend"
    ]
   },
@@ -5933,6 +6672,9 @@
     "sub_vec_uint16_3.bend",
     "sub_unique_vec_uint16_3.bend",
     "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_3_generated.bend"
    ]
   },
@@ -5942,6 +6684,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_3_vrootj_v3_u16_generated.bend",
     "slop/constants/vec_uint16_3_generated.bend"
    ]
   },
@@ -5973,6 +6716,9 @@
     "sub_vec_uint16_4.bend",
     "sub_unique_vec_uint16_4.bend",
     "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_4_generated.bend"
    ]
   },
@@ -5982,6 +6728,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_4_vrootj_v4_u16_generated.bend",
     "slop/constants/vec_uint16_4_generated.bend"
    ]
   },
@@ -6011,6 +6758,8 @@
     "sub_vec_uint16_512.bend",
     "sub_unique_vec_uint16_512.bend",
     "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_512_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint16_512_generated.bend"
    ]
   },
@@ -6049,6 +6798,8 @@
     "sub_vec_uint16_513.bend",
     "sub_unique_vec_uint16_513.bend",
     "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_513_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_513_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint16_513_generated.bend"
    ]
   },
@@ -6058,6 +6809,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_513_vrootj_v513_u16_generated.bend",
     "slop/constants/vec_uint16_513_generated.bend"
    ]
   },
@@ -6087,6 +6839,9 @@
     "sub_vec_uint16_5.bend",
     "sub_unique_vec_uint16_5.bend",
     "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_5_generated.bend"
    ]
   },
@@ -6096,6 +6851,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_5_vrootj_v5_u16_generated.bend",
     "slop/constants/vec_uint16_5_generated.bend"
    ]
   },
@@ -6127,6 +6883,9 @@
     "sub_vec_uint16_8.bend",
     "sub_unique_vec_uint16_8.bend",
     "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint16_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint16_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint16_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint16_8_generated.bend"
    ]
   },
@@ -6136,6 +6895,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_8_vrootj_v8_u16_generated.bend",
     "slop/constants/vec_uint16_8_generated.bend"
    ]
   },
@@ -6161,6 +6921,9 @@
     "var_plist_proglist_uint256_unique.bend",
     "var_plist_proglist_uint256_rej.bend",
     "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint256_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_uint256_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint256_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint256_generated.bend"
    ]
   },
@@ -6200,6 +6963,8 @@
     "spec_grepr_vec_uint256_16.bend",
     "spec_ginput_vec_uint256_16.bend",
     "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_16_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint256_16_generated.bend"
    ]
   },
@@ -6242,6 +7007,9 @@
     "spec_grepr_vec_uint256_1.bend",
     "spec_ginput_vec_uint256_1.bend",
     "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint256_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint256_1_generated.bend"
    ]
   },
@@ -6284,6 +7052,9 @@
     "spec_grepr_vec_uint256_2.bend",
     "spec_ginput_vec_uint256_2.bend",
     "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint256_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint256_2_generated.bend"
    ]
   },
@@ -6324,6 +7095,8 @@
     "spec_grepr_vec_uint256_31.bend",
     "spec_ginput_vec_uint256_31.bend",
     "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_31_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint256_31_generated.bend"
    ]
   },
@@ -6333,6 +7106,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint256_31_vrootj_v31_u256_generated.bend",
     "slop/constants/vec_uint256_31_generated.bend"
    ]
   },
@@ -6366,6 +7140,9 @@
     "spec_grepr_vec_uint256_3.bend",
     "spec_ginput_vec_uint256_3.bend",
     "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint256_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint256_3_generated.bend"
    ]
   },
@@ -6375,6 +7152,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint256_3_vrootj_v3_u256_generated.bend",
     "slop/constants/vec_uint256_3_generated.bend"
    ]
   },
@@ -6408,6 +7186,9 @@
     "spec_grepr_vec_uint256_4.bend",
     "spec_ginput_vec_uint256_4.bend",
     "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint256_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint256_4_generated.bend"
    ]
   },
@@ -6524,6 +7305,8 @@
     "spec_grepr_vec_uint256_5.bend",
     "spec_ginput_vec_uint256_5.bend",
     "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_5_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint256_5_generated.bend"
    ]
   },
@@ -6533,6 +7316,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint256_5_vrootj_v5_u256_generated.bend",
     "slop/constants/vec_uint256_5_generated.bend"
    ]
   },
@@ -6566,6 +7350,8 @@
     "spec_grepr_vec_uint256_8.bend",
     "spec_ginput_vec_uint256_8.bend",
     "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint256_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint256_8_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint256_8_generated.bend"
    ]
   },
@@ -6601,6 +7387,9 @@
     "var_plist_proglist_uint32_unique.bend",
     "var_plist_proglist_uint32_rej.bend",
     "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint32_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_uint32_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint32_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint32_generated.bend"
    ]
   },
@@ -6609,7 +7398,8 @@
    "generated_name": "proglist_uint32",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint32_vrootj_pl_u32_generated.bend"
    ]
   },
   "vec_uint32_16_encode_ssz_proof_generated.bend": {
@@ -6642,6 +7432,9 @@
     "spec_grepr_vec_uint32_16.bend",
     "spec_ginput_vec_uint32_16.bend",
     "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_16_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_16_generated.bend"
    ]
   },
@@ -6684,6 +7477,9 @@
     "spec_grepr_vec_uint32_1.bend",
     "spec_ginput_vec_uint32_1.bend",
     "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_1_generated.bend"
    ]
   },
@@ -6693,6 +7489,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_1_vrootj_v1_u32_generated.bend",
     "slop/constants/vec_uint32_1_generated.bend"
    ]
   },
@@ -6726,6 +7523,9 @@
     "spec_grepr_vec_uint32_2.bend",
     "spec_ginput_vec_uint32_2.bend",
     "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_2_generated.bend"
    ]
   },
@@ -6735,6 +7535,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_2_vrootj_v2_u32_generated.bend",
     "slop/constants/vec_uint32_2_generated.bend"
    ]
   },
@@ -6768,6 +7569,9 @@
     "spec_grepr_vec_uint32_31.bend",
     "spec_ginput_vec_uint32_31.bend",
     "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_31_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_31_generated.bend"
    ]
   },
@@ -6777,6 +7581,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_31_vrootj_v31_u32_generated.bend",
     "slop/constants/vec_uint32_31_generated.bend"
    ]
   },
@@ -6810,6 +7615,9 @@
     "spec_grepr_vec_uint32_3.bend",
     "spec_ginput_vec_uint32_3.bend",
     "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_3_generated.bend"
    ]
   },
@@ -6819,6 +7627,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_3_vrootj_v3_u32_generated.bend",
     "slop/constants/vec_uint32_3_generated.bend"
    ]
   },
@@ -6852,6 +7661,9 @@
     "spec_grepr_vec_uint32_4.bend",
     "spec_ginput_vec_uint32_4.bend",
     "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_4_generated.bend"
    ]
   },
@@ -6861,6 +7673,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_4_vrootj_v4_u32_generated.bend",
     "slop/constants/vec_uint32_4_generated.bend"
    ]
   },
@@ -6890,6 +7703,8 @@
     "spec_garr_vec_uint32_512.bend",
     "spec_garr_unique_vec_uint32_512.bend",
     "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_512_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint32_512_generated.bend"
    ]
   },
@@ -6970,6 +7785,9 @@
     "spec_grepr_vec_uint32_5.bend",
     "spec_ginput_vec_uint32_5.bend",
     "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_5_generated.bend"
    ]
   },
@@ -6979,6 +7797,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint32_5_vrootj_v5_u32_generated.bend",
     "slop/constants/vec_uint32_5_generated.bend"
    ]
   },
@@ -7012,6 +7831,9 @@
     "spec_grepr_vec_uint32_8.bend",
     "spec_ginput_vec_uint32_8.bend",
     "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint32_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint32_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint32_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint32_8_generated.bend"
    ]
   },
@@ -7047,6 +7869,9 @@
     "var_plist_proglist_uint64_unique.bend",
     "var_plist_proglist_uint64_rej.bend",
     "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
+    "slop/validity/generic_proglist_uint64_decode_literal_bad_generated.bend",
+    "slop/validity/generic_proglist_uint64_decode_literal_ok_generated.bend",
+    "slop/validity/generic_proglist_uint64_decode_literal_rt_generated.bend",
     "slop/offsets/proglist_uint64_generated.bend"
    ]
   },
@@ -7055,7 +7880,8 @@
    "generated_name": "proglist_uint64",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint64_vrootj_pl_u64_generated.bend"
    ]
   },
   "vec_uint64_16_encode_ssz_proof_generated.bend": {
@@ -7088,6 +7914,9 @@
     "spec_grepr_vec_uint64_16.bend",
     "spec_ginput_vec_uint64_16.bend",
     "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_16_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_16_generated.bend"
    ]
   },
@@ -7130,6 +7959,9 @@
     "spec_grepr_vec_uint64_1.bend",
     "spec_ginput_vec_uint64_1.bend",
     "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_1_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_1_generated.bend"
    ]
   },
@@ -7139,6 +7971,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint64_1_vrootj_v1_u64_generated.bend",
     "slop/constants/vec_uint64_1_generated.bend"
    ]
   },
@@ -7172,6 +8005,9 @@
     "spec_grepr_vec_uint64_2.bend",
     "spec_ginput_vec_uint64_2.bend",
     "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_2_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_2_generated.bend"
    ]
   },
@@ -7181,6 +8017,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint64_2_vrootj_v2_u64_generated.bend",
     "slop/constants/vec_uint64_2_generated.bend"
    ]
   },
@@ -7214,6 +8051,8 @@
     "spec_grepr_vec_uint64_31.bend",
     "spec_ginput_vec_uint64_31.bend",
     "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_31_decode_literal_ok_generated.bend",
     "slop/offsets/vec_uint64_31_generated.bend"
    ]
   },
@@ -7223,6 +8062,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint64_31_vrootj_v31_u64_generated.bend",
     "slop/constants/vec_uint64_31_generated.bend"
    ]
   },
@@ -7256,6 +8096,9 @@
     "spec_grepr_vec_uint64_3.bend",
     "spec_ginput_vec_uint64_3.bend",
     "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_3_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_3_generated.bend"
    ]
   },
@@ -7265,6 +8108,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint64_3_vrootj_v3_u64_generated.bend",
     "slop/constants/vec_uint64_3_generated.bend"
    ]
   },
@@ -7298,6 +8142,9 @@
     "spec_grepr_vec_uint64_4.bend",
     "spec_ginput_vec_uint64_4.bend",
     "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_4_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_4_generated.bend"
    ]
   },
@@ -7415,6 +8262,9 @@
     "spec_grepr_vec_uint64_5.bend",
     "spec_ginput_vec_uint64_5.bend",
     "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_5_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_5_generated.bend"
    ]
   },
@@ -7424,6 +8274,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint64_5_vrootj_v5_u64_generated.bend",
     "slop/constants/vec_uint64_5_generated.bend"
    ]
   },
@@ -7457,6 +8308,9 @@
     "spec_grepr_vec_uint64_8.bend",
     "spec_ginput_vec_uint64_8.bend",
     "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
+    "slop/validity/generic_vec_uint64_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_vec_uint64_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_vec_uint64_8_decode_literal_rt_generated.bend",
     "slop/offsets/vec_uint64_8_generated.bend"
    ]
   },
@@ -7497,6 +8351,54 @@
     "var_codec_ProgressiveTestStruct.bend",
     "var_codec_ProgressiveTestStruct_unique.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_10_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_4_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_7_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_C_ragged_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_C_ragged_1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_C_ragged_2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_C_ragged_3_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_C_ragged_6_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_first_past_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off0_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off5_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_desc_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_past_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_first_past_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off0_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off5_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off_desc_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off_past_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_B_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_C_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_D_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_marked_generated.bend",
     "slop/offsets/ProgressiveTestStruct_generated.bend"
    ]
   },
@@ -7534,6 +8436,23 @@
     "var_codec_BitsStruct.bend",
     "var_codec_BitsStruct_unique.bend",
     "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_A_nodelim_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_A_over_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_B_pad_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_C_pad_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_D_nodelim_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_f_D_over_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_bad_order_f_D_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_f_A_n1_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_all_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_f_A_n1_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_f_D_n1_generated.bend",
     "slop/offsets/BitsStruct_generated.bend"
    ]
   },
@@ -7590,6 +8509,39 @@
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits256_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_bitops_bits257_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_B_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_B_over_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_C_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_D_pad_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_E_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_E_over_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_F_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_H_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_H_over_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_I_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_J_pad_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_K_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_K_over_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_L_nodelim_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_C_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_E_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_F_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_H_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_I_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_K_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_L_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_E_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_F_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_H_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_I_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_K_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_L_n1_generated.bend",
     "slop/offsets/ProgressiveBitsStruct_generated.bend"
    ]
   },
@@ -7598,7 +8550,8 @@
    "generated_name": "ProgressiveBitsStruct",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes2.bend"
+    "root_gtypes2.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_vrootj_bv1280_generated.bend"
    ]
   },
   "FixedTestStruct_encode_ssz_proof_generated.bend": {
@@ -7622,6 +8575,9 @@
     "sub_unique_FixedTestStruct.bend",
     "slop/size/FixedTestStruct_generated.bend",
     "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_FixedTestStruct_decode_literal_bad_generated.bend",
+    "slop/validity/generic_FixedTestStruct_decode_literal_ok_generated.bend",
+    "slop/validity/generic_FixedTestStruct_decode_literal_rt_generated.bend",
     "slop/offsets/FixedTestStruct_generated.bend"
    ]
   },
@@ -7653,6 +8609,9 @@
     "sub_unique_SingleFieldTestStruct.bend",
     "slop/size/SingleFieldTestStruct_generated.bend",
     "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_SingleFieldTestStruct_decode_literal_bad_generated.bend",
+    "slop/validity/generic_SingleFieldTestStruct_decode_literal_ok_generated.bend",
+    "slop/validity/generic_SingleFieldTestStruct_decode_literal_rt_generated.bend",
     "slop/offsets/SingleFieldTestStruct_generated.bend"
    ]
   },
@@ -7689,6 +8648,16 @@
     "var_codec_VarTestStruct.bend",
     "var_codec_VarTestStruct_unique.bend",
     "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n1_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n2_generated.bend",
     "slop/offsets/VarTestStruct_generated.bend"
    ]
   },
@@ -7697,7 +8666,8 @@
    "generated_name": "VarTestStruct",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes.bend"
+    "root_gtypes.bend",
+    "slop/validity/generic_VarTestStruct_vrootj_l1024_u16_generated.bend"
    ]
   },
   "ComplexTestStruct_encode_ssz_proof_generated.bend": {
@@ -7730,6 +8700,39 @@
     "var_codec_ComplexTestStruct.bend",
     "var_codec_ComplexTestStruct_unique.bend",
     "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_over_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_D_over_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_f_B_ragged_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_off_minus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_off_plus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_f_B_ragged_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_off_minus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_off_plus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e1_f_B_ragged_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e1_f_B_ragged_1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e1_off_minus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e1_off_plus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_off_minus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_order_f_D_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_order_f_E_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_bad_order_f_G_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_all_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_all_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_default_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_D_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_marked_generated.bend",
     "slop/offsets/ComplexTestStruct_generated.bend"
    ]
   },
@@ -7739,7 +8742,9 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
-    "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend"
+    "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj_l128_u16_generated.bend"
    ]
   },
   "SmallTestStruct_encode_ssz_proof_generated.bend": {
@@ -7763,6 +8768,9 @@
     "sub_unique_SmallTestStruct.bend",
     "slop/size/SmallTestStruct_generated.bend",
     "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
+    "slop/validity/generic_SmallTestStruct_decode_literal_bad_generated.bend",
+    "slop/validity/generic_SmallTestStruct_decode_literal_ok_generated.bend",
+    "slop/validity/generic_SmallTestStruct_decode_literal_rt_generated.bend",
     "slop/offsets/SmallTestStruct_generated.bend"
    ]
   },
@@ -7802,6 +8810,9 @@
     "var_bits_bitlist_15_rej.bend",
     "slop/validity/generic_bitlist_15_bitops_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_15_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_15_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_15_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_15_generated.bend"
    ]
   },
@@ -7843,6 +8854,9 @@
     "var_bits_bitlist_16_rej.bend",
     "slop/validity/generic_bitlist_16_bitops_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_16_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_16_generated.bend"
    ]
   },
@@ -7884,6 +8898,9 @@
     "var_bits_bitlist_17_rej.bend",
     "slop/validity/generic_bitlist_17_bitops_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_17_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_17_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_17_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_17_generated.bend"
    ]
   },
@@ -7925,6 +8942,9 @@
     "var_bits_bitlist_1_rej.bend",
     "slop/validity/generic_bitlist_1_bitops_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_1_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_1_generated.bend"
    ]
   },
@@ -7966,6 +8986,9 @@
     "var_bits_bitlist_2_rej.bend",
     "slop/validity/generic_bitlist_2_bitops_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_2_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_2_generated.bend"
    ]
   },
@@ -8007,6 +9030,9 @@
     "var_bits_bitlist_31_rej.bend",
     "slop/validity/generic_bitlist_31_bitops_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_31_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_31_generated.bend"
    ]
   },
@@ -8046,6 +9072,9 @@
     "var_bits_bitlist_32_rej.bend",
     "slop/validity/generic_bitlist_32_bitops_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_32_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_32_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_32_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_32_generated.bend"
    ]
   },
@@ -8085,6 +9114,9 @@
     "var_bits_bitlist_33_rej.bend",
     "slop/validity/generic_bitlist_33_bitops_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_33_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_33_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_33_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_33_generated.bend"
    ]
   },
@@ -8126,6 +9158,9 @@
     "var_bits_bitlist_3_rej.bend",
     "slop/validity/generic_bitlist_3_bitops_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_3_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_3_generated.bend"
    ]
   },
@@ -8167,6 +9202,9 @@
     "var_bits_bitlist_4_rej.bend",
     "slop/validity/generic_bitlist_4_bitops_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_4_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_4_generated.bend"
    ]
   },
@@ -8206,6 +9244,9 @@
     "var_bits_bitlist_511_rej.bend",
     "slop/validity/generic_bitlist_511_bitops_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_511_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_511_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_511_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_511_generated.bend"
    ]
   },
@@ -8245,6 +9286,9 @@
     "var_bits_bitlist_512_rej.bend",
     "slop/validity/generic_bitlist_512_bitops_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_512_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_512_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_512_generated.bend"
    ]
   },
@@ -8284,6 +9328,9 @@
     "var_bits_bitlist_513_rej.bend",
     "slop/validity/generic_bitlist_513_bitops_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_513_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_513_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_513_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_513_generated.bend"
    ]
   },
@@ -8325,6 +9372,9 @@
     "var_bits_bitlist_5_rej.bend",
     "slop/validity/generic_bitlist_5_bitops_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_5_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_5_generated.bend"
    ]
   },
@@ -8366,6 +9416,9 @@
     "var_bits_bitlist_6_rej.bend",
     "slop/validity/generic_bitlist_6_bitops_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_6_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_6_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_6_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_6_generated.bend"
    ]
   },
@@ -8407,6 +9460,9 @@
     "var_bits_bitlist_7_rej.bend",
     "slop/validity/generic_bitlist_7_bitops_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_7_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_7_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_7_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_7_generated.bend"
    ]
   },
@@ -8448,6 +9504,9 @@
     "var_bits_bitlist_8_rej.bend",
     "slop/validity/generic_bitlist_8_bitops_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_8_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_8_generated.bend"
    ]
   },
@@ -8489,6 +9548,9 @@
     "var_bits_bitlist_9_rej.bend",
     "slop/validity/generic_bitlist_9_bitops_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
+    "slop/validity/generic_bitlist_9_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitlist_9_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitlist_9_decode_literal_rt_generated.bend",
     "slop/offsets/bitlist_9_generated.bend"
    ]
   },
@@ -8525,6 +9587,9 @@
     "sub_unique_bitvector_15.bend",
     "slop/size/bitvector_15_generated.bend",
     "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_15_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_15_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_15_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_15_generated.bend"
    ]
   },
@@ -8559,6 +9624,9 @@
     "sub_unique_bitvector_16.bend",
     "slop/size/bitvector_16_generated.bend",
     "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_16_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_16_generated.bend"
    ]
   },
@@ -8593,6 +9661,9 @@
     "sub_unique_bitvector_17.bend",
     "slop/size/bitvector_17_generated.bend",
     "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_17_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_17_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_17_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_17_generated.bend"
    ]
   },
@@ -8627,6 +9698,9 @@
     "sub_unique_bitvector_1.bend",
     "slop/size/bitvector_1_generated.bend",
     "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_1_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_1_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_1_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_1_generated.bend"
    ]
   },
@@ -8661,6 +9735,9 @@
     "sub_unique_bitvector_2.bend",
     "slop/size/bitvector_2_generated.bend",
     "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_2_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_2_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_2_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_2_generated.bend"
    ]
   },
@@ -8695,6 +9772,9 @@
     "sub_unique_bitvector_31.bend",
     "slop/size/bitvector_31_generated.bend",
     "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_31_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_31_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_31_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_31_generated.bend"
    ]
   },
@@ -8733,6 +9813,9 @@
     "spec_ginput_bitvector_32.bend",
     "slop/size/bitvector_32_generated.bend",
     "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_32_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_32_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_32_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_32_generated.bend"
    ]
   },
@@ -8767,6 +9850,9 @@
     "sub_unique_bitvector_33.bend",
     "slop/size/bitvector_33_generated.bend",
     "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_33_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_33_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_33_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_33_generated.bend"
    ]
   },
@@ -8801,6 +9887,9 @@
     "sub_unique_bitvector_3.bend",
     "slop/size/bitvector_3_generated.bend",
     "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_3_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_3_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_3_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_3_generated.bend"
    ]
   },
@@ -8835,6 +9924,9 @@
     "sub_unique_bitvector_4.bend",
     "slop/size/bitvector_4_generated.bend",
     "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_4_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_4_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_4_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_4_generated.bend"
    ]
   },
@@ -8869,6 +9961,9 @@
     "sub_unique_bitvector_511.bend",
     "slop/size/bitvector_511_generated.bend",
     "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_511_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_511_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_511_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_511_generated.bend"
    ]
   },
@@ -8907,6 +10002,9 @@
     "spec_ginput_bitvector_512.bend",
     "slop/size/bitvector_512_generated.bend",
     "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_512_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_512_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_512_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_512_generated.bend"
    ]
   },
@@ -8941,6 +10039,9 @@
     "sub_unique_bitvector_513.bend",
     "slop/size/bitvector_513_generated.bend",
     "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_513_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_513_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_513_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_513_generated.bend"
    ]
   },
@@ -8975,6 +10076,9 @@
     "sub_unique_bitvector_5.bend",
     "slop/size/bitvector_5_generated.bend",
     "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_5_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_5_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_5_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_5_generated.bend"
    ]
   },
@@ -9009,6 +10113,9 @@
     "sub_unique_bitvector_6.bend",
     "slop/size/bitvector_6_generated.bend",
     "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_6_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_6_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_6_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_6_generated.bend"
    ]
   },
@@ -9043,6 +10150,9 @@
     "sub_unique_bitvector_7.bend",
     "slop/size/bitvector_7_generated.bend",
     "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_7_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_7_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_7_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_7_generated.bend"
    ]
   },
@@ -9077,6 +10187,9 @@
     "sub_unique_bitvector_8.bend",
     "slop/size/bitvector_8_generated.bend",
     "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_8_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_8_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_8_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_8_generated.bend"
    ]
   },
@@ -9111,6 +10224,9 @@
     "sub_unique_bitvector_9.bend",
     "slop/size/bitvector_9_generated.bend",
     "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
+    "slop/validity/generic_bitvector_9_decode_literal_bad_generated.bend",
+    "slop/validity/generic_bitvector_9_decode_literal_ok_generated.bend",
+    "slop/validity/generic_bitvector_9_decode_literal_rt_generated.bend",
     "slop/offsets/bitvector_9_generated.bend"
    ]
   },
@@ -9143,6 +10259,12 @@
     "slop/alignment/CompatibleUnionBC_union_arm_generated.bend",
     "var_codec_CompatibleUnionBC_unique.bend",
     "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_arm_f_C_nodelim_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_arm_off_minus_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_arm_off_plus_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_selector_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_CompatibleUnionBC_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_CompatibleUnionBC_selectors_generated.bend",
     "slop/offsets/CompatibleUnionBC_generated.bend"
    ]
@@ -9177,6 +10299,9 @@
     "var_codec_CompatibleUnionABCA_unique.bend",
     "slop/size/CompatibleUnionABCA_generated.bend",
     "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
+    "slop/validity/generic_CompatibleUnionABCA_decode_literal_bad_selector_generated.bend",
+    "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_CompatibleUnionABCA_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_CompatibleUnionABCA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionABCA_generated.bend"
    ]
@@ -9212,6 +10337,9 @@
     "var_codec_CompatibleUnionA_unique.bend",
     "slop/size/CompatibleUnionA_generated.bend",
     "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
+    "slop/validity/generic_CompatibleUnionA_decode_literal_bad_selector_generated.bend",
+    "slop/validity/generic_CompatibleUnionA_decode_literal_ok_default_generated.bend",
+    "slop/validity/generic_CompatibleUnionA_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_CompatibleUnionA_selectors_generated.bend",
     "slop/offsets/CompatibleUnionA_generated.bend"
    ]
@@ -9250,6 +10378,9 @@
     "var_pbits_progbitlist_rej.bend",
     "slop/validity/generic_progbitlist_bitops_pbits_generated.bend",
     "slop/validity/generic_progbitlist_decode_checked_generated.bend",
+    "slop/validity/generic_progbitlist_decode_literal_bad_generated.bend",
+    "slop/validity/generic_progbitlist_decode_literal_ok_generated.bend",
+    "slop/validity/generic_progbitlist_decode_literal_rt_generated.bend",
     "slop/offsets/progbitlist_generated.bend"
    ]
   },
@@ -9289,6 +10420,9 @@
     "spec_ginput_uint128.bend",
     "slop/size/uint128_generated.bend",
     "slop/validity/generic_uint128_decode_checked_generated.bend",
+    "slop/validity/generic_uint128_decode_literal_bad_generated.bend",
+    "slop/validity/generic_uint128_decode_literal_ok_generated.bend",
+    "slop/validity/generic_uint128_decode_literal_rt_generated.bend",
     "slop/offsets/uint128_generated.bend"
    ]
   },
@@ -9320,6 +10454,9 @@
     "sub_unique_uint16.bend",
     "slop/size/uint16_generated.bend",
     "slop/validity/generic_uint16_decode_checked_generated.bend",
+    "slop/validity/generic_uint16_decode_literal_bad_generated.bend",
+    "slop/validity/generic_uint16_decode_literal_ok_generated.bend",
+    "slop/validity/generic_uint16_decode_literal_rt_generated.bend",
     "slop/validity/generic_uint16_read_generated.bend",
     "slop/offsets/uint16_generated.bend"
    ]

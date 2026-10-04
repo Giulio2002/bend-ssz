@@ -68,6 +68,12 @@ def FuluLightClientBootstrap__encode_spec__encode_spec(+dS: Nat, +TS: P0_FD.arra
 def FuluLightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_default_valid() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_default())) == True{} : Bool}:
   P2_PRV.LightClientBootstrap_serialize_vreject_default_valid()
 
+def FuluLightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_header_execution() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_header(FuluLightClientBootstrap_d.LightClientBootstrap_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientBootstrap_serialize_vreject_header_execution()
+
+def FuluLightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_current_sync_committee_pubkeys() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_current_sync_committee(FuluLightClientBootstrap_d.LightClientBootstrap_default(), FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), P2_O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  P2_PRV.LightClientBootstrap_serialize_vreject_current_sync_committee_pubkeys()
+
 def FuluLightClientBootstrap__serialize_valid__LightClientBootstrap_serialize_vreject_current_sync_committee_branch() -> {Pair.snd(FuluLightClientBootstrap_d.LightClientBootstrap, Bool, FuluLightClientBootstrap_e.LightClientBootstrap_valid(FuluLightClientBootstrap_d.LightClientBootstrap_set_current_sync_committee_branch(FuluLightClientBootstrap_d.LightClientBootstrap_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P2_PRV.LightClientBootstrap_serialize_vreject_current_sync_committee_branch()
 

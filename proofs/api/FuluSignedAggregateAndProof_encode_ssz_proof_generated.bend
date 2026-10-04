@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
 import ../../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
 import ../../types/FuluSignedAggregateAndProof_encode_ssz_generated.bend as FuluSignedAggregateAndProof_e
 import ../../types/schema.bend as P0_S
@@ -77,6 +78,12 @@ def FuluSignedAggregateAndProof__serialize_valid__SignedAggregateAndProof_serial
 
 def FuluSignedAggregateAndProof__serialize_valid__SignedAggregateAndProof_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, P1_O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_sized((FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), 4294967295))) == P1_O.refused() : P1_O.Encoded}:
   P1_PRV.SignedAggregateAndProof_serialize_vrefuse_poisoned_size()
+
+def FuluSignedAggregateAndProof__serialize_valid__SignedAggregateAndProof_serialize_vreject_message_aggregate() -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, Bool, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_valid(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), P1_O.BNone{})))) == False{} : Bool}:
+  P1_PRV.SignedAggregateAndProof_serialize_vreject_message_aggregate()
+
+def FuluSignedAggregateAndProof__serialize_valid__SignedAggregateAndProof_serialize_vrefuse_message_aggregate() -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, P1_O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_serialize(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), P1_O.BNone{})))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.SignedAggregateAndProof_serialize_vrefuse_message_aggregate()
 
 def FuluSignedAggregateAndProof__serialize_valid__SignedAggregateAndProof_serialize_vrefuse_writer_marker() -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, P2_O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_out(0, Array.new(U32, 0n, 0), FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), 4294967295)) == P2_O.refused() : P2_O.Encoded}:
   P2_PRV.SignedAggregateAndProof_serialize_vrefuse_writer_marker()

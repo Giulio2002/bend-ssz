@@ -1,5 +1,6 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
 import ../../../types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend as FuluLightClientFinalityUpdate_e
 
@@ -8,6 +9,22 @@ import ../../../types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend as
 
 def LightClientFinalityUpdate_serialize_vreject_default_valid()
     -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default())) == True{} : Bool}:
+  {==}
+
+def LightClientFinalityUpdate_serialize_vreject_attested_header_execution()
+    -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == False{} : Bool}:
+  {==}
+
+def LightClientFinalityUpdate_serialize_vrefuse_attested_header_execution()
+    -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, O.Encoded, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_attested_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == O.refused() : O.Encoded}:
+  {==}
+
+def LightClientFinalityUpdate_serialize_vreject_finalized_header_execution()
+    -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, Bool, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_valid(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == False{} : Bool}:
+  {==}
+
+def LightClientFinalityUpdate_serialize_vrefuse_finalized_header_execution()
+    -> {Pair.snd(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, O.Encoded, FuluLightClientFinalityUpdate_e.LightClientFinalityUpdate_serialize(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_set_finalized_header(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == O.refused() : O.Encoded}:
   {==}
 
 def LightClientFinalityUpdate_serialize_vreject_finality_branch()

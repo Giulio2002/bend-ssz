@@ -185,14 +185,41 @@ def witness_laws(tx, X, fu_t):
                 if f'{X}_set_{fn}' in tx.blk:
                     law(fn + sfx, f'T.{X}_set_{fn}(T.{X}_default(), {bad})', refuse=bad == 'O.BNone{}' or sfx == '_limit')
             mb = re.fullmatch(r'O\.Boxed<(\w+)>', ty)
-            if mb and mb.group(1) in decls and f'{X}_set_{fn}' in tx.blk and f'{mb.group(1)}_bx_wrap' in tx.blk:
-                # a present box whose value is invalid: the first field of the child that has a cheap invalid value
-                Y = mb.group(1)
-                inner = [(gf, sfx, bad) for gf, gty in decls[Y] for sfx, bad in bad_values(tx, decls, gty)[:1] if f'{Y}_set_{gf}' in tx.blk]
+            Y = mb.group(1) if mb else ty
+            if Y in decls and not Y.startswith(f'{X}_g') and f'{X}_set_{fn}' in tx.blk and (not mb or f'{Y}_bx_wrap' in tx.blk):
+                # a child container (boxed or not) holding an invalid value: the first field, at any depth up to 3, that has a cheap invalid value
+                inner = invalid_value(tx, decls, Y)
                 if inner:
-                    gf, sfx, bad = inner[0]
-                    law(f'{fn}_{gf}{sfx}', f'T.{X}_set_{fn}(T.{X}_default(), T.{Y}_bx_wrap(T.{Y}_set_{gf}(T.{Y}_default(), {bad})))', refuse=True)
+                    tag, val = inner
+                    law(f'{fn}_{tag}', f'T.{X}_set_{fn}(T.{X}_default(), {f"T.{Y}_bx_wrap({val})" if mb else val})', refuse=True)
     return laws
+
+
+def invalid_value(tx, decls, Y, depth=0):
+    """(tag, expression) of a value of the container Y that is invalid, from its first field (inside a group too, or inside a child container) that has a
+    cheap invalid value; None when none is reachable"""
+    if depth > 3 or Y not in decls or not tx.get(f'{Y}_default'):
+        return None
+    for fn, ty in decls[Y]:
+        if ty.startswith(f'{Y}_g') and ty in decls:
+            for gf, gty in decls[ty]:
+                for sfx, bad in bad_values(tx, decls, gty)[:1]:
+                    if f'{ty}_set_{gf}' in tx.blk:
+                        comps = ', '.join(f'T.{ty}_set_{gf}(T.{ty}_default(), {bad})' if n == fn else f'T.{t2}_default()' for n, t2 in decls[Y])
+                        return f'{gf}{sfx}', f'T.{Y}{{{comps}}}'
+            continue
+        if f'{Y}_set_{fn}' not in tx.blk:
+            continue
+        for sfx, bad in bad_values(tx, decls, ty)[:1]:
+            return f'{fn}{sfx}', f'T.{Y}_set_{fn}(T.{Y}_default(), {bad})'
+        mb = re.fullmatch(r'O\.Boxed<(\w+)>', ty)
+        Z = mb.group(1) if mb else ty
+        if Z in decls and not Z.startswith(f'{Y}_g') and (not mb or f'{Z}_bx_wrap' in tx.blk):
+            inner = invalid_value(tx, decls, Z, depth + 1)
+            if inner:
+                tag, val = inner
+                return f'{fn}_{tag}', f'T.{Y}_set_{fn}(T.{Y}_default(), {f"T.{Z}_bx_wrap({val})" if mb else val})'
+    return None
 
 
 def box_laws(tx, X, t):

@@ -2,6 +2,7 @@ import Base
 import ../../src/buffer.bend as P0_B
 import ../../src/obj.bend as P0_O
 import ../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../../types/FuluExecutionBranch_encode_ssz_generated.bend as FuluExecutionBranch_e
 import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
@@ -78,6 +79,12 @@ def FuluLightClientHeader__serialize_valid__LightClientHeader_serialize_vreject_
 
 def FuluLightClientHeader__serialize_valid__LightClientHeader_serialize_vrefuse_execution() -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, P2_O.Encoded, FuluLightClientHeader_e.LightClientHeader_serialize(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{}))) == P2_O.refused() : P2_O.Encoded}:
   P2_PRV.LightClientHeader_serialize_vrefuse_execution()
+
+def FuluLightClientHeader__serialize_valid__LightClientHeader_serialize_vreject_execution_logs_bloom() -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, Bool, FuluLightClientHeader_e.LightClientHeader_valid(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_set_logs_bloom(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()})))) == False{} : Bool}:
+  P2_PRV.LightClientHeader_serialize_vreject_execution_logs_bloom()
+
+def FuluLightClientHeader__serialize_valid__LightClientHeader_serialize_vrefuse_execution_logs_bloom() -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, P2_O.Encoded, FuluLightClientHeader_e.LightClientHeader_serialize(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_set_logs_bloom(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()})))) == P2_O.refused() : P2_O.Encoded}:
+  P2_PRV.LightClientHeader_serialize_vrefuse_execution_logs_bloom()
 
 def FuluLightClientHeader__serialize_valid__LightClientHeader_serialize_vreject_execution_branch() -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, Bool, FuluLightClientHeader_e.LightClientHeader_valid(FuluLightClientHeader_d.LightClientHeader_set_execution_branch(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P2_PRV.LightClientHeader_serialize_vreject_execution_branch()

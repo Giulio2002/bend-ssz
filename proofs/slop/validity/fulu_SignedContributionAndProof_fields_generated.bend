@@ -1,5 +1,6 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
 import ../../../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedContributionAndProof_d
 import ../../../types/FuluSignedContributionAndProof_encode_ssz_generated.bend as FuluSignedContributionAndProof_e
 
@@ -8,4 +9,12 @@ import ../../../types/FuluSignedContributionAndProof_encode_ssz_generated.bend a
 
 def SignedContributionAndProof_serialize_vreject_default_valid()
     -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, Bool, FuluSignedContributionAndProof_e.SignedContributionAndProof_valid(FuluSignedContributionAndProof_d.SignedContributionAndProof_default())) == True{} : Bool}:
+  {==}
+
+def SignedContributionAndProof_serialize_vreject_message_contribution()
+    -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, Bool, FuluSignedContributionAndProof_e.SignedContributionAndProof_valid(FuluSignedContributionAndProof_d.SignedContributionAndProof_set_message(FuluSignedContributionAndProof_d.SignedContributionAndProof_default(), FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), O.BNone{})))) == False{} : Bool}:
+  {==}
+
+def SignedContributionAndProof_serialize_vrefuse_message_contribution()
+    -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, O.Encoded, FuluSignedContributionAndProof_e.SignedContributionAndProof_serialize(FuluSignedContributionAndProof_d.SignedContributionAndProof_set_message(FuluSignedContributionAndProof_d.SignedContributionAndProof_default(), FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), O.BNone{})))) == O.refused() : O.Encoded}:
   {==}

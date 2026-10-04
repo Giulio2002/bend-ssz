@@ -1,5 +1,6 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientHeader_encode_ssz_generated.bend as FuluLightClientHeader_e
 
@@ -16,6 +17,14 @@ def LightClientHeader_serialize_vreject_execution()
 
 def LightClientHeader_serialize_vrefuse_execution()
     -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, O.Encoded, FuluLightClientHeader_e.LightClientHeader_serialize(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{}))) == O.refused() : O.Encoded}:
+  {==}
+
+def LightClientHeader_serialize_vreject_execution_logs_bloom()
+    -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, Bool, FuluLightClientHeader_e.LightClientHeader_valid(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_set_logs_bloom(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()})))) == False{} : Bool}:
+  {==}
+
+def LightClientHeader_serialize_vrefuse_execution_logs_bloom()
+    -> {Pair.snd(FuluLightClientHeader_d.LightClientHeader, O.Encoded, FuluLightClientHeader_e.LightClientHeader_serialize(FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_set_logs_bloom(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()})))) == O.refused() : O.Encoded}:
   {==}
 
 def LightClientHeader_serialize_vreject_execution_branch()

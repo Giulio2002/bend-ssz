@@ -78,8 +78,17 @@ def FuluLightClientUpdate__encode_spec__encode_spec(+m: P0_CI.MW, +hok: {P0_CI.O
 def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_default_valid() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_default())) == True{} : Bool}:
   P2_PRV.LightClientUpdate_serialize_vreject_default_valid()
 
+def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_attested_header_execution() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientUpdate_serialize_vreject_attested_header_execution()
+
+def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_next_sync_committee_pubkeys() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), P2_O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  P2_PRV.LightClientUpdate_serialize_vreject_next_sync_committee_pubkeys()
+
 def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_next_sync_committee_branch() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(FuluLightClientUpdate_d.LightClientUpdate_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P2_PRV.LightClientUpdate_serialize_vreject_next_sync_committee_branch()
+
+def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_finalized_header_execution() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), P2_O.BNone{})))) == False{} : Bool}:
+  P2_PRV.LightClientUpdate_serialize_vreject_finalized_header_execution()
 
 def FuluLightClientUpdate__serialize_valid__LightClientUpdate_serialize_vreject_finality_branch() -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_finality_branch(FuluLightClientUpdate_d.LightClientUpdate_default(), P2_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P2_PRV.LightClientUpdate_serialize_vreject_finality_branch()

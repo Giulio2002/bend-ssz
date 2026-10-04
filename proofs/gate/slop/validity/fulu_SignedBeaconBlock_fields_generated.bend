@@ -1,5 +1,6 @@
 import Base
 import ../../../../src/obj.bend as O
+import ../../../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
 import ../../../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSignedBeaconBlock_e
 import ../../../slop/validity/fulu_SignedBeaconBlock_fields_generated.bend as PRV
@@ -10,9 +11,15 @@ import ../../../slop/validity/fulu_SignedBeaconBlock_fields_generated.bend as PR
 def SignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_bad_flag() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_go(True{}, 0, FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) == O.refused() : O.Encoded}:
   PRV.SignedBeaconBlock_serialize_vrefuse_bad_flag()
 
+def SignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_message_body() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_serialize(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_message(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{})))) == O.refused() : O.Encoded}:
+  PRV.SignedBeaconBlock_serialize_vrefuse_message_body()
+
 def SignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_sized((FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), 4294967295))) == O.refused() : O.Encoded}:
   PRV.SignedBeaconBlock_serialize_vrefuse_poisoned_size()
 
 def SignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vreject_default_valid() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(FuluSignedBeaconBlock_d.SignedBeaconBlock_default())) == True{} : Bool}:
   PRV.SignedBeaconBlock_serialize_vreject_default_valid()
+
+def SignedBeaconBlock__serialize_valid__SignedBeaconBlock_serialize_vreject_message_body() -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_message(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{})))) == False{} : Bool}:
+  PRV.SignedBeaconBlock_serialize_vreject_message_body()
 

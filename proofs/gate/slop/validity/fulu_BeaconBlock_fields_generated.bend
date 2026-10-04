@@ -1,5 +1,7 @@
 import Base
 import ../../../../src/obj.bend as O
+import ../../../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerSlashing_16_d
+import ../../../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
 import ../../../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../../../types/FuluBeaconBlock_encode_ssz_generated.bend as FuluBeaconBlock_e
 import ../../../slop/validity/fulu_BeaconBlock_fields_generated.bend as PRV
@@ -13,11 +15,17 @@ def BeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_bad_flag() -> {P
 def BeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_body() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{}))) == O.refused() : O.Encoded}:
   PRV.BeaconBlock_serialize_vrefuse_body()
 
+def BeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_body_proposer_slashings() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})))) == O.refused() : O.Encoded}:
+  PRV.BeaconBlock_serialize_vrefuse_body_proposer_slashings()
+
 def BeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_poisoned_size() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_sized((FuluBeaconBlock_d.BeaconBlock_default(), 4294967295))) == O.refused() : O.Encoded}:
   PRV.BeaconBlock_serialize_vrefuse_poisoned_size()
 
 def BeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_body() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{}))) == False{} : Bool}:
   PRV.BeaconBlock_serialize_vreject_body()
+
+def BeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_body_proposer_slashings() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})))) == False{} : Bool}:
+  PRV.BeaconBlock_serialize_vreject_body_proposer_slashings()
 
 def BeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_default_valid() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_default())) == True{} : Bool}:
   PRV.BeaconBlock_serialize_vreject_default_valid()

@@ -3,6 +3,8 @@ import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
 import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../types/uint64_def_generated.bend as uint64_d
+import ../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerSlashing_16_d
+import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
 import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../types/FuluBeaconBlock_encode_ssz_generated.bend as FuluBeaconBlock_e
 import ../../types/schema.bend as P0_S
@@ -76,6 +78,12 @@ def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_body() -> {P
 
 def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_body() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, P1_O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), P1_O.BNone{}))) == P1_O.refused() : P1_O.Encoded}:
   P1_PRV.BeaconBlock_serialize_vrefuse_body()
+
+def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vreject_body_proposer_slashings() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, Bool, FuluBeaconBlock_e.BeaconBlock_valid(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})))) == False{} : Bool}:
+  P1_PRV.BeaconBlock_serialize_vreject_body_proposer_slashings()
+
+def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_body_proposer_slashings() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, P1_O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})))) == P1_O.refused() : P1_O.Encoded}:
+  P1_PRV.BeaconBlock_serialize_vrefuse_body_proposer_slashings()
 
 def FuluBeaconBlock__serialize_valid__BeaconBlock_serialize_vrefuse_writer_marker() -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, P2_O.Encoded, FuluBeaconBlock_e.BeaconBlock_senc_out(0, Array.new(U32, 0n, 0), FuluBeaconBlock_d.BeaconBlock_default(), 4294967295)) == P2_O.refused() : P2_O.Encoded}:
   P2_PRV.BeaconBlock_serialize_vrefuse_writer_marker()

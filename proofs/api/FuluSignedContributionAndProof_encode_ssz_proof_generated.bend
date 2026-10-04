@@ -65,6 +65,12 @@ def FuluSignedContributionAndProof__encode_spec__SignedContributionAndProof_spec
 def FuluSignedContributionAndProof__serialize_valid__SignedContributionAndProof_serialize_vreject_default_valid() -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, Bool, FuluSignedContributionAndProof_e.SignedContributionAndProof_valid(FuluSignedContributionAndProof_d.SignedContributionAndProof_default())) == True{} : Bool}:
   P3_PRV.SignedContributionAndProof_serialize_vreject_default_valid()
 
+def FuluSignedContributionAndProof__serialize_valid__SignedContributionAndProof_serialize_vreject_message_contribution() -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, Bool, FuluSignedContributionAndProof_e.SignedContributionAndProof_valid(FuluSignedContributionAndProof_d.SignedContributionAndProof_set_message(FuluSignedContributionAndProof_d.SignedContributionAndProof_default(), FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), P3_O.BNone{})))) == False{} : Bool}:
+  P3_PRV.SignedContributionAndProof_serialize_vreject_message_contribution()
+
+def FuluSignedContributionAndProof__serialize_valid__SignedContributionAndProof_serialize_vrefuse_message_contribution() -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, P3_O.Encoded, FuluSignedContributionAndProof_e.SignedContributionAndProof_serialize(FuluSignedContributionAndProof_d.SignedContributionAndProof_set_message(FuluSignedContributionAndProof_d.SignedContributionAndProof_default(), FuluContributionAndProof_d.ContributionAndProof_set_contribution(FuluContributionAndProof_d.ContributionAndProof_default(), P3_O.BNone{})))) == P3_O.refused() : P3_O.Encoded}:
+  P3_PRV.SignedContributionAndProof_serialize_vrefuse_message_contribution()
+
 def FuluSignedContributionAndProof__serialize_valid__SignedContributionAndProof_serialize_vrefuse_writer_marker() -> {Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, P4_O.Encoded, FuluSignedContributionAndProof_e.SignedContributionAndProof_senc_out((Array.new(U32, 0n, 0), (FuluSignedContributionAndProof_d.SignedContributionAndProof_default(), 4294967295)))) == P4_O.refused() : P4_O.Encoded}:
   P4_PRV.SignedContributionAndProof_serialize_vrefuse_writer_marker()
 

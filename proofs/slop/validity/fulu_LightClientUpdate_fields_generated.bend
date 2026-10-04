@@ -1,5 +1,7 @@
 import Base
 import ../../../src/obj.bend as O
+import ../../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
 import ../../../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
 
@@ -10,8 +12,20 @@ def LightClientUpdate_serialize_vreject_default_valid()
     -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_default())) == True{} : Bool}:
   {==}
 
+def LightClientUpdate_serialize_vreject_attested_header_execution()
+    -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_attested_header(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == False{} : Bool}:
+  {==}
+
+def LightClientUpdate_serialize_vreject_next_sync_committee_pubkeys()
+    -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluSyncCommittee_d.SyncCommittee_set_pubkeys(FuluSyncCommittee_d.SyncCommittee_default(), O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  {==}
+
 def LightClientUpdate_serialize_vreject_next_sync_committee_branch()
     -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_next_sync_committee_branch(FuluLightClientUpdate_d.LightClientUpdate_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
+  {==}
+
+def LightClientUpdate_serialize_vreject_finalized_header_execution()
+    -> {Pair.snd(FuluLightClientUpdate_d.LightClientUpdate, Bool, FuluLightClientUpdate_e.LightClientUpdate_valid(FuluLightClientUpdate_d.LightClientUpdate_set_finalized_header(FuluLightClientUpdate_d.LightClientUpdate_default(), FuluLightClientHeader_d.LightClientHeader_set_execution(FuluLightClientHeader_d.LightClientHeader_default(), O.BNone{})))) == False{} : Bool}:
   {==}
 
 def LightClientUpdate_serialize_vreject_finality_branch()

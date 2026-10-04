@@ -67,8 +67,107 @@ import ../../src/obj.bend as P7_O
 import ../slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend as P7_PRV
 import ../../src/buffer.bend as P8_B
 import ../../src/obj.bend as P8_O
-import ../obj/decode_window_library_generated.bend as P8_DWL
-import ../slop/offsets/ProgressiveBitsStruct_generated.bend as P8_PRV
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_B_nodelim_generated.bend as P8_PRV
+import ../../src/buffer.bend as P9_B
+import ../../src/obj.bend as P9_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_B_over_generated.bend as P9_PRV
+import ../../src/buffer.bend as P10_B
+import ../../src/obj.bend as P10_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_C_nodelim_generated.bend as P10_PRV
+import ../../src/buffer.bend as P11_B
+import ../../src/obj.bend as P11_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_D_pad_generated.bend as P11_PRV
+import ../../src/buffer.bend as P12_B
+import ../../src/obj.bend as P12_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_E_nodelim_generated.bend as P12_PRV
+import ../../src/buffer.bend as P13_B
+import ../../src/obj.bend as P13_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_E_over_generated.bend as P13_PRV
+import ../../src/buffer.bend as P14_B
+import ../../src/obj.bend as P14_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_F_nodelim_generated.bend as P14_PRV
+import ../../src/buffer.bend as P15_B
+import ../../src/obj.bend as P15_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_H_nodelim_generated.bend as P15_PRV
+import ../../src/buffer.bend as P16_B
+import ../../src/obj.bend as P16_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_H_over_generated.bend as P16_PRV
+import ../../src/buffer.bend as P17_B
+import ../../src/obj.bend as P17_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_I_nodelim_generated.bend as P17_PRV
+import ../../src/buffer.bend as P18_B
+import ../../src/obj.bend as P18_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_J_pad_generated.bend as P18_PRV
+import ../../src/buffer.bend as P19_B
+import ../../src/obj.bend as P19_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_K_nodelim_generated.bend as P19_PRV
+import ../../src/buffer.bend as P20_B
+import ../../src/obj.bend as P20_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_K_over_generated.bend as P20_PRV
+import ../../src/buffer.bend as P21_B
+import ../../src/obj.bend as P21_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_L_nodelim_generated.bend as P21_PRV
+import ../../src/buffer.bend as P22_B
+import ../../src/obj.bend as P22_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_off_minus_generated.bend as P22_PRV
+import ../../src/buffer.bend as P23_B
+import ../../src/obj.bend as P23_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_off_plus_generated.bend as P23_PRV
+import ../../src/buffer.bend as P24_B
+import ../../src/obj.bend as P24_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_C_generated.bend as P24_PRV
+import ../../src/buffer.bend as P25_B
+import ../../src/obj.bend as P25_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_E_generated.bend as P25_PRV
+import ../../src/buffer.bend as P26_B
+import ../../src/obj.bend as P26_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_F_generated.bend as P26_PRV
+import ../../src/buffer.bend as P27_B
+import ../../src/obj.bend as P27_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_H_generated.bend as P27_PRV
+import ../../src/buffer.bend as P28_B
+import ../../src/obj.bend as P28_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_I_generated.bend as P28_PRV
+import ../../src/buffer.bend as P29_B
+import ../../src/obj.bend as P29_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_K_generated.bend as P29_PRV
+import ../../src/buffer.bend as P30_B
+import ../../src/obj.bend as P30_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_order_f_L_generated.bend as P30_PRV
+import ../../src/buffer.bend as P31_B
+import ../../src/obj.bend as P31_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_all_generated.bend as P31_PRV
+import ../../src/buffer.bend as P32_B
+import ../../src/obj.bend as P32_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_default_generated.bend as P32_PRV
+import ../../src/buffer.bend as P33_B
+import ../../src/obj.bend as P33_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_B_n1_generated.bend as P33_PRV
+import ../../src/buffer.bend as P34_B
+import ../../src/obj.bend as P34_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_C_n1_generated.bend as P34_PRV
+import ../../src/buffer.bend as P35_B
+import ../../src/obj.bend as P35_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_E_n1_generated.bend as P35_PRV
+import ../../src/buffer.bend as P36_B
+import ../../src/obj.bend as P36_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_F_n1_generated.bend as P36_PRV
+import ../../src/buffer.bend as P37_B
+import ../../src/obj.bend as P37_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_H_n1_generated.bend as P37_PRV
+import ../../src/buffer.bend as P38_B
+import ../../src/obj.bend as P38_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_I_n1_generated.bend as P38_PRV
+import ../../src/buffer.bend as P39_B
+import ../../src/obj.bend as P39_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_K_n1_generated.bend as P39_PRV
+import ../../src/buffer.bend as P40_B
+import ../../src/obj.bend as P40_O
+import ../slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_L_n1_generated.bend as P40_PRV
+import ../../src/buffer.bend as P41_B
+import ../../src/obj.bend as P41_O
+import ../obj/decode_window_library_generated.bend as P41_DWL
+import ../slop/offsets/ProgressiveBitsStruct_generated.bend as P41_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # ProgressiveBitsStruct: its decode_ssz laws in the object API's terms, each discharged by its proving law.
@@ -178,6 +277,105 @@ def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 426}, 426)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   P7_PRV.ProgressiveBitsStruct_decode_vchecked_real()
 
-def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_build(buf: P8_B.Buf, +size: U32, b2: P8_B.Buf, e: {ProgressiveBitsStruct_r.ProgressiveBitsStruct_ok(buf, 0, size) == (b2, True{}) : P8_B.Buf & Bool}, hwin: {U32.is_le(size, P8_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(buf, size) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_some(ProgressiveBitsStruct_r.ProgressiveBitsStruct_build(b2, size)) : P8_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
-  P8_PRV.ProgressiveBitsStruct_decode_build(buf, size, b2, e, hwin)
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_B_nodelim() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P8_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16777216), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P8_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_B_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_B_over() -> {P9_PRV.some1(Pair.snd(P9_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P9_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 451), 18, 115712), 19, 115968), 60, 116224), 61, 116480), 102, 29884416), 103, 29949952), 112, 16908288), 113, 16843009), 114, 257), 458}, 458))) == False{} : Bool}:
+  P9_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_B_over()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_C_nodelim() -> {P10_PRV.some1(Pair.snd(P10_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P10_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 65536), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P10_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_C_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_D_pad() -> {P11_PRV.some1(Pair.snd(P11_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P11_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107522), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P11_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_D_pad()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_E_nodelim() -> {P12_PRV.some1(Pair.snd(P12_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P12_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843008), 106, 257), 426}, 426))) == False{} : Bool}:
+  P12_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_E_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_E_over() -> {P13_PRV.some1(Pair.snd(P13_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P13_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 115968), 60, 116224), 61, 116480), 102, 29884416), 103, 29949952), 104, 16842752), 113, 16843012), 114, 257), 458}, 458))) == False{} : Bool}:
+  P13_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_E_over()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_F_nodelim() -> {P14_PRV.some1(Pair.snd(P14_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P14_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16842753), 106, 257), 426}, 426))) == False{} : Bool}:
+  P14_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_F_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_H_nodelim() -> {P15_PRV.some1(Pair.snd(P15_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P15_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16777473), 106, 257), 426}, 426))) == False{} : Bool}:
+  P15_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_H_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_H_over() -> {P16_PRV.some1(Pair.snd(P16_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P16_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 149248), 102, 38273024), 103, 38338560), 104, 16842752), 105, 257), 145, 16908288), 146, 257), 586}, 586))) == False{} : Bool}:
+  P16_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_H_over()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_I_nodelim() -> {P17_PRV.some1(Pair.snd(P17_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P17_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 65793), 106, 257), 426}, 426))) == False{} : Bool}:
+  P17_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_I_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_J_pad() -> {P18_PRV.some1(Pair.snd(P18_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P18_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787776), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P18_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_J_pad()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_K_nodelim() -> {P19_PRV.some1(Pair.snd(P19_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P19_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 256), 426}, 426))) == False{} : Bool}:
+  P19_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_K_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_K_over() -> {P20_PRV.some1(Pair.snd(P20_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P20_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 38338560), 104, 16842752), 105, 16843009), 146, 260), 586}, 586))) == False{} : Bool}:
+  P20_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_K_over()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_f_L_nodelim() -> {P21_PRV.some1(Pair.snd(P21_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P21_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 1), 426}, 426))) == False{} : Bool}:
+  P21_PRV.ProgressiveBitsStruct_decode_vlit_bad_f_L_nodelim()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_off_minus() -> {P22_PRV.some1(Pair.snd(P22_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P22_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 417), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P22_PRV.ProgressiveBitsStruct_decode_vlit_bad_off_minus()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_off_plus() -> {P23_PRV.some1(Pair.snd(P23_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P23_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 419), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 427}, 427))) == False{} : Bool}:
+  P23_PRV.ProgressiveBitsStruct_decode_vlit_bad_off_plus()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_C() -> {P24_PRV.some1(Pair.snd(P24_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P24_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 417), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P24_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_C()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_E() -> {P25_PRV.some1(Pair.snd(P25_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P25_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107008), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P25_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_E()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_F() -> {P26_PRV.some1(Pair.snd(P26_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P26_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107264), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P26_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_F()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_H() -> {P27_PRV.some1(Pair.snd(P27_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P27_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 107520), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P27_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_H()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_I() -> {P28_PRV.some1(Pair.snd(P28_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P28_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 107776), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P28_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_I()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_K() -> {P29_PRV.some1(Pair.snd(P29_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P29_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27656192), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P29_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_K()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_bad_order_f_L() -> {P30_PRV.some1(Pair.snd(P30_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P30_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27721728), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == False{} : Bool}:
+  P30_PRV.ProgressiveBitsStruct_decode_vlit_bad_order_f_L()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_all() -> {P31_PRV.some1(Pair.snd(P31_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P31_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 50528256), 105, 50529027), 106, 771), 426}, 426))) == True{} : Bool}:
+  P31_PRV.ProgressiveBitsStruct_decode_vlit_ok_all()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_default() -> {P32_PRV.some1(Pair.snd(P32_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P32_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == True{} : Bool}:
+  P32_PRV.ProgressiveBitsStruct_decode_vlit_ok_default()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_B_n1() -> {P33_PRV.some1(Pair.snd(P33_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P33_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16973824), 105, 16843009), 106, 257), 426}, 426))) == True{} : Bool}:
+  P33_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_B_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_C_n1() -> {P34_PRV.some1(Pair.snd(P34_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P34_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 50397184), 105, 16843009), 106, 257), 426}, 426))) == True{} : Bool}:
+  P34_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_C_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_E_n1() -> {P35_PRV.some1(Pair.snd(P35_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P35_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843011), 106, 257), 426}, 426))) == True{} : Bool}:
+  P35_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_E_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_F_n1() -> {P36_PRV.some1(Pair.snd(P36_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P36_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843521), 106, 257), 426}, 426))) == True{} : Bool}:
+  P36_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_F_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_H_n1() -> {P37_PRV.some1(Pair.snd(P37_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P37_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16974081), 106, 257), 426}, 426))) == True{} : Bool}:
+  P37_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_H_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_I_n1() -> {P38_PRV.some1(Pair.snd(P38_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P38_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 50397441), 106, 257), 426}, 426))) == True{} : Bool}:
+  P38_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_I_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_K_n1() -> {P39_PRV.some1(Pair.snd(P39_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P39_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 259), 426}, 426))) == True{} : Bool}:
+  P39_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_K_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vlit_ok_f_L_n1() -> {P40_PRV.some1(Pair.snd(P40_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(P40_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 769), 426}, 426))) == True{} : Bool}:
+  P40_PRV.ProgressiveBitsStruct_decode_vlit_ok_f_L_n1()
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_build(buf: P41_B.Buf, +size: U32, b2: P41_B.Buf, e: {ProgressiveBitsStruct_r.ProgressiveBitsStruct_ok(buf, 0, size) == (b2, True{}) : P41_B.Buf & Bool}, hwin: {U32.is_le(size, P41_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode(buf, size) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_some(ProgressiveBitsStruct_r.ProgressiveBitsStruct_build(b2, size)) : P41_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  P41_PRV.ProgressiveBitsStruct_decode_build(buf, size, b2, e, hwin)
 

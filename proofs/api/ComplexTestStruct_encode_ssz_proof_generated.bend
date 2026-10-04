@@ -2,6 +2,7 @@ import Base
 import ../../src/obj.bend as P0_O
 import ../../src/primitives.bend as P0_I
 import ../../types/uint8_def_generated.bend as uint8_d
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../../types/list_uint16_128_def_generated.bend as list_uint16_128_d
 import ../../types/list_uint16_128_encode_ssz_generated.bend as list_uint16_128_e
 import ../../types/bytelist_256_def_generated.bend as bytelist_256_d
@@ -202,6 +203,12 @@ def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_f_B(
 
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_f_D() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_D(ComplexTestStruct_d.ComplexTestStruct_default(), P5_O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   P5_PRV.ComplexTestStruct_serialize_vreject_f_D()
+
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_f_E_f_B() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_E(ComplexTestStruct_d.ComplexTestStruct_default(), VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), P5_O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  P5_PRV.ComplexTestStruct_serialize_vreject_f_E_f_B()
+
+def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vrefuse_f_E_f_B() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, P5_O.Encoded, ComplexTestStruct_e.ComplexTestStruct_serialize(ComplexTestStruct_d.ComplexTestStruct_set_f_E(ComplexTestStruct_d.ComplexTestStruct_default(), VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), P5_O.Words{Array.new(U32, 0n, 0), 5})))) == P5_O.refused() : P5_O.Encoded}:
+  P5_PRV.ComplexTestStruct_serialize_vrefuse_f_E_f_B()
 
 def ComplexTestStruct__serialize_valid__ComplexTestStruct_serialize_vreject_f_F() -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_F(ComplexTestStruct_d.ComplexTestStruct_default(), vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{vec_FixedTestStruct_4_d.v4_FixedTestStruct_fill(0n), 2}))) == False{} : Bool}:
   P5_PRV.ComplexTestStruct_serialize_vreject_f_F()
