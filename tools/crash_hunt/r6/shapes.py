@@ -100,3 +100,20 @@ def SHAPES(target):
     add('CompatibleUnionABCA', '<2>.f_C.bits 2^k+1', ('2', 'f_C'), lambda i: False)
     add('ProgressiveComplexTestStruct', 'f_C.bits 2^k+1', ('f_C',), lambda i: False)
     return out
+
+
+_SHAPES1 = SHAPES
+
+
+def SHAPES(target):  # noqa: F811
+    out = _SHAPES1(target)
+    t = T['DataColumnSidecar'][0]
+    fs = dict(t.fields)
+
+    def all3(n):
+        v = minval(t)
+        for f in ('column', 'kzg_commitments', 'kzg_proofs'):
+            v[f] = [minval(fs[f].elem)] * n
+        return v
+    out.append(('DataColumnSidecar', 'column, kzg_commitments, kzg_proofs all at the 4096 limit', all3, 4096))
+    return out
