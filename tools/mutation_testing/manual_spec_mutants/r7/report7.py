@@ -38,6 +38,8 @@ for d in pdirs:
             for f in sorted(os.listdir(fd)):
                 if f.endswith('.patch'):
                     h = hdr(os.path.join(fd, f))
+                    if not h.get('id', '').startswith('r7-'):
+                        continue
                     patches[h['id']] = dict(h, patch=os.path.relpath(os.path.join(fd, f), d))
 A = {}
 for n in ('res_all.json', 'budget.json', 'pass2.json'):     # later files override (explicit roots)
