@@ -14,6 +14,12 @@ def Version__decode_offsets__Version_decode_vchecked_accept() -> {PRV.is_some(Pa
 def Version__decode_offsets__Version_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluVersion_r.Version_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluVersion_r.Version_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_at_2pow31(buf)
 
+def Version__decode_offsets__Version_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked_budget(B.Buf{Array.new(U32, 0n, 0), 4}, 4, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
+  PRV.Version_decode_vchecked_budget_accept()
+
+def Version__decode_offsets__Version_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluVersion_r.Version_dcost(size), 4294967295), U32.is_le(FuluVersion_r.Version_dcost(size), budget)) == True{} : Bool}) -> {FuluVersion_r.Version_decode_checked_budget(buf, size, budget) == FuluVersion_r.Version_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.Version_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def Version__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_limit()
 

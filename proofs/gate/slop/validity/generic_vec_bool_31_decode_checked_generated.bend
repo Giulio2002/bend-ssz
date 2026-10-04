@@ -13,6 +13,12 @@ def vec_bool_31__decode_offsets__vec_bool_31_decode_vchecked_accept() -> {PRV.is
 def vec_bool_31__decode_offsets__vec_bool_31_decode_vchecked_at_2pow31(buf: B.Buf) -> {vec_bool_31_r.vec_bool_31_dchw(2147483648, 2147483648, (buf, 536870912)) == vec_bool_31_r.vec_bool_31_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
   PRV.vec_bool_31_decode_vchecked_at_2pow31(buf)
 
+def vec_bool_31__decode_offsets__vec_bool_31_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_31_r.vec_bool_31_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 31}, 31, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_31_r.vec_bool_31_decode_checked(B.Buf{Array.new(U32, 3n, 0), 31}, 31))) == (True{}, True{}) : Bool & Bool}:
+  PRV.vec_bool_31_decode_vchecked_budget_accept()
+
+def vec_bool_31__decode_offsets__vec_bool_31_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(vec_bool_31_r.vec_bool_31_dcost(size), 4294967295), U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget)) == True{} : Bool}) -> {vec_bool_31_r.vec_bool_31_decode_checked_budget(buf, size, budget) == vec_bool_31_r.vec_bool_31_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_bool_31_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def vec_bool_31__decode_offsets__vec_bool_31_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_31_r.vec_bool_31_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_31_decode_vchecked_limit()
 

@@ -14,6 +14,12 @@ def Attestation__decode_offsets__Attestation_decode_vchecked_accept() -> {PRV.is
 def Attestation__decode_offsets__Attestation_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluAttestation_r.Attestation_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluAttestation_r.Attestation_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
   PRV.Attestation_decode_vchecked_at_2pow31(buf)
 
+def Attestation__decode_offsets__Attestation_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 237, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 237))) == (True{}, True{}) : Bool & Bool}:
+  PRV.Attestation_decode_vchecked_budget_accept()
+
+def Attestation__decode_offsets__Attestation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttestation_r.Attestation_dcost(size), 4294967295), U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget)) == True{} : Bool}) -> {FuluAttestation_r.Attestation_decode_checked_budget(buf, size, budget) == FuluAttestation_r.Attestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  PRV.Attestation_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def Attestation__decode_offsets__Attestation_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttestation_d.Attestation>}:
   PRV.Attestation_decode_vchecked_limit()
 

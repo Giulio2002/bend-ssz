@@ -14,6 +14,12 @@ def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vche
 def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   PRV.SignedAggregateAndProof_decode_vchecked_at_2pow31(buf)
 
+def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 445, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 445))) == (True{}, True{}) : Bool & Bool}:
+  PRV.SignedAggregateAndProof_decode_vchecked_budget_accept()
+
+def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked_budget(buf, size, budget) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  PRV.SignedAggregateAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   PRV.SignedAggregateAndProof_decode_vchecked_limit()
 

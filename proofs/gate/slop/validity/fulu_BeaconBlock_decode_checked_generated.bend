@@ -14,6 +14,12 @@ def BeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_accept() -> {PRV.is
 def BeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBeaconBlock_r.BeaconBlock_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBeaconBlock_r.BeaconBlock_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
   PRV.BeaconBlock_decode_vchecked_at_2pow31(buf)
 
+def BeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlock_d.BeaconBlock>, FuluBeaconBlock_r.BeaconBlock_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 20, 84), 71, 396), 72, 396), 73, 396), 74, 396), 75, 396), 116, 396), 117, 924), 118, 924), 119, 924), 229, 528), 246, 528), 247, 528), 252, 12), 253, 12), 254, 12), 1020}, 1020, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlock_d.BeaconBlock>, FuluBeaconBlock_r.BeaconBlock_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 20, 84), 71, 396), 72, 396), 73, 396), 74, 396), 75, 396), 116, 396), 117, 924), 118, 924), 119, 924), 229, 528), 246, 528), 247, 528), 252, 12), 253, 12), 254, 12), 1020}, 1020))) == (True{}, True{}) : Bool & Bool}:
+  PRV.BeaconBlock_decode_vchecked_budget_accept()
+
+def BeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlock_r.BeaconBlock_dcost(size), 4294967295), U32.is_le(FuluBeaconBlock_r.BeaconBlock_dcost(size), budget)) == True{} : Bool}) -> {FuluBeaconBlock_r.BeaconBlock_decode_checked_budget(buf, size, budget) == FuluBeaconBlock_r.BeaconBlock_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
+  PRV.BeaconBlock_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def BeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlock_d.BeaconBlock>, FuluBeaconBlock_r.BeaconBlock_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
   PRV.BeaconBlock_decode_vchecked_limit()
 

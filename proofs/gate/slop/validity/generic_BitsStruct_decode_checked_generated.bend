@@ -14,6 +14,12 @@ def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_accept() -> {PRV.is_s
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_at_2pow31(buf: B.Buf) -> {BitsStruct_r.BitsStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == BitsStruct_r.BitsStruct_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
   PRV.BitsStruct_decode_vchecked_at_2pow31(buf)
 
+def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 13, 4294967295)), Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 13))) == (True{}, True{}) : Bool & Bool}:
+  PRV.BitsStruct_decode_vchecked_budget_accept()
+
+def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(BitsStruct_r.BitsStruct_dcost(size), 4294967295), U32.is_le(BitsStruct_r.BitsStruct_dcost(size), budget)) == True{} : Bool}) -> {BitsStruct_r.BitsStruct_decode_checked_budget(buf, size, budget) == BitsStruct_r.BitsStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  PRV.BitsStruct_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   PRV.BitsStruct_decode_vchecked_limit()
 

@@ -14,6 +14,12 @@ def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_a
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluPendingConsolidation_r.PendingConsolidation_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluPendingConsolidation_r.PendingConsolidation_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_at_2pow31(buf)
 
+def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_decode_checked_budget(B.Buf{Array.new(U32, 2n, 0), 16}, 16, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
+  PRV.PendingConsolidation_decode_vchecked_budget_accept()
+
+def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingConsolidation_r.PendingConsolidation_dcost(size), 4294967295), U32.is_le(FuluPendingConsolidation_r.PendingConsolidation_dcost(size), budget)) == True{} : Bool}) -> {FuluPendingConsolidation_r.PendingConsolidation_decode_checked_budget(buf, size, budget) == FuluPendingConsolidation_r.PendingConsolidation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
+  PRV.PendingConsolidation_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_limit()
 

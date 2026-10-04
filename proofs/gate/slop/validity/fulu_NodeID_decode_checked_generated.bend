@@ -14,6 +14,12 @@ def NodeID__decode_offsets__NodeID_decode_vchecked_accept() -> {PRV.is_some(Pair
 def NodeID__decode_offsets__NodeID_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluNodeID_r.NodeID_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluNodeID_r.NodeID_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
   PRV.NodeID_decode_vchecked_at_2pow31(buf)
 
+def NodeID__decode_offsets__NodeID_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 32}, 32, 4294967295)), Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
+  PRV.NodeID_decode_vchecked_budget_accept()
+
+def NodeID__decode_offsets__NodeID_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluNodeID_r.NodeID_dcost(size), 4294967295), U32.is_le(FuluNodeID_r.NodeID_dcost(size), budget)) == True{} : Bool}) -> {FuluNodeID_r.NodeID_decode_checked_budget(buf, size, budget) == FuluNodeID_r.NodeID_decode_checked(buf, size) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  PRV.NodeID_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def NodeID__decode_offsets__NodeID_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, FuluNodeID_r.NodeID_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, uint256_d.Uint256>}:
   PRV.NodeID_decode_vchecked_limit()
 

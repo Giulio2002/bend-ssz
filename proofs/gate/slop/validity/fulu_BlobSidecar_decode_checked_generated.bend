@@ -11,6 +11,9 @@ import ../../../slop/validity/fulu_BlobSidecar_decode_checked_generated.bend as 
 def BlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBlobSidecar_r.BlobSidecar_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBlobSidecar_r.BlobSidecar_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   PRV.BlobSidecar_decode_vchecked_at_2pow31(buf)
 
+def BlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobSidecar_r.BlobSidecar_dcost(size), 4294967295), U32.is_le(FuluBlobSidecar_r.BlobSidecar_dcost(size), budget)) == True{} : Bool}) -> {FuluBlobSidecar_r.BlobSidecar_decode_checked_budget(buf, size, budget) == FuluBlobSidecar_r.BlobSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  PRV.BlobSidecar_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def BlobSidecar__decode_offsets__BlobSidecar_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   PRV.BlobSidecar_decode_vchecked_limit()
 

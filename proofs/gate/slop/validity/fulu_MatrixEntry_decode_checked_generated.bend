@@ -11,6 +11,9 @@ import ../../../slop/validity/fulu_MatrixEntry_decode_checked_generated.bend as 
 def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   PRV.MatrixEntry_decode_vchecked_at_2pow31(buf)
 
+def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)) == True{} : Bool}) -> {FuluMatrixEntry_r.MatrixEntry_decode_checked_budget(buf, size, budget) == FuluMatrixEntry_r.MatrixEntry_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  PRV.MatrixEntry_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def MatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   PRV.MatrixEntry_decode_vchecked_limit()
 

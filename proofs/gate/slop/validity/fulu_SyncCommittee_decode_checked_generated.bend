@@ -11,6 +11,9 @@ import ../../../slop/validity/fulu_SyncCommittee_decode_checked_generated.bend a
 def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluSyncCommittee_r.SyncCommittee_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSyncCommittee_r.SyncCommittee_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   PRV.SyncCommittee_decode_vchecked_at_2pow31(buf)
 
+def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommittee_r.SyncCommittee_dcost(size), 4294967295), U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget)) == True{} : Bool}) -> {FuluSyncCommittee_r.SyncCommittee_decode_checked_budget(buf, size, budget) == FuluSyncCommittee_r.SyncCommittee_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  PRV.SyncCommittee_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def SyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   PRV.SyncCommittee_decode_vchecked_limit()
 
