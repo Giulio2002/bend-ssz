@@ -31,6 +31,15 @@ from the element it replaces and D the default object:
   <X>_serialize_vcoll_<kp>_api_append    (a list) k = min(L, 3) appends of e0, e1, e2 to D are accepted, len is k, get j is Some{e_j} for
                                          j < k and None at k; when L = k one more append is refused; and (a packed or bit list with its own
                                          serializer) the checked serializer of the appended object equals that of the literal F
+  <X>_serialize_vcoll_<kp>_api_uncache   (a cached composite list) uncache(cache(F)) is F
+  <X>_serialize_vcoll_<kp>_api_len       (the list of cells l4096_b2048) len(D) is 0; one append of a zero cell is accepted and len is 1;
+                                         get at 1 is None, set at 1 refused, a set at 0 keeps len 1
+  <X>_serialize_vcoll_<kp>_api_zero      (a bit vector kind whose object is a word record, file <runtime>_<X>_api_<kp>_default) its default
+                                         is the record of zero words: every bit False, the SSZ default
+  <X>_serialize_vrefuse_api_tight_<f>    (a Fulu container whose default encodes above encoder_constants.SER_MAX, so no `_mc_ser` witness
+                                         names its checked serializer: BeaconState) the default with its first packed-list field f on a
+                                         storage too small for its length (8 bytes on one word) is refused by X_serialize (the size pass
+                                         is poisoned), file <runtime>_<X>_api_tight
   <U>_serialize_vcoll_selector           (a union U) the selector of the default, and of U_ck{default of option k} for every option k, is
                                          the selector the schema declares for option k (codegen/core/generic_form_schemas.py)
 
@@ -39,8 +48,8 @@ width (the U32 words of a record element, little-endian bytes of the smaller one
 width U of a packed kind is the divisor of its length (`kp_len_of`) and its largest value, when the setter tests one, must be 2^(8U) - 1
 (else the generator stops). Every statement is by computation. The generator stops when a kind of the API has no access laws (the
 coverage gate of this family): a kind whose element it cannot build, a set without a getter, a union whose selectors the schema does not
-give. One exception, named: the list of cells (`l4096_b2048`, element O.Words of 2048 bytes) whose access is the subject of
-cell_list_guards. Filed by api_gate under serialize_valid (`vcoll_*`).
+give. The list of cells (`l4096_b2048`, element O.Words of 2048 bytes) gets the `api_len` law only: cell_list_guards states its get /
+set / append. Filed by api_gate under serialize_valid (`vcoll_*`, `vrefuse_*`).
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -57,7 +66,7 @@ from codegen.proofs.slop.container_field_validity import type_decls  # noqa: E40
 from codegen.proofs.slop.element_access_laws import element, owners_any, tup, ttyp  # noqa: E402
 
 TOP = 4294967295
-CELL_KINDS = {'l4096_b2048': 'cell_list_guards'}     # kinds whose access another generator states, by name
+CELL_KINDS = {'l4096_b2048': 'cell_list_guards'}     # kinds whose element access cell_list_guards states (here: len, and get / set past the end)
 
 
 def own_name(tx, kp):
@@ -309,7 +318,52 @@ def kind_laws(tx, decls, kp, rep, E):
         F = f'Pair.fst({T}_Seq, Bool, {T}_set({T}_default(), 0, {v}))'
     el = lambda i: es[i]   # noqa: E731
     newval = lambda i: d if es[i] == v else v   # noqa: E731
-    return X, api_laws(X, kp, f'{T}_Seq', Eq, getter, F, n, el, d, newval, N, lst, [v, d, v][:min(L, 3)] if lst else [], None, False, None, None, L)
+    laws = api_laws(X, kp, f'{T}_Seq', Eq, getter, F, n, el, d, newval, N, lst, [v, d, v][:min(L, 3)] if lst else [], None, False, None, None, L)
+    if f'{kp}_uncache' in tx.blk and f'{kp}_cache' in tx.blk:
+        # a cached list hands back the list it caches: uncache(cache(F)) is F (the helper `obj` is F)
+        laws.append(f'def {X}_serialize_vcoll_{kp}_api_uncache()\n    -> {{{T}_uncache({T}_cache(obj())) == obj() : {T}_Seq}}:\n  {{==}}')
+    return X, laws
+
+
+def cell_laws(X, kp):
+    """the list of cells (element O.Words of 2048 bytes): its len, and get / set past the end (cell_list_guards states the rest)"""
+    T, rep, mb = f'T.{kp}', 'O.Words', 'Maybe<&1, O.Words>'
+    c = 'O.words_new(2048)'
+    a = f'Pair.fst({rep}, Bool, {T}_append({T}_default(), {c}))'
+    lhs = [f'Pair.snd({rep}, U32, {T}_len({T}_default()))', f'Pair.snd({rep}, Bool, {T}_append({T}_default(), {c}))', f'Pair.snd({rep}, U32, {T}_len({a}))',
+           f'Pair.snd({rep}, {mb}, {T}_get({a}, 1))', f'Pair.snd({rep}, Bool, {T}_set({a}, 1, {c}))', f'Pair.snd({rep}, U32, {T}_len(Pair.fst({rep}, Bool, {T}_set({a}, 0, {c}))))']
+    rhs = ['0', 'True{}', '1', 'None{}', 'False{}', '1']
+    typ = ['U32', 'Bool', 'U32', mb, 'Bool', 'U32']
+    return [f'def {X}_serialize_vcoll_{kp}_api_len()\n    -> {{{tup(lhs)} == {tup(rhs)} : {ttyp(typ)}}}:\n  {{==}}']
+
+
+def bitvector_default_laws(tx):
+    """(kp, law) for every bit vector kind whose object is a word record: its default is all zero bits (the SSZ default)"""
+    out = []
+    for m in re.finditer(r'^def (bv\d+)_default\(\) -> (\w+): ', tx.text, re.M):
+        kp, R = m.groups()
+        d = record_decl(tx, R)
+        if d is None:
+            continue
+        k = len(d.group(1).split(','))
+        out.append((kp, f'T.{kp}_default() == T.{R}{{{", ".join(["0"] * k)}}} : T.{R}'))
+    return out
+
+
+def tight_refusal_laws(tx):
+    """(X, law) for every Fulu container whose default encodes above encoder_constants.SER_MAX (no `_mc_ser` witness names its checked
+    serializer): with a packed list field on a storage too small for its length (8 bytes on one word), the size pass is poisoned and
+    X_serialize refuses"""
+    out = []
+    for X, t in sorted(MC.SCHEMA.items()):
+        if t.kind != 'container' or (MC.default_size(X) or 0) <= MC.SER_MAX or f'{X}_serialize' not in tx.blk:
+            continue
+        for f, ft in t.fields:
+            if ft.kind == 'list' and re.search(rf'^def {re.escape(X)}_set_{re.escape(f)}\(o: {re.escape(X)}, v: O\.Words\)', tx.text, re.M):
+                bad = f'T.{X}_set_{f}(T.{X}_default(), O.Words{{Array.new(U32, 0n, 0), 8}})'
+                out.append((X, f'def {X}_serialize_vrefuse_api_tight_{f}()\n    -> {{Pair.snd(T.{X}, O.Encoded, T.{X}_serialize({bad})) == O.refused() : O.Encoded}}:\n  {{==}}'))
+                break
+    return out
 
 
 def union_selectors():
@@ -335,6 +389,8 @@ def outputs():
             kp, rep, E = m.groups()
             done.add(kp)
             if kp in CELL_KINDS:
+                X = owners_any(tx, kp)[0]
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_api_{kp}')] = module(tmod, X, kp, cell_laws(X, kp))
                 continue
             try:
                 X, laws = kind_laws(tx, decls, kp, rep, E)
@@ -343,6 +399,17 @@ def outputs():
                 continue
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_api_{kp}')] = module(tmod, X, kp, laws)
         missing += [f'{runtime} {kp}: an element API without a `set(o, +i: U32, v)` of the expected shape' for kp in sorted(api - done)]
+        for kp, stmt in bitvector_default_laws(tx):
+            owners = ([own_name(tx, kp)] if own_name(tx, kp) else []) + owners_any(tx, kp)
+            if not owners:
+                missing.append(f'{runtime} {kp}: no API name reaches the bit vector')
+                continue
+            X = owners[0]
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}_api_{kp}_default')] = module(tmod, X, kp, [f'def {X}_serialize_vcoll_{kp}_api_zero()\n    -> {{{stmt}}}:\n  {{==}}'])
+        if runtime == 'fulu':
+            MC.default_size('BeaconState')      # loads MC.SCHEMA
+            for X, law in tight_refusal_laws(tx):
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_api_tight')] = module(tmod, X, X, [law])
         for m in re.finditer(r'^def (\w+)_selector\((?:o|v): (\w+)\) -> ', tx.text, re.M):
             U = m.group(1)
             if sels is None:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """freplay_access.py --runner tools/mutation_testing/manual_spec_mutants --tree TREE --work W --out OUT PATCH...: replay round-9 patches on fixer G's tree (agent/access-laws).
-Roots per patch: the element API modules (proofs/slop/validity/*_api_*) whose import cone holds the patched file, then up to K other
+Roots per patch: the element API modules (proofs/slop/validity/*_api_*) and the generic field laws (proofs/obj/gfields_*) whose import cone holds the patched file, then up to K other
 proofs/slop roots whose cone holds it and whose text names one of the patch's symbols (cheapest by size). First kill stops.
 At most 8 jobs, nice 19 (tools/check.sh pinned settings, 300 s)."""
 import argparse, concurrent.futures as cf, glob, json, os, re, shutil, sys
@@ -18,9 +18,9 @@ def one(a, cones, path):
     res = {'id': h['id'], 'file': h['file'], 'checks': []}
     try:
         f = h['file']
-        mine = [r for r, c in cones.items() if '_api_' in r and f in c]
+        mine = [r for r, c in cones.items() if ('_api_' in r or '/gfields_' in r) and f in c]
         syms = [s.strip() for s in h.get('sym', '').split(',') if s.strip()]
-        other = [r for r, c in cones.items() if '_api_' not in r and f in c and mentions(a.tree, r, syms)]
+        other = [r for r, c in cones.items() if r not in mine and f in c and mentions(a.tree, r, syms)]
         other.sort(key=lambda r: os.path.getsize(os.path.join(a.tree, r)))
         cands = sorted(mine) + other[:a.k]
         if not cands:
@@ -59,6 +59,7 @@ def main():
     a.tree = os.path.abspath(a.tree)
     os.makedirs(a.work, exist_ok=True)
     roots = [os.path.relpath(p, a.tree) for p in glob.glob(os.path.join(a.tree, 'proofs/slop/**/*.bend'), recursive=True)]
+    roots += [os.path.relpath(p, a.tree) for p in glob.glob(os.path.join(a.tree, 'proofs/obj/gfields_*.bend'))]
     cones = {r: cone(a.tree, r) for r in roots}
     out = []
     with cf.ThreadPoolExecutor(min(a.jobs, 8)) as ex:
