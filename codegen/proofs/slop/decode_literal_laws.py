@@ -37,6 +37,7 @@ for a variable-size container or union, one per kind otherwise: a mutated valida
                                window accepts it (SignedBeaconBlock's message: a ragged proposer slashing)
   <X>_decode_vlit_bad_count_<p>          (every list p of variable elements with a limit N that X validates) symbolic: an aligned first offset inside
                                the window, at least 4, that counts more than N elements makes the head refuse (by rewriting its four tests)
+  <X>_decode_vlit_bad_order_sym_o<i>     (every offset i >= 1 of a variable-size container X) symbolic: o_i below o_{i-1} makes the validator refuse
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vlit_` form).
 """
@@ -493,6 +494,32 @@ def count_laws(tx, X):
     return out
 
 
+def order_laws(tx, X):
+    """(round 7 / r5-d02/01) [law]: for every offset o_i (i >= 1) of the variable-size container X, an offset below the one before it makes the
+    validator refuse, symbolic in the buffer, the position, the length and the offsets: the offset test `o_{i-1} <= o_i` is rewritten to False
+    (a validator that drops it leaves the rewrite without its subterm). The literal laws cannot reach this when a crossing window is still
+    accepted by the field types around it (ProgressiveTestStruct with offsets 16, 16, 24, 16 decoded)."""
+    out = []
+    i = 1
+    while f'{X}_v{i}' in tx.blk:
+        m = re.fullmatch(rf'def {re.escape(X)}_v{i}\(\+off: U32, \+len: U32, (.*), pair: B\.Buf & U32\) -> B\.Buf & Bool:\n  \(buf, \+o{i}\) = pair\n'
+                         rf'  {re.escape(X)}_c{i}\(Bool\.and\(U32\.is_le\(o{i - 1}, o{i}\), U32\.is_le\(o{i}, len\)\), buf, off, len, (.*)\)', tx.blk[f'{X}_v{i}'])
+        if not m:
+            break
+        prm, args = m.group(1), m.group(2)
+        pre = ', '.join(a.split(':')[0].strip() for a in prm.split(', '))
+        if args != f'{pre.replace("+", "")}, o{i}':
+            raise SystemExit(f'{X}_v{i}: unexpected arguments {args}')
+        T = f'T.{X}_c{i}'
+        out.append(f'''def {X}_decode_vlit_bad_order_sym_o{i}(buf: B.Buf, +off: U32, +len: U32, {prm}, +o{i}: U32,
+    hlt: {{U32.is_le(o{i - 1}, o{i}) == False{{}} : Bool}})
+    -> {{T.{X}_v{i}(off, len, {args.rsplit(', ', 1)[0]}, (buf, o{i})) == (buf, False{{}}) : B.Buf & Bool}}:
+  %Equal.sym(Bool, U32.is_le(o{i - 1}, o{i}), False{{}}, hlt) : {{{T}(Bool.and(_, U32.is_le(o{i}, len)), buf, off, len, {args}) == (buf, False{{}}) : B.Buf & Bool}}
+  {{==}}''')
+        i += 1
+    return out
+
+
 def module(tmod, X, helper, laws):
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '', writer.header('decode_literal_laws'),
          f'# {X}: literal encodings that decode and literal encodings that do not (manual spec-mutation audit, round 5; docs/mutation_testing/MUTATION_PROOFS.md).', '', helper]
@@ -527,6 +554,9 @@ def outputs():
                 groups.setdefault(f'{kind}_{tag}' if split else kind, []).append(text)
             for key, texts in groups.items():
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_{key}')] = module(tmod, X, helper, texts)
+            olaws = order_laws(tx, X)
+            if olaws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_order_sym')] = module(tmod, X, '', olaws)
             for p, text in count_laws(tx, X):
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_count_{p}')] = module(tmod, X, '', [text])
     return out
