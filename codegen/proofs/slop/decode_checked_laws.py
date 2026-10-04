@@ -20,6 +20,12 @@ parts zero, variable parts empty, offsets at the end of the fixed part; up to 20
   <X>_decode_vchecked_short     X_decode_checked of a buffer whose array holds W but whose size field is S - 1: None
   <X>_decode_vchecked_real      (S > 4) X_decode_checked of a one-word array claiming S bytes: None (the storage is counted from the array, not from the size field)
   without W (a type with no such default): window X_dchw(5, 4, ..), storage X_dchw(8, 8, (B.empty(), 1)), real X_decode_checked(Buf{one word, 8}, 8), all None.
+The decode budget (docs/DECODE_AMPLIFICATION.md), X_decode_checked_budget(buf, size, budget):
+  <X>_decode_vchecked_budget_cost    X_dcost(4096) is ((4096 >> 3) + 1) * K + 524288 (K the name's heap bytes per input byte, codegen/decode_cost.json)
+  <X>_decode_vchecked_budget_refuse  X_dcost(size) > budget: (buf, None), for every buffer, size and budget
+  <X>_decode_vchecked_budget_agree   X_dcost(size) <= budget: X_decode_checked(buf, size), for every buffer, size and budget
+  <X>_decode_vchecked_budget_zero    a budget of 0 refuses (every bound is at least the constant 524288)
+  <X>_decode_vchecked_budget_accept  (with W) the budget 2^32 - 1 decodes W, as X_decode_checked does
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vchecked_` form). The generator stops when a checked decoder does not have the expected
 shape, so that a change of the definition cannot silently drop the laws.
@@ -37,6 +43,7 @@ from codegen.core import generic_form_schemas as generic  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
+from codegen.impl.typed_object_runtime import decode_cost_k  # noqa: E402
 
 DCHW = re.compile(r'^def (\w+)_dchw\(\+size: U32, \+n: U32, pair: B\.Buf & U32\) -> B\.Buf & Maybe<&1, ([\w.]+)>:\n'
                   r'  \(buf, \+c\) = pair\n'
@@ -127,6 +134,19 @@ def laws_of(X, V, win):
         law('short', f'{snd(f"T.{X}_decode_checked({buffer(win, s - 1)}, {s})")} == None{{}} : {M}')
         if s > 4:
             law('real', f'{snd(f"T.{X}_decode_checked({buffer(win[:4], s)}, {s})")} == None{{}} : {M}')
+    # the decode budget (docs/DECODE_AMPLIFICATION.md): a size whose cost bound is above the budget is refused, any other is the checked decode
+    k = decode_cost_k(X)
+    ex = 4096
+    cost = ((ex >> 3) + 1) * k + 524288 if k else 524288
+    out.append(f'def {X}_decode_vchecked_budget_cost()\n    -> {{T.{X}_dcost({ex}) == {cost} : U32}}:\n  {{==}}')
+    for tag, val, rhs in (('refuse', 'False{}', '(buf, None{})'), ('agree', 'True{}', f'T.{X}_decode_checked(buf, size)')):
+        out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{U32.is_le(T.{X}_dcost(size), budget) == {val} : Bool}})\n'
+                   f'    -> {{T.{X}_decode_checked_budget(buf, size, budget) == {rhs} : B.Buf & {M}}}:\n'
+                   f'  %Equal.sym(Bool, U32.is_le(T.{X}_dcost(size), budget), {val}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
+    law('budget_zero', f'{snd(f"T.{X}_decode_checked_budget(B.empty(), 8, 0)")} == None{{}} : {M}')
+    if win is not None:
+        s_ = len(win)
+        law('budget_accept', f'is_some({snd(f"T.{X}_decode_checked_budget({buffer(win)}, {s_}, 4294967295)")}, {snd(f"T.{X}_decode_checked({buffer(win)}, {s_})")}) == (True{{}}, True{{}}) : Bool & Bool')
     helper = (f'def some1(m: {M}) -> Bool:\n  match m:\n    case Some{{v}}: True{{}}\n    case None{{}}: False{{}}\n\n'
               f'def is_some(a: {M}, b: {M}) -> Bool & Bool: (some1(a), some1(b))\n')
     return helper, out

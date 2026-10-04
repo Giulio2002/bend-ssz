@@ -86,3 +86,12 @@ def DepositRequest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fulu
   DepositRequest_dchw(size, n, B.stored(buf))
 
 def DepositRequest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>: DepositRequest_dchk(size, B.size(buf))
+
+def DepositRequest_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def DepositRequest_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>:
+  match ok:
+    case True{}: DepositRequest_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def DepositRequest_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>: DepositRequest_dcb(U32.is_le(DepositRequest_dcost(size), budget), buf, size)

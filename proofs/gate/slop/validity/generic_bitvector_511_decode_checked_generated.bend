@@ -11,6 +11,12 @@ import ../../../slop/validity/generic_bitvector_511_decode_checked_generated.ben
 def bitvector_511__decode_offsets__bitvector_511_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_511_d.Bitvector511>, bitvector_511_r.bitvector_511_dchw(64, 64, (B.Buf{Array.new(U32, 4n, 0), 64}, 16))), Pair.snd(B.Buf, Maybe<&1, bitvector_511_d.Bitvector511>, bitvector_511_r.bitvector_511_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_511_decode_vchecked_accept()
 
+def bitvector_511__decode_offsets__bitvector_511_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_511_d.Bitvector511>, bitvector_511_r.bitvector_511_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 64}, 64, 4294967295)), Pair.snd(B.Buf, Maybe<&1, bitvector_511_d.Bitvector511>, bitvector_511_r.bitvector_511_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
+  PRV.bitvector_511_decode_vchecked_budget_accept()
+
+def bitvector_511__decode_offsets__bitvector_511_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitvector_511_r.bitvector_511_dcost(size), budget) == True{} : Bool}) -> {bitvector_511_r.bitvector_511_decode_checked_budget(buf, size, budget) == bitvector_511_r.bitvector_511_decode_checked(buf, size) : B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>}:
+  PRV.bitvector_511_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def bitvector_511__decode_offsets__bitvector_511_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_511_d.Bitvector511>, bitvector_511_r.bitvector_511_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_511_d.Bitvector511>}:
   PRV.bitvector_511_decode_vchecked_limit()
 

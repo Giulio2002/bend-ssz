@@ -51,3 +51,12 @@ def bitlist_9_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
   bitlist_9_dchw(size, n, B.stored(buf))
 
 def bitlist_9_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_9_dchk(size, B.size(buf))
+
+def bitlist_9_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def bitlist_9_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
+  match ok:
+    case True{}: bitlist_9_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def bitlist_9_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_9_dcb(U32.is_le(bitlist_9_dcost(size), budget), buf, size)

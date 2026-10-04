@@ -94,6 +94,9 @@ def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_storage() -
 def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   P3_PRV.SyncCommittee_decode_vchecked_real()
 
+def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget) == True{} : Bool}) -> {FuluSyncCommittee_r.SyncCommittee_decode_checked_budget(buf, size, budget) == FuluSyncCommittee_r.SyncCommittee_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  P3_PRV.SyncCommittee_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def FuluSyncCommittee__decode_offsets__SyncCommittee_decode_build(buf: P4_B.Buf, +size: U32, b2: P4_B.Buf, e: {FuluSyncCommittee_r.SyncCommittee_ok(buf, 0, size) == (b2, True{}) : P4_B.Buf & Bool}, hwin: {U32.is_le(size, P4_DWL.bsz(buf)) == True{} : Bool}) -> {FuluSyncCommittee_r.SyncCommittee_decode(buf, size) == FuluSyncCommittee_r.SyncCommittee_some(FuluSyncCommittee_r.SyncCommittee_build(b2, size)) : P4_B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   P4_PRV.SyncCommittee_decode_build(buf, size, b2, e, hwin)
 

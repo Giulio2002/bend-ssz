@@ -41,3 +41,25 @@ def CompatibleUnionA_decode_vchecked_storage()
 def CompatibleUnionA_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 2)) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   {==}
+
+def CompatibleUnionA_decode_vchecked_budget_cost()
+    -> {CompatibleUnionA_r.CompatibleUnionA_dcost(4096) == 524288 : U32}:
+  {==}
+
+def CompatibleUnionA_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(CompatibleUnionA_r.CompatibleUnionA_dcost(size), budget) == False{} : Bool})
+    -> {CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  %Equal.sym(Bool, U32.is_le(CompatibleUnionA_r.CompatibleUnionA_dcost(size), budget), False{}, h) : {CompatibleUnionA_r.CompatibleUnionA_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}
+  {==}
+
+def CompatibleUnionA_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(CompatibleUnionA_r.CompatibleUnionA_dcost(size), budget) == True{} : Bool})
+    -> {CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(buf, size, budget) == CompatibleUnionA_r.CompatibleUnionA_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  %Equal.sym(Bool, U32.is_le(CompatibleUnionA_r.CompatibleUnionA_dcost(size), budget), True{}, h) : {CompatibleUnionA_r.CompatibleUnionA_dcb(_, buf, size) == CompatibleUnionA_r.CompatibleUnionA_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}
+  {==}
+
+def CompatibleUnionA_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  {==}
+
+def CompatibleUnionA_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked_budget(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2, 4294967295)), Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
+  {==}

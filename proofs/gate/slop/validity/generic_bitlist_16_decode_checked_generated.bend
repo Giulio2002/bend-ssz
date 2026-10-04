@@ -10,6 +10,12 @@ import ../../../slop/validity/generic_bitlist_16_decode_checked_generated.bend a
 def bitlist_16__decode_offsets__bitlist_16_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_dchw(1, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitlist_16_decode_vchecked_accept()
 
+def bitlist_16__decode_offsets__bitlist_16_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_decode_checked_budget(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
+  PRV.bitlist_16_decode_vchecked_budget_accept()
+
+def bitlist_16__decode_offsets__bitlist_16_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitlist_16_r.bitlist_16_dcost(size), budget) == True{} : Bool}) -> {bitlist_16_r.bitlist_16_decode_checked_budget(buf, size, budget) == bitlist_16_r.bitlist_16_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}:
+  PRV.bitlist_16_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def bitlist_16__decode_offsets__bitlist_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_16_r.bitlist_16_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_16_decode_vchecked_limit()
 

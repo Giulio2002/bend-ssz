@@ -74,3 +74,12 @@ def Fork_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluFork_d.For
   Fork_dchw(size, n, B.stored(buf))
 
 def Fork_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluFork_d.Fork>: Fork_dchk(size, B.size(buf))
+
+def Fork_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def Fork_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluFork_d.Fork>:
+  match ok:
+    case True{}: Fork_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Fork_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluFork_d.Fork>: Fork_dcb(U32.is_le(Fork_dcost(size), budget), buf, size)

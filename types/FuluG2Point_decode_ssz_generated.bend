@@ -49,3 +49,12 @@ def G2Point_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes96
   G2Point_dchw(size, n, B.stored(buf))
 
 def G2Point_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: G2Point_dchk(size, B.size(buf))
+
+def G2Point_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def G2Point_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  match ok:
+    case True{}: G2Point_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def G2Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: G2Point_dcb(U32.is_le(G2Point_dcost(size), budget), buf, size)

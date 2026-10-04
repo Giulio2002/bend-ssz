@@ -45,3 +45,25 @@ def ExecutionPayload_decode_vchecked_short()
 def ExecutionPayload_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.new(U32, 0n, 0), 528}, 528)) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(4096) == 544808 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget) == False{} : Bool})
+    -> {FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  %Equal.sym(Bool, U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget), False{}, h) : {FuluExecutionPayload_r.ExecutionPayload_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget) == True{} : Bool})
+    -> {FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(buf, size, budget) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  %Equal.sym(Bool, U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget), True{}, h) : {FuluExecutionPayload_r.ExecutionPayload_dcb(_, buf, size) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
+  {==}

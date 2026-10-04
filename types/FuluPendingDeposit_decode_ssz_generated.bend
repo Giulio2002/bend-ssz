@@ -86,3 +86,12 @@ def PendingDeposit_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fulu
   PendingDeposit_dchw(size, n, B.stored(buf))
 
 def PendingDeposit_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>: PendingDeposit_dchk(size, B.size(buf))
+
+def PendingDeposit_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def PendingDeposit_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>:
+  match ok:
+    case True{}: PendingDeposit_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def PendingDeposit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>: PendingDeposit_dcb(U32.is_le(PendingDeposit_dcost(size), budget), buf, size)

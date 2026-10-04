@@ -69,3 +69,12 @@ def SigningData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSig
   SigningData_dchw(size, n, B.stored(buf))
 
 def SigningData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>: SigningData_dchk(size, B.size(buf))
+
+def SigningData_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def SigningData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
+  match ok:
+    case True{}: SigningData_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SigningData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>: SigningData_dcb(U32.is_le(SigningData_dcost(size), budget), buf, size)

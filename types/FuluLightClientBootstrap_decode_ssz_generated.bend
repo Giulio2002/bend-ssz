@@ -96,3 +96,12 @@ def LightClientBootstrap_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
   LightClientBootstrap_dchw(size, n, B.stored(buf))
 
 def LightClientBootstrap_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>: LightClientBootstrap_dchk(size, B.size(buf))
+
+def LightClientBootstrap_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def LightClientBootstrap_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
+  match ok:
+    case True{}: LightClientBootstrap_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def LightClientBootstrap_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>: LightClientBootstrap_dcb(U32.is_le(LightClientBootstrap_dcost(size), budget), buf, size)

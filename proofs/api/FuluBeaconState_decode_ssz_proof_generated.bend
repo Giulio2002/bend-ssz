@@ -92,6 +92,9 @@ def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_storage() -> {P
 def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   P3_PRV.BeaconState_decode_vchecked_real()
 
+def FuluBeaconState__decode_offsets__BeaconState_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget) == True{} : Bool}) -> {FuluBeaconState_r.BeaconState_decode_checked_budget(buf, size, budget) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  P3_PRV.BeaconState_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def FuluBeaconState__decode_offsets__BeaconState_decode_build(buf: P4_B.Buf, +size: U32, b2: P4_B.Buf, e: {FuluBeaconState_r.BeaconState_ok(buf, 0, size) == (b2, True{}) : P4_B.Buf & Bool}, hwin: {U32.is_le(size, P4_DWL.bsz(buf)) == True{} : Bool}) -> {FuluBeaconState_r.BeaconState_decode(buf, size) == FuluBeaconState_r.BeaconState_some(FuluBeaconState_r.BeaconState_build(b2, size)) : P4_B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
   P4_PRV.BeaconState_decode_build(buf, size, b2, e, hwin)
 

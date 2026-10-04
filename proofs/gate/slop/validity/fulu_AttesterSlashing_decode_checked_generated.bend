@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_AttesterSlashing_decode_checked_generated.ben
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 116))), Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464))) == (True{}, True{}) : Bool & Bool}:
   PRV.AttesterSlashing_decode_vchecked_accept()
 
+def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464))) == (True{}, True{}) : Bool & Bool}:
+  PRV.AttesterSlashing_decode_vchecked_budget_accept()
+
+def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget) == True{} : Bool}) -> {FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(buf, size, budget) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  PRV.AttesterSlashing_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   PRV.AttesterSlashing_decode_vchecked_limit()
 

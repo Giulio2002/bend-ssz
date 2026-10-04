@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_G1Point_decode_checked_generated.bend as PRV
 def G1Point__decode_offsets__G1Point_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_decode_checked(B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
   PRV.G1Point_decode_vchecked_accept()
 
+def G1Point__decode_offsets__G1Point_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 48}, 48, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_decode_checked(B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
+  PRV.G1Point_decode_vchecked_budget_accept()
+
+def G1Point__decode_offsets__G1Point_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluG1Point_r.G1Point_dcost(size), budget) == True{} : Bool}) -> {FuluG1Point_r.G1Point_decode_checked_budget(buf, size, budget) == FuluG1Point_r.G1Point_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.G1Point_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def G1Point__decode_offsets__G1Point_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.G1Point_decode_vchecked_limit()
 

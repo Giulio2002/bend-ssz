@@ -11,6 +11,12 @@ import ../../../slop/validity/generic_ProgressiveTestStruct_decode_checked_gener
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(16, 16, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 4))), Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   PRV.ProgressiveTestStruct_decode_vchecked_accept()
 
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16, 4294967295)), Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
+  PRV.ProgressiveTestStruct_decode_vchecked_budget_accept()
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget) == True{} : Bool}) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  PRV.ProgressiveTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
   PRV.ProgressiveTestStruct_decode_vchecked_limit()
 

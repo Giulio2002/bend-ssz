@@ -167,3 +167,12 @@ def ProgressiveTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&
   ProgressiveTestStruct_dchw(size, n, B.stored(buf))
 
 def ProgressiveTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: ProgressiveTestStruct_dchk(size, B.size(buf))
+
+def ProgressiveTestStruct_dcost(+size: U32) -> U32: O.dcost(size, 31)
+
+def ProgressiveTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>:
+  match ok:
+    case True{}: ProgressiveTestStruct_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ProgressiveTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>: ProgressiveTestStruct_dcb(U32.is_le(ProgressiveTestStruct_dcost(size), budget), buf, size)

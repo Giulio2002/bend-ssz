@@ -494,7 +494,7 @@
     "why": "the runtime heap stops at 61.9 GB whatever ulimit -d allows; the NMAX lift made 2^31..NMAX windows decodable and the in-memory form of the largest of them does not fit (before: < 2^31 bytes, <= 2^29 offsets, 38 GB)",
     "fix": "a count bound for variable-size-element lists in X_decode_checked (e.g. 2^28, documented as a capacity limit next to NMAX), or a cheaper empty element, or documentation of the practical limit (about 3.5 GB of such lists)",
     "proof_impact": "bound in the checked entry only: its slop laws (as R2-04); the frozen decode statements are about _decode",
-    "status": "ACCEPTED by decision (Giulio): a capacity limit of the runtime heap, documented in docs/API_CONTRACTS.md; no count cap"
+    "status": "REOPENED and FIXED (agent/decode-amplification): X_decode_checked_budget refuses a size whose decode bound X_dcost(size) is above the budget (docs/DECODE_AMPLIFICATION.md); was ACCEPTED by decision"
    },
    {
     "id": "R4-01",
@@ -564,7 +564,7 @@
   ],
   "fix_status": {
    "R4-01": "FIXED (crash-fix5): the clean copy of the root path is sized without the wrap of n + 31 (O.zeros_copy); with R4-05 such an object is also not valid",
-   "R4-02": "ACCEPTED by decision (Giulio): a capacity limit of the runtime heap, documented in docs/API_CONTRACTS.md; no count cap",
+   "R4-02": "REOPENED and FIXED (agent/decode-amplification): X_decode_checked_budget refuses a size whose decode bound X_dcost(size) is above the budget (docs/DECODE_AMPLIFICATION.md); was ACCEPTED by decision",
    "R4-03": "FIXED (crash-fix5): the offset table of a list of variable-size elements is the checked O.mul4c(n) in the size pass",
    "R4-04": "FIXED (crash-fix5): the union size adds its selector byte with O.padd; audit of every plain + on a size in docs/CRASH_HUNT.md section crash-fix5",
    "R4-05": "FIXED (crash-fix5): _valid is 0 above NMAX for packed lists (words_ok hi = NMAX), lists of fixed-size elements and containers / unions that can pass NMAX (_valid = the fields part _valid_f and the size pass within NMAX)",

@@ -45,3 +45,25 @@ def Withdrawal_decode_vchecked_short()
 def Withdrawal_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked(B.Buf{Array.new(U32, 0n, 0), 44}, 44)) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
   {==}
+
+def Withdrawal_decode_vchecked_budget_cost()
+    -> {FuluWithdrawal_r.Withdrawal_dcost(4096) == 524288 : U32}:
+  {==}
+
+def Withdrawal_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluWithdrawal_r.Withdrawal_dcost(size), budget) == False{} : Bool})
+    -> {FuluWithdrawal_r.Withdrawal_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  %Equal.sym(Bool, U32.is_le(FuluWithdrawal_r.Withdrawal_dcost(size), budget), False{}, h) : {FuluWithdrawal_r.Withdrawal_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}
+  {==}
+
+def Withdrawal_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluWithdrawal_r.Withdrawal_dcost(size), budget) == True{} : Bool})
+    -> {FuluWithdrawal_r.Withdrawal_decode_checked_budget(buf, size, budget) == FuluWithdrawal_r.Withdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  %Equal.sym(Bool, U32.is_le(FuluWithdrawal_r.Withdrawal_dcost(size), budget), True{}, h) : {FuluWithdrawal_r.Withdrawal_dcb(_, buf, size) == FuluWithdrawal_r.Withdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}
+  {==}
+
+def Withdrawal_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  {==}
+
+def Withdrawal_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 44}, 44, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked(B.Buf{Array.new(U32, 4n, 0), 44}, 44))) == (True{}, True{}) : Bool & Bool}:
+  {==}

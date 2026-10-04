@@ -80,3 +80,12 @@ def SyncCommitteeMessage_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
   SyncCommitteeMessage_dchw(size, n, B.stored(buf))
 
 def SyncCommitteeMessage_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>: SyncCommitteeMessage_dchk(size, B.size(buf))
+
+def SyncCommitteeMessage_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def SyncCommitteeMessage_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>:
+  match ok:
+    case True{}: SyncCommitteeMessage_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SyncCommitteeMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>: SyncCommitteeMessage_dcb(U32.is_le(SyncCommitteeMessage_dcost(size), budget), buf, size)

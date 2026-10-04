@@ -36,3 +36,21 @@ def proglist_uint256_decode_vchecked_storage()
 def proglist_uint256_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.Words>}:
   {==}
+
+def proglist_uint256_decode_vchecked_budget_cost()
+    -> {proglist_uint256_r.proglist_uint256_dcost(4096) == 527366 : U32}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget) == False{} : Bool})
+    -> {proglist_uint256_r.proglist_uint256_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget), False{}, h) : {proglist_uint256_r.proglist_uint256_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget) == True{} : Bool})
+    -> {proglist_uint256_r.proglist_uint256_decode_checked_budget(buf, size, budget) == proglist_uint256_r.proglist_uint256_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget), True{}, h) : {proglist_uint256_r.proglist_uint256_dcb(_, buf, size) == proglist_uint256_r.proglist_uint256_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
+  {==}

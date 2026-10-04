@@ -11,6 +11,12 @@ import ../../../slop/validity/generic_bitvector_17_decode_checked_generated.bend
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(3, 3, (B.Buf{Array.new(U32, 0n, 0), 3}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 3))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_17_decode_vchecked_accept()
 
+def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_decode_checked_budget(B.Buf{Array.new(U32, 0n, 0), 3}, 3, 4294967295)), Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 3))) == (True{}, True{}) : Bool & Bool}:
+  PRV.bitvector_17_decode_vchecked_budget_accept()
+
+def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitvector_17_r.bitvector_17_dcost(size), budget) == True{} : Bool}) -> {bitvector_17_r.bitvector_17_decode_checked_budget(buf, size, budget) == bitvector_17_r.bitvector_17_decode_checked(buf, size) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  PRV.bitvector_17_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   PRV.bitvector_17_decode_vchecked_limit()
 

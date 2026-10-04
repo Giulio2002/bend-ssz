@@ -107,3 +107,12 @@ def Bytes48_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48
   Bytes48_dchw(size, n, B.stored(buf))
 
 def Bytes48_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: Bytes48_dchk(size, B.size(buf))
+
+def Bytes48_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def Bytes48_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: Bytes48_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Bytes48_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: Bytes48_dcb(U32.is_le(Bytes48_dcost(size), budget), buf, size)

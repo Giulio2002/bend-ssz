@@ -37,3 +37,21 @@ def LightClientUpdate_decode_vchecked_storage()
 def LightClientUpdate_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   {==}
+
+def LightClientUpdate_decode_vchecked_budget_cost()
+    -> {FuluLightClientUpdate_r.LightClientUpdate_dcost(4096) == 524288 : U32}:
+  {==}
+
+def LightClientUpdate_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), budget) == False{} : Bool})
+    -> {FuluLightClientUpdate_r.LightClientUpdate_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  %Equal.sym(Bool, U32.is_le(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), budget), False{}, h) : {FuluLightClientUpdate_r.LightClientUpdate_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
+  {==}
+
+def LightClientUpdate_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), budget) == True{} : Bool})
+    -> {FuluLightClientUpdate_r.LightClientUpdate_decode_checked_budget(buf, size, budget) == FuluLightClientUpdate_r.LightClientUpdate_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  %Equal.sym(Bool, U32.is_le(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), budget), True{}, h) : {FuluLightClientUpdate_r.LightClientUpdate_dcb(_, buf, size) == FuluLightClientUpdate_r.LightClientUpdate_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}
+  {==}
+
+def LightClientUpdate_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  {==}

@@ -45,3 +45,25 @@ def DataColumnSidecar_decode_vchecked_short()
 def DataColumnSidecar_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(B.Buf{Array.new(U32, 0n, 0), 356}, 356)) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   {==}
+
+def DataColumnSidecar_decode_vchecked_budget_cost()
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_dcost(4096) == 527366 : U32}:
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), budget) == False{} : Bool})
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  %Equal.sym(Bool, U32.is_le(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), budget), False{}, h) : {FuluDataColumnSidecar_r.DataColumnSidecar_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), budget) == True{} : Bool})
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked_budget(buf, size, budget) == FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  %Equal.sym(Bool, U32.is_le(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), budget), True{}, h) : {FuluDataColumnSidecar_r.DataColumnSidecar_dcb(_, buf, size) == FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 356, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 356))) == (True{}, True{}) : Bool & Bool}:
+  {==}

@@ -63,3 +63,12 @@ def bitvector_8_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvect
   bitvector_8_dchw(size, n, B.stored(buf))
 
 def bitvector_8_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>: bitvector_8_dchk(size, B.size(buf))
+
+def bitvector_8_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def bitvector_8_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
+  match ok:
+    case True{}: bitvector_8_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_8_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>: bitvector_8_dcb(U32.is_le(bitvector_8_dcost(size), budget), buf, size)

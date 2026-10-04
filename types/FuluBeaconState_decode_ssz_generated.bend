@@ -568,3 +568,12 @@ def BeaconState_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBea
   BeaconState_dchw(size, n, B.stored(buf))
 
 def BeaconState_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dchk(size, B.size(buf))
+
+def BeaconState_dcost(+size: U32) -> U32: O.dcost(size, 7)
+
+def BeaconState_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>:
+  match ok:
+    case True{}: BeaconState_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def BeaconState_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dcb(U32.is_le(BeaconState_dcost(size), budget), buf, size)

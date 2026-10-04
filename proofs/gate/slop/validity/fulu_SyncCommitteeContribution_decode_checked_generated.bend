@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_SyncCommitteeContribution_decode_checked_gene
 def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 160, (B.Buf{Array.new(U32, 6n, 0), 160}, 40))), Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
   PRV.SyncCommitteeContribution_decode_vchecked_accept()
 
+def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 160}, 160, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
+  PRV.SyncCommitteeContribution_decode_vchecked_budget_accept()
+
+def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dcost(size), budget) == True{} : Bool}) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked_budget(buf, size, budget) == FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  PRV.SyncCommitteeContribution_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   PRV.SyncCommitteeContribution_decode_vchecked_limit()
 

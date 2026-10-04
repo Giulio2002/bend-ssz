@@ -10,6 +10,12 @@ import ../../../slop/validity/fulu_RowIndex_decode_checked_generated.bend as PRV
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   PRV.RowIndex_decode_vchecked_accept()
 
+def RowIndex__decode_offsets__RowIndex_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_decode_checked_budget(B.Buf{Array.new(U32, 1n, 0), 8}, 8, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
+  PRV.RowIndex_decode_vchecked_budget_accept()
+
+def RowIndex__decode_offsets__RowIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluRowIndex_r.RowIndex_dcost(size), budget) == True{} : Bool}) -> {FuluRowIndex_r.RowIndex_decode_checked_budget(buf, size, budget) == FuluRowIndex_r.RowIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.RowIndex_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   PRV.RowIndex_decode_vchecked_limit()
 

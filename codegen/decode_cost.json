@@ -1,0 +1,1052 @@
+{
+ "unit": "heap bytes per input byte; O.dcost(size, k) = ((size >> 3) + 1) * k + 524288 words of 8 bytes",
+ "source": "tools/decode_amp/measure.py + k_table.py, docs/DECODE_AMPLIFICATION.md",
+ "k": {
+  "AggregateAndProof": {
+   "k": 0,
+   "max_input": 16729
+  },
+  "Attestation": {
+   "k": 0,
+   "max_input": 16621
+  },
+  "AttestationData": {
+   "k": 0,
+   "max_input": 128
+  },
+  "AttesterSlashing": {
+   "k": 4,
+   "density": 2.28,
+   "by": "ratio",
+   "shape": "attestation_1.attesting_indices.[]",
+   "input": 524760
+  },
+  "BLSPubkey": {
+   "k": 0,
+   "max_input": 48
+  },
+  "BLSSignature": {
+   "k": 0,
+   "max_input": 96
+  },
+  "BLSToExecutionChange": {
+   "k": 0,
+   "max_input": 76
+  },
+  "BeaconBlock": {
+   "k": 40,
+   "density": 30.37,
+   "by": "slope",
+   "shape": "body.execution_payload.transactions.[1B]",
+   "input": 2622465,
+   "inherits": "BeaconBlockBody"
+  },
+  "BeaconBlockBody": {
+   "k": 40,
+   "density": 30.51,
+   "by": "slope",
+   "shape": "execution_payload.transactions.[1B]",
+   "input": 2622381
+  },
+  "BeaconBlockHeader": {
+   "k": 0,
+   "max_input": 112
+  },
+  "BeaconState": {
+   "k": 7,
+   "density": 4.13,
+   "by": "slope",
+   "shape": "validators.[]",
+   "input": 18597642
+  },
+  "BitsStruct": {
+   "k": 0,
+   "max_input": 13
+  },
+  "Blob": {
+   "k": 5,
+   "density": 2.72,
+   "by": "ratio",
+   "shape": "(fixed)",
+   "input": 131072
+  },
+  "BlobIdentifier": {
+   "k": 0,
+   "max_input": 40
+  },
+  "BlobIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "BlobSidecar": {
+   "k": 3,
+   "density": 0.84,
+   "by": "ratio",
+   "shape": "(fixed)",
+   "input": 131928
+  },
+  "Bytes1": {
+   "k": 0,
+   "max_input": 1
+  },
+  "Bytes20": {
+   "k": 0,
+   "max_input": 20
+  },
+  "Bytes32": {
+   "k": 0,
+   "max_input": 32
+  },
+  "Bytes4": {
+   "k": 0,
+   "max_input": 4
+  },
+  "Bytes48": {
+   "k": 0,
+   "max_input": 48
+  },
+  "Bytes8": {
+   "k": 0,
+   "max_input": 8
+  },
+  "Bytes96": {
+   "k": 0,
+   "max_input": 96
+  },
+  "Cell": {
+   "k": 0,
+   "max_input": 2048
+  },
+  "CellIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "Checkpoint": {
+   "k": 0,
+   "max_input": 40
+  },
+  "ColumnIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "CommitmentIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "CommitteeIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "CompatibleUnionA": {
+   "k": 0,
+   "max_input": 2
+  },
+  "CompatibleUnionABCA": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "<2>.f_C.bits",
+   "input": 16777222
+  },
+  "CompatibleUnionBC": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "<2>.f_C.bits",
+   "input": 16777222
+  },
+  "ComplexTestStruct": {
+   "k": 0,
+   "max_input": 6756
+  },
+  "ConsolidationRequest": {
+   "k": 0,
+   "max_input": 116
+  },
+  "ContributionAndProof": {
+   "k": 0,
+   "max_input": 264
+  },
+  "CurrentSyncCommitteeBranch": {
+   "k": 0,
+   "max_input": 192
+  },
+  "CustodyIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "DataColumnSidecar": {
+   "k": 6,
+   "density": 3.97,
+   "by": "slope",
+   "shape": "column.[]",
+   "input": 4196708
+  },
+  "DataColumnsByRootIdentifier": {
+   "k": 0,
+   "max_input": 1060
+  },
+  "Deposit": {
+   "k": 0,
+   "max_input": 1240
+  },
+  "DepositData": {
+   "k": 0,
+   "max_input": 184
+  },
+  "DepositMessage": {
+   "k": 0,
+   "max_input": 88
+  },
+  "DepositRequest": {
+   "k": 0,
+   "max_input": 192
+  },
+  "Domain": {
+   "k": 0,
+   "max_input": 32
+  },
+  "DomainType": {
+   "k": 0,
+   "max_input": 4
+  },
+  "Epoch": {
+   "k": 0,
+   "max_input": 8
+  },
+  "Eth1Block": {
+   "k": 0,
+   "max_input": 48
+  },
+  "Eth1Data": {
+   "k": 0,
+   "max_input": 72
+  },
+  "Ether": {
+   "k": 0,
+   "max_input": 8
+  },
+  "ExecutionAddress": {
+   "k": 0,
+   "max_input": 20
+  },
+  "ExecutionBranch": {
+   "k": 0,
+   "max_input": 128
+  },
+  "ExecutionPayload": {
+   "k": 40,
+   "density": 30.5,
+   "by": "slope",
+   "shape": "transactions.[1B]",
+   "input": 2621973
+  },
+  "ExecutionPayloadHeader": {
+   "k": 0,
+   "max_input": 616
+  },
+  "ExecutionRequests": {
+   "k": 5,
+   "density": 2.47,
+   "by": "ratio",
+   "shape": "deposits.[]",
+   "input": 786636
+  },
+  "FinalityBranch": {
+   "k": 0,
+   "max_input": 224
+  },
+  "FixedTestStruct": {
+   "k": 0,
+   "max_input": 13
+  },
+  "Fork": {
+   "k": 0,
+   "max_input": 16
+  },
+  "ForkData": {
+   "k": 0,
+   "max_input": 36
+  },
+  "ForkDigest": {
+   "k": 0,
+   "max_input": 4
+  },
+  "G1Point": {
+   "k": 0,
+   "max_input": 48
+  },
+  "G2Point": {
+   "k": 0,
+   "max_input": 96
+  },
+  "Gwei": {
+   "k": 0,
+   "max_input": 8
+  },
+  "Hash32": {
+   "k": 0,
+   "max_input": 32
+  },
+  "HistoricalBatch": {
+   "k": 4,
+   "density": 2.28,
+   "by": "ratio",
+   "shape": "(fixed)",
+   "input": 524288
+  },
+  "HistoricalSummary": {
+   "k": 0,
+   "max_input": 64
+  },
+  "IndexedAttestation": {
+   "k": 3,
+   "density": 1.34,
+   "by": "ratio",
+   "shape": "attesting_indices.[]",
+   "input": 524524
+  },
+  "KZGCommitment": {
+   "k": 0,
+   "max_input": 48
+  },
+  "KZGProof": {
+   "k": 0,
+   "max_input": 48
+  },
+  "LightClientBootstrap": {
+   "k": 0,
+   "max_input": 25680
+  },
+  "LightClientFinalityUpdate": {
+   "k": 0,
+   "max_input": 2120
+  },
+  "LightClientHeader": {
+   "k": 0,
+   "max_input": 860
+  },
+  "LightClientOptimisticUpdate": {
+   "k": 0,
+   "max_input": 1032
+  },
+  "LightClientUpdate": {
+   "k": 0,
+   "max_input": 26936
+  },
+  "MatrixEntry": {
+   "k": 0,
+   "max_input": 2112
+  },
+  "NextSyncCommitteeBranch": {
+   "k": 0,
+   "max_input": 192
+  },
+  "NodeID": {
+   "k": 0,
+   "max_input": 32
+  },
+  "ParticipationFlags": {
+   "k": 0,
+   "max_input": 1
+  },
+  "PayloadId": {
+   "k": 0,
+   "max_input": 8
+  },
+  "PendingAttestation": {
+   "k": 0,
+   "max_input": 405
+  },
+  "PendingConsolidation": {
+   "k": 0,
+   "max_input": 16
+  },
+  "PendingDeposit": {
+   "k": 0,
+   "max_input": 192
+  },
+  "PendingPartialWithdrawal": {
+   "k": 0,
+   "max_input": 24
+  },
+  "PowBlock": {
+   "k": 0,
+   "max_input": 96
+  },
+  "ProgressiveBitsStruct": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "f_L.bits",
+   "input": 16777642
+  },
+  "ProgressiveComplexTestStruct": {
+   "k": 31,
+   "density": 24.0,
+   "by": "slope",
+   "shape": "f_F.[]",
+   "input": 16777250
+  },
+  "ProgressiveSingleFieldContainerTestStruct": {
+   "k": 0,
+   "max_input": 1
+  },
+  "ProgressiveSingleListContainerTestStruct": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "f_C.bits",
+   "input": 16777221
+  },
+  "ProgressiveTestStruct": {
+   "k": 31,
+   "density": 24.0,
+   "by": "slope",
+   "shape": "f_D.[]",
+   "input": 16777236
+  },
+  "ProgressiveVarTestStruct": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "f_C.bits",
+   "input": 16777226
+  },
+  "ProposerSlashing": {
+   "k": 0,
+   "max_input": 416
+  },
+  "Root": {
+   "k": 0,
+   "max_input": 32
+  },
+  "RowIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "SignedAggregateAndProof": {
+   "k": 0,
+   "max_input": 16829
+  },
+  "SignedBLSToExecutionChange": {
+   "k": 0,
+   "max_input": 172
+  },
+  "SignedBeaconBlock": {
+   "k": 40,
+   "density": 30.37,
+   "by": "slope",
+   "shape": "message.body.execution_payload.transactions.[1B]",
+   "input": 2622565,
+   "inherits": "BeaconBlockBody"
+  },
+  "SignedBeaconBlockHeader": {
+   "k": 0,
+   "max_input": 208
+  },
+  "SignedContributionAndProof": {
+   "k": 0,
+   "max_input": 360
+  },
+  "SignedVoluntaryExit": {
+   "k": 0,
+   "max_input": 112
+  },
+  "SigningData": {
+   "k": 0,
+   "max_input": 64
+  },
+  "SingleAttestation": {
+   "k": 0,
+   "max_input": 240
+  },
+  "SingleFieldTestStruct": {
+   "k": 0,
+   "max_input": 1
+  },
+  "Slot": {
+   "k": 0,
+   "max_input": 8
+  },
+  "SmallTestStruct": {
+   "k": 0,
+   "max_input": 4
+  },
+  "SubnetID": {
+   "k": 0,
+   "max_input": 8
+  },
+  "SyncAggregate": {
+   "k": 0,
+   "max_input": 160
+  },
+  "SyncAggregatorSelectionData": {
+   "k": 0,
+   "max_input": 16
+  },
+  "SyncCommittee": {
+   "k": 0,
+   "max_input": 24624
+  },
+  "SyncCommitteeContribution": {
+   "k": 0,
+   "max_input": 160
+  },
+  "SyncCommitteeMessage": {
+   "k": 0,
+   "max_input": 144
+  },
+  "Transaction": {
+   "k": 5,
+   "density": 3.0,
+   "by": "slope",
+   "shape": "bytes",
+   "input": 33554432
+  },
+  "Validator": {
+   "k": 0,
+   "max_input": 121
+  },
+  "ValidatorIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "VarTestStruct": {
+   "k": 0,
+   "max_input": 2055
+  },
+  "Version": {
+   "k": 0,
+   "max_input": 4
+  },
+  "VersionedHash": {
+   "k": 0,
+   "max_input": 32
+  },
+  "VoluntaryExit": {
+   "k": 0,
+   "max_input": 16
+  },
+  "Withdrawal": {
+   "k": 0,
+   "max_input": 44
+  },
+  "WithdrawalIndex": {
+   "k": 0,
+   "max_input": 8
+  },
+  "WithdrawalRequest": {
+   "k": 0,
+   "max_input": 76
+  },
+  "bitlist_1": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_15": {
+   "k": 0,
+   "max_input": 2
+  },
+  "bitlist_16": {
+   "k": 0,
+   "max_input": 3
+  },
+  "bitlist_17": {
+   "k": 0,
+   "max_input": 3
+  },
+  "bitlist_2": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_3": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_31": {
+   "k": 0,
+   "max_input": 4
+  },
+  "bitlist_32": {
+   "k": 0,
+   "max_input": 5
+  },
+  "bitlist_33": {
+   "k": 0,
+   "max_input": 5
+  },
+  "bitlist_4": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_5": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_511": {
+   "k": 0,
+   "max_input": 64
+  },
+  "bitlist_512": {
+   "k": 0,
+   "max_input": 65
+  },
+  "bitlist_513": {
+   "k": 0,
+   "max_input": 65
+  },
+  "bitlist_6": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_7": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitlist_8": {
+   "k": 0,
+   "max_input": 2
+  },
+  "bitlist_9": {
+   "k": 0,
+   "max_input": 2
+  },
+  "bitvector_1": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_15": {
+   "k": 0,
+   "max_input": 2
+  },
+  "bitvector_16": {
+   "k": 0,
+   "max_input": 2
+  },
+  "bitvector_17": {
+   "k": 0,
+   "max_input": 3
+  },
+  "bitvector_2": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_3": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_31": {
+   "k": 0,
+   "max_input": 4
+  },
+  "bitvector_32": {
+   "k": 0,
+   "max_input": 4
+  },
+  "bitvector_33": {
+   "k": 0,
+   "max_input": 5
+  },
+  "bitvector_4": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_5": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_511": {
+   "k": 0,
+   "max_input": 64
+  },
+  "bitvector_512": {
+   "k": 0,
+   "max_input": 64
+  },
+  "bitvector_513": {
+   "k": 0,
+   "max_input": 65
+  },
+  "bitvector_6": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_7": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_8": {
+   "k": 0,
+   "max_input": 1
+  },
+  "bitvector_9": {
+   "k": 0,
+   "max_input": 2
+  },
+  "boolean": {
+   "k": 0,
+   "max_input": 1
+  },
+  "progbitlist": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "bits",
+   "input": 16777217
+  },
+  "proglist_bool": {
+   "k": 6,
+   "density": 4.0,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777217
+  },
+  "proglist_uint128": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777232
+  },
+  "proglist_uint16": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777218
+  },
+  "proglist_uint256": {
+   "k": 6,
+   "density": 3.99,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777248
+  },
+  "proglist_uint32": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777220
+  },
+  "proglist_uint64": {
+   "k": 6,
+   "density": 3.99,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777224
+  },
+  "proglist_uint8": {
+   "k": 7,
+   "density": 4.02,
+   "by": "slope",
+   "shape": "[]",
+   "input": 16777217
+  },
+  "uint128": {
+   "k": 0,
+   "max_input": 16
+  },
+  "uint16": {
+   "k": 0,
+   "max_input": 2
+  },
+  "uint256": {
+   "k": 0,
+   "max_input": 32
+  },
+  "uint32": {
+   "k": 0,
+   "max_input": 4
+  },
+  "uint64": {
+   "k": 0,
+   "max_input": 8
+  },
+  "uint8": {
+   "k": 0,
+   "max_input": 1
+  },
+  "vec_bool_1": {
+   "k": 0,
+   "max_input": 1
+  },
+  "vec_bool_16": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_bool_2": {
+   "k": 0,
+   "max_input": 2
+  },
+  "vec_bool_3": {
+   "k": 0,
+   "max_input": 3
+  },
+  "vec_bool_31": {
+   "k": 0,
+   "max_input": 31
+  },
+  "vec_bool_4": {
+   "k": 0,
+   "max_input": 4
+  },
+  "vec_bool_5": {
+   "k": 0,
+   "max_input": 5
+  },
+  "vec_bool_512": {
+   "k": 0,
+   "max_input": 512
+  },
+  "vec_bool_513": {
+   "k": 0,
+   "max_input": 513
+  },
+  "vec_bool_8": {
+   "k": 0,
+   "max_input": 8
+  },
+  "vec_uint128_1": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_uint128_16": {
+   "k": 0,
+   "max_input": 256
+  },
+  "vec_uint128_2": {
+   "k": 0,
+   "max_input": 32
+  },
+  "vec_uint128_3": {
+   "k": 0,
+   "max_input": 48
+  },
+  "vec_uint128_31": {
+   "k": 0,
+   "max_input": 496
+  },
+  "vec_uint128_4": {
+   "k": 0,
+   "max_input": 64
+  },
+  "vec_uint128_5": {
+   "k": 0,
+   "max_input": 80
+  },
+  "vec_uint128_512": {
+   "k": 0,
+   "max_input": 8192
+  },
+  "vec_uint128_513": {
+   "k": 0,
+   "max_input": 8208
+  },
+  "vec_uint128_8": {
+   "k": 0,
+   "max_input": 128
+  },
+  "vec_uint16_1": {
+   "k": 0,
+   "max_input": 2
+  },
+  "vec_uint16_16": {
+   "k": 0,
+   "max_input": 32
+  },
+  "vec_uint16_2": {
+   "k": 0,
+   "max_input": 4
+  },
+  "vec_uint16_3": {
+   "k": 0,
+   "max_input": 6
+  },
+  "vec_uint16_31": {
+   "k": 0,
+   "max_input": 62
+  },
+  "vec_uint16_4": {
+   "k": 0,
+   "max_input": 8
+  },
+  "vec_uint16_5": {
+   "k": 0,
+   "max_input": 10
+  },
+  "vec_uint16_512": {
+   "k": 0,
+   "max_input": 1024
+  },
+  "vec_uint16_513": {
+   "k": 0,
+   "max_input": 1026
+  },
+  "vec_uint16_8": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_uint256_1": {
+   "k": 0,
+   "max_input": 32
+  },
+  "vec_uint256_16": {
+   "k": 0,
+   "max_input": 512
+  },
+  "vec_uint256_2": {
+   "k": 0,
+   "max_input": 64
+  },
+  "vec_uint256_3": {
+   "k": 0,
+   "max_input": 96
+  },
+  "vec_uint256_31": {
+   "k": 0,
+   "max_input": 992
+  },
+  "vec_uint256_4": {
+   "k": 0,
+   "max_input": 128
+  },
+  "vec_uint256_5": {
+   "k": 0,
+   "max_input": 160
+  },
+  "vec_uint256_512": {
+   "k": 0,
+   "max_input": 16384
+  },
+  "vec_uint256_513": {
+   "k": 0,
+   "max_input": 16416
+  },
+  "vec_uint256_8": {
+   "k": 0,
+   "max_input": 256
+  },
+  "vec_uint32_1": {
+   "k": 0,
+   "max_input": 4
+  },
+  "vec_uint32_16": {
+   "k": 0,
+   "max_input": 64
+  },
+  "vec_uint32_2": {
+   "k": 0,
+   "max_input": 8
+  },
+  "vec_uint32_3": {
+   "k": 0,
+   "max_input": 12
+  },
+  "vec_uint32_31": {
+   "k": 0,
+   "max_input": 124
+  },
+  "vec_uint32_4": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_uint32_5": {
+   "k": 0,
+   "max_input": 20
+  },
+  "vec_uint32_512": {
+   "k": 0,
+   "max_input": 2048
+  },
+  "vec_uint32_513": {
+   "k": 0,
+   "max_input": 2052
+  },
+  "vec_uint32_8": {
+   "k": 0,
+   "max_input": 32
+  },
+  "vec_uint64_1": {
+   "k": 0,
+   "max_input": 8
+  },
+  "vec_uint64_16": {
+   "k": 0,
+   "max_input": 128
+  },
+  "vec_uint64_2": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_uint64_3": {
+   "k": 0,
+   "max_input": 24
+  },
+  "vec_uint64_31": {
+   "k": 0,
+   "max_input": 248
+  },
+  "vec_uint64_4": {
+   "k": 0,
+   "max_input": 32
+  },
+  "vec_uint64_5": {
+   "k": 0,
+   "max_input": 40
+  },
+  "vec_uint64_512": {
+   "k": 0,
+   "max_input": 4096
+  },
+  "vec_uint64_513": {
+   "k": 0,
+   "max_input": 4104
+  },
+  "vec_uint64_8": {
+   "k": 0,
+   "max_input": 64
+  },
+  "vec_uint8_1": {
+   "k": 0,
+   "max_input": 1
+  },
+  "vec_uint8_16": {
+   "k": 0,
+   "max_input": 16
+  },
+  "vec_uint8_2": {
+   "k": 0,
+   "max_input": 2
+  },
+  "vec_uint8_3": {
+   "k": 0,
+   "max_input": 3
+  },
+  "vec_uint8_31": {
+   "k": 0,
+   "max_input": 31
+  },
+  "vec_uint8_4": {
+   "k": 0,
+   "max_input": 4
+  },
+  "vec_uint8_5": {
+   "k": 0,
+   "max_input": 5
+  },
+  "vec_uint8_512": {
+   "k": 0,
+   "max_input": 512
+  },
+  "vec_uint8_513": {
+   "k": 0,
+   "max_input": 513
+  },
+  "vec_uint8_8": {
+   "k": 0,
+   "max_input": 8
+  }
+ }
+}

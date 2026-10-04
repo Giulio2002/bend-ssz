@@ -75,3 +75,12 @@ def PowBlock_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPowBlo
   PowBlock_dchw(size, n, B.stored(buf))
 
 def PowBlock_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>: PowBlock_dchk(size, B.size(buf))
+
+def PowBlock_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def PowBlock_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
+  match ok:
+    case True{}: PowBlock_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def PowBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>: PowBlock_dcb(U32.is_le(PowBlock_dcost(size), budget), buf, size)

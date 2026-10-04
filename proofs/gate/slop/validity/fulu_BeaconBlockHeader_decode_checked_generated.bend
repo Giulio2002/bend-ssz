@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.be
 def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_dchw(112, 112, (B.Buf{Array.new(U32, 5n, 0), 112}, 28))), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 5n, 0), 112}, 112))) == (True{}, True{}) : Bool & Bool}:
   PRV.BeaconBlockHeader_decode_vchecked_accept()
 
+def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked_budget(B.Buf{Array.new(U32, 5n, 0), 112}, 112, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 5n, 0), 112}, 112))) == (True{}, True{}) : Bool & Bool}:
+  PRV.BeaconBlockHeader_decode_vchecked_budget_accept()
+
+def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconBlockHeader_r.BeaconBlockHeader_dcost(size), budget) == True{} : Bool}) -> {FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked_budget(buf, size, budget) == FuluBeaconBlockHeader_r.BeaconBlockHeader_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>}:
+  PRV.BeaconBlockHeader_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def BeaconBlockHeader__decode_offsets__BeaconBlockHeader_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>, FuluBeaconBlockHeader_r.BeaconBlockHeader_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconBlockHeader_d.BeaconBlockHeader>}:
   PRV.BeaconBlockHeader_decode_vchecked_limit()
 

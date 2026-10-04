@@ -45,3 +45,25 @@ def VersionedHash_decode_vchecked_short()
 def VersionedHash_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked(B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   {==}
+
+def VersionedHash_decode_vchecked_budget_cost()
+    -> {FuluVersionedHash_r.VersionedHash_dcost(4096) == 524288 : U32}:
+  {==}
+
+def VersionedHash_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget) == False{} : Bool})
+    -> {FuluVersionedHash_r.VersionedHash_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  %Equal.sym(Bool, U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget), False{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  {==}
+
+def VersionedHash_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget) == True{} : Bool})
+    -> {FuluVersionedHash_r.VersionedHash_decode_checked_budget(buf, size, budget) == FuluVersionedHash_r.VersionedHash_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  %Equal.sym(Bool, U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget), True{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == FuluVersionedHash_r.VersionedHash_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  {==}
+
+def VersionedHash_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
+  {==}
+
+def VersionedHash_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 32}, 32, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
+  {==}

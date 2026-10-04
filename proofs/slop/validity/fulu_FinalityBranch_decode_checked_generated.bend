@@ -44,3 +44,25 @@ def FinalityBranch_decode_vchecked_short()
 def FinalityBranch_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 224}, 224)) == None{} : Maybe<&1, O.Words>}:
   {==}
+
+def FinalityBranch_decode_vchecked_budget_cost()
+    -> {FuluFinalityBranch_r.FinalityBranch_dcost(4096) == 524288 : U32}:
+  {==}
+
+def FinalityBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget) == False{} : Bool})
+    -> {FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget), False{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def FinalityBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget) == True{} : Bool})
+    -> {FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(buf, size, budget) == FuluFinalityBranch_r.FinalityBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget), True{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == FuluFinalityBranch_r.FinalityBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def FinalityBranch_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
+  {==}
+
+def FinalityBranch_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 224}, 224, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked(B.Buf{Array.new(U32, 6n, 0), 224}, 224))) == (True{}, True{}) : Bool & Bool}:
+  {==}

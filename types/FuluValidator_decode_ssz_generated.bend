@@ -106,3 +106,12 @@ def Validator_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluValid
   Validator_dchw(size, n, B.stored(buf))
 
 def Validator_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dchk(size, B.size(buf))
+
+def Validator_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def Validator_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>:
+  match ok:
+    case True{}: Validator_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Validator_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dcb(U32.is_le(Validator_dcost(size), budget), buf, size)

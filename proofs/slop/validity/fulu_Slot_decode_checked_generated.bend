@@ -44,3 +44,25 @@ def Slot_decode_vchecked_short()
 def Slot_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSlot_r.Slot_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   {==}
+
+def Slot_decode_vchecked_budget_cost()
+    -> {FuluSlot_r.Slot_dcost(4096) == 524288 : U32}:
+  {==}
+
+def Slot_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSlot_r.Slot_dcost(size), budget) == False{} : Bool})
+    -> {FuluSlot_r.Slot_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, U32.is_le(FuluSlot_r.Slot_dcost(size), budget), False{}, h) : {FuluSlot_r.Slot_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def Slot_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSlot_r.Slot_dcost(size), budget) == True{} : Bool})
+    -> {FuluSlot_r.Slot_decode_checked_budget(buf, size, budget) == FuluSlot_r.Slot_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, U32.is_le(FuluSlot_r.Slot_dcost(size), budget), True{}, h) : {FuluSlot_r.Slot_dcb(_, buf, size) == FuluSlot_r.Slot_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def Slot_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSlot_r.Slot_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def Slot_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSlot_r.Slot_decode_checked_budget(B.Buf{Array.new(U32, 1n, 0), 8}, 8, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSlot_r.Slot_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
+  {==}

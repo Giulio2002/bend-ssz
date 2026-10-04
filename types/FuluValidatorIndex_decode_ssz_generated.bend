@@ -48,3 +48,12 @@ def ValidatorIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U6
   ValidatorIndex_dchw(size, n, B.stored(buf))
 
 def ValidatorIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: ValidatorIndex_dchk(size, B.size(buf))
+
+def ValidatorIndex_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def ValidatorIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: ValidatorIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ValidatorIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: ValidatorIndex_dcb(U32.is_le(ValidatorIndex_dcost(size), budget), buf, size)

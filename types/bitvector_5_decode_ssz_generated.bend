@@ -63,3 +63,12 @@ def bitvector_5_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvect
   bitvector_5_dchw(size, n, B.stored(buf))
 
 def bitvector_5_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>: bitvector_5_dchk(size, B.size(buf))
+
+def bitvector_5_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def bitvector_5_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>:
+  match ok:
+    case True{}: bitvector_5_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def bitvector_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>: bitvector_5_dcb(U32.is_le(bitvector_5_dcost(size), budget), buf, size)

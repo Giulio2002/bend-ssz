@@ -58,3 +58,12 @@ def uint64_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   uint64_dchw(size, n, B.stored(buf))
 
 def uint64_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: uint64_dchk(size, B.size(buf))
+
+def uint64_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def uint64_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: uint64_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def uint64_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: uint64_dcb(U32.is_le(uint64_dcost(size), budget), buf, size)

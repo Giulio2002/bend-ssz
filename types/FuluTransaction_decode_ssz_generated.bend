@@ -60,3 +60,12 @@ def Transaction_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words
   Transaction_dchw(size, n, B.stored(buf))
 
 def Transaction_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dchk(size, B.size(buf))
+
+def Transaction_dcost(+size: U32) -> U32: O.dcost(size, 5)
+
+def Transaction_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
+  match ok:
+    case True{}: Transaction_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(size), budget), buf, size)

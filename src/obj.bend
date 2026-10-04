@@ -1815,6 +1815,19 @@ def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), 
 # 4 * n, the offset table of a list of variable-size elements: the product when n <= NMAX / 4, else the marker (docs/CRASH_HUNT.md R4-03).
 def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
 
+# The decode budget (docs/DECODE_AMPLIFICATION.md, X_decode_checked_budget): an upper bound, in heap words of 8 bytes, of what the
+# decode of `size` input bytes allocates, for a type whose decode allocates at most k heap bytes per input byte and the constant
+# 4 MiB: ((size >> 3) + 1) * k + 524288 words, 2^32 - 1 when that does not fit U32. k is the type's (codegen/decode_cost.json).
+def dcost_go(+w: U32, +k: U32) -> U32:
+  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
+
+def dcost_k(nz: Bool, +w: U32, +k: U32) -> U32:
+  match nz:
+    case True{}: dcost_go(w, k)
+    case False{}: 524288
+
+def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
+
 def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
   match o:
     case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))

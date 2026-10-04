@@ -49,3 +49,12 @@ def KZGProof_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4
   KZGProof_dchw(size, n, B.stored(buf))
 
 def KZGProof_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dchk(size, B.size(buf))
+
+def KZGProof_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def KZGProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
+  match ok:
+    case True{}: KZGProof_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def KZGProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dcb(U32.is_le(KZGProof_dcost(size), budget), buf, size)

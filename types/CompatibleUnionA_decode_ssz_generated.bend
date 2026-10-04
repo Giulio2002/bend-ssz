@@ -81,3 +81,12 @@ def CompatibleUnionA_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Co
   CompatibleUnionA_dchw(size, n, B.stored(buf))
 
 def CompatibleUnionA_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>: CompatibleUnionA_dchk(size, B.size(buf))
+
+def CompatibleUnionA_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def CompatibleUnionA_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>:
+  match ok:
+    case True{}: CompatibleUnionA_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def CompatibleUnionA_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>: CompatibleUnionA_dcb(U32.is_le(CompatibleUnionA_dcost(size), budget), buf, size)

@@ -80,3 +80,12 @@ def SingleAttestation_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
   SingleAttestation_dchw(size, n, B.stored(buf))
 
 def SingleAttestation_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>: SingleAttestation_dchk(size, B.size(buf))
+
+def SingleAttestation_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def SingleAttestation_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>:
+  match ok:
+    case True{}: SingleAttestation_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SingleAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>: SingleAttestation_dcb(U32.is_le(SingleAttestation_dcost(size), budget), buf, size)

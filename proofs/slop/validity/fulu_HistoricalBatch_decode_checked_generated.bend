@@ -37,3 +37,21 @@ def HistoricalBatch_decode_vchecked_storage()
 def HistoricalBatch_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   {==}
+
+def HistoricalBatch_decode_vchecked_budget_cost()
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dcost(4096) == 526340 : U32}:
+  {==}
+
+def HistoricalBatch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget) == False{} : Bool})
+    -> {FuluHistoricalBatch_r.HistoricalBatch_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  %Equal.sym(Bool, U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget), False{}, h) : {FuluHistoricalBatch_r.HistoricalBatch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}
+  {==}
+
+def HistoricalBatch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget) == True{} : Bool})
+    -> {FuluHistoricalBatch_r.HistoricalBatch_decode_checked_budget(buf, size, budget) == FuluHistoricalBatch_r.HistoricalBatch_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  %Equal.sym(Bool, U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget), True{}, h) : {FuluHistoricalBatch_r.HistoricalBatch_dcb(_, buf, size) == FuluHistoricalBatch_r.HistoricalBatch_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}
+  {==}
+
+def HistoricalBatch_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  {==}

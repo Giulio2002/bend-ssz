@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_LightClientHeader_decode_checked_generated.be
 def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(828, 828, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 207))), Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828))) == (True{}, True{}) : Bool & Bool}:
   PRV.LightClientHeader_decode_vchecked_accept()
 
+def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828))) == (True{}, True{}) : Bool & Bool}:
+  PRV.LightClientHeader_decode_vchecked_budget_accept()
+
+def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(buf, size, budget) == FuluLightClientHeader_r.LightClientHeader_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  PRV.LightClientHeader_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   PRV.LightClientHeader_decode_vchecked_limit()
 

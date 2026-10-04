@@ -49,3 +49,12 @@ def BLSSignature_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBy
   BLSSignature_dchw(size, n, B.stored(buf))
 
 def BLSSignature_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dchk(size, B.size(buf))
+
+def BLSSignature_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def BLSSignature_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
+  match ok:
+    case True{}: BLSSignature_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def BLSSignature_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dcb(U32.is_le(BLSSignature_dcost(size), budget), buf, size)

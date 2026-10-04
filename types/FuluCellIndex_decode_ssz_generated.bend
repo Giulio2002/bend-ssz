@@ -48,3 +48,12 @@ def CellIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   CellIndex_dchw(size, n, B.stored(buf))
 
 def CellIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: CellIndex_dchk(size, B.size(buf))
+
+def CellIndex_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def CellIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: CellIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def CellIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CellIndex_dcb(U32.is_le(CellIndex_dcost(size), budget), buf, size)

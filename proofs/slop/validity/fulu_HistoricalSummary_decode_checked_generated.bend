@@ -45,3 +45,25 @@ def HistoricalSummary_decode_vchecked_short()
 def HistoricalSummary_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked(B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   {==}
+
+def HistoricalSummary_decode_vchecked_budget_cost()
+    -> {FuluHistoricalSummary_r.HistoricalSummary_dcost(4096) == 524288 : U32}:
+  {==}
+
+def HistoricalSummary_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), budget) == False{} : Bool})
+    -> {FuluHistoricalSummary_r.HistoricalSummary_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  %Equal.sym(Bool, U32.is_le(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), budget), False{}, h) : {FuluHistoricalSummary_r.HistoricalSummary_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}
+  {==}
+
+def HistoricalSummary_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), budget) == True{} : Bool})
+    -> {FuluHistoricalSummary_r.HistoricalSummary_decode_checked_budget(buf, size, budget) == FuluHistoricalSummary_r.HistoricalSummary_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  %Equal.sym(Bool, U32.is_le(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), budget), True{}, h) : {FuluHistoricalSummary_r.HistoricalSummary_dcb(_, buf, size) == FuluHistoricalSummary_r.HistoricalSummary_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}
+  {==}
+
+def HistoricalSummary_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  {==}
+
+def HistoricalSummary_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 64}, 64, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked(B.Buf{Array.new(U32, 4n, 0), 64}, 64))) == (True{}, True{}) : Bool & Bool}:
+  {==}

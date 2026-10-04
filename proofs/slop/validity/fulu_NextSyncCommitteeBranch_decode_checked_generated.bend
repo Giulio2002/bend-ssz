@@ -44,3 +44,25 @@ def NextSyncCommitteeBranch_decode_vchecked_short()
 def NextSyncCommitteeBranch_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, O.Words>}:
   {==}
+
+def NextSyncCommitteeBranch_decode_vchecked_budget_cost()
+    -> {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(4096) == 524288 : U32}:
+  {==}
+
+def NextSyncCommitteeBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), budget) == False{} : Bool})
+    -> {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), budget), False{}, h) : {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def NextSyncCommitteeBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), budget) == True{} : Bool})
+    -> {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(buf, size, budget) == FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_le(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), budget), True{}, h) : {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcb(_, buf, size) == FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def NextSyncCommitteeBranch_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
+  {==}
+
+def NextSyncCommitteeBranch_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 192}, 192, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
+  {==}

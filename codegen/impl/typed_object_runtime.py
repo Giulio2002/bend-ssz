@@ -49,6 +49,17 @@ FLAT_MAX = 64             # a Data container is laid out inline (flattened) by t
                           # exceeds the backend's 255-slot arity limit
 
 
+
+_DECODE_COST = None
+
+
+def decode_cost_k(name):
+    """the heap bytes per input byte the decode budget charges for `name` (codegen/decode_cost.json, docs/DECODE_AMPLIFICATION.md)"""
+    global _DECODE_COST
+    if _DECODE_COST is None:
+        _DECODE_COST = json.loads((ROOT / 'codegen' / 'decode_cost.json').read_text())['k']
+    return _DECODE_COST[name]['k']
+
 def log2ceil(n):
     d = 0
     while (1 << d) < n:
@@ -3251,6 +3262,15 @@ def emit_api(g, name, s, w):
     w('  (buf, +n) = pair')
     w(f'  {name}_dchw(size, n, B.stored(buf))')
     w(f'def {name}_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dchk(size, B.size(buf))')
+    # The decode budget (docs/DECODE_AMPLIFICATION.md): the checked decode within `budget` heap words. `_dcost(size)` bounds what the
+    # decode of `size` bytes allocates (O.dcost with the name's heap bytes per input byte, codegen/decode_cost.json); a size whose bound
+    # is above the budget is refused before anything is read, any other is `_decode_checked`.
+    w(f'def {name}_dcost(+size: U32) -> U32: O.dcost(size, {decode_cost_k(name)})')
+    w(f'def {name}_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
+    w('  match ok:')
+    w(f'    case True{{}}: {name}_decode_checked(buf, size)')
+    w('    case False{}: (buf, None{})')
+    w(f'def {name}_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dcb(U32.is_le({name}_dcost(size), budget), buf, size)')
     # encode
     if s.data:
         # the output of a fixed-size value has a size known here, so the

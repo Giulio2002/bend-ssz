@@ -49,3 +49,12 @@ def ForkDigest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluByte
   ForkDigest_dchw(size, n, B.stored(buf))
 
 def ForkDigest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: ForkDigest_dchk(size, B.size(buf))
+
+def ForkDigest_dcost(+size: U32) -> U32: O.dcost(size, 0)
+
+def ForkDigest_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  match ok:
+    case True{}: ForkDigest_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ForkDigest_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: ForkDigest_dcb(U32.is_le(ForkDigest_dcost(size), budget), buf, size)

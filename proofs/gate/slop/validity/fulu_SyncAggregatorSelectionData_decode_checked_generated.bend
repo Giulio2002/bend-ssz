@@ -11,6 +11,12 @@ import ../../../slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_ge
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 16, (B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_accept()
 
+def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked_budget(B.Buf{Array.new(U32, 2n, 0), 16}, 16, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
+  PRV.SyncAggregatorSelectionData_decode_vchecked_budget_accept()
+
+def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget) == True{} : Bool}) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked_budget(buf, size, budget) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  PRV.SyncAggregatorSelectionData_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_limit()
 
