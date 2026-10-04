@@ -32,5 +32,5 @@ def ComplexTestStruct_serialize_vcoll_l128_u16_set_write()
   {==}
 
 def ComplexTestStruct_serialize_vcoll_l128_u16_append_clear()
-    -> {(Pair.snd(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), (Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 1)), Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+    -> {(Pair.snd(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_128_d.l128_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
   {==}
