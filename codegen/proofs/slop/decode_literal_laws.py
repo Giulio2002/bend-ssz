@@ -393,8 +393,9 @@ def laws_of(X, V, t, ser_pair):
     def dec(data):
         return f'Pair.snd(B.Buf, {M}, T.{X}_decode({buffer(data)}, {len(data)}))'
 
-    def law(kind, tag, data, wide=False):
-        if len(data) > MAX_BYTES or (kind, data) in seen or len(out) >= MAX_LAWS:
+    def law(kind, tag, data, wide=False, r7=False):
+        # the round-7 laws (r7) come after the cap of the earlier ones, which they do not displace
+        if len(data) > MAX_BYTES or (kind, data) in seen or (len(out) >= MAX_LAWS and not r7):
             return
         seen.add((kind, data))
         tag = re.sub(r'\W', '_', tag)
@@ -427,12 +428,12 @@ def laws_of(X, V, t, ser_pair):
         for tag, wide in (('fixed', False), ('wide', True)):
             d = marked(t, Marks(), wide)
             if d is not None and all(d != g for _, g in good):
-                law('ok', tag, d)
+                law('ok', tag, d, r7=True)
                 if ser_pair is not None:
-                    law('rt', tag, d, wide=True)
+                    law('rt', tag, d, wide=True, r7=True)
         # (round 7: c06/02) one size fault deep inside each variable field, every offset right
         for tag, b in size_bad(t):
-            law('bad', f'size_{tag}', b)
+            law('bad', f'size_{tag}', b, r7=True)
     ser = f'Pair.snd({val}, O.Encoded, T.{X}_serialize(v))' if ser_pair else f'T.{X}_serialize(v)'
     helper = [f'def some1(m: {M}) -> Bool:\n  match m:\n    case Some{{v}}: True{{}}\n    case None{{}}: False{{}}\n',
               f'def rt(m: {M}) -> B.Buf:\n  match m:\n    case Some{{v}}: O.ser_out({ser})\n    case None{{}}: B.empty()\n']
