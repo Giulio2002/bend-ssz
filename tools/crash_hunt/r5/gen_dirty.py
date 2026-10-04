@@ -23,6 +23,7 @@ PROG = '''import Base
 import ../../../../src/buffer.bend as B
 import ../../../../src/digest.bend as D
 import ../../../../src/obj.bend as O
+import ../../../../src/merkle_fast.bend as M
 import ../../../../types/%(file)s_hashtreeroot_generated.bend as Hh
 import ../../../../types/%(file)s_encode_ssz_generated.bend as Ee
 import ../../../../benchmarks/compact/objio.bend as IOx
@@ -39,7 +40,7 @@ def fw(k: Nat, +i: U32, arr: Array<U32>) -> Array<U32>:
 def tailmask(+r: U32) -> U32:
   match r:
     case 0: 0
-    case _: (O.pick(U32.is_lt(r, 32), (U32.shl_by(1, r) - 1 : U32), 4294967295))
+    case _: (O.pick(U32.is_lt(r, 32), (M.shl_by(1, r) - 1 : U32), 4294967295))
 
 def lastw(+n: U32, arr: Array<U32>) -> Array<U32>: Array.set(U32, arr, %(WIDX)s, (fill() .&. tailmask(%(TBITS)s) : U32))
 
