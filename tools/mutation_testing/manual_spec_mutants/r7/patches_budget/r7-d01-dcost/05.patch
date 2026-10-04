@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/05
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: the bound covers every input byte
+# fault: the words are size >> 4 (+1): half the input charged
+# why: shift 4 for 3
+# file: src/obj.bend
+# sym: dcost
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1828,3 +1828,3 @@
+ 
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 4n) + 1 : U32), k)
+ 

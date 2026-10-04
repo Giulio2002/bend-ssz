@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/08
+# type: ExecutionPayload
+# ops: decode
+# spec: same: extra_data is a ByteList[32]
+# fault: the extra_data window is not validated (any length accepted)
+# why: check forgotten
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_c2
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -156,3 +156,3 @@
+   match ok:
+-    case True{}: ExecutionPayload_v3(off, len, o0, o1, o2, Fulu_bytelist_32_r.bl32_ok(buf, (off + o0 : U32), (o1 - o0 : U32)))
++    case True{}: ExecutionPayload_v3(off, len, o0, o1, o2, (buf, True{}))
+     case False{}: (buf, False{})

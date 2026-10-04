@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/09
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: a word past the length counts as clean when it is nonzero only in its low byte (x >> 8 == 0 for x == 0)
+# why: reused the tail test of one byte
+# file: src/obj.bend
+# sym: lc_step,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -940,3 +940,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(U32.shrn(x, 8n), 0))))
+ 

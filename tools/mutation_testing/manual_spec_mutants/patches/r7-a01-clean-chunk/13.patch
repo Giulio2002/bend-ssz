@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/13
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: rN is computed against the chunk count instead of the last chunk's start (n - 32 * k: rN = 0 for every n <= 32 * k, so every word of the chunk must be zero; for the last chunk q = k - 1 the data words then fail the test: clean storage is taken as unclean)
+# why: q for k
+# file: src/obj.bend
+# sym: wcn_k,wcn_t
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -991,3 +991,3 @@
+     case 0n: (ws, True{})
+-    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(Nat.add(q, 1n))), ws)
+ 

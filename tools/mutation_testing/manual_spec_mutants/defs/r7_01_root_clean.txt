@@ -1,0 +1,207 @@
+## ROUND 7, family a01: the binary root's clean-storage test (src/obj.bend wcn_* / lc_*), the code the round-5 junk-storage root laws (`<X>_vroot_<p>_j_past / j_tail / j_tight`) guard
+## Every fault makes the test answer "clean" for some storage that holds a nonzero word past the length inside the last chunk (the root is then taken over the junk),
+## or answer "unclean" for clean storage (the slow path copies: equivalent, slower). The junk laws put junk at word ceil(n/4) and at the last storage word.
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s1,lc_s2,wcn_t,wcn_k
+spec: hash_tree_root depends only on the value: storage words past the length do not enter the root
+fault: word 1 of the last chunk is never tested (its byte offset 4 read as 0: always 'holds data')
+why: copy-paste of the c = 0 step
+-  lc_s2(q, rN, lc_step(rN, 4n, acc, lc_read(q, 1n, ws)))
++  lc_s2(q, rN, lc_step(rN, 0n, acc, lc_read(q, 1n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s2,lc_s3,wcn_t,wcn_k
+spec: same
+fault: word 2 of the last chunk is never tested (offset 8 read as 0)
+why: copy-paste of the c = 0 step
+-  lc_s3(q, rN, lc_step(rN, 8n, acc, lc_read(q, 2n, ws)))
++  lc_s3(q, rN, lc_step(rN, 0n, acc, lc_read(q, 2n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s3,lc_s4,wcn_t,wcn_k
+spec: same
+fault: word 3 of the last chunk is never tested (offset 12 read as 0)
+why: copy-paste of the c = 0 step
+-  lc_s4(q, rN, lc_step(rN, 12n, acc, lc_read(q, 3n, ws)))
++  lc_s4(q, rN, lc_step(rN, 0n, acc, lc_read(q, 3n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s4,lc_s5,wcn_t,wcn_k
+spec: same
+fault: word 4 of the last chunk is never tested (offset 16 read as 0)
+why: copy-paste of the c = 0 step
+-  lc_s5(q, rN, lc_step(rN, 16n, acc, lc_read(q, 4n, ws)))
++  lc_s5(q, rN, lc_step(rN, 0n, acc, lc_read(q, 4n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s5,lc_s6,wcn_t,wcn_k
+spec: same
+fault: word 5 of the last chunk is tested against offset 32 (never 'past the length': never tested)
+why: wrong constant
+-  lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 5n, ws)))
++  lc_s6(q, rN, lc_step(rN, 32n, acc, lc_read(q, 5n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s6,lc_s7,wcn_t,wcn_k
+spec: same
+fault: word 6 of the last chunk is never tested (offset 24 read as 0)
+why: copy-paste of the c = 0 step
+-  lc_s7(q, rN, lc_step(rN, 24n, acc, lc_read(q, 6n, ws)))
++  lc_s7(q, rN, lc_step(rN, 0n, acc, lc_read(q, 6n, ws)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_s7,wcn_t,wcn_k
+spec: same
+fault: word 7 of the last chunk is never tested (offset 28 read as 0)
+why: copy-paste of the c = 0 step
+-  lc_step(rN, 28n, acc, lc_read(q, 7n, ws))
++  lc_step(rN, 0n, acc, lc_read(q, 7n, ws))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_step,lc_s0,wcn_t,wcn_k
+spec: same
+fault: a word that starts exactly at the length counts as holding data (c <= rN for c < rN)
+why: off-by-one in the boundary comparison
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.and(acc, Bool.or(Nat.is_le(c, rN), U32.is_eq(x, 0))))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_step,wcn_t,wcn_k
+spec: same
+fault: a word past the length counts as clean when it is nonzero only in its low byte (x >> 8 == 0 for x == 0)
+why: reused the tail test of one byte
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(U32.shrn(x, 8n), 0))))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_step,wcn_t,wcn_k
+spec: same
+fault: the accumulator is dropped: only the last word read (word 7) decides cleanliness
+why: fold without the running and
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_read,wcn_t,wcn_k
+spec: same
+fault: the last chunk's words are read from chunk 0 (the q * 8 base dropped)
+why: base offset forgotten
+-def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(q), j)))
++def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(j))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: lc_read,wcn_t,wcn_k
+spec: same
+fault: the chunk words are read one chunk late (chunk q + 1, past the last chunk: zeros or junk of a later chunk)
+why: off-by-one chunk index
+-def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(q), j)))
++def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(Nat.add(q, 1n)), j)))
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wcn_k,wcn_t
+spec: same
+fault: rN is computed against the chunk count instead of the last chunk's start (n - 32 * k: rN = 0 for every n <= 32 * k, so every word of the chunk must be zero; for the last chunk q = k - 1 the data words then fail the test: clean storage is taken as unclean)
+why: q for k
+-    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(Nat.add(q, 1n))), ws)
+=== r7-a01-clean-chunk
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wcn_k,wcn_t
+spec: same
+fault: the chunk examined is always chunk 0 (q passed as 0)
+why: index forgotten
+-    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++    case 1n+q: wcn_t(n, c, 0n, Nat.sub(U32.to_nat(n), e32(q)), ws)
+=== r7-a02-partial-word
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wcn_tz,wcn_t
+spec: same; the partial last word must be zero past the length
+fault: the partial word is read one word early (word (n >> 2) - 1)
+why: off-by-one word index
+-  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 2n))))
++  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, (U32.shrn(n, 2n) - 1 : U32))))
+=== r7-a02-partial-word
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: tail_zero,wcn_tz
+spec: same
+fault: a tail of 3 bytes tests only the top byte through the one-byte rule (r = 3 handled as r = 1)
+why: case order
+-    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
+-    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
+-    case _: U32.is_eq(U32.shrn(x, 24n), 0)
++    case 1: U32.is_eq(U32.shrn(x, 24n), 0)
++    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
++    case _: U32.is_eq(U32.shrn(x, 8n), 0)
+=== r7-a03-copy-path
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: cc_fin,words_copy
+spec: same: the clean copy holds the value's bytes only
+fault: the copy keeps the last word whole (mask_last dropped): bytes past the length in the last word reach the root
+why: mask forgotten
+-  (mask_last(n, out), ws)
++  (out, ws)
+=== r7-a03-copy-path
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wr_slow,wr_clean
+spec: same
+fault: the covered slow path hashes the original storage, not the clean copy (the copy is made and dropped)
+why: swapped pair components
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+=== r7-a03-copy-path
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wr_cap,wr_zc
+spec: same
+fault: storage of whole chunks is never examined for junk (the capacity branch goes straight to the fast path)
+why: the clean test forgotten in the roomy branch
+-    case True{}: wr_zc(hl, h, depth, n, sz, wcn_k(chunks_of(n), n, sz, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+=== r7-a03-copy-path
+type: Transaction,vec_uint16_5
+ops: root
+file: src/obj.bend
+sym: wr_fit,wr_slow
+spec: same
+fault: a tight storage of exactly ceil(n / 4) words is not 'covered' (strict test): it is hashed over the chunks its storage holds
+why: < for <=
+-    case False{}: wr_slow(Nat.is_le(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)
++    case False{}: wr_slow(Nat.is_lt(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), U32.to_nat(sz)), hl, h, depth, n, sz, ws)

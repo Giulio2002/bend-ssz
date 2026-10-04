@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c03-signed-child/02
+# type: SignedAggregateAndProof,AggregateAndProof
+# ops: encode
+# spec: same
+# fault: a present aggregate box is checked with the field pass only (Attestation_valid_f: the size pass of the aggregate skipped)
+# why: _valid_f for _valid
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_bx_valid
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -104,3 +104,3 @@
+   match o:
+-    case O.BSome{v, rest}: Attestation_bx_va_back(Attestation_valid(v))
++    case O.BSome{v, rest}: Attestation_bx_va_back(Attestation_valid_f(v))
+     case O.BNone{}: (O.BNone{}, False{})

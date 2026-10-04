@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/05
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: word 5 of the last chunk is tested against offset 32 (never 'past the length': never tested)
+# why: wrong constant
+# file: src/obj.bend
+# sym: lc_s5,lc_s6,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -952,3 +952,3 @@
+   (ws, acc) = pair
+-  lc_s6(q, rN, lc_step(rN, 20n, acc, lc_read(q, 5n, ws)))
++  lc_s6(q, rN, lc_step(rN, 32n, acc, lc_read(q, 5n, ws)))
+ 

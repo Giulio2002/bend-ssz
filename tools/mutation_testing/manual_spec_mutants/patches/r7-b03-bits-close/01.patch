@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/01
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: a bitlist's encoding is its bits then a 1 delimiter bit then zero padding; bits past the delimiter do not exist
+# fault: the next word is cleared when the pushed bit is bit 30 (b = 30 for 31): after a push of bit 31 the delimiter word keeps its junk, after bit 30 a word holding no bits yet is cleared (harmless)
+# why: off-by-one
+# file: src/obj.bend
+# sym: app_old31,bits_close_go,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1516,3 +1516,3 @@
+ # The next word is touched only when it is inside the storage (after the fit it always is).
+-def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 31), 0, old)
++def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 30), 0, old)
+ 

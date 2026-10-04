@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c03-signed-child/05
+# type: SignedAggregateAndProof,AggregateAndProof
+# ops: encode
+# spec: same
+# fault: the aggregate's flag is OR-ed with the accumulator (always True)
+# why: or for and
+# file: types/FuluAggregateAndProof_encode_ssz_generated.bend
+# sym: AggregateAndProof_va0
+--- a/types/FuluAggregateAndProof_encode_ssz_generated.bend
++++ b/types/FuluAggregateAndProof_encode_ssz_generated.bend
+@@ -72,3 +72,3 @@
+   (aggregate, ok) = pair
+-  (FuluAggregateAndProof_d.AggregateAndProof{aggregator_index, aggregate, selection_proof}, Bool.and(acc, ok))
++  (FuluAggregateAndProof_d.AggregateAndProof{aggregator_index, aggregate, selection_proof}, Bool.or(acc, ok))
+ 

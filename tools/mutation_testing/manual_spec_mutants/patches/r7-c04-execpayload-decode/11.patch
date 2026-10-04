@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/11
+# type: ExecutionPayload
+# ops: decode
+# spec: same
+# fault: the reader reads the transactions at the extra_data offset
+# why: wrong offset variable in the reader only
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_g1_rd7
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -71,3 +71,3 @@
+   (buf, +block_hash) = pair
+-  ExecutionPayload_g1_rd8(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_read(buf, (off + o_transactions : U32), (o_withdrawals - o_transactions : U32)))
++  ExecutionPayload_g1_rd8(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_read(buf, (off + o_extra_data : U32), (o_withdrawals - o_transactions : U32)))
+ 

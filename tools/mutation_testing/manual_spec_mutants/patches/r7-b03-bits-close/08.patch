@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/08
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the close is applied with the new length (k + 1) as the pushed bit: the word after bit k + 1 is closed (a push of bit 30 clears the next word, a push of bit 31 does not)
+# why: k for k + 1
+# file: src/obj.bend
+# sym: bits_push,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1537,3 +1537,3 @@
+   match b:
+-    case Bits{ws, +k}: bits_close(k, bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v))
++    case Bits{ws, +k}: bits_close((k + 1 : U32), bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v))
+ 

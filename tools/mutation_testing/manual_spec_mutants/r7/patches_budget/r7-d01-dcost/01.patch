@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/01
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: the budget bounds the decode's heap: a size whose bound does not fit U32 is the saturated 2^32 - 1 (refused below the maximal budget)
+# fault: the saturation bound ignores the constant (w <= (2^32 - 1) / k): w * k + 524288 wraps to a small bound for w in ((2^32 - 1 - 524288) / k, (2^32 - 1) / k]
+# why: the constant forgotten in the overflow guard
+# file: src/obj.bend
+# sym: dcost,dcost_go,dcost_k
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1821,3 +1821,3 @@
+ def dcost_go(+w: U32, +k: U32) -> U32:
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294967295, k)), ((w * k : U32) + 524288 : U32), 4294967295)
+ 

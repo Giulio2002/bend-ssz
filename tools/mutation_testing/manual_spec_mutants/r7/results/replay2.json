@@ -1,0 +1,169 @@
+[
+ {
+  "id": "bl04-bitlist-size/02",
+  "type": "bitlist_8,progbitlist,FuluAttestation",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_1_bitops_bits1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_31_bitops_bits31_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_bitlist_9_collection_bits9_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Attestation_bitops_bits131072_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "c05-offset-encode/09",
+  "type": "ComplexTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "Blob_serialize_vpoison_padd"
+    ],
+    "msg": "- expected : (0, 12, 4294967264, 4294967265, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295, 4294967295)\n- observed : (0, 12, 4294967264, 4294967265, 4294967294, 4294967295, 4294967295, 4294967295, 4294967295, 4294967294)",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r2-a03-bits-append/04",
+  "type": "bitlist_9",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "bitlist_9_serialize_vcoll_bits9_first"
+    ],
+    "msg": "- expected : (True{}, 1, Some{False{}}, None{})\n- observed : (True{}, 1, Some{True{}}, None{})",
+    "root": "proofs/slop/validity/generic_bitlist_9_collection_bits9_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r2-a03-bits-append/05",
+  "type": "bitlist_9",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "bitlist_9_serialize_vcoll_bits9_first"
+    ],
+    "msg": "- expected : (True{}, 0, None{}, None{})\n- observed : (True{}, 1, Some{True{}}, None{})",
+    "root": "proofs/slop/validity/generic_bitlist_9_collection_bits9_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r2-s05-poison/03",
+  "type": "VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "bitlist_31_serialize_vbits_table_31"
+    ],
+    "msg": "- expected : False{}\n- observed : True{}",
+    "root": "proofs/slop/validity/generic_bitlist_31_bits_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r3-w04-copy/01",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "ComplexTestStruct_vroot_bl256_tight_5"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r3-w04-copy/02",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "ComplexTestStruct_vroot_bl256_tight_5"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r3-w04-copy/06",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_vrootj_bl256_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ }
+]

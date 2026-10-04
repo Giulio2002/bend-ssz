@@ -1,0 +1,1835 @@
+[
+ {
+  "id": "r7-a01-clean-chunk/01",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "hash_tree_root depends only on the value: storage words past the length do not enter the root",
+  "fault": "word 1 of the last chunk is never tested (its byte offset 4 read as 0: always 'holds data')",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/02",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 2 of the last chunk is never tested (offset 8 read as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/03",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 3 of the last chunk is never tested (offset 12 read as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/04",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 4 of the last chunk is never tested (offset 16 read as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/05",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 5 of the last chunk is tested against offset 32 (never 'past the length': never tested)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/06",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 6 of the last chunk is never tested (offset 24 read as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/07",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "word 7 of the last chunk is never tested (offset 28 read as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcchain"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/08",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "a word that starts exactly at the length counts as holding data (c <= rN for c < rN)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcs"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/09",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "a word past the length counts as clean when it is nonzero only in its low byte (x >> 8 == 0 for x == 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcs"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/10",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the accumulator is dropped: only the last word read (word 7) decides cleanliness",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+    [
+     "ComplexTestStruct_vroot_bl256_past_41"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 tx1 junk3 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+      "c2 tx1 junk3 valid=1 ser ok=1 size=1 ck=218 root=3609811651,3838290698,371027170"
+     ],
+     "3": [
+      "c3 tx1 junk6 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+      "c3 tx1 junk6 valid=1 ser ok=1 size=1 ck=218 root=3295005408,577049209,958930597"
+     ],
+     "10": [
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=689063799,552043827,1862809903"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-a01-clean-chunk/11",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the last chunk's words are read from chunk 0 (the q * 8 base dropped)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcs"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/12",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the chunk words are read one chunk late (chunk q + 1, past the last chunk: zeros or junk of a later chunk)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "lcs"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/13",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "rN is computed against the chunk count instead of the last chunk's start (n - 32 * k: rN = 0 for every n <= 32 * k, so every word of the chunk must be zero; for the last chunk q = k - 1 the data words then fail the test: clean storage is taken as unclean)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "canon1"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a01-clean-chunk/14",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the chunk examined is always chunk 0 (q passed as 0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/pbits_obj.bend",
+    [
+     "canon1"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a02-partial-word/01",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same; the partial last word must be zero past the length",
+  "fault": "the partial word is read one word early (word (n >> 2) - 1)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/words_canon.bend",
+    [
+     "canon1"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a02-partial-word/02",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "a tail of 3 bytes tests only the top byte through the one-byte rule (r = 3 handled as r = 1)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/api/vec_uint16_5_hashtreeroot_proof_generated.bend",
+    [
+     "tzg3"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a03-copy-path/01",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the covered slow path hashes the original storage, not the clean copy (the copy is made and dropped)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/api/vec_uint16_5_hashtreeroot_proof_generated.bend",
+    [
+     "vec_uint16_5_vroot_v5_u16_j_past"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a03-copy-path/02",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "storage of whole chunks is never examined for junk (the capacity branch goes straight to the fast path)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/words_cap.bend",
+    [
+     "wr_unfold"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-a03-copy-path/03",
+  "type": "Transaction,vec_uint16_5",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "a tight storage of exactly ceil(n / 4) words is not 'covered' (strict test): it is hashed over the chunks its storage holds",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend",
+    [
+     "Transaction_vroot_bl1073741824_j_tight"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/01",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "a list's bytes past its length do not exist: after an append the value is the old bytes plus the new one (no junk byte of the spare storage survives into the encoding / root)",
+  "fault": "the word is cleared only when the element starts byte 1 of it (s = 1 for s = 0): junk at a word start survives an append",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/view_bytes_generated.bend",
+    [
+     "btake_app_1"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+      "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/02",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the old word is never cleared (app_old answers old)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+      "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/03",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "same; the earlier bytes of the word are part of the value",
+  "fault": "the word is always cleared (also when the element lands inside a word that holds earlier bytes of the value: they are erased)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/view_bytes_generated.bend",
+    [
+     "btake_app_1"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "10": [
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67109081 root=3247015108,533320362,3591511061"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/04",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the clearing test reads the byte count instead of the byte position (cleared when bytes = 0: never for an append)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/coll_bytes_generated.bend",
+    [
+     "bl1073741824_api_read_append"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+      "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/05",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the appended byte goes to the word after the right one (j = (p >> 2) + 1 for the write, the read word unchanged)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/coll_bytes_generated.bend",
+    [
+     "bl1073741824_api_read_append"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+      "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=2755196973,2970850675,2861873458"
+     ],
+     "10": [
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=730 root=3510339946,4242190428,57275249"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b01-app-clear/06",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the byte position inside the word is taken modulo 2 (p & 1): a byte at position 2 or 3 of a word is written at 0 or 1",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/coll_bytes_generated.bend",
+    [
+     "bl1073741824_api_read_append"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "10": [
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+      "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=1244 root=748079810,815664563,1329821928"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b02-put-app-gen/01",
+  "type": "bytelist_256",
+  "file": "types/bytelist_256_def_generated.bend",
+  "rule": "same",
+  "fault": "the generated append writes through the plain O.words_write (the R5-01 clearing bypassed)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": null
+ },
+ {
+  "id": "r7-b02-put-app-gen/02",
+  "type": "bytelist_256",
+  "file": "types/bytelist_256_def_generated.bend",
+  "rule": "same",
+  "fault": "the appended element is written at position i + 1 (one byte late; byte i keeps the cleared zero)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
+    [
+     "ComplexTestStruct_serialize_vcoll_bl256_len_get"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-b03-bits-close/01",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "a bitlist's encoding is its bits then a 1 delimiter bit then zero padding; bits past the delimiter do not exist",
+  "fault": "the next word is cleared when the pushed bit is bit 30 (b = 30 for 31): after a push of bit 31 the delimiter word keeps its junk, after bit 30 a word holding no bits yet is cleared (harmless)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/02",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the next word is never cleared",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/03",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the word cleared is the word of the pushed bit itself (k >> 5, not k >> 5 + 1): a push of bit 31 erases bits 0..31 of the list",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/bits_view_generated.bend",
+    [
+     "close_thaw_g"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=188860208,2803505009,14951609"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/04",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the clearing test reads the bit index of the new length (k + 1) & 31: the next word is cleared after a push of bit 30",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/bits_view_generated.bend",
+    [
+     "close_thaw_g"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/05",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the next word is written back even when it lies past the storage (the inside test dropped): a write past the array",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/bits_view_generated.bend",
+    [
+     "close_thaw_g"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/06",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the inside test is <= (the word one past the storage counts as inside)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/bits_view_generated.bend",
+    [
+     "close_thaw"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/07",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the inside test is never true (the next word is never touched)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/bits_view_generated.bend",
+    [
+     "close_thaw"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b03-bits-close/08",
+  "type": "bitlist_9,Bitlist[2048]",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the close is applied with the new length (k + 1) as the pushed bit: the word after bit k + 1 is closed (a push of bit 30 clears the next word, a push of bit 31 does not)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/coll_bits_generated.bend",
+    [
+     "bits131072_api_read_append"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+      "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-b04-slice-guard/01",
+  "type": "Fulu_list_bytevec_2048_4096",
+  "file": "src/obj.bend",
+  "rule": "an element view of n bytes holds exactly those n bytes",
+  "fault": "the empty test is n <= 4 (a slice of 1..4 bytes is returned empty)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": null
+ },
+ {
+  "id": "r7-b04-slice-guard/02",
+  "type": "Fulu_list_bytevec_2048_4096",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the empty slice keeps the claimed length n with no storage (Words{zeros(0), n})",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": null
+ },
+ {
+  "id": "r7-c01-szf-bound/01",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend",
+  "rule": "a serialization longer than NMAX bytes is not produced (the size pass answers the marker)",
+  "fault": "the size pass multiplies without the NMAX guard (n * 44 wraps past 2^32)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
+    [
+     "ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_above"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c01-szf-bound/02",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend",
+  "rule": "same; a list whose storage does not hold its count is invalid",
+  "fault": "a list whose storage is short answers size 0 (not the marker)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/encx_l16_Withdrawal_generated.bend",
+    [
+     "sizex_l16_Withdrawal"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c01-szf-bound/03",
+  "type": "BeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the size pass guards with the element size 120 (floor(NMAX / 120) elements of 121 bytes pass, product past NMAX)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+    [
+     "BeaconState_serialize_vpoison_size_l1099511627776_Validator_above"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c01-szf-bound/04",
+  "type": "BeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the size pass bound is one element short (n < floor(NMAX / 121)): the largest list that fits is poisoned",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+    [
+     "BeaconState_serialize_vpoison_size_l1099511627776_Validator_at"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c02-out-done/01",
+  "type": "bitlist_16",
+  "file": "types/bitlist_16_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the bitlist's unchecked encoder uses the unguarded out_done (the claimed length kept for a poisoned m)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/var_bits_enc_bitlist_16_generated.bend",
+    [
+     "encode_eval"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c03-signed-child/01",
+  "type": "SignedBeaconBlock,BeaconBlock",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "rule": "a container is valid only if every field is valid (a present body box is valid only if the body is)",
+  "fault": "a present body box is always valid (its content's flag dropped)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": null
+ },
+ {
+  "id": "r7-c03-signed-child/02",
+  "type": "SignedAggregateAndProof,AggregateAndProof",
+  "file": "types/FuluAttestation_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "a present aggregate box is checked with the field pass only (Attestation_valid_f: the size pass of the aggregate skipped)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Attestation_fields_generated.bend",
+    [
+     "Attestation_bx_valid"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c03-signed-child/03",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the message is checked with BeaconBlock_valid_f (its own size pass skipped; the wrapper's size pass still runs)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": null
+ },
+ {
+  "id": "r7-c03-signed-child/04",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the message's flag is OR-ed with the accumulator (always True: acc starts True)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_SignedBeaconBlock_fields_generated.bend",
+    [
+     "SignedBeaconBlock_serialize_vreject_message_body"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c03-signed-child/05",
+  "type": "SignedAggregateAndProof,AggregateAndProof",
+  "file": "types/FuluAggregateAndProof_encode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the aggregate's flag is OR-ed with the accumulator (always True)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+    [
+     "AggregateAndProof_serialize_vreject_aggregate"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-c04-execpayload-decode/01",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "the first offset of a container equals the length of its fixed part",
+  "fault": "the first offset may be any value up to the fixed size (o0 <= 528)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/offsets/fulu_ExecutionPayload_first_offset_generated.bend",
+    [
+     "ExecutionPayload_decode_first_offset"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/02",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "offsets are non-decreasing and inside the window",
+  "fault": "o0 <= o1 dropped (extra_data window may be negative)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/03",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "o1 <= len dropped",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/04",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "o2 <= len dropped",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/05",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "every variable-size field's window must decode as its type",
+  "fault": "the withdrawals window is not validated (its check answers True)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_bad_withdrawals_ragged"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/06",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the withdrawals window is validated from o1 (the transactions' start) to the end",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n2_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_ok_transactions_n2"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=none"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/07",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the transactions window is validated with the extra_data window's length (o1 - o0)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_ok_marked_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_ok_marked"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=none"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/08",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same: extra_data is a ByteList[32]",
+  "fault": "the extra_data window is not validated (any length accepted)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_extra_data_over_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_bad_extra_data_over"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/09",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "offsets are read from the fixed part at their own positions",
+  "fault": "the withdrawals offset is read at byte 504 (the transactions offset again)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n2_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_ok_transactions_n2"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=none"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/10",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "the decoded value's fields are read from their windows (decode then encode is the identity)",
+  "fault": "the reader reads withdrawals with the window length taken from the transactions' start (vend - o_transactions)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/11",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the reader reads the transactions at the extra_data offset",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=some reser_ok=0 size=0 ck=7"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/12",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the reader reads extra_data up to the withdrawals offset (window o_withdrawals - o_extra_data)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=639 ck=3590805050"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c04-execpayload-decode/13",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "gas_used is read at byte 428 + 8 (timestamp's position)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/01",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "List[ByteList, 2^20]: the first offset is a multiple of 4, at least 4, at most the window, and its count at most the limit",
+  "fault": "the count limit is dropped (more than 2^20 transactions accepted)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/02",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the alignment test is dropped (a first offset of 5 accepted)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off5_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_bad_transactions_off5"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/03",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "first <= len dropped",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/04",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "offsets are non-decreasing",
+  "fault": "the non-decreasing test is dropped",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/05",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "same; offsets inside the window",
+  "fault": "the upper-bound test is dropped",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/06",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the accumulated flag is not carried (an earlier bad element forgotten)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_transactions_off_desc_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_bad_transactions_off_desc"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "5": [
+      "c5 ep tx off desc decoded=none",
+      "c5 ep tx off desc decoded=some reser_ok=0 size=0 ck=7"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/07",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "the last element ends at the end of the list's window",
+  "fault": "the reader's last element ends at its own start (empty)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=627 ck=469056870"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/08",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "the elements are read from their windows",
+  "fault": "the element is read at its relative offset s (not off + s)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3095832581"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c05-txlist-decode/09",
+  "type": "ExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend",
+  "rule": "every offset is checked",
+  "fault": "the second-to-last element's end is taken as the window end (the last offset is never read by the validator: last test at i + 1 for i + 2)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n2_generated.bend",
+    [
+     "ExecutionPayload_decode_vlit_ok_transactions_n2"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+      "c2 ep x1 t2 w2 decoded=none"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c06-signed-decode/01",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_decode_ssz_generated.bend",
+  "rule": "the first offset equals the fixed size (100)",
+  "fault": "the first offset may be anything at least 100",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/offsets/fulu_SignedBeaconBlock_first_offset_generated.bend",
+    [
+     "SignedBeaconBlock_decode_first_offset"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c06-signed-decode/02",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_decode_ssz_generated.bend",
+  "rule": "the message window must decode as a BeaconBlock",
+  "fault": "the message window is not validated",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-c06-signed-decode/03",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_decode_ssz_generated.bend",
+  "rule": "decode then encode is the identity",
+  "fault": "the signature is read at byte 0 (over the offset)",
+  "A": "UNJUDGED",
+  "killed_by": [],
+  "probe": {
+   "p7e": {
+    "B2": "KILLED",
+    "diff": {
+     "3": [
+      "c3 sbb sig7 decoded=some reser_ok=1 size=1120 ck=3174164382",
+      "c3 sbb sig7 decoded=some reser_ok=1 size=1120 ck=2735992468"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-c06-signed-decode/04",
+  "type": "SignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_decode_ssz_generated.bend",
+  "rule": "the window holds at least the fixed part",
+  "fault": "the minimum length is 96 (a 96..99-byte window passes the length test)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/offsets/fulu_SignedBeaconBlock_first_offset_generated.bend",
+    [
+     "SignedBeaconBlock_decode_first_offset"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7e": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/01",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "the budget bounds the decode's heap: a size whose bound does not fit U32 is the saturated 2^32 - 1 (refused below the maximal budget)",
+  "fault": "the saturation bound ignores the constant (w <= (2^32 - 1) / k): w * k + 524288 wraps to a small bound for w in ((2^32 - 1 - 524288) / k, (2^32 - 1) / k]",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "3": [
+      "c3 ep 858980000 4294967295",
+      "c3 ep 858980000 457032"
+     ],
+     "4": [
+      "c4 ep 858900000 4294967295",
+      "c4 ep 858900000 57032"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/02",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "no saturation (the product wraps for every large size)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep 2^31 4294967295",
+      "c2 ep 2^31 2148007976"
+     ],
+     "3": [
+      "c3 ep 858980000 4294967295",
+      "c3 ep 858980000 457032"
+     ],
+     "4": [
+      "c4 ep 858900000 4294967295",
+      "c4 ep 858900000 57032"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/03",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the saturation bound is strict (w < (2^32 - 1 - 524288) / k): the largest w that fits saturates (over-strict by one step)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7b": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/04",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "a saturated bound is the constant 524288 (an unaffordable size passes every budget of 4 MiB)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 ep 2^31 4294967295",
+      "c2 ep 2^31 524288"
+     ],
+     "3": [
+      "c3 ep 858980000 4294967295",
+      "c3 ep 858980000 524288"
+     ],
+     "4": [
+      "c4 ep 858900000 4294967295",
+      "c4 ep 858900000 524288"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/05",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "the bound covers every input byte",
+  "fault": "the words are size >> 4 (+1): half the input charged",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 ep 4096 544808",
+      "c1 ep 4096 534568"
+     ],
+     "3": [
+      "c3 ep 858980000 4294967295",
+      "c3 ep 858980000 2147974328"
+     ],
+     "4": [
+      "c4 ep 858900000 4294967295",
+      "c4 ep 858900000 2147774328"
+     ],
+     "5": [
+      "c5 tx nmax 2684878833",
+      "c5 tx nmax 1342701563"
+     ],
+     "6": [
+      "c6 bs nmax 3758620651",
+      "c6 bs nmax 1879572473"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/06",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the + 1 word is dropped (size >> 3: a size below 8 bytes is charged only the constant)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 ep 4096 544808",
+      "c1 ep 4096 544768"
+     ],
+     "5": [
+      "c5 tx nmax 2684878833",
+      "c5 tx nmax 2684878828"
+     ],
+     "6": [
+      "c6 bs nmax 3758620651",
+      "c6 bs nmax 3758620644"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/07",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "(size >> 3) + 1 is computed as (size + 1) >> 3 (rounding moved: a size of 4096 gives 512 words, sizes 8m - 1 lose a word)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 ep 4096 544808",
+      "c1 ep 4096 544768"
+     ],
+     "5": [
+      "c5 tx nmax 2684878833",
+      "c5 tx nmax 2684878828"
+     ],
+     "6": [
+      "c6 bs nmax 3758620651",
+      "c6 bs nmax 3758620644"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/08",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same: a name with K = 0 is charged the constant",
+  "fault": "the K = 0 test is k <= 1 (a name with K = 1 is charged only the constant)",
+  "A": "SURVIVED",
+  "killed_by": [],
+  "probe": {
+   "p7b": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/09",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the constant of a K = 0 name is 0 (every budget, also 0, accepts a fixed-size name)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+    [
+     "Checkpoint_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7b": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r7-d01-dcost/10",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "rule": "same",
+  "fault": "the constant is 4 MiB in bytes counted as words / 8 (65536)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": {
+   "p7b": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 ep 4096 544808",
+      "c1 ep 4096 86056"
+     ],
+     "5": [
+      "c5 tx nmax 2684878833",
+      "c5 tx nmax 2684420081"
+     ],
+     "6": [
+      "c6 bs nmax 3758620651",
+      "c6 bs nmax 3758161899"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "id": "r7-d02-dcost-k/01",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "X_dcost charges the name's measured K (codegen/decode_cost.json: Transaction 5)",
+  "fault": "K = 4 (one below the table)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d02-dcost-k/02",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "same; a name's K is at least the K of every name nested in it (List[Transaction] in ExecutionPayload)",
+  "fault": "ExecutionPayload charged its own fixed-part K 0 (the nested-K rule not applied)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+    [
+     "ExecutionPayload_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d02-dcost-k/03",
+  "type": "BeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "BeaconState's K is 1 (charged a byte per byte)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_BeaconState_decode_checked_generated.bend",
+    [
+     "BeaconState_decode_vchecked_budget_cost"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d03-budget-cmp/01",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "X_decode_checked_budget decodes exactly when the bound is within the budget",
+  "fault": "the bound must be strictly below the budget (a bound equal to the budget is refused)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_refuse"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d03-budget-cmp/02",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "same",
+  "fault": "the comparison is reversed (budget <= bound: decodes only when the bound is at least the budget)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_refuse"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d03-budget-cmp/03",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "same: within the budget it is the checked decode",
+  "fault": "within the budget the unchecked _decode runs (the buffer's storage test of _decode_checked skipped)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_agree"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-d03-budget-cmp/04",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "the bound is the cost of the requested size",
+  "fault": "the bound is charged for the buffer's size field instead of the requested size: the budget compares the cost of 0 bytes (dcost(0))",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend",
+    [
+     "Transaction_decode_vchecked_budget_refuse"
+    ]
+   ]
+  ],
+  "probe": null
+ },
+ {
+  "id": "r7-s01-faithful-rederive/01",
+  "type": "Fulu_list_uint8_1099511627776",
+  "file": "types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend",
+  "rule": "a List[uint8, 2^40] is bounded only by NMAX in the object API (r3-p05-fulu-field-validity/10 as designed: a wrong bound; the r6 re-derivation also flipped the writer's match arm)",
+  "fault": "the bound is 4294967294 bytes (above NMAX: lengths in (NMAX, 2^32 - 2] pass validity)",
+  "A": "KILLED",
+  "killed_by": [
+   [
+    "proofs/obj/encx_l1099511627776_u8_d_generated.bend",
+    [
+     "valid"
+    ]
+   ]
+  ],
+  "probe": null
+ }
+]

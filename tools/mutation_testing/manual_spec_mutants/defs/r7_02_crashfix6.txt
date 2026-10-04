@@ -1,0 +1,184 @@
+## ROUND 7, family b: crash-fix6 (docs/CRASH_HUNT.md R5-01 / R5-02): O.words_write_app (an appended 1- or 2-byte element clears the rest of a word it starts),
+## O.bits_close (a pushed bit 31 clears the next word, the new delimiter word), the words_slice empty guard; and the generated {p}_put_app.
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: app_old,put_in_app,words_write_app
+spec: a list's bytes past its length do not exist: after an append the value is the old bytes plus the new one (no junk byte of the spare storage survives into the encoding / root)
+fault: the word is cleared only when the element starts byte 1 of it (s = 1 for s = 0): junk at a word start survives an append
+why: off-by-one byte position
+-def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
++def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 1), 0, old)
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: app_old,put_in_app,words_write_app
+spec: same
+fault: the old word is never cleared (app_old answers old)
+why: the fix reverted
+-def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
++def app_old(+old: U32, +s: U32) -> U32: old
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: app_old,put_in_app,words_write_app
+spec: same; the earlier bytes of the word are part of the value
+fault: the word is always cleared (also when the element lands inside a word that holds earlier bytes of the value: they are erased)
+why: condition dropped
+-def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
++def app_old(+old: U32, +s: U32) -> U32: 0
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: app_old,put_in_app
+spec: same
+fault: the clearing test reads the byte count instead of the byte position (cleared when bytes = 0: never for an append)
+why: argument swap
+-  words_setw(w, j, merge_word(app_old(old, s), x, s, bytes))
++  words_setw(w, j, merge_word(app_old(old, bytes), x, s, bytes))
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: words_write_app,put_in_app
+spec: same
+fault: the appended byte goes to the word after the right one (j = (p >> 2) + 1 for the write, the read word unchanged)
+why: off-by-one word
+-  put_in_app(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in_app((U32.shrn(p, 2n) + 1 : U32), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+=== r7-b01-app-clear
+type: bytelist_256
+ops: encode,root
+file: src/obj.bend
+sym: words_write_app,put_in_app
+spec: same
+fault: the byte position inside the word is taken modulo 2 (p & 1): a byte at position 2 or 3 of a word is written at 0 or 1
+why: wrong mask
+-  put_in_app(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in_app(U32.shrn(p, 2n), x, (p .&. 1 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+=== r7-b02-put-app-gen
+type: bytelist_256
+ops: encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_put_app,bl256_grow
+spec: same
+fault: the generated append writes through the plain O.words_write (the R5-01 clearing bypassed)
+why: the generator's app branch not taken
+-    case True{}: (O.words_write_app(o, (i * 1 : U32), v, 1), True{})
++    case True{}: (O.words_write(o, (i * 1 : U32), v, 1), True{})
+=== r7-b02-put-app-gen
+type: bytelist_256
+ops: encode,root
+file: types/bytelist_256_def_generated.bend
+sym: bl256_put_app,bl256_grow
+spec: same
+fault: the appended element is written at position i + 1 (one byte late; byte i keeps the cleared zero)
+why: off-by-one
+-    case True{}: (O.words_write_app(o, (i * 1 : U32), v, 1), True{})
++    case True{}: (O.words_write_app(o, ((i + 1 : U32) * 1 : U32), v, 1), True{})
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: app_old31,bits_close_go,bits_close
+spec: a bitlist's encoding is its bits then a 1 delimiter bit then zero padding; bits past the delimiter do not exist
+fault: the next word is cleared when the pushed bit is bit 30 (b = 30 for 31): after a push of bit 31 the delimiter word keeps its junk, after bit 30 a word holding no bits yet is cleared (harmless)
+why: off-by-one
+-def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 31), 0, old)
++def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 30), 0, old)
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: app_old31,bits_close_go,bits_close
+spec: same
+fault: the next word is never cleared
+why: the fix reverted
+-def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 31), 0, old)
++def app_old31(+old: U32, +b: U32) -> U32: old
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_close_go,bits_close
+spec: same
+fault: the word cleared is the word of the pushed bit itself (k >> 5, not k >> 5 + 1): a push of bit 31 erases bits 0..31 of the list
+why: off-by-one word
+-  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, (k .&. 31 : U32)))
++  bits_setw(b, U32.shrn(k, 5n), app_old31(x, (k .&. 31 : U32)))
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_close_go,bits_close
+spec: same
+fault: the clearing test reads the bit index of the new length (k + 1) & 31: the next word is cleared after a push of bit 30
+why: k for k + 1
+-  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, (k .&. 31 : U32)))
++  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, ((k + 1 : U32) .&. 31 : U32)))
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_close_if,bits_close
+spec: same
+fault: the next word is written back even when it lies past the storage (the inside test dropped): a write past the array
+why: guard dropped
+-    case True{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
+-    case False{}: b
++    case True{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
++    case False{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_close_sz,bits_close
+spec: same
+fault: the inside test is <= (the word one past the storage counts as inside)
+why: < for <=
+-  bits_close_if(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), sz), k, Bits{ws, k1})
++  bits_close_if(U32.is_le((U32.shrn(k, 5n) + 1 : U32), sz), k, Bits{ws, k1})
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_close_sz,bits_close
+spec: same
+fault: the inside test is never true (the next word is never touched)
+why: the guard compares with the word index of k1, inverted
+-  bits_close_if(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), sz), k, Bits{ws, k1})
++  bits_close_if(U32.is_lt(sz, (U32.shrn(k, 5n) + 1 : U32)), k, Bits{ws, k1})
+=== r7-b03-bits-close
+type: bitlist_9,Bitlist[2048]
+ops: encode,root
+file: src/obj.bend
+sym: bits_push,bits_close
+spec: same
+fault: the close is applied with the new length (k + 1) as the pushed bit: the word after bit k + 1 is closed (a push of bit 30 clears the next word, a push of bit 31 does not)
+why: k for k + 1
+-    case Bits{ws, +k}: bits_close(k, bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v))
++    case Bits{ws, +k}: bits_close((k + 1 : U32), bits_set(bits_of_words((k + 1 : U32), words_fit(Words{ws, bits_nbytes((k + 1 : U32))}, bits_nbytes((k + 1 : U32)))), k, v))
+=== r7-b04-slice-guard
+type: Fulu_list_bytevec_2048_4096
+ops: root
+file: src/obj.bend
+sym: sl_some,words_slice
+spec: an element view of n bytes holds exactly those n bytes
+fault: the empty test is n <= 4 (a slice of 1..4 bytes is returned empty)
+why: wrong guard
+-def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_eq(n, 0), o, p, n)
++def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_le(n, 4), o, p, n)
+=== r7-b04-slice-guard
+type: Fulu_list_bytevec_2048_4096
+ops: root
+file: src/obj.bend
+sym: sl_some,words_slice
+spec: same
+fault: the empty slice keeps the claimed length n with no storage (Words{zeros(0), n})
+why: length not reset
+-    case True{}: (o, Words{zeros_for(0), 0})
++    case True{}: (o, Words{zeros_for(0), n})

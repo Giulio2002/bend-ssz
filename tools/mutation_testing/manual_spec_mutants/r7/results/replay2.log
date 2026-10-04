@@ -1,0 +1,9 @@
+bl04-bitlist-size/02 SURVIVED []
+c05-offset-encode/09 KILLED [('fulu_Blob_poison_generated.bend', ['Blob_serialize_vpoison_padd'])]
+r2-a03-bits-append/04 KILLED [('generic_bitlist_9_collection_bits9_generated.bend', ['bitlist_9_serialize_vcoll_bits9_first'])]
+r2-a03-bits-append/05 KILLED [('generic_bitlist_9_collection_bits9_generated.bend', ['bitlist_9_serialize_vcoll_bits9_first'])]
+r2-s05-poison/03 KILLED [('generic_bitlist_31_bits_generated.bend', ['bitlist_31_serialize_vbits_table_31'])]
+r3-w04-copy/01 KILLED [('generic_ComplexTestStruct_vroot_bl256_generated.bend', ['ComplexTestStruct_vroot_bl256_tight_5'])]
+r3-w04-copy/02 KILLED [('generic_ComplexTestStruct_vroot_bl256_generated.bend', ['ComplexTestStruct_vroot_bl256_tight_5'])]
+r3-w04-copy/06 SURVIVED []
+done

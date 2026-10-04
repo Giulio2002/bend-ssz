@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a03-copy-path/01
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: the covered slow path hashes the original storage, not the clean copy (the copy is made and dropped)
+# why: swapped pair components
+# file: src/obj.bend
+# sym: wr_slow,wr_clean
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1028,3 +1028,3 @@
+   match covered:
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+     case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))

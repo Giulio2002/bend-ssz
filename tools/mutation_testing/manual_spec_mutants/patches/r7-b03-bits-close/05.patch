@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/05
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the next word is written back even when it lies past the storage (the inside test dropped): a write past the array
+# why: guard dropped
+# file: src/obj.bend
+# sym: bits_close_if,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1525,3 +1525,3 @@
+     case True{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
+-    case False{}: b
++    case False{}: bits_close_go(k, bits_word(b, (U32.shrn(k, 5n) + 1 : U32)))
+ 

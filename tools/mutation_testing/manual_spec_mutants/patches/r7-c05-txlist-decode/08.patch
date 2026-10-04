@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c05-txlist-decode/08
+# type: ExecutionPayload
+# ops: decode
+# spec: the elements are read from their windows
+# fault: the element is read at its relative offset s (not off + s)
+# why: base forgotten
+# file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+# sym: l1048576_bl1073741824_elem_win
+--- a/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+ 
+-def l1048576_bl1073741824_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<O.Words>: FuluTransaction_r.bl1073741824_bx_read(buf, (off + s : U32), (e - s : U32))
++def l1048576_bl1073741824_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<O.Words>: FuluTransaction_r.bl1073741824_bx_read(buf, s, (e - s : U32))
+ 

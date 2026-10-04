@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/14
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: the chunk examined is always chunk 0 (q passed as 0)
+# why: index forgotten
+# file: src/obj.bend
+# sym: wcn_k,wcn_t
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -991,3 +991,3 @@
+     case 0n: (ws, True{})
+-    case 1n+q: wcn_t(n, c, q, Nat.sub(U32.to_nat(n), e32(q)), ws)
++    case 1n+q: wcn_t(n, c, 0n, Nat.sub(U32.to_nat(n), e32(q)), ws)
+ 

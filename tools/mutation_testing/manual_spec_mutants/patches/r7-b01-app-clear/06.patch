@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b01-app-clear/06
+# type: bytelist_256
+# ops: encode,root
+# spec: same
+# fault: the byte position inside the word is taken modulo 2 (p & 1): a byte at position 2 or 3 of a word is written at 0 or 1
+# why: wrong mask
+# file: src/obj.bend
+# sym: words_write_app,put_in_app
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1385,3 +1385,3 @@
+ def words_write_app(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
+-  put_in_app(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in_app(U32.shrn(p, 2n), x, (p .&. 1 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+ 

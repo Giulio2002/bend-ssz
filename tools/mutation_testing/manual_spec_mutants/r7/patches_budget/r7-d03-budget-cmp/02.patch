@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d03-budget-cmp/02
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend
+# type: Transaction
+# ops: decode
+# spec: same
+# fault: the comparison is reversed (budget <= bound: decodes only when the bound is at least the budget)
+# why: argument order
+# file: types/FuluTransaction_decode_ssz_generated.bend
+# sym: Transaction_decode_checked_budget,Transaction_dcb
+# base: 5c1f48b93
+--- a/types/FuluTransaction_decode_ssz_generated.bend
++++ b/types/FuluTransaction_decode_ssz_generated.bend
+@@ -70,3 +70,3 @@
+ 
+-def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(Transaction_dcost(size), budget), buf, size)
++def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(U32.is_le(budget, Transaction_dcost(size)), buf, size)
+ 

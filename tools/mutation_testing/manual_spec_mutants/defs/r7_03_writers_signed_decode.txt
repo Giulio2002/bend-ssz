@@ -1,0 +1,422 @@
+## ROUND 7, family c: the size pass one past NMAX / es and O.out_donem (writer_poison_laws r6), the signed wrappers' message validity (vreject_message_* r5),
+## and the decoders the one-law decode_vlit_* files cover that no earlier round mutated (ExecutionPayload, List[Transaction, 2^20], SignedBeaconBlock).
+=== r7-c01-szf-bound
+type: ExecutionPayload
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_szf,l16_Withdrawal_size
+spec: a serialization longer than NMAX bytes is not produced (the size pass answers the marker)
+fault: the size pass multiplies without the NMAX guard (n * 44 wraps past 2^32)
+why: mulc not used
+-  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 4294967295))
++  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 44 : U32), 4294967295))
+=== r7-c01-szf-bound
+type: ExecutionPayload
+ops: encode
+file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+sym: l16_Withdrawal_szf,l16_Withdrawal_size
+spec: same; a list whose storage does not hold its count is invalid
+fault: a list whose storage is short answers size 0 (not the marker)
+why: wrong default
+-  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 4294967295))
++  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 0))
+=== r7-c01-szf-bound
+type: BeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: same
+fault: the size pass guards with the element size 120 (floor(NMAX / 120) elements of 121 bytes pass, product past NMAX)
+why: wrong constant in one of two places
+-  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295))
++  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.pick(U32.is_le(n, U32.div(4294967264, 120)), (n * 121 : U32), 4294967295), 4294967295))
+=== r7-c01-szf-bound
+type: BeaconState
+ops: encode
+file: types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_Validator_szf,l1099511627776_Validator_size
+spec: same
+fault: the size pass bound is one element short (n < floor(NMAX / 121)): the largest list that fits is poisoned
+why: < for <=
+-  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 121), 4294967295))
++  (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, O.pick(U32.is_le(n, c), O.pick(U32.is_lt(n, U32.div(4294967264, 121)), (n * 121 : U32), 4294967295), 4294967295))
+=== r7-c02-out-done
+type: bitlist_16
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: the unchecked encode of an invalid value is the empty buffer, never a claimed size past the written storage
+fault: out_donep's arms are swapped (a valid length gives the empty buffer, a poisoned one the claimed buffer)
+why: inverted match
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, m}
++    case False{}: B.empty()
+=== r7-c02-out-done
+type: bitlist_16
+ops: encode
+file: src/obj.bend
+sym: out_donep,out_donem
+spec: same
+fault: a poisoned length gives a buffer of length 0 over the written storage (B.Buf{out, 0}, not B.empty())
+why: 'empty' spelled as a zero length
+-    case True{}: B.empty()
+-    case False{}: B.Buf{out, m}
++    case True{}: B.Buf{out, 0}
++    case False{}: B.Buf{out, m}
+=== r7-c02-out-done
+type: bitlist_16
+ops: encode
+file: types/bitlist_16_encode_ssz_generated.bend
+sym: bitlist_16_enc_out
+spec: same
+fault: the bitlist's unchecked encoder uses the unguarded out_done (the claimed length kept for a poisoned m)
+why: wrong helper
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+=== r7-c03-signed-child
+type: SignedBeaconBlock,BeaconBlock
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_bx_valid,BeaconBlockBody_bx_va_back
+spec: a container is valid only if every field is valid (a present body box is valid only if the body is)
+fault: a present body box is always valid (its content's flag dropped)
+why: only presence checked
+-def BeaconBlockBody_bx_va_back(pair: FuluBeaconBlockBody_d.BeaconBlockBody & Bool) -> O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool:
+-  (v, ok) = pair
+-  (O.BSome{v, O.BNone{}}, ok)
++def BeaconBlockBody_bx_va_back(pair: FuluBeaconBlockBody_d.BeaconBlockBody & Bool) -> O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool:
++  (v, ok) = pair
++  (O.BSome{v, O.BNone{}}, True{})
+=== r7-c03-signed-child
+type: SignedAggregateAndProof,AggregateAndProof
+ops: encode
+file: types/FuluAttestation_encode_ssz_generated.bend
+sym: Attestation_bx_valid
+spec: same
+fault: a present aggregate box is checked with the field pass only (Attestation_valid_f: the size pass of the aggregate skipped)
+why: _valid_f for _valid
+-    case O.BSome{v, rest}: Attestation_bx_va_back(Attestation_valid(v))
++    case O.BSome{v, rest}: Attestation_bx_va_back(Attestation_valid_f(v))
+=== r7-c03-signed-child
+type: SignedBeaconBlock
+ops: encode
+file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+sym: SignedBeaconBlock_valid_f,SignedBeaconBlock_va0
+spec: same
+fault: the message is checked with BeaconBlock_valid_f (its own size pass skipped; the wrapper's size pass still runs)
+why: _valid_f for _valid
+-    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid(message))
++    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid_f(message))
+=== r7-c03-signed-child
+type: SignedBeaconBlock
+ops: encode
+file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+sym: SignedBeaconBlock_vsz_go,SignedBeaconBlock_valid
+spec: same, and the value's serialization is at most NMAX bytes
+fault: the wrapper's size pass is dropped (only the message's flag)
+why: size pass forgotten in the wrapper
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+=== r7-c03-signed-child
+type: SignedBeaconBlock
+ops: encode
+file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+sym: SignedBeaconBlock_va0
+spec: same
+fault: the message's flag is OR-ed with the accumulator (always True: acc starts True)
+why: or for and
+-  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.and(acc, ok))
++  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.or(acc, ok))
+=== r7-c03-signed-child
+type: SignedAggregateAndProof,AggregateAndProof
+ops: encode
+file: types/FuluAggregateAndProof_encode_ssz_generated.bend
+sym: AggregateAndProof_va0
+spec: same
+fault: the aggregate's flag is OR-ed with the accumulator (always True)
+why: or for and
+-  (FuluAggregateAndProof_d.AggregateAndProof{aggregator_index, aggregate, selection_proof}, Bool.and(acc, ok))
++  (FuluAggregateAndProof_d.AggregateAndProof{aggregator_index, aggregate, selection_proof}, Bool.or(acc, ok))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_v0,ExecutionPayload_c0
+spec: the first offset of a container equals the length of its fixed part
+fault: the first offset may be any value up to the fixed size (o0 <= 528)
+why: <= for ==
+-  ExecutionPayload_c0(U32.is_eq(o0, 528), buf, off, len, o0)
++  ExecutionPayload_c0(U32.is_le(o0, 528), buf, off, len, o0)
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_v1,ExecutionPayload_c1
+spec: offsets are non-decreasing and inside the window
+fault: o0 <= o1 dropped (extra_data window may be negative)
+why: one of two tests forgotten
+-  ExecutionPayload_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ExecutionPayload_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_v1,ExecutionPayload_c1
+spec: same
+fault: o1 <= len dropped
+why: one of two tests forgotten
+-  ExecutionPayload_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ExecutionPayload_c1(U32.is_le(o0, o1), buf, off, len, o0, o1)
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_v2,ExecutionPayload_c2
+spec: same
+fault: o2 <= len dropped
+why: one of two tests forgotten
+-  ExecutionPayload_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++  ExecutionPayload_c2(U32.is_le(o1, o2), buf, off, len, o0, o1, o2)
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_c4,ExecutionPayload_v5
+spec: every variable-size field's window must decode as its type
+fault: the withdrawals window is not validated (its check answers True)
+why: last field forgotten
+-    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, Fulu_list_Withdrawal_16_r.l16_Withdrawal_ok(buf, (off + o2 : U32), (len - o2 : U32)))
++    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, (buf, True{}))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_c4
+spec: same
+fault: the withdrawals window is validated from o1 (the transactions' start) to the end
+why: wrong offset variable
+-    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, Fulu_list_Withdrawal_16_r.l16_Withdrawal_ok(buf, (off + o2 : U32), (len - o2 : U32)))
++    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, Fulu_list_Withdrawal_16_r.l16_Withdrawal_ok(buf, (off + o1 : U32), (len - o1 : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_c3
+spec: same
+fault: the transactions window is validated with the extra_data window's length (o1 - o0)
+why: wrong offset pair
+-    case True{}: ExecutionPayload_v4(off, len, o0, o1, o2, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: ExecutionPayload_v4(off, len, o0, o1, o2, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_ok(buf, (off + o1 : U32), (o1 - o0 : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_c2
+spec: same: extra_data is a ByteList[32]
+fault: the extra_data window is not validated (any length accepted)
+why: check forgotten
+-    case True{}: ExecutionPayload_v3(off, len, o0, o1, o2, Fulu_bytelist_32_r.bl32_ok(buf, (off + o0 : U32), (o1 - o0 : U32)))
++    case True{}: ExecutionPayload_v3(off, len, o0, o1, o2, (buf, True{}))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_v2,ExecutionPayload_c1
+spec: offsets are read from the fixed part at their own positions
+fault: the withdrawals offset is read at byte 504 (the transactions offset again)
+why: wrong position
+-    case True{}: ExecutionPayload_v2(off, len, o0, o1, B.read32(buf, (off + 508 : U32)))
++    case True{}: ExecutionPayload_v2(off, len, o0, o1, B.read32(buf, (off + 504 : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_g1_rd8
+spec: the decoded value's fields are read from their windows (decode then encode is the identity)
+fault: the reader reads withdrawals with the window length taken from the transactions' start (vend - o_transactions)
+why: wrong offset variable in the reader only
+-  ExecutionPayload_g1_rd9(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, Fulu_list_Withdrawal_16_r.l16_Withdrawal_read(buf, (off + o_withdrawals : U32), (vend - o_withdrawals : U32)))
++  ExecutionPayload_g1_rd9(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, Fulu_list_Withdrawal_16_r.l16_Withdrawal_read(buf, (off + o_withdrawals : U32), (vend - o_transactions : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_g1_rd7
+spec: same
+fault: the reader reads the transactions at the extra_data offset
+why: wrong offset variable in the reader only
+-  ExecutionPayload_g1_rd8(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_read(buf, (off + o_transactions : U32), (o_withdrawals - o_transactions : U32)))
++  ExecutionPayload_g1_rd8(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_read(buf, (off + o_extra_data : U32), (o_withdrawals - o_transactions : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_g1_rd4
+spec: same
+fault: the reader reads extra_data up to the withdrawals offset (window o_withdrawals - o_extra_data)
+why: wrong offset variable in the reader only
+-  ExecutionPayload_g1_rd5(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, Fulu_bytelist_32_r.bl32_read(buf, (off + o_extra_data : U32), (o_transactions - o_extra_data : U32)))
++  ExecutionPayload_g1_rd5(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, Fulu_bytelist_32_r.bl32_read(buf, (off + o_extra_data : U32), (o_withdrawals - o_extra_data : U32)))
+=== r7-c04-execpayload-decode
+type: ExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_g1_rd2
+spec: same
+fault: gas_used is read at byte 428 + 8 (timestamp's position)
+why: off by one field
+-  ExecutionPayload_g1_rd3(off, len, vend, o_extra_data, o_transactions, o_withdrawals, uint64_r.u64_read(buf, (off + 420 : U32), 8))
++  ExecutionPayload_g1_rd3(off, len, vend, o_extra_data, o_transactions, o_withdrawals, uint64_r.u64_read(buf, (off + 428 : U32), 8))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_head,l1048576_bl1073741824_first
+spec: List[ByteList, 2^20]: the first offset is a multiple of 4, at least 4, at most the window, and its count at most the limit
+fault: the count limit is dropped (more than 2^20 transactions accepted)
+why: limit test forgotten
+-  l1048576_bl1073741824_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
++  l1048576_bl1073741824_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_head,l1048576_bl1073741824_first
+spec: same
+fault: the alignment test is dropped (a first offset of 5 accepted)
+why: test forgotten
+-  l1048576_bl1073741824_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
++  l1048576_bl1073741824_first(Bool.and(U32.is_le(first, len), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_head,l1048576_bl1073741824_first
+spec: same
+fault: first <= len dropped
+why: test forgotten
+-  l1048576_bl1073741824_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
++  l1048576_bl1073741824_first(Bool.and(U32.is_eq((first .&. 3 : U32), 0), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_ee
+spec: offsets are non-decreasing
+fault: the non-decreasing test is dropped
+why: test forgotten
+-  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_ee
+spec: same; offsets inside the window
+fault: the upper-bound test is dropped
+why: test forgotten
+-  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, U32.is_le(a, b)), buf, off, a, b)))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_ee
+spec: same
+fault: the accumulated flag is not carried (an earlier bad element forgotten)
+why: and_pair accumulator dropped
+-  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l1048576_bl1073741824_eb(b, O.and_pair(True{}, l1048576_bl1073741824_ew(Bool.and(True{}, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_win_last
+spec: the last element ends at the end of the list's window
+fault: the reader's last element ends at its own start (empty)
+why: s for len
+-    case True{}: (buf, (s, len))
++    case True{}: (buf, (s, s))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_elem_win
+spec: the elements are read from their windows
+fault: the element is read at its relative offset s (not off + s)
+why: base forgotten
+-def l1048576_bl1073741824_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<O.Words>: FuluTransaction_r.bl1073741824_bx_read(buf, (off + s : U32), (e - s : U32))
++def l1048576_bl1073741824_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<O.Words>: FuluTransaction_r.bl1073741824_bx_read(buf, s, (e - s : U32))
+=== r7-c05-txlist-decode
+type: ExecutionPayload
+ops: decode
+file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+sym: l1048576_bl1073741824_ev,l1048576_bl1073741824_next
+spec: every offset is checked
+fault: the second-to-last element's end is taken as the window end (the last offset is never read by the validator: last test at i + 1 for i + 2)
+why: off-by-one
+-      l1048576_bl1073741824_ev(q, (i + 1 : U32), n, off, len, l1048576_bl1073741824_ee(ok, off, len, a, l1048576_bl1073741824_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))))
++      l1048576_bl1073741824_ev(q, (i + 1 : U32), n, off, len, l1048576_bl1073741824_ee(ok, off, len, a, l1048576_bl1073741824_next(U32.is_eq((i + 1 : U32), n), buf, off, len, (i + 1 : U32))))
+=== r7-c06-signed-decode
+type: SignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_v0,SignedBeaconBlock_c0
+spec: the first offset equals the fixed size (100)
+fault: the first offset may be anything at least 100
+why: <= for ==
+-  SignedBeaconBlock_c0(U32.is_eq(o0, 100), buf, off, len, o0)
++  SignedBeaconBlock_c0(U32.is_le(100, o0), buf, off, len, o0)
+=== r7-c06-signed-decode
+type: SignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_c0
+spec: the message window must decode as a BeaconBlock
+fault: the message window is not validated
+why: check forgotten
+-    case True{}: SignedBeaconBlock_v1(off, len, o0, FuluBeaconBlock_r.BeaconBlock_ok(buf, (off + o0 : U32), (len - o0 : U32)))
++    case True{}: SignedBeaconBlock_v1(off, len, o0, (buf, True{}))
+=== r7-c06-signed-decode
+type: SignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_rd1
+spec: decode then encode is the identity
+fault: the signature is read at byte 0 (over the offset)
+why: wrong position
+-  SignedBeaconBlock_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 4 : U32), 96))
++  SignedBeaconBlock_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+=== r7-c06-signed-decode
+type: SignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_ok
+spec: the window holds at least the fixed part
+fault: the minimum length is 96 (a 96..99-byte window passes the length test)
+why: forgot the offset's 4 bytes
+-def SignedBeaconBlock_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlock_ok_len(U32.is_le(100, len), buf, off, len)
++def SignedBeaconBlock_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlock_ok_len(U32.is_le(96, len), buf, off, len)
+=== r7-s01-faithful-rederive
+type: VarTestStruct
+ops: encode
+file: src/obj.bend
+sym: pz,padd
+spec: a validity flag contributes the marker when false (r2-s05-poison/03 as designed: the false flag's poison value changed; the r6 re-derivation moved the edit to bits_above_zero)
+fault: a false flag contributes 2^31 (the old marker: below the new 2^32 - 1 marker but above NMAX)
+why: stale constant
+-    case True{}: 0
+-    case False{}: 4294967295
++    case True{}: 0
++    case False{}: 2147483648
+=== r7-s01-faithful-rederive
+type: Fulu_list_uint8_1099511627776
+ops: encode
+file: types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend
+sym: l1099511627776_u8_valid,words_ok
+spec: a List[uint8, 2^40] is bounded only by NMAX in the object API (r3-p05-fulu-field-validity/10 as designed: a wrong bound; the r6 re-derivation also flipped the writer's match arm)
+fault: the bound is 4294967294 bytes (above NMAX: lengths in (NMAX, 2^32 - 2] pass validity)
+why: parameter
+-def l1099511627776_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 1)
++def l1099511627776_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967294, False{}, 1)

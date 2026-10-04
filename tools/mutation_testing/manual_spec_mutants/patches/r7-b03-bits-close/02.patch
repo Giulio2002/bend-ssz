@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/02
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the next word is never cleared
+# why: the fix reverted
+# file: src/obj.bend
+# sym: app_old31,bits_close_go,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1516,3 +1516,3 @@
+ # The next word is touched only when it is inside the storage (after the fit it always is).
+-def app_old31(+old: U32, +b: U32) -> U32: pick(U32.is_eq(b, 31), 0, old)
++def app_old31(+old: U32, +b: U32) -> U32: old
+ 

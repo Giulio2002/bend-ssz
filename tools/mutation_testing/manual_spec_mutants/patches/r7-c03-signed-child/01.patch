@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c03-signed-child/01
+# type: SignedBeaconBlock,BeaconBlock
+# ops: encode
+# spec: a container is valid only if every field is valid (a present body box is valid only if the body is)
+# fault: a present body box is always valid (its content's flag dropped)
+# why: only presence checked
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_bx_valid,BeaconBlockBody_bx_va_back
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -317,3 +317,3 @@
+   (v, ok) = pair
+-  (O.BSome{v, O.BNone{}}, ok)
++  (O.BSome{v, O.BNone{}}, True{})
+ 

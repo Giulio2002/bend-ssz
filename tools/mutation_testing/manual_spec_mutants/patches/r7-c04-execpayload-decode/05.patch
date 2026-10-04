@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/05
+# type: ExecutionPayload
+# ops: decode
+# spec: every variable-size field's window must decode as its type
+# fault: the withdrawals window is not validated (its check answers True)
+# why: last field forgotten
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_c4,ExecutionPayload_v5
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -138,3 +138,3 @@
+   match ok:
+-    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, Fulu_list_Withdrawal_16_r.l16_Withdrawal_ok(buf, (off + o2 : U32), (len - o2 : U32)))
++    case True{}: ExecutionPayload_v5(off, len, o0, o1, o2, (buf, True{}))
+     case False{}: (buf, False{})

@@ -1,0 +1,13 @@
+baseline {1: 'c1 ep 4096 544808', 2: 'c2 ep 2^31 4294967295', 3: 'c3 ep 858980000 4294967295', 4: 'c4 ep 858900000 4294967295', 5: 'c5 tx nmax 2684878833', 6: 'c6 bs nmax 3758620651', 7: 'c7 ep budget none'}
+r7-d01-dcost/01 KILLED [('3', ['c3 ep 858980000 4294967295', 'c3 ep 858980000 457032'])]
+r7-d01-dcost/02 KILLED [('2', ['c2 ep 2^31 4294967295', 'c2 ep 2^31 2148007976'])]
+r7-d01-dcost/03 SURVIVED []
+r7-d01-dcost/04 KILLED [('2', ['c2 ep 2^31 4294967295', 'c2 ep 2^31 524288'])]
+r7-d01-dcost/05 KILLED [('1', ['c1 ep 4096 544808', 'c1 ep 4096 534568'])]
+r7-d01-dcost/06 KILLED [('1', ['c1 ep 4096 544808', 'c1 ep 4096 544768'])]
+r7-d01-dcost/07 KILLED [('1', ['c1 ep 4096 544808', 'c1 ep 4096 544768'])]
+r7-d01-dcost/08 SURVIVED []
+r7-d01-dcost/09 SURVIVED []
+r7-d01-dcost/10 KILLED [('1', ['c1 ep 4096 544808', 'c1 ep 4096 86056'])]
+done
+ALLDONE

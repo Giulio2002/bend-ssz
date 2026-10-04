@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/13
+# type: ExecutionPayload
+# ops: decode
+# spec: same
+# fault: gas_used is read at byte 428 + 8 (timestamp's position)
+# why: off by one field
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_g1_rd2
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -91,3 +91,3 @@
+   (buf, +o_withdrawals) = pair
+-  ExecutionPayload_g1_rd3(off, len, vend, o_extra_data, o_transactions, o_withdrawals, uint64_r.u64_read(buf, (off + 420 : U32), 8))
++  ExecutionPayload_g1_rd3(off, len, vend, o_extra_data, o_transactions, o_withdrawals, uint64_r.u64_read(buf, (off + 428 : U32), 8))
+ 

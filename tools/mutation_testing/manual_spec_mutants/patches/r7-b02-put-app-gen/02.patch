@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b02-put-app-gen/02
+# type: bytelist_256
+# ops: encode,root
+# spec: same
+# fault: the appended element is written at position i + 1 (one byte late; byte i keeps the cleared zero)
+# why: off-by-one
+# file: types/bytelist_256_def_generated.bend
+# sym: bl256_put_app,bl256_grow
+--- a/types/bytelist_256_def_generated.bend
++++ b/types/bytelist_256_def_generated.bend
+@@ -51,3 +51,3 @@
+   match ok:
+-    case True{}: (O.words_write_app(o, (i * 1 : U32), v, 1), True{})
++    case True{}: (O.words_write_app(o, ((i + 1 : U32) * 1 : U32), v, 1), True{})
+     case False{}: (o, False{})

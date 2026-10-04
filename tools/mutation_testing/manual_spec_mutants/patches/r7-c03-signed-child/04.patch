@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c03-signed-child/04
+# type: SignedBeaconBlock
+# ops: encode
+# spec: same
+# fault: the message's flag is OR-ed with the accumulator (always True: acc starts True)
+# why: or for and
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_va0
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (message, ok) = pair
+-  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.and(acc, ok))
++  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.or(acc, ok))
+ 

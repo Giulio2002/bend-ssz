@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c05-txlist-decode/02
+# type: ExecutionPayload
+# ops: decode
+# spec: same
+# fault: the alignment test is dropped (a first offset of 5 accepted)
+# why: test forgotten
+# file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+# sym: l1048576_bl1073741824_head,l1048576_bl1073741824_first
+--- a/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+@@ -91,3 +91,3 @@
+   (buf, +first) = pair
+-  l1048576_bl1073741824_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
++  l1048576_bl1073741824_first(Bool.and(U32.is_le(first, len), Bool.and(U32.is_le(4, first), U32.is_le(U32.shrn(first, 2n), 1048576))), buf, off, len, first)
+ 

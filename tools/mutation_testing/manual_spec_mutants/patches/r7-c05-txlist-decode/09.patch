@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c05-txlist-decode/09
+# type: ExecutionPayload
+# ops: decode
+# spec: every offset is checked
+# fault: the second-to-last element's end is taken as the window end (the last offset is never read by the validator: last test at i + 1 for i + 2)
+# why: off-by-one
+# file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+# sym: l1048576_bl1073741824_ev,l1048576_bl1073741824_next
+--- a/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+       (ok, a) = r
+-      l1048576_bl1073741824_ev(q, (i + 1 : U32), n, off, len, l1048576_bl1073741824_ee(ok, off, len, a, l1048576_bl1073741824_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))))
++      l1048576_bl1073741824_ev(q, (i + 1 : U32), n, off, len, l1048576_bl1073741824_ee(ok, off, len, a, l1048576_bl1073741824_next(U32.is_eq((i + 1 : U32), n), buf, off, len, (i + 1 : U32))))
+ 

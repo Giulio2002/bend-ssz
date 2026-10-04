@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c06-signed-decode/03
+# type: SignedBeaconBlock
+# ops: decode
+# spec: decode then encode is the identity
+# fault: the signature is read at byte 0 (over the offset)
+# why: wrong position
+# file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+# sym: SignedBeaconBlock_rd1
+--- a/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, message) = pair
+-  SignedBeaconBlock_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 4 : U32), 96))
++  SignedBeaconBlock_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+ 

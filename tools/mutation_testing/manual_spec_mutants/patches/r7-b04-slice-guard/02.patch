@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b04-slice-guard/02
+# type: Fulu_list_bytevec_2048_4096
+# ops: root
+# spec: same
+# fault: the empty slice keeps the claimed length n with no storage (Words{zeros(0), n})
+# why: length not reset
+# file: src/obj.bend
+# sym: sl_some,words_slice
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1580,3 +1580,3 @@
+   match empty:
+-    case True{}: (o, Words{zeros_for(0), 0})
++    case True{}: (o, Words{zeros_for(0), n})
+     case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c06-signed-decode/04
+# type: SignedBeaconBlock
+# ops: decode
+# spec: the window holds at least the fixed part
+# fault: the minimum length is 96 (a 96..99-byte window passes the length test)
+# why: forgot the offset's 4 bytes
+# file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+# sym: SignedBeaconBlock_ok
+--- a/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+@@ -51,3 +51,3 @@
+ 
+-def SignedBeaconBlock_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlock_ok_len(U32.is_le(100, len), buf, off, len)
++def SignedBeaconBlock_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlock_ok_len(U32.is_le(96, len), buf, off, len)
+ 

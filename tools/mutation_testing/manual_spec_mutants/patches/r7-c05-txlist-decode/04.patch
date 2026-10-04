@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c05-txlist-decode/04
+# type: ExecutionPayload
+# ops: decode
+# spec: offsets are non-decreasing
+# fault: the non-decreasing test is dropped
+# why: test forgotten
+# file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+# sym: l1048576_bl1073741824_ee
+--- a/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+@@ -66,3 +66,3 @@
+   (buf, +b) = pair
+-  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  l1048576_bl1073741824_eb(b, O.and_pair(acc, l1048576_bl1073741824_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)))
+ 

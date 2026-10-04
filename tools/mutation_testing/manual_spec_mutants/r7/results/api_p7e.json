@@ -1,0 +1,163 @@
+{
+ "baseline": {
+  "1": "c1 ep default decoded=some reser_ok=1 size=528 ck=4096691351",
+  "2": "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+  "3": "c3 sbb sig7 decoded=some reser_ok=1 size=1120 ck=3174164382",
+  "4": "c4 ep tx off past decoded=none",
+  "5": "c5 ep tx off desc decoded=none"
+ },
+ "r7-c04-execpayload-decode/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/06": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=none"
+   ]
+  }
+ },
+ "r7-c04-execpayload-decode/07": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=none"
+   ]
+  }
+ },
+ "r7-c04-execpayload-decode/08": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/09": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=none"
+   ]
+  }
+ },
+ "r7-c04-execpayload-decode/10": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c04-execpayload-decode/11": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=some reser_ok=0 size=0 ck=7"
+   ]
+  }
+ },
+ "r7-c04-execpayload-decode/12": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=639 ck=3590805050"
+   ]
+  }
+ },
+ "r7-c04-execpayload-decode/13": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c05-txlist-decode/06": {
+  "B2": "KILLED",
+  "diff": {
+   "5": [
+    "c5 ep tx off desc decoded=none",
+    "c5 ep tx off desc decoded=some reser_ok=0 size=0 ck=7"
+   ]
+  }
+ },
+ "r7-c05-txlist-decode/07": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=627 ck=469056870"
+   ]
+  }
+ },
+ "r7-c05-txlist-decode/08": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3095832581"
+   ]
+  }
+ },
+ "r7-c05-txlist-decode/09": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 ep x1 t2 w2 decoded=some reser_ok=1 size=628 ck=3751930117",
+    "c2 ep x1 t2 w2 decoded=none"
+   ]
+  }
+ },
+ "r7-c06-signed-decode/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c06-signed-decode/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-c06-signed-decode/03": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 sbb sig7 decoded=some reser_ok=1 size=1120 ck=3174164382",
+    "c3 sbb sig7 decoded=some reser_ok=1 size=1120 ck=2735992468"
+   ]
+  }
+ },
+ "r7-c06-signed-decode/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ }
+}

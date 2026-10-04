@@ -1,0 +1,415 @@
+[
+ {
+  "id": "r5-d01-nested-list-offsets/01",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_desc_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off_desc_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_past_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off_past_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/04",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_desc_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off_past_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off_desc_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/06",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_first_past_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_first_past_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/07",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_off0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off0_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/09",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d01-nested-list-offsets/10",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d02-container-offsets/01",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_D_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_off_plus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d02-container-offsets/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_D_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_off_plus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_off_minus_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d02-container-offsets/07",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n1_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r5-d02-container-offsets/08",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_marked_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r5-d03-pcts-offsets/02",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_G_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_F_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_off_plus_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r5-d03-pcts-offsets/03",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_D_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_E_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_off_plus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_off_minus_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-d04-fixed-elem-list/02",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_default_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ }
+]
