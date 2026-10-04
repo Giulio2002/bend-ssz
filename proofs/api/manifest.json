@@ -2992,6 +2992,7 @@
     "slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
     "slop/validity/fulu_Transaction_senc_generated.bend",
     "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
+    "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
     "slop/validity/fulu_Transaction_writer_bl1073741824_generated.bend",
     "slop/size/Transaction_generated.bend",
     "slop/constants/Transaction_generated.bend"
@@ -3015,6 +3016,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_Transaction.bend",
+    "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
     "slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend"
    ]
   },
@@ -3148,6 +3150,9 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ExecutionRequests_enc.bend",
+    "slop/validity/fulu_ExecutionRequests_access_l16_WithdrawalRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_access_l2_ConsolidationRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_access_l8192_DepositRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_appb_l16_WithdrawalRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_appb_l2_ConsolidationRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_appb_l8192_DepositRequest_generated.bend",
@@ -3228,6 +3233,11 @@
     "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend",
     "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend",
     "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_dok_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_end_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_limit_generated.bend",
     "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend",
     "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend",
     "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend",
@@ -3334,6 +3344,7 @@
     "slop/validity/fulu_ExecutionPayloadHeader_senc_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_unit_b256_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_writer_b256_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_writer_bl32_generated.bend",
     "slop/capacity/ExecutionPayloadHeader_generated.bend",
@@ -3369,6 +3380,7 @@
    "files": [
     "root_types.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_vroot_bl32_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_vrootj_bl32_generated.bend"
    ]
   },
@@ -3500,6 +3512,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ExecutionPayload_enc.bend",
+    "slop/validity/fulu_ExecutionPayload_access_l1048576_bl1073741824_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_access_l16_Withdrawal_generated.bend",
     "slop/validity/fulu_ExecutionPayload_appb_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayload_appb_l16_Withdrawal_generated.bend",
     "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
@@ -3561,6 +3575,19 @@
    "op": "hashtreeroot",
    "files": [
     "root_ExecutionPayload.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_4_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_clean_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_fold_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_dok_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_end_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_2_generated.bend",
     "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend",
     "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend",
     "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend",
@@ -3580,6 +3607,12 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BeaconState_enc.bend",
+    "slop/validity/fulu_BeaconState_access_l1099511627776_Validator_generated.bend",
+    "slop/validity/fulu_BeaconState_access_l134217728_PendingDeposit_generated.bend",
+    "slop/validity/fulu_BeaconState_access_l134217728_PendingPartialWithdrawal_generated.bend",
+    "slop/validity/fulu_BeaconState_access_l16777216_HistoricalSummary_generated.bend",
+    "slop/validity/fulu_BeaconState_access_l2048_Eth1Data_generated.bend",
+    "slop/validity/fulu_BeaconState_access_l262144_PendingConsolidation_generated.bend",
     "slop/validity/fulu_BeaconState_appb_l1099511627776_Validator_generated.bend",
     "slop/validity/fulu_BeaconState_appb_l1099511627776_u64_generated.bend",
     "slop/validity/fulu_BeaconState_appb_l1099511627776_u8_generated.bend",
@@ -3605,7 +3638,9 @@
     "slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend",
     "slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_enc_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_enc_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend",
+    "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_writer_l1099511627776_Validator_generated.bend",
     "slop/validity/fulu_BeaconState_writer_l1099511627776_u64_generated.bend",
     "slop/validity/fulu_BeaconState_writer_l1099511627776_u8_generated.bend",
@@ -3671,6 +3706,17 @@
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_4_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_clean_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_fold_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_dok_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_end_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_1_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend",
@@ -3692,6 +3738,7 @@
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend",
     "slop/validity/fulu_BeaconState_vrootj_l1099511627776_u8_generated.bend"
    ]
@@ -4057,6 +4104,11 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_BeaconBlockBody_enc.bend",
+    "slop/validity/fulu_BeaconBlockBody_access_l16_Deposit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_access_l16_ProposerSlashing_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_access_l16_SignedBLSToExecutionChange_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_access_l16_SignedVoluntaryExit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_access_l8_Attestation_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_appb_l16_Deposit_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_appb_l16_ProposerSlashing_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_appb_l16_SignedBLSToExecutionChange_generated.bend",
@@ -4184,6 +4236,8 @@
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_take_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_take_2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend",
@@ -4195,6 +4249,8 @@
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend",
@@ -4221,6 +4277,7 @@
     "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_dok_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_end_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend",
@@ -4231,7 +4288,9 @@
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_limit_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend",
-    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_0_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_2_generated.bend"
    ]
   },
   "FuluBeaconBlock_encode_ssz_proof_generated.bend": {
@@ -4905,6 +4964,8 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveComplexTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_access_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_access_pl_ProgressiveVarTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_appb_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_appb_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_appb_pbits_generated.bend",
@@ -5009,7 +5070,18 @@
    "generated_name": "ProgressiveComplexTestStruct",
    "op": "hashtreeroot",
    "files": [
-    "root_gtypes2.bend"
+    "root_gtypes2.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_4_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_clean_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_dok_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_end_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_limit_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_3_generated.bend"
    ]
   },
   "ProgressiveVarTestStruct_encode_ssz_proof_generated.bend": {
@@ -5025,6 +5097,7 @@
     "slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_senc_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_writer_l123_u16_generated.bend",
     "slop/size/ProgressiveVarTestStruct_generated.bend",
     "slop/constants/ProgressiveVarTestStruct_generated.bend"
@@ -5070,6 +5143,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes2.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_vrootj_l123_u16_generated.bend"
    ]
   },
@@ -5118,6 +5192,7 @@
     "slop/validity/generic_proglist_bool_booleans_generated.bend",
     "slop/validity/generic_proglist_bool_senc_generated.bend",
     "slop/validity/generic_proglist_bool_unit_pl_bool_generated.bend",
+    "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
     "slop/validity/generic_proglist_bool_writer_pl_bool_generated.bend",
     "slop/constants/proglist_bool_generated.bend"
    ]
@@ -5143,6 +5218,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
     "slop/validity/generic_proglist_bool_vrootj_pl_bool_generated.bend"
    ]
   },
@@ -5205,6 +5281,7 @@
     "slop/validity/generic_vec_bool_1_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_1_senc_generated.bend",
     "slop/validity/generic_vec_bool_1_unit_v1_bool_generated.bend",
+    "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
     "slop/validity/generic_vec_bool_1_writer_v1_bool_generated.bend",
     "slop/capacity/vec_bool_1_generated.bend",
     "slop/size/vec_bool_1_generated.bend",
@@ -5233,6 +5310,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
     "slop/validity/generic_vec_bool_1_vrootj_v1_bool_generated.bend",
     "slop/constants/vec_bool_1_generated.bend"
    ]
@@ -5249,6 +5327,7 @@
     "slop/validity/generic_vec_bool_2_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_2_senc_generated.bend",
     "slop/validity/generic_vec_bool_2_unit_v2_bool_generated.bend",
+    "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
     "slop/validity/generic_vec_bool_2_writer_v2_bool_generated.bend",
     "slop/capacity/vec_bool_2_generated.bend",
     "slop/size/vec_bool_2_generated.bend",
@@ -5277,6 +5356,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
     "slop/validity/generic_vec_bool_2_vrootj_v2_bool_generated.bend",
     "slop/constants/vec_bool_2_generated.bend"
    ]
@@ -5293,6 +5373,7 @@
     "slop/validity/generic_vec_bool_31_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_31_senc_generated.bend",
     "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
+    "slop/validity/generic_vec_bool_31_vrootj1_v31_bool_generated.bend",
     "slop/validity/generic_vec_bool_31_writer_v31_bool_generated.bend",
     "slop/capacity/vec_bool_31_generated.bend",
     "slop/size/vec_bool_31_generated.bend",
@@ -5320,6 +5401,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_31_vrootj1_v31_bool_generated.bend",
     "slop/validity/generic_vec_bool_31_vrootj_v31_bool_generated.bend",
     "slop/constants/vec_bool_31_generated.bend"
    ]
@@ -5336,6 +5418,7 @@
     "slop/validity/generic_vec_bool_3_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_3_senc_generated.bend",
     "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
+    "slop/validity/generic_vec_bool_3_vrootj1_v3_bool_generated.bend",
     "slop/validity/generic_vec_bool_3_writer_v3_bool_generated.bend",
     "slop/capacity/vec_bool_3_generated.bend",
     "slop/size/vec_bool_3_generated.bend",
@@ -5363,6 +5446,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_3_vrootj1_v3_bool_generated.bend",
     "slop/validity/generic_vec_bool_3_vrootj_v3_bool_generated.bend",
     "slop/constants/vec_bool_3_generated.bend"
    ]
@@ -5465,6 +5549,7 @@
     "slop/validity/generic_vec_bool_513_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_513_senc_generated.bend",
     "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
+    "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
     "slop/validity/generic_vec_bool_513_writer_v513_bool_generated.bend",
     "slop/capacity/vec_bool_513_generated.bend",
     "slop/size/vec_bool_513_generated.bend",
@@ -5491,6 +5576,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
     "slop/validity/generic_vec_bool_513_vrootj_v513_bool_generated.bend",
     "slop/constants/vec_bool_513_generated.bend"
    ]
@@ -5507,6 +5593,7 @@
     "slop/validity/generic_vec_bool_5_poison_flag_generated.bend",
     "slop/validity/generic_vec_bool_5_senc_generated.bend",
     "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
+    "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
     "slop/validity/generic_vec_bool_5_writer_v5_bool_generated.bend",
     "slop/capacity/vec_bool_5_generated.bend",
     "slop/size/vec_bool_5_generated.bend",
@@ -5534,6 +5621,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
     "slop/validity/generic_vec_bool_5_vrootj_v5_bool_generated.bend",
     "slop/constants/vec_bool_5_generated.bend"
    ]
@@ -6065,6 +6153,7 @@
     "slop/validity/generic_proglist_uint8_collection_pl_u8_generated.bend",
     "slop/validity/generic_proglist_uint8_senc_generated.bend",
     "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
+    "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
     "slop/validity/generic_proglist_uint8_writer_pl_u8_generated.bend",
     "slop/constants/proglist_uint8_generated.bend"
    ]
@@ -6089,6 +6178,7 @@
    "files": [
     "root_gtypes.bend",
     "slop/validity/generic_proglist_uint8_vroot_pl_u8_generated.bend",
+    "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
     "slop/validity/generic_proglist_uint8_vrootj_pl_u8_generated.bend"
    ]
   },
@@ -6148,6 +6238,7 @@
     "slop/validity/generic_vec_uint8_1_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_1_senc_generated.bend",
     "slop/validity/generic_vec_uint8_1_unit_v1_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
     "slop/validity/generic_vec_uint8_1_writer_v1_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_1_generated.bend",
@@ -6176,6 +6267,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
     "slop/validity/generic_vec_uint8_1_vrootj_v1_u8_generated.bend",
     "slop/constants/vec_uint8_1_generated.bend"
    ]
@@ -6191,6 +6283,7 @@
     "slop/validity/generic_vec_uint8_2_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_2_senc_generated.bend",
     "slop/validity/generic_vec_uint8_2_unit_v2_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
     "slop/validity/generic_vec_uint8_2_writer_v2_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_2_generated.bend",
@@ -6219,6 +6312,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
     "slop/validity/generic_vec_uint8_2_vrootj_v2_u8_generated.bend",
     "slop/constants/vec_uint8_2_generated.bend"
    ]
@@ -6234,6 +6328,7 @@
     "slop/validity/generic_vec_uint8_31_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_31_senc_generated.bend",
     "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_31_vrootj1_v31_u8_generated.bend",
     "slop/validity/generic_vec_uint8_31_writer_v31_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_31_generated.bend",
@@ -6262,6 +6357,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_31_vrootj1_v31_u8_generated.bend",
     "slop/validity/generic_vec_uint8_31_vrootj_v31_u8_generated.bend",
     "slop/constants/vec_uint8_31_generated.bend"
    ]
@@ -6277,6 +6373,7 @@
     "slop/validity/generic_vec_uint8_3_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_3_senc_generated.bend",
     "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_3_vrootj1_v3_u8_generated.bend",
     "slop/validity/generic_vec_uint8_3_writer_v3_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_3_generated.bend",
@@ -6305,6 +6402,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_3_vrootj1_v3_u8_generated.bend",
     "slop/validity/generic_vec_uint8_3_vrootj_v3_u8_generated.bend",
     "slop/constants/vec_uint8_3_generated.bend"
    ]
@@ -6406,6 +6504,7 @@
     "slop/validity/generic_vec_uint8_513_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_513_senc_generated.bend",
     "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
     "slop/validity/generic_vec_uint8_513_writer_v513_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_513_generated.bend",
@@ -6433,6 +6532,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
     "slop/validity/generic_vec_uint8_513_vrootj_v513_u8_generated.bend",
     "slop/constants/vec_uint8_513_generated.bend"
    ]
@@ -6448,6 +6548,7 @@
     "slop/validity/generic_vec_uint8_5_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint8_5_senc_generated.bend",
     "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
+    "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
     "slop/validity/generic_vec_uint8_5_writer_v5_u8_generated.bend",
     "slop/size/size_and_bound_generic_generated.bend",
     "slop/capacity/vec_uint8_5_generated.bend",
@@ -6476,6 +6577,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
     "slop/validity/generic_vec_uint8_5_vrootj_v5_u8_generated.bend",
     "slop/constants/vec_uint8_5_generated.bend"
    ]
@@ -6536,6 +6638,7 @@
     "slop/validity/generic_proglist_uint16_collection_pl_u16_generated.bend",
     "slop/validity/generic_proglist_uint16_senc_generated.bend",
     "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+    "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
     "slop/validity/generic_proglist_uint16_writer_pl_u16_generated.bend",
     "slop/constants/proglist_uint16_generated.bend"
    ]
@@ -6560,6 +6663,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
     "slop/validity/generic_proglist_uint16_vrootj_pl_u16_generated.bend"
    ]
   },
@@ -6617,6 +6721,7 @@
     "slop/validity/generic_vec_uint16_1_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint16_1_senc_generated.bend",
     "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
+    "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
     "slop/validity/generic_vec_uint16_1_writer_v1_u16_generated.bend",
     "slop/capacity/vec_uint16_1_generated.bend",
     "slop/size/vec_uint16_1_generated.bend",
@@ -6644,6 +6749,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
     "slop/validity/generic_vec_uint16_1_vrootj_v1_u16_generated.bend",
     "slop/constants/vec_uint16_1_generated.bend"
    ]
@@ -6703,6 +6809,7 @@
     "slop/validity/generic_vec_uint16_31_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint16_31_senc_generated.bend",
     "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
+    "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
     "slop/validity/generic_vec_uint16_31_writer_v31_u16_generated.bend",
     "slop/capacity/vec_uint16_31_generated.bend",
     "slop/size/vec_uint16_31_generated.bend",
@@ -6730,6 +6837,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
     "slop/validity/generic_vec_uint16_31_vrootj_v31_u16_generated.bend",
     "slop/constants/vec_uint16_31_generated.bend"
    ]
@@ -6745,6 +6853,7 @@
     "slop/validity/generic_vec_uint16_3_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint16_3_senc_generated.bend",
     "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
+    "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
     "slop/validity/generic_vec_uint16_3_writer_v3_u16_generated.bend",
     "slop/capacity/vec_uint16_3_generated.bend",
     "slop/size/vec_uint16_3_generated.bend",
@@ -6772,6 +6881,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
     "slop/validity/generic_vec_uint16_3_vrootj_v3_u16_generated.bend",
     "slop/constants/vec_uint16_3_generated.bend"
    ]
@@ -6871,6 +6981,7 @@
     "slop/validity/generic_vec_uint16_513_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint16_513_senc_generated.bend",
     "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
+    "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
     "slop/validity/generic_vec_uint16_513_writer_v513_u16_generated.bend",
     "slop/capacity/vec_uint16_513_generated.bend",
     "slop/size/vec_uint16_513_generated.bend",
@@ -6897,6 +7008,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
     "slop/validity/generic_vec_uint16_513_vrootj_v513_u16_generated.bend",
     "slop/constants/vec_uint16_513_generated.bend"
    ]
@@ -6912,6 +7024,7 @@
     "slop/validity/generic_vec_uint16_5_poison_flag_generated.bend",
     "slop/validity/generic_vec_uint16_5_senc_generated.bend",
     "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
+    "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
     "slop/validity/generic_vec_uint16_5_writer_v5_u16_generated.bend",
     "slop/capacity/vec_uint16_5_generated.bend",
     "slop/size/vec_uint16_5_generated.bend",
@@ -6939,6 +7052,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
     "slop/validity/generic_vec_uint16_5_vrootj_v5_u16_generated.bend",
     "slop/constants/vec_uint16_5_generated.bend"
    ]
@@ -8417,6 +8531,9 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_ProgressiveTestStruct_enc.bend",
+    "slop/validity/generic_ProgressiveTestStruct_access_pl_SmallTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_access_pl_VarTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_access_pl_pl_VarTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_appb_pl_SmallTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_appb_pl_u64_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_appb_pl_u8_generated.bend",
@@ -8740,6 +8857,7 @@
     "slop/validity/generic_VarTestStruct_fields_generated.bend",
     "slop/validity/generic_VarTestStruct_senc_generated.bend",
     "slop/validity/generic_VarTestStruct_unit_l1024_u16_generated.bend",
+    "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
     "slop/validity/generic_VarTestStruct_writer_l1024_u16_generated.bend",
     "slop/size/VarTestStruct_generated.bend",
     "slop/constants/VarTestStruct_generated.bend"
@@ -8777,6 +8895,7 @@
    "op": "hashtreeroot",
    "files": [
     "root_gtypes.bend",
+    "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
     "slop/validity/generic_VarTestStruct_vrootj_l1024_u16_generated.bend"
    ]
   },
@@ -8796,6 +8915,9 @@
     "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
     "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_writer_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_writer_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_writer_v2_VarTestStruct_generated.bend",
@@ -8859,6 +8981,8 @@
    "files": [
     "root_gtypes.bend",
     "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_vrootj_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_vrootj_l128_u16_generated.bend"
    ]

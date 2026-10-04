@@ -15129,6 +15129,30 @@
      "law": "Transaction_root_correct"
     },
     {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_vroot_bl1073741824_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/fulu_Transaction_vrootj_bl1073741824_generated.bend",
      "law": "Transaction_vroot_bl1073741824_j_past"
     },
@@ -15279,6 +15303,54 @@
     {
      "file": "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
      "law": "Transaction_serialize_vunit_bl1073741824_range_above_full"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vreject_j1_bl1073741824_n3_b3"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_vrootj1_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vrefuse_j1_bl1073741824_n3_b3"
     },
     {
      "file": "slop/validity/fulu_Transaction_writer_bl1073741824_generated.bend",
@@ -16011,6 +16083,26 @@
      "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_dok_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_end_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_limit_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_limit"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend",
      "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1"
     },
@@ -16106,6 +16198,18 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_access_l16_WithdrawalRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vcoll_l16_WithdrawalRequest_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_access_l2_ConsolidationRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vcoll_l2_ConsolidationRequest_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_access_l8192_DepositRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vcoll_l8192_DepositRequest_append_grow"
+    },
     {
      "file": "slop/validity/fulu_ExecutionRequests_appb_l16_WithdrawalRequest_generated.bend",
      "law": "ExecutionRequests_serialize_vcoll_l16_WithdrawalRequest_appb_below"
@@ -16912,6 +17016,30 @@
      "law": "ExecutionPayloadHeader_vroot_bl32_short_5"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_vroot_bl32_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj_bl32_generated.bend",
      "law": "ExecutionPayloadHeader_vroot_bl32_j_past"
     },
@@ -17098,6 +17226,54 @@
     {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_unit_bl32_generated.bend",
      "law": "ExecutionPayloadHeader_serialize_vunit_bl32_range_above_33"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vreject_j1_bl32_n3_b3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_vrootj1_bl32_generated.bend",
+     "law": "ExecutionPayloadHeader_serialize_vrefuse_j1_bl32_n3_b3"
     },
     {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_writer_b256_generated.bend",
@@ -17826,6 +18002,58 @@
      "law": "ExecutionPayload_root_correct"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_4_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_clean_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_clean"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_fold_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_dok_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_end_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_2"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend",
      "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_1"
     },
@@ -17925,6 +18153,14 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_access_l1048576_bl1073741824_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_l1048576_bl1073741824_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_access_l16_Withdrawal_generated.bend",
+     "law": "ExecutionPayload_serialize_vcoll_l16_Withdrawal_append_grow"
+    },
     {
      "file": "slop/validity/fulu_ExecutionPayload_appb_bl32_generated.bend",
      "law": "ExecutionPayload_serialize_vcoll_bl32_appb_below"
@@ -18438,6 +18674,50 @@
      "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_3_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_4_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_clean_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_clean"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_fold_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_fold"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_dok_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_dok"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_end_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_1_3_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_3_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_set_3"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend",
      "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_1"
     },
@@ -18522,6 +18802,30 @@
      "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_set_3"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_u8_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vrootj_l1099511627776_u64_generated.bend",
      "law": "BeaconState_vroot_l1099511627776_u64_j_past"
     },
@@ -18601,6 +18905,30 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l1099511627776_Validator_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l134217728_PendingDeposit_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l134217728_PendingDeposit_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l134217728_PendingPartialWithdrawal_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l16777216_HistoricalSummary_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_HistoricalSummary_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l2048_Eth1Data_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l2048_Eth1Data_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_access_l262144_PendingConsolidation_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l262144_PendingConsolidation_append_grow"
+    },
     {
      "file": "slop/validity/fulu_BeaconState_appb_l1099511627776_Validator_generated.bend",
      "law": "BeaconState_serialize_vcoll_l1099511627776_Validator_appb_below"
@@ -19110,8 +19438,36 @@
      "law": "BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_enc_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_HistoricalSummary_enc"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend",
      "law": "BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n1_b1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n1_b2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n1_b3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n2_b2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n2_b3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vrootj1_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vreject_j1_l1099511627776_u8_n3_b3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_writer_l1099511627776_Validator_generated.bend",
@@ -21078,6 +21434,14 @@
      "law": "BeaconBlockBody_vroot_l16_Deposit_cache_set_3"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_take_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_take_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_take_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_take_2"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1"
     },
@@ -21120,6 +21484,14 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_2"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend",
@@ -21226,6 +21598,10 @@
      "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend",
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_1"
     },
@@ -21268,6 +21644,14 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend",
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_set_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_take_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_take_2"
     }
    ],
    "ok_eval": [
@@ -21325,6 +21709,26 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_access_l16_Deposit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_Deposit_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_access_l16_ProposerSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_ProposerSlashing_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_access_l16_SignedBLSToExecutionChange_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_SignedBLSToExecutionChange_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_access_l16_SignedVoluntaryExit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l16_SignedVoluntaryExit_append_grow"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_access_l8_Attestation_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l8_Attestation_append_grow"
+    },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_appb_l16_Deposit_generated.bend",
      "law": "BeaconBlockBody_serialize_vcoll_l16_Deposit_appb_below"
@@ -25449,6 +25853,50 @@
     {
      "file": "root_gtypes2.bend",
      "law": "ProgressiveComplexTestStruct_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_4_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_clean_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_clean"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_dok_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_dok"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_end_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_end"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_limit_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_limit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_3_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_3"
     }
    ],
    "ok_eval": [
@@ -25506,6 +25954,14 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_access_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_l10_ProgressiveSingleFieldContainerTestStruct_append_grow"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_access_pl_ProgressiveVarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_ProgressiveVarTestStruct_append_grow"
+    },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vcoll_l10_ProgressiveSingleFieldContainerTestStruct_appb_below"
@@ -26174,6 +26630,14 @@
      "law": "ProgressiveVarTestStruct_root_correct"
     },
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_vroot_l123_u16_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_vroot_l123_u16_j1_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj_l123_u16_generated.bend",
      "law": "ProgressiveVarTestStruct_vroot_l123_u16_j_past"
     },
@@ -26436,6 +26900,22 @@
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_unit_l123_u16_generated.bend",
      "law": "ProgressiveVarTestStruct_serialize_vunit_l123_u16_range_above_248"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_j1_l123_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vrefuse_j1_l123_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vreject_j1_l123_u16_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_vrootj1_l123_u16_generated.bend",
+     "law": "ProgressiveVarTestStruct_serialize_vrefuse_j1_l123_u16_n2_b3"
     },
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_writer_l123_u16_generated.bend",
@@ -26789,6 +27269,30 @@
      "law": "proglist_bool_root_correct"
     },
     {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_vroot_pl_bool_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/generic_proglist_bool_vrootj_pl_bool_generated.bend",
      "law": "proglist_bool_vroot_pl_bool_j_past"
     },
@@ -26975,6 +27479,54 @@
     {
      "file": "slop/validity/generic_proglist_bool_unit_pl_bool_generated.bend",
      "law": "proglist_bool_serialize_vunit_pl_bool_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vreject_j1_pl_bool_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_vrootj1_pl_bool_generated.bend",
+     "law": "proglist_bool_serialize_vrefuse_j1_pl_bool_n3_b3"
     },
     {
      "file": "slop/validity/generic_proglist_bool_writer_pl_bool_generated.bend",
@@ -27451,6 +28003,18 @@
      "law": "vec_bool_1_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_vroot_v1_bool_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_vroot_v1_bool_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_vroot_v1_bool_j1_n1_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_1_vrootj_v1_bool_generated.bend",
      "law": "vec_bool_1_vroot_v1_bool_j_past"
     },
@@ -27603,6 +28167,30 @@
      "law": "vec_bool_1_serialize_vunit_v1_bool_range_above_2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vreject_j1_v1_bool_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vrefuse_j1_v1_bool_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vreject_j1_v1_bool_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vrefuse_j1_v1_bool_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vreject_j1_v1_bool_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_vrootj1_v1_bool_generated.bend",
+     "law": "vec_bool_1_serialize_vrefuse_j1_v1_bool_n1_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_1_writer_v1_bool_generated.bend",
      "law": "vec_bool_1_serialize_vpoison_pk_v1_bool"
     },
@@ -27716,6 +28304,14 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_2_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_vroot_v2_bool_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_vroot_v2_bool_j1_n2_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_2_vrootj_v2_bool_generated.bend",
@@ -27870,6 +28466,22 @@
      "law": "vec_bool_2_serialize_vunit_v2_bool_range_above_3"
     },
     {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vreject_j1_v2_bool_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vrefuse_j1_v2_bool_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vreject_j1_v2_bool_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_vrootj1_v2_bool_generated.bend",
+     "law": "vec_bool_2_serialize_vrefuse_j1_v2_bool_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_2_writer_v2_bool_generated.bend",
      "law": "vec_bool_2_serialize_vpoison_pk_v2_bool"
     },
@@ -27987,6 +28599,10 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_bool_31_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_vrootj1_v31_bool_generated.bend",
+     "law": "vec_bool_31_vroot_v31_bool_j1_n31_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_31_vrootj_v31_bool_generated.bend",
@@ -28175,6 +28791,14 @@
     {
      "file": "slop/validity/generic_vec_bool_31_unit_v31_bool_generated.bend",
      "law": "vec_bool_31_serialize_vunit_v31_bool_range_above_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_vrootj1_v31_bool_generated.bend",
+     "law": "vec_bool_31_serialize_vreject_j1_v31_bool_n31_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_vrootj1_v31_bool_generated.bend",
+     "law": "vec_bool_31_serialize_vrefuse_j1_v31_bool_n31_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_31_writer_v31_bool_generated.bend",
@@ -28412,6 +29036,10 @@
      "law": "vec_bool_3_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_bool_3_vrootj1_v3_bool_generated.bend",
+     "law": "vec_bool_3_vroot_v3_bool_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_3_vrootj_v3_bool_generated.bend",
      "law": "vec_bool_3_vroot_v3_bool_j_past"
     },
@@ -28574,6 +29202,14 @@
     {
      "file": "slop/validity/generic_vec_bool_3_unit_v3_bool_generated.bend",
      "law": "vec_bool_3_serialize_vunit_v3_bool_range_above_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_vrootj1_v3_bool_generated.bend",
+     "law": "vec_bool_3_serialize_vreject_j1_v3_bool_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_vrootj1_v3_bool_generated.bend",
+     "law": "vec_bool_3_serialize_vrefuse_j1_v3_bool_n3_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_3_writer_v3_bool_generated.bend",
@@ -29537,6 +30173,18 @@
      "law": "vec_bool_513_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_vroot_v513_bool_j1_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_vroot_v513_bool_j1_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_vroot_v513_bool_j1_n513_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_513_vrootj_v513_bool_generated.bend",
      "law": "vec_bool_513_vroot_v513_bool_j_past"
     },
@@ -29727,6 +30375,30 @@
     {
      "file": "slop/validity/generic_vec_bool_513_unit_v513_bool_generated.bend",
      "law": "vec_bool_513_serialize_vunit_v513_bool_range_above_514"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vreject_j1_v513_bool_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vrefuse_j1_v513_bool_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vreject_j1_v513_bool_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vrefuse_j1_v513_bool_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vreject_j1_v513_bool_n513_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_vrootj1_v513_bool_generated.bend",
+     "law": "vec_bool_513_serialize_vrefuse_j1_v513_bool_n513_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_513_writer_v513_bool_generated.bend",
@@ -30080,6 +30752,18 @@
      "law": "vec_bool_5_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_vroot_v5_bool_j1_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_vroot_v5_bool_j1_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_vroot_v5_bool_j1_n5_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_5_vrootj_v5_bool_generated.bend",
      "law": "vec_bool_5_vroot_v5_bool_j_past"
     },
@@ -30266,6 +30950,30 @@
     {
      "file": "slop/validity/generic_vec_bool_5_unit_v5_bool_generated.bend",
      "law": "vec_bool_5_serialize_vunit_v5_bool_range_above_6"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vreject_j1_v5_bool_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vrefuse_j1_v5_bool_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vreject_j1_v5_bool_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vrefuse_j1_v5_bool_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vreject_j1_v5_bool_n5_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_vrootj1_v5_bool_generated.bend",
+     "law": "vec_bool_5_serialize_vrefuse_j1_v5_bool_n5_b3"
     },
     {
      "file": "slop/validity/generic_vec_bool_5_writer_v5_bool_generated.bend",
@@ -33273,6 +33981,30 @@
      "law": "proglist_uint8_vroot_pl_u8_past_73"
     },
     {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_vroot_pl_u8_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint8_vrootj_pl_u8_generated.bend",
      "law": "proglist_uint8_vroot_pl_u8_j_past"
     },
@@ -33423,6 +34155,54 @@
     {
      "file": "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
      "law": "proglist_uint8_serialize_vunit_pl_u8_range_above_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vreject_j1_pl_u8_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_vrootj1_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vrefuse_j1_pl_u8_n3_b3"
     },
     {
      "file": "slop/validity/generic_proglist_uint8_writer_pl_u8_generated.bend",
@@ -33743,6 +34523,18 @@
      "law": "vec_uint8_1_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_vroot_v1_u8_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_vroot_v1_u8_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_vroot_v1_u8_j1_n1_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_1_vrootj_v1_u8_generated.bend",
      "law": "vec_uint8_1_vroot_v1_u8_j_past"
     },
@@ -33855,6 +34647,30 @@
      "law": "vec_uint8_1_serialize_vunit_v1_u8_range_above_2"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vreject_j1_v1_u8_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vrefuse_j1_v1_u8_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vreject_j1_v1_u8_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vrefuse_j1_v1_u8_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vreject_j1_v1_u8_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_vrootj1_v1_u8_generated.bend",
+     "law": "vec_uint8_1_serialize_vrefuse_j1_v1_u8_n1_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_1_writer_v1_u8_generated.bend",
      "law": "vec_uint8_1_serialize_vpoison_pk_v1_u8"
     },
@@ -33964,6 +34780,14 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint8_2_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_vroot_v2_u8_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_vroot_v2_u8_j1_n2_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint8_2_vrootj_v2_u8_generated.bend",
@@ -34078,6 +34902,22 @@
      "law": "vec_uint8_2_serialize_vunit_v2_u8_range_above_3"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vreject_j1_v2_u8_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vrefuse_j1_v2_u8_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vreject_j1_v2_u8_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_vrootj1_v2_u8_generated.bend",
+     "law": "vec_uint8_2_serialize_vrefuse_j1_v2_u8_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_2_writer_v2_u8_generated.bend",
      "law": "vec_uint8_2_serialize_vpoison_pk_v2_u8"
     },
@@ -34189,6 +35029,10 @@
      "law": "vec_uint8_31_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_31_vrootj1_v31_u8_generated.bend",
+     "law": "vec_uint8_31_vroot_v31_u8_j1_n31_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_31_vrootj_v31_u8_generated.bend",
      "law": "vec_uint8_31_vroot_v31_u8_j_tail"
     },
@@ -34287,6 +35131,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_31_unit_v31_u8_generated.bend",
      "law": "vec_uint8_31_serialize_vunit_v31_u8_range_above_32"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_vrootj1_v31_u8_generated.bend",
+     "law": "vec_uint8_31_serialize_vreject_j1_v31_u8_n31_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_vrootj1_v31_u8_generated.bend",
+     "law": "vec_uint8_31_serialize_vrefuse_j1_v31_u8_n31_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint8_31_writer_v31_u8_generated.bend",
@@ -34404,6 +35256,10 @@
      "law": "vec_uint8_3_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_3_vrootj1_v3_u8_generated.bend",
+     "law": "vec_uint8_3_vroot_v3_u8_j1_n3_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_3_vrootj_v3_u8_generated.bend",
      "law": "vec_uint8_3_vroot_v3_u8_j_past"
     },
@@ -34514,6 +35370,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_3_unit_v3_u8_generated.bend",
      "law": "vec_uint8_3_serialize_vunit_v3_u8_range_above_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_vrootj1_v3_u8_generated.bend",
+     "law": "vec_uint8_3_serialize_vreject_j1_v3_u8_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_vrootj1_v3_u8_generated.bend",
+     "law": "vec_uint8_3_serialize_vrefuse_j1_v3_u8_n3_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint8_3_writer_v3_u8_generated.bend",
@@ -35065,6 +35929,18 @@
      "law": "vec_uint8_513_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_vroot_v513_u8_j1_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_vroot_v513_u8_j1_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_vroot_v513_u8_j1_n513_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_513_vrootj_v513_u8_generated.bend",
      "law": "vec_uint8_513_vroot_v513_u8_j_past"
     },
@@ -35167,6 +36043,30 @@
     {
      "file": "slop/validity/generic_vec_uint8_513_unit_v513_u8_generated.bend",
      "law": "vec_uint8_513_serialize_vunit_v513_u8_range_above_514"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vreject_j1_v513_u8_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vrefuse_j1_v513_u8_n513_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vreject_j1_v513_u8_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vrefuse_j1_v513_u8_n513_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vreject_j1_v513_u8_n513_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_vrootj1_v513_u8_generated.bend",
+     "law": "vec_uint8_513_serialize_vrefuse_j1_v513_u8_n513_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint8_513_writer_v513_u8_generated.bend",
@@ -35280,6 +36180,18 @@
      "law": "vec_uint8_5_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_vroot_v5_u8_j1_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_vroot_v5_u8_j1_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_vroot_v5_u8_j1_n5_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_5_vrootj_v5_u8_generated.bend",
      "law": "vec_uint8_5_vroot_v5_u8_j_past"
     },
@@ -35390,6 +36302,30 @@
     {
      "file": "slop/validity/generic_vec_uint8_5_unit_v5_u8_generated.bend",
      "law": "vec_uint8_5_serialize_vunit_v5_u8_range_above_6"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vreject_j1_v5_u8_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vrefuse_j1_v5_u8_n5_b1"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vreject_j1_v5_u8_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vrefuse_j1_v5_u8_n5_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vreject_j1_v5_u8_n5_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_vrootj1_v5_u8_generated.bend",
+     "law": "vec_uint8_5_serialize_vrefuse_j1_v5_u8_n5_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint8_5_writer_v5_u8_generated.bend",
@@ -35742,6 +36678,14 @@
      "law": "proglist_uint16_root_correct"
     },
     {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_vroot_pl_u16_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_vroot_pl_u16_j1_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint16_vrootj_pl_u16_generated.bend",
      "law": "proglist_uint16_vroot_pl_u16_j_past"
     },
@@ -35908,6 +36852,22 @@
     {
      "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
      "law": "proglist_uint16_serialize_vunit_pl_u16_range_above_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vreject_j1_pl_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vrefuse_j1_pl_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vreject_j1_pl_u16_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_vrootj1_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vrefuse_j1_pl_u16_n2_b3"
     },
     {
      "file": "slop/validity/generic_proglist_uint16_writer_pl_u16_generated.bend",
@@ -36228,6 +37188,14 @@
      "law": "vec_uint16_1_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_vroot_v1_u16_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_vroot_v1_u16_j1_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_1_vrootj_v1_u16_generated.bend",
      "law": "vec_uint16_1_vroot_v1_u16_j_past"
     },
@@ -36346,6 +37314,22 @@
     {
      "file": "slop/validity/generic_vec_uint16_1_unit_v1_u16_generated.bend",
      "law": "vec_uint16_1_serialize_vunit_v1_u16_range_above_4"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vreject_j1_v1_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vrefuse_j1_v1_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vreject_j1_v1_u16_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_vrootj1_v1_u16_generated.bend",
+     "law": "vec_uint16_1_serialize_vrefuse_j1_v1_u16_n2_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_1_writer_v1_u16_generated.bend",
@@ -36690,6 +37674,14 @@
      "law": "vec_uint16_31_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_vroot_v31_u16_j1_n62_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_vroot_v31_u16_j1_n62_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_31_vrootj_v31_u16_generated.bend",
      "law": "vec_uint16_31_vroot_v31_u16_j_tail"
     },
@@ -36792,6 +37784,22 @@
     {
      "file": "slop/validity/generic_vec_uint16_31_unit_v31_u16_generated.bend",
      "law": "vec_uint16_31_serialize_vunit_v31_u16_range_above_64"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vreject_j1_v31_u16_n62_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vrefuse_j1_v31_u16_n62_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vreject_j1_v31_u16_n62_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_vrootj1_v31_u16_generated.bend",
+     "law": "vec_uint16_31_serialize_vrefuse_j1_v31_u16_n62_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_31_writer_v31_u16_generated.bend",
@@ -36903,6 +37911,14 @@
     {
      "file": "root_gtypes.bend",
      "law": "vec_uint16_3_root_correct"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_vroot_v3_u16_j1_n6_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_vroot_v3_u16_j1_n6_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_3_vrootj_v3_u16_generated.bend",
@@ -37019,6 +38035,22 @@
     {
      "file": "slop/validity/generic_vec_uint16_3_unit_v3_u16_generated.bend",
      "law": "vec_uint16_3_serialize_vunit_v3_u16_range_above_8"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vreject_j1_v3_u16_n6_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vrefuse_j1_v3_u16_n6_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vreject_j1_v3_u16_n6_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_vrootj1_v3_u16_generated.bend",
+     "law": "vec_uint16_3_serialize_vrefuse_j1_v3_u16_n6_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_3_writer_v3_u16_generated.bend",
@@ -37574,6 +38606,14 @@
      "law": "vec_uint16_513_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_vroot_v513_u16_j1_n1026_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_vroot_v513_u16_j1_n1026_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_513_vrootj_v513_u16_generated.bend",
      "law": "vec_uint16_513_vroot_v513_u16_j_past"
     },
@@ -37680,6 +38720,22 @@
     {
      "file": "slop/validity/generic_vec_uint16_513_unit_v513_u16_generated.bend",
      "law": "vec_uint16_513_serialize_vunit_v513_u16_range_above_1028"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vreject_j1_v513_u16_n1026_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vrefuse_j1_v513_u16_n1026_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vreject_j1_v513_u16_n1026_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_vrootj1_v513_u16_generated.bend",
+     "law": "vec_uint16_513_serialize_vrefuse_j1_v513_u16_n1026_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_513_writer_v513_u16_generated.bend",
@@ -37789,6 +38845,14 @@
      "law": "vec_uint16_5_root_correct"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_vroot_v5_u16_j1_n10_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_vroot_v5_u16_j1_n10_b3"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_5_vrootj_v5_u16_generated.bend",
      "law": "vec_uint16_5_vroot_v5_u16_j_past"
     },
@@ -37895,6 +38959,22 @@
     {
      "file": "slop/validity/generic_vec_uint16_5_unit_v5_u16_generated.bend",
      "law": "vec_uint16_5_serialize_vunit_v5_u16_range_above_12"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vreject_j1_v5_u16_n10_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vrefuse_j1_v5_u16_n10_b2"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vreject_j1_v5_u16_n10_b3"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_vrootj1_v5_u16_generated.bend",
+     "law": "vec_uint16_5_serialize_vrefuse_j1_v5_u16_n10_b3"
     },
     {
      "file": "slop/validity/generic_vec_uint16_5_writer_v5_u16_generated.bend",
@@ -45856,6 +46936,18 @@
    "decode_input": [],
    "serialize_valid": [
     {
+     "file": "slop/validity/generic_ProgressiveTestStruct_access_pl_SmallTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_append_grow"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_access_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_VarTestStruct_append_grow"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_access_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_pl_VarTestStruct_append_grow"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_SmallTestStruct_generated.bend",
      "law": "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_below"
     },
@@ -47684,6 +48776,14 @@
      "law": "VarTestStruct_root_correct"
     },
     {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_vroot_l1024_u16_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_vroot_l1024_u16_j1_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_VarTestStruct_vrootj_l1024_u16_generated.bend",
      "law": "VarTestStruct_vroot_l1024_u16_j_past"
     },
@@ -47920,6 +49020,22 @@
      "law": "VarTestStruct_serialize_vunit_l1024_u16_range_above_2050"
     },
     {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_j1_l1024_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vrefuse_j1_l1024_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vreject_j1_l1024_u16_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_vrootj1_l1024_u16_generated.bend",
+     "law": "VarTestStruct_serialize_vrefuse_j1_l1024_u16_n2_b3"
+    },
+    {
      "file": "slop/validity/generic_VarTestStruct_writer_l1024_u16_generated.bend",
      "law": "VarTestStruct_serialize_vpoison_pk_l1024_u16"
     },
@@ -48098,6 +49214,38 @@
     {
      "file": "slop/validity/generic_ComplexTestStruct_vroot_bl256_generated.bend",
      "law": "ComplexTestStruct_vroot_bl256_past_73"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_vroot_bl256_j1_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_vroot_l128_u16_j1_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_vroot_l128_u16_j1_n2_b3"
     },
     {
      "file": "slop/validity/generic_ComplexTestStruct_vrootj_bl256_generated.bend",
@@ -48426,6 +49574,90 @@
     {
      "file": "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
      "law": "ComplexTestStruct_serialize_vunit_l128_u16_range_above_258"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_read_set_0"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_other_set_0"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_read_set_1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_other_set_1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vaccess_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vcoll_v2_VarTestStruct_out_of_range"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n1_b1"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n1_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n1_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_bl256_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_bl256_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_bl256_n3_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_l128_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_l128_u16_n2_b2"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vreject_j1_l128_u16_n2_b3"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_vrootj1_l128_u16_generated.bend",
+     "law": "ComplexTestStruct_serialize_vrefuse_j1_l128_u16_n2_b3"
     },
     {
      "file": "slop/validity/generic_ComplexTestStruct_writer_bl256_generated.bend",
