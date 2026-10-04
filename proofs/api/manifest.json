@@ -3638,6 +3638,7 @@
     "slop/validity/fulu_BeaconState_api_l16777216_b32_generated.bend",
     "slop/validity/fulu_BeaconState_api_l2048_Eth1Data_generated.bend",
     "slop/validity/fulu_BeaconState_api_l262144_PendingConsolidation_generated.bend",
+    "slop/validity/fulu_BeaconState_api_tight_generated.bend",
     "slop/validity/fulu_BeaconState_api_v64_u64_generated.bend",
     "slop/validity/fulu_BeaconState_api_v65536_b32_generated.bend",
     "slop/validity/fulu_BeaconState_api_v8192_u64_generated.bend",
@@ -4842,6 +4843,7 @@
    "op": "encode_ssz",
    "files": [
     "var_codec_DataColumnSidecar_enc.bend",
+    "slop/validity/fulu_DataColumnSidecar_api_l4096_b2048_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_api_l4096_b48_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_appb_l4096_b2048_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_blit_generated.bend",

@@ -19694,6 +19694,10 @@
      "law": "BeaconState_serialize_vcoll_l262144_PendingConsolidation_api_append"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_api_tight_generated.bend",
+     "law": "BeaconState_serialize_vrefuse_api_tight_historical_roots"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_api_v64_u64_generated.bend",
      "law": "BeaconState_serialize_vcoll_v64_u64_api_get"
     },
@@ -26214,6 +26218,10 @@
    "decode_tree": [],
    "decode_input": [],
    "serialize_valid": [
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_api_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_api_len"
+    },
     {
      "file": "slop/validity/fulu_DataColumnSidecar_api_l4096_b48_generated.bend",
      "law": "DataColumnSidecar_serialize_vcoll_l4096_b48_api_get"
