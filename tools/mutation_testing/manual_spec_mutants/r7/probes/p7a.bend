@@ -30,10 +30,14 @@ def rs(d: D.Digest) -> String:
   match d:
     case D.D{+a, +b1, +c, +d1, +e, +f, +g, +h}: U32.show(a) ++ "," ++ U32.show(b1) ++ "," ++ U32.show(h)
 
+def ck_st(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
+  (ws, +x) = pair
+  ck_go(k, (i + 1 : U32), ((acc * 31 : U32) + x : U32), ws)
+
 def ck_go(+k: Nat, +i: U32, +acc: U32, ws: Array<U32>) -> U32:
   match k:
     case 0n: acc
-    case 1n+q: ck_go(q, (i + 1 : U32), ((acc * 31 : U32) + Array.get(U32, ws, i) : U32), ws)
+    case 1n+q: ck_st(q, i, acc, Array.get(U32, ws, i))
 
 def enc_str(e: O.Encoded) -> String:
   match e:

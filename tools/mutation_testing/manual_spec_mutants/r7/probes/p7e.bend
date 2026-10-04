@@ -23,10 +23,14 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 #  4 case 2's bytes with the transactions' second offset (byte 528 + 1 + 4) set past the transactions window (10 -> 200): invalid
 #  5 case 2's bytes with byte 528 + 1 + 4 set to 4 (offsets 8, 4: descending): invalid
 
+def ck_st(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
+  (ws, +x) = pair
+  ck_go(k, (i + 1 : U32), ((acc * 31 : U32) + x : U32), ws)
+
 def ck_go(+k: Nat, +i: U32, +acc: U32, ws: Array<U32>) -> U32:
   match k:
     case 0n: acc
-    case 1n+q: ck_go(q, (i + 1 : U32), ((acc * 31 : U32) + Array.get(U32, ws, i) : U32), ws)
+    case 1n+q: ck_st(q, i, acc, Array.get(U32, ws, i))
 
 def show_buf(label: String, x: Bool, b: B.Buf) -> IO(Unit):
   match b:
@@ -73,9 +77,12 @@ def dec_ep(label: String, pair: B.Buf & U32) -> IO(Unit):
   (b, +n) = pair
   show_ep(label, EpR.ExecutionPayload_decode(b, n))
 # byte 533 = word 133, byte 1: set it to v (it is the low byte of the transactions' second offset, at 528 + 1 + 4)
+def set_w(+i: U32, +v: U32, +n: U32, pair: Array<U32> & U32) -> B.Buf:
+  (ws, +x) = pair
+  B.Buf{Array.set(U32, ws, i, ((x .&. 4294902015 : U32) .|. (v * 256 : U32) : U32)), n}
 def set533(+v: U32, b: B.Buf) -> B.Buf:
   match b:
-    case B.Buf{ws, +n}: B.Buf{Array.set(U32, ws, 133, ((Array.get(U32, ws, 133) .&. 4294902015 : U32) .|. (v * 256 : U32) : U32)), n}
+    case B.Buf{ws, +n}: set_w(133, v, n, Array.get(U32, ws, 133))
 def sig7() -> B96.Bytes96: B96.Bytes96{7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 def sb_bytes() -> B.Buf: bytes_of(Pair.snd(SbD.SignedBeaconBlock, O.Encoded, SbE.SignedBeaconBlock_serialize(SbD.SignedBeaconBlock_set_signature(SbD.SignedBeaconBlock_default(), sig7()))))
 def dec_sb(label: String, pair: B.Buf & U32) -> IO(Unit):
