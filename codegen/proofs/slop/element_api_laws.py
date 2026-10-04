@@ -53,7 +53,6 @@ from codegen.core import slop_layout as LAYOUT  # noqa: E402
 from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
-from codegen.proofs.slop.collection_guards import owners_of  # noqa: E402
 from codegen.proofs.slop.container_field_validity import type_decls  # noqa: E402
 from codegen.proofs.slop.element_access_laws import element, owners_any, tup, ttyp  # noqa: E402
 

@@ -1824,3 +1824,60 @@ No frozen statement and no lock changed.
 | r8-b02-merkle-fast/01..04 (equivalent) | do not apply: the streaming merkleizer of src/merkle_fast.bend was removed |
 
 Machine-readable: the `status` field of each entry of `manual_round_8_survivors.json`.
+
+## Round 9 access laws (agent/access-laws)
+
+Scope: the element-access survivors of the in-progress round 9 first pass (families r9-a01..a09, b01..b04, c01..c04, f01; the d01..d03
+and e01 survivors replayed for the record). The plain element API of the standalone vectors and lists had almost no laws:
+collection_guards covers only the packed lists whose append tests the element range (byte lists, uint16 lists) and the bit lists,
+element_access_laws (round 8) only the growing lists and the boxed vectors. No survivor was a code bug; each family is closed by a
+generated law. No frozen statement and no lock changed.
+
+**New generator `codegen/proofs/slop/element_api_laws.py`** (files `proofs/slop/validity/<runtime>_<X>_api_<kp>_generated.bend`, X the
+name whose encoder is the kind's own, else the smallest name reaching it; filed by api_gate under serialize_valid). The objects are rigid
+literals: a packed kind's F is `O.words_setw` over `O.words_new(bytes)` with the element values computed by the generator from the element
+width (never read back from the generated code), a bit list's F is `O.bits_setw(O.bits_zeros(n), 0, w)`, a composite kind's F is built from
+the default by set / append of the variant element. Every file checks in under 10 s on the unmutated tree (the slowest: the 65536-element
+Bytes32 vector of BeaconState, 9.0 s).
+
+| Law (`<X>_serialize_vcoll_<kp>_api_<tag>`) | Kinds | Pins |
+|---|---|---|
+| `get` | 153 | len(F) = n; get(F, i) = Some{e_i} at 0, 1, n - 1; None at n, n + 1, 2^32 - 1 |
+| `default` | 153 | len(D) = N (vector) or 0 (list); get(D, 0) = Some{default element} or None; get(D, N) = None |
+| `set_<i>` (i = 0, 1 when n > 2, n - 1: 431 laws) | 153 | set(F, i, w) accepted, reads back w, len still n, the slots i - 1, i + 1, 0, n - 1 keep their elements |
+| `set_out` | 153 | set(F, i, w) = (F, False{}) at i = n, n + 1, 2^32 - 1: refused, object unchanged |
+| `range` | 34 (uint8 / uint16 elements, byte lists and vectors, the byte API of bitvector_1280 / 1281) | set of 2^(8U) and of 2^32 - 1 = (F, False{}); 2^(8U) - 1 accepted and read back. uint32 / uint64 / uint128 / uint256 / boolean elements are U32 / O.U64 / word records / Bool values: no out-of-width value exists |
+| `len` | 66 lists | len after one append is 1, after a set on it still 1 |
+| `append` | 66 lists | min(L, 3) appends of e0, e1, e2 accepted, len k, get j = Some{e_j}, get k = None; at L = k one more is refused; a packed / bit list with its own serializer: serialize(appended) = serialize(F) |
+| `<U>_serialize_vcoll_selector` | 3 unions | the selector of the default and of `U_ck{default}` for every option k is the schema's declared selector (generic_form_schemas) |
+
+Kinds: 85 packed vectors (uint8..uint256, boolean, byte vectors, Bytes32 / Bytes48 vectors, the two bitvector byte APIs), 19 packed lists,
+25 bit lists (progbitlist included), 2 composite vectors and 22 composite lists (boxed `take` kinds included), 3 unions. Boolean kinds
+hold True and False in F, so both reads are stated. The one exempt kind, by name, is the list of cells `l4096_b2048` (element O.Words of
+2048 bytes), whose access cell_list_guards states. **Coverage gate:** the generator stops when any kind with a `get / take / set / append /
+len` has no laws (a set of an unexpected shape, an element it cannot build, a 1- or 2-byte element whose setter does not refuse values
+above 2^(8U) - 1, an append without a limit test) or a union's selectors are not in the schema.
+
+**Replay** (each patch applied with `patch -p1` to a hard-linked copy of the regenerated tree; the element API modules whose import cone
+holds the patched file are checked first, then up to 3 other proofs/slop roots naming a changed symbol; tools/check.sh, pinned settings):
+
+| Family | Replayed | Killed | Killed by | Survivors |
+|---|---|---|---|---|
+| r9-a01-get-bound | 15 | 15 | `_api_get` | |
+| r9-a02-set-bound | 15 | 15 | `_api_set_out` | |
+| r9-a03-set-no-index-check | 15 | 15 | `_api_set_out` | |
+| r9-a04-set-value-range | 3 | 3 | `_api_range` | |
+| r9-a05-len-unit | 15 | 14 | `_api_get` | /01 equivalent: `U32.div(n, 1)` -> `n` on vec_uint8_513 |
+| r9-a06-get-position | 12 | 12 | `_api_get` | |
+| r9-a07-set-position | 15 | 15 | `_api_set_0` / `_api_set_1` | |
+| r9-a08-bool-read | 6 | 3 | `_api_get` (is_eq(x, 0)) | /02, /04, /06 equivalent on every reachable object: `is_lt(0, x)` differs from `is_eq(x, 1)` only on a byte >= 2, which no set / append writes (`O.pick(v, 1, 0)`) and the decoder refuses |
+| r9-a09-append-slot | 10 | 9 | `_api_append` (slot n - 1), `_api_len` (one byte) | /10 equivalent: `(n * 1) + 1` = `(n + 1) * 1` on proglist_bool |
+| r9-b01..b04 (bitvector byte API) | 12 | 12 | `_api_get`, `_api_range`, `_api_set_out`, `_api_set_0` | |
+| r9-c01..c04 (composite vectors / lists) | 8 | 8 | `_api_get`, `_api_set_out`, `_api_set_1` | |
+| r9-f01-union-selector | 5 | 5 | `<U>_serialize_vcoll_selector` | |
+| r9-d01-getter-neighbour (survivors) | 8 | 0 | | container field getters, outside this family (no collection API): the field laws state the getters on objects whose neighbour fields are equal |
+| r9-d02-setter-neighbour (survivors) | 5 | 2 | /13, /18 by round 8's `_cache_enc` laws (fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc, fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc) | /11, /15, /17 container field setters, outside this family |
+| r9-d03-swap-noop (survivors) | 9 | 0 | | container `swap_f`, outside this family (8 reach no proofs/slop root) |
+| r9-e01-group-validity (survivors) | 7 | 0 | | the group validity of the Fulu containers, outside this family |
+
+All 156 element API modules check on the unmutated tree. Machine-readable replay: `tools/mutation_testing/manual_spec_mutants/r9_access/replay_access_laws.json` (and `.log`; the runner `freplay_access.py`, patches from the round 9 auditor's `pk/`).

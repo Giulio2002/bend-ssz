@@ -1,0 +1,2579 @@
+[
+ {
+  "id": "r9-a01-get-bound/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_get"
+    ],
+    "msg": "- expected : (513, Some{255}, Some{1}, Some{90}, Some{0}, None{}, None{})\n- observed : (513, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_get"
+    ],
+    "msg": "- expected : (5, Some{65535}, Some{1}, Some{23130}, Some{0}, None{}, None{})\n- observed : (5, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_get"
+    ],
+    "msg": "- expected : (513, Some{65535}, Some{1}, Some{23130}, Some{0}, None{}, None{})\n- observed : (513, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_get"
+    ],
+    "msg": "- expected : (31, Some{4294967295}, Some{1}, Some{1515870810}, Some{0}, None{}, None{})\n- observed : (31, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_get"
+    ],
+    "msg": "- expected : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, Some{O.U64{0, 0}}, None{}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{}, None{})\n- observed : (3, Some{uint128_d.Uint128{4294967",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_get"
+    ],
+    "msg": "- expected : (31, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{}, None{})\n- observed : (31, Some{uint128_d.Uint128{42949",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_get"
+    ],
+    "msg": "- expected : (5, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 151584",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/09",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_get"
+    ],
+    "msg": "- expected : (5, Some{True{}}, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{})\n- observed : (5, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/10",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_get"
+    ],
+    "msg": "- expected : (513, Some{True{}}, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{})\n- observed : (513, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/11",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_get"
+    ],
+    "msg": "- expected : (3, Some{4294967295}, Some{1}, Some{1515870810}, Some{0}, None{}, None{})\n- observed : (3, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/12",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_get"
+    ],
+    "msg": "- expected : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, Some{O.U64{0, 0}}, None{}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/13",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{}, None{})\n- observed : (3, Some{uint128_d.Uint128{4294967",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/14",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 151584",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a01-get-bound/15",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_get"
+    ],
+    "msg": "- expected : (3, Some{True{}}, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{})\n- observed : (3, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[131071, 0, 1010588250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, True{}), (O.Words{[131071, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, False{}), O.Words{[131071, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, False{})\n- observed : ((O.Words{[131071, 0, ",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[131071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967295, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1515870810, 1010580540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 124}, True{}), (O.Words{[4294967295, 1, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0, 0, 0], 24}, True{}), (O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 24}, False{}), O.Words{[4294967040, 4294967041, 1, 2, 1515847680",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.2,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 1515847680, 1515847681, 1515847682, 1515847683, 1010565120, 1010565121, 1010565122, 1010565123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 48}, True{}), (O.Words{[4294967040, 4294967041, 4294967042, 4294967043,",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.3,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 5.3,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515847687, 1010565120, ",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/09",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, True{}), (O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, False{}), O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, False{})\n- observed : ((O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/10",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.7,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/11",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967295, 1, 1515870810, 1010580540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 12}, True{}), (O.Words{[4294967295, 1, 1515870810, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 12}, False{}), O.Words{[4294967295, 1, 1515870810, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 12}, False{})\n- ob",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/12",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0, 0, 0], 24}, True{}), (O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 24}, False{}), O.Words{[4294967040, 4294967041, 1, 2, 1515847680",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/13",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.9,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 1515847680, 1515847681, 1515847682, 1515847683, 1010565120, 1010565121, 1010565122, 1010565123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 48}, True{}), (O.Words{[4294967040, 4294967041, 4294967042, 4294967043,",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/14",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.7,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4, 5, 6, 7, 8, 1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515847687, 1010565120, 1010565121, 1010565122, 1010565123, 1010565124, ",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a02-set-bound/15",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, True{}), (O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, False{}), O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, False{})\n- observed : ((O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[131071, 0, 1010588250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, True{}), (O.Words{[131071, 0, 23130, 15420, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, True{}), O.Words{[131071, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1010565120], 10}, True{})\n- observed : ((O.Words{[",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[131071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967295, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1515870810, 1010580540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 124}, True{}), (O.Words{[4294967295, 1, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0, 0, 0], 24}, True{}), (O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 0, 0, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0], 24}, True{}), O.Words{[4294967040, 4294967041,",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 1515847680, 1515847681, 1515847682, 1515847683, 1010565120, 1010565121, 1010565122, 1010565123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 48}, True{}), (O.Words{[4294967040, 4294967041, 4294967042, 4294967043,",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.4,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.4,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515847687, 1010565120, ",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/09",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, True{}), (O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, True{}), O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 5}, True{})\n- observed : ((O.Words{[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/10",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/11",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967295, 1, 1515870810, 1010580540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 12}, True{}), (O.Words{[4294967295, 1, 1515870810, 0, 1010580540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 12}, True{}), O.Words{[4294967295, 1, 1515870810, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1010580540], 1",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/12",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0, 0, 0], 24}, True{}), (O.Words{[4294967040, 4294967041, 1, 2, 1515847680, 1515847681, 0, 0, 1010565120, 1010565121, 0, 0, 0, 0, 0, 0], 24}, True{}), O.Words{[4294967040, 4294967041,",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/13",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.9,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 1, 2, 3, 4, 1515847680, 1515847681, 1515847682, 1515847683, 1010565120, 1010565121, 1010565122, 1010565123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 48}, True{}), (O.Words{[4294967040, 4294967041, 4294967042, 4294967043,",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/14",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.5,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4, 5, 6, 7, 8, 1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515847687, 1010565120, 1010565121, 1010565122, 1010565123, 1010565124, ",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a03-set-no-index-check/15",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, True{}), (O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, True{}), O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 3}, True{})\n- observed : ((O.Words{[65537, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a04-set-value-range/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_range"
+    ],
+    "msg": "- expected : ((O.Words{[255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a04-set-value-range/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_range"
+    ],
+    "msg": "- expected : ((O.Words{[65535, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, True{}), (O.Words{[131071, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, False{}), True{}, Some{65535})\n- observed : ((O.Words{[131071, 0, 23130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 10}, False{}), (O.W",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a04-set-value-range/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.9,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_range"
+    ],
+    "msg": "- expected : ((O.Words{[65535, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-a05-len-unit/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_get"
+    ],
+    "msg": "- expected : (10, Some{65535}, Some{1}, Some{23130}, Some{0}, Some{0}, None{})\n- observed : (5, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_get"
+    ],
+    "msg": "- expected : (1026, Some{65535}, Some{1}, Some{23130}, Some{0}, Some{0}, None{})\n- observed : (513, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_get"
+    ],
+    "msg": "- expected : (124, Some{4294967295}, Some{1}, Some{1515870810}, Some{0}, Some{0}, None{})\n- observed : (31, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_get"
+    ],
+    "msg": "- expected : (24, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, Some{O.U64{0, 0}}, Some{O.U64{0, 0}}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_get"
+    ],
+    "msg": "- expected : (48, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{})\n- observed : (3, ",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_get"
+    ],
+    "msg": "- expected : (496, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{})\n- observed : (31",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_get"
+    ],
+    "msg": "- expected : (160, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/09",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_get"
+    ],
+    "msg": "- expected : (2, Some{True{}}, Some{False{}}, None{}, None{}, None{}, None{})\n- observed : (5, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/10",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_get"
+    ],
+    "msg": "- expected : (256, Some{True{}}, Some{False{}}, None{}, None{}, None{}, None{})\n- observed : (513, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/11",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_get"
+    ],
+    "msg": "- expected : (12, Some{4294967295}, Some{1}, Some{1515870810}, Some{0}, Some{0}, None{})\n- observed : (3, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/12",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_get"
+    ],
+    "msg": "- expected : (24, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, Some{O.U64{0, 0}}, Some{O.U64{0, 0}}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/13",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_get"
+    ],
+    "msg": "- expected : (48, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{})\n- observed : (3, ",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/14",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_get"
+    ],
+    "msg": "- expected : (96, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 15158",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a05-len-unit/15",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_get"
+    ],
+    "msg": "- expected : (1, Some{True{}}, None{}, None{}, None{}, None{}, None{})\n- observed : (3, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_get"
+    ],
+    "msg": "- expected : (513, Some{1}, Some{0}, Some{0}, None{}, None{}, None{})\n- observed : (513, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_get"
+    ],
+    "msg": "- expected : (5, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})\n- observed : (5, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_get"
+    ],
+    "msg": "- expected : (513, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})\n- observed : (513, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_get"
+    ],
+    "msg": "- expected : (31, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})\n- observed : (31, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_get"
+    ],
+    "msg": "- expected : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{4294967041, 1}}, Some{O.U64{1, 2}}, None{}, None{}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{4294967042, 4294967043, 1, 2}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, None{}, None{}, None{})\n- observed : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_get"
+    ],
+    "msg": "- expected : (31, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{4294967042, 4294967043, 1, 2}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{}, None{}, None{})\n- observed : (31, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, So",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_get"
+    ],
+    "msg": "- expected : (5, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4}}, Some{uint256_d.Uint256{0, 0, 0, 0, 0, 0, 0, 0}}, None{}, None{}, None{})\n- ob",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/09",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_get"
+    ],
+    "msg": "- expected : (3, Some{65535}, Some{1}, Some{23130}, None{}, None{}, None{})\n- observed : (3, Some{4294967295}, Some{1}, Some{1515870810}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/10",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_get"
+    ],
+    "msg": "- expected : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{4294967041, 1}}, Some{O.U64{1, 2}}, None{}, None{}, None{})\n- observed : (3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/11",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some{uint128_d.Uint128{4294967042, 4294967043, 1, 2}}, Some{uint128_d.Uint128{1, 2, 3, 4}}, None{}, None{}, None{})\n- observed : (3, Some{uint128_d.Uint128{4294967040, 4294967041, 4294967042, 4294967043}}, Some",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a06-get-position/12",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.1,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_get"
+    ],
+    "msg": "- expected : (3, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 4294967044, 4294967045, 4294967046, 4294967047}}, Some{uint256_d.Uint256{4294967044, 4294967045, 4294967046, 4294967047, 1, 2, 3, 4}}, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, None{}, None{}, None{})\n- ob",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/01",
+  "file": "types/vec_uint8_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_uint8_513_serialize_vcoll_v513_u8_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{255}, 513, Some{60}, Some{90})\n- observed : (True{}, Some{60}, 513, Some{1}, Some{90})",
+    "root": "proofs/slop/validity/generic_vec_uint8_513_api_v513_u8_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/02",
+  "file": "types/vec_uint16_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "vec_uint16_5_serialize_vcoll_v5_u16_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{65340}, 5, Some{1}, Some{23130})\n- observed : (True{}, Some{15420}, 5, Some{1}, Some{23130})",
+    "root": "proofs/slop/validity/generic_vec_uint16_5_api_v5_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/03",
+  "file": "types/vec_uint16_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "vec_uint16_513_serialize_vcoll_v513_u16_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{65340}, 513, Some{1}, Some{23130})\n- observed : (True{}, Some{15420}, 513, Some{1}, Some{23130})",
+    "root": "proofs/slop/validity/generic_vec_uint16_513_api_v513_u16_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/04",
+  "file": "types/vec_uint32_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_uint32_31_serialize_vcoll_v31_u32_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{4294917180}, 31, Some{1}, Some{1515870810})\n- observed : (True{}, Some{1010580540}, 31, Some{1}, Some{1515870810})",
+    "root": "proofs/slop/validity/generic_vec_uint32_31_api_v31_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/05",
+  "file": "types/vec_uint64_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_uint64_3_serialize_vcoll_v3_u64_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{O.U64{1010565121, 2}}, 3, Some{O.U64{4294967040, 1010565120}}, Some{O.U64{1515847680, 1515847681}})\n- observed : (True{}, Some{O.U64{1010565120, 1010565121}}, 3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1515847680, 1515847681}})",
+    "root": "proofs/slop/validity/generic_vec_uint64_3_api_v3_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/06",
+  "file": "types/vec_uint128_3_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "vec_uint128_3_serialize_vcoll_v3_u128_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{uint128_d.Uint128{1010565122, 1010565123, 3, 4}}, 3, Some{uint128_d.Uint128{4294967040, 4294967041, 1010565120, 1010565121}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}})\n- observed : (True{}, Some{uint128_d.Uint128{1010565120, 1010565121, 10105",
+    "root": "proofs/slop/validity/generic_vec_uint128_3_api_v3_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/07",
+  "file": "types/vec_uint128_31_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.2,
+    "laws": [
+     "vec_uint128_31_serialize_vcoll_v31_u128_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{uint128_d.Uint128{1010565122, 1010565123, 3, 4}}, 31, Some{uint128_d.Uint128{4294967040, 4294967041, 1010565120, 1010565121}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}})\n- observed : (True{}, Some{uint128_d",
+    "root": "proofs/slop/validity/generic_vec_uint128_31_api_v31_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/08",
+  "file": "types/vec_uint256_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.7,
+    "laws": [
+     "vec_uint256_5_serialize_vcoll_v5_u256_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{uint256_d.Uint256{1010565124, 1010565125, 1010565126, 1010565127, 5, 6, 7, 8}}, 5, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 1010565120, 1010565121, 1010565122, 1010565123}}, Some{uint256_d.Uint256{0, 0, 0, 0, 0, 0, 0, 0}}, Some{uint256_d.Uint2",
+    "root": "proofs/slop/validity/generic_vec_uint256_5_api_v5_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/09",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{True{}}, 5, Some{False{}}, Some{True{}})\n- observed : (True{}, Some{False{}}, 5, Some{False{}}, Some{True{}})",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/10",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{True{}}, 513, Some{False{}}, Some{True{}})\n- observed : (True{}, Some{False{}}, 513, Some{False{}}, Some{True{}})",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/11",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.7,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{4294917180}, 3, Some{1}, Some{1515870810})\n- observed : (True{}, Some{1010580540}, 3, Some{1}, Some{1515870810})",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/12",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{O.U64{1010565121, 2}}, 3, Some{O.U64{4294967040, 1010565120}}, Some{O.U64{1515847680, 1515847681}})\n- observed : (True{}, Some{O.U64{1010565120, 1010565121}}, 3, Some{O.U64{4294967040, 4294967041}}, Some{O.U64{1515847680, 1515847681}})",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/13",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{uint128_d.Uint128{1010565122, 1010565123, 3, 4}}, 3, Some{uint128_d.Uint128{4294967040, 4294967041, 1010565120, 1010565121}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}})\n- observed : (True{}, Some{uint128_d.Uint128{1010565120, 1010565121, 10105",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/14",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.5,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{uint256_d.Uint256{1010565124, 1010565125, 1010565126, 1010565127, 5, 6, 7, 8}}, 3, Some{uint256_d.Uint256{4294967040, 4294967041, 4294967042, 4294967043, 1010565120, 1010565121, 1010565122, 1010565123}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a07-set-position/15",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{True{}}, 3, Some{False{}}, Some{True{}})\n- observed : (True{}, Some{False{}}, 3, Some{False{}}, Some{True{}})",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a08-bool-read/01",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "vec_bool_5_serialize_vcoll_v5_bool_api_get"
+    ],
+    "msg": "- expected : (5, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{}, None{})\n- observed : (5, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a08-bool-read/02",
+  "file": "types/vec_bool_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_5_api_v5_bool_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-a08-bool-read/03",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "vec_bool_513_serialize_vcoll_v513_bool_api_get"
+    ],
+    "msg": "- expected : (513, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{}, None{})\n- observed : (513, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a08-bool-read/04",
+  "file": "types/vec_bool_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_513_api_v513_bool_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-a08-bool-read/05",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_get"
+    ],
+    "msg": "- expected : (3, Some{False{}}, Some{True{}}, Some{False{}}, None{}, None{}, None{})\n- observed : (3, Some{True{}}, Some{False{}}, Some{True{}}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a08-bool-read/06",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-a09-append-slot/01",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.8,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_append"
+    ],
+    "msg": "- expected : (True{}, True{}, True{}, 3, Some{1}, Some{1515870810}, Some{0}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[1, 1515870810, 0, 0], 12}})\n- observed : (True{}, True{}, True{}, 3, Some{4294967295}, Some{1}, Some{1515870810}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[4294967",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/02",
+  "file": "types/proglist_uint32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "proglist_uint32_serialize_vcoll_pl_u32_api_len"
+    ],
+    "msg": "- expected : (0, 0)\n- observed : (1, 1)",
+    "root": "proofs/slop/validity/generic_proglist_uint32_api_pl_u32_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/03",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.9,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_append"
+    ],
+    "msg": "- expected : (True{}, True{}, True{}, 3, Some{O.U64{1, 2}}, Some{O.U64{1515847680, 1515847681}}, Some{O.U64{0, 0}}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[1, 2, 1515847680, 1515847681, 0, 0, 0, 0], 24}})\n- observed : (True{}, True{}, True{}, 3, Some{O.U64{4294967040, 4294967041}}, Some{O",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/04",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "proglist_uint64_serialize_vcoll_pl_u64_api_len"
+    ],
+    "msg": "- expected : (0, 0)\n- observed : (1, 1)",
+    "root": "proofs/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/05",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 5.6,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_append"
+    ],
+    "msg": "- expected : (True{}, True{}, True{}, 3, Some{uint128_d.Uint128{1, 2, 3, 4}}, Some{uint128_d.Uint128{1515847680, 1515847681, 1515847682, 1515847683}}, Some{uint128_d.Uint128{0, 0, 0, 0}}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[1, 2, 3, 4, 1515847680, 1515847681, 1515847682, 1515847683, 0",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/06",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.9,
+    "laws": [
+     "proglist_uint128_serialize_vcoll_pl_u128_api_len"
+    ],
+    "msg": "- expected : (0, 0)\n- observed : (1, 1)",
+    "root": "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/07",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 7.6,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_append"
+    ],
+    "msg": "- expected : (True{}, True{}, True{}, 3, Some{uint256_d.Uint256{1, 2, 3, 4, 5, 6, 7, 8}}, Some{uint256_d.Uint256{1515847680, 1515847681, 1515847682, 1515847683, 1515847684, 1515847685, 1515847686, 1515847687}}, Some{uint256_d.Uint256{0, 0, 0, 0, 0, 0, 0, 0}}, None{}, O.Encoded{True{}, ../../../src/b",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/08",
+  "file": "types/proglist_uint256_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.0,
+    "laws": [
+     "proglist_uint256_serialize_vcoll_pl_u256_api_len"
+    ],
+    "msg": "- expected : (0, 0)\n- observed : (1, 1)",
+    "root": "proofs/slop/validity/generic_proglist_uint256_api_pl_u256_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/09",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.7,
+    "laws": [
+     "proglist_bool_serialize_vcoll_pl_bool_api_append"
+    ],
+    "msg": "- expected : (True{}, True{}, True{}, 3, Some{False{}}, Some{True{}}, Some{False{}}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[256], 3}})\n- observed : (True{}, True{}, True{}, 3, Some{True{}}, Some{False{}}, Some{True{}}, None{}, O.Encoded{True{}, ../../../src/buffer.Buf{[65537], 3}})",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-a09-append-slot/10",
+  "file": "types/proglist_bool_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_proglist_bool_api_pl_bool_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_proglist_bool_appb_pl_bool_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-b01-bitvec-get/01",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_get"
+    ],
+    "msg": "- expected : (160, Some{255}, Some{1}, Some{90}, Some{0}, None{}, None{})\n- observed : (160, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b01-bitvec-get/02",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_get"
+    ],
+    "msg": "- expected : (161, Some{255}, Some{1}, Some{90}, Some{0}, None{}, None{})\n- observed : (161, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/01",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_range"
+    ],
+    "msg": "- expected : ((O.Words{[255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1509949440, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 160}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/02",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1509949440, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 160}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/03",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1509949440, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 160}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/04",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_range"
+    ],
+    "msg": "- expected : ((O.Words{[255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 161}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/05",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.1,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15450, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 161}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/06",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_set_out"
+    ],
+    "msg": "- expected : ((O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15450, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 161}, True{}), (O.Words{[511, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b03-bitvec-write/01",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{60}, 160, Some{0}, Some{90})\n- observed : (True{}, Some{60}, 160, Some{1}, Some{90})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b03-bitvec-write/02",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_set_0"
+    ],
+    "msg": "- expected : (True{}, Some{60}, 161, Some{0}, Some{90})\n- observed : (True{}, Some{60}, 161, Some{1}, Some{90})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b04-bitvec-read/01",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1280_api_get"
+    ],
+    "msg": "- expected : (160, Some{1}, Some{0}, Some{0}, None{}, None{}, None{})\n- observed : (160, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1280_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-b04-bitvec-read/02",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vcoll_bv1281_api_get"
+    ],
+    "msg": "- expected : (161, Some{1}, Some{0}, Some{0}, None{}, None{}, None{})\n- observed : (161, Some{255}, Some{1}, Some{90}, None{}, None{}, None{})",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_api_bv1281_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c01-composite-get/01",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "ComplexTestStruct_serialize_vcoll_v4_FixedTestStruct_api_get"
+    ],
+    "msg": "- expected : (4, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, None{}, None{})\n- observed : (4, Some{Fixed",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c01-composite-get/02",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_api_get"
+    ],
+    "msg": "- expected : (3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{0, 0}}, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{0, 0}}, None{}, None{})\n- observed : (3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestS",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c02-composite-set/01",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "ComplexTestStruct_serialize_vcoll_v4_FixedTestStruct_api_set_out"
+    ],
+    "msg": "- expected : ((vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq{[FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}, FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}, FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}, FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}], 4}, True{}), (vec_Fi",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c02-composite-set/02",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_api_set_out"
+    ],
+    "msg": "- expected : ((proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{[SmallTestStruct_d.SmallTestStruct{1, 0}, SmallTestStruct_d.SmallTestStruct{0, 0}, SmallTestStruct_d.SmallTestStruct{1, 0}, SmallTestStruct_d.SmallTestStruct{0, 0}], 3}, True{}), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{[Smal",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c03-composite-read/01",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "ComplexTestStruct_serialize_vcoll_v4_FixedTestStruct_api_get"
+    ],
+    "msg": "- expected : (4, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, None{}, None{}, None{})\n- observed : (4, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, So",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c03-composite-read/02",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_api_get"
+    ],
+    "msg": "- expected : (3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, None{}, None{}, None{})\n- observed : (3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{0, 0}}, Some{Sm",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c04-composite-write/01",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "ComplexTestStruct_serialize_vcoll_v4_FixedTestStruct_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}}, 4, Some{FixedTestStruct_d.FixedTestStruct{1, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}}, Some{FixedTestStruct_d.FixedTestStruct{0, O.U64{0, 0}, 0}})\n- observed : (True{}, Some{FixedTes",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-c04-composite-write/02",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.8,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_api_set_1"
+    ],
+    "msg": "- expected : (True{}, Some{SmallTestStruct_d.SmallTestStruct{0, 0}}, 3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestStruct_d.SmallTestStruct{1, 0}})\n- observed : (True{}, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, 3, Some{SmallTestStruct_d.SmallTestStruct{1, 0}}, Some{SmallTestS",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-f01-union-selector/01",
+  "file": "types/CompatibleUnionA_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "CompatibleUnionA_serialize_vcoll_selector"
+    ],
+    "msg": "- expected : (2, 2)\n- observed : (1, 1)",
+    "root": "proofs/slop/validity/generic_CompatibleUnionA_api_selector_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-f01-union-selector/02",
+  "file": "types/CompatibleUnionBC_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "CompatibleUnionBC_serialize_vcoll_selector"
+    ],
+    "msg": "- expected : (3, 3, 3)\n- observed : (2, 2, 3)",
+    "root": "proofs/slop/validity/generic_CompatibleUnionBC_api_selector_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-f01-union-selector/03",
+  "file": "types/CompatibleUnionBC_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "CompatibleUnionBC_serialize_vcoll_selector"
+    ],
+    "msg": "- expected : (2, 2, 2)\n- observed : (2, 2, 3)",
+    "root": "proofs/slop/validity/generic_CompatibleUnionBC_api_selector_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-f01-union-selector/04",
+  "file": "types/CompatibleUnionABCA_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "CompatibleUnionABCA_serialize_vcoll_selector"
+    ],
+    "msg": "- expected : (2, 2, 2, 3, 4)\n- observed : (1, 1, 2, 3, 4)",
+    "root": "proofs/slop/validity/generic_CompatibleUnionABCA_api_selector_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-f01-union-selector/05",
+  "file": "types/CompatibleUnionABCA_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "CompatibleUnionABCA_serialize_vcoll_selector"
+    ],
+    "msg": "- expected : (1, 1, 3, 3, 4)\n- observed : (1, 1, 2, 3, 4)",
+    "root": "proofs/slop/validity/generic_CompatibleUnionABCA_api_selector_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/01",
+  "file": "types/FixedTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/02",
+  "file": "types/FixedTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v4_FixedTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/03",
+  "file": "types/SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/04",
+  "file": "types/SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_SmallTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/05",
+  "file": "types/VarTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v2_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_pl_VarTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/06",
+  "file": "types/VarTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v2_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_pl_VarTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/07",
+  "file": "types/ComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d01-getter-neighbour/08",
+  "file": "types/ComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d02-setter-neighbour/11",
+  "file": "types/FuluValidator_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l1099511627776_Validator_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_4_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d02-setter-neighbour/13",
+  "file": "types/FuluBeaconBlockHeader_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l16_ProposerSlashing_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 6.5,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l16_ProposerSlashing_enc"
+    ],
+    "msg": "- expected : [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-d02-setter-neighbour/15",
+  "file": "types/FuluAttestationData_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l1_AttesterSlashing_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l8_Attestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_2_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d02-setter-neighbour/17",
+  "file": "types/FuluPendingDeposit_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l134217728_PendingDeposit_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_4_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d02-setter-neighbour/18",
+  "file": "types/FuluWithdrawal_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_api_l16_Withdrawal_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.1,
+    "laws": [
+     "ExecutionPayload_serialize_vcoll_l16_Withdrawal_enc"
+    ],
+    "msg": "- expected : [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]\n- observed : [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend"
+   }
+  ],
+  "G": "KILLED"
+ },
+ {
+  "id": "r9-d03-swap-noop/01",
+  "file": "types/VarTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_api_v2_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_api_pl_pl_VarTestStruct_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-d03-swap-noop/02",
+  "file": "types/ComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/03",
+  "file": "types/ComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/04",
+  "file": "types/BitsStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/05",
+  "file": "types/BitsStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/06",
+  "file": "types/ProgressiveBitsStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/07",
+  "file": "types/ProgressiveBitsStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/08",
+  "file": "types/ProgressiveComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-d03-swap-noop/09",
+  "file": "types/ProgressiveComplexTestStruct_def_generated.bend",
+  "checks": [],
+  "G": "NOROOT"
+ },
+ {
+  "id": "r9-e01-group-validity/01",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/03",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 8.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/05",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/06",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/09",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/13",
+  "file": "types/FuluExecutionPayload_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ },
+ {
+  "id": "r9-e01-group-validity/20",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 9.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_fields_generated.bend"
+   }
+  ],
+  "G": "SURVIVED"
+ }
+]
