@@ -2233,3 +2233,4 @@ codegen/append_guard_bounds.py	codegen/proofs/slop/append_guard_bounds.py
 codegen/decode_window_laws.py	codegen/proofs/laws/decode_window_laws.py
 codegen/writer_poison_laws.py	codegen/proofs/slop/writer_poison_laws.py
 codegen/decode_literal_laws.py	codegen/proofs/slop/decode_literal_laws.py
+codegen/element_access_laws.py	codegen/proofs/slop/element_access_laws.py
