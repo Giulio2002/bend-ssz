@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/04
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: same
+# fault: a saturated bound is the constant 524288 (an unaffordable size passes every budget of 4 MiB)
+# why: wrong default
+# file: src/obj.bend
+# sym: dcost,dcost_go,dcost_k
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1821,3 +1821,3 @@
+ def dcost_go(+w: U32, +k: U32) -> U32:
+-  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 4294967295)
++  pick(U32.is_le(w, U32.div(4294443007, k)), ((w * k : U32) + 524288 : U32), 524288)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c05-txlist-decode/07
+# type: ExecutionPayload
+# ops: decode
+# spec: the last element ends at the end of the list's window
+# fault: the reader's last element ends at its own start (empty)
+# why: s for len
+# file: types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+# sym: l1048576_bl1073741824_win_last
+--- a/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   match last:
+-    case True{}: (buf, (s, len))
++    case True{}: (buf, (s, s))
+     case False{}: l1048576_bl1073741824_win_end(s, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c06-signed-decode/01
+# type: SignedBeaconBlock
+# ops: decode
+# spec: the first offset equals the fixed size (100)
+# fault: the first offset may be anything at least 100
+# why: <= for ==
+# file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+# sym: SignedBeaconBlock_v0,SignedBeaconBlock_c0
+--- a/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+@@ -44,3 +44,3 @@
+   (buf, +o0) = pair
+-  SignedBeaconBlock_c0(U32.is_eq(o0, 100), buf, off, len, o0)
++  SignedBeaconBlock_c0(U32.is_le(100, o0), buf, off, len, o0)
+ 

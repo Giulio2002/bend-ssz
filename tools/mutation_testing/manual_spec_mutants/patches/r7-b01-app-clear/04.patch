@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b01-app-clear/04
+# type: bytelist_256
+# ops: encode,root
+# spec: same
+# fault: the clearing test reads the byte count instead of the byte position (cleared when bytes = 0: never for an append)
+# why: argument swap
+# file: src/obj.bend
+# sym: app_old,put_in_app
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1381,3 +1381,3 @@
+   (w, +old) = pair
+-  words_setw(w, j, merge_word(app_old(old, s), x, s, bytes))
++  words_setw(w, j, merge_word(app_old(old, bytes), x, s, bytes))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/07
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the inside test is never true (the next word is never touched)
+# why: the guard compares with the word index of k1, inverted
+# file: src/obj.bend
+# sym: bits_close_sz,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1529,3 +1529,3 @@
+   (ws, +sz) = pair
+-  bits_close_if(U32.is_lt((U32.shrn(k, 5n) + 1 : U32), sz), k, Bits{ws, k1})
++  bits_close_if(U32.is_lt(sz, (U32.shrn(k, 5n) + 1 : U32)), k, Bits{ws, k1})
+ 

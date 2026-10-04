@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b01-app-clear/01
+# type: bytelist_256
+# ops: encode,root
+# spec: a list's bytes past its length do not exist: after an append the value is the old bytes plus the new one (no junk byte of the spare storage survives into the encoding / root)
+# fault: the word is cleared only when the element starts byte 1 of it (s = 1 for s = 0): junk at a word start survives an append
+# why: off-by-one byte position
+# file: src/obj.bend
+# sym: app_old,put_in_app,words_write_app
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1377,3 +1377,3 @@
+ # length, and a valid object may hold anything there (CH-11): it is cleared, so the bytes past the new length are zero.
+-def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
++def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 1), 0, old)
+ 

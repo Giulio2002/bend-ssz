@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/04
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the clearing test reads the bit index of the new length (k + 1) & 31: the next word is cleared after a push of bit 30
+# why: k for k + 1
+# file: src/obj.bend
+# sym: bits_close_go,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1520,3 +1520,3 @@
+   (b, +x) = pair
+-  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, (k .&. 31 : U32)))
++  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, ((k + 1 : U32) .&. 31 : U32)))
+ 

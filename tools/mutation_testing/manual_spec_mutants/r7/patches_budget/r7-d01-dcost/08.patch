@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/08
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: same: a name with K = 0 is charged the constant
+# fault: the K = 0 test is k <= 1 (a name with K = 1 is charged only the constant)
+# why: wrong threshold
+# file: src/obj.bend
+# sym: dcost,dcost_k
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1828,3 +1828,3 @@
+ 
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(1, k), (U32.shrn(size, 3n) + 1 : U32), k)
+ 

@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d02-dcost-k/03
+# proofs: proofs/slop/validity/fulu_BeaconState_decode_checked_generated.bend
+# type: BeaconState
+# ops: decode
+# spec: same
+# fault: BeaconState's K is 1 (charged a byte per byte)
+# why: table drift
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_dcost
+# base: 5c1f48b93
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -571,3 +571,3 @@
+ 
+-def BeaconState_dcost(+size: U32) -> U32: O.dcost(size, 7)
++def BeaconState_dcost(+size: U32) -> U32: O.dcost(size, 1)
+ 

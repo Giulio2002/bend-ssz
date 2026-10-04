@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a02-partial-word/01
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same; the partial last word must be zero past the length
+# fault: the partial word is read one word early (word (n >> 2) - 1)
+# why: off-by-one word index
+# file: src/obj.bend
+# sym: wcn_tz,wcn_t
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -986,3 +986,3 @@
+ def wcn_t(+n: U32, +c: U32, +q: Nat, +rN: Nat, ws: Array<U32>) -> Array<U32> & Bool:
+-  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, U32.shrn(n, 2n))))
++  wcn_c(q, rN, wcn_tz(n, c, Array.get(U32, ws, (U32.shrn(n, 2n) - 1 : U32))))
+ 

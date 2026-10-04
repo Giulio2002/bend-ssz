@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/10
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: the accumulator is dropped: only the last word read (word 7) decides cleanliness
+# why: fold without the running and
+# file: src/obj.bend
+# sym: lc_step,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -940,3 +940,3 @@
+   (ws, +x) = pair
+-  (ws, Bool.and(acc, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0))))
++  (ws, Bool.or(Nat.is_lt(c, rN), U32.is_eq(x, 0)))
+ 

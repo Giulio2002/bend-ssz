@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b04-slice-guard/01
+# type: Fulu_list_bytevec_2048_4096
+# ops: root
+# spec: an element view of n bytes holds exactly those n bytes
+# fault: the empty test is n <= 4 (a slice of 1..4 bytes is returned empty)
+# why: wrong guard
+# file: src/obj.bend
+# sym: sl_some,words_slice
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1584,3 +1584,3 @@
+ 
+-def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_eq(n, 0), o, p, n)
++def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_le(n, 4), o, p, n)
+ 

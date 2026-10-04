@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c06-signed-decode/02
+# type: SignedBeaconBlock
+# ops: decode
+# spec: the message window must decode as a BeaconBlock
+# fault: the message window is not validated
+# why: check forgotten
+# file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+# sym: SignedBeaconBlock_c0
+--- a/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+@@ -39,3 +39,3 @@
+   match ok:
+-    case True{}: SignedBeaconBlock_v1(off, len, o0, FuluBeaconBlock_r.BeaconBlock_ok(buf, (off + o0 : U32), (len - o0 : U32)))
++    case True{}: SignedBeaconBlock_v1(off, len, o0, (buf, True{}))
+     case False{}: (buf, False{})

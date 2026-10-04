@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 94, in <module>
+    main()
+    ~~~~^^
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 64, in main
+    d = build(a.tree, a.work, 'baseline', None, a.bend)
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 37, in build
+    raise RuntimeError('compile failed: ' + (r.stdout + r.stderr)[-400:])
+RuntimeError: compile failed: SOME PROOFS FAIL
+Error:
+- expected : a filled definition (an unfilled law is a dead claim: live code cannot use it)
+- observed : ck_go
+Context:
+- k   : Nat
+- i   : U32
+- acc : U32
+- ws  : Array<U32>
+- x   : U32
+Location: ck_st
+34 |   (ws, +x) = pair
+35>|   ck_go(k, (i + 1 : U32), ((acc * 31 : U32) + x : U32), ws)
+   |   ^^^^^
+36 | 
+
+done

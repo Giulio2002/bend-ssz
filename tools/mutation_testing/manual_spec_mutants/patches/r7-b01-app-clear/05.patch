@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b01-app-clear/05
+# type: bytelist_256
+# ops: encode,root
+# spec: same
+# fault: the appended byte goes to the word after the right one (j = (p >> 2) + 1 for the write, the read word unchanged)
+# why: off-by-one word
+# file: src/obj.bend
+# sym: words_write_app,put_in_app
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1385,3 +1385,3 @@
+ def words_write_app(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
+-  put_in_app(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
++  put_in_app((U32.shrn(p, 2n) + 1 : U32), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
+ 

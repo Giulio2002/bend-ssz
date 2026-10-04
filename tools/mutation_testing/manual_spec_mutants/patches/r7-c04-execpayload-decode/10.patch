@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/10
+# type: ExecutionPayload
+# ops: decode
+# spec: the decoded value's fields are read from their windows (decode then encode is the identity)
+# fault: the reader reads withdrawals with the window length taken from the transactions' start (vend - o_transactions)
+# why: wrong offset variable in the reader only
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_g1_rd8
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   (buf, transactions) = pair
+-  ExecutionPayload_g1_rd9(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, Fulu_list_Withdrawal_16_r.l16_Withdrawal_read(buf, (off + o_withdrawals : U32), (vend - o_withdrawals : U32)))
++  ExecutionPayload_g1_rd9(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, Fulu_list_Withdrawal_16_r.l16_Withdrawal_read(buf, (off + o_withdrawals : U32), (vend - o_transactions : U32)))
+ 

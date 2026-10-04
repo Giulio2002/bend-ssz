@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c02-out-done/01
+# type: bitlist_16
+# ops: encode
+# spec: same
+# fault: the bitlist's unchecked encoder uses the unguarded out_done (the claimed length kept for a poisoned m)
+# why: wrong helper
+# file: types/bitlist_16_encode_ssz_generated.bend
+# sym: bitlist_16_enc_out
+--- a/types/bitlist_16_encode_ssz_generated.bend
++++ b/types/bitlist_16_encode_ssz_generated.bend
+@@ -26,3 +26,3 @@
+ def bitlist_16_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+-  (o, O.out_donem(m, out))
++  (o, O.out_done(m, out))
+ 

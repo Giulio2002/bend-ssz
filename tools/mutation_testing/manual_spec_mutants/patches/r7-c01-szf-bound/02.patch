@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c01-szf-bound/02
+# type: ExecutionPayload
+# ops: encode
+# spec: same; a list whose storage does not hold its count is invalid
+# fault: a list whose storage is short answers size 0 (not the marker)
+# why: wrong default
+# file: types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+# sym: l16_Withdrawal_szf,l16_Withdrawal_size
+--- a/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
++++ b/types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 4294967295))
++  (Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 44), 0))
+ 

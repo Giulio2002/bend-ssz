@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/07
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: same
+# fault: (size >> 3) + 1 is computed as (size + 1) >> 3 (rounding moved: a size of 4096 gives 512 words, sizes 8m - 1 lose a word)
+# why: parenthesis
+# file: src/obj.bend
+# sym: dcost
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1828,3 +1828,3 @@
+ 
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), U32.shrn((size + 1 : U32), 3n), k)
+ 

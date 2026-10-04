@@ -1,0 +1,358 @@
+[
+ {
+  "id": "r7-d01-dcost/01",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r7-d01-dcost/02",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r7-d01-dcost/03",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r7-d01-dcost/04",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r7-d01-dcost/05",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 525573\n- observed : 526853",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d01-dcost/06",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 526848\n- observed : 526853",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d01-dcost/07",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 526848\n- observed : 526853",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d01-dcost/08",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r7-d01-dcost/09",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Checkpoint_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 0\n- observed : 524288",
+    "root": "proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d01-dcost/10",
+  "type": "Transaction,Checkpoint,ExecutionPayload",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 68101\n- observed : 526853",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d02-dcost-k/01",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Transaction_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 526340\n- observed : 526853",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d02-dcost-k/02",
+  "type": "ExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "ExecutionPayload_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 524288\n- observed : 544808",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d02-dcost-k/03",
+  "type": "BeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_decode_vchecked_budget_cost"
+    ],
+    "msg": "- expected : 524801\n- observed : 527879",
+    "root": "proofs/slop/validity/fulu_BeaconState_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d03-budget-cmp/01",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "Transaction_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluTransaction_r.Transaction_dcb(Cmp.is_lt(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 858888601)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 5), 524288), 4294967295), budget)), buf, size) == (buf, None{}) : Sigma<&1, &1, B.Buf, _ =",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d03-budget-cmp/02",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "Transaction_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluTransaction_r.Transaction_dcb(Cmp.is_le(U32.cmp(budget, O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 858888601)), U32.add(U32.mul(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 5), 524288), 4294967295))), buf, size) == (buf, None{}) : Sigma<&1, &1, B.Buf, _ =",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d03-budget-cmp/03",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Transaction_decode_vchecked_budget_agree"
+    ],
+    "msg": "- expected : FuluTransaction_r.Transaction_dwin(size, B.size(buf))\n- observed : FuluTransaction_r.Transaction_dchk(size, B.size(buf))",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r7-d03-budget-cmp/04",
+  "type": "Transaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "Transaction_decode_vchecked_budget_refuse"
+    ],
+    "msg": "- expected : {FuluTransaction_r.Transaction_dcb(Cmp.is_le(U32.cmp(524293, budget)), buf, size) == (buf, None{}) : Sigma<&1, &1, B.Buf, _ => Maybe<&1, O.Words>>}\n- observed : {FuluTransaction_r.Transaction_dcb(Cmp.is_le(U32.cmp(O.pick(Cmp.is_le(U32.cmp(U32.add(U32.shr(U32.shr(U32.shr(size))), 1), 858",
+    "root": "proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-s01-faithful-rederive/01
+# type: Fulu_list_uint8_1099511627776
+# ops: encode
+# spec: a List[uint8, 2^40] is bounded only by NMAX in the object API (r3-p05-fulu-field-validity/10 as designed: a wrong bound; the r6 re-derivation also flipped the writer's match arm)
+# fault: the bound is 4294967294 bytes (above NMAX: lengths in (NMAX, 2^32 - 2] pass validity)
+# why: parameter
+# file: types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend
+# sym: l1099511627776_u8_valid,words_ok
+--- a/types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend
++++ b/types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def l1099511627776_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 1)
++def l1099511627776_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967294, False{}, 1)
+ 

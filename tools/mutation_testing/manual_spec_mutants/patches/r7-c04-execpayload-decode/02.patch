@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/02
+# type: ExecutionPayload
+# ops: decode
+# spec: offsets are non-decreasing and inside the window
+# fault: o0 <= o1 dropped (extra_data window may be negative)
+# why: one of two tests forgotten
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_v1,ExecutionPayload_c1
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -170,3 +170,3 @@
+   (buf, +o1) = pair
+-  ExecutionPayload_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ExecutionPayload_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+ 

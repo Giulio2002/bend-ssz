@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/06
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: same
+# fault: the + 1 word is dropped (size >> 3: a size below 8 bytes is charged only the constant)
+# why: rounding dropped
+# file: src/obj.bend
+# sym: dcost
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1828,3 +1828,3 @@
+ 
+-def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), (U32.shrn(size, 3n) + 1 : U32), k)
++def dcost(+size: U32, +k: U32) -> U32: dcost_k(U32.is_lt(0, k), U32.shrn(size, 3n), k)
+ 

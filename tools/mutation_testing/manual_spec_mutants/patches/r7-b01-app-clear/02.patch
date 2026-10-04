@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b01-app-clear/02
+# type: bytelist_256
+# ops: encode,root
+# spec: same
+# fault: the old word is never cleared (app_old answers old)
+# why: the fix reverted
+# file: src/obj.bend
+# sym: app_old,put_in_app,words_write_app
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1377,3 +1377,3 @@
+ # length, and a valid object may hold anything there (CH-11): it is cleared, so the bytes past the new length are zero.
+-def app_old(+old: U32, +s: U32) -> U32: pick(U32.is_eq(s, 0), 0, old)
++def app_old(+old: U32, +s: U32) -> U32: old
+ 

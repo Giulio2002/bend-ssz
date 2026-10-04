@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-b03-bits-close/03
+# type: bitlist_9,Bitlist[2048]
+# ops: encode,root
+# spec: same
+# fault: the word cleared is the word of the pushed bit itself (k >> 5, not k >> 5 + 1): a push of bit 31 erases bits 0..31 of the list
+# why: off-by-one word
+# file: src/obj.bend
+# sym: bits_close_go,bits_close
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1520,3 +1520,3 @@
+   (b, +x) = pair
+-  bits_setw(b, (U32.shrn(k, 5n) + 1 : U32), app_old31(x, (k .&. 31 : U32)))
++  bits_setw(b, U32.shrn(k, 5n), app_old31(x, (k .&. 31 : U32)))
+ 

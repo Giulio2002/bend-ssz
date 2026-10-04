@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/09
+# type: ExecutionPayload
+# ops: decode
+# spec: offsets are read from the fixed part at their own positions
+# fault: the withdrawals offset is read at byte 504 (the transactions offset again)
+# why: wrong position
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_v2,ExecutionPayload_c1
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -165,3 +165,3 @@
+   match ok:
+-    case True{}: ExecutionPayload_v2(off, len, o0, o1, B.read32(buf, (off + 508 : U32)))
++    case True{}: ExecutionPayload_v2(off, len, o0, o1, B.read32(buf, (off + 504 : U32)))
+     case False{}: (buf, False{})

@@ -1,0 +1,18 @@
+# MANUAL SPEC MUTANT r7-a02-partial-word/02
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: a tail of 3 bytes tests only the top byte through the one-byte rule (r = 3 handled as r = 1)
+# why: case order
+# file: src/obj.bend
+# sym: tail_zero,wcn_tz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -925,5 +925,5 @@
+     case 0: True{}
+-    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
++    case 1: U32.is_eq(U32.shrn(x, 24n), 0)
+     case 2: U32.is_eq(U32.shrn(x, 16n), 0)
+-    case _: U32.is_eq(U32.shrn(x, 24n), 0)
++    case _: U32.is_eq(U32.shrn(x, 8n), 0)
+ 

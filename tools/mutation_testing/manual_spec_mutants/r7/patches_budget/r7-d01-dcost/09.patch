@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r7-d01-dcost/09
+# proofs: proofs/slop/validity/fulu_Transaction_decode_checked_generated.bend,proofs/slop/validity/fulu_Checkpoint_decode_checked_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend
+# type: Transaction,Checkpoint,ExecutionPayload
+# ops: decode
+# spec: same
+# fault: the constant of a K = 0 name is 0 (every budget, also 0, accepts a fixed-size name)
+# why: wrong constant
+# file: src/obj.bend
+# sym: dcost_k
+# base: 5c1f48b93
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1826,3 +1826,3 @@
+     case True{}: dcost_go(w, k)
+-    case False{}: 524288
++    case False{}: 0
+ 

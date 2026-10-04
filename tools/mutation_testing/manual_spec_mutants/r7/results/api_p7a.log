@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 94, in <module>
+    main()
+    ~~~~^^
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 64, in main
+    d = build(a.tree, a.work, 'baseline', None, a.bend)
+  File "/srv/ssz-optimization/agents/manualmut-r7/tree/tools/mutation_testing/manual_spec_mutants/r3/apiprobe3.py", line 37, in build
+    raise RuntimeError('compile failed: ' + (r.stdout + r.stderr)[-400:])
+RuntimeError: compile failed: SOME PROOFS FAIL
+Error:
+- expected : label
+- observed : label (consumed more than once)
+Location: tx_o3
+61 | 
+62>| def tx_o3(label: String, pair: O.Words & O.Encoded) -> IO(Unit):
+   |           ^^^^^
+63 |   (w, e) = pair
+
+done

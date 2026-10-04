@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/12
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: the chunk words are read one chunk late (chunk q + 1, past the last chunk: zeros or junk of a later chunk)
+# why: off-by-one chunk index
+# file: src/obj.bend
+# sym: lc_read,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -936,3 +936,3 @@
+ # that holds only bytes past the length is zero. It reads words of the first chunks of storage only after the capacity test (`wr_size`).
+-def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(q), j)))
++def lc_read(+q: Nat, +j: Nat, ws: Array<U32>) -> Array<U32> & U32: Array.get(U32, ws, U32.from_nat(Nat.add(e8(Nat.add(q, 1n)), j)))
+ 

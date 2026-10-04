@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/01
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: hash_tree_root depends only on the value: storage words past the length do not enter the root
+# fault: word 1 of the last chunk is never tested (its byte offset 4 read as 0: always 'holds data')
+# why: copy-paste of the c = 0 step
+# file: src/obj.bend
+# sym: lc_s1,lc_s2,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -968,3 +968,3 @@
+   (ws, acc) = pair
+-  lc_s2(q, rN, lc_step(rN, 4n, acc, lc_read(q, 1n, ws)))
++  lc_s2(q, rN, lc_step(rN, 0n, acc, lc_read(q, 1n, ws)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a01-clean-chunk/06
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: word 6 of the last chunk is never tested (offset 24 read as 0)
+# why: copy-paste of the c = 0 step
+# file: src/obj.bend
+# sym: lc_s6,lc_s7,wcn_t,wcn_k
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -948,3 +948,3 @@
+   (ws, acc) = pair
+-  lc_s7(q, rN, lc_step(rN, 24n, acc, lc_read(q, 6n, ws)))
++  lc_s7(q, rN, lc_step(rN, 0n, acc, lc_read(q, 6n, ws)))
+ 

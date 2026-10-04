@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/07
+# type: ExecutionPayload
+# ops: decode
+# spec: same
+# fault: the transactions window is validated with the extra_data window's length (o1 - o0)
+# why: wrong offset pair
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_c3
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -147,3 +147,3 @@
+   match ok:
+-    case True{}: ExecutionPayload_v4(off, len, o0, o1, o2, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: ExecutionPayload_v4(off, len, o0, o1, o2, Fulu_list_bytelist_1073741824_1048576_r.l1048576_bl1073741824_ok(buf, (off + o1 : U32), (o1 - o0 : U32)))
+     case False{}: (buf, False{})

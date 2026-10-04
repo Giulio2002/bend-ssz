@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c03-signed-child/03
+# type: SignedBeaconBlock
+# ops: encode
+# spec: same
+# fault: the message is checked with BeaconBlock_valid_f (its own size pass skipped; the wrapper's size pass still runs)
+# why: _valid_f for _valid
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_valid_f,SignedBeaconBlock_va0
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match o:
+-    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid(message))
++    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid_f(message))
+ 

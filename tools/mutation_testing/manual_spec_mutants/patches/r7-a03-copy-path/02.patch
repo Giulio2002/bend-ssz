@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-a03-copy-path/02
+# type: Transaction,vec_uint16_5
+# ops: root
+# spec: same
+# fault: storage of whole chunks is never examined for junk (the capacity branch goes straight to the fast path)
+# why: the clean test forgotten in the roomy branch
+# file: src/obj.bend
+# sym: wr_cap,wr_zc
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1042,3 +1042,3 @@
+   match capok:
+-    case True{}: wr_zc(hl, h, depth, n, sz, wcn_k(chunks_of(n), n, sz, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, chunks_of(n))
+     case False{}: wr_fit(False{}, hl, h, depth, n, sz, ws)

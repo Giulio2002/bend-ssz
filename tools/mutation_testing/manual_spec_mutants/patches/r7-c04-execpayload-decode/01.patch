@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/01
+# type: ExecutionPayload
+# ops: decode
+# spec: the first offset of a container equals the length of its fixed part
+# fault: the first offset may be any value up to the fixed size (o0 <= 528)
+# why: <= for ==
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_v0,ExecutionPayload_c0
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -179,3 +179,3 @@
+   (buf, +o0) = pair
+-  ExecutionPayload_c0(U32.is_eq(o0, 528), buf, off, len, o0)
++  ExecutionPayload_c0(U32.is_le(o0, 528), buf, off, len, o0)
+ 

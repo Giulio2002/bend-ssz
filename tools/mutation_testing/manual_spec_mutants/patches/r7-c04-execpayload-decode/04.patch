@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r7-c04-execpayload-decode/04
+# type: ExecutionPayload
+# ops: decode
+# spec: same
+# fault: o2 <= len dropped
+# why: one of two tests forgotten
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_v2,ExecutionPayload_c2
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -161,3 +161,3 @@
+   (buf, +o2) = pair
+-  ExecutionPayload_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++  ExecutionPayload_c2(U32.is_le(o1, o2), buf, off, len, o0, o1, o2)
+ 
