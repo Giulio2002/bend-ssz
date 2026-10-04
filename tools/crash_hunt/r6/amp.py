@@ -185,7 +185,7 @@ def main():
     tree = os.path.abspath(a.tree)
     T = types(tree)
     K = json.load(open(a.k))['k']
-    ns = {'minval': minval, 'with_field': with_field, 'field_t': field_t, 'T': T}
+    ns = {'enc': enc, 'minval': minval, 'with_field': with_field, 'field_t': field_t, 'T': T}
     exec(open(a.shapes).read(), ns)
     shapes = [s for s in ns['SHAPES'](a.target) if a.only in s[0] + ' ' + s[1]]
     refuse = {}
