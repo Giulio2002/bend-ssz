@@ -1905,3 +1905,10 @@ listed (`get`, `set`, `len`, `uncache`, `serialize` of BeaconState, the bitvecto
 
 Machine-readable: `tools/mutation_testing/manual_spec_mutants/r9_access/replay_criticals.json` (and `.log`; the first pass on the a / b /
 c / d / e / f patches: `replay_access_laws.json`; the runner `freplay_access.py`).
+
+**Checks** (fresh clone of d47909c4b on the server: agent/access-laws with origin/main 867870982 merged; regenerate_all -j 8 reached its
+fixpoint in one pass): cold `CHECK_CACHE=0 tools/check_fast.sh --jobs 8 --no-cache`: all files check, 96 umbrellas (0 reused) in
+1458 s, the slowest 396 s (proglist_uint64 decode_checked gate umbrella); `tools/crash_hunt/regress.sh`: all cases pass;
+`tools/verify_frozen.py`: 42 files, 1915 statement_defs files match; `tools/test_codegen.sh`: 53 unit tests OK, 149/149 generators up to
+date (run with the committed stamp: the check_fast run copies its own stamp into benchmarks/evidence/, which makes documentation_figures
+stale until the gate stamps).
