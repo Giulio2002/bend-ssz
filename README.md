@@ -102,48 +102,4 @@ root and encode bridges only in the sense that the statement is about the very v
 The field swap laws of `proofs/obj/fields_*.bend` (<!-- fig:obj_swap_laws -->118<!-- /fig --> laws: the old value is handed back and the new one stored) are listed and locked; the other definitional field laws
 and the helper-level collection laws (`proofs/obj/collections_*.bend`) are still checked but are no longer listed as statements (the setter spec-value laws and the collection laws state what they did).
 
-Details: [docs/RESULTS.md](docs/RESULTS.md). Premises and known limits:
-[docs/PREMISES.md](docs/PREMISES.md). What must be trusted: [docs/TRUST.md](docs/TRUST.md).
 
-## Confirming what was checked
-
-What a reader relies on is: the specification (`spec/`, mapped to `simple-serialize.md` in
-`spec/CORRESPONDENCE.md`), the laws of END_TO_END.bend (the same text as
-`memory_bench/law-statements.json`) and ROOT_DOMAIN.bend, the bridge statements
-(`e2e/STATEMENTS.txt`) and the premises (`docs/PREMISES.md`). To confirm that exactly these were
-checked, at the commit you rely on:
-
-    python3 tools/verify_frozen.py          # spec/ and the roots' statements match frozen.lock.json
-    python3 codegen/regenerate_all.py --check    # every generated file (bridges, STATEMENTS.txt, doc figures) is what the generators write
-    python3 tools/verify_fixtures.py --tarballs   # the fixtures are the pinned consensus-spec-tests release files (fetches ~850 MB)
-    # the checker: Bend main 01875127 + one commit of the fork Giulio2002/bend, branch rigid-memo
-    # (c55a7f03; the earlier form of the change, bendlang/bend#1210, was closed unmerged, see docs/TRUST.md), built as a release
-    # layout (bin/bend + bend2/base.bend); the recipe is in toolchain.lock.json and docs/BUILD.md
-    git clone https://github.com/Giulio2002/bend T/bend-src && git -C T/bend-src checkout c55a7f038e65a11b6635573d86642ed2ad956d82
-    cp -r T/bend-src/bend2 T/bend2 && (cd T/bend-src && bun build --compile bend2/main.ts --outfile ../bin/bend)   # Bun 1.4.2
-    python3 tools/verify_pins.py --toolchain T   # bin/bend, Base, the sources and the vendored SHA-256 package match toolchain.lock.json
-    BEND_TOOLCHAIN=T tools/check_fast.sh    # pins ulimit -s 16384 and a 10 MB JSC budget itself; prints "all files check"
-    BEND_TOOLCHAIN=T tools/check_fast.sh --jsc-stack 5242880   # informational headroom run (not a gate): the same check at half the budget; see docs/BUILD.md
-    # every check is `bend <file> --check-only`, not `--verdict` (the proven kernel): see docs/TRUST.md
-
-`check_fast.sh` repeats the two verifications itself and refuses to run on any mismatch. A change
-to a frozen statement shows up as a change to `frozen.lock.json` (`git log -p frozen.lock.json`);
-a change to a bridge statement as a change to `e2e/STATEMENTS.txt`. The trust base (checker,
-SHA-256 package, compiler and host) is described in [docs/TRUST.md](docs/TRUST.md).
-
-## Layout
-
-`examples/` usage examples, `src/` runtime, `types/` the generated API per name, `spec/` the frozen specification,
-`proofs/` the checked laws, `e2e/` the bridges to END_TO_END, `codegen/` the generators (by purpose; `codegen/README.md`).
-See [docs/LAYOUT.md](docs/LAYOUT.md).
-
-## Regenerate and check
-
-    python3 codegen/regenerate_all.py            # regenerate every generated file (idempotent)
-    python3 codegen/regenerate_all.py --check    # fail if any generated file is stale
-    tools/check_fast.sh                     # the full check: every .bend file, through umbrellas
-                                            # (last recorded run: <!-- fig:check_wall -->19.6<!-- /fig --> min wall at 20 jobs);
-                                            # on failure it bisects and prints the failing files
-    tools/check.sh <file.bend>              # one file
-
-See [docs/BUILD.md](docs/BUILD.md) for the checker and the resource limits.
