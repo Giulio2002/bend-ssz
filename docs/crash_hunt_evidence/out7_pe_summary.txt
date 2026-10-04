@@ -1,8 +1,0 @@
-first_word 4 rc=0 sec=0 :: read_count=1  :: 
-first_word 8 rc=0 sec=1 :: read_count=2  :: 
-first_word 4096 rc=1 sec=11 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
-first_word 1048576 rc=1 sec=11 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
-first_word 16777216 rc=1 sec=11 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
-first_word 268435456 rc=1 sec=13 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
-first_word 1073741820 rc=1 sec=17 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
-first_word 4294967292 rc=1 sec=33 ::  :: bend: out of memory: run again with a bigger span, as in --gpu 8GB 
