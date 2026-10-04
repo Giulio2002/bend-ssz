@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/10
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: element windows are relative to the list's start
+# fault: the inner element is read at its absolute offset s (not off + s)
+# why: relative offset taken as absolute
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_elem_win
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -25,3 +25,3 @@
+ 
+-def pl_pl_VarTestStruct_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>: proglist_VarTestStruct_r.pl_VarTestStruct_bx_read(buf, (off + s : U32), (e - s : U32))
++def pl_pl_VarTestStruct_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>: proglist_VarTestStruct_r.pl_VarTestStruct_bx_read(buf, s, (e - s : U32))
+ 

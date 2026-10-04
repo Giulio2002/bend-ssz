@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e02-swap/01
+# type: FuluBeaconState
+# ops: encode,root
+# spec: swap_f(o, v) = (o with f = v, the old f)
+# fault: swap_balances returns the new value and keeps the old (no swap)
+# why: swap halves exchanged
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g1_swap_balances,BeaconState_swap_balances
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -191,3 +191,3 @@
+   match o:
+-    case BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: (BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, v, randao_mixes, slashings, previous_epoch_participation}, balances)
++    case BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: (BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, v)
+ 

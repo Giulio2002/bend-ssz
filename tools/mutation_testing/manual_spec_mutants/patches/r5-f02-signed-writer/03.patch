@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f02-signed-writer/03
+# type: FuluSignedAggregateAndProof
+# ops: encode
+# spec: serialize refuses a value with an invalid field
+# fault: the final poison test of serialize is removed
+# why: same
+# file: types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+# sym: SignedAggregateAndProof_senc_out,SignedAggregateAndProof_serialize
+--- a/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
++++ b/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+@@ -70,3 +70,3 @@
+ def SignedAggregateAndProof_senc_out(+n: U32, out: Array<U32>, o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +m: U32) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

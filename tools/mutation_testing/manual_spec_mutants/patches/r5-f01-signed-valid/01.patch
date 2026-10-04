@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f01-signed-valid/01
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: a container is valid only if every field is valid
+# fault: the message's validity is not consulted (the signature-only wrapper thought always valid)
+# why: the inner container's check dropped
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_valid_f,SignedBeaconBlock_va0,SignedBeaconBlock_valid
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match o:
+-    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid(message))
++    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, (message, True{}))
+ 

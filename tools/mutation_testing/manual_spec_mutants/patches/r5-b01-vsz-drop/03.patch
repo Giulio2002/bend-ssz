@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b01-vsz-drop/03
+# type: FuluBeaconBlock
+# ops: encode
+# spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+# fault: the size pass is dropped: _valid is the fields' check alone
+# why: the size test thought implied by the fields' limits
+# file: types/FuluBeaconBlock_encode_ssz_generated.bend
+# sym: BeaconBlock_vsz_go,BeaconBlock_vsz,BeaconBlock_valid
+--- a/types/FuluBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlock_encode_ssz_generated.bend
+@@ -80,3 +80,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+ 

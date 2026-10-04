@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c09-uint-vec-codec/05
+# type: vec_uint128_3
+# ops: encode
+# spec: serialize(Vector[uint128, 3]) = the 48 bytes in order
+# fault: the last word is written at q + 10 (overwrites word 10, word 11 left zero)
+# why: off by one in the unrolled copy
+# file: types/vec_uint128_3_encode_ssz_generated.bend
+# sym: v3_u128_pa11,v3_u128_put
+--- a/types/vec_uint128_3_encode_ssz_generated.bend
++++ b/types/vec_uint128_3_encode_ssz_generated.bend
+@@ -13,3 +13,3 @@
+   (ws, +w) = pair
+-  (Array.set(U32, out, (q + 11 : U32), w), ws)
++  (Array.set(U32, out, (q + 10 : U32), w), ws)
+ 

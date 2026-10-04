@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d03-pcts-offsets/05
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: field C (ProgressiveBitlist) window is [o1, o2)
+# fault: field C is not validated (its delimiter never checked)
+# why: a bitlist thought always valid
+# file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_v8
+--- a/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+@@ -140,3 +140,3 @@
+   match ok:
+-    case True{}: ProgressiveComplexTestStruct_v8(off, len, o0, o1, o2, o3, o4, o5, o6, progbitlist_r.pbits_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: ProgressiveComplexTestStruct_v8(off, len, o0, o1, o2, o3, o4, o5, o6, (buf, True{}))
+     case False{}: (buf, False{})

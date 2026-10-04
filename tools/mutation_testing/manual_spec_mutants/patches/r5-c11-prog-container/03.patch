@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c11-prog-container/03
+# type: ProgressiveVarTestStruct
+# ops: root
+# spec: same
+# fault: the progressive tree's first subtree (depth 0, field A) is put on the left
+# why: H(T, P(rest)) for H(P(rest), T)
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveVarTestStruct_rt2
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+ def ProgressiveVarTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest):
+-  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
++  (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, d_f_A, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C)))), 21)))
+ 

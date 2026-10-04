@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/08
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the reader reads offset D at byte 12
+# fault: the reader reads offset D at byte 8 (offset C again)
+# why: offset slot off by one
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_rd2
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -38,3 +38,3 @@
+   (buf, +o_f_C) = pair
+-  ProgressiveTestStruct_rd3(off, len, o_f_A, o_f_B, o_f_C, B.read32(buf, (off + 12 : U32)))
++  ProgressiveTestStruct_rd3(off, len, o_f_A, o_f_B, o_f_C, B.read32(buf, (off + 8 : U32)))
+ 

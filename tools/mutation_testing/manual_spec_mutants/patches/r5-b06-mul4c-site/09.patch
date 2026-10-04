@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b06-mul4c-site/09
+# type: FuluExecutionPayload
+# ops: encode
+# spec: same
+# fault: the offset table is counted with mulc(n, 4) (designed equivalent: same bound NMAX / 4)
+# why: control
+# file: types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+# sym: l1048576_bl1073741824_sz_fin,l1048576_bl1073741824_size
+--- a/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_encode_ssz_generated.bend
+@@ -34,3 +34,3 @@
+   (m, sp) = r
+-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mulc(n, 4), m))
+ 

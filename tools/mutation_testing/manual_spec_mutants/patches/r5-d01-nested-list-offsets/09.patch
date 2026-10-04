@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/09
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the reader's element windows are the validator's
+# fault: the reader's last element ends at the start of the window (len taken as the start)
+# why: end and start confused
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_win_last,pl_pl_VarTestStruct_rv
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   match last:
+-    case True{}: (buf, (s, len))
++    case True{}: (buf, (s, s))
+     case False{}: pl_pl_VarTestStruct_win_end(s, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))

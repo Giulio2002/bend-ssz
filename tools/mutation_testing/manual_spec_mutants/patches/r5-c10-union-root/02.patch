@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c10-union-root/02
+# type: CompatibleUnionBC
+# ops: root
+# spec: arm 1 has selector 3
+# fault: arm 1 mixes in selector 2
+# why: copy-paste
+# file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+# sym: CompatibleUnionBC_rt1,CompatibleUnionBC_root
+--- a/types/CompatibleUnionBC_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionBC_hashtreeroot_generated.bend
+@@ -22,3 +22,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.mix_len(hl, d, 3)))
++  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.mix_len(hl, d, 2)))
+ 

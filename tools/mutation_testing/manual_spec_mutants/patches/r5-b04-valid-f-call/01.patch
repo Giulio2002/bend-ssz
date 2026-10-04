@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/01
+# type: FuluBeaconState
+# ops: encode
+# spec: a container's validity is the conjunction of its fields' validity and its own size limit
+# fault: the parent calls the list's _valid (with its own size pass) instead of _valid_f (stricter only above NMAX: designed equivalent in context)
+# why: the renamed function not used at one call site
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g1_valid,BeaconState_g1_va0,l1099511627776_Validator_valid
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -365,3 +365,3 @@
+   (eth1_data_votes, ok) = pair
+-  BeaconState_g1_va1(eth1_data, eth1_data_votes, eth1_deposit_index, balances, randao_mixes, slashings, previous_epoch_participation, Bool.and(acc, ok), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid_f(validators))
++  BeaconState_g1_va1(eth1_data, eth1_data_votes, eth1_deposit_index, balances, randao_mixes, slashings, previous_epoch_participation, Bool.and(acc, ok), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(validators))
+ 

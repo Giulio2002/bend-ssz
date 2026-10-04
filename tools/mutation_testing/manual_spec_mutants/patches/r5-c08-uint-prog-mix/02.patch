@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c08-uint-prog-mix/02
+# type: proglist_uint256
+# ops: root
+# spec: the count mixed in is bytes / 32
+# fault: the count is the chunk count of a binary tree (bytes / 16)
+# why: uint128 copy-paste
+# file: types/proglist_uint256_hashtreeroot_generated.bend
+# sym: pl_u256_root
+--- a/types/proglist_uint256_hashtreeroot_generated.bend
++++ b/types/proglist_uint256_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def pl_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 5n, O.words_root_prog(hl, h, o, seg))
++def pl_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
+ 

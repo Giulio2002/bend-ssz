@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c11-prog-container/08
+# type: ProgressiveBitsStruct
+# ops: root
+# spec: Container of 12 fields: 16 leaves; the right half is node(node(I..L), zero subtree of depth 2)
+# fault: the zero subtree of depth 2 is the zero chunk
+# why: zero-hash level off by one
+# file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+# sym: ProgressiveBitsStruct_g1_rt3
+--- a/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+@@ -65,3 +65,3 @@
+   (h, z2) = pair
+-  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), D.zero())))
+ 

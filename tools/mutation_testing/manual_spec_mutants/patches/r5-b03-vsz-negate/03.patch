@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b03-vsz-negate/03
+# type: FuluExecutionPayload
+# ops: encode
+# spec: same
+# fault: the size pass compares with 2^31 (the pre-NMAX limit): a payload of more than 2 GiB is invalid
+# why: the old 2^31 limit kept in one place
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -218,3 +218,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, U32.is_lt(m, 2147483648)))
+ 

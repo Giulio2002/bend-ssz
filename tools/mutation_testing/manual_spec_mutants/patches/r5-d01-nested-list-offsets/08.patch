@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/08
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: element i ends at offset i + 1, the last at the window's end
+# fault: the last-element test is one early (element n - 2 ends at len)
+# why: off by one in the last index
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_next,pl_pl_VarTestStruct_ev
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -83,3 +83,3 @@
+       (ok, a) = r
+-      pl_pl_VarTestStruct_ev(q, (i + 1 : U32), n, off, len, pl_pl_VarTestStruct_ee(ok, off, len, a, pl_pl_VarTestStruct_next(U32.is_eq((i + 2 : U32), n), buf, off, len, (i + 1 : U32))))
++      pl_pl_VarTestStruct_ev(q, (i + 1 : U32), n, off, len, pl_pl_VarTestStruct_ee(ok, off, len, a, pl_pl_VarTestStruct_next(U32.is_eq((i + 3 : U32), n), buf, off, len, (i + 1 : U32))))
+ 

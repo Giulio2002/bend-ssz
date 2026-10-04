@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/04
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the clean copy keeps the old wrapping formula ((n + 31) >> 5) (the R4-01 regression)
+# why: the pre-fix code restored
+# file: src/obj.bend
+# sym: zeros_copy,words_copy,wr_slow,wrp_slow
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1011,3 +1011,3 @@
+ def zeros_copy(+n: U32) -> Array<U32>:
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32)))
+ 

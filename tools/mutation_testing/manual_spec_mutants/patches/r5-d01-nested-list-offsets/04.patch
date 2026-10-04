@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/04
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: every element's window must be valid for the element type
+# fault: the accumulated flag is not carried: an invalid earlier element is forgotten when a later one is valid
+# why: and_pair accumulator dropped
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_ee
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   (buf, +b) = pair
+-  pl_pl_VarTestStruct_eb(b, O.and_pair(acc, pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  pl_pl_VarTestStruct_eb(b, O.and_pair(True{}, pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
+ 

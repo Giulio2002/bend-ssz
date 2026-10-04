@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d06-union-decode/02
+# type: CompatibleUnionBC
+# ops: decode
+# spec: the payload of arm 1 is the bytes after the selector
+# fault: the payload of arm 1 is validated over the whole window (selector included)
+# why: selector not skipped
+# file: types/CompatibleUnionBC_decode_ssz_generated.bend
+# sym: CompatibleUnionBC_ok1
+--- a/types/CompatibleUnionBC_decode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_decode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+   match c:
+-    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, (off + 1 : U32), (len - 1 : U32))
++    case True{}: ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_ok(buf, off, len)
+     case False{}: (buf, False{})

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c09-uint-vec-codec/01
+# type: vec_uint128_3
+# ops: decode
+# spec: the decoded vector holds its 48 bytes in whole chunks
+# fault: the read storage is 8 words (32 bytes of 48)
+# why: depth of the storage one too small
+# file: types/vec_uint128_3_decode_ssz_generated.bend
+# sym: v3_u128_read
+--- a/types/vec_uint128_3_decode_ssz_generated.bend
++++ b/types/vec_uint128_3_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v3_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))
++def v3_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 48, Array.new(U32, 3n, 0))
+ 

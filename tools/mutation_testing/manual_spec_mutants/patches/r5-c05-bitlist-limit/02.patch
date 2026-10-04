@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c05-bitlist-limit/02
+# type: bitlist_512
+# ops: decode
+# spec: a Bitlist[512] holds at most 512 bits
+# fault: the decoder refuses 512 bits (limit 511)
+# why: the delimiter counted against the limit
+# file: types/bitlist_512_decode_ssz_generated.bend
+# sym: bits512_ok
+--- a/types/bitlist_512_decode_ssz_generated.bend
++++ b/types/bitlist_512_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def bits512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 512, False{})
++def bits512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 511, False{})
+ 

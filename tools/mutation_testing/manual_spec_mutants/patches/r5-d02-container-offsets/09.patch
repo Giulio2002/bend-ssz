@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/09
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: a ProgressiveTestStruct needs at least its 16-byte fixed part
+# fault: 12 bytes are enough
+# why: fixed part miscounted (3 offsets)
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_ok
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -127,3 +127,3 @@
+ 
+-def ProgressiveTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveTestStruct_ok_len(U32.is_le(16, len), buf, off, len)
++def ProgressiveTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveTestStruct_ok_len(U32.is_le(12, len), buf, off, len)
+ 

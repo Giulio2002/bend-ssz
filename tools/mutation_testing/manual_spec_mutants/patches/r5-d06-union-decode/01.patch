@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d06-union-decode/01
+# type: CompatibleUnionBC
+# ops: decode
+# spec: CompatibleUnionBC's selectors are 2 and 3
+# fault: selector 1 accepted for arm 0
+# why: zero-based / one-based confusion
+# file: types/CompatibleUnionBC_decode_ssz_generated.bend
+# sym: CompatibleUnionBC_ok_sel,CompatibleUnionBC_ok0
+--- a/types/CompatibleUnionBC_decode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_decode_ssz_generated.bend
+@@ -26,3 +26,3 @@
+   (buf, +s) = pair
+-  CompatibleUnionBC_ok0(U32.is_eq(s, 2), s, buf, off, len)
++  CompatibleUnionBC_ok0(U32.is_le(s, 2), s, buf, off, len)
+ 

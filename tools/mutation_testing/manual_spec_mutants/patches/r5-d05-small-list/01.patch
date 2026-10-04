@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d05-small-list/01
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: ProgressiveList[SmallTestStruct]: the window is a multiple of 4 bytes
+# fault: a multiple of 2 bytes accepted
+# why: element size taken as one uint16
+# file: types/proglist_SmallTestStruct_decode_ssz_generated.bend
+# sym: pl_SmallTestStruct_ok
+--- a/types/proglist_SmallTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_decode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+ 
+-def pl_SmallTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 4) * 4 : U32)), True{}))
++def pl_SmallTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}))
+ 

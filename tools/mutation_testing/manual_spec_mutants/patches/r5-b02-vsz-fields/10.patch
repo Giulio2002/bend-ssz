@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b02-vsz-fields/10
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the size pass replaces the fields' check (only the total size is tested)
+# why: the accumulated flag dropped when the size test was added
+# file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+# sym: pl_SmallTestStruct_vsz_go,pl_SmallTestStruct_vsz,pl_SmallTestStruct_valid
+--- a/types/proglist_SmallTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_encode_ssz_generated.bend
+@@ -99,3 +99,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/11
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the inner element's validator sees its own window
+# fault: the inner validator gets the window to the list's end (len - a) instead of (b - a)
+# why: the remainder taken as the element
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_ew
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -58,3 +58,3 @@
+   match ok:
+-    case True{}: proglist_VarTestStruct_r.pl_VarTestStruct_bx_ok(buf, (off + a : U32), (b - a : U32))
++    case True{}: proglist_VarTestStruct_r.pl_VarTestStruct_bx_ok(buf, (off + a : U32), (len - a : U32))
+     case False{}: (buf, False{})

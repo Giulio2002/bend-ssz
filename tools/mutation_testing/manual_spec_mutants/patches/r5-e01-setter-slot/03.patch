@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/03
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_inactivity_scores writes current_epoch_participation (both Words)
+# why: group boundary miscounted
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g2_set_inactivity_scores,BeaconState_set_inactivity_scores
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -296,3 +296,3 @@
+   match o:
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, v, current_sync_committee, next_sync_committee}
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{v, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
+ 

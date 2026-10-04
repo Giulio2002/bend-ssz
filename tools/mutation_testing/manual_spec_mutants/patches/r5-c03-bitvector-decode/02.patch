@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c03-bitvector-decode/02
+# type: bitvector_257
+# ops: decode
+# spec: same
+# fault: the padding test allows 2 bits in the last byte
+# why: r = 257 mod 8 miscomputed
+# file: types/bitvector_257_decode_ssz_generated.bend
+# sym: bv257_ok_at,bv257_ok
+--- a/types/bitvector_257_decode_ssz_generated.bend
++++ b/types/bitvector_257_decode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+ 
+-def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 1)
++def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 2)
+ 

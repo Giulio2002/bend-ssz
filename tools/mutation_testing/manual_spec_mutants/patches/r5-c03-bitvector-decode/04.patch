@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c03-bitvector-decode/04
+# type: bitvector_511
+# ops: decode
+# spec: the last byte of a Bitvector[511] has bit 7 zero
+# fault: the padding test allows all 8 bits (r = 0 taken for 511 mod 8 = 7 ... read as a whole byte)
+# why: 511 mod 8 confused
+# file: types/bitvector_511_decode_ssz_generated.bend
+# sym: bv511_ok_at,bv511_ok
+--- a/types/bitvector_511_decode_ssz_generated.bend
++++ b/types/bitvector_511_decode_ssz_generated.bend
+@@ -76,3 +76,3 @@
+ 
+-def bv511_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 63 : U32), 7)
++def bv511_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 63 : U32), 0)
+ 

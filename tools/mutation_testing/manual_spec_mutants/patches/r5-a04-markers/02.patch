@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a04-markers/02
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: an invalid field poisons the size
+# fault: pz's False branch is NMAX + 1 (a poisoned value, not the marker): designed near-equivalent
+# why: any value past NMAX thought enough
+# file: src/obj.bend
+# sym: pz
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1755,3 +1755,3 @@
+     case True{}: 0
+-    case False{}: 4294967295
++    case False{}: 4294967265
+ 

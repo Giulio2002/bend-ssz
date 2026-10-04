@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d03-pcts-offsets/02
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: offsets non-decreasing
+# fault: o4 <= o5 dropped
+# why: one comparison dropped
+# file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_c5
+--- a/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+@@ -163,3 +163,3 @@
+   (buf, +o5) = pair
+-  ProgressiveComplexTestStruct_c5(Bool.and(U32.is_le(o4, o5), U32.is_le(o5, len)), buf, off, len, o0, o1, o2, o3, o4, o5)
++  ProgressiveComplexTestStruct_c5(U32.is_le(o5, len), buf, off, len, o0, o1, o2, o3, o4, o5)
+ 

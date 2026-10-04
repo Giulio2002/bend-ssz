@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c09-uint-vec-codec/04
+# type: vec_uint128_3
+# ops: encode
+# spec: same
+# fault: the unit is 8 bytes (designed equivalent: the length is fixed at 48)
+# why: control
+# file: types/vec_uint128_3_encode_ssz_generated.bend
+# sym: v3_u128_valid,v3_u128_putk
+--- a/types/vec_uint128_3_encode_ssz_generated.bend
++++ b/types/vec_uint128_3_encode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+ 
+-def v3_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 48, 48, False{}, 16)
++def v3_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 48, 48, False{}, 8)
+ 

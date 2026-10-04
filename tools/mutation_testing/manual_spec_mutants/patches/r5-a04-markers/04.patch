@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a04-markers/04
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: the size of a bit list is floor(k / 8) + 1 bytes
+# fault: bsz_pick reports ceil(k / 8) (the delimiter byte forgotten when k is a multiple of 8)
+# why: ceil(k/8) for floor(k/8)+1
+# file: src/obj.bend
+# sym: bsz_pick,bits_sizek
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1816,3 +1816,3 @@
+   (ws, +c) = pair
+-  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 4294967295))
++  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn((k + 7 : U32), 3n) : U32), 4294967295))
+ 

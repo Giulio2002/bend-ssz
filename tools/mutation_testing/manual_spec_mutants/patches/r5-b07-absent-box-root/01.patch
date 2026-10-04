@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b07-absent-box-root/01
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: the root of an absent box has no spec value; the cached root after _ctake must equal the plain root (R4 absent-box fix)
+# fault: the absent box is replaced by the default value in the returned object (the pre-fix behaviour)
+# why: the pre-fix code
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveVarTestStruct_bx_root
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -42,3 +42,3 @@
+     case O.BSome{v, rest}: ProgressiveVarTestStruct_bx_rt(ProgressiveVarTestStruct_root(hl, h, v, seg))
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default(), D.zero()))
+ 

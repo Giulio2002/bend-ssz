@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/07
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the reader's windows are the validator's
+# fault: the reader reads f_D at o_f_C
+# why: copy-paste
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_rd6
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   (buf, f_C) = pair
+-  ProgressiveTestStruct_rd7(off, len, o_f_A, o_f_B, o_f_C, o_f_D, f_A, f_B, f_C, proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_read(buf, (off + o_f_D : U32), (len - o_f_D : U32)))
++  ProgressiveTestStruct_rd7(off, len, o_f_A, o_f_B, o_f_C, o_f_D, f_A, f_B, f_C, proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_read(buf, (off + o_f_C : U32), (len - o_f_D : U32)))
+ 

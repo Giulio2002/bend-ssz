@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c03-bitvector-decode/01
+# type: bitvector_257
+# ops: decode
+# spec: the last byte of a Bitvector[257] (byte 32) has bits 1..7 zero
+# fault: the padding test reads byte 31 (the last byte of the first chunk)
+# why: off by one in the last byte index
+# file: types/bitvector_257_decode_ssz_generated.bend
+# sym: bv257_ok_at,bv257_ok
+--- a/types/bitvector_257_decode_ssz_generated.bend
++++ b/types/bitvector_257_decode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+ 
+-def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 1)
++def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 31 : U32), 1)
+ 

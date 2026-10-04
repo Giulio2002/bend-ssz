@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d03-pcts-offsets/01
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: the first offset equals the fixed part (1 + 7 * 4 = 29)
+# fault: the first offset must be 28 (the uint8 field forgotten)
+# why: fixed part miscounted
+# file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_c0
+--- a/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+@@ -208,3 +208,3 @@
+   (buf, +o0) = pair
+-  ProgressiveComplexTestStruct_c0(U32.is_eq(o0, 29), buf, off, len, o0)
++  ProgressiveComplexTestStruct_c0(U32.is_eq(o0, 28), buf, off, len, o0)
+ 

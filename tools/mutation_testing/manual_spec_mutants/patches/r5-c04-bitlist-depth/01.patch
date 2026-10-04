@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c04-bitlist-depth/01
+# type: bitlist_257
+# ops: root
+# spec: hash_tree_root(Bitlist[257]) = mix_in_length(merkleize(chunks, limit ceil(257/256) = 2), n): depth 1
+# fault: depth 0 (limit counted as 1 chunk)
+# why: floor for ceil
+# file: types/bitlist_257_hashtreeroot_generated.bend
+# sym: bits257_root
+--- a/types/bitlist_257_hashtreeroot_generated.bend
++++ b/types/bitlist_257_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits257_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
++def bits257_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
+ 

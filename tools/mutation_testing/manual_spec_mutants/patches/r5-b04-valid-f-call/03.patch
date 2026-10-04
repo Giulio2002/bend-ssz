@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/03
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: the checked writer flags an invalid value
+# fault: the checked writer tests the list's element count against nothing: putk writes without the fields' check (pk gets True)
+# why: the validity call dropped from the writer
+# file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+# sym: pl_SmallTestStruct_putk,pl_SmallTestStruct_pk
+--- a/types/proglist_SmallTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_encode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+ 
+-def pl_SmallTestStruct_putk(out: Array<U32>, +pos: U32, o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32): pl_SmallTestStruct_pk(out, pos, pl_SmallTestStruct_valid_f(o))
++def pl_SmallTestStruct_putk(out: Array<U32>, +pos: U32, o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32): pl_SmallTestStruct_pk(out, pos, (o, True{}))
+ 

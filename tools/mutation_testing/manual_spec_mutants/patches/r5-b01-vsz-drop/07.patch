@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b01-vsz-drop/07
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+# fault: the size pass is dropped: _valid is the fields' check alone
+# why: the size test thought implied by the fields' limits
+# file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_vsz_go,ProgressiveComplexTestStruct_vsz,ProgressiveComplexTestStruct_valid
+--- a/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+@@ -157,3 +157,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+ 

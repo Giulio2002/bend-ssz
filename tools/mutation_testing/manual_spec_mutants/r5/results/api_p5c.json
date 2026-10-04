@@ -1,0 +1,189 @@
+{
+ "baseline": {
+  "1": "c1 pts empty decoded=some reser_ok=1 size=16",
+  "2": "c2 pts o3<o2 decoded=none",
+  "3": "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+  "4": "c4 pts D first 5 decoded=none",
+  "5": "c5 pts D[[],[]] decoded=some reser_ok=1 size=24",
+  "6": "c6 pts C 2 bytes decoded=none",
+  "7": "c7 pcts default decoded=some reser_ok=1 size=30",
+  "8": "c8 pcts no delim decoded=none",
+  "9": "c9 ubc arm0 decoded=some reser_ok=1 size=6",
+  "10": "c10 ubc sel1 decoded=none"
+ },
+ "r5-d01-nested-list-offsets/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d01-nested-list-offsets/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d01-nested-list-offsets/03": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+    "c3 pts C1 D[[]] decoded=none"
+   ],
+   "5": [
+    "c5 pts D[[],[]] decoded=some reser_ok=1 size=24",
+    "c5 pts D[[],[]] decoded=none"
+   ]
+  }
+ },
+ "r5-d01-nested-list-offsets/05": {
+  "B2": "KILLED",
+  "diff": {
+   "4": [
+    "c4 pts D first 5 decoded=none",
+    "c4 pts D first 5 decoded=some reser_ok=1 size=20"
+   ]
+  }
+ },
+ "r5-d01-nested-list-offsets/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d01-nested-list-offsets/07": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d01-nested-list-offsets/08": {
+  "B2": "KILLED",
+  "diff": {
+   "5": [
+    "c5 pts D[[],[]] decoded=some reser_ok=1 size=24",
+    "c5 pts D[[],[]] decoded=none"
+   ]
+  }
+ },
+ "r5-d01-nested-list-offsets/09": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d01-nested-list-offsets/10": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d02-container-offsets/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d02-container-offsets/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d02-container-offsets/03": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "c1 pts empty decoded=some reser_ok=1 size=16",
+    "c1 pts empty decoded=none"
+   ],
+   "3": [
+    "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+    "c3 pts C1 D[[]] decoded=none"
+   ],
+   "5": [
+    "c5 pts D[[],[]] decoded=some reser_ok=1 size=24",
+    "c5 pts D[[],[]] decoded=none"
+   ]
+  }
+ },
+ "r5-d02-container-offsets/05": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+    "c3 pts C1 D[[]] decoded=none"
+   ]
+  }
+ },
+ "r5-d02-container-offsets/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d02-container-offsets/07": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+    "timeout"
+   ]
+  }
+ },
+ "r5-d02-container-offsets/08": {
+  "B2": "KILLED",
+  "diff": {
+   "3": [
+    "c3 pts C1 D[[]] decoded=some reser_ok=1 size=24",
+    "timeout"
+   ]
+  }
+ },
+ "r5-d03-pcts-offsets/01": {
+  "B2": "KILLED",
+  "diff": {
+   "7": [
+    "c7 pcts default decoded=some reser_ok=1 size=30",
+    "c7 pcts default decoded=none"
+   ]
+  }
+ },
+ "r5-d03-pcts-offsets/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d03-pcts-offsets/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d03-pcts-offsets/04": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d03-pcts-offsets/05": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 pcts no delim decoded=none",
+    "c8 pcts no delim decoded=some reser_ok=1 size=30"
+   ]
+  }
+ },
+ "r5-d03-pcts-offsets/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d04-fixed-elem-list/01": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d04-fixed-elem-list/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r5-d05-small-list/01": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "c6 pts C 2 bytes decoded=none",
+    "c6 pts C 2 bytes decoded=some reser_ok=1 size=16"
+   ]
+  }
+ },
+ "r5-d06-union-decode/01": {
+  "B2": "KILLED",
+  "diff": {
+   "10": [
+    "c10 ubc sel1 decoded=none",
+    "c10 ubc sel1 decoded=some reser_ok=1 size=6"
+   ]
+  }
+ },
+ "r5-d06-union-decode/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ }
+}

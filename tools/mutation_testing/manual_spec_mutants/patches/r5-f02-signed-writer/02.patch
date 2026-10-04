@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f02-signed-writer/02
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: same
+# fault: the final poison test of serialize is removed
+# why: the size pass thought to have refused already
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_senc_out,SignedBeaconBlock_serialize
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -81,3 +81,3 @@
+ def SignedBeaconBlock_senc_out(+n: U32, out: Array<U32>, o: FuluSignedBeaconBlock_d.SignedBeaconBlock, +m: U32) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

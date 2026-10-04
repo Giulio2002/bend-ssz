@@ -1,0 +1,54 @@
+{
+ "baseline": {
+  "1": "c1 sbb default valid=1 ser_ok=1",
+  "2": "c2 sbb bad kzg valid=0 ser_ok=0",
+  "3": "c3 saap default valid=1 ser_ok=1",
+  "4": "c4 saap bad bits valid=0 ser_ok=0",
+  "5": "c5 pl_small 65536 valid=0"
+ },
+ "r5-b02-vsz-fields/04": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 sbb bad kzg valid=0 ser_ok=0",
+    "c2 sbb bad kzg valid=1 ser_ok=0"
+   ]
+  }
+ },
+ "r5-b02-vsz-fields/10": {
+  "B2": "KILLED",
+  "diff": {
+   "5": [
+    "c5 pl_small 65536 valid=0",
+    "c5 pl_small 65536 valid=1"
+   ]
+  }
+ },
+ "r5-f01-signed-valid/01": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 sbb bad kzg valid=0 ser_ok=0",
+    "c2 sbb bad kzg valid=1 ser_ok=0"
+   ]
+  }
+ },
+ "r5-f01-signed-valid/02": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 sbb bad kzg valid=0 ser_ok=0",
+    "c2 sbb bad kzg valid=1 ser_ok=0"
+   ]
+  }
+ },
+ "r5-f01-signed-valid/03": {
+  "B2": "KILLED",
+  "diff": {
+   "4": [
+    "c4 saap bad bits valid=0 ser_ok=0",
+    "c4 saap bad bits valid=1 ser_ok=0"
+   ]
+  }
+ }
+}

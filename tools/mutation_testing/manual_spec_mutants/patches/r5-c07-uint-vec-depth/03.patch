@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c07-uint-vec-depth/03
+# type: vec_uint128_513
+# ops: root
+# spec: Vector[uint128, 513]: 8208 bytes = 257 chunks, depth 9
+# fault: depth 8 (512 elements thought one chunk each pair: 256 chunks)
+# why: 513/2 floored
+# file: types/vec_uint128_513_hashtreeroot_generated.bend
+# sym: v513_u128_root
+--- a/types/vec_uint128_513_hashtreeroot_generated.bend
++++ b/types/vec_uint128_513_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v513_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 9, seg)
++def v513_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 8, seg)
+ 

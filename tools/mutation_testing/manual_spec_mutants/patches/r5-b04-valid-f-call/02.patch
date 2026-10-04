@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/02
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the parent calls proglist_SmallTestStruct's _valid instead of _valid_f (designed equivalent in context)
+# why: same
+# file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveTestStruct_va1,ProgressiveTestStruct_valid_f
+--- a/types/ProgressiveTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_encode_ssz_generated.bend
+@@ -100,3 +100,3 @@
+   (f_B, ok) = pair
+-  ProgressiveTestStruct_va2(f_A, f_B, f_D, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_C))
++  ProgressiveTestStruct_va2(f_A, f_B, f_D, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(f_C))
+ 

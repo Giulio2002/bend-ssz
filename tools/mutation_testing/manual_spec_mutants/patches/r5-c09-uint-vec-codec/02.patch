@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c09-uint-vec-codec/02
+# type: vec_uint256_3
+# ops: decode
+# spec: the decoded vector holds its 96 bytes in whole chunks (4 chunks = 32 words)
+# fault: the read storage is 16 words (64 of 96 bytes)
+# why: depth one too small
+# file: types/vec_uint256_3_decode_ssz_generated.bend
+# sym: v3_u256_read
+--- a/types/vec_uint256_3_decode_ssz_generated.bend
++++ b/types/vec_uint256_3_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v3_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 96, Array.new(U32, 5n, 0))
++def v3_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 96, Array.new(U32, 4n, 0))
+ 

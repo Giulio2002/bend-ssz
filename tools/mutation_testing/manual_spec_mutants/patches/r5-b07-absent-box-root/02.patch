@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b07-absent-box-root/02
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: same
+# fault: the absent box hashes as the default value's root (not the zero chunk)
+# why: an absent element treated as the default element
+# file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveVarTestStruct_bx_root
+--- a/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+@@ -42,3 +42,3 @@
+     case O.BSome{v, rest}: ProgressiveVarTestStruct_bx_rt(ProgressiveVarTestStruct_root(hl, h, v, seg))
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: ProgressiveVarTestStruct_bx_rt(ProgressiveVarTestStruct_root(hl, h, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), seg))
+ 

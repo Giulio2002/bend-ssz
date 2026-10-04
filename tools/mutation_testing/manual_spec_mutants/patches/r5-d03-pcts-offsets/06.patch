@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d03-pcts-offsets/06
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: a ProgressiveComplexTestStruct needs its 29-byte fixed part
+# fault: 28 bytes are enough
+# why: fixed part miscounted
+# file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_ok
+--- a/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+@@ -215,3 +215,3 @@
+ 
+-def ProgressiveComplexTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveComplexTestStruct_ok_len(U32.is_le(29, len), buf, off, len)
++def ProgressiveComplexTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveComplexTestStruct_ok_len(U32.is_le(28, len), buf, off, len)
+ 

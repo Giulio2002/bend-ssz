@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/07
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: same
+# fault: 4 <= first is dropped (first offset 0 accepted for a non-empty window)
+# why: an empty table thought fine
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_head
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  pl_pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
++  pl_pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), True{}), buf, off, len, first)
+ 

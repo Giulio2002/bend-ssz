@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c06-uint-pack/01
+# type: uint128
+# ops: root
+# spec: hash_tree_root(uint128) = its 16 little-endian bytes padded right with zeros to 32
+# fault: the 16 bytes are right-aligned in the chunk
+# why: padding on the wrong side
+# file: types/uint128_hashtreeroot_generated.bend
+# sym: u128_root
+--- a/types/uint128_hashtreeroot_generated.bend
++++ b/types/uint128_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case uint128_d.Uint128{+w0, +w1, +w2, +w3}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
++    case uint128_d.Uint128{+w0, +w1, +w2, +w3}: (h, D.D{0, 0, 0, 0, B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3)})
+ 

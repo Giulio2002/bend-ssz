@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/02
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_balances writes randao_mixes
+# why: adjacent Words fields confused
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g1_set_balances,BeaconState_set_balances
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -195,3 +195,3 @@
+   match o:
+-    case BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, v, randao_mixes, slashings, previous_epoch_participation}
++    case BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, v, slashings, previous_epoch_participation}
+ 

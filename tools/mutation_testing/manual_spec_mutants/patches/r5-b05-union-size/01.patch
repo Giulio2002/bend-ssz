@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b05-union-size/01
+# type: CompatibleUnionBC
+# ops: encode
+# spec: serialize(union) = selector byte || serialize(value): size = 1 + size(value)
+# fault: arm 0's size omits the selector byte
+# why: the selector forgotten in the size pass
+# file: types/CompatibleUnionBC_encode_ssz_generated.bend
+# sym: CompatibleUnionBC_sz0,CompatibleUnionBC_size
+--- a/types/CompatibleUnionBC_encode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_encode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+   (v, +m) = pair
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, m)
+ 

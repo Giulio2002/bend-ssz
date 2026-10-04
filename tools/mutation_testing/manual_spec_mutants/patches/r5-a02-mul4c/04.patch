@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a02-mul4c/04
+# type: proglist_VarTestStruct
+# ops: encode
+# spec: same
+# fault: mul4c's overflow value is 0 instead of the marker (an offset table too large reports size 0)
+# why: saturate-to-zero
+# file: src/obj.bend
+# sym: mul4c,pl_VarTestStruct_sz_fin
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1775,3 +1775,3 @@
+ # 4 * n, the offset table of a list of variable-size elements: the product when n <= NMAX / 4, else the marker (docs/CRASH_HUNT.md R4-03).
+-def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
++def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 0)
+ 

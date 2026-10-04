@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b07-absent-box-root/03
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: same
+# fault: the absent Deposit box hashes as the default Deposit's root
+# why: same
+# file: types/FuluDeposit_hashtreeroot_generated.bend
+# sym: Deposit_bx_root
+--- a/types/FuluDeposit_hashtreeroot_generated.bend
++++ b/types/FuluDeposit_hashtreeroot_generated.bend
+@@ -35,3 +35,3 @@
+     case O.BSome{v, rest}: Deposit_bx_rt(Deposit_root(hl, h, v, seg))
+-    case O.BNone{}: (h, (O.BNone{}, D.zero()))
++    case O.BNone{}: Deposit_bx_rt(Deposit_root(hl, h, FuluDeposit_d.Deposit_default(), seg))
+ 

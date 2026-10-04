@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/04
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the first offset equals the fixed part's size (16)
+# fault: the first offset may exceed 16 (a gap after the fixed part accepted)
+# why: first offset only bounded below
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_c0
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -120,3 +120,3 @@
+   (buf, +o0) = pair
+-  ProgressiveTestStruct_c0(U32.is_eq(o0, 16), buf, off, len, o0)
++  ProgressiveTestStruct_c0(U32.is_le(16, o0), buf, off, len, o0)
+ 

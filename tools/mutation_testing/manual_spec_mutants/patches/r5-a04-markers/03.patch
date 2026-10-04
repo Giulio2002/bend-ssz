@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a04-markers/03
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: serialize refuses an invalid value
+# fault: ser_done answers ok with the empty buffer for a poisoned length
+# why: refusal by emptiness instead of ok = False
+# file: src/obj.bend
+# sym: ser_done
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1801,3 +1801,3 @@
+   match bad:
+-    case True{}: refused()
++    case True{}: Encoded{True{}, B.empty()}
+     case False{}: Encoded{True{}, B.Buf{out, m}}

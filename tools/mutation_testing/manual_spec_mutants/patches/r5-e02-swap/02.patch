@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e02-swap/02
+# type: FuluBeaconBlockBody
+# ops: encode,root
+# spec: same
+# fault: swap_deposits keeps the old list and returns the new one
+# why: same
+# file: types/FuluBeaconBlockBody_def_generated.bend
+# sym: BeaconBlockBody_g0_swap_deposits,BeaconBlockBody_swap_deposits
+--- a/types/FuluBeaconBlockBody_def_generated.bend
++++ b/types/FuluBeaconBlockBody_def_generated.bend
+@@ -106,3 +106,3 @@
+   match o:
+-    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, v, voluntary_exits}, deposits)
++    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, v)
+ 

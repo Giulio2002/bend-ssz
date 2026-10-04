@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c11-prog-container/06
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: the progressive tree of the chunks; a zero subtree of depth 1 is z1
+# fault: the depth-1 zero subtree next to H is the zero chunk
+# why: zero-hash level off by one
+# file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+# sym: ProgressiveComplexTestStruct_fin
+--- a/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+ def ProgressiveComplexTestStruct_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, +d_f_D: D.Digest, +d_f_E: D.Digest, +d_f_F: D.Digest, +d_f_G: D.Digest, +d_f_H: D.Digest, +z1: D.Digest, +z2: D.Digest, +z3: D.Digest, +z4: D.Digest, +z5: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, f_F: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, f_G: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq, f_H: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq) -> B.Buf & (ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & D.Digest):
+-  (h, (ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.mix_len(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, d_f_H, D.zero()), z1), z2), z3), z4), z5)), D.node(hl, D.node(hl, D.node(hl, z1, D.node(hl, D.zero(), d_f_D)), D.node(hl, z1, D.node(hl, D.zero(), d_f_E))), D.node(hl, D.node(hl, D.node(hl, d_f_F, D.zero()), z1), D.node(hl, z1, D.node(hl, D.zero(), d_f_G))))), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 3158293)))
++  (h, (ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.mix_len(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, d_f_H, D.zero()), D.zero()), z2), z3), z4), z5)), D.node(hl, D.node(hl, D.node(hl, z1, D.node(hl, D.zero(), d_f_D)), D.node(hl, z1, D.node(hl, D.zero(), d_f_E))), D.node(hl, D.node(hl, D.node(hl, d_f_F, D.zero()), z1), D.node(hl, z1, D.node(hl, D.zero(), d_f_G))))), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 3158293)))
+ 

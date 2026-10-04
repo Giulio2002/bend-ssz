@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b01-vsz-drop/05
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a value is valid when its fields are and its serialization is at most NMAX bytes (R4-05: _valid agrees with _serialize)
+# fault: the size pass is dropped: _valid is the fields' check alone
+# why: the size test thought implied by the fields' limits
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -218,3 +218,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, ok)
+ 

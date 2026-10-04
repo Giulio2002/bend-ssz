@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f02-signed-writer/01
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: serialize refuses a value with an invalid field
+# fault: the message writer's poisoned cursor is replaced by the clean size 100 + size(message) only when not poisoned: the writer reports the payload end without the poison
+# why: flag and cursor confused
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_pw0,SignedBeaconBlock_putn,SignedBeaconBlock_serialize
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -25,3 +25,3 @@
+   (message, c) = r
+-  (FuluBytes96_e.b96_put(out, (pos + 4 : U32), signature), (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, c))
++  (FuluBytes96_e.b96_put(out, (pos + 4 : U32), signature), (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, O.pick(O.is_poisoned(c), 100, c)))
+ 

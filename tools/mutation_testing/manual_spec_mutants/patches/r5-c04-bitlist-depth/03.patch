@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c04-bitlist-depth/03
+# type: bitlist_512
+# ops: root
+# spec: Bitlist[512]: chunk limit 2, depth 1
+# fault: depth 2 (delimiter counted)
+# why: same
+# file: types/bitlist_512_hashtreeroot_generated.bend
+# sym: bits512_root
+--- a/types/bitlist_512_hashtreeroot_generated.bend
++++ b/types/bitlist_512_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits512_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
++def bits512_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 2, seg)
+ 

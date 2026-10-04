@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/02
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the clean copy's whole-chunk term counts 4 words per chunk (half a chunk)
+# why: words and chunks confused (4 bytes per word, 8 words per chunk)
+# file: src/obj.bend
+# sym: zeros_copy,words_copy,wr_slow,wrp_slow
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1011,3 +1011,3 @@
+ def zeros_copy(+n: U32) -> Array<U32>:
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 4 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
+ 

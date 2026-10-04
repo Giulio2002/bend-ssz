@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b05-union-size/02
+# type: CompatibleUnionBC
+# ops: encode
+# spec: same
+# fault: arm 1's size reverts to the wrapping add (m + 1): the marker wraps to 0 (the R4-04 regression)
+# why: the pre-fix code
+# file: types/CompatibleUnionBC_encode_ssz_generated.bend
+# sym: CompatibleUnionBC_sz1,CompatibleUnionBC_size
+--- a/types/CompatibleUnionBC_encode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_encode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (v, +m) = pair
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, (m + 1 : U32))
+ 

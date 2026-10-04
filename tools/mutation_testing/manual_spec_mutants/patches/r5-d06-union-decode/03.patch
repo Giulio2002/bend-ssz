@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d06-union-decode/03
+# type: CompatibleUnionBC
+# ops: decode
+# spec: a union needs at least its selector byte
+# fault: an empty window is accepted (selector read as 0... past the end)
+# why: nonempty test dropped
+# file: types/CompatibleUnionBC_decode_ssz_generated.bend
+# sym: CompatibleUnionBC_ok
+--- a/types/CompatibleUnionBC_decode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_decode_ssz_generated.bend
+@@ -33,3 +33,3 @@
+ 
+-def CompatibleUnionBC_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionBC_ok_nz(U32.is_le(1, len), buf, off, len)
++def CompatibleUnionBC_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: CompatibleUnionBC_ok_nz(True{}, buf, off, len)
+ 

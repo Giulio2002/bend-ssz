@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/04
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_current_justified_checkpoint writes previous_justified_checkpoint
+# why: previous/current confused
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g2_set_current_justified_checkpoint,BeaconState_set_current_justified_checkpoint
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -280,3 +280,3 @@
+   match o:
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, v, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, v, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
+ 

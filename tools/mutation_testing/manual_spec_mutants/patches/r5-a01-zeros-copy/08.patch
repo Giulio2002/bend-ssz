@@ -1,0 +1,17 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/08
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the slow path takes the clean copy even when the storage does not hold ceil(n / 4) words (covered test inverted)
+# why: inverted guard
+# file: src/obj.bend
+# sym: zeros_copy,words_copy,wr_slow,wrp_slow
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1028,4 +1028,4 @@
+   match covered:
+-    case True{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
+-    case False{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
++    case False{}: wr_clean(hl, h, depth, n, words_copy(n, ws))
++    case True{}: wr_cnt(hl, h, depth, n, ws, cap_cnt(chunks_of(n), e8(chunks_of(n)), 8n, U32.to_nat(sz)))
+ 

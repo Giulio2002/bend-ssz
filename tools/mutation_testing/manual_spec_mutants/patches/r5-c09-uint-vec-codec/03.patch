@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c09-uint-vec-codec/03
+# type: vec_uint128_3
+# ops: encode
+# spec: a Vector[uint128, 3] has exactly 48 bytes
+# fault: the writer accepts 0..48 bytes (lower bound dropped)
+# why: a vector checked like a list
+# file: types/vec_uint128_3_encode_ssz_generated.bend
+# sym: v3_u128_valid,v3_u128_putk
+--- a/types/vec_uint128_3_encode_ssz_generated.bend
++++ b/types/vec_uint128_3_encode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+ 
+-def v3_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 48, 48, False{}, 16)
++def v3_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 48, False{}, 16)
+ 

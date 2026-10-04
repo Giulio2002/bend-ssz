@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c03-bitvector-decode/03
+# type: bitvector_257
+# ops: decode
+# spec: the decoded Bitvector[257] holds byte 32 as its spill word
+# fault: the spill word keeps 2 bytes (a byte past the vector is read)
+# why: byte count of the spill
+# file: types/bitvector_257_decode_ssz_generated.bend
+# sym: bv257_r8,bv257_read
+--- a/types/bitvector_257_decode_ssz_generated.bend
++++ b/types/bitvector_257_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, bitvector_257_d.Bitvector257{w0, w1, w2, w3, w4, w5, w6, w7, O.keep(1, x)})
++  (buf, bitvector_257_d.Bitvector257{w0, w1, w2, w3, w4, w5, w6, w7, O.keep(2, x)})
+ 

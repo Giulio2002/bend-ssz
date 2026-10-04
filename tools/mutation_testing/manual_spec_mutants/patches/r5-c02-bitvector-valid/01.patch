@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c02-bitvector-valid/01
+# type: bitvector_257
+# ops: encode
+# spec: a Bitvector[257] has no bit at index >= 257 (the padding bits of the last byte are zero)
+# fault: bit 257 is accepted (w8 < 4)
+# why: the spill word's mask one bit too wide
+# file: types/bitvector_257_encode_ssz_generated.bend
+# sym: bv257_valid
+--- a/types/bitvector_257_encode_ssz_generated.bend
++++ b/types/bitvector_257_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   match o:
+-    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: U32.is_lt(w8, 2)
++    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: U32.is_lt(w8, 4)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b05-union-size/03
+# type: CompatibleUnionBC
+# ops: encode
+# spec: same
+# fault: arm 1's size counts a 4-byte selector
+# why: selector width confused with an offset
+# file: types/CompatibleUnionBC_encode_ssz_generated.bend
+# sym: CompatibleUnionBC_sz1,CompatibleUnionBC_size
+--- a/types/CompatibleUnionBC_encode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_encode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (v, +m) = pair
+-  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 1))
++  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 4))
+ 

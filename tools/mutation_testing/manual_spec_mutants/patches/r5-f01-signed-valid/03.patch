@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f01-signed-valid/03
+# type: FuluSignedAggregateAndProof
+# ops: encode
+# spec: a container is valid only if every field is valid
+# fault: the message's validity is not consulted
+# why: same
+# file: types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+# sym: SignedAggregateAndProof_valid,SignedAggregateAndProof_va0
+--- a/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
++++ b/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match o:
+-    case FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, +signature}: SignedAggregateAndProof_va0(signature, True{}, FuluAggregateAndProof_e.AggregateAndProof_valid(message))
++    case FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, +signature}: SignedAggregateAndProof_va0(signature, True{}, (message, True{}))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c08-uint-prog-mix/03
+# type: proglist_uint128
+# ops: root
+# spec: merkleize_progressive, not a binary tree
+# fault: the progressive list hashes a binary tree of depth 0 (only the first chunk)
+# why: progressive treated as a vector
+# file: types/proglist_uint128_hashtreeroot_generated.bend
+# sym: pl_u128_root
+--- a/types/proglist_uint128_hashtreeroot_generated.bend
++++ b/types/proglist_uint128_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def pl_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
++def pl_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 4n, O.words_root(hl, h, o, 0, seg))
+ 

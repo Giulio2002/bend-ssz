@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b06-mul4c-site/04
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+# fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+# why: offsets thought to sit between elements
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/05
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: same
+# fault: the f_E field's check is skipped (True is its flag)
+# why: same
+# file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_va2,ProgressiveComplexTestStruct_valid_f
+--- a/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+@@ -141,3 +141,3 @@
+   (f_D, ok) = pair
+-  ProgressiveComplexTestStruct_va3(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_E))
++  ProgressiveComplexTestStruct_va3(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), (f_E, True{}))
+ 

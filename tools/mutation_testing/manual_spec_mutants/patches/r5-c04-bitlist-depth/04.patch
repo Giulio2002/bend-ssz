@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c04-bitlist-depth/04
+# type: bitlist_511
+# ops: root
+# spec: Bitlist[511]: chunk limit 2, depth 1
+# fault: depth 0
+# why: 511/256 floored
+# file: types/bitlist_511_hashtreeroot_generated.bend
+# sym: bits511_root
+--- a/types/bitlist_511_hashtreeroot_generated.bend
++++ b/types/bitlist_511_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits511_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
++def bits511_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
+ 

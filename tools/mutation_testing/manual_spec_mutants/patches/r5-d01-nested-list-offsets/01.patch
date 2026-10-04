@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/01
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: offsets of a list of variable-size elements are non-decreasing and within the list
+# fault: the non-decreasing test is dropped (a later offset may point before the previous one)
+# why: only the upper bound checked
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_ee,pl_pl_VarTestStruct_ok
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   (buf, +b) = pair
+-  pl_pl_VarTestStruct_eb(b, O.and_pair(acc, pl_pl_VarTestStruct_ew(Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))), buf, off, a, b)))
++  pl_pl_VarTestStruct_eb(b, O.and_pair(acc, pl_pl_VarTestStruct_ew(Bool.and(acc, U32.is_le(b, len)), buf, off, a, b)))
+ 

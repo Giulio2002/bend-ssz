@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/07
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_earliest_consolidation_epoch writes consolidation_balance_to_consume
+# why: first field of a group
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g4_set_earliest_consolidation_epoch,BeaconState_set_earliest_consolidation_epoch
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -442,3 +442,3 @@
+   match o:
+-    case BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4{consolidation_balance_to_consume, v, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}
++    case BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4{v, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}
+ 

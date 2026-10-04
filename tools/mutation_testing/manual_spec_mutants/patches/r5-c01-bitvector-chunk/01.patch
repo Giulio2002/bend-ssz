@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c01-bitvector-chunk/01
+# type: bitvector_257
+# ops: root
+# spec: hash_tree_root(Bitvector[257]) = merkleize(pack_bits(bits), limit 2 chunks): bit 256 is bit 0 of byte 0 of chunk 1
+# fault: bit 256 is placed in the last word of chunk 1 (big-endian chunk)
+# why: chunk filled from the right
+# file: types/bitvector_257_hashtreeroot_generated.bend
+# sym: bv257_root
+--- a/types/bitvector_257_hashtreeroot_generated.bend
++++ b/types/bitvector_257_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
++    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w8)}))
+ 

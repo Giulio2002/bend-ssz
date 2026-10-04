@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d04-fixed-elem-list/02
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: element i is at off + i
+# fault: element i + 1 is read at off + i (each element read twice, the last lost)
+# why: index off by one
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_rd
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+       (buf, +v) = pair
+-      l10_ProgressiveSingleFieldContainerTestStruct_rd(q, (i + 1 : U32), off, Array.set(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, i, v), ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + (i + 1 : U32) * 1 : U32), 1))
++      l10_ProgressiveSingleFieldContainerTestStruct_rd(q, (i + 1 : U32), off, Array.set(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, i, v), ProgressiveSingleFieldContainerTestStruct_r.ProgressiveSingleFieldContainerTestStruct_read(buf, (off + i * 1 : U32), 1))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/08
+# type: FuluExecutionPayload
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_state_root writes parent_hash (both Bytes32)
+# why: adjacent Bytes32 fields confused
+# file: types/FuluExecutionPayload_def_generated.bend
+# sym: ExecutionPayload_g0_set_state_root,ExecutionPayload_set_state_root
+--- a/types/FuluExecutionPayload_def_generated.bend
++++ b/types/FuluExecutionPayload_def_generated.bend
+@@ -56,3 +56,3 @@
+   match o:
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{v, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
+ 

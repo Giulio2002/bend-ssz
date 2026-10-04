@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c01-bitvector-chunk/05
+# type: bitvector_256
+# ops: root
+# spec: same
+# fault: the last word is not byte-swapped
+# why: endianness
+# file: types/bitvector_256_hashtreeroot_generated.bend
+# sym: bv256_root
+--- a/types/bitvector_256_hashtreeroot_generated.bend
++++ b/types/bitvector_256_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
++    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), w7})
+ 

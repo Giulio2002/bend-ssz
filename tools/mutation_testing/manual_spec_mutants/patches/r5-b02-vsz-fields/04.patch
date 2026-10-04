@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b02-vsz-fields/04
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: same
+# fault: the size pass replaces the fields' check (only the total size is tested)
+# why: the accumulated flag dropped when the size test was added
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_vsz_go,SignedBeaconBlock_vsz,SignedBeaconBlock_valid
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -71,3 +71,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+ 

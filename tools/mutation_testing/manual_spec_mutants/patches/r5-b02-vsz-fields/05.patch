@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b02-vsz-fields/05
+# type: FuluExecutionPayload
+# ops: encode
+# spec: same
+# fault: the size pass replaces the fields' check (only the total size is tested)
+# why: the accumulated flag dropped when the size test was added
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_vsz_go,ExecutionPayload_vsz,ExecutionPayload_valid
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -218,3 +218,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b02-vsz-fields/09
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: the size pass replaces the fields' check (only the total size is tested)
+# why: the accumulated flag dropped when the size test was added
+# file: types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
+# sym: l134217728_PendingDeposit_vsz_go,l134217728_PendingDeposit_vsz,l134217728_PendingDeposit_valid
+--- a/types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
++++ b/types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend
+@@ -76,3 +76,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.not(O.is_poisoned(m)))
+ 

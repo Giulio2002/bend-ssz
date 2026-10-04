@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/02
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: same
+# fault: o3 <= len is dropped
+# why: the last offset's bound forgotten
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_c3
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -93,3 +93,3 @@
+   (buf, +o3) = pair
+-  ProgressiveTestStruct_c3(Bool.and(U32.is_le(o2, o3), U32.is_le(o3, len)), buf, off, len, o0, o1, o2, o3)
++  ProgressiveTestStruct_c3(U32.is_le(o2, o3), buf, off, len, o0, o1, o2, o3)
+ 

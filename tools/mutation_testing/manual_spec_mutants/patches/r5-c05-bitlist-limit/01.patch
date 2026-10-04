@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c05-bitlist-limit/01
+# type: bitlist_257
+# ops: decode
+# spec: a Bitlist[257] holds at most 257 bits
+# fault: the decoder accepts 258 bits
+# why: limit + 1
+# file: types/bitlist_257_decode_ssz_generated.bend
+# sym: bits257_ok
+--- a/types/bitlist_257_decode_ssz_generated.bend
++++ b/types/bitlist_257_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def bits257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 257, False{})
++def bits257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 258, False{})
+ 

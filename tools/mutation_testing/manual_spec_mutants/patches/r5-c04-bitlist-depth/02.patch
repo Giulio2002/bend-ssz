@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c04-bitlist-depth/02
+# type: bitlist_256
+# ops: root
+# spec: Bitlist[256]: chunk limit 1, depth 0
+# fault: depth 1 (the delimiter counted: 257 bits)
+# why: delimiter counted in the limit
+# file: types/bitlist_256_hashtreeroot_generated.bend
+# sym: bits256_root
+--- a/types/bitlist_256_hashtreeroot_generated.bend
++++ b/types/bitlist_256_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits256_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
++def bits256_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
+ 

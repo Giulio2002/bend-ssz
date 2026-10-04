@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/03
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: same; an empty first field (o0 = o1) is allowed
+# fault: o0 < o1 required (empty f_A refused)
+# why: < for <=
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_c1
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -111,3 +111,3 @@
+   (buf, +o1) = pair
+-  ProgressiveTestStruct_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  ProgressiveTestStruct_c1(Bool.and(U32.is_lt(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d02-container-offsets/05
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the last field's window is [o3, len)
+# fault: the last field is validated over [o3, o3 + (len - o2))
+# why: previous offset used
+# file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveTestStruct_v7,ProgressiveTestStruct_c7
+--- a/types/ProgressiveTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_decode_ssz_generated.bend
+@@ -61,3 +61,3 @@
+   match ok:
+-    case True{}: ProgressiveTestStruct_v7(off, len, o0, o1, o2, o3, proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_ok(buf, (off + o3 : U32), (len - o3 : U32)))
++    case True{}: ProgressiveTestStruct_v7(off, len, o0, o1, o2, o3, proglist_proglist_VarTestStruct_r.pl_pl_VarTestStruct_ok(buf, (off + o3 : U32), (len - o2 : U32)))
+     case False{}: (buf, False{})

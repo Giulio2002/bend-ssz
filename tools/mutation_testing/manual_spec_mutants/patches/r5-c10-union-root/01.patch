@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c10-union-root/01
+# type: CompatibleUnionBC
+# ops: root
+# spec: hash_tree_root(CompatibleUnion) = mix_in_selector(root(value), selector): arm 0 has selector 2
+# fault: arm 0 mixes in its arm index 0
+# why: arm index for selector
+# file: types/CompatibleUnionBC_hashtreeroot_generated.bend
+# sym: CompatibleUnionBC_rt0,CompatibleUnionBC_root
+--- a/types/CompatibleUnionBC_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionBC_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (v, d) = r
+-  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.mix_len(hl, d, 2)))
++  (h, (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.mix_len(hl, d, 0)))
+ 

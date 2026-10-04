@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/04
+# type: FuluBeaconState
+# ops: encode
+# spec: same
+# fault: the pending_deposits field's check is skipped (True is passed as its flag)
+# why: a field dropped from the conjunction when the call was renamed
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g4_valid,BeaconState_g4_va0
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -421,3 +421,3 @@
+   match o:
+-    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid_f(pending_deposits))
++    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, (pending_deposits, True{}))
+ 

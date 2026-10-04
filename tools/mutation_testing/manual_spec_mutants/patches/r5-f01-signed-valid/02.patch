@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-f01-signed-valid/02
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: a container is valid only if every field is valid
+# fault: va0 returns the accumulator only (the message's flag ok is dropped)
+# why: and-chain miswired
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_va0,SignedBeaconBlock_valid
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (message, ok) = pair
+-  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.and(acc, ok))
++  (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, acc)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c05-bitlist-limit/03
+# type: bitlist_256
+# ops: encode
+# spec: same, encode side
+# fault: the checked writer accepts 257 bits
+# why: limit + 1
+# file: types/bitlist_256_encode_ssz_generated.bend
+# sym: bits256_valid
+--- a/types/bitlist_256_encode_ssz_generated.bend
++++ b/types/bitlist_256_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bits256_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 256, False{})
++def bits256_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 257, False{})
+ 

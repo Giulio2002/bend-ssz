@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d04-fixed-elem-list/01
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: List[ProgressiveSingleFieldContainerTestStruct, 10]: 1-byte elements, at most 10
+# fault: 11 elements accepted
+# why: limit + 1
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_ok
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_decode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+ 
+-def l10_ProgressiveSingleFieldContainerTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), U32.is_le(U32.div(len, 1), 10)))
++def l10_ProgressiveSingleFieldContainerTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), U32.is_le(U32.div(len, 1), 11)))
+ 

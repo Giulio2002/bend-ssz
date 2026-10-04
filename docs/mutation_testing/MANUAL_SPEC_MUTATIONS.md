@@ -1508,3 +1508,90 @@ four control mutants on writers the marker laws list (`l128_u16_pk_false_poisone
 ## R4.4 Every fault
 
 See `tools/mutation_testing/manual_spec_mutants/r4/results/run.log` (one line per fault: verdict and first killing root and law) and `res_all.json` (every root checked, seconds, laws).
+
+# Round 5 (base main 8bd2fc3e1)
+
+Definitions `defs/r5_01..06*.txt`, patches `patches/r5-*` (**167 faults**, 31 rule slugs, all apply; 9 further definitions were dropped by `r5/mk5.py` as exact duplicates
+of an earlier round's fault), drivers `r5/` (`mk5.py` with the duplicate check, `go.sh`; verdict (A) with round 4's `run4.py`), API probes `r5/probes/p5.bend`
+(root of a value with spare or unclean storage), `p5b.bend` (X_valid / X_serialize of the signed wrappers), `p5c.bend` (decode of crafted byte strings), results
+`r5/results/` (`run.log`, `res_all.json`, `rerun.log`, `res_rerun.json`, `api_p5*.json`, `final.txt`), machine-readable survivors `manual_round_5_survivors.json`.
+Focus: (a) the round-4 fix code (`O.zeros_copy`, the split `_valid` / `_valid_f` with the size pass, `O.mul4c`, the union size via `O.padd`, the absent-box root) and the
+round-4 laws around it; (b) roots of unions, optionals and progressive containers, Bitvector / Bitlist at the 256 / 257 / 511 / 512 / 513 boundaries, uint128 / uint256
+packing, decode of nested variable-size containers, setters / swaps on grouped containers.
+
+## R5.1 Result
+
+| | count |
+|---|---|
+| Faults | **167** |
+| (A) killed by a named law (106 in the narrow pass, 5 more on the re-run with explicit roots: the proglist_uint8 root facade, the marker laws, crash_fix_laws) | **111** |
+| (A) survived every checked root | **22** |
+| (A) UNJUDGED (pinned checker overflowed its stack, also at the big stack, on every root tried; 4 timeouts on BeaconState) | **34** (27 of them decode faults) |
+| Survivors + unjudged judged through the public API (56) | critical **5** (all demonstrated by a probe), unjudged-but-demonstrated **11**, gap **4**, gap-unreachable **8**, equivalent **13** (incl. 3 equivalent in context among the unjudged), unjudged not demonstrated **15** |
+
+Verdict (A): `run4.py` (cheapest roots that import the patched file and mention a changed symbol, slop laws first, K = 4, cost <= 60 s, then one direct importer and
+one facade; 120 s per root; STACK retried once at the big stack; CRASH = unjudged). Re-run (`res_rerun.json`) for the `O.zeros_copy` / `O.mul4c` / marker faults
+with explicit roots: `words_canon`, `words_zero`, `words_cap`, the Transaction / Vector[uint128, 3] / ProgressiveList[uint8] root facades, `crash_fix_laws`, and the
+round-4 marker files `generic_vec_bool_1_poison` / `fulu_Blob_poison` (the 1 s files: `O.mul4c` edits crashed the checker on `venc` and every `encx_*` like `padd` did
+in round 4). Verdict (B'): API probes compiled (2.0.34 runtime) from a hard-linked copy of the import cone with the patch applied and compared case by case with the
+unmutated build; inputs use only public records (`O.Words{array, n}` over an array built with `Array.new` / `Array.set`, `O.Bits`, `B.Buf`, Seq records), defaults,
+setters and the entry points `X_hash_tree_root`, `X_valid`, `X_serialize`, `X_decode`. **(B) The reference corpus was not run** (as in rounds 3 and 4: it decodes,
+re-encodes and hashes valid values only; it cannot see the validity and unclean-storage survivors, and the over-strict decode faults are shown by the probes).
+
+Per family (killed / survived / unjudged): zeros_copy 5/5/0, mul4c 1/4/0, markers 3/1/0, size pass dropped 7/2/1, fields' check dropped 6/4/0, size pass negated 3/0/0,
+_valid vs _valid_f calls 4/0/4, union size 7/0/0, offset-table sites 10/0/0, absent-box root 0/3/0, Bitvector chunks 5/0/0, Bitvector validity 3/0/0, Bitvector decode
+4/0/0, Bitlist depth 4/0/0, Bitlist limit 3/0/1, uint128/256 roots 3/0/0, uint vectors' depth 5/0/0, progressive uint mix 3/0/0, uint vector codec 5/0/0, union roots
+3/0/0, (progressive) container roots 8/0/0, **nested-list offsets 1/0/10, container offsets 2/1/6, ProgressiveComplexTestStruct offsets 0/0/6**, fixed-element list 0/0/2,
+SmallTestStruct list 0/0/1, union decode 1/0/2, setters 8/0/0, swaps 4/0/0, **signed wrappers' validity 0/2/1**, signed wrappers' writer 3/0/0.
+
+## R5.2 Findings (critical: reachable through the public API, nothing in the proofs catches them, a probe shows the wrong answer)
+
+1. **The binary root's slow path is unpinned** (`r5-a01-zeros-copy/08`, `src/obj.bend` `wr_slow`: the `covered` test inverted). A valid value whose storage holds junk
+   past its length in the last chunk is hashed over the junk: `Transaction_hash_tree_root(O.hasher(), O.Words{a, 3})` with `a = Array.new(U32, 3n, 0)`, word 0 =
+   0x030201, word 5 = 0xDEADBEEF (`X_valid` = 1) gives `2343420938,1014311131,...` instead of `2998063901,1922048482,...` (the root of the clean 3-byte value, which
+   the unmutated build returns). Same on `Vector[uint128, 3]` (p5 case 6). Chain: `Transaction_hash_tree_root -> bl1073741824_root -> O.mix_count -> O.words_root ->
+   wr_size -> wr_cap -> wcn_k (unclean) -> wr_fit(False) -> wr_slow`. Every binary packed type goes through it. Checked and survived: `u32bits`, `words_canon`,
+   `words_zero`, `words_cap`, the three root facades, `crash_fix_laws`. The progressive twin (`wrp_slow`, `r5-a01/09`) **is** killed (`proglist_uint8_vroot_pl_u8_tight_5`),
+   as are the undersized copies `a01/01, 03, 06` (same law): the binary path has no law that hashes a valid value with unclean spare storage (CH-11 / R2-02 (b)).
+2. **`SignedBeaconBlock_valid` and `SignedAggregateAndProof_valid` do not depend on the message's validity in any law** (`r5-b02-vsz-fields/04`, `r5-f01-signed-valid/01,02,03`).
+   With the message's flag dropped: `SignedBeaconBlock_valid(SignedBeaconBlock_set_message(default, BeaconBlock_set_body(default, BeaconBlockBody_bx_wrap(
+   BeaconBlockBody_set_blob_kzg_commitments(default, O.Words{Array.new(U32, 4n, 0), 49})))))` answers **1** (unmutated 0), and `SignedAggregateAndProof_valid` of a
+   message whose aggregate has 131073 aggregation bits answers **1**; `X_serialize` still refuses both (ok = 0, its writer flag is pinned by `vrefuse_writer_marker`).
+   `X_valid` is the documented precondition of `X_encode` and `X_hash_tree_root` (docs/API_CONTRACTS.md), so the two public functions disagree. Cause:
+   `container_field_validity` emits for these two containers only `vreject_default_valid`, `vrefuse_bad_flag`, `vrefuse_poisoned_size`, no `vreject_message` (the message
+   field is an unboxed container; `BeaconBlock`'s boxed `body` has `vreject_body`). Of the 30 containers with no `vreject_<field>` law, these are the two whose field can
+   be invalid (`SignedBeaconBlock` -> body lists; `SignedAggregateAndProof` -> `aggregation_bits`).
+
+## R5.3 Unjudged decode faults the probes demonstrate (the full check would reject them only by a checker stack overflow)
+
+Every edit of the validators of `ProgressiveList[ProgressiveList[VarTestStruct]]`, `ProgressiveTestStruct`, `ProgressiveComplexTestStruct`,
+`List[ProgressiveSingleFieldContainerTestStruct, 10]`, `ProgressiveList[SmallTestStruct]`, `CompatibleUnionBC` and `Bitlist[257]` makes the pinned checker overflow its
+stack (also at 1 GiB / 800 MB) on `var_winx_*`, `vvl_*` and the decode facades, so (A) cannot judge 27 of the 33 decode faults (the other 6 are killed by
+`ProgressiveTestStruct_decode_first_offset`, `CompatibleUnionBC_ua_ok1_t`, `pl_pl_VarTestStruct_ew`). p5c shows 11 of them change the public decode:
+
+* accept invalid bytes: `d01/05` (nested first offset 5: `ProgressiveTestStruct_decode(B.Buf{[16,16,16,16,5,0], 21}, 21)` -> some), `d03/05` (ProgressiveComplexTestStruct's
+  progressive bitlist without its delimiter -> some), `d05/01` (`f_C` of 2 bytes -> some), `d06/01` (CompatibleUnionBC selector 1 -> some);
+* refuse valid encodings: `d01/03` (empty inner list), `d01/08` (`f_D = [[], []]`), `d02/03` (the default value, every field empty), `d02/05`, `d03/01` (ProgressiveComplexTestStruct's own default);
+* read wrong windows: `d02/07`, `d02/08` (a valid value decodes into a 2^15-element read: timeout).
+
+The 15 others were not reached by the probe inputs (argued counterexamples in the JSON; `d02/01`'s input in p5c was rejected by `f_B`'s own length test first).
+Recommendation for the coordinator: these are the same rule shapes the round-1/2 facades kill on smaller types; here the checker cannot evaluate the mutated validators,
+so a cheaper witness (a closed-literal decode law per name, like the round-4 marker file) would turn them into named kills.
+
+## R5.4 Not critical (reasoned)
+
+* equivalent (13): `a01/02, 07` (the copy is over-allocated), `a01/10` (only the storage past the length changes), `a04/01` (`padd` at a + b = 2^32 - 1 is the marker
+  either way), `b02/08, 09` (List[Validator] / List[PendingDeposit]: the fields' check is n <= storage, which the size pass also tests, and the elements have no invalid
+  values), `b04/01, 02` (designed: `_valid` for `_valid_f` differs only above NMAX), `b04/04` (List[PendingDeposit]'s check is caught by BeaconState's size pass),
+  `d02/06` (ProgressiveList[uint64] validates only its window length), and in context `d01/04`, `d03/06`, `d06/03`.
+* gap (4): `b02/10` (`pl_SmallTestStruct_valid` accepts a uint16 of 65536: only through the field type's own `_valid`; its parents and writer call `_valid_f`),
+  `b07/01..03` (the root of an absent box: an invalid object, no spec root; the cached and plain roots both go through `X_bx_root`, so they still agree).
+* gap-unreachable (8): `a01/04` (n > 2^32 - 32), `a02/01, 02, 04, 05` (`O.mul4c` differs only for more than 2^30 - 8 boxed elements in storage), `b01/08, 09, 10`
+  (the size pass of List[Validator] / List[PendingDeposit] / ProgressiveList[SmallTestStruct] matters only above NMAX: tens of millions of records).
+* unjudged, argued, not probed: `b04/05` (ProgressiveComplexTestStruct_valid ignoring `f_E`: same class as finding 2, X_valid vs X_serialize), `c05/01` (Bitlist[257]
+  decode accepting 258 bits).
+
+What the proofs catch this round: every root fault at a chunk boundary (Bitvector 256/257/511/513, Bitlist depths, uint128/uint256 packing, vector depths,
+progressive mix counts, union selectors, progressive-container trees and active_fields: 36/36), every union-size and offset-table fault (17/17, `sizexb`, `rt0`/`rt1`),
+every setter / swap on a grouped container (12/12, `fields_4..6`), the size pass on the containers (7/10, `validx`), and the signed wrappers' writers (3/3,
+`vrefuse_writer_marker`).

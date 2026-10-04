@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e02-swap/03
+# type: FuluBeaconBlockBody
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_graffiti on the outer container leaves the group unchanged (the inner setter not called)
+# why: the nested record rebuilt from the old group
+# file: types/FuluBeaconBlockBody_def_generated.bend
+# sym: BeaconBlockBody_set_graffiti
+--- a/types/FuluBeaconBlockBody_def_generated.bend
++++ b/types/FuluBeaconBlockBody_def_generated.bend
+@@ -232,3 +232,3 @@
+   match o:
+-    case BeaconBlockBody{g0, g1}: BeaconBlockBody{BeaconBlockBody_g0_set_graffiti(g0, v), g1}
++    case BeaconBlockBody{g0, g1}: BeaconBlockBody{g0, g1}
+ 

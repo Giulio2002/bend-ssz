@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b06-mul4c-site/02
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: serialize(list of variable-size elements) = n offsets (4 n bytes) || the elements: size = 4 n + sum of the element sizes
+# fault: the offset table is counted once per element pair: 4 (n - 1) bytes (the first offset forgotten)
+# why: offsets thought to sit between elements
+# file: types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_sz_fin,pl_pl_VarTestStruct_size
+--- a/types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c((n - 1 : U32)), m))
+ 

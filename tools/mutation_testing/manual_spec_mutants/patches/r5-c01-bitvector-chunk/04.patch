@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c01-bitvector-chunk/04
+# type: bitvector_256
+# ops: root
+# spec: hash_tree_root(Bitvector[256]) = the single chunk of its 32 bytes
+# fault: the first two words of the chunk are exchanged
+# why: word order of the chunk
+# file: types/bitvector_256_hashtreeroot_generated.bend
+# sym: bv256_root
+--- a/types/bitvector_256_hashtreeroot_generated.bend
++++ b/types/bitvector_256_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
++    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w1), B.swap32(w0), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
+ 

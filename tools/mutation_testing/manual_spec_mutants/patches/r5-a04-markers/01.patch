@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a04-markers/01
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: sizes add; a sum past NMAX is the marker
+# fault: padd saturates only on wrap (a sum in (NMAX, 2^32 - 1) is kept)
+# why: the reach-the-marker conjunct dropped
+# file: src/obj.bend
+# sym: padd
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1758,3 +1758,3 @@
+ # Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
+-def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(U32.is_le(a, (a + b : U32)), (a + b : U32), 4294967295)
+ 

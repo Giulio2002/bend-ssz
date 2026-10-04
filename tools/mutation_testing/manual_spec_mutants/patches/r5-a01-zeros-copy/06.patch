@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/06
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the clean copy copies floor(n / 4) words (the partial last word is lost)
+# why: floor for ceil
+# file: src/obj.bend
+# sym: zeros_copy,words_copy,wr_slow,wrp_slow
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1014,3 +1014,3 @@
+ def words_copy(+n: U32, ws: Array<U32>) -> Array<U32> & Array<U32>:
+-  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
++  cc_fin(n, cc_go(Nat.div(U32.to_nat(n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
+ 

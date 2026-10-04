@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c05-bitlist-limit/04
+# type: bitlist_511
+# ops: encode
+# spec: same
+# fault: the limit test is lifted (big)
+# why: the big flag set for a declared limit
+# file: types/bitlist_511_encode_ssz_generated.bend
+# sym: bits511_valid
+--- a/types/bitlist_511_encode_ssz_generated.bend
++++ b/types/bitlist_511_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+ 
+-def bits511_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 511, False{})
++def bits511_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 511, True{})
+ 

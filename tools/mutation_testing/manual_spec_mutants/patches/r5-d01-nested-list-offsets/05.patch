@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d01-nested-list-offsets/05
+# type: ProgressiveTestStruct
+# ops: decode
+# spec: the first offset of a list of variable-size elements is a multiple of 4, at least 4, at most the window
+# fault: the first offset's multiple-of-4 test is dropped
+# why: the element count taken as floor(first / 4)
+# file: types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_pl_VarTestStruct_head
+--- a/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (buf, +first) = pair
+-  pl_pl_VarTestStruct_first(Bool.and(Bool.and(U32.is_eq((first .&. 3 : U32), 0), U32.is_le(first, len)), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
++  pl_pl_VarTestStruct_first(Bool.and(U32.is_le(first, len), Bool.and(U32.is_le(4, first), True{})), buf, off, len, first)
+ 

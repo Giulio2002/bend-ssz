@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c07-uint-vec-depth/02
+# type: vec_uint256_3
+# ops: root
+# spec: Vector[uint256, 3]: 3 chunks, depth 2
+# fault: depth 1 (3 chunks floored to 2)
+# why: floor of log2
+# file: types/vec_uint256_3_hashtreeroot_generated.bend
+# sym: v3_u256_root
+--- a/types/vec_uint256_3_hashtreeroot_generated.bend
++++ b/types/vec_uint256_3_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v3_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
++def v3_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
+ 

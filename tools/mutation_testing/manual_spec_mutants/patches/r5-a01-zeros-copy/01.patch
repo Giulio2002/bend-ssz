@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/01
+# type: bytelist_256
+# ops: root
+# spec: hash_tree_root(ByteList) = mix_in_length(merkleize(pack(bytes), limit), len): the chunks are the bytes zero-padded to whole chunks
+# fault: the clean copy has floor(n / 32) chunks plus the +8 slack word count dropped (no room for the partial last chunk)
+# why: floor for ceil, and the slack thought redundant
+# file: src/obj.bend
+# sym: zeros_copy,words_copy,wr_slow,wrp_slow
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1011,3 +1011,3 @@
+ def zeros_copy(+n: U32) -> Array<U32>:
+-  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
++  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 : U32)))
+ 

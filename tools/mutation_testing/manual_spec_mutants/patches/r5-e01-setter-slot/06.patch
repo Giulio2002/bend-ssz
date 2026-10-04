@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/06
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_exit_balance_to_consume writes deposit_balance_to_consume
+# why: adjacent uint64 fields confused
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g3_set_exit_balance_to_consume,BeaconState_set_exit_balance_to_consume
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -389,3 +389,3 @@
+   match o:
+-    case BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, v, earliest_exit_epoch}
++    case BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, v, exit_balance_to_consume, earliest_exit_epoch}
+ 

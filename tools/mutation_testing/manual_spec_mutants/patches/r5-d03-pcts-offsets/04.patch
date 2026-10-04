@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-d03-pcts-offsets/04
+# type: ProgressiveComplexTestStruct
+# ops: decode
+# spec: field G (List[ProgressiveSingleFieldContainerTestStruct, 10]) window is [o5, o6)
+# fault: field G is validated over [o5, len)
+# why: last-field window used
+# file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_v12
+--- a/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+@@ -104,3 +104,3 @@
+   match ok:
+-    case True{}: ProgressiveComplexTestStruct_v12(off, len, o0, o1, o2, o3, o4, o5, o6, list_ProgressiveSingleFieldContainerTestStruct_10_r.l10_ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + o5 : U32), (o6 - o5 : U32)))
++    case True{}: ProgressiveComplexTestStruct_v12(off, len, o0, o1, o2, o3, o4, o5, o6, list_ProgressiveSingleFieldContainerTestStruct_10_r.l10_ProgressiveSingleFieldContainerTestStruct_ok(buf, (off + o5 : U32), (len - o5 : U32)))
+     case False{}: (buf, False{})

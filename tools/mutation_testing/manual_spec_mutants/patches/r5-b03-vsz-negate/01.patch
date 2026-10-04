@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b03-vsz-negate/01
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: same
+# fault: the size pass is negated (a size within NMAX makes the value invalid)
+# why: Bool.not misplaced
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_vsz_go,BeaconBlockBody_vsz,BeaconBlockBody_valid
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -306,3 +306,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, O.is_poisoned(m)))
+ 

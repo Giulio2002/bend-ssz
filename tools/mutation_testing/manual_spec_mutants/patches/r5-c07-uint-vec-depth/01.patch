@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c07-uint-vec-depth/01
+# type: vec_uint128_3
+# ops: root
+# spec: Vector[uint128, 3]: 48 bytes = 2 chunks, depth 1
+# fault: depth 2 (one chunk per element)
+# why: elements taken as chunks
+# file: types/vec_uint128_3_hashtreeroot_generated.bend
+# sym: v3_u128_root
+--- a/types/vec_uint128_3_hashtreeroot_generated.bend
++++ b/types/vec_uint128_3_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v3_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
++def v3_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
+ 

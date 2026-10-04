@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c02-bitvector-valid/02
+# type: bitvector_511
+# ops: encode
+# spec: a Bitvector[511] has no bit 511
+# fault: bit 511 is accepted (w15 <= 2^31)
+# why: <= for <
+# file: types/bitvector_511_encode_ssz_generated.bend
+# sym: bv511_valid
+--- a/types/bitvector_511_encode_ssz_generated.bend
++++ b/types/bitvector_511_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case bitvector_511_d.Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: U32.is_lt(w15, 2147483648)
++    case bitvector_511_d.Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: U32.is_le(w15, 2147483648)
+ 

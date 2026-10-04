@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-e01-setter-slot/01
+# type: FuluBeaconState
+# ops: encode,root
+# spec: a setter changes exactly the named field (get_f(set_f(o, v)) = v, other fields unchanged)
+# fault: set_block_roots writes state_roots (same type: Vector[Root, 8192])
+# why: adjacent same-type fields confused
+# file: types/FuluBeaconState_def_generated.bend
+# sym: BeaconState_g0_set_block_roots,BeaconState_set_block_roots
+--- a/types/FuluBeaconState_def_generated.bend
++++ b/types/FuluBeaconState_def_generated.bend
+@@ -102,3 +102,3 @@
+   match o:
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, v, state_roots, historical_roots}
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, v, historical_roots}
+ 

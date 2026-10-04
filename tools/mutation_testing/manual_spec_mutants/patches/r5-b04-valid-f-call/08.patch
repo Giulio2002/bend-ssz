@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b04-valid-f-call/08
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: the size of a list beyond its storage is the marker
+# fault: szf drops the storage test (a claim n beyond the array is sized 4 n)
+# why: the storage guard thought redundant with valid_f
+# file: types/proglist_SmallTestStruct_encode_ssz_generated.bend
+# sym: pl_SmallTestStruct_szf,pl_SmallTestStruct_size
+--- a/types/proglist_SmallTestStruct_encode_ssz_generated.bend
++++ b/types/proglist_SmallTestStruct_encode_ssz_generated.bend
+@@ -14,3 +14,3 @@
+   (arr, +c) = pair
+-  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.pick(U32.is_le(n, c), O.mulc(n, 4), 4294967295))
++  (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, n}, O.mulc(n, 4))
+ 

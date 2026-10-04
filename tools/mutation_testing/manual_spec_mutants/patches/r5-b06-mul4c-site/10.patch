@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b06-mul4c-site/10
+# type: ComplexTestStruct
+# ops: encode
+# spec: same; a Vector[VarTestStruct, 2] always has 2 offsets
+# fault: the vector's offset table is the wrapping add of the element sizes only (offsets omitted)
+# why: a vector thought to need no offsets
+# file: types/vec_VarTestStruct_2_encode_ssz_generated.bend
+# sym: v2_VarTestStruct_sz_fin,v2_VarTestStruct_size
+--- a/types/vec_VarTestStruct_2_encode_ssz_generated.bend
++++ b/types/vec_VarTestStruct_2_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, m)
+ 

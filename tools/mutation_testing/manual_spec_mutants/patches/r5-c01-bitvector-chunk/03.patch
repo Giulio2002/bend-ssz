@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-c01-bitvector-chunk/03
+# type: bitvector_257
+# ops: root
+# spec: same
+# fault: the spill chunk is dropped: the root is the first chunk alone (limit counted as 1 chunk)
+# why: ceil(257/256) taken as 1
+# file: types/bitvector_257_hashtreeroot_generated.bend
+# sym: bv257_root
+--- a/types/bitvector_257_hashtreeroot_generated.bend
++++ b/types/bitvector_257_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
++    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
+ 

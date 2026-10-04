@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-b03-vsz-negate/02
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: same
+# fault: the size pass uses a strict marker test (only the marker itself is refused): size in (NMAX, 2^32 - 2] accepted
+# why: equality with the marker instead of the range
+# file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveTestStruct_vsz_go,ProgressiveTestStruct_vsz,ProgressiveTestStruct_valid
+--- a/types/ProgressiveTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_encode_ssz_generated.bend
+@@ -112,3 +112,3 @@
+   (o, +m) = pair
+-  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
++  (o, Bool.and(ok, Bool.not(U32.is_eq(m, 4294967295))))
+ 

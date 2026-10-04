@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r5-a01-zeros-copy/10
+# type: bytelist_256
+# ops: root
+# spec: same
+# fault: the clean path returns the copy (not the caller's array) in the object it gives back
+# why: the swap back to the caller's storage forgotten
+# file: src/obj.bend
+# sym: wr_clean,wr_slow,words_copy
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1024,3 +1024,3 @@
+   (out, ws) = pair
+-  wr_swap(ws, wr_cnt(hl, h, depth, n, out, chunks_of(n)))
++  wr_cnt(hl, h, depth, n, out, chunks_of(n))
+ 
