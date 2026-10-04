@@ -1,0 +1,168 @@
+{
+ "baseline": {
+  "1": "c1 tx1 clean valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+  "2": "c2 tx1 junk3 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+  "3": "c3 tx1 junk6 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+  "4": "c4 v5u16 clean root=286331153,286331153,0",
+  "5": "c5 v5u16 junk5 valid=1\nc5 v5u16 junk5 root=286331153,286331153,0",
+  "6": "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+  "7": "c7 tx5 clean valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+  "8": "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+  "9": "c9 bits32 clean ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+  "10": "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341"
+ },
+ "r7-a01-clean-chunk/10": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 tx1 junk3 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+    "c2 tx1 junk3 valid=1 ser ok=1 size=1 ck=218 root=3609811651,3838290698,371027170"
+   ],
+   "3": [
+    "c3 tx1 junk6 valid=1 ser ok=1 size=1 ck=218 root=1488297322,974581513,3903836319",
+    "c3 tx1 junk6 valid=1 ser ok=1 size=1 ck=218 root=3295005408,577049209,958930597"
+   ],
+   "10": [
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=689063799,552043827,1862809903"
+   ]
+  }
+ },
+ "r7-a03-copy-path/03": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-b01-app-clear/01": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+    "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+   ]
+  }
+ },
+ "r7-b01-app-clear/02": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+    "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+   ]
+  }
+ },
+ "r7-b01-app-clear/03": {
+  "B2": "KILLED",
+  "diff": {
+   "10": [
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67109081 root=3247015108,533320362,3591511061"
+   ]
+  }
+ },
+ "r7-b01-app-clear/04": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+    "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=4282594966,1740879303,843225157"
+   ]
+  }
+ },
+ "r7-b01-app-clear/05": {
+  "B2": "KILLED",
+  "diff": {
+   "6": [
+    "c6 tx4 junk1 +05 valid=1 ser ok=1 size=5 ck=2086492267 root=4282594966,1740879303,843225157",
+    "c6 tx4 junk1 +05 valid=0 ser ok=0 size=0 ck=7 root=2755196973,2970850675,2861873458"
+   ],
+   "10": [
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=730 root=3510339946,4242190428,57275249"
+   ]
+  }
+ },
+ "r7-b01-app-clear/06": {
+  "B2": "KILLED",
+  "diff": {
+   "10": [
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=67306202 root=1130266272,599794646,4108954341",
+    "c10 tx2 1word +3 +4 valid=1 ser ok=1 size=4 ck=1244 root=748079810,815664563,1329821928"
+   ]
+  }
+ },
+ "r7-b03-bits-close/01": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ },
+ "r7-b03-bits-close/02": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ },
+ "r7-b03-bits-close/03": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=188860208,2803505009,14951609"
+   ]
+  }
+ },
+ "r7-b03-bits-close/04": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ },
+ "r7-b03-bits-close/05": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-b03-bits-close/06": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r7-b03-bits-close/07": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ },
+ "r7-b03-bits-close/08": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=0 size=0 ck=7 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ },
+ "bl04-bitlist-size/02": {
+  "B2": "KILLED",
+  "diff": {
+   "8": [
+    "c8 bits31 junk1 +1 ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c8 bits31 junk1 +1 ser ok=1 size=4 ck=216 root=2234088112,3002369638,1112130500"
+   ],
+   "9": [
+    "c9 bits32 clean ser ok=1 size=5 ck=6697 root=2234088112,3002369638,1112130500",
+    "c9 bits32 clean ser ok=1 size=4 ck=216 root=2234088112,3002369638,1112130500"
+   ]
+  }
+ }
+}
