@@ -26,6 +26,14 @@ def ProposerSlashing_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluProposerSlashing_r.ProposerSlashing_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   {==}
 
+def ProposerSlashing_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluProposerSlashing_r.ProposerSlashing_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluProposerSlashing_r.ProposerSlashing_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  {==}
+
+def ProposerSlashing_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluProposerSlashing_r.ProposerSlashing_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluProposerSlashing_r.ProposerSlashing_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  {==}
+
 def ProposerSlashing_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_dchw(416, 416, (B.Buf{Array.new(U32, 7n, 0), 416}, 104))), Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode_checked(B.Buf{Array.new(U32, 7n, 0), 416}, 416))) == (True{}, True{}) : Bool & Bool}:
   {==}

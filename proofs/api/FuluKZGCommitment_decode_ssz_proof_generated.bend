@@ -121,6 +121,12 @@ def FuluKZGCommitment__decode_offsets__KZGCommitment_decode_vchecked_nmax_wrap(b
 def FuluKZGCommitment__decode_offsets__KZGCommitment_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluKZGCommitment_r.KZGCommitment_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
   P7_PRV.KZGCommitment_decode_vchecked_nmax_above(buf)
 
+def FuluKZGCommitment__decode_offsets__KZGCommitment_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluKZGCommitment_r.KZGCommitment_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluKZGCommitment_r.KZGCommitment_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  P7_PRV.KZGCommitment_decode_vchecked_nmax_at(buf)
+
+def FuluKZGCommitment__decode_offsets__KZGCommitment_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluKZGCommitment_r.KZGCommitment_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluKZGCommitment_r.KZGCommitment_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  P7_PRV.KZGCommitment_decode_vchecked_at_2pow31(buf)
+
 def FuluKZGCommitment__decode_offsets__KZGCommitment_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGCommitment_r.KZGCommitment_dchw(48, 48, (P7_B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGCommitment_r.KZGCommitment_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.KZGCommitment_decode_vchecked_accept()
 

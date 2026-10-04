@@ -121,6 +121,12 @@ def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_nmax_wrap(buf: P7_B
 def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluPayloadId_r.PayloadId_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
   P7_PRV.PayloadId_decode_vchecked_nmax_above(buf)
 
+def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluPayloadId_r.PayloadId_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluPayloadId_r.PayloadId_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  P7_PRV.PayloadId_decode_vchecked_nmax_at(buf)
+
+def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluPayloadId_r.PayloadId_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluPayloadId_r.PayloadId_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  P7_PRV.PayloadId_decode_vchecked_at_2pow31(buf)
+
 def FuluPayloadId__decode_offsets__PayloadId_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluPayloadId_r.PayloadId_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.PayloadId_decode_vchecked_accept()
 

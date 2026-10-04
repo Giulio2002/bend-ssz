@@ -479,6 +479,14 @@
     },
     {
      "file": "slop/validity/fulu_boolean_decode_checked_generated.bend",
+     "law": "boolean_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_boolean_decode_checked_generated.bend",
+     "law": "boolean_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_boolean_decode_checked_generated.bend",
      "law": "boolean_decode_vchecked_accept"
     },
     {
@@ -625,6 +633,14 @@
     {
      "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
      "law": "uint8_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
+     "law": "uint8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
+     "law": "uint8_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
@@ -793,6 +809,14 @@
     },
     {
      "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
+     "law": "uint32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
+     "law": "uint32_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
      "law": "uint32_decode_vchecked_accept"
     },
     {
@@ -955,6 +979,14 @@
     {
      "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
      "law": "uint64_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
+     "law": "uint64_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
+     "law": "uint64_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
@@ -1147,6 +1179,14 @@
     },
     {
      "file": "slop/validity/fulu_uint256_decode_checked_generated.bend",
+     "law": "uint256_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_uint256_decode_checked_generated.bend",
+     "law": "uint256_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_uint256_decode_checked_generated.bend",
      "law": "uint256_decode_vchecked_accept"
     },
     {
@@ -1313,6 +1353,14 @@
     {
      "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
      "law": "Bytes1_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
+     "law": "Bytes1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
+     "law": "Bytes1_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
@@ -1498,6 +1546,14 @@
     {
      "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
      "law": "Bytes4_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
+     "law": "Bytes4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
+     "law": "Bytes4_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
@@ -1687,6 +1743,14 @@
     {
      "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
      "law": "Bytes32_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
+     "law": "Bytes32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
+     "law": "Bytes32_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
@@ -1883,6 +1947,14 @@
     },
     {
      "file": "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
+     "law": "Bytes48_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
+     "law": "Bytes48_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
      "law": "Bytes48_decode_vchecked_accept"
     },
     {
@@ -2069,6 +2141,14 @@
     {
      "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
      "law": "Bytes96_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
+     "law": "Bytes96_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
+     "law": "Bytes96_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
@@ -2265,6 +2345,14 @@
     },
     {
      "file": "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
+     "law": "Bytes8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
+     "law": "Bytes8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
      "law": "Bytes8_decode_vchecked_accept"
     },
     {
@@ -2458,6 +2546,14 @@
     },
     {
      "file": "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
+     "law": "Bytes20_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
+     "law": "Bytes20_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
      "law": "Bytes20_decode_vchecked_accept"
     },
     {
@@ -2624,6 +2720,14 @@
     {
      "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
      "law": "Slot_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
+     "law": "Slot_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
+     "law": "Slot_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
@@ -2796,6 +2900,14 @@
     },
     {
      "file": "slop/validity/fulu_Epoch_decode_checked_generated.bend",
+     "law": "Epoch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Epoch_decode_checked_generated.bend",
+     "law": "Epoch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Epoch_decode_checked_generated.bend",
      "law": "Epoch_decode_vchecked_accept"
     },
     {
@@ -2962,6 +3074,14 @@
     {
      "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
      "law": "Gwei_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
+     "law": "Gwei_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
+     "law": "Gwei_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
@@ -3154,6 +3274,14 @@
     },
     {
      "file": "slop/validity/fulu_Hash32_decode_checked_generated.bend",
+     "law": "Hash32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Hash32_decode_checked_generated.bend",
+     "law": "Hash32_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Hash32_decode_checked_generated.bend",
      "law": "Hash32_decode_vchecked_accept"
     },
     {
@@ -3343,6 +3471,14 @@
     },
     {
      "file": "slop/validity/fulu_Version_decode_checked_generated.bend",
+     "law": "Version_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Version_decode_checked_generated.bend",
+     "law": "Version_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Version_decode_checked_generated.bend",
      "law": "Version_decode_vchecked_accept"
     },
     {
@@ -3528,6 +3664,14 @@
     },
     {
      "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
+     "law": "DomainType_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
+     "law": "DomainType_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
      "law": "DomainType_decode_vchecked_accept"
     },
     {
@@ -3710,6 +3854,14 @@
     {
      "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
      "law": "BLSSignature_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
+     "law": "BLSSignature_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
+     "law": "BLSSignature_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
@@ -3942,6 +4094,14 @@
     },
     {
      "file": "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
+     "law": "FinalityBranch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
+     "law": "FinalityBranch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
      "law": "FinalityBranch_decode_vchecked_accept"
     },
     {
@@ -4124,6 +4284,14 @@
     {
      "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
      "law": "VersionedHash_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
+     "law": "VersionedHash_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
+     "law": "VersionedHash_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
@@ -4316,6 +4484,14 @@
     },
     {
      "file": "slop/validity/fulu_G1Point_decode_checked_generated.bend",
+     "law": "G1Point_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_G1Point_decode_checked_generated.bend",
+     "law": "G1Point_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_G1Point_decode_checked_generated.bend",
      "law": "G1Point_decode_vchecked_accept"
     },
     {
@@ -4505,6 +4681,14 @@
     },
     {
      "file": "slop/validity/fulu_G2Point_decode_checked_generated.bend",
+     "law": "G2Point_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_G2Point_decode_checked_generated.bend",
+     "law": "G2Point_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_G2Point_decode_checked_generated.bend",
      "law": "G2Point_decode_vchecked_accept"
     },
     {
@@ -4679,6 +4863,14 @@
     {
      "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
      "law": "Fork_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
+     "law": "Fork_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
+     "law": "Fork_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
@@ -4871,6 +5063,14 @@
     },
     {
      "file": "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
+     "law": "SyncAggregate_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
+     "law": "SyncAggregate_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
      "law": "SyncAggregate_decode_vchecked_accept"
     },
     {
@@ -5045,6 +5245,14 @@
     {
      "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
      "law": "SyncAggregatorSelectionData_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
+     "law": "SyncAggregatorSelectionData_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
+     "law": "SyncAggregatorSelectionData_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
@@ -5229,6 +5437,14 @@
     },
     {
      "file": "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
+     "law": "PowBlock_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
+     "law": "PowBlock_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
      "law": "PowBlock_decode_vchecked_accept"
     },
     {
@@ -5402,6 +5618,14 @@
     },
     {
      "file": "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
+     "law": "CommitteeIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
+     "law": "CommitteeIndex_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
      "law": "CommitteeIndex_decode_vchecked_accept"
     },
     {
@@ -5568,6 +5792,14 @@
     {
      "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
      "law": "ValidatorIndex_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
+     "law": "ValidatorIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
+     "law": "ValidatorIndex_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
@@ -5745,6 +5977,14 @@
     {
      "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
      "law": "PendingConsolidation_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
+     "law": "PendingConsolidation_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
+     "law": "PendingConsolidation_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
@@ -5929,6 +6169,14 @@
     },
     {
      "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
+     "law": "PendingPartialWithdrawal_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
+     "law": "PendingPartialWithdrawal_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
      "law": "PendingPartialWithdrawal_decode_vchecked_accept"
     },
     {
@@ -6110,6 +6358,14 @@
     },
     {
      "file": "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
+     "law": "VoluntaryExit_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
+     "law": "VoluntaryExit_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
      "law": "VoluntaryExit_decode_vchecked_accept"
     },
     {
@@ -6288,6 +6544,14 @@
     {
      "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
      "law": "SignedVoluntaryExit_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
+     "law": "SignedVoluntaryExit_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
+     "law": "SignedVoluntaryExit_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
@@ -6484,6 +6748,14 @@
     },
     {
      "file": "slop/validity/fulu_Root_decode_checked_generated.bend",
+     "law": "Root_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Root_decode_checked_generated.bend",
+     "law": "Root_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Root_decode_checked_generated.bend",
      "law": "Root_decode_vchecked_accept"
     },
     {
@@ -6658,6 +6930,14 @@
     {
      "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
      "law": "HistoricalSummary_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
+     "law": "HistoricalSummary_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
+     "law": "HistoricalSummary_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
@@ -6847,6 +7127,14 @@
     {
      "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
      "law": "SyncCommitteeContribution_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
+     "law": "SyncCommitteeContribution_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
+     "law": "SyncCommitteeContribution_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
@@ -7047,6 +7335,14 @@
     },
     {
      "file": "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
+     "law": "ContributionAndProof_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
+     "law": "ContributionAndProof_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
      "law": "ContributionAndProof_decode_vchecked_accept"
     },
     {
@@ -7244,6 +7540,14 @@
     },
     {
      "file": "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
+     "law": "SignedContributionAndProof_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
+     "law": "SignedContributionAndProof_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
      "law": "SignedContributionAndProof_decode_vchecked_accept"
     },
     {
@@ -7421,6 +7725,14 @@
     },
     {
      "file": "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
+     "law": "SyncCommitteeMessage_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
+     "law": "SyncCommitteeMessage_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
      "law": "SyncCommitteeMessage_decode_vchecked_accept"
     },
     {
@@ -7595,6 +7907,14 @@
     {
      "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
      "law": "Eth1Block_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
+     "law": "Eth1Block_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
+     "law": "Eth1Block_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
@@ -7776,6 +8096,14 @@
     {
      "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
      "law": "BeaconBlockHeader_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
+     "law": "BeaconBlockHeader_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
+     "law": "BeaconBlockHeader_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
@@ -7965,6 +8293,14 @@
     {
      "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
      "law": "SignedBeaconBlockHeader_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
+     "law": "SignedBeaconBlockHeader_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
+     "law": "SignedBeaconBlockHeader_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
@@ -8182,6 +8518,14 @@
     },
     {
      "file": "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
+     "law": "ProposerSlashing_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
+     "law": "ProposerSlashing_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
      "law": "ProposerSlashing_decode_vchecked_accept"
     },
     {
@@ -8374,6 +8718,14 @@
     },
     {
      "file": "slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend",
+     "law": "HistoricalBatch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend",
+     "law": "HistoricalBatch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend",
      "law": "HistoricalBatch_decode_vchecked_window"
     },
     {
@@ -8528,6 +8880,14 @@
     {
      "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
      "law": "Eth1Data_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
+     "law": "Eth1Data_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
+     "law": "Eth1Data_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
@@ -8712,6 +9072,14 @@
     },
     {
      "file": "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+     "law": "Checkpoint_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+     "law": "Checkpoint_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
      "law": "Checkpoint_decode_vchecked_accept"
     },
     {
@@ -8893,6 +9261,14 @@
     },
     {
      "file": "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
+     "law": "AttestationData_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
+     "law": "AttestationData_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
      "law": "AttestationData_decode_vchecked_accept"
     },
     {
@@ -9071,6 +9447,14 @@
     {
      "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
      "law": "SingleAttestation_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
+     "law": "SingleAttestation_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
+     "law": "SingleAttestation_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
@@ -9262,6 +9646,10 @@
      "law": "Attestation_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_Attestation_size_bits131072_generated.bend",
+     "law": "Attestation_serialize_vpoison_size_bits131072_storage"
+    },
+    {
      "file": "slop/validity/fulu_Attestation_writer_bits131072_generated.bend",
      "law": "Attestation_serialize_vpoison_pk_bits131072"
     },
@@ -9318,6 +9706,14 @@
     {
      "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
      "law": "Attestation_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
+     "law": "Attestation_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
+     "law": "Attestation_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
@@ -9497,6 +9893,14 @@
     },
     {
      "file": "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
+     "law": "AggregateAndProof_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
+     "law": "AggregateAndProof_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
      "law": "AggregateAndProof_decode_vchecked_accept"
     },
     {
@@ -9661,6 +10065,14 @@
     {
      "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
      "law": "SignedAggregateAndProof_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
+     "law": "SignedAggregateAndProof_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
+     "law": "SignedAggregateAndProof_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
@@ -9857,6 +10269,10 @@
      "law": "PendingAttestation_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_PendingAttestation_size_bits2048_generated.bend",
+     "law": "PendingAttestation_serialize_vpoison_size_bits2048_storage"
+    },
+    {
      "file": "slop/validity/fulu_PendingAttestation_writer_bits2048_generated.bend",
      "law": "PendingAttestation_serialize_vpoison_pk_bits2048"
     },
@@ -9901,6 +10317,14 @@
     {
      "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
      "law": "PendingAttestation_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
+     "law": "PendingAttestation_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
+     "law": "PendingAttestation_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
@@ -10172,6 +10596,14 @@
     },
     {
      "file": "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
+     "law": "IndexedAttestation_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
+     "law": "IndexedAttestation_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
      "law": "IndexedAttestation_decode_vchecked_accept"
     },
     {
@@ -10421,6 +10853,14 @@
     {
      "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
      "law": "AttesterSlashing_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
+     "law": "AttesterSlashing_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
+     "law": "AttesterSlashing_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
@@ -10677,6 +11117,14 @@
     },
     {
      "file": "slop/validity/fulu_ForkData_decode_checked_generated.bend",
+     "law": "ForkData_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ForkData_decode_checked_generated.bend",
+     "law": "ForkData_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ForkData_decode_checked_generated.bend",
      "law": "ForkData_decode_vchecked_accept"
     },
     {
@@ -10870,6 +11318,14 @@
     },
     {
      "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
+     "law": "ForkDigest_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
+     "law": "ForkDigest_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
      "law": "ForkDigest_decode_vchecked_accept"
     },
     {
@@ -11055,6 +11511,14 @@
     },
     {
      "file": "slop/validity/fulu_Domain_decode_checked_generated.bend",
+     "law": "Domain_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Domain_decode_checked_generated.bend",
+     "law": "Domain_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Domain_decode_checked_generated.bend",
      "law": "Domain_decode_vchecked_accept"
     },
     {
@@ -11229,6 +11693,14 @@
     {
      "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
      "law": "SigningData_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
+     "law": "SigningData_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
+     "law": "SigningData_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
@@ -11425,6 +11897,14 @@
     },
     {
      "file": "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
+     "law": "BLSPubkey_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
+     "law": "BLSPubkey_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
      "law": "BLSPubkey_decode_vchecked_accept"
     },
     {
@@ -11602,6 +12082,14 @@
     },
     {
      "file": "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
+     "law": "DepositRequest_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
+     "law": "DepositRequest_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
      "law": "DepositRequest_decode_vchecked_accept"
     },
     {
@@ -11776,6 +12264,14 @@
     {
      "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
      "law": "PendingDeposit_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
+     "law": "PendingDeposit_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
+     "law": "PendingDeposit_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
@@ -11971,6 +12467,14 @@
     },
     {
      "file": "slop/validity/fulu_SyncCommittee_decode_checked_generated.bend",
+     "law": "SyncCommittee_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_decode_checked_generated.bend",
+     "law": "SyncCommittee_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommittee_decode_checked_generated.bend",
      "law": "SyncCommittee_decode_vchecked_window"
     },
     {
@@ -12133,6 +12637,14 @@
     {
      "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
      "law": "DepositData_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
+     "law": "DepositData_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
+     "law": "DepositData_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
@@ -12366,6 +12878,14 @@
     },
     {
      "file": "slop/validity/fulu_Deposit_decode_checked_generated.bend",
+     "law": "Deposit_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_decode_checked_generated.bend",
+     "law": "Deposit_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_decode_checked_generated.bend",
      "law": "Deposit_decode_vchecked_accept"
     },
     {
@@ -12543,6 +13063,14 @@
     },
     {
      "file": "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
+     "law": "DepositMessage_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
+     "law": "DepositMessage_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
      "law": "DepositMessage_decode_vchecked_accept"
     },
     {
@@ -12696,6 +13224,14 @@
     {
      "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
      "law": "Validator_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
+     "law": "Validator_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
+     "law": "Validator_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
@@ -12896,6 +13432,14 @@
     },
     {
      "file": "slop/validity/fulu_NodeID_decode_checked_generated.bend",
+     "law": "NodeID_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_NodeID_decode_checked_generated.bend",
+     "law": "NodeID_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_NodeID_decode_checked_generated.bend",
      "law": "NodeID_decode_vchecked_accept"
     },
     {
@@ -13062,6 +13606,14 @@
     {
      "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
      "law": "SubnetID_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
+     "law": "SubnetID_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
+     "law": "SubnetID_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
@@ -13234,6 +13786,14 @@
     },
     {
      "file": "slop/validity/fulu_Ether_decode_checked_generated.bend",
+     "law": "Ether_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Ether_decode_checked_generated.bend",
+     "law": "Ether_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Ether_decode_checked_generated.bend",
      "law": "Ether_decode_vchecked_accept"
     },
     {
@@ -13380,6 +13940,14 @@
     {
      "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
      "law": "ParticipationFlags_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
+     "law": "ParticipationFlags_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
+     "law": "ParticipationFlags_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
@@ -13604,6 +14172,14 @@
     },
     {
      "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
      "law": "CurrentSyncCommitteeBranch_decode_vchecked_accept"
     },
     {
@@ -13813,6 +14389,14 @@
     },
     {
      "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "NextSyncCommitteeBranch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "NextSyncCommitteeBranch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
      "law": "NextSyncCommitteeBranch_decode_vchecked_accept"
     },
     {
@@ -13997,6 +14581,14 @@
      "law": "Transaction_serialize_vunit_bl1073741824_range_lo_0"
     },
     {
+     "file": "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vunit_bl1073741824_range_hi_full"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_unit_bl1073741824_generated.bend",
+     "law": "Transaction_serialize_vunit_bl1073741824_range_above_full"
+    },
+    {
      "file": "slop/validity/fulu_Transaction_writer_bl1073741824_generated.bend",
      "law": "Transaction_serialize_vpoison_pk_bl1073741824"
     },
@@ -14033,6 +14625,14 @@
     {
      "file": "slop/validity/fulu_Transaction_decode_checked_generated.bend",
      "law": "Transaction_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_decode_checked_generated.bend",
+     "law": "Transaction_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_decode_checked_generated.bend",
+     "law": "Transaction_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Transaction_decode_checked_generated.bend",
@@ -14213,6 +14813,14 @@
     },
     {
      "file": "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
+     "law": "ExecutionAddress_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
+     "law": "ExecutionAddress_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
      "law": "ExecutionAddress_decode_vchecked_accept"
     },
     {
@@ -14387,6 +14995,14 @@
     {
      "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
      "law": "ConsolidationRequest_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
+     "law": "ConsolidationRequest_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
+     "law": "ConsolidationRequest_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
@@ -14568,6 +15184,14 @@
     {
      "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
      "law": "WithdrawalRequest_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
+     "law": "WithdrawalRequest_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
+     "law": "WithdrawalRequest_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
@@ -14875,6 +15499,54 @@
      "law": "ExecutionRequests_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l16_WithdrawalRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l16_WithdrawalRequest_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l16_WithdrawalRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l16_WithdrawalRequest_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l16_WithdrawalRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l16_WithdrawalRequest_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l16_WithdrawalRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l16_WithdrawalRequest_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l2_ConsolidationRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l2_ConsolidationRequest_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l2_ConsolidationRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l2_ConsolidationRequest_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l2_ConsolidationRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l2_ConsolidationRequest_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l2_ConsolidationRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l2_ConsolidationRequest_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l8192_DepositRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l8192_DepositRequest_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l8192_DepositRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l8192_DepositRequest_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l8192_DepositRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l8192_DepositRequest_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_size_l8192_DepositRequest_generated.bend",
+     "law": "ExecutionRequests_serialize_vpoison_size_l8192_DepositRequest_at"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_writer_l16_WithdrawalRequest_generated.bend",
      "law": "ExecutionRequests_serialize_vpoison_pk_l16_WithdrawalRequest"
     },
@@ -14907,6 +15579,14 @@
     {
      "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
      "law": "ExecutionRequests_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
+     "law": "ExecutionRequests_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
+     "law": "ExecutionRequests_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
@@ -15215,6 +15895,14 @@
     },
     {
      "file": "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
+     "law": "BLSToExecutionChange_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
+     "law": "BLSToExecutionChange_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
      "law": "BLSToExecutionChange_decode_vchecked_accept"
     },
     {
@@ -15393,6 +16081,14 @@
     {
      "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
      "law": "SignedBLSToExecutionChange_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
+     "law": "SignedBLSToExecutionChange_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
+     "law": "SignedBLSToExecutionChange_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
@@ -15695,6 +16391,14 @@
     },
     {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
      "law": "ExecutionPayloadHeader_decode_vchecked_accept"
     },
     {
@@ -15888,6 +16592,14 @@
     },
     {
      "file": "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
+     "law": "PayloadId_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
+     "law": "PayloadId_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
      "law": "PayloadId_decode_vchecked_accept"
     },
     {
@@ -16054,6 +16766,14 @@
     {
      "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
      "law": "WithdrawalIndex_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
+     "law": "WithdrawalIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
+     "law": "WithdrawalIndex_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
@@ -16231,6 +16951,14 @@
     {
      "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
      "law": "Withdrawal_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
+     "law": "Withdrawal_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
+     "law": "Withdrawal_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
@@ -16514,6 +17242,26 @@
      "law": "ExecutionPayload_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_size_l1048576_bl1073741824_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_size_l1048576_bl1073741824_offsets"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
+     "law": "ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_at"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend",
      "law": "ExecutionPayload_serialize_vcoll_l16_Withdrawal_enc"
     },
@@ -16562,6 +17310,14 @@
     {
      "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
      "law": "ExecutionPayload_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+     "law": "ExecutionPayload_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+     "law": "ExecutionPayload_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
@@ -17278,6 +18034,102 @@
      "law": "BeaconState_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l1099511627776_Validator_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l1099511627776_Validator_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l2048_Eth1Data_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l2048_Eth1Data_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend",
+     "law": "BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_at"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
      "law": "BeaconState_serialize_vunit_l1099511627776_u64_refuse_1"
     },
@@ -17302,8 +18154,24 @@
      "law": "BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_range_hi_full"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u64_range_above_full"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
      "law": "BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u8_range_hi_full"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
+     "law": "BeaconState_serialize_vunit_l1099511627776_u8_range_above_full"
     },
     {
      "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
@@ -17328,6 +18196,14 @@
     {
      "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
      "law": "BeaconState_serialize_vunit_l16777216_b32_range_lo_0"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_range_hi_full"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vunit_l16777216_b32_range_above_full"
     },
     {
      "file": "slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend",
@@ -17450,6 +18326,14 @@
     {
      "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
      "law": "BeaconState_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
+     "law": "BeaconState_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
+     "law": "BeaconState_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
@@ -17655,6 +18539,14 @@
     },
     {
      "file": "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
+     "law": "ExecutionBranch_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
+     "law": "ExecutionBranch_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
      "law": "ExecutionBranch_decode_vchecked_accept"
     },
     {
@@ -17846,6 +18738,14 @@
     },
     {
      "file": "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
+     "law": "LightClientHeader_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
+     "law": "LightClientHeader_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
      "law": "LightClientHeader_decode_vchecked_accept"
     },
     {
@@ -18031,6 +18931,14 @@
     {
      "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
      "law": "LightClientOptimisticUpdate_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
+     "law": "LightClientOptimisticUpdate_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
+     "law": "LightClientOptimisticUpdate_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
@@ -18249,6 +19157,14 @@
     },
     {
      "file": "slop/validity/fulu_LightClientFinalityUpdate_decode_checked_generated.bend",
+     "law": "LightClientFinalityUpdate_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_decode_checked_generated.bend",
+     "law": "LightClientFinalityUpdate_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_decode_checked_generated.bend",
      "law": "LightClientFinalityUpdate_decode_vchecked_window"
     },
     {
@@ -18424,6 +19340,14 @@
     },
     {
      "file": "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
+     "law": "LightClientUpdate_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
+     "law": "LightClientUpdate_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
      "law": "LightClientUpdate_decode_vchecked_window"
     },
     {
@@ -18575,6 +19499,14 @@
     },
     {
      "file": "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
+     "law": "LightClientBootstrap_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
+     "law": "LightClientBootstrap_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
      "law": "LightClientBootstrap_decode_vchecked_window"
     },
     {
@@ -18717,6 +19649,14 @@
     {
      "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
      "law": "BlobIndex_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
+     "law": "BlobIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
+     "law": "BlobIndex_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
@@ -18894,6 +19834,14 @@
     {
      "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
      "law": "BlobIdentifier_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
+     "law": "BlobIdentifier_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
+     "law": "BlobIdentifier_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
@@ -19087,6 +20035,14 @@
     {
      "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
      "law": "KZGCommitment_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
+     "law": "KZGCommitment_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
+     "law": "KZGCommitment_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
@@ -19690,6 +20646,78 @@
      "law": "BeaconBlockBody_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_Deposit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_Deposit_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_Deposit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_Deposit_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_Deposit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_Deposit_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_Deposit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_Deposit_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_ProposerSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_ProposerSlashing_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_ProposerSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_ProposerSlashing_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_ProposerSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_ProposerSlashing_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_ProposerSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_ProposerSlashing_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedBLSToExecutionChange_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedBLSToExecutionChange_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedBLSToExecutionChange_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedBLSToExecutionChange_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedBLSToExecutionChange_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedBLSToExecutionChange_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedBLSToExecutionChange_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedBLSToExecutionChange_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedVoluntaryExit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedVoluntaryExit_storage_short"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedVoluntaryExit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedVoluntaryExit_storage_tight"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedVoluntaryExit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedVoluntaryExit_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l16_SignedVoluntaryExit_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l16_SignedVoluntaryExit_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l1_AttesterSlashing_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l1_AttesterSlashing_offsets"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_size_l8_Attestation_generated.bend",
+     "law": "BeaconBlockBody_serialize_vpoison_size_l8_Attestation_offsets"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
      "law": "BeaconBlockBody_serialize_vunit_l4096_b48_refuse_1"
     },
@@ -19794,6 +20822,14 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
      "law": "BeaconBlockBody_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
+     "law": "BeaconBlockBody_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
+     "law": "BeaconBlockBody_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
@@ -20209,6 +21245,14 @@
     },
     {
      "file": "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
+     "law": "BeaconBlock_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
+     "law": "BeaconBlock_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
      "law": "BeaconBlock_decode_vchecked_accept"
     },
     {
@@ -20401,6 +21445,14 @@
     {
      "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
      "law": "SignedBeaconBlock_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
+     "law": "SignedBeaconBlock_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
+     "law": "SignedBeaconBlock_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
@@ -20634,6 +21686,14 @@
     },
     {
      "file": "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
+     "law": "KZGProof_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
+     "law": "KZGProof_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
      "law": "KZGProof_decode_vchecked_accept"
     },
     {
@@ -20838,6 +21898,14 @@
     },
     {
      "file": "slop/validity/fulu_Blob_decode_checked_generated.bend",
+     "law": "Blob_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Blob_decode_checked_generated.bend",
+     "law": "Blob_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Blob_decode_checked_generated.bend",
      "law": "Blob_decode_vchecked_window"
     },
     {
@@ -21011,6 +22079,14 @@
     {
      "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
      "law": "BlobSidecar_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
+     "law": "BlobSidecar_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
+     "law": "BlobSidecar_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
@@ -21203,6 +22279,14 @@
     },
     {
      "file": "slop/validity/fulu_Cell_decode_checked_generated.bend",
+     "law": "Cell_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_decode_checked_generated.bend",
+     "law": "Cell_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_decode_checked_generated.bend",
      "law": "Cell_decode_vchecked_accept"
     },
     {
@@ -21361,6 +22445,14 @@
     {
      "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
      "law": "CellIndex_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
+     "law": "CellIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
+     "law": "CellIndex_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
@@ -21533,6 +22625,14 @@
     },
     {
      "file": "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
+     "law": "CommitmentIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
+     "law": "CommitmentIndex_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
      "law": "CommitmentIndex_decode_vchecked_accept"
     },
     {
@@ -21702,6 +22802,14 @@
     },
     {
      "file": "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
+     "law": "RowIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
+     "law": "RowIndex_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
      "law": "RowIndex_decode_vchecked_accept"
     },
     {
@@ -21868,6 +22976,14 @@
     {
      "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
      "law": "ColumnIndex_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
+     "law": "ColumnIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
+     "law": "ColumnIndex_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
@@ -22087,6 +23203,14 @@
     {
      "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
      "law": "DataColumnsByRootIdentifier_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
@@ -22335,6 +23459,14 @@
     },
     {
      "file": "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
+     "law": "MatrixEntry_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
+     "law": "MatrixEntry_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
      "law": "MatrixEntry_decode_vchecked_window"
     },
     {
@@ -22568,6 +23700,14 @@
     },
     {
      "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_range_hi_full"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
+     "law": "DataColumnSidecar_serialize_vunit_l4096_b2048_range_above_full"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_unit_l4096_b2048_generated.bend",
      "law": "DataColumnSidecar_serialize_vunit_ok_2048"
     },
     {
@@ -22643,6 +23783,14 @@
     {
      "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
      "law": "DataColumnSidecar_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
+     "law": "DataColumnSidecar_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
+     "law": "DataColumnSidecar_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
@@ -22900,6 +24048,14 @@
     },
     {
      "file": "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
+     "law": "CustodyIndex_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
+     "law": "CustodyIndex_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
      "law": "CustodyIndex_decode_vchecked_accept"
     },
     {
@@ -23076,6 +24232,14 @@
     {
      "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
@@ -23427,6 +24591,18 @@
      "law": "ProgressiveComplexTestStruct_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_size_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_size_l10_ProgressiveSingleFieldContainerTestStruct_storage_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_size_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_size_l10_ProgressiveSingleFieldContainerTestStruct_storage_tight"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_size_pl_ProgressiveVarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vpoison_size_pl_ProgressiveVarTestStruct_offsets"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vunit_l123_u16_refuse_1"
     },
@@ -23483,6 +24659,14 @@
      "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_lo_0"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vunit_pl_u64_range_above_full"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_writer_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vpoison_pk_l10_ProgressiveSingleFieldContainerTestStruct"
     },
@@ -23507,6 +24691,14 @@
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveComplexTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
@@ -24081,6 +25273,14 @@
     },
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveVarTestStruct_decode_vchecked_accept"
     },
     {
@@ -24302,6 +25502,14 @@
     {
      "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
@@ -24561,6 +25769,14 @@
     {
      "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
      "law": "proglist_bool_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
+     "law": "proglist_bool_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
+     "law": "proglist_bool_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
@@ -24868,6 +26084,14 @@
     {
      "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
      "law": "vec_bool_16_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
+     "law": "vec_bool_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
+     "law": "vec_bool_16_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
@@ -25186,6 +26410,14 @@
     },
     {
      "file": "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
+     "law": "vec_bool_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
+     "law": "vec_bool_1_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
      "law": "vec_bool_1_decode_vchecked_accept"
     },
     {
@@ -25434,6 +26666,14 @@
     {
      "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
      "law": "vec_bool_2_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
+     "law": "vec_bool_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
+     "law": "vec_bool_2_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
@@ -25721,6 +26961,14 @@
     {
      "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
      "law": "vec_bool_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
+     "law": "vec_bool_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
+     "law": "vec_bool_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
@@ -26107,6 +27355,14 @@
     },
     {
      "file": "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
+     "law": "vec_bool_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
+     "law": "vec_bool_3_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
      "law": "vec_bool_3_decode_vchecked_accept"
     },
     {
@@ -26391,6 +27647,14 @@
     {
      "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
      "law": "vec_bool_4_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
+     "law": "vec_bool_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
+     "law": "vec_bool_4_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
@@ -26682,6 +27946,14 @@
     {
      "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
      "law": "vec_bool_512_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
+     "law": "vec_bool_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
+     "law": "vec_bool_512_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
@@ -27212,6 +28484,14 @@
     },
     {
      "file": "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
+     "law": "vec_bool_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
+     "law": "vec_bool_513_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
      "law": "vec_bool_513_decode_vchecked_accept"
     },
     {
@@ -27735,6 +29015,14 @@
     },
     {
      "file": "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
+     "law": "vec_bool_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
+     "law": "vec_bool_5_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
      "law": "vec_bool_5_decode_vchecked_accept"
     },
     {
@@ -28058,6 +29346,14 @@
     },
     {
      "file": "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
+     "law": "vec_bool_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
+     "law": "vec_bool_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
      "law": "vec_bool_8_decode_vchecked_accept"
     },
     {
@@ -28251,6 +29547,14 @@
     },
     {
      "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vunit_pl_u128_range_above_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_unit_pl_u128_generated.bend",
      "law": "proglist_uint128_serialize_vunit_ok_16"
     },
     {
@@ -28278,6 +29582,14 @@
     {
      "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
      "law": "proglist_uint128_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
+     "law": "proglist_uint128_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
+     "law": "proglist_uint128_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
@@ -28522,6 +29834,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
+     "law": "vec_uint128_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
+     "law": "vec_uint128_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
      "law": "vec_uint128_16_decode_vchecked_accept"
     },
     {
@@ -28751,6 +30071,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
+     "law": "vec_uint128_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
+     "law": "vec_uint128_1_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
      "law": "vec_uint128_1_decode_vchecked_accept"
     },
     {
@@ -28976,6 +30304,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
+     "law": "vec_uint128_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
+     "law": "vec_uint128_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
      "law": "vec_uint128_2_decode_vchecked_accept"
     },
     {
@@ -29182,6 +30518,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
      "law": "vec_uint128_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
+     "law": "vec_uint128_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
+     "law": "vec_uint128_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
@@ -29406,6 +30750,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
+     "law": "vec_uint128_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
+     "law": "vec_uint128_3_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
      "law": "vec_uint128_3_decode_vchecked_accept"
     },
     {
@@ -29627,6 +30979,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
+     "law": "vec_uint128_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
+     "law": "vec_uint128_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
      "law": "vec_uint128_4_decode_vchecked_accept"
     },
     {
@@ -29819,6 +31179,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint128_512_decode_checked_generated.bend",
+     "law": "vec_uint128_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_512_decode_checked_generated.bend",
+     "law": "vec_uint128_512_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_512_decode_checked_generated.bend",
      "law": "vec_uint128_512_decode_vchecked_window"
     },
     {
@@ -29980,6 +31348,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
      "law": "vec_uint128_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
+     "law": "vec_uint128_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
+     "law": "vec_uint128_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
@@ -30181,6 +31557,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
      "law": "vec_uint128_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
+     "law": "vec_uint128_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
+     "law": "vec_uint128_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
@@ -30402,6 +31786,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
      "law": "vec_uint128_8_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
+     "law": "vec_uint128_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
+     "law": "vec_uint128_8_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
@@ -30629,6 +32021,14 @@
      "law": "proglist_uint8_serialize_vunit_pl_u8_range_lo_0"
     },
     {
+     "file": "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vunit_pl_u8_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_unit_pl_u8_generated.bend",
+     "law": "proglist_uint8_serialize_vunit_pl_u8_range_above_full"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint8_writer_pl_u8_generated.bend",
      "law": "proglist_uint8_serialize_vpoison_pk_pl_u8"
     },
@@ -30653,6 +32053,14 @@
     {
      "file": "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
      "law": "proglist_uint8_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
+     "law": "proglist_uint8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
+     "law": "proglist_uint8_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
@@ -30871,6 +32279,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
+     "law": "vec_uint8_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
+     "law": "vec_uint8_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
      "law": "vec_uint8_16_decode_vchecked_accept"
     },
     {
@@ -31082,6 +32498,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
+     "law": "vec_uint8_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
+     "law": "vec_uint8_1_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
      "law": "vec_uint8_1_decode_vchecked_accept"
     },
     {
@@ -31289,6 +32713,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
+     "law": "vec_uint8_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
+     "law": "vec_uint8_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
      "law": "vec_uint8_2_decode_vchecked_accept"
     },
     {
@@ -31481,6 +32913,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
      "law": "vec_uint8_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
+     "law": "vec_uint8_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
+     "law": "vec_uint8_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
@@ -31692,6 +33132,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
      "law": "vec_uint8_3_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
+     "law": "vec_uint8_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
+     "law": "vec_uint8_3_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
@@ -31910,6 +33358,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
+     "law": "vec_uint8_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
+     "law": "vec_uint8_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
      "law": "vec_uint8_4_decode_vchecked_accept"
     },
     {
@@ -32098,6 +33554,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
      "law": "vec_uint8_512_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
+     "law": "vec_uint8_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
+     "law": "vec_uint8_512_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
@@ -32297,6 +33761,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
      "law": "vec_uint8_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
+     "law": "vec_uint8_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
+     "law": "vec_uint8_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
@@ -32504,6 +33976,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
      "law": "vec_uint8_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
+     "law": "vec_uint8_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
+     "law": "vec_uint8_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
@@ -32726,6 +34206,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
+     "law": "vec_uint8_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
+     "law": "vec_uint8_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
      "law": "vec_uint8_8_decode_vchecked_accept"
     },
     {
@@ -32930,6 +34418,14 @@
      "law": "proglist_uint16_serialize_vunit_pl_u16_range_lo_0"
     },
     {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_unit_pl_u16_generated.bend",
+     "law": "proglist_uint16_serialize_vunit_pl_u16_range_above_full"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint16_writer_pl_u16_generated.bend",
      "law": "proglist_uint16_serialize_vpoison_pk_pl_u16"
     },
@@ -32954,6 +34450,14 @@
     {
      "file": "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
      "law": "proglist_uint16_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
+     "law": "proglist_uint16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
+     "law": "proglist_uint16_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
@@ -33172,6 +34676,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
+     "law": "vec_uint16_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
+     "law": "vec_uint16_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
      "law": "vec_uint16_16_decode_vchecked_accept"
     },
     {
@@ -33384,6 +34896,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
      "law": "vec_uint16_1_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
+     "law": "vec_uint16_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
+     "law": "vec_uint16_1_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
@@ -33606,6 +35126,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
+     "law": "vec_uint16_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
+     "law": "vec_uint16_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
      "law": "vec_uint16_2_decode_vchecked_accept"
     },
     {
@@ -33798,6 +35326,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
      "law": "vec_uint16_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
+     "law": "vec_uint16_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
+     "law": "vec_uint16_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
@@ -34009,6 +35545,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
      "law": "vec_uint16_3_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
+     "law": "vec_uint16_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
+     "law": "vec_uint16_3_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
@@ -34231,6 +35775,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
+     "law": "vec_uint16_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
+     "law": "vec_uint16_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
      "law": "vec_uint16_4_decode_vchecked_accept"
     },
     {
@@ -34423,6 +35975,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
      "law": "vec_uint16_512_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
+     "law": "vec_uint16_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
+     "law": "vec_uint16_512_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
@@ -34625,6 +36185,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
+     "law": "vec_uint16_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
+     "law": "vec_uint16_513_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
      "law": "vec_uint16_513_decode_vchecked_accept"
     },
     {
@@ -34821,6 +36389,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
      "law": "vec_uint16_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
+     "law": "vec_uint16_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
+     "law": "vec_uint16_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
@@ -35043,6 +36619,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
+     "law": "vec_uint16_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
+     "law": "vec_uint16_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
      "law": "vec_uint16_8_decode_vchecked_accept"
     },
     {
@@ -35195,6 +36779,10 @@
      "law": "proglist_uint256_serialize_vunit_pl_u256_range_lo_0"
     },
     {
+     "file": "slop/validity/generic_proglist_uint256_unit_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vunit_pl_u256_range_hi_full"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint256_writer_pl_u256_generated.bend",
      "law": "proglist_uint256_serialize_vpoison_pk_pl_u256"
     },
@@ -35219,6 +36807,14 @@
     {
      "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
      "law": "proglist_uint256_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
+     "law": "proglist_uint256_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
+     "law": "proglist_uint256_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
@@ -35447,6 +37043,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
+     "law": "vec_uint256_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
+     "law": "vec_uint256_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
      "law": "vec_uint256_16_decode_vchecked_accept"
     },
     {
@@ -35665,6 +37269,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
      "law": "vec_uint256_1_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
+     "law": "vec_uint256_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
+     "law": "vec_uint256_1_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
@@ -35893,6 +37505,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
+     "law": "vec_uint256_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
+     "law": "vec_uint256_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
      "law": "vec_uint256_2_decode_vchecked_accept"
     },
     {
@@ -36099,6 +37719,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
      "law": "vec_uint256_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
+     "law": "vec_uint256_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
+     "law": "vec_uint256_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
@@ -36323,6 +37951,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
+     "law": "vec_uint256_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
+     "law": "vec_uint256_3_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
      "law": "vec_uint256_3_decode_vchecked_accept"
     },
     {
@@ -36544,6 +38180,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
+     "law": "vec_uint256_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
+     "law": "vec_uint256_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
      "law": "vec_uint256_4_decode_vchecked_accept"
     },
     {
@@ -36732,6 +38376,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_512_decode_checked_generated.bend",
+     "law": "vec_uint256_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_512_decode_checked_generated.bend",
+     "law": "vec_uint256_512_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_512_decode_checked_generated.bend",
      "law": "vec_uint256_512_decode_vchecked_window"
     },
     {
@@ -36893,6 +38545,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
      "law": "vec_uint256_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
+     "law": "vec_uint256_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
+     "law": "vec_uint256_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
@@ -37094,6 +38754,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
      "law": "vec_uint256_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
+     "law": "vec_uint256_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
+     "law": "vec_uint256_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
@@ -37314,6 +38982,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
+     "law": "vec_uint256_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
+     "law": "vec_uint256_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
      "law": "vec_uint256_8_decode_vchecked_accept"
     },
     {
@@ -37491,6 +39167,14 @@
     },
     {
      "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
+     "law": "proglist_uint32_serialize_vunit_pl_u32_range_above_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_unit_pl_u32_generated.bend",
      "law": "proglist_uint32_serialize_vunit_ok_4"
     },
     {
@@ -37518,6 +39202,14 @@
     {
      "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
      "law": "proglist_uint32_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
+     "law": "proglist_uint32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
+     "law": "proglist_uint32_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
@@ -37758,6 +39450,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
+     "law": "vec_uint32_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
+     "law": "vec_uint32_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
      "law": "vec_uint32_16_decode_vchecked_accept"
     },
     {
@@ -37991,6 +39691,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
+     "law": "vec_uint32_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
+     "law": "vec_uint32_1_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
      "law": "vec_uint32_1_decode_vchecked_accept"
     },
     {
@@ -38220,6 +39928,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
+     "law": "vec_uint32_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
+     "law": "vec_uint32_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
      "law": "vec_uint32_2_decode_vchecked_accept"
     },
     {
@@ -38445,6 +40161,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
+     "law": "vec_uint32_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
+     "law": "vec_uint32_31_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
      "law": "vec_uint32_31_decode_vchecked_accept"
     },
     {
@@ -38667,6 +40391,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
      "law": "vec_uint32_3_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
+     "law": "vec_uint32_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
+     "law": "vec_uint32_3_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
@@ -38899,6 +40631,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
+     "law": "vec_uint32_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
+     "law": "vec_uint32_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
      "law": "vec_uint32_4_decode_vchecked_accept"
     },
     {
@@ -39099,6 +40839,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
+     "law": "vec_uint32_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
+     "law": "vec_uint32_512_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
      "law": "vec_uint32_512_decode_vchecked_accept"
     },
     {
@@ -39288,6 +41036,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
      "law": "vec_uint32_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
+     "law": "vec_uint32_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
+     "law": "vec_uint32_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
@@ -39489,6 +41245,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
      "law": "vec_uint32_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
+     "law": "vec_uint32_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
+     "law": "vec_uint32_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
@@ -39713,6 +41477,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
+     "law": "vec_uint32_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
+     "law": "vec_uint32_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
      "law": "vec_uint32_8_decode_vchecked_accept"
     },
     {
@@ -39893,6 +41665,14 @@
      "law": "proglist_uint64_serialize_vunit_pl_u64_range_lo_0"
     },
     {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_unit_pl_u64_generated.bend",
+     "law": "proglist_uint64_serialize_vunit_pl_u64_range_above_full"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint64_writer_pl_u64_generated.bend",
      "law": "proglist_uint64_serialize_vpoison_pk_pl_u64"
     },
@@ -39917,6 +41697,14 @@
     {
      "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
      "law": "proglist_uint64_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
+     "law": "proglist_uint64_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
+     "law": "proglist_uint64_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
@@ -40161,6 +41949,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
+     "law": "vec_uint64_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
+     "law": "vec_uint64_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
      "law": "vec_uint64_16_decode_vchecked_accept"
     },
     {
@@ -40391,6 +42187,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
      "law": "vec_uint64_1_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
+     "law": "vec_uint64_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
+     "law": "vec_uint64_1_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
@@ -40627,6 +42431,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
+     "law": "vec_uint64_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
+     "law": "vec_uint64_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
      "law": "vec_uint64_2_decode_vchecked_accept"
     },
     {
@@ -40852,6 +42664,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
+     "law": "vec_uint64_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
+     "law": "vec_uint64_31_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
      "law": "vec_uint64_31_decode_vchecked_accept"
     },
     {
@@ -41070,6 +42890,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
      "law": "vec_uint64_3_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
+     "law": "vec_uint64_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
+     "law": "vec_uint64_3_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
@@ -41294,6 +43122,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
+     "law": "vec_uint64_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
+     "law": "vec_uint64_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
      "law": "vec_uint64_4_decode_vchecked_accept"
     },
     {
@@ -41494,6 +43330,14 @@
     },
     {
      "file": "slop/validity/generic_vec_uint64_512_decode_checked_generated.bend",
+     "law": "vec_uint64_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_512_decode_checked_generated.bend",
+     "law": "vec_uint64_512_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_512_decode_checked_generated.bend",
      "law": "vec_uint64_512_decode_vchecked_window"
     },
     {
@@ -41659,6 +43503,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
      "law": "vec_uint64_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
+     "law": "vec_uint64_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
+     "law": "vec_uint64_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
@@ -41860,6 +43712,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
      "law": "vec_uint64_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
+     "law": "vec_uint64_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
+     "law": "vec_uint64_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
@@ -42081,6 +43941,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
      "law": "vec_uint64_8_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
+     "law": "vec_uint64_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
+     "law": "vec_uint64_8_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
@@ -42312,6 +44180,30 @@
      "law": "ProgressiveTestStruct_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_SmallTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_SmallTestStruct_storage_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_SmallTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_SmallTestStruct_storage_tight"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_SmallTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_SmallTestStruct_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_SmallTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_SmallTestStruct_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_VarTestStruct_offsets"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_size_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vpoison_size_pl_pl_VarTestStruct_offsets"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
      "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_refuse_1"
     },
@@ -42334,6 +44226,14 @@
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
      "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_range_lo_0"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_range_hi_full"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vunit_pl_u64_range_above_full"
     },
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_writer_pl_SmallTestStruct_generated.bend",
@@ -42364,6 +44264,14 @@
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
@@ -42760,6 +44668,14 @@
     {
      "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
      "law": "BitsStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
+     "law": "BitsStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
+     "law": "BitsStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
@@ -43180,6 +45096,22 @@
      "law": "ProgressiveBitsStruct_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_size_bits1280_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vpoison_size_bits1280_storage"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_size_bits1281_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vpoison_size_bits1281_storage"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_size_bits256_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vpoison_size_bits256_storage"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_size_bits257_generated.bend",
+     "law": "ProgressiveBitsStruct_serialize_vpoison_size_bits257_storage"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
      "law": "ProgressiveBitsStruct_serialize_vunit_bv1280_range_below_159"
     },
@@ -43312,6 +45244,14 @@
     {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
      "law": "ProgressiveBitsStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
@@ -43604,6 +45544,14 @@
     },
     {
      "file": "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
+     "law": "FixedTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
+     "law": "FixedTestStruct_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
      "law": "FixedTestStruct_decode_vchecked_accept"
     },
     {
@@ -43769,6 +45717,14 @@
     {
      "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
      "law": "SingleFieldTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
+     "law": "SingleFieldTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
+     "law": "SingleFieldTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
@@ -44076,6 +46032,14 @@
     {
      "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
      "law": "VarTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
+     "law": "VarTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
+     "law": "VarTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
@@ -44452,6 +46416,26 @@
      "law": "ComplexTestStruct_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_ComplexTestStruct_size_v2_VarTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_size_v2_VarTestStruct_offsets"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_size_v4_FixedTestStruct_storage_short"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_size_v4_FixedTestStruct_storage_tight"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_size_v4_FixedTestStruct_above"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
+     "law": "ComplexTestStruct_serialize_vpoison_size_v4_FixedTestStruct_at"
+    },
+    {
      "file": "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
      "law": "ComplexTestStruct_serialize_vunit_bl256_range_lo_0"
     },
@@ -44524,6 +46508,14 @@
     {
      "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
      "law": "ComplexTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
+     "law": "ComplexTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
+     "law": "ComplexTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
@@ -44821,6 +46813,14 @@
     {
      "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
      "law": "SmallTestStruct_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
+     "law": "SmallTestStruct_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
+     "law": "SmallTestStruct_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
@@ -45128,6 +47128,10 @@
      "law": "bitlist_15_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_15_size_bits15_generated.bend",
+     "law": "bitlist_15_serialize_vpoison_size_bits15_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_15_writer_bits15_generated.bend",
      "law": "bitlist_15_serialize_vpoison_pk_bits15"
     },
@@ -45180,6 +47184,14 @@
     {
      "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
      "law": "bitlist_15_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
+     "law": "bitlist_15_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
+     "law": "bitlist_15_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
@@ -45491,6 +47503,10 @@
      "law": "bitlist_16_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_16_size_bits16_generated.bend",
+     "law": "bitlist_16_serialize_vpoison_size_bits16_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_16_writer_bits16_generated.bend",
      "law": "bitlist_16_serialize_vpoison_pk_bits16"
     },
@@ -45543,6 +47559,14 @@
     {
      "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
      "law": "bitlist_16_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
+     "law": "bitlist_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
+     "law": "bitlist_16_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
@@ -45854,6 +47878,10 @@
      "law": "bitlist_17_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_17_size_bits17_generated.bend",
+     "law": "bitlist_17_serialize_vpoison_size_bits17_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_17_writer_bits17_generated.bend",
      "law": "bitlist_17_serialize_vpoison_pk_bits17"
     },
@@ -45906,6 +47934,14 @@
     {
      "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
      "law": "bitlist_17_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
+     "law": "bitlist_17_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
+     "law": "bitlist_17_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
@@ -46209,6 +48245,10 @@
      "law": "bitlist_1_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_1_size_bits1_generated.bend",
+     "law": "bitlist_1_serialize_vpoison_size_bits1_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_1_writer_bits1_generated.bend",
      "law": "bitlist_1_serialize_vpoison_pk_bits1"
     },
@@ -46261,6 +48301,14 @@
     {
      "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
      "law": "bitlist_1_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
+     "law": "bitlist_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
+     "law": "bitlist_1_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
@@ -46568,6 +48616,10 @@
      "law": "bitlist_2_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_2_size_bits2_generated.bend",
+     "law": "bitlist_2_serialize_vpoison_size_bits2_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_2_writer_bits2_generated.bend",
      "law": "bitlist_2_serialize_vpoison_pk_bits2"
     },
@@ -46620,6 +48672,14 @@
     {
      "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
      "law": "bitlist_2_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
+     "law": "bitlist_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
+     "law": "bitlist_2_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
@@ -46931,6 +48991,10 @@
      "law": "bitlist_31_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_31_size_bits31_generated.bend",
+     "law": "bitlist_31_serialize_vpoison_size_bits31_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_31_writer_bits31_generated.bend",
      "law": "bitlist_31_serialize_vpoison_pk_bits31"
     },
@@ -46983,6 +49047,14 @@
     {
      "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
      "law": "bitlist_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
+     "law": "bitlist_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
+     "law": "bitlist_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
@@ -47290,6 +49362,10 @@
      "law": "bitlist_32_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_32_size_bits32_generated.bend",
+     "law": "bitlist_32_serialize_vpoison_size_bits32_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_32_writer_bits32_generated.bend",
      "law": "bitlist_32_serialize_vpoison_pk_bits32"
     },
@@ -47334,6 +49410,14 @@
     {
      "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
      "law": "bitlist_32_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
+     "law": "bitlist_32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
+     "law": "bitlist_32_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
@@ -47641,6 +49725,10 @@
      "law": "bitlist_33_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_33_size_bits33_generated.bend",
+     "law": "bitlist_33_serialize_vpoison_size_bits33_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_33_writer_bits33_generated.bend",
      "law": "bitlist_33_serialize_vpoison_pk_bits33"
     },
@@ -47685,6 +49773,14 @@
     {
      "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
      "law": "bitlist_33_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
+     "law": "bitlist_33_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
+     "law": "bitlist_33_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
@@ -47996,6 +50092,10 @@
      "law": "bitlist_3_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_3_size_bits3_generated.bend",
+     "law": "bitlist_3_serialize_vpoison_size_bits3_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_3_writer_bits3_generated.bend",
      "law": "bitlist_3_serialize_vpoison_pk_bits3"
     },
@@ -48048,6 +50148,14 @@
     {
      "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
      "law": "bitlist_3_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
+     "law": "bitlist_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
+     "law": "bitlist_3_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
@@ -48359,6 +50467,10 @@
      "law": "bitlist_4_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_4_size_bits4_generated.bend",
+     "law": "bitlist_4_serialize_vpoison_size_bits4_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_4_writer_bits4_generated.bend",
      "law": "bitlist_4_serialize_vpoison_pk_bits4"
     },
@@ -48411,6 +50523,14 @@
     {
      "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
      "law": "bitlist_4_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
+     "law": "bitlist_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
+     "law": "bitlist_4_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
@@ -48726,6 +50846,10 @@
      "law": "bitlist_511_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_511_size_bits511_generated.bend",
+     "law": "bitlist_511_serialize_vpoison_size_bits511_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_511_writer_bits511_generated.bend",
      "law": "bitlist_511_serialize_vpoison_pk_bits511"
     },
@@ -48770,6 +50894,14 @@
     {
      "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
      "law": "bitlist_511_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
+     "law": "bitlist_511_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
+     "law": "bitlist_511_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
@@ -49085,6 +51217,10 @@
      "law": "bitlist_512_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_512_size_bits512_generated.bend",
+     "law": "bitlist_512_serialize_vpoison_size_bits512_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_512_writer_bits512_generated.bend",
      "law": "bitlist_512_serialize_vpoison_pk_bits512"
     },
@@ -49129,6 +51265,14 @@
     {
      "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
      "law": "bitlist_512_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
+     "law": "bitlist_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
+     "law": "bitlist_512_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
@@ -49444,6 +51588,10 @@
      "law": "bitlist_513_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_513_size_bits513_generated.bend",
+     "law": "bitlist_513_serialize_vpoison_size_bits513_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_513_writer_bits513_generated.bend",
      "law": "bitlist_513_serialize_vpoison_pk_bits513"
     },
@@ -49488,6 +51636,14 @@
     {
      "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
      "law": "bitlist_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
+     "law": "bitlist_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
+     "law": "bitlist_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
@@ -49799,6 +51955,10 @@
      "law": "bitlist_5_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_5_size_bits5_generated.bend",
+     "law": "bitlist_5_serialize_vpoison_size_bits5_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_5_writer_bits5_generated.bend",
      "law": "bitlist_5_serialize_vpoison_pk_bits5"
     },
@@ -49851,6 +52011,14 @@
     {
      "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
      "law": "bitlist_5_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
+     "law": "bitlist_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
+     "law": "bitlist_5_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
@@ -50162,6 +52330,10 @@
      "law": "bitlist_6_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_6_size_bits6_generated.bend",
+     "law": "bitlist_6_serialize_vpoison_size_bits6_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_6_writer_bits6_generated.bend",
      "law": "bitlist_6_serialize_vpoison_pk_bits6"
     },
@@ -50214,6 +52386,14 @@
     {
      "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
      "law": "bitlist_6_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
+     "law": "bitlist_6_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
+     "law": "bitlist_6_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
@@ -50525,6 +52705,10 @@
      "law": "bitlist_7_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_7_size_bits7_generated.bend",
+     "law": "bitlist_7_serialize_vpoison_size_bits7_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_7_writer_bits7_generated.bend",
      "law": "bitlist_7_serialize_vpoison_pk_bits7"
     },
@@ -50577,6 +52761,14 @@
     {
      "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
      "law": "bitlist_7_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
+     "law": "bitlist_7_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
+     "law": "bitlist_7_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
@@ -50888,6 +53080,10 @@
      "law": "bitlist_8_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_8_size_bits8_generated.bend",
+     "law": "bitlist_8_serialize_vpoison_size_bits8_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_8_writer_bits8_generated.bend",
      "law": "bitlist_8_serialize_vpoison_pk_bits8"
     },
@@ -50940,6 +53136,14 @@
     {
      "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
      "law": "bitlist_8_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
+     "law": "bitlist_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
+     "law": "bitlist_8_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
@@ -51251,6 +53455,10 @@
      "law": "bitlist_9_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_bitlist_9_size_bits9_generated.bend",
+     "law": "bitlist_9_serialize_vpoison_size_bits9_storage"
+    },
+    {
      "file": "slop/validity/generic_bitlist_9_writer_bits9_generated.bend",
      "law": "bitlist_9_serialize_vpoison_pk_bits9"
     },
@@ -51303,6 +53511,14 @@
     {
      "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
      "law": "bitlist_9_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
+     "law": "bitlist_9_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
+     "law": "bitlist_9_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
@@ -51470,6 +53686,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
+     "law": "bitvector_15_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
+     "law": "bitvector_15_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
      "law": "bitvector_15_decode_vchecked_accept"
     },
     {
@@ -51626,6 +53850,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
+     "law": "bitvector_16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
+     "law": "bitvector_16_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
      "law": "bitvector_16_decode_vchecked_accept"
     },
     {
@@ -51779,6 +54011,14 @@
     {
      "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
      "law": "bitvector_17_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
+     "law": "bitvector_17_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
+     "law": "bitvector_17_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
@@ -51942,6 +54182,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
+     "law": "bitvector_1_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
+     "law": "bitvector_1_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
      "law": "bitvector_1_decode_vchecked_accept"
     },
     {
@@ -52102,6 +54350,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
+     "law": "bitvector_2_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
+     "law": "bitvector_2_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
      "law": "bitvector_2_decode_vchecked_accept"
     },
     {
@@ -52259,6 +54515,14 @@
     {
      "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
      "law": "bitvector_31_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
+     "law": "bitvector_31_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
+     "law": "bitvector_31_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
@@ -52447,6 +54711,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
+     "law": "bitvector_32_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
+     "law": "bitvector_32_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
      "law": "bitvector_32_decode_vchecked_accept"
     },
     {
@@ -52600,6 +54872,14 @@
     {
      "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
      "law": "bitvector_33_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
+     "law": "bitvector_33_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
+     "law": "bitvector_33_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
@@ -52767,6 +55047,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
+     "law": "bitvector_3_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
+     "law": "bitvector_3_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
      "law": "bitvector_3_decode_vchecked_accept"
     },
     {
@@ -52927,6 +55215,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
+     "law": "bitvector_4_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
+     "law": "bitvector_4_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
      "law": "bitvector_4_decode_vchecked_accept"
     },
     {
@@ -53084,6 +55380,14 @@
     {
      "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
      "law": "bitvector_511_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
+     "law": "bitvector_511_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
+     "law": "bitvector_511_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
@@ -53276,6 +55580,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
+     "law": "bitvector_512_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
+     "law": "bitvector_512_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
      "law": "bitvector_512_decode_vchecked_accept"
     },
     {
@@ -53433,6 +55745,14 @@
     {
      "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
      "law": "bitvector_513_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
+     "law": "bitvector_513_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
+     "law": "bitvector_513_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
@@ -53600,6 +55920,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
+     "law": "bitvector_5_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
+     "law": "bitvector_5_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
      "law": "bitvector_5_decode_vchecked_accept"
     },
     {
@@ -53757,6 +56085,14 @@
     {
      "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
      "law": "bitvector_6_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
+     "law": "bitvector_6_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
+     "law": "bitvector_6_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
@@ -53920,6 +56256,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
+     "law": "bitvector_7_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
+     "law": "bitvector_7_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
      "law": "bitvector_7_decode_vchecked_accept"
     },
     {
@@ -54076,6 +56420,14 @@
     },
     {
      "file": "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
+     "law": "bitvector_8_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
+     "law": "bitvector_8_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
      "law": "bitvector_8_decode_vchecked_accept"
     },
     {
@@ -54229,6 +56581,14 @@
     {
      "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
      "law": "bitvector_9_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
+     "law": "bitvector_9_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
+     "law": "bitvector_9_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
@@ -54420,6 +56780,14 @@
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
      "law": "CompatibleUnionBC_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
+     "law": "CompatibleUnionBC_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
+     "law": "CompatibleUnionBC_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
@@ -54675,6 +57043,14 @@
     },
     {
      "file": "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
      "law": "CompatibleUnionABCA_decode_vchecked_accept"
     },
     {
@@ -54856,6 +57232,14 @@
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
      "law": "CompatibleUnionA_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
+     "law": "CompatibleUnionA_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
+     "law": "CompatibleUnionA_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
@@ -55155,6 +57539,10 @@
      "law": "progbitlist_serialize_vrefuse_writer_ok"
     },
     {
+     "file": "slop/validity/generic_progbitlist_size_pbits_generated.bend",
+     "law": "progbitlist_serialize_vpoison_size_pbits_storage"
+    },
+    {
      "file": "slop/validity/generic_progbitlist_writer_pbits_generated.bend",
      "law": "progbitlist_serialize_vpoison_pk_pbits"
     },
@@ -55199,6 +57587,14 @@
     {
      "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
      "law": "progbitlist_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
+     "law": "progbitlist_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
+     "law": "progbitlist_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
@@ -55387,6 +57783,14 @@
     },
     {
      "file": "slop/validity/generic_uint128_decode_checked_generated.bend",
+     "law": "uint128_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_uint128_decode_checked_generated.bend",
+     "law": "uint128_decode_vchecked_at_2pow31"
+    },
+    {
+     "file": "slop/validity/generic_uint128_decode_checked_generated.bend",
      "law": "uint128_decode_vchecked_accept"
     },
     {
@@ -55524,6 +57928,14 @@
     {
      "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
      "law": "uint16_decode_vchecked_nmax_above"
+    },
+    {
+     "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
+     "law": "uint16_decode_vchecked_nmax_at"
+    },
+    {
+     "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
+     "law": "uint16_decode_vchecked_at_2pow31"
     },
     {
      "file": "slop/validity/generic_uint16_decode_checked_generated.bend",

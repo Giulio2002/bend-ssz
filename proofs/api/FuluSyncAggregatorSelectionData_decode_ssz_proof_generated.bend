@@ -120,6 +120,12 @@ def FuluSyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData
 def FuluSyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   P7_PRV.SyncAggregatorSelectionData_decode_vchecked_nmax_above(buf)
 
+def FuluSyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  P7_PRV.SyncAggregatorSelectionData_decode_vchecked_nmax_at(buf)
+
+def FuluSyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  P7_PRV.SyncAggregatorSelectionData_decode_vchecked_at_2pow31(buf)
+
 def FuluSyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 16, (P7_B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(P7_B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SyncAggregatorSelectionData_decode_vchecked_accept()
 

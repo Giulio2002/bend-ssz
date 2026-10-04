@@ -23,7 +23,12 @@ Laws, all by computation:
     <X>_serialize_vpoison_refused         `O.refused() == O.Encoded{False, B.empty()}`
     <X>_serialize_vpoison_out_done        `O.out_donem` of the marker and of NMAX + 1 is the empty buffer, of a size the buffer of that size
   for every list of fixed-size composite elements (es bytes each): <X>_serialize_vpoison_size_<kp>_above / _at: the size pass at floor(NMAX / es) + 1
-    elements is the marker, at floor(NMAX / es) the size (with out_done: the unchecked encode of the longer list is the empty buffer)
+    elements is the marker, at floor(NMAX / es) the size (with out_done: the unchecked encode of the longer list is the empty buffer); for every such list
+    also _storage_short / _storage_tight: 3 elements claimed on a storage of 2 are the marker, 2 on 2 their size (round 7 G2)
+  for every list kp of variable-size boxed elements: <X>_serialize_vpoison_size_<kp>_offsets: one and two absent elements (0 bytes each) are 4 and 8
+    bytes, the offset table (round 7 G2)
+  for every bit list kp whose size pass is `O.bits_sizek`: <X>_serialize_vpoison_size_<kp>_storage: k = 8 and k = 31 bits on one word of storage are
+    2 and 4 bytes, k = 32 on one word is the marker (round 7 G2)
     <X>_serialize_vpoison_marks           `O.is_poisoned` at 0, 2^31, NMAX, NMAX + 1, 2^32 - 2, 2^32 - 1 (closed literals)
     <X>_serialize_vpoison_padd            `O.padd` below, at and across the marker and across the wrap (closed literals)
 
@@ -45,6 +50,7 @@ from codegen.proofs.slop.collection_guards import owners_of  # noqa: E402
 MARK, NMAX = 4294967295, 4294967264
 PK = re.compile(r'^def (\w+)_pk\(out: Array<U32>, \+pos: U32, pair: ([\w.<>, ]+?) & Bool\) -> Array<U32> & \(([\w.<>, ]+?) & U32\):', re.M)
 SZF = re.compile(r'^def (\w+)_szf\(\+n: U32, pair: Array<[\w.<>]+> & U32\) -> \w+_Seq & U32:\n  \(arr, \+c\) = pair\n  .*O\.mulc\(n, (\d+)\)', re.M)
+SZV = re.compile(r"^def (\w+)_sz_fin\(\+n: U32, st: .*\n  \(arr, r\) = st\n  \(m, sp\) = r\n  \(\w+_Seq\{arr, n\}, O\.padd\(O\.mul4c\(n\), m\)\)$", re.M)
 SENC = re.compile(r'^def (\w+)_senc_out\(([^)]*)\) -> ([^:\n]+):', re.M)
 SENC_PAIR = re.compile(r'^def (\w+)_senc_out\(pair: Array<U32> & \(([\w.<>, ]+) & U32\)\) -> ([^:\n]+):\n  \(out, r\) = pair\n  \(o, fl\) = r\n'
                        r'  \(o, O\.ser_done\(O\.is_poisoned\(fl\), (\d+), out\)\)$', re.M)
@@ -184,13 +190,38 @@ def outputs():
                 continue
             X = owners[0]
             top = NMAX // es
-            if top + 2 > (1 << 31):       # an array of 2^31 slots or more has no U32 size: such a list cannot be held, the bound is the storage's
-                continue
             seq = f'T.{kp}_Seq'
-            size = lambda n: f'Pair.snd({seq}, U32, T.{kp}_size({seq}{{T.{kp}_fill({(n + 1).bit_length()}n), {n}}}))'    # noqa: E731
-            laws = [law(f'{X}_serialize_vpoison_size_{kp}_above', f'{size(top + 1)} == {MARK} : U32'),
-                    law(f'{X}_serialize_vpoison_size_{kp}_at', f'{size(top)} == {top * es} : U32')]
-            out[LAYOUT.module_path('validity', f'{runtime}_{X}_size_{kp}')] = module(tmod, X, f'the size pass of {kp} one element past NMAX / {es}', laws)
+            size = lambda n, d=None: f'Pair.snd({seq}, U32, T.{kp}_size({seq}{{T.{kp}_fill({(n + 1).bit_length() if d is None else d}n), {n}}}))'    # noqa: E731
+            # the storage test (round 7 G2: r3-l01/02 dropped it, /03 made it strict): 3 elements claimed on a storage of 2 are the marker, 2 on 2 their size
+            laws = [law(f'{X}_serialize_vpoison_size_{kp}_storage_short', f'{size(3, 1)} == {MARK} : U32'),
+                    law(f'{X}_serialize_vpoison_size_{kp}_storage_tight', f'{size(2, 1)} == {2 * es} : U32')]
+            if top + 2 <= (1 << 31):       # an array of 2^31 slots or more has no U32 size: such a list cannot be held, the bound is the storage's
+                laws += [law(f'{X}_serialize_vpoison_size_{kp}_above', f'{size(top + 1)} == {MARK} : U32'),
+                         law(f'{X}_serialize_vpoison_size_{kp}_at', f'{size(top)} == {top * es} : U32')]
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}_size_{kp}')] = module(tmod, X, f'the size pass of {kp}: its storage test, one element past NMAX / {es}', laws)
+        # lists of variable-size elements: the size pass counts the offset table, 4 bytes per element, beside the elements (round 7 G2: r3-l02/01 dropped
+        # it): one and two absent elements (an absent box counts 0 bytes, `X_bx_size`) are 4 and 8 bytes, the offsets alone
+        for m in SZV.finditer(tx.text):
+            kp = m.group(1)
+            one = re.search(r'\b(\w+)_bx_size\(v\)', tx.blk.get(f'{kp}_sz_one', ''))
+            owners = smallest(tx, owners_of(tx, kp) or holders(tx, kp))
+            if not owners or not one or f'{kp}_fill' not in tx.blk or f'{kp}_sz_cap' not in tx.blk:
+                continue
+            X = owners[0]
+            seq = f'T.{kp}_Seq'
+            vsize = lambda n: f'Pair.snd({seq}, U32, T.{kp}_size({seq}{{T.{kp}_fill({(n - 1).bit_length()}n), {n}}}))'    # noqa: E731
+            laws = [law(f'{X}_serialize_vpoison_size_{kp}_offsets', f'({vsize(1)}, {vsize(2)}) == (4, 8) : U32 & U32')]
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}_size_{kp}')] = module(tmod, X, f'the size pass of {kp}: its offset table', laws)
+        # bit lists: the size pass `O.bits_sizek` asks for the word of bit k (round 7 G2: r2-s05/05 made the test strict): k = 8 and k = 31 on one word are
+        # 2 and 4 bytes, k = 32 on one word is the marker
+        for kp in re.findall(r'^def (\w+)_size\(o: O\.Bits\) -> O\.Bits & U32: O\.bits_sizek\(o\)$', tx.text, re.M):
+            owners = smallest(tx, owners_of(tx, kp) or holders(tx, kp))
+            if not owners:
+                continue
+            X = owners[0]
+            bsize = lambda k: f'Pair.snd(O.Bits, U32, T.{kp}_size(O.Bits{{Array.new(U32, 0n, 0), {k}}}))'    # noqa: E731
+            laws = [law(f'{X}_serialize_vpoison_size_{kp}_storage', f'({bsize(8)}, ({bsize(31)}, {bsize(32)})) == (2, (4, {MARK})) : U32 & (U32 & U32)')]
+            out[LAYOUT.module_path('validity', f'{runtime}_{X}_size_{kp}')] = module(tmod, X, f'the size pass of {kp}: its storage test', laws)
         every = re.findall(r'^def (\w+)_senc_out\(', tx.text, re.M)
         if sorted(every) != sorted(sencs):
             raise SystemExit(f'writer_poison_laws: checked serializers of an unexpected shape: {sorted(set(every) - set(sencs))[:5]}')

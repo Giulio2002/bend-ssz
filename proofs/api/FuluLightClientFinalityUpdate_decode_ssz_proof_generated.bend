@@ -57,6 +57,12 @@ def FuluLightClientFinalityUpdate__decode_offsets__LightClientFinalityUpdate_dec
 def FuluLightClientFinalityUpdate__decode_offsets__LightClientFinalityUpdate_decode_vchecked_nmax_above(buf: P1_B.Buf) -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P1_B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}:
   P1_PRV.LightClientFinalityUpdate_decode_vchecked_nmax_above(buf)
 
+def FuluLightClientFinalityUpdate__decode_offsets__LightClientFinalityUpdate_decode_vchecked_nmax_at(buf: P1_B.Buf) -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dgo(True{}, buf, 4294967264) : P1_B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}:
+  P1_PRV.LightClientFinalityUpdate_decode_vchecked_nmax_at(buf)
+
+def FuluLightClientFinalityUpdate__decode_offsets__LightClientFinalityUpdate_decode_vchecked_at_2pow31(buf: P1_B.Buf) -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dgo(True{}, buf, 2147483648) : P1_B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}:
+  P1_PRV.LightClientFinalityUpdate_decode_vchecked_at_2pow31(buf)
+
 def FuluLightClientFinalityUpdate__decode_offsets__LightClientFinalityUpdate_decode_vchecked_window() -> {Pair.snd(P1_B.Buf, Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_dchw(5, 4, (P1_B.empty(), 8))) == None{} : Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}:
   P1_PRV.LightClientFinalityUpdate_decode_vchecked_window()
 

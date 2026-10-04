@@ -1,16 +1,16 @@
 # MANUAL SPEC MUTANT r2-d01-decode-checked/06
-# type: FuluCheckpoint
+# type: proglist_uint8
 # ops: decode
-# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer (size <= B.size) and size < 2^31 (CH-05, CH-06); every accepted window decodes as the unchecked decoder does
-# fault: the 2^31 bound is size < 2^31 - 1 (the window 2^31 - 1 is refused)
+# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer, size <= NMAX and the storage holds it; every accepted window decodes as the unchecked decoder does
+# fault: the NMAX bound is size < NMAX (the window NMAX is refused); moved from Checkpoint, where the decoder refuses such a window itself
 # why: off-by-one in the bound
-# file: types/FuluCheckpoint_decode_ssz_generated.bend
-# sym: Checkpoint_decode_checked,Checkpoint_dchk,Checkpoint_dgo
-# re-derived against 0b80524f4 (the 2^31 marker / cap read as 2^32 - 1 / NMAX)
---- a/types/FuluCheckpoint_decode_ssz_generated.bend
-+++ b/types/FuluCheckpoint_decode_ssz_generated.bend
-@@ -65,3 +65,3 @@
+# sym: proglist_uint8_decode_checked,proglist_uint8_dchk,proglist_uint8_dchw
+# file: types/proglist_uint8_decode_ssz_generated.bend
+# re-derived against e1b65e26f (by hand, round 7 G2: rederive.py OVERRIDES)
+--- a/types/proglist_uint8_decode_ssz_generated.bend
++++ b/types/proglist_uint8_decode_ssz_generated.bend
+@@ -46,3 +46,3 @@
    (buf, +c) = pair
--  Checkpoint_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
-+  Checkpoint_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483647)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+-  proglist_uint8_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  proglist_uint8_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
  

@@ -113,64 +113,82 @@ import ../slop/validity/fulu_BeaconState_fields_generated.bend as P10_PRV
 import ../../src/buffer.bend as P11_B
 import ../../src/obj.bend as P11_O
 import ../slop/validity/fulu_BeaconState_senc_generated.bend as P11_PRV
+import ../../src/buffer.bend as P12_B
 import ../../src/obj.bend as P12_O
-import ../slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend as P12_PRV
+import ../slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend as P12_PRV
+import ../../src/buffer.bend as P13_B
 import ../../src/obj.bend as P13_O
-import ../slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend as P13_PRV
+import ../slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend as P13_PRV
+import ../../src/buffer.bend as P14_B
 import ../../src/obj.bend as P14_O
-import ../slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend as P14_PRV
+import ../slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend as P14_PRV
+import ../../src/buffer.bend as P15_B
 import ../../src/obj.bend as P15_O
-import ../slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend as P15_PRV
+import ../slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend as P15_PRV
+import ../../src/buffer.bend as P16_B
 import ../../src/obj.bend as P16_O
-import ../slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend as P16_PRV
+import ../slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend as P16_PRV
+import ../../src/buffer.bend as P17_B
 import ../../src/obj.bend as P17_O
-import ../slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend as P17_PRV
+import ../slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend as P17_PRV
 import ../../src/obj.bend as P18_O
-import ../slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend as P18_PRV
-import ../../src/buffer.bend as P19_B
-import ../../src/digest.bend as P19_D
+import ../slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend as P18_PRV
 import ../../src/obj.bend as P19_O
-import ../slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_enc_generated.bend as P19_PRV
-import ../../src/buffer.bend as P20_B
-import ../../src/digest.bend as P20_D
+import ../slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend as P19_PRV
 import ../../src/obj.bend as P20_O
-import ../slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend as P20_PRV
-import ../../src/buffer.bend as P21_B
+import ../slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend as P20_PRV
 import ../../src/obj.bend as P21_O
-import ../slop/validity/fulu_BeaconState_writer_l1099511627776_Validator_generated.bend as P21_PRV
-import ../../src/buffer.bend as P22_B
+import ../slop/validity/fulu_BeaconState_unit_v64_u64_generated.bend as P21_PRV
 import ../../src/obj.bend as P22_O
-import ../slop/validity/fulu_BeaconState_writer_l1099511627776_u64_generated.bend as P22_PRV
-import ../../src/buffer.bend as P23_B
+import ../slop/validity/fulu_BeaconState_unit_v65536_b32_generated.bend as P22_PRV
 import ../../src/obj.bend as P23_O
-import ../slop/validity/fulu_BeaconState_writer_l1099511627776_u8_generated.bend as P23_PRV
-import ../../src/buffer.bend as P24_B
+import ../slop/validity/fulu_BeaconState_unit_v8192_b32_generated.bend as P23_PRV
 import ../../src/obj.bend as P24_O
-import ../slop/validity/fulu_BeaconState_writer_l134217728_PendingDeposit_generated.bend as P24_PRV
+import ../slop/validity/fulu_BeaconState_unit_v8192_u64_generated.bend as P24_PRV
 import ../../src/buffer.bend as P25_B
+import ../../src/digest.bend as P25_D
 import ../../src/obj.bend as P25_O
-import ../slop/validity/fulu_BeaconState_writer_l134217728_PendingPartialWithdrawal_generated.bend as P25_PRV
+import ../slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_enc_generated.bend as P25_PRV
 import ../../src/buffer.bend as P26_B
+import ../../src/digest.bend as P26_D
 import ../../src/obj.bend as P26_O
-import ../slop/validity/fulu_BeaconState_writer_l16777216_HistoricalSummary_generated.bend as P26_PRV
+import ../slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_enc_generated.bend as P26_PRV
 import ../../src/buffer.bend as P27_B
 import ../../src/obj.bend as P27_O
-import ../slop/validity/fulu_BeaconState_writer_l16777216_b32_generated.bend as P27_PRV
+import ../slop/validity/fulu_BeaconState_writer_l1099511627776_Validator_generated.bend as P27_PRV
 import ../../src/buffer.bend as P28_B
 import ../../src/obj.bend as P28_O
-import ../slop/validity/fulu_BeaconState_writer_l2048_Eth1Data_generated.bend as P28_PRV
+import ../slop/validity/fulu_BeaconState_writer_l1099511627776_u64_generated.bend as P28_PRV
 import ../../src/buffer.bend as P29_B
 import ../../src/obj.bend as P29_O
-import ../slop/validity/fulu_BeaconState_writer_l262144_PendingConsolidation_generated.bend as P29_PRV
+import ../slop/validity/fulu_BeaconState_writer_l1099511627776_u8_generated.bend as P29_PRV
 import ../../src/buffer.bend as P30_B
 import ../../src/obj.bend as P30_O
-import ../slop/validity/fulu_BeaconState_writer_v64_u64_generated.bend as P30_PRV
+import ../slop/validity/fulu_BeaconState_writer_l134217728_PendingDeposit_generated.bend as P30_PRV
 import ../../src/buffer.bend as P31_B
 import ../../src/obj.bend as P31_O
-import ../slop/validity/fulu_BeaconState_writer_v65536_b32_generated.bend as P31_PRV
+import ../slop/validity/fulu_BeaconState_writer_l134217728_PendingPartialWithdrawal_generated.bend as P31_PRV
 import ../../src/buffer.bend as P32_B
 import ../../src/obj.bend as P32_O
-import ../slop/validity/fulu_BeaconState_writer_v8192_u64_generated.bend as P32_PRV
+import ../slop/validity/fulu_BeaconState_writer_l16777216_HistoricalSummary_generated.bend as P32_PRV
+import ../../src/buffer.bend as P33_B
+import ../../src/obj.bend as P33_O
+import ../slop/validity/fulu_BeaconState_writer_l16777216_b32_generated.bend as P33_PRV
+import ../../src/buffer.bend as P34_B
+import ../../src/obj.bend as P34_O
+import ../slop/validity/fulu_BeaconState_writer_l2048_Eth1Data_generated.bend as P34_PRV
+import ../../src/buffer.bend as P35_B
+import ../../src/obj.bend as P35_O
+import ../slop/validity/fulu_BeaconState_writer_l262144_PendingConsolidation_generated.bend as P35_PRV
+import ../../src/buffer.bend as P36_B
+import ../../src/obj.bend as P36_O
+import ../slop/validity/fulu_BeaconState_writer_v64_u64_generated.bend as P36_PRV
+import ../../src/buffer.bend as P37_B
+import ../../src/obj.bend as P37_O
+import ../slop/validity/fulu_BeaconState_writer_v65536_b32_generated.bend as P37_PRV
+import ../../src/buffer.bend as P38_B
+import ../../src/obj.bend as P38_O
+import ../slop/validity/fulu_BeaconState_writer_v8192_u64_generated.bend as P38_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # FuluBeaconState (BeaconState): its encode_ssz laws in the object API's terms, each discharged by its proving law.
@@ -391,120 +409,210 @@ def FuluBeaconState__serialize_valid__BeaconState_serialize_vrefuse_writer_above
 def FuluBeaconState__serialize_valid__BeaconState_serialize_vrefuse_writer_ok() -> {Pair.snd(FuluBeaconState_d.BeaconState, P11_O.Encoded, FuluBeaconState_e.BeaconState_senc_out(0, Array.new(U32, 0n, 0), FuluBeaconState_d.BeaconState_default(), 0)) == P11_O.Encoded{True{}, P11_B.Buf{Array.new(U32, 0n, 0), 0}} : P11_O.Encoded}:
   P11_PRV.BeaconState_serialize_vrefuse_writer_ok()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_1() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(1))) == False{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_1()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_short() -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(1n), 3})) == 4294967295 : U32}:
+  P12_PRV.BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_4() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(4))) == False{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_4()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_tight() -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(1n), 2})) == 242 : U32}:
+  P12_PRV.BeaconState_serialize_vpoison_size_l1099511627776_Validator_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_9() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(9))) == False{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_9()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l1099511627776_Validator_above() -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(26n), 35495598})) == 4294967295 : U32}:
+  P12_PRV.BeaconState_serialize_vpoison_size_l1099511627776_Validator_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_accept_8() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(8))) == True{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_accept_8()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l1099511627776_Validator_at() -> {Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_fill(26n), 35495597})) == 4294967237 : U32}:
+  P12_PRV.BeaconState_serialize_vpoison_size_l1099511627776_Validator_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_accept_16() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(16))) == True{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_accept_16()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_short() -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_size(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(1n), 3})) == 4294967295 : U32}:
+  P13_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0() -> {Pair.snd(P12_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P12_O.words_new(0))) == True{} : Bool}:
-  P12_PRV.BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_tight() -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_size(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(1n), 2})) == 384 : U32}:
+  P13_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0() -> {Pair.snd(P13_O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(P13_O.words_new(0))) == True{} : Bool}:
-  P13_PRV.BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_above() -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_size(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(25n), 22369622})) == 4294967295 : U32}:
+  P13_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_1() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(1))) == False{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_1()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_at() -> {Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_size(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_fill(25n), 22369621})) == 4294967232 : U32}:
+  P13_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingDeposit_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_16() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(16))) == False{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_16()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_short() -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_size(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(1n), 3})) == 4294967295 : U32}:
+  P14_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_33() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(33))) == False{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_33()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_tight() -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_size(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(1n), 2})) == 48 : U32}:
+  P14_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_accept_32() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(32))) == True{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_accept_32()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_above() -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_size(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(28n), 178956970})) == 4294967295 : U32}:
+  P14_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_accept_64() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(64))) == True{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_accept_64()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_at() -> {Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_size(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_fill(28n), 178956969})) == 4294967256 : U32}:
+  P14_PRV.BeaconState_serialize_vpoison_size_l134217728_PendingPartialWithdrawal_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_range_lo_0() -> {Pair.snd(P14_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P14_O.words_new(0))) == True{} : Bool}:
-  P14_PRV.BeaconState_serialize_vunit_l16777216_b32_range_lo_0()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_short() -> {Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_size(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_fill(1n), 3})) == 4294967295 : U32}:
+  P15_PRV.BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_below_504() -> {Pair.snd(P15_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P15_O.words_new(504))) == False{} : Bool}:
-  P15_PRV.BeaconState_serialize_vunit_v64_u64_range_below_504()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_tight() -> {Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_size(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_fill(1n), 2})) == 128 : U32}:
+  P15_PRV.BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_lo_512() -> {Pair.snd(P15_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P15_O.words_new(512))) == True{} : Bool}:
-  P15_PRV.BeaconState_serialize_vunit_v64_u64_range_lo_512()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_above() -> {Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_size(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_fill(27n), 67108864})) == 4294967295 : U32}:
+  P15_PRV.BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_above_520() -> {Pair.snd(P15_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P15_O.words_new(520))) == False{} : Bool}:
-  P15_PRV.BeaconState_serialize_vunit_v64_u64_range_above_520()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_at() -> {Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_size(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_fill(27n), 67108863})) == 4294967232 : U32}:
+  P15_PRV.BeaconState_serialize_vpoison_size_l16777216_HistoricalSummary_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_below_2097120() -> {Pair.snd(P16_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P16_O.words_new(2097120))) == False{} : Bool}:
-  P16_PRV.BeaconState_serialize_vunit_v65536_b32_range_below_2097120()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_short() -> {Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_size(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(1n), 3})) == 4294967295 : U32}:
+  P16_PRV.BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_lo_2097152() -> {Pair.snd(P16_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P16_O.words_new(2097152))) == True{} : Bool}:
-  P16_PRV.BeaconState_serialize_vunit_v65536_b32_range_lo_2097152()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_tight() -> {Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_size(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(1n), 2})) == 144 : U32}:
+  P16_PRV.BeaconState_serialize_vpoison_size_l2048_Eth1Data_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_above_2097184() -> {Pair.snd(P16_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P16_O.words_new(2097184))) == False{} : Bool}:
-  P16_PRV.BeaconState_serialize_vunit_v65536_b32_range_above_2097184()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l2048_Eth1Data_above() -> {Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_size(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(26n), 59652324})) == 4294967295 : U32}:
+  P16_PRV.BeaconState_serialize_vpoison_size_l2048_Eth1Data_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_below_262112() -> {Pair.snd(P17_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P17_O.words_new(262112))) == False{} : Bool}:
-  P17_PRV.BeaconState_serialize_vunit_v8192_b32_range_below_262112()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l2048_Eth1Data_at() -> {Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_size(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(26n), 59652323})) == 4294967256 : U32}:
+  P16_PRV.BeaconState_serialize_vpoison_size_l2048_Eth1Data_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_lo_262144() -> {Pair.snd(P17_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P17_O.words_new(262144))) == True{} : Bool}:
-  P17_PRV.BeaconState_serialize_vunit_v8192_b32_range_lo_262144()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_short() -> {Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_size(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(1n), 3})) == 4294967295 : U32}:
+  P17_PRV.BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_short()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_above_262176() -> {Pair.snd(P17_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P17_O.words_new(262176))) == False{} : Bool}:
-  P17_PRV.BeaconState_serialize_vunit_v8192_b32_range_above_262176()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_tight() -> {Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_size(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(1n), 2})) == 32 : U32}:
+  P17_PRV.BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_storage_tight()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_below_65528() -> {Pair.snd(P18_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P18_O.words_new(65528))) == False{} : Bool}:
-  P18_PRV.BeaconState_serialize_vunit_v8192_u64_range_below_65528()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_above() -> {Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_size(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(29n), 268435455})) == 4294967295 : U32}:
+  P17_PRV.BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_above()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_lo_65536() -> {Pair.snd(P18_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P18_O.words_new(65536))) == True{} : Bool}:
-  P18_PRV.BeaconState_serialize_vunit_v8192_u64_range_lo_65536()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_at() -> {Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_size(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_fill(28n), 268435454})) == 4294967264 : U32}:
+  P17_PRV.BeaconState_serialize_vpoison_size_l262144_PendingConsolidation_at()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_above_65544() -> {Pair.snd(P18_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P18_O.words_new(65544))) == False{} : Bool}:
-  P18_PRV.BeaconState_serialize_vunit_v8192_u64_range_above_65544()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_1() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(1))) == False{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_1()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc() -> {Pair.fst(Array<U32>, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_putn(Array.new(U32, 5n, 0), 0, P19_PRV.sa(P19_PRV.sa(P19_PRV.sa(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_default(), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_set_validator_index(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default(), P19_O.U64{1, 0})), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_set_validator_index(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default(), P19_O.U64{1, 0})))) == Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 1), 12, 1) : Array<U32>}:
-  P19_PRV.BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_4() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(4))) == False{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_4()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc() -> {Pair.fst(Array<U32>, Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_putn(Array.new(U32, 4n, 0), 0, P20_PRV.sa(P20_PRV.sa(P20_PRV.sa(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_default(), FuluPendingConsolidation_d.PendingConsolidation_set_source_index(FuluPendingConsolidation_d.PendingConsolidation_default(), P20_O.U64{1, 0})), FuluPendingConsolidation_d.PendingConsolidation_default()), FuluPendingConsolidation_d.PendingConsolidation_set_source_index(FuluPendingConsolidation_d.PendingConsolidation_default(), P20_O.U64{1, 0})))) == Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 1), 8, 1) : Array<U32>}:
-  P20_PRV.BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_refuse_9() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(9))) == False{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_refuse_9()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_Validator() -> {P21_O.is_poisoned(Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Pair.snd(Array<U32>, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_default(), False{}))))) == True{} : Bool}:
-  P21_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_Validator()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_accept_8() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(8))) == True{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_accept_8()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_u64() -> {P22_O.is_poisoned(Pair.snd(P22_O.Words, U32, Pair.snd(Array<U32>, P22_O.Words & U32, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_pk(Array.new(U32, 0n, 0), 0, (P22_O.words_new(0), False{}))))) == True{} : Bool}:
-  P22_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_u64()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_accept_16() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(16))) == True{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_accept_16()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_u8() -> {P23_O.is_poisoned(Pair.snd(P23_O.Words, U32, Pair.snd(Array<U32>, P23_O.Words & U32, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_pk(Array.new(U32, 0n, 0), 0, (P23_O.words_new(0), False{}))))) == True{} : Bool}:
-  P23_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_u8()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.words_new(0))) == True{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_range_lo_0()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l134217728_PendingDeposit() -> {P24_O.is_poisoned(Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_default(), False{}))))) == True{} : Bool}:
-  P24_PRV.BeaconState_serialize_vpoison_pk_l134217728_PendingDeposit()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_range_hi_full() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_range_hi_full()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l134217728_PendingPartialWithdrawal() -> {P25_O.is_poisoned(Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_default(), False{}))))) == True{} : Bool}:
-  P25_PRV.BeaconState_serialize_vpoison_pk_l134217728_PendingPartialWithdrawal()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u64_range_above_full() -> {Pair.snd(P18_O.Words, Bool, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(P18_O.Words{Array.new(U32, 30n, 0), 4294967272})) == False{} : Bool}:
+  P18_PRV.BeaconState_serialize_vunit_l1099511627776_u64_range_above_full()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l16777216_HistoricalSummary() -> {P26_O.is_poisoned(Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Pair.snd(Array<U32>, Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_default(), False{}))))) == True{} : Bool}:
-  P26_PRV.BeaconState_serialize_vpoison_pk_l16777216_HistoricalSummary()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(P19_O.words_new(0))) == True{} : Bool}:
+  P19_PRV.BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l16777216_b32() -> {P27_O.is_poisoned(Pair.snd(P27_O.Words, U32, Pair.snd(Array<U32>, P27_O.Words & U32, Fulu_list_bytevec_32_16777216_e.l16777216_b32_pk(Array.new(U32, 0n, 0), 0, (P27_O.words_new(0), False{}))))) == True{} : Bool}:
-  P27_PRV.BeaconState_serialize_vpoison_pk_l16777216_b32()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u8_range_hi_full() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(P19_O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  P19_PRV.BeaconState_serialize_vunit_l1099511627776_u8_range_hi_full()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l2048_Eth1Data() -> {P28_O.is_poisoned(Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Pair.snd(Array<U32>, Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_default(), False{}))))) == True{} : Bool}:
-  P28_PRV.BeaconState_serialize_vpoison_pk_l2048_Eth1Data()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l1099511627776_u8_range_above_full() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(P19_O.Words{Array.new(U32, 30n, 0), 4294967265})) == False{} : Bool}:
+  P19_PRV.BeaconState_serialize_vunit_l1099511627776_u8_range_above_full()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l262144_PendingConsolidation() -> {P29_O.is_poisoned(Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_default(), False{}))))) == True{} : Bool}:
-  P29_PRV.BeaconState_serialize_vpoison_pk_l262144_PendingConsolidation()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_1() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(1))) == False{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_1()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v64_u64() -> {P30_O.is_poisoned(Pair.snd(P30_O.Words, U32, Pair.snd(Array<U32>, P30_O.Words & U32, Fulu_vec_uint64_64_e.v64_u64_pk(Array.new(U32, 0n, 0), 0, (P30_O.words_new(0), False{}))))) == True{} : Bool}:
-  P30_PRV.BeaconState_serialize_vpoison_pk_v64_u64()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_16() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(16))) == False{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_16()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v65536_b32() -> {P31_O.is_poisoned(Pair.snd(P31_O.Words, U32, Pair.snd(Array<U32>, P31_O.Words & U32, Fulu_vec_bytevec_32_65536_e.v65536_b32_pk(Array.new(U32, 0n, 0), 0, (P31_O.words_new(0), False{}))))) == True{} : Bool}:
-  P31_PRV.BeaconState_serialize_vpoison_pk_v65536_b32()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_refuse_33() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(33))) == False{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_refuse_33()
 
-def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v8192_u64() -> {P32_O.is_poisoned(Pair.snd(P32_O.Words, U32, Pair.snd(Array<U32>, P32_O.Words & U32, Fulu_vec_uint64_8192_e.v8192_u64_pk(Array.new(U32, 0n, 0), 0, (P32_O.words_new(0), False{}))))) == True{} : Bool}:
-  P32_PRV.BeaconState_serialize_vpoison_pk_v8192_u64()
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_accept_32() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(32))) == True{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_accept_32()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_accept_64() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(64))) == True{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_accept_64()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_range_lo_0() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.words_new(0))) == True{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_range_lo_0()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_range_hi_full() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.Words{Array.new(U32, 30n, 0), 536870912})) == True{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_range_hi_full()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_l16777216_b32_range_above_full() -> {Pair.snd(P20_O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(P20_O.Words{Array.new(U32, 30n, 0), 536870944})) == False{} : Bool}:
+  P20_PRV.BeaconState_serialize_vunit_l16777216_b32_range_above_full()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_below_504() -> {Pair.snd(P21_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P21_O.words_new(504))) == False{} : Bool}:
+  P21_PRV.BeaconState_serialize_vunit_v64_u64_range_below_504()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_lo_512() -> {Pair.snd(P21_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P21_O.words_new(512))) == True{} : Bool}:
+  P21_PRV.BeaconState_serialize_vunit_v64_u64_range_lo_512()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v64_u64_range_above_520() -> {Pair.snd(P21_O.Words, Bool, Fulu_vec_uint64_64_e.v64_u64_valid(P21_O.words_new(520))) == False{} : Bool}:
+  P21_PRV.BeaconState_serialize_vunit_v64_u64_range_above_520()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_below_2097120() -> {Pair.snd(P22_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P22_O.words_new(2097120))) == False{} : Bool}:
+  P22_PRV.BeaconState_serialize_vunit_v65536_b32_range_below_2097120()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_lo_2097152() -> {Pair.snd(P22_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P22_O.words_new(2097152))) == True{} : Bool}:
+  P22_PRV.BeaconState_serialize_vunit_v65536_b32_range_lo_2097152()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v65536_b32_range_above_2097184() -> {Pair.snd(P22_O.Words, Bool, Fulu_vec_bytevec_32_65536_e.v65536_b32_valid(P22_O.words_new(2097184))) == False{} : Bool}:
+  P22_PRV.BeaconState_serialize_vunit_v65536_b32_range_above_2097184()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_below_262112() -> {Pair.snd(P23_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P23_O.words_new(262112))) == False{} : Bool}:
+  P23_PRV.BeaconState_serialize_vunit_v8192_b32_range_below_262112()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_lo_262144() -> {Pair.snd(P23_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P23_O.words_new(262144))) == True{} : Bool}:
+  P23_PRV.BeaconState_serialize_vunit_v8192_b32_range_lo_262144()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_b32_range_above_262176() -> {Pair.snd(P23_O.Words, Bool, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(P23_O.words_new(262176))) == False{} : Bool}:
+  P23_PRV.BeaconState_serialize_vunit_v8192_b32_range_above_262176()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_below_65528() -> {Pair.snd(P24_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P24_O.words_new(65528))) == False{} : Bool}:
+  P24_PRV.BeaconState_serialize_vunit_v8192_u64_range_below_65528()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_lo_65536() -> {Pair.snd(P24_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P24_O.words_new(65536))) == True{} : Bool}:
+  P24_PRV.BeaconState_serialize_vunit_v8192_u64_range_lo_65536()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vunit_v8192_u64_range_above_65544() -> {Pair.snd(P24_O.Words, Bool, Fulu_vec_uint64_8192_e.v8192_u64_valid(P24_O.words_new(65544))) == False{} : Bool}:
+  P24_PRV.BeaconState_serialize_vunit_v8192_u64_range_above_65544()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc() -> {Pair.fst(Array<U32>, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_putn(Array.new(U32, 5n, 0), 0, P25_PRV.sa(P25_PRV.sa(P25_PRV.sa(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_default(), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_set_validator_index(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default(), P25_O.U64{1, 0})), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default()), FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_set_validator_index(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal_default(), P25_O.U64{1, 0})))) == Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 1), 12, 1) : Array<U32>}:
+  P25_PRV.BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_enc()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc() -> {Pair.fst(Array<U32>, Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_putn(Array.new(U32, 4n, 0), 0, P26_PRV.sa(P26_PRV.sa(P26_PRV.sa(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_default(), FuluPendingConsolidation_d.PendingConsolidation_set_source_index(FuluPendingConsolidation_d.PendingConsolidation_default(), P26_O.U64{1, 0})), FuluPendingConsolidation_d.PendingConsolidation_default()), FuluPendingConsolidation_d.PendingConsolidation_set_source_index(FuluPendingConsolidation_d.PendingConsolidation_default(), P26_O.U64{1, 0})))) == Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 1), 8, 1) : Array<U32>}:
+  P26_PRV.BeaconState_serialize_vcoll_l262144_PendingConsolidation_enc()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_Validator() -> {P27_O.is_poisoned(Pair.snd(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, U32, Pair.snd(Array<U32>, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_default(), False{}))))) == True{} : Bool}:
+  P27_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_Validator()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_u64() -> {P28_O.is_poisoned(Pair.snd(P28_O.Words, U32, Pair.snd(Array<U32>, P28_O.Words & U32, Fulu_list_uint64_1099511627776_e.l1099511627776_u64_pk(Array.new(U32, 0n, 0), 0, (P28_O.words_new(0), False{}))))) == True{} : Bool}:
+  P28_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_u64()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l1099511627776_u8() -> {P29_O.is_poisoned(Pair.snd(P29_O.Words, U32, Pair.snd(Array<U32>, P29_O.Words & U32, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_pk(Array.new(U32, 0n, 0), 0, (P29_O.words_new(0), False{}))))) == True{} : Bool}:
+  P29_PRV.BeaconState_serialize_vpoison_pk_l1099511627776_u8()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l134217728_PendingDeposit() -> {P30_O.is_poisoned(Pair.snd(Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_default(), False{}))))) == True{} : Bool}:
+  P30_PRV.BeaconState_serialize_vpoison_pk_l134217728_PendingDeposit()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l134217728_PendingPartialWithdrawal() -> {P31_O.is_poisoned(Pair.snd(Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq & U32, Fulu_list_PendingPartialWithdrawal_134217728_e.l134217728_PendingPartialWithdrawal_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_default(), False{}))))) == True{} : Bool}:
+  P31_PRV.BeaconState_serialize_vpoison_pk_l134217728_PendingPartialWithdrawal()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l16777216_HistoricalSummary() -> {P32_O.is_poisoned(Pair.snd(Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, U32, Pair.snd(Array<U32>, Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_default(), False{}))))) == True{} : Bool}:
+  P32_PRV.BeaconState_serialize_vpoison_pk_l16777216_HistoricalSummary()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l16777216_b32() -> {P33_O.is_poisoned(Pair.snd(P33_O.Words, U32, Pair.snd(Array<U32>, P33_O.Words & U32, Fulu_list_bytevec_32_16777216_e.l16777216_b32_pk(Array.new(U32, 0n, 0), 0, (P33_O.words_new(0), False{}))))) == True{} : Bool}:
+  P33_PRV.BeaconState_serialize_vpoison_pk_l16777216_b32()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l2048_Eth1Data() -> {P34_O.is_poisoned(Pair.snd(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, U32, Pair.snd(Array<U32>, Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_default(), False{}))))) == True{} : Bool}:
+  P34_PRV.BeaconState_serialize_vpoison_pk_l2048_Eth1Data()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_l262144_PendingConsolidation() -> {P35_O.is_poisoned(Pair.snd(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, U32, Pair.snd(Array<U32>, Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pk(Array.new(U32, 0n, 0), 0, (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_default(), False{}))))) == True{} : Bool}:
+  P35_PRV.BeaconState_serialize_vpoison_pk_l262144_PendingConsolidation()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v64_u64() -> {P36_O.is_poisoned(Pair.snd(P36_O.Words, U32, Pair.snd(Array<U32>, P36_O.Words & U32, Fulu_vec_uint64_64_e.v64_u64_pk(Array.new(U32, 0n, 0), 0, (P36_O.words_new(0), False{}))))) == True{} : Bool}:
+  P36_PRV.BeaconState_serialize_vpoison_pk_v64_u64()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v65536_b32() -> {P37_O.is_poisoned(Pair.snd(P37_O.Words, U32, Pair.snd(Array<U32>, P37_O.Words & U32, Fulu_vec_bytevec_32_65536_e.v65536_b32_pk(Array.new(U32, 0n, 0), 0, (P37_O.words_new(0), False{}))))) == True{} : Bool}:
+  P37_PRV.BeaconState_serialize_vpoison_pk_v65536_b32()
+
+def FuluBeaconState__serialize_valid__BeaconState_serialize_vpoison_pk_v8192_u64() -> {P38_O.is_poisoned(Pair.snd(P38_O.Words, U32, Pair.snd(Array<U32>, P38_O.Words & U32, Fulu_vec_uint64_8192_e.v8192_u64_pk(Array.new(U32, 0n, 0), 0, (P38_O.words_new(0), False{}))))) == True{} : Bool}:
+  P38_PRV.BeaconState_serialize_vpoison_pk_v8192_u64()
 

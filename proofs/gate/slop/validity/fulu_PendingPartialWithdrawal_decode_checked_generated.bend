@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_PendingPartialWithdrawal_decode_checked_gener
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 24, (B.Buf{Array.new(U32, 3n, 0), 24}, 6))), Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(B.Buf{Array.new(U32, 3n, 0), 24}, 24))) == (True{}, True{}) : Bool & Bool}:
   PRV.PendingPartialWithdrawal_decode_vchecked_accept()
 
+def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  PRV.PendingPartialWithdrawal_decode_vchecked_at_2pow31(buf)
+
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   PRV.PendingPartialWithdrawal_decode_vchecked_limit()
 
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   PRV.PendingPartialWithdrawal_decode_vchecked_nmax_above(buf)
+
+def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  PRV.PendingPartialWithdrawal_decode_vchecked_nmax_at(buf)
 
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   PRV.PendingPartialWithdrawal_decode_vchecked_nmax_wrap(buf)

@@ -102,6 +102,12 @@ def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_wrap(buf: 
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P5_PRV.MatrixEntry_decode_vchecked_nmax_above(buf)
 
+def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  P5_PRV.MatrixEntry_decode_vchecked_nmax_at(buf)
+
+def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  P5_PRV.MatrixEntry_decode_vchecked_at_2pow31(buf)
+
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_window() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(5, 4, (P5_B.empty(), 8))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P5_PRV.MatrixEntry_decode_vchecked_window()
 

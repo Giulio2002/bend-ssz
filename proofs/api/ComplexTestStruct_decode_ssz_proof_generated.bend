@@ -189,6 +189,12 @@ def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_nmax_wr
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {ComplexTestStruct_r.ComplexTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   P3_PRV.ComplexTestStruct_decode_vchecked_nmax_above(buf)
 
+def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {ComplexTestStruct_r.ComplexTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ComplexTestStruct_r.ComplexTestStruct_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  P3_PRV.ComplexTestStruct_decode_vchecked_nmax_at(buf)
+
+def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {ComplexTestStruct_r.ComplexTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ComplexTestStruct_r.ComplexTestStruct_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  P3_PRV.ComplexTestStruct_decode_vchecked_at_2pow31(buf)
+
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 25))), Pair.snd(P3_B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 100))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.ComplexTestStruct_decode_vchecked_accept()
 

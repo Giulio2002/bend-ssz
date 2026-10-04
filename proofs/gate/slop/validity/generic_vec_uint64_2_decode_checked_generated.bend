@@ -10,11 +10,17 @@ import ../../../slop/validity/generic_vec_uint64_2_decode_checked_generated.bend
 def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_2_r.vec_uint64_2_dchw(16, 16, (B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_2_r.vec_uint64_2_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   PRV.vec_uint64_2_decode_vchecked_accept()
 
+def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_at_2pow31(buf: B.Buf) -> {vec_uint64_2_r.vec_uint64_2_dchw(2147483648, 2147483648, (buf, 536870912)) == vec_uint64_2_r.vec_uint64_2_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_uint64_2_decode_vchecked_at_2pow31(buf)
+
 def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_2_r.vec_uint64_2_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_uint64_2_decode_vchecked_limit()
 
 def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_nmax_above(buf: B.Buf) -> {vec_uint64_2_r.vec_uint64_2_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.vec_uint64_2_decode_vchecked_nmax_above(buf)
+
+def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_nmax_at(buf: B.Buf) -> {vec_uint64_2_r.vec_uint64_2_dchw(4294967264, 4294967264, (buf, 1073741816)) == vec_uint64_2_r.vec_uint64_2_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_uint64_2_decode_vchecked_nmax_at(buf)
 
 def vec_uint64_2__decode_offsets__vec_uint64_2_decode_vchecked_nmax_wrap(buf: B.Buf) -> {vec_uint64_2_r.vec_uint64_2_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.vec_uint64_2_decode_vchecked_nmax_wrap(buf)

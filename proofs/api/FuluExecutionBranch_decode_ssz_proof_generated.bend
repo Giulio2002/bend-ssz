@@ -99,6 +99,12 @@ def FuluExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_nmax_wr
 def FuluExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluExecutionBranch_r.ExecutionBranch_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
   P5_PRV.ExecutionBranch_decode_vchecked_nmax_above(buf)
 
+def FuluExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {FuluExecutionBranch_r.ExecutionBranch_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluExecutionBranch_r.ExecutionBranch_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.ExecutionBranch_decode_vchecked_nmax_at(buf)
+
+def FuluExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {FuluExecutionBranch_r.ExecutionBranch_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluExecutionBranch_r.ExecutionBranch_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.ExecutionBranch_decode_vchecked_at_2pow31(buf)
+
 def FuluExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(128, 128, (P5_B.Buf{Array.new(U32, 5n, 0), 128}, 32))), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode_checked(P5_B.Buf{Array.new(U32, 5n, 0), 128}, 128))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.ExecutionBranch_decode_vchecked_accept()
 

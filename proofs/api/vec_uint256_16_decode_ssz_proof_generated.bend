@@ -99,6 +99,12 @@ def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_nmax_wrap(buf
 def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {vec_uint256_16_r.vec_uint256_16_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
   P5_PRV.vec_uint256_16_decode_vchecked_nmax_above(buf)
 
+def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {vec_uint256_16_r.vec_uint256_16_dchw(4294967264, 4294967264, (buf, 1073741816)) == vec_uint256_16_r.vec_uint256_16_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.vec_uint256_16_decode_vchecked_nmax_at(buf)
+
+def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {vec_uint256_16_r.vec_uint256_16_dchw(2147483648, 2147483648, (buf, 536870912)) == vec_uint256_16_r.vec_uint256_16_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.vec_uint256_16_decode_vchecked_at_2pow31(buf)
+
 def vec_uint256_16__decode_offsets__vec_uint256_16_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint256_16_r.vec_uint256_16_dchw(512, 512, (P5_B.Buf{Array.new(U32, 7n, 0), 512}, 128))), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint256_16_r.vec_uint256_16_decode_checked(P5_B.Buf{Array.new(U32, 7n, 0), 512}, 512))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.vec_uint256_16_decode_vchecked_accept()
 

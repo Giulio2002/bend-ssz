@@ -152,6 +152,12 @@ def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_nmax_above(buf)
 
+def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_nmax_at(buf)
+
+def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_at_2pow31(buf)
+
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 36, (P3_B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 9))), Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 36))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_accept()
 

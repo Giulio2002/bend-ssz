@@ -169,6 +169,12 @@ def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_nma
 def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
   P4_PRV.CompatibleUnionABCA_decode_vchecked_nmax_above(buf)
 
+def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_nmax_at(buf: P4_B.Buf) -> {CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(4294967264, 4294967264, (buf, 1073741816)) == CompatibleUnionABCA_r.CompatibleUnionABCA_dgo(True{}, buf, 4294967264) : P4_B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
+  P4_PRV.CompatibleUnionABCA_decode_vchecked_nmax_at(buf)
+
+def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_at_2pow31(buf: P4_B.Buf) -> {CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(2147483648, 2147483648, (buf, 536870912)) == CompatibleUnionABCA_r.CompatibleUnionABCA_dgo(True{}, buf, 2147483648) : P4_B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
+  P4_PRV.CompatibleUnionABCA_decode_vchecked_at_2pow31(buf)
+
 def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>, CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(2, 2, (P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>, CompatibleUnionABCA_r.CompatibleUnionABCA_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.CompatibleUnionABCA_decode_vchecked_accept()
 

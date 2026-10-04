@@ -26,6 +26,14 @@ def SignedAggregateAndProof_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   {==}
 
+def SignedAggregateAndProof_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  {==}
+
+def SignedAggregateAndProof_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  {==}
+
 def SignedAggregateAndProof_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(445, 445, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 112))), Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 445))) == (True{}, True{}) : Bool & Bool}:
   {==}

@@ -156,6 +156,12 @@ def FuluAttestation__decode_offsets__Attestation_decode_vchecked_nmax_wrap(buf: 
 def FuluAttestation__decode_offsets__Attestation_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluAttestation_r.Attestation_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
   P5_PRV.Attestation_decode_vchecked_nmax_above(buf)
 
+def FuluAttestation__decode_offsets__Attestation_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {FuluAttestation_r.Attestation_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluAttestation_r.Attestation_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  P5_PRV.Attestation_decode_vchecked_nmax_at(buf)
+
+def FuluAttestation__decode_offsets__Attestation_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {FuluAttestation_r.Attestation_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluAttestation_r.Attestation_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
+  P5_PRV.Attestation_decode_vchecked_at_2pow31(buf)
+
 def FuluAttestation__decode_offsets__Attestation_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_dchw(237, 237, (P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 60))), Pair.snd(P5_B.Buf, Maybe<&1, FuluAttestation_d.Attestation>, FuluAttestation_r.Attestation_decode_checked(P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 236), 59, 1), 237}, 237))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.Attestation_decode_vchecked_accept()
 

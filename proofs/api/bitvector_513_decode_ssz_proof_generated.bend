@@ -116,6 +116,12 @@ def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_nmax_wrap(buf: 
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {bitvector_513_r.bitvector_513_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
   P4_PRV.bitvector_513_decode_vchecked_nmax_above(buf)
 
+def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_nmax_at(buf: P4_B.Buf) -> {bitvector_513_r.bitvector_513_dchw(4294967264, 4294967264, (buf, 1073741816)) == bitvector_513_r.bitvector_513_dgo(True{}, buf, 4294967264) : P4_B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
+  P4_PRV.bitvector_513_decode_vchecked_nmax_at(buf)
+
+def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_at_2pow31(buf: P4_B.Buf) -> {bitvector_513_r.bitvector_513_dchw(2147483648, 2147483648, (buf, 536870912)) == bitvector_513_r.bitvector_513_dgo(True{}, buf, 2147483648) : P4_B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
+  P4_PRV.bitvector_513_decode_vchecked_at_2pow31(buf)
+
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_dchw(65, 65, (P4_B.Buf{Array.new(U32, 5n, 0), 65}, 17))), Pair.snd(P4_B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_decode_checked(P4_B.Buf{Array.new(U32, 5n, 0), 65}, 65))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.bitvector_513_decode_vchecked_accept()
 

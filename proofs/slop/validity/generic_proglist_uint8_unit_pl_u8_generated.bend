@@ -8,3 +8,11 @@ import ../../../types/proglist_uint8_encode_ssz_generated.bend as proglist_uint8
 def proglist_uint8_serialize_vunit_pl_u8_range_lo_0()
     -> {Pair.snd(O.Words, Bool, proglist_uint8_e.pl_u8_valid(O.words_new(0))) == True{} : Bool}:
   {==}
+
+def proglist_uint8_serialize_vunit_pl_u8_range_hi_full()
+    -> {Pair.snd(O.Words, Bool, proglist_uint8_e.pl_u8_valid(O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  {==}
+
+def proglist_uint8_serialize_vunit_pl_u8_range_above_full()
+    -> {Pair.snd(O.Words, Bool, proglist_uint8_e.pl_u8_valid(O.Words{Array.new(U32, 30n, 0), 4294967265})) == False{} : Bool}:
+  {==}

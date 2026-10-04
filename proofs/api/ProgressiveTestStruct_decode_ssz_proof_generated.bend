@@ -234,6 +234,12 @@ def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
   P3_PRV.ProgressiveTestStruct_decode_vchecked_nmax_above(buf)
 
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ProgressiveTestStruct_r.ProgressiveTestStruct_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_nmax_at(buf)
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ProgressiveTestStruct_r.ProgressiveTestStruct_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_at_2pow31(buf)
+
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(16, 16, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 4))), Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.ProgressiveTestStruct_decode_vchecked_accept()
 

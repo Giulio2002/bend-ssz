@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 234))), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 936))) == (True{}, True{}) : Bool & Bool}:
   PRV.BeaconBlockBody_decode_vchecked_accept()
 
+def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  PRV.BeaconBlockBody_decode_vchecked_at_2pow31(buf)
+
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   PRV.BeaconBlockBody_decode_vchecked_limit()
 
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   PRV.BeaconBlockBody_decode_vchecked_nmax_above(buf)
+
+def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  PRV.BeaconBlockBody_decode_vchecked_nmax_at(buf)
 
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   PRV.BeaconBlockBody_decode_vchecked_nmax_wrap(buf)

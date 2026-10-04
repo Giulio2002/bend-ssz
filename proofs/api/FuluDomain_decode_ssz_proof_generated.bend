@@ -121,6 +121,12 @@ def FuluDomain__decode_offsets__Domain_decode_vchecked_nmax_wrap(buf: P7_B.Buf) 
 def FuluDomain__decode_offsets__Domain_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluDomain_r.Domain_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   P7_PRV.Domain_decode_vchecked_nmax_above(buf)
 
+def FuluDomain__decode_offsets__Domain_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluDomain_r.Domain_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluDomain_r.Domain_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P7_PRV.Domain_decode_vchecked_nmax_at(buf)
+
+def FuluDomain__decode_offsets__Domain_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluDomain_r.Domain_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluDomain_r.Domain_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P7_PRV.Domain_decode_vchecked_at_2pow31(buf)
+
 def FuluDomain__decode_offsets__Domain_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_dchw(32, 32, (P7_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.Domain_decode_vchecked_accept()
 

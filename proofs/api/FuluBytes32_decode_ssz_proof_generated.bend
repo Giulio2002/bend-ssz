@@ -125,6 +125,12 @@ def FuluBytes32__decode_offsets__Bytes32_decode_vchecked_nmax_wrap(buf: P8_B.Buf
 def FuluBytes32__decode_offsets__Bytes32_decode_vchecked_nmax_above(buf: P8_B.Buf) -> {FuluBytes32_r.Bytes32_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P8_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   P8_PRV.Bytes32_decode_vchecked_nmax_above(buf)
 
+def FuluBytes32__decode_offsets__Bytes32_decode_vchecked_nmax_at(buf: P8_B.Buf) -> {FuluBytes32_r.Bytes32_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBytes32_r.Bytes32_dgo(True{}, buf, 4294967264) : P8_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P8_PRV.Bytes32_decode_vchecked_nmax_at(buf)
+
+def FuluBytes32__decode_offsets__Bytes32_decode_vchecked_at_2pow31(buf: P8_B.Buf) -> {FuluBytes32_r.Bytes32_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBytes32_r.Bytes32_dgo(True{}, buf, 2147483648) : P8_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P8_PRV.Bytes32_decode_vchecked_at_2pow31(buf)
+
 def FuluBytes32__decode_offsets__Bytes32_decode_vchecked_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluBytes32_r.Bytes32_dchw(32, 32, (P8_B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluBytes32_r.Bytes32_decode_checked(P8_B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   P8_PRV.Bytes32_decode_vchecked_accept()
 

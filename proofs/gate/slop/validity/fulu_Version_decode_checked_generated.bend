@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_Version_decode_checked_generated.bend as PRV
 def Version__decode_offsets__Version_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   PRV.Version_decode_vchecked_accept()
 
+def Version__decode_offsets__Version_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluVersion_r.Version_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluVersion_r.Version_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.Version_decode_vchecked_at_2pow31(buf)
+
 def Version__decode_offsets__Version_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_limit()
 
 def Version__decode_offsets__Version_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluVersion_r.Version_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_nmax_above(buf)
+
+def Version__decode_offsets__Version_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluVersion_r.Version_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluVersion_r.Version_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.Version_decode_vchecked_nmax_at(buf)
 
 def Version__decode_offsets__Version_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluVersion_r.Version_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_nmax_wrap(buf)

@@ -25,6 +25,14 @@ def proglist_uint64_decode_vchecked_nmax_above(buf: B.Buf)
     -> {proglist_uint64_r.proglist_uint64_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def proglist_uint64_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {proglist_uint64_r.proglist_uint64_dchw(4294967264, 4294967264, (buf, 1073741816)) == proglist_uint64_r.proglist_uint64_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def proglist_uint64_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {proglist_uint64_r.proglist_uint64_dchw(2147483648, 2147483648, (buf, 536870912)) == proglist_uint64_r.proglist_uint64_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def proglist_uint64_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, O.Words>}:
   {==}

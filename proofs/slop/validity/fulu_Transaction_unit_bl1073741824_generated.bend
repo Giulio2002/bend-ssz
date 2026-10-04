@@ -8,3 +8,11 @@ import ../../../types/FuluTransaction_encode_ssz_generated.bend as FuluTransacti
 def Transaction_serialize_vunit_bl1073741824_range_lo_0()
     -> {Pair.snd(O.Words, Bool, FuluTransaction_e.bl1073741824_valid(O.words_new(0))) == True{} : Bool}:
   {==}
+
+def Transaction_serialize_vunit_bl1073741824_range_hi_full()
+    -> {Pair.snd(O.Words, Bool, FuluTransaction_e.bl1073741824_valid(O.Words{Array.new(U32, 30n, 0), 1073741824})) == True{} : Bool}:
+  {==}
+
+def Transaction_serialize_vunit_bl1073741824_range_above_full()
+    -> {Pair.snd(O.Words, Bool, FuluTransaction_e.bl1073741824_valid(O.Words{Array.new(U32, 30n, 0), 1073741825})) == False{} : Bool}:
+  {==}

@@ -70,3 +70,5 @@
 70 r5_progbits_append_dirty append=1 valid=1 ser_ok=1 ser_size=5
 71 r5_words_slice_empty n=0
 72 pd_encode_22369622_len=0
+80 pl_u8_decode_checked_nmax=some len=4294967264
+81 pl_u8_decode_checked_2pow31=some len=2147483648

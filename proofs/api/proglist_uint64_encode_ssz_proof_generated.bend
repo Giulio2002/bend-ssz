@@ -106,6 +106,12 @@ def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_acc
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(P4_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P4_O.words_new(0))) == True{} : Bool}:
   P4_PRV.proglist_uint64_serialize_vunit_pl_u64_range_lo_0()
 
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_hi_full() -> {Pair.snd(P4_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P4_O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  P4_PRV.proglist_uint64_serialize_vunit_pl_u64_range_hi_full()
+
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_above_full() -> {Pair.snd(P4_O.Words, Bool, proglist_uint64_e.pl_u64_valid(P4_O.Words{Array.new(U32, 30n, 0), 4294967272})) == False{} : Bool}:
+  P4_PRV.proglist_uint64_serialize_vunit_pl_u64_range_above_full()
+
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vpoison_pk_pl_u64() -> {P5_O.is_poisoned(Pair.snd(P5_O.Words, U32, Pair.snd(Array<U32>, P5_O.Words & U32, proglist_uint64_e.pl_u64_pk(Array.new(U32, 0n, 0), 0, (P5_O.words_new(0), False{}))))) == True{} : Bool}:
   P5_PRV.proglist_uint64_serialize_vpoison_pk_pl_u64()
 

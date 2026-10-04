@@ -100,6 +100,12 @@ def uint16__decode_offsets__uint16_decode_vchecked_nmax_wrap(buf: P4_B.Buf) -> {
 def uint16__decode_offsets__uint16_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {uint16_r.uint16_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, U32>}:
   P4_PRV.uint16_decode_vchecked_nmax_above(buf)
 
+def uint16__decode_offsets__uint16_decode_vchecked_nmax_at(buf: P4_B.Buf) -> {uint16_r.uint16_dchw(4294967264, 4294967264, (buf, 1073741816)) == uint16_r.uint16_dgo(True{}, buf, 4294967264) : P4_B.Buf & Maybe<&1, U32>}:
+  P4_PRV.uint16_decode_vchecked_nmax_at(buf)
+
+def uint16__decode_offsets__uint16_decode_vchecked_at_2pow31(buf: P4_B.Buf) -> {uint16_r.uint16_dchw(2147483648, 2147483648, (buf, 536870912)) == uint16_r.uint16_dgo(True{}, buf, 2147483648) : P4_B.Buf & Maybe<&1, U32>}:
+  P4_PRV.uint16_decode_vchecked_at_2pow31(buf)
+
 def uint16__decode_offsets__uint16_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, U32>, uint16_r.uint16_dchw(2, 2, (P4_B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, U32>, uint16_r.uint16_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.uint16_decode_vchecked_accept()
 

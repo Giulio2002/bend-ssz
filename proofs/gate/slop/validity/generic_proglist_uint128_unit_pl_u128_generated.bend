@@ -15,6 +15,12 @@ def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_
 def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_accept_32() -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.words_new(32))) == True{} : Bool}:
   PRV.proglist_uint128_serialize_vunit_pl_u128_accept_32()
 
+def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_range_above_full() -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.Words{Array.new(U32, 30n, 0), 4294967280})) == False{} : Bool}:
+  PRV.proglist_uint128_serialize_vunit_pl_u128_range_above_full()
+
+def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_range_hi_full() -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  PRV.proglist_uint128_serialize_vunit_pl_u128_range_hi_full()
+
 def proglist_uint128__serialize_valid__proglist_uint128_serialize_vunit_pl_u128_range_lo_0() -> {Pair.snd(O.Words, Bool, proglist_uint128_e.pl_u128_valid(O.words_new(0))) == True{} : Bool}:
   PRV.proglist_uint128_serialize_vunit_pl_u128_range_lo_0()
 

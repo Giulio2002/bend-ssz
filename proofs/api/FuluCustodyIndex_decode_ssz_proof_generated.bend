@@ -121,6 +121,12 @@ def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_nmax_wrap(buf
 def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluCustodyIndex_r.CustodyIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
   P7_PRV.CustodyIndex_decode_vchecked_nmax_above(buf)
 
+def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluCustodyIndex_r.CustodyIndex_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluCustodyIndex_r.CustodyIndex_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.CustodyIndex_decode_vchecked_nmax_at(buf)
+
+def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluCustodyIndex_r.CustodyIndex_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluCustodyIndex_r.CustodyIndex_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.CustodyIndex_decode_vchecked_at_2pow31(buf)
+
 def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluCustodyIndex_r.CustodyIndex_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluCustodyIndex_r.CustodyIndex_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.CustodyIndex_decode_vchecked_accept()
 

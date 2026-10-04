@@ -123,6 +123,12 @@ def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked
 def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
   P7_PRV.SignedVoluntaryExit_decode_vchecked_nmax_above(buf)
 
+def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
+  P7_PRV.SignedVoluntaryExit_decode_vchecked_nmax_at(buf)
+
+def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
+  P7_PRV.SignedVoluntaryExit_decode_vchecked_at_2pow31(buf)
+
 def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(112, 112, (P7_B.Buf{Array.new(U32, 5n, 0), 112}, 28))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 112}, 112))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SignedVoluntaryExit_decode_vchecked_accept()
 

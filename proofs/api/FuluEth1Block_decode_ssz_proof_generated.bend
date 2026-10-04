@@ -122,6 +122,12 @@ def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_nmax_wrap(buf: P7_B
 def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluEth1Block_r.Eth1Block_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
   P7_PRV.Eth1Block_decode_vchecked_nmax_above(buf)
 
+def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluEth1Block_r.Eth1Block_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluEth1Block_r.Eth1Block_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
+  P7_PRV.Eth1Block_decode_vchecked_nmax_at(buf)
+
+def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluEth1Block_r.Eth1Block_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluEth1Block_r.Eth1Block_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
+  P7_PRV.Eth1Block_decode_vchecked_at_2pow31(buf)
+
 def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Block_d.Eth1Block>, FuluEth1Block_r.Eth1Block_dchw(48, 48, (P7_B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Block_d.Eth1Block>, FuluEth1Block_r.Eth1Block_decode_checked(P7_B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.Eth1Block_decode_vchecked_accept()
 

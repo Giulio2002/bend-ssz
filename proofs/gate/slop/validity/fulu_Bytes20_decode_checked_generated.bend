@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_Bytes20_decode_checked_generated.bend as PRV
 def Bytes20__decode_offsets__Bytes20_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(20, 20, (B.Buf{Array.new(U32, 3n, 0), 20}, 5))), Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked(B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
   PRV.Bytes20_decode_vchecked_accept()
 
+def Bytes20__decode_offsets__Bytes20_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBytes20_r.Bytes20_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBytes20_r.Bytes20_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  PRV.Bytes20_decode_vchecked_at_2pow31(buf)
+
 def Bytes20__decode_offsets__Bytes20_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.Bytes20_decode_vchecked_limit()
 
 def Bytes20__decode_offsets__Bytes20_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluBytes20_r.Bytes20_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.Bytes20_decode_vchecked_nmax_above(buf)
+
+def Bytes20__decode_offsets__Bytes20_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluBytes20_r.Bytes20_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBytes20_r.Bytes20_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  PRV.Bytes20_decode_vchecked_nmax_at(buf)
 
 def Bytes20__decode_offsets__Bytes20_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluBytes20_r.Bytes20_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.Bytes20_decode_vchecked_nmax_wrap(buf)

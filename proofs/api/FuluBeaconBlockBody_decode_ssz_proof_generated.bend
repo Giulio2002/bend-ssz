@@ -275,6 +275,12 @@ def FuluBeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_wr
 def FuluBeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   P3_PRV.BeaconBlockBody_decode_vchecked_nmax_above(buf)
 
+def FuluBeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  P3_PRV.BeaconBlockBody_decode_vchecked_nmax_at(buf)
+
+def FuluBeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  P3_PRV.BeaconBlockBody_decode_vchecked_at_2pow31(buf)
+
 def FuluBeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 234))), Pair.snd(P3_B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 936))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.BeaconBlockBody_decode_vchecked_accept()
 

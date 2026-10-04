@@ -12,6 +12,8 @@ of byte vectors), proofs/slop/validity/<runtime>_<X>_unit_generated.bend holds, 
 
   <X>_serialize_vunit()      n = 1, U / 2 and U + 1 are refused (when they lie in the length range), n = U and 2 U are accepted
                              (when they do): {Pair.snd(O.Words, Bool, T.p_valid(O.words_new(n))) == <verdict> : Bool}, one law each.
+  <X>_serialize_vunit_<p>_range_hi_full / _range_above_full   for an upper bound above 2^22 (NMAX for a List[uint8, 2^40]) on a storage of 2^30 words:
+                             the bound accepted, one element above it refused (round 7 G2: r3-p05/10)
 
 By computation; filed by api_gate under serialize_valid.
 """
@@ -45,7 +47,7 @@ def laws_of(X, p, lo, hi, big, U):
 NR = 1 << 22      # a length the zero storage of the law can still build lazily
 
 
-def range_laws(X, p, lo, hi, big, U):
+def range_laws(X, p, lo, hi, big, U, bools=False):
     """the length range of the validity pass (round 3: p01/06, p05/07): one multiple of the element size below the lower bound, the bounds, one above the upper"""
     cases = []
     if lo >= U:
@@ -56,7 +58,14 @@ def range_laws(X, p, lo, hi, big, U):
         cases.append((f'range_hi_{hi}', hi, 'True'))
     if not big and hi + U <= NR:
         cases.append((f'range_above_{hi + U}', hi + U, 'False'))
-    return [f'def {X}_serialize_vunit_{p}_{tag}()\n    -> {{Pair.snd(O.Words, Bool, T.{p}_valid(O.words_new({n}))) == {want}{{}} : Bool}}:\n  {{==}}' for tag, n, want in cases]
+    out = [f'def {X}_serialize_vunit_{p}_{tag}()\n    -> {{Pair.snd(O.Words, Bool, T.{p}_valid(O.words_new({n}))) == {want}{{}} : Bool}}:\n  {{==}}' for tag, n, want in cases]
+    # an upper bound past what a zero storage of the law can build (NMAX for a List[uint8, 2^40], round 7 G2: r3-p05/10 moved it to 2^32 - 2): the
+    # length range on a storage of 2^30 words (Array.new of depth 30 stays lazy), so that only the range decides: the bound accepted, one element more refused
+    at, above = hi // U * U, (hi // U + 1) * U
+    if not big and not bools and hi > NR and lo <= at:     # each length a U32 whose storage 2^30 words hold
+        out += [f'def {X}_serialize_vunit_{p}_range_{tag}_full()\n    -> {{Pair.snd(O.Words, Bool, T.{p}_valid(O.Words{{Array.new(U32, 30n, 0), {n}}})) == {want}{{}} : Bool}}:\n  {{==}}'
+                for tag, n, want in (('hi', at, 'True'), ('above', above, 'False')) if n <= 4294967295 and (n + 3) // 4 <= (1 << 30)]
+    return out
 
 
 def unit_ok_law(X, U):
@@ -92,7 +101,7 @@ def outputs():
                 owners = sorted(owners, key=lambda X: sum(1 for n in tx.blk if n.startswith(X + '_')))[:1]
             for X in owners:
                 laws = laws_of(X, p, lo, hi, big, U) if U > 1 else []
-                laws = [l.replace(f'{X}_serialize_vunit_', f'{X}_serialize_vunit_{p}_') for l in laws] + range_laws(X, p, lo, hi, big, U)
+                laws = [l.replace(f'{X}_serialize_vunit_', f'{X}_serialize_vunit_{p}_') for l in laws] + range_laws(X, p, lo, hi, big, U, "bools_ok(" in m.group(0))
                 if U > 1 and U not in seen_units:
                     seen_units.add(U)
                     laws.append(unit_ok_law(X, U))

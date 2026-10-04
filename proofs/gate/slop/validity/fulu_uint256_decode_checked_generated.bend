@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_uint256_decode_checked_generated.bend as PRV
 def uint256__decode_offsets__uint256_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   PRV.uint256_decode_vchecked_accept()
 
+def uint256__decode_offsets__uint256_decode_vchecked_at_2pow31(buf: B.Buf) -> {uint256_r.uint256_dchw(2147483648, 2147483648, (buf, 536870912)) == uint256_r.uint256_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  PRV.uint256_decode_vchecked_at_2pow31(buf)
+
 def uint256__decode_offsets__uint256_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, uint256_d.Uint256>, uint256_r.uint256_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, uint256_d.Uint256>}:
   PRV.uint256_decode_vchecked_limit()
 
 def uint256__decode_offsets__uint256_decode_vchecked_nmax_above(buf: B.Buf) -> {uint256_r.uint256_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
   PRV.uint256_decode_vchecked_nmax_above(buf)
+
+def uint256__decode_offsets__uint256_decode_vchecked_nmax_at(buf: B.Buf) -> {uint256_r.uint256_dchw(4294967264, 4294967264, (buf, 1073741816)) == uint256_r.uint256_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
+  PRV.uint256_decode_vchecked_nmax_at(buf)
 
 def uint256__decode_offsets__uint256_decode_vchecked_nmax_wrap(buf: B.Buf) -> {uint256_r.uint256_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
   PRV.uint256_decode_vchecked_nmax_wrap(buf)

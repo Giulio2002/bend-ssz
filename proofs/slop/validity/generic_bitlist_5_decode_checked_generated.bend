@@ -25,6 +25,14 @@ def bitlist_5_decode_vchecked_nmax_above(buf: B.Buf)
     -> {bitlist_5_r.bitlist_5_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
   {==}
 
+def bitlist_5_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {bitlist_5_r.bitlist_5_dchw(4294967264, 4294967264, (buf, 1073741816)) == bitlist_5_r.bitlist_5_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
+def bitlist_5_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {bitlist_5_r.bitlist_5_dchw(2147483648, 2147483648, (buf, 536870912)) == bitlist_5_r.bitlist_5_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
 def bitlist_5_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_5_r.bitlist_5_dchw(1, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_5_r.bitlist_5_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   {==}

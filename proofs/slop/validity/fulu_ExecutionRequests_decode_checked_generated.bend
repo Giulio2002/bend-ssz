@@ -26,6 +26,14 @@ def ExecutionRequests_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluExecutionRequests_r.ExecutionRequests_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   {==}
 
+def ExecutionRequests_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluExecutionRequests_r.ExecutionRequests_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluExecutionRequests_r.ExecutionRequests_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  {==}
+
+def ExecutionRequests_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluExecutionRequests_r.ExecutionRequests_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluExecutionRequests_r.ExecutionRequests_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  {==}
+
 def ExecutionRequests_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 3))), Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 12))) == (True{}, True{}) : Bool & Bool}:
   {==}

@@ -25,6 +25,14 @@ def vec_uint64_513_decode_vchecked_nmax_above(buf: B.Buf)
     -> {vec_uint64_513_r.vec_uint64_513_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def vec_uint64_513_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {vec_uint64_513_r.vec_uint64_513_dchw(4294967264, 4294967264, (buf, 1073741816)) == vec_uint64_513_r.vec_uint64_513_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def vec_uint64_513_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {vec_uint64_513_r.vec_uint64_513_dchw(2147483648, 2147483648, (buf, 536870912)) == vec_uint64_513_r.vec_uint64_513_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def vec_uint64_513_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint64_513_r.vec_uint64_513_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, O.Words>}:
   {==}

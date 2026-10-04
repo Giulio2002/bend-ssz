@@ -398,6 +398,17 @@ def bs_enc_len_line(label: String, pair: BSD.BeaconState & B.Buf) -> IO(Unit):
   IO.print(label ++ "_len=" ++ U32.show(Pair.snd(B.Buf, U32, B.size(b))))
 def case72() -> IO(Unit): bs_enc_len_line("pd_encode_22369622", BSE.BeaconState_encode(bs_pd(22369622)))
 
+# round 7 G1: the checked decoder ACCEPTS a window between 2^31 and NMAX (an honest 4 GiB buffer: the storage holds NMAX bytes)
+def dec_w_line(label: String, pair: B.Buf & Maybe<&1, O.Words>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}:
+      match v:
+        case O.Words{ws, +n}: IO.print(label ++ "=some len=" ++ U32.show(n))
+    case None{}: IO.print(label ++ "=none")
+def case80() -> IO(Unit): dec_w_line("pl_u8_decode_checked_nmax", PlR.proglist_uint8_decode_checked(B.Buf{big(), 4294967264}, 4294967264))
+def case81() -> IO(Unit): dec_w_line("pl_u8_decode_checked_2pow31", PlR.proglist_uint8_decode_checked(B.Buf{big(), 2147483648}, 2147483648))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -471,6 +482,8 @@ def dispatch(+c: U32) -> IO(Unit):
     case 70: case70()
     case 71: case71()
     case 72: case72()
+    case 80: case80()
+    case 81: case81()
     case _: case12()
 
 def main() -> IO(Unit):

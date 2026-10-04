@@ -25,6 +25,14 @@ def vec_uint16_5_decode_vchecked_nmax_above(buf: B.Buf)
     -> {vec_uint16_5_r.vec_uint16_5_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def vec_uint16_5_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {vec_uint16_5_r.vec_uint16_5_dchw(4294967264, 4294967264, (buf, 1073741816)) == vec_uint16_5_r.vec_uint16_5_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def vec_uint16_5_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {vec_uint16_5_r.vec_uint16_5_dchw(2147483648, 2147483648, (buf, 536870912)) == vec_uint16_5_r.vec_uint16_5_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def vec_uint16_5_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint16_5_r.vec_uint16_5_dchw(10, 10, (B.Buf{Array.new(U32, 2n, 0), 10}, 3))), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint16_5_r.vec_uint16_5_decode_checked(B.Buf{Array.new(U32, 2n, 0), 10}, 10))) == (True{}, True{}) : Bool & Bool}:
   {==}

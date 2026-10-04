@@ -1,16 +1,16 @@
 # MANUAL SPEC MUTANT r2-s05-poison/03
 # type: VarTestStruct
 # ops: encode
-# spec: a validity flag contributes bit 31 when false
-# fault: a false flag contributes bit 30
+# spec: a false validity flag contributes the marker 2^32 - 1 (O.pz)
+# fault: a false flag contributes 2^30 (a size, not the marker)
 # why: constant
-# file: src/obj.bend
 # sym: pz,padd
-# re-derived against 0b80524f4
+# file: src/obj.bend
+# re-derived against e1b65e26f (by hand, round 7 G2: rederive.py OVERRIDES)
 --- a/src/obj.bend
 +++ b/src/obj.bend
-@@ -1721,3 +1721,3 @@
-     case 30: U32.is_eq((x .&. 3221225472 : U32), 0)
--    case _: U32.is_eq((x .&. 2147483648 : U32), 0)
-+    case _: U32.is_eq((x .&. 1073741824 : U32), 0)
+@@ -1795,3 +1795,3 @@
+     case True{}: 0
+-    case False{}: 4294967295
++    case False{}: 1073741824
  

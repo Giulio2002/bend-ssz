@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_VersionedHash_decode_checked_generated.bend a
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))), Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   PRV.VersionedHash_decode_vchecked_accept()
 
+def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluVersionedHash_r.VersionedHash_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.VersionedHash_decode_vchecked_at_2pow31(buf)
+
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.VersionedHash_decode_vchecked_limit()
 
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.VersionedHash_decode_vchecked_nmax_above(buf)
+
+def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluVersionedHash_r.VersionedHash_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.VersionedHash_decode_vchecked_nmax_at(buf)
 
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.VersionedHash_decode_vchecked_nmax_wrap(buf)

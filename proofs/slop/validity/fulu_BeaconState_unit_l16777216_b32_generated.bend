@@ -28,3 +28,11 @@ def BeaconState_serialize_vunit_l16777216_b32_accept_64()
 def BeaconState_serialize_vunit_l16777216_b32_range_lo_0()
     -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(O.words_new(0))) == True{} : Bool}:
   {==}
+
+def BeaconState_serialize_vunit_l16777216_b32_range_hi_full()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(O.Words{Array.new(U32, 30n, 0), 536870912})) == True{} : Bool}:
+  {==}
+
+def BeaconState_serialize_vunit_l16777216_b32_range_above_full()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_bytevec_32_16777216_e.l16777216_b32_valid(O.Words{Array.new(U32, 30n, 0), 536870944})) == False{} : Bool}:
+  {==}

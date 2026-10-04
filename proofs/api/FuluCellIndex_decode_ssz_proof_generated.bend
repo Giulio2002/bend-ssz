@@ -121,6 +121,12 @@ def FuluCellIndex__decode_offsets__CellIndex_decode_vchecked_nmax_wrap(buf: P7_B
 def FuluCellIndex__decode_offsets__CellIndex_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluCellIndex_r.CellIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
   P7_PRV.CellIndex_decode_vchecked_nmax_above(buf)
 
+def FuluCellIndex__decode_offsets__CellIndex_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluCellIndex_r.CellIndex_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluCellIndex_r.CellIndex_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.CellIndex_decode_vchecked_nmax_at(buf)
+
+def FuluCellIndex__decode_offsets__CellIndex_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluCellIndex_r.CellIndex_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluCellIndex_r.CellIndex_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.CellIndex_decode_vchecked_at_2pow31(buf)
+
 def FuluCellIndex__decode_offsets__CellIndex_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluCellIndex_r.CellIndex_dchw(8, 8, (P7_B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluCellIndex_r.CellIndex_decode_checked(P7_B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.CellIndex_decode_vchecked_accept()
 

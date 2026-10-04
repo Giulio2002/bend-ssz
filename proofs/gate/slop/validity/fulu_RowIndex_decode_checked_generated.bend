@@ -10,11 +10,17 @@ import ../../../slop/validity/fulu_RowIndex_decode_checked_generated.bend as PRV
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   PRV.RowIndex_decode_vchecked_accept()
 
+def RowIndex__decode_offsets__RowIndex_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluRowIndex_r.RowIndex_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluRowIndex_r.RowIndex_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.RowIndex_decode_vchecked_at_2pow31(buf)
+
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluRowIndex_r.RowIndex_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.U64>}:
   PRV.RowIndex_decode_vchecked_limit()
 
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluRowIndex_r.RowIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
   PRV.RowIndex_decode_vchecked_nmax_above(buf)
+
+def RowIndex__decode_offsets__RowIndex_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluRowIndex_r.RowIndex_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluRowIndex_r.RowIndex_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.RowIndex_decode_vchecked_nmax_at(buf)
 
 def RowIndex__decode_offsets__RowIndex_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluRowIndex_r.RowIndex_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
   PRV.RowIndex_decode_vchecked_nmax_wrap(buf)

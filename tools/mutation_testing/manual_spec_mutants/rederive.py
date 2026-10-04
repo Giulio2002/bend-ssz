@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Re-derive the manual spec-mutant patches that no longer apply to the generated text.
 
-    python3 tools/mutation_testing/manual_spec_mutants/rederive.py [--write] [--report FILE] [PATCH ...]
+    python3 tools/mutation_testing/manual_spec_mutants/rederive.py [--write] [--redo] [--report FILE] [PATCH ...]
 
 A patch (patches/<family>/<nn>.patch) is a header of `# key: value` lines and one or more unified-diff hunks (`-` lines, `+` lines, one context
 line) on one file. After a change of the generated text (a renamed getter, a rewritten guard) the old hunk's context or its removed line is no
@@ -200,6 +200,11 @@ def rederive(patch, commit, translate=False):
     if new_lines == lines:
         return None, 'the replacement changes nothing'
     diff = list(difflib.unified_diff(lines, new_lines, f'a/{path}', f'b/{path}', n=1, lineterm=''))
+    old = patch.read_text().split("\n")
+    shape = lambda d: (sum(1 for x in d if x.startswith("-") and not x.startswith("---")), sum(1 for x in d if x.startswith("@@")))    # noqa: E731
+    if shape(diff) != shape(old):
+        # the same fault touches as many lines in as many hunks; another count is another fault (round 7 G2: a second `case False` was made)
+        return None, f"the re-derived patch changes {shape(diff)[0]} lines in {shape(diff)[1]} hunks, the original {shape(old)[0]} in {shape(old)[1]}"
     head = [h for h in head if not h.startswith('# re-derived')] + [f'# re-derived against {commit}']
     return '\n'.join(head + diff) + '\n', None
 
@@ -219,6 +224,17 @@ OVERRIDES = {
     'r3-g01-append-guard/10': ('types/Fulu_list_Validator_1099511627776_def_generated.bend', ['l1099511627776_Validator_app_sz'], [('U32.is_lt(n, 17747798)', 'U32.is_le(n, 17747798)')]),
     'r3-g01-append-guard/12': ('types/proglist_SmallTestStruct_def_generated.bend', ['pl_SmallTestStruct_app_sz'], [('U32.is_lt(n, 1073741816)', 'U32.is_le(n, 1073741816)')]),
     'r3-g01-append-guard/15': ('types/Fulu_list_ProposerSlashing_16_def_generated.bend', ['l16_ProposerSlashing_app_sz'], [('U32.is_lt(n, 16)', 'U32.is_le(n, 16)')]),
+    # round 7 G2: re-derivations that applied but made another fault (a constant of another definition, an always-true test, a cap on a name where it
+    # cannot be observed), written by hand
+    'r2-d01-decode-checked/04': ('types/FuluCheckpoint_decode_ssz_generated.bend', ['Checkpoint_dchw'], [('U32.is_le(size, 4294967264)', 'U32.is_le(size, 4294967265)')]),
+    'r2-d01-decode-checked/06': ('types/proglist_uint8_decode_ssz_generated.bend', ['proglist_uint8_dchw'], [('U32.is_le(size, 4294967264)', 'U32.is_lt(size, 4294967264)')]),
+    'r2-d01-decode-checked/10': ('types/VarTestStruct_decode_ssz_generated.bend', ['VarTestStruct_dchw'], [('U32.is_le(size, 4294967264)', 'U32.is_le(size, 4294967265)')]),
+    'r7-g1-cap-reversion/01': ('types/proglist_uint8_decode_ssz_generated.bend', ['proglist_uint8_dchw'], [('U32.is_le(size, 4294967264)', 'U32.is_lt(size, 2147483648)')]),
+    'r3-p05-fulu-field-validity/10': ('types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend', ['l1099511627776_u8_valid'],
+                                      [('O.words_ok(o, 0, 4294967264, False{}, 1)', 'O.words_ok(o, 0, 4294967294, False{}, 1)')]),
+    'r2-s05-poison/03': ('src/obj.bend', ['pz'], [('case False{}: 4294967295', 'case False{}: 1073741824')]),
+    'r3-l02-variable-elements/01': ('types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend', ['l1_AttesterSlashing_sz_fin'], [('O.padd(O.mul4c(n), m)', 'O.padd(0, m)')]),
+    'c05-offset-encode/09': ('src/obj.bend', ['padd'], [('), (a + b : U32), 4294967295)', '), (a + b + 1 : U32), 4294967295)')]),
 }
 
 
@@ -243,8 +259,9 @@ def from_override(patch, commit):
 
 def main():
     write = '--write' in sys.argv
+    redo = '--redo' in sys.argv      # the patches with an override are rewritten from it even when they apply (a re-derivation that made another fault)
     report = None
-    args = [a for a in sys.argv[1:] if a != '--write']
+    args = [a for a in sys.argv[1:] if a not in ('--write', '--redo')]
     if '--report' in args:
         i = args.index('--report')
         report = pathlib.Path(args[i + 1])
@@ -253,7 +270,7 @@ def main():
     todo = [pathlib.Path(a) for a in args] or sorted(PATCHES.glob('*/*.patch'))
     done, failed, fine = [], [], 0
     for p in todo:
-        if applies(p):
+        if applies(p) and not (redo and f'{p.parent.name}/{p.stem}' in OVERRIDES):
             fine += 1
             continue
         new, why = from_override(p, commit)

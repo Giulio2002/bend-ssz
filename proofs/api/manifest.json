@@ -1971,6 +1971,7 @@
     "slop/validity/fulu_Attestation_collection_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_fields_generated.bend",
     "slop/validity/fulu_Attestation_senc_generated.bend",
+    "slop/validity/fulu_Attestation_size_bits131072_generated.bend",
     "slop/validity/fulu_Attestation_writer_bits131072_generated.bend",
     "slop/size/Attestation_generated.bend",
     "slop/constants/Attestation_generated.bend"
@@ -2091,6 +2092,7 @@
     "slop/validity/fulu_PendingAttestation_collection_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_fields_generated.bend",
     "slop/validity/fulu_PendingAttestation_senc_generated.bend",
+    "slop/validity/fulu_PendingAttestation_size_bits2048_generated.bend",
     "slop/validity/fulu_PendingAttestation_writer_bits2048_generated.bend",
     "slop/size/PendingAttestation_generated.bend",
     "slop/constants/PendingAttestation_generated.bend"
@@ -3129,6 +3131,9 @@
     "slop/validity/fulu_ExecutionRequests_appb_l8192_DepositRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_fields_generated.bend",
     "slop/validity/fulu_ExecutionRequests_senc_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_size_l16_WithdrawalRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_size_l2_ConsolidationRequest_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_size_l8192_DepositRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_writer_l16_WithdrawalRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_writer_l2_ConsolidationRequest_generated.bend",
     "slop/validity/fulu_ExecutionRequests_writer_l8192_DepositRequest_generated.bend",
@@ -3472,6 +3477,8 @@
     "slop/validity/fulu_ExecutionPayload_collection_bl32_generated.bend",
     "slop/validity/fulu_ExecutionPayload_fields_generated.bend",
     "slop/validity/fulu_ExecutionPayload_senc_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_size_l1048576_bl1073741824_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_size_l16_Withdrawal_generated.bend",
     "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_enc_generated.bend",
     "slop/validity/fulu_ExecutionPayload_writer_l1048576_bl1073741824_generated.bend",
     "slop/validity/fulu_ExecutionPayload_writer_l16_Withdrawal_generated.bend",
@@ -3552,6 +3559,12 @@
     "slop/validity/fulu_BeaconState_collection_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_fields_generated.bend",
     "slop/validity/fulu_BeaconState_senc_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l1099511627776_Validator_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l134217728_PendingDeposit_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l134217728_PendingPartialWithdrawal_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l16777216_HistoricalSummary_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l2048_Eth1Data_generated.bend",
+    "slop/validity/fulu_BeaconState_size_l262144_PendingConsolidation_generated.bend",
     "slop/validity/fulu_BeaconState_unit_l1099511627776_u64_generated.bend",
     "slop/validity/fulu_BeaconState_unit_l1099511627776_u8_generated.bend",
     "slop/validity/fulu_BeaconState_unit_l16777216_b32_generated.bend",
@@ -4014,6 +4027,12 @@
     "slop/validity/fulu_BeaconBlockBody_appb_l8_Attestation_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_senc_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l16_Deposit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l16_ProposerSlashing_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l16_SignedBLSToExecutionChange_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l16_SignedVoluntaryExit_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l1_AttesterSlashing_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_size_l8_Attestation_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_unit_l4096_b48_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_enc_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_enc_generated.bend",
@@ -4838,6 +4857,8 @@
     "slop/validity/generic_ProgressiveComplexTestStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_senc_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_size_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_size_pl_ProgressiveVarTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_unit_l123_u16_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_unit_pl_u64_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_writer_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend",
@@ -8335,6 +8356,9 @@
     "slop/validity/generic_ProgressiveTestStruct_collection_pl_u8_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_senc_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_size_pl_SmallTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_size_pl_VarTestStruct_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_size_pl_pl_VarTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_unit_pl_u64_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_writer_pl_SmallTestStruct_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_writer_pl_VarTestStruct_generated.bend",
@@ -8486,6 +8510,10 @@
     "slop/validity/generic_ProgressiveBitsStruct_collection_pbits_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_senc_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_size_bits1280_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_size_bits1281_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_size_bits256_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_size_bits257_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_unit_bv1280_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_writer_bits1280_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_writer_bits1281_generated.bend",
@@ -8682,6 +8710,8 @@
     "slop/validity/generic_ComplexTestStruct_collection_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_fields_generated.bend",
     "slop/validity/generic_ComplexTestStruct_senc_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_size_v2_VarTestStruct_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_size_v4_FixedTestStruct_generated.bend",
     "slop/validity/generic_ComplexTestStruct_unit_bl256_generated.bend",
     "slop/validity/generic_ComplexTestStruct_unit_l128_u16_generated.bend",
     "slop/validity/generic_ComplexTestStruct_writer_bl256_generated.bend",
@@ -8795,6 +8825,7 @@
     "slop/validity/generic_bitlist_15_bits_generated.bend",
     "slop/validity/generic_bitlist_15_collection_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_senc_generated.bend",
+    "slop/validity/generic_bitlist_15_size_bits15_generated.bend",
     "slop/validity/generic_bitlist_15_writer_bits15_generated.bend",
     "slop/capacity/bitlist_15_generated.bend",
     "slop/constants/bitlist_15_generated.bend"
@@ -8839,6 +8870,7 @@
     "slop/validity/generic_bitlist_16_bits_generated.bend",
     "slop/validity/generic_bitlist_16_collection_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_senc_generated.bend",
+    "slop/validity/generic_bitlist_16_size_bits16_generated.bend",
     "slop/validity/generic_bitlist_16_writer_bits16_generated.bend",
     "slop/capacity/bitlist_16_generated.bend",
     "slop/constants/bitlist_16_generated.bend"
@@ -8883,6 +8915,7 @@
     "slop/validity/generic_bitlist_17_bits_generated.bend",
     "slop/validity/generic_bitlist_17_collection_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_senc_generated.bend",
+    "slop/validity/generic_bitlist_17_size_bits17_generated.bend",
     "slop/validity/generic_bitlist_17_writer_bits17_generated.bend",
     "slop/capacity/bitlist_17_generated.bend",
     "slop/constants/bitlist_17_generated.bend"
@@ -8927,6 +8960,7 @@
     "slop/validity/generic_bitlist_1_bits_generated.bend",
     "slop/validity/generic_bitlist_1_collection_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_senc_generated.bend",
+    "slop/validity/generic_bitlist_1_size_bits1_generated.bend",
     "slop/validity/generic_bitlist_1_writer_bits1_generated.bend",
     "slop/capacity/bitlist_1_generated.bend",
     "slop/constants/bitlist_1_generated.bend"
@@ -8971,6 +9005,7 @@
     "slop/validity/generic_bitlist_2_bits_generated.bend",
     "slop/validity/generic_bitlist_2_collection_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_senc_generated.bend",
+    "slop/validity/generic_bitlist_2_size_bits2_generated.bend",
     "slop/validity/generic_bitlist_2_writer_bits2_generated.bend",
     "slop/capacity/bitlist_2_generated.bend",
     "slop/constants/bitlist_2_generated.bend"
@@ -9015,6 +9050,7 @@
     "slop/validity/generic_bitlist_31_bits_generated.bend",
     "slop/validity/generic_bitlist_31_collection_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_senc_generated.bend",
+    "slop/validity/generic_bitlist_31_size_bits31_generated.bend",
     "slop/validity/generic_bitlist_31_writer_bits31_generated.bend",
     "slop/capacity/bitlist_31_generated.bend",
     "slop/constants/bitlist_31_generated.bend"
@@ -9058,6 +9094,7 @@
     "slop/validity/generic_bitlist_32_bits_generated.bend",
     "slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_senc_generated.bend",
+    "slop/validity/generic_bitlist_32_size_bits32_generated.bend",
     "slop/validity/generic_bitlist_32_writer_bits32_generated.bend",
     "slop/constants/bitlist_32_generated.bend"
    ]
@@ -9100,6 +9137,7 @@
     "slop/validity/generic_bitlist_33_bits_generated.bend",
     "slop/validity/generic_bitlist_33_collection_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_senc_generated.bend",
+    "slop/validity/generic_bitlist_33_size_bits33_generated.bend",
     "slop/validity/generic_bitlist_33_writer_bits33_generated.bend",
     "slop/constants/bitlist_33_generated.bend"
    ]
@@ -9143,6 +9181,7 @@
     "slop/validity/generic_bitlist_3_bits_generated.bend",
     "slop/validity/generic_bitlist_3_collection_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_senc_generated.bend",
+    "slop/validity/generic_bitlist_3_size_bits3_generated.bend",
     "slop/validity/generic_bitlist_3_writer_bits3_generated.bend",
     "slop/capacity/bitlist_3_generated.bend",
     "slop/constants/bitlist_3_generated.bend"
@@ -9187,6 +9226,7 @@
     "slop/validity/generic_bitlist_4_bits_generated.bend",
     "slop/validity/generic_bitlist_4_collection_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_senc_generated.bend",
+    "slop/validity/generic_bitlist_4_size_bits4_generated.bend",
     "slop/validity/generic_bitlist_4_writer_bits4_generated.bend",
     "slop/capacity/bitlist_4_generated.bend",
     "slop/constants/bitlist_4_generated.bend"
@@ -9230,6 +9270,7 @@
     "slop/validity/generic_bitlist_511_bits_generated.bend",
     "slop/validity/generic_bitlist_511_collection_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_senc_generated.bend",
+    "slop/validity/generic_bitlist_511_size_bits511_generated.bend",
     "slop/validity/generic_bitlist_511_writer_bits511_generated.bend",
     "slop/constants/bitlist_511_generated.bend"
    ]
@@ -9272,6 +9313,7 @@
     "slop/validity/generic_bitlist_512_bits_generated.bend",
     "slop/validity/generic_bitlist_512_collection_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_senc_generated.bend",
+    "slop/validity/generic_bitlist_512_size_bits512_generated.bend",
     "slop/validity/generic_bitlist_512_writer_bits512_generated.bend",
     "slop/constants/bitlist_512_generated.bend"
    ]
@@ -9314,6 +9356,7 @@
     "slop/validity/generic_bitlist_513_bits_generated.bend",
     "slop/validity/generic_bitlist_513_collection_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_senc_generated.bend",
+    "slop/validity/generic_bitlist_513_size_bits513_generated.bend",
     "slop/validity/generic_bitlist_513_writer_bits513_generated.bend",
     "slop/constants/bitlist_513_generated.bend"
    ]
@@ -9357,6 +9400,7 @@
     "slop/validity/generic_bitlist_5_bits_generated.bend",
     "slop/validity/generic_bitlist_5_collection_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_senc_generated.bend",
+    "slop/validity/generic_bitlist_5_size_bits5_generated.bend",
     "slop/validity/generic_bitlist_5_writer_bits5_generated.bend",
     "slop/capacity/bitlist_5_generated.bend",
     "slop/constants/bitlist_5_generated.bend"
@@ -9401,6 +9445,7 @@
     "slop/validity/generic_bitlist_6_bits_generated.bend",
     "slop/validity/generic_bitlist_6_collection_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_senc_generated.bend",
+    "slop/validity/generic_bitlist_6_size_bits6_generated.bend",
     "slop/validity/generic_bitlist_6_writer_bits6_generated.bend",
     "slop/capacity/bitlist_6_generated.bend",
     "slop/constants/bitlist_6_generated.bend"
@@ -9445,6 +9490,7 @@
     "slop/validity/generic_bitlist_7_bits_generated.bend",
     "slop/validity/generic_bitlist_7_collection_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_senc_generated.bend",
+    "slop/validity/generic_bitlist_7_size_bits7_generated.bend",
     "slop/validity/generic_bitlist_7_writer_bits7_generated.bend",
     "slop/capacity/bitlist_7_generated.bend",
     "slop/constants/bitlist_7_generated.bend"
@@ -9489,6 +9535,7 @@
     "slop/validity/generic_bitlist_8_bits_generated.bend",
     "slop/validity/generic_bitlist_8_collection_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_senc_generated.bend",
+    "slop/validity/generic_bitlist_8_size_bits8_generated.bend",
     "slop/validity/generic_bitlist_8_writer_bits8_generated.bend",
     "slop/capacity/bitlist_8_generated.bend",
     "slop/constants/bitlist_8_generated.bend"
@@ -9533,6 +9580,7 @@
     "slop/validity/generic_bitlist_9_bits_generated.bend",
     "slop/validity/generic_bitlist_9_collection_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_senc_generated.bend",
+    "slop/validity/generic_bitlist_9_size_bits9_generated.bend",
     "slop/validity/generic_bitlist_9_writer_bits9_generated.bend",
     "slop/capacity/bitlist_9_generated.bend",
     "slop/constants/bitlist_9_generated.bend"
@@ -10364,6 +10412,7 @@
     "slop/validity/generic_progbitlist_bits_generated.bend",
     "slop/validity/generic_progbitlist_collection_pbits_generated.bend",
     "slop/validity/generic_progbitlist_senc_generated.bend",
+    "slop/validity/generic_progbitlist_size_pbits_generated.bend",
     "slop/validity/generic_progbitlist_writer_pbits_generated.bend",
     "slop/constants/progbitlist_generated.bend"
    ]

@@ -96,6 +96,12 @@ def FuluFinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_wrap
 def FuluFinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
   P5_PRV.FinalityBranch_decode_vchecked_nmax_above(buf)
 
+def FuluFinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluFinalityBranch_r.FinalityBranch_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.FinalityBranch_decode_vchecked_nmax_at(buf)
+
+def FuluFinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluFinalityBranch_r.FinalityBranch_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.FinalityBranch_decode_vchecked_at_2pow31(buf)
+
 def FuluFinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluFinalityBranch_r.FinalityBranch_dchw(224, 224, (P5_B.Buf{Array.new(U32, 6n, 0), 224}, 56))), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked(P5_B.Buf{Array.new(U32, 6n, 0), 224}, 224))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.FinalityBranch_decode_vchecked_accept()
 

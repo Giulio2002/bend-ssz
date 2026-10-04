@@ -11,11 +11,17 @@ import ../../../slop/validity/generic_bitvector_16_decode_checked_generated.bend
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_dchw(2, 2, (B.Buf{Array.new(U32, 0n, 0), 2}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2}, 2))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_16_decode_vchecked_accept()
 
+def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_at_2pow31(buf: B.Buf) -> {bitvector_16_r.bitvector_16_dchw(2147483648, 2147483648, (buf, 536870912)) == bitvector_16_r.bitvector_16_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
+  PRV.bitvector_16_decode_vchecked_at_2pow31(buf)
+
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_16_d.Bitvector16>, bitvector_16_r.bitvector_16_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_16_d.Bitvector16>}:
   PRV.bitvector_16_decode_vchecked_limit()
 
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_nmax_above(buf: B.Buf) -> {bitvector_16_r.bitvector_16_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
   PRV.bitvector_16_decode_vchecked_nmax_above(buf)
+
+def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_nmax_at(buf: B.Buf) -> {bitvector_16_r.bitvector_16_dchw(4294967264, 4294967264, (buf, 1073741816)) == bitvector_16_r.bitvector_16_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
+  PRV.bitvector_16_decode_vchecked_nmax_at(buf)
 
 def bitvector_16__decode_offsets__bitvector_16_decode_vchecked_nmax_wrap(buf: B.Buf) -> {bitvector_16_r.bitvector_16_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
   PRV.bitvector_16_decode_vchecked_nmax_wrap(buf)

@@ -25,6 +25,14 @@ def Cell_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluCell_r.Cell_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def Cell_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluCell_r.Cell_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluCell_r.Cell_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def Cell_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluCell_r.Cell_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluCell_r.Cell_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def Cell_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_dchw(2048, 2048, (B.Buf{Array.new(U32, 9n, 0), 2048}, 512))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_decode_checked(B.Buf{Array.new(U32, 9n, 0), 2048}, 2048))) == (True{}, True{}) : Bool & Bool}:
   {==}

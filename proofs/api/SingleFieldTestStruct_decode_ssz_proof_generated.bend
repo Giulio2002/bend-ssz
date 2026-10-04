@@ -102,6 +102,12 @@ def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
   P4_PRV.SingleFieldTestStruct_decode_vchecked_nmax_above(buf)
 
+def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_nmax_at(buf: P4_B.Buf) -> {SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == SingleFieldTestStruct_r.SingleFieldTestStruct_dgo(True{}, buf, 4294967264) : P4_B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
+  P4_PRV.SingleFieldTestStruct_decode_vchecked_nmax_at(buf)
+
+def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_at_2pow31(buf: P4_B.Buf) -> {SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == SingleFieldTestStruct_r.SingleFieldTestStruct_dgo(True{}, buf, 2147483648) : P4_B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
+  P4_PRV.SingleFieldTestStruct_decode_vchecked_at_2pow31(buf)
+
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(1, 1, (P4_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P4_B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.SingleFieldTestStruct_decode_vchecked_accept()
 

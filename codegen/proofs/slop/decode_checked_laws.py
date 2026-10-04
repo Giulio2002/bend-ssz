@@ -12,7 +12,10 @@ Only Checkpoint and proglist_uint8 had laws on it (docs/CRASH_HUNT.md CH-05, CH-
 For every name X with a checked decoder, proofs/slop/validity/<runtime>_<X>_decode_checked_generated.bend holds. W is the default value of X as bytes (fixed
 parts zero, variable parts empty, offsets at the end of the fixed part; up to 2048 bytes), S its length, V the value type of X:
 
-  <X>_decode_vchecked_limit     X_dchw(2^31, 2^31, (B.empty(), 2^29)) is None: a window of 2^31 bytes or more
+  <X>_decode_vchecked_limit     X_dchw(NMAX + 1, NMAX + 1, (B.empty(), 2^30)) is None: a window above NMAX
+  <X>_decode_vchecked_nmax_wrap / _nmax_above (buf)   above NMAX refused on a symbolic buffer (round 4)
+  <X>_decode_vchecked_nmax_at / _at_2pow31 (buf)      X_dchw(S, S, (buf, ceil(S / 4))) == X_dgo(True, buf, S) at S = NMAX and at S = 2^31: the guard lets the window
+                                                      through (round 7 G1; every name: for a bounded name its decoder refuses such a window itself, the law pins the guard)
   with W (every fixed type up to 2048 bytes, every list, bit list, container and union whose default encodes that way):
   <X>_decode_vchecked_accept    the window W with the buffer size S and ceil(S / 4) words of storage is decoded, by X_dchw and by X_decode_checked
   <X>_decode_vchecked_window    a buffer one byte smaller than the window (size field S - 1): None
@@ -111,6 +114,10 @@ def laws_of(X, V, win):
     # 2^32 - 1 is the size whose storage need (size + 3) >> 2 wraps to 0, NMAX + 1 the first size above the limit (round 4: a14)
     for tag, size, c in (('nmax_wrap', 4294967295, 0), ('nmax_above', 4294967265, 1073741824)):
         out.append(f'def {X}_decode_vchecked_{tag}(buf: B.Buf)\n    -> {{T.{X}_dchw({size}, 4294967295, (buf, {c})) == (buf, None{{}}) : B.Buf & {M}}}:\n  {{==}}')
+    # and accepted up to NMAX (round 7 G1): at NMAX and at 2^31 the guard lets the window through to the decoder, whatever the buffer (both sides reduce
+    # to the same decode of the symbolic buffer); a decoder whose cap went back to 2^31, or to any value below NMAX, fails these
+    for tag, size, c in (('nmax_at', 4294967264, 1073741816), ('at_2pow31', 2147483648, 536870912)):
+        out.append(f'def {X}_decode_vchecked_{tag}(buf: B.Buf)\n    -> {{T.{X}_dchw({size}, {size}, (buf, {c})) == T.{X}_dgo(True{{}}, buf, {size}) : B.Buf & {M}}}:\n  {{==}}')
     if win is None:
         # no known valid window: only what is refused whatever the type decodes
         law('window', f'{snd(f"T.{X}_dchw(5, 4, (B.empty(), 8))")} == None{{}} : {M}')

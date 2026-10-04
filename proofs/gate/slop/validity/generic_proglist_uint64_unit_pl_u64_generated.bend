@@ -12,6 +12,12 @@ def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_acc
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_accept_8() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(8))) == True{} : Bool}:
   PRV.proglist_uint64_serialize_vunit_pl_u64_accept_8()
 
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_above_full() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.Words{Array.new(U32, 30n, 0), 4294967272})) == False{} : Bool}:
+  PRV.proglist_uint64_serialize_vunit_pl_u64_range_above_full()
+
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_hi_full() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  PRV.proglist_uint64_serialize_vunit_pl_u64_range_hi_full()
+
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vunit_pl_u64_range_lo_0() -> {Pair.snd(O.Words, Bool, proglist_uint64_e.pl_u64_valid(O.words_new(0))) == True{} : Bool}:
   PRV.proglist_uint64_serialize_vunit_pl_u64_range_lo_0()
 

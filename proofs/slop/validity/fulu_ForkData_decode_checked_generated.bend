@@ -26,6 +26,14 @@ def ForkData_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluForkData_r.ForkData_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
   {==}
 
+def ForkData_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluForkData_r.ForkData_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluForkData_r.ForkData_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
+  {==}
+
+def ForkData_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluForkData_r.ForkData_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluForkData_r.ForkData_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
+  {==}
+
 def ForkData_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(36, 36, (B.Buf{Array.new(U32, 4n, 0), 36}, 9))), Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_decode_checked(B.Buf{Array.new(U32, 4n, 0), 36}, 36))) == (True{}, True{}) : Bool & Bool}:
   {==}

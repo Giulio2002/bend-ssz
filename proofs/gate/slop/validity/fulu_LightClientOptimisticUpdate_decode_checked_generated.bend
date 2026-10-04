@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_ge
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 250))), Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 1000))) == (True{}, True{}) : Bool & Bool}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_accept()
 
+def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  PRV.LightClientOptimisticUpdate_decode_vchecked_at_2pow31(buf)
+
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_limit()
 
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_nmax_above(buf)
+
+def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  PRV.LightClientOptimisticUpdate_decode_vchecked_nmax_at(buf)
 
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_nmax_wrap(buf)

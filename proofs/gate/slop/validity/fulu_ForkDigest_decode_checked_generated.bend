@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_ForkDigest_decode_checked_generated.bend as P
 def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluForkDigest_r.ForkDigest_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))), Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluForkDigest_r.ForkDigest_decode_checked(B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == (True{}, True{}) : Bool & Bool}:
   PRV.ForkDigest_decode_vchecked_accept()
 
+def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluForkDigest_r.ForkDigest_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluForkDigest_r.ForkDigest_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.ForkDigest_decode_vchecked_at_2pow31(buf)
+
 def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluForkDigest_r.ForkDigest_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.ForkDigest_decode_vchecked_limit()
 
 def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluForkDigest_r.ForkDigest_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.ForkDigest_decode_vchecked_nmax_above(buf)
+
+def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluForkDigest_r.ForkDigest_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluForkDigest_r.ForkDigest_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.ForkDigest_decode_vchecked_nmax_at(buf)
 
 def ForkDigest__decode_offsets__ForkDigest_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluForkDigest_r.ForkDigest_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.ForkDigest_decode_vchecked_nmax_wrap(buf)

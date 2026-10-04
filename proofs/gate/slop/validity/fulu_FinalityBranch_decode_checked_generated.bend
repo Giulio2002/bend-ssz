@@ -10,11 +10,17 @@ import ../../../slop/validity/fulu_FinalityBranch_decode_checked_generated.bend 
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_dchw(224, 224, (B.Buf{Array.new(U32, 6n, 0), 224}, 56))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked(B.Buf{Array.new(U32, 6n, 0), 224}, 224))) == (True{}, True{}) : Bool & Bool}:
   PRV.FinalityBranch_decode_vchecked_accept()
 
+def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluFinalityBranch_r.FinalityBranch_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.FinalityBranch_decode_vchecked_at_2pow31(buf)
+
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.FinalityBranch_decode_vchecked_limit()
 
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.FinalityBranch_decode_vchecked_nmax_above(buf)
+
+def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluFinalityBranch_r.FinalityBranch_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.FinalityBranch_decode_vchecked_nmax_at(buf)
 
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.FinalityBranch_decode_vchecked_nmax_wrap(buf)

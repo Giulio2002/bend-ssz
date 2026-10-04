@@ -106,6 +106,12 @@ def proglist_uint32__serialize_valid__proglist_uint32_serialize_vunit_pl_u32_acc
 def proglist_uint32__serialize_valid__proglist_uint32_serialize_vunit_pl_u32_range_lo_0() -> {Pair.snd(P4_O.Words, Bool, proglist_uint32_e.pl_u32_valid(P4_O.words_new(0))) == True{} : Bool}:
   P4_PRV.proglist_uint32_serialize_vunit_pl_u32_range_lo_0()
 
+def proglist_uint32__serialize_valid__proglist_uint32_serialize_vunit_pl_u32_range_hi_full() -> {Pair.snd(P4_O.Words, Bool, proglist_uint32_e.pl_u32_valid(P4_O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  P4_PRV.proglist_uint32_serialize_vunit_pl_u32_range_hi_full()
+
+def proglist_uint32__serialize_valid__proglist_uint32_serialize_vunit_pl_u32_range_above_full() -> {Pair.snd(P4_O.Words, Bool, proglist_uint32_e.pl_u32_valid(P4_O.Words{Array.new(U32, 30n, 0), 4294967268})) == False{} : Bool}:
+  P4_PRV.proglist_uint32_serialize_vunit_pl_u32_range_above_full()
+
 def proglist_uint32__serialize_valid__proglist_uint32_serialize_vunit_ok_4() -> {(P4_O.unit_ok(4, 1), (P4_O.unit_ok(4, 2), (P4_O.unit_ok(4, 3), (P4_O.unit_ok(4, 4), (P4_O.unit_ok(4, 5), (P4_O.unit_ok(4, 7), (P4_O.unit_ok(4, 8), (P4_O.unit_ok(4, 12), P4_O.unit_ok(4, 14))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
   P4_PRV.proglist_uint32_serialize_vunit_ok_4()
 

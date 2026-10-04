@@ -121,6 +121,12 @@ def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_nmax_
 def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluExecutionAddress_r.ExecutionAddress_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   P7_PRV.ExecutionAddress_decode_vchecked_nmax_above(buf)
 
+def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluExecutionAddress_r.ExecutionAddress_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluExecutionAddress_r.ExecutionAddress_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P7_PRV.ExecutionAddress_decode_vchecked_nmax_at(buf)
+
+def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluExecutionAddress_r.ExecutionAddress_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluExecutionAddress_r.ExecutionAddress_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P7_PRV.ExecutionAddress_decode_vchecked_at_2pow31(buf)
+
 def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (P7_B.Buf{Array.new(U32, 3n, 0), 20}, 5))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.ExecutionAddress_decode_vchecked_accept()
 

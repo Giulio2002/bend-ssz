@@ -11,11 +11,17 @@ import ../../../slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend 
 def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>, FuluBlobIdentifier_r.BlobIdentifier_dchw(40, 40, (B.Buf{Array.new(U32, 4n, 0), 40}, 10))), Pair.snd(B.Buf, Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>, FuluBlobIdentifier_r.BlobIdentifier_decode_checked(B.Buf{Array.new(U32, 4n, 0), 40}, 40))) == (True{}, True{}) : Bool & Bool}:
   PRV.BlobIdentifier_decode_vchecked_accept()
 
+def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBlobIdentifier_r.BlobIdentifier_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBlobIdentifier_r.BlobIdentifier_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
+  PRV.BlobIdentifier_decode_vchecked_at_2pow31(buf)
+
 def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>, FuluBlobIdentifier_r.BlobIdentifier_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
   PRV.BlobIdentifier_decode_vchecked_limit()
 
 def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluBlobIdentifier_r.BlobIdentifier_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
   PRV.BlobIdentifier_decode_vchecked_nmax_above(buf)
+
+def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluBlobIdentifier_r.BlobIdentifier_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBlobIdentifier_r.BlobIdentifier_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
+  PRV.BlobIdentifier_decode_vchecked_nmax_at(buf)
 
 def BlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluBlobIdentifier_r.BlobIdentifier_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
   PRV.BlobIdentifier_decode_vchecked_nmax_wrap(buf)

@@ -262,6 +262,12 @@ def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   P7_PRV.ProgressiveBitsStruct_decode_vchecked_nmax_above(buf)
 
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  P7_PRV.ProgressiveBitsStruct_decode_vchecked_nmax_at(buf)
+
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  P7_PRV.ProgressiveBitsStruct_decode_vchecked_at_2pow31(buf)
+
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 426, (P7_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 107))), Pair.snd(P7_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(P7_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 426))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.ProgressiveBitsStruct_decode_vchecked_accept()
 
