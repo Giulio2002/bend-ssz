@@ -58,11 +58,11 @@ def l134217728_PendingDeposit_va_cap(ok: Bool, +n: U32, pair: Array<FuluPendingD
   (arr, +c) = pair
   (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
 
-def l134217728_PendingDeposit_valid(o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool:
+def l134217728_PendingDeposit_valid_f(o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool:
   match o:
     case Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{arr, +n}: l134217728_PendingDeposit_va_cap(Bool.or(False{}, U32.is_le(n, 134217728)), n, Array.size(FuluPendingDeposit_d.PendingDeposit, arr))
 
-def l134217728_PendingDeposit_putk(out: Array<U32>, +pos: U32, o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32): l134217728_PendingDeposit_pk(out, pos, l134217728_PendingDeposit_valid(o))
+def l134217728_PendingDeposit_putk(out: Array<U32>, +pos: U32, o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32): l134217728_PendingDeposit_pk(out, pos, l134217728_PendingDeposit_valid_f(o))
 
 def l134217728_PendingDeposit_pvb(+cur: U32, pair: Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32)) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32):
   (out, r) = pair
@@ -71,3 +71,14 @@ def l134217728_PendingDeposit_pvb(+cur: U32, pair: Array<U32> & (Fulu_list_Pendi
 
 def l134217728_PendingDeposit_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Array<U32> & (Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32):
   l134217728_PendingDeposit_pvb(cur, l134217728_PendingDeposit_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def l134217728_PendingDeposit_vsz_go(ok: Bool, pair: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def l134217728_PendingDeposit_vsz(pair: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool:
+  (o, ok) = pair
+  l134217728_PendingDeposit_vsz_go(ok, l134217728_PendingDeposit_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def l134217728_PendingDeposit_valid(o: Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq) -> Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool: l134217728_PendingDeposit_vsz(l134217728_PendingDeposit_valid_f(o))

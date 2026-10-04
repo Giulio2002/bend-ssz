@@ -32,7 +32,7 @@ def l1048576_bl1073741824_sz(+k: Nat, +i: U32, st: Array<O.Boxed<O.Words>> & (U3
 def l1048576_bl1073741824_sz_fin(+n: U32, st: Array<O.Boxed<O.Words>> & (U32 & O.Boxed<O.Words>)) -> Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq & U32:
   (arr, r) = st
   (m, sp) = r
-  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd((4 * n : U32), m))
+  (Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{arr, n}, O.padd(O.mul4c(n), m))
 
 def l1048576_bl1073741824_sz_nz(empty: Bool, arr: Array<O.Boxed<O.Words>>, +n: U32) -> Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq & U32:
   match empty:

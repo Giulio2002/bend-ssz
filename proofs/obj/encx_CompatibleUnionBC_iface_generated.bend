@@ -51,7 +51,7 @@ def TH0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> CompatibleUnionBC
 def OK0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> Bool: Bool.and(EA_ProgressiveSingleListContainerTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(28n))))
 def ENC0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> +List<U32>: Con{U32.and(2, 255), EA_ProgressiveSingleListContainerTestStruct.ENC(x)}
 def VAL0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> S.Value: S.Selected{2, EA_ProgressiveSingleListContainerTestStruct.VAL(x)}
-def SZ0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> U32: (EA_ProgressiveSingleListContainerTestStruct.SZ(x) + 1 : U32)
+def SZ0(+x: EA_ProgressiveSingleListContainerTestStruct.MW) -> U32: O.padd(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1)
 def PUTX0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EA_ProgressiveSingleListContainerTestStruct.PUTX(x, dd, VU.DS(dd, D, q, r, 2), VU.AQ(q, r), VU.AR(r))
 def RT0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {CompatibleUnionBC_e.CompatibleUnionBC_putk(FD.array__thaw(U32, D), X, TH0(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.CompatibleUnionBC & U32)}
@@ -108,8 +108,7 @@ def pfx0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +dd: Nat, +D: FD.ar
 def bnd0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +hok: {OK0(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Nat.is_le(List.length(&2, U32, ENC0(x)), A.quad(VB.pw(k))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(z))) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), and_r(EA_ProgressiveSingleListContainerTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok))
 def szk0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +hok: {OK0(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(SZ0(x)) == List.length(&2, U32, ENC0(x)) : Nat}:
-  VB.add_le_at(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1, List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), 2n+k, EA_ProgressiveSingleListContainerTestStruct.szx(x, and_l(EA_ProgressiveSingleListContainerTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)),
-    FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), bnd0(x, hok, k, ek))
+  VU.padd1_at(EA_ProgressiveSingleListContainerTestStruct.SZ(x), List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), k, ek, EA_ProgressiveSingleListContainerTestStruct.szx(x, and_l(EA_ProgressiveSingleListContainerTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)), bnd0(x, hok, k, ek))
 def spec0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +hok: {OK0(x) == True{} : Bool}) -> {Codec.parts(VAL0(x), Spec.CompatibleUnionBC()) == Some{[S.Variable{ENC0(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_v(2, EA_ProgressiveSingleListContainerTestStruct.VAL(x), Spec.ProgressiveSingleListContainerTestStruct(), EA_ProgressiveSingleListContainerTestStruct.ENC(x), EA_ProgressiveSingleListContainerTestStruct.encx_spec(x, and_l(EA_ProgressiveSingleListContainerTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveSingleListContainerTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)))
 def size0(+x: EA_ProgressiveSingleListContainerTestStruct.MW, +hok: {OK0(x) == True{} : Bool}) -> {CompatibleUnionBC_e.CompatibleUnionBC_size(TH0(x)) == (TH0(x), SZ0(x)) : CompatibleUnionBC_d.CompatibleUnionBC & U32}:
@@ -124,7 +123,7 @@ def TH1(+x: EA_ProgressiveVarTestStruct.MW) -> CompatibleUnionBC_d.CompatibleUni
 def OK1(+x: EA_ProgressiveVarTestStruct.MW) -> Bool: Bool.and(EA_ProgressiveVarTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(28n))))
 def ENC1(+x: EA_ProgressiveVarTestStruct.MW) -> +List<U32>: Con{U32.and(3, 255), EA_ProgressiveVarTestStruct.ENC(x)}
 def VAL1(+x: EA_ProgressiveVarTestStruct.MW) -> S.Value: S.Selected{3, EA_ProgressiveVarTestStruct.VAL(x)}
-def SZ1(+x: EA_ProgressiveVarTestStruct.MW) -> U32: (EA_ProgressiveVarTestStruct.SZ(x) + 1 : U32)
+def SZ1(+x: EA_ProgressiveVarTestStruct.MW) -> U32: O.padd(EA_ProgressiveVarTestStruct.SZ(x), 1)
 def PUTX1(+x: EA_ProgressiveVarTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EA_ProgressiveVarTestStruct.PUTX(x, dd, VU.DS(dd, D, q, r, 3), VU.AQ(q, r), VU.AR(r))
 def RT1(+x: EA_ProgressiveVarTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {CompatibleUnionBC_e.CompatibleUnionBC_putk(FD.array__thaw(U32, D), X, TH1(x)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.CompatibleUnionBC & U32)}
@@ -181,8 +180,7 @@ def pfx1(+x: EA_ProgressiveVarTestStruct.MW, +dd: Nat, +D: FD.array__Tree<U32>, 
 def bnd1(+x: EA_ProgressiveVarTestStruct.MW, +hok: {OK1(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Nat.is_le(List.length(&2, U32, ENC1(x)), A.quad(VB.pw(k))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(z))) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), and_r(EA_ProgressiveVarTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok))
 def szk1(+x: EA_ProgressiveVarTestStruct.MW, +hok: {OK1(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(SZ1(x)) == List.length(&2, U32, ENC1(x)) : Nat}:
-  VB.add_le_at(EA_ProgressiveVarTestStruct.SZ(x), 1, List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), 2n+k, EA_ProgressiveVarTestStruct.szx(x, and_l(EA_ProgressiveVarTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)),
-    FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), bnd1(x, hok, k, ek))
+  VU.padd1_at(EA_ProgressiveVarTestStruct.SZ(x), List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), k, ek, EA_ProgressiveVarTestStruct.szx(x, and_l(EA_ProgressiveVarTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)), bnd1(x, hok, k, ek))
 def spec1(+x: EA_ProgressiveVarTestStruct.MW, +hok: {OK1(x) == True{} : Bool}) -> {Codec.parts(VAL1(x), Spec.CompatibleUnionBC()) == Some{[S.Variable{ENC1(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_v(3, EA_ProgressiveVarTestStruct.VAL(x), Spec.ProgressiveVarTestStruct(), EA_ProgressiveVarTestStruct.ENC(x), EA_ProgressiveVarTestStruct.encx_spec(x, and_l(EA_ProgressiveVarTestStruct.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_ProgressiveVarTestStruct.ENC(x)), A.quad(VB.pw(28n))), hok)))
 def size1(+x: EA_ProgressiveVarTestStruct.MW, +hok: {OK1(x) == True{} : Bool}) -> {CompatibleUnionBC_e.CompatibleUnionBC_size(TH1(x)) == (TH1(x), SZ1(x)) : CompatibleUnionBC_d.CompatibleUnionBC & U32}:

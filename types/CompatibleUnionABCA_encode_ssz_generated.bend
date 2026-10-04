@@ -16,11 +16,11 @@ import ./CompatibleUnionABCA_def_generated.bend as CompatibleUnionABCA_d
 
 def CompatibleUnionABCA_sz1(pair: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & U32) -> CompatibleUnionABCA_d.CompatibleUnionABCA & U32:
   (v, +m) = pair
-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, (m + 1 : U32))
+  (CompatibleUnionABCA_d.CompatibleUnionABCA_c1{v}, O.padd(m, 1))
 
 def CompatibleUnionABCA_sz2(pair: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & U32) -> CompatibleUnionABCA_d.CompatibleUnionABCA & U32:
   (v, +m) = pair
-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, (m + 1 : U32))
+  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, O.padd(m, 1))
 
 def CompatibleUnionABCA_size(o: CompatibleUnionABCA_d.CompatibleUnionABCA) -> CompatibleUnionABCA_d.CompatibleUnionABCA & U32:
   match o:

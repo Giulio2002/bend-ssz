@@ -31,6 +31,6 @@ def SignedBeaconBlockHeader_bx_rt(+v: FuluSignedBeaconBlockHeader_d.SignedBeacon
 def SignedBeaconBlockHeader_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, +seg: U32) -> B.Buf & (O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader> & D.Digest):
   match o:
     case O.BSome{+v, rest}: SignedBeaconBlockHeader_bx_rt(v, SignedBeaconBlockHeader_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def SignedBeaconBlockHeader_hash_tree_root(h: B.Buf, +o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> B.Buf & D.Digest: SignedBeaconBlockHeader_root(64n, h, o, 0)

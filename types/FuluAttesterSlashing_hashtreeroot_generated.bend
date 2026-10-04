@@ -32,6 +32,6 @@ def AttesterSlashing_bx_rt(pair: B.Buf & (FuluAttesterSlashing_d.AttesterSlashin
 def AttesterSlashing_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, +seg: U32) -> B.Buf & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & D.Digest):
   match o:
     case O.BSome{v, rest}: AttesterSlashing_bx_rt(AttesterSlashing_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluAttesterSlashing_d.AttesterSlashing_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def AttesterSlashing_hash_tree_root(h: B.Buf, o: FuluAttesterSlashing_d.AttesterSlashing) -> B.Buf & (FuluAttesterSlashing_d.AttesterSlashing & D.Digest): AttesterSlashing_root(64n, h, o, 0)

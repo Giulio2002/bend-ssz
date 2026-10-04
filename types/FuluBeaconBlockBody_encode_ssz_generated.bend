@@ -298,9 +298,20 @@ def BeaconBlockBody_va0(g1: FuluBeaconBlockBody_d.BeaconBlockBody_g1, acc: Bool,
   (g0, ok) = pair
   BeaconBlockBody_va1(g0, Bool.and(acc, ok), BeaconBlockBody_g1_valid(g1))
 
-def BeaconBlockBody_valid(o: FuluBeaconBlockBody_d.BeaconBlockBody) -> FuluBeaconBlockBody_d.BeaconBlockBody & Bool:
+def BeaconBlockBody_valid_f(o: FuluBeaconBlockBody_d.BeaconBlockBody) -> FuluBeaconBlockBody_d.BeaconBlockBody & Bool:
   match o:
     case FuluBeaconBlockBody_d.BeaconBlockBody{g0, g1}: BeaconBlockBody_va0(g1, True{}, BeaconBlockBody_g0_valid(g0))
+
+def BeaconBlockBody_vsz_go(ok: Bool, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> FuluBeaconBlockBody_d.BeaconBlockBody & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def BeaconBlockBody_vsz(pair: FuluBeaconBlockBody_d.BeaconBlockBody & Bool) -> FuluBeaconBlockBody_d.BeaconBlockBody & Bool:
+  (o, ok) = pair
+  BeaconBlockBody_vsz_go(ok, BeaconBlockBody_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def BeaconBlockBody_valid(o: FuluBeaconBlockBody_d.BeaconBlockBody) -> FuluBeaconBlockBody_d.BeaconBlockBody & Bool: BeaconBlockBody_vsz(BeaconBlockBody_valid_f(o))
 
 def BeaconBlockBody_bx_va_back(pair: FuluBeaconBlockBody_d.BeaconBlockBody & Bool) -> O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool:
   (v, ok) = pair

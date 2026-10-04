@@ -493,7 +493,8 @@
     "call_chain": "X_decode_checked -> X_decode_in -> X_read -> pl_pl_VarTestStruct_read / pl_ProgressiveVarTestStruct_read: one boxed element per offset (about 64 heap bytes per 4 input bytes, 195 per 14)",
     "why": "the runtime heap stops at 61.9 GB whatever ulimit -d allows; the NMAX lift made 2^31..NMAX windows decodable and the in-memory form of the largest of them does not fit (before: < 2^31 bytes, <= 2^29 offsets, 38 GB)",
     "fix": "a count bound for variable-size-element lists in X_decode_checked (e.g. 2^28, documented as a capacity limit next to NMAX), or a cheaper empty element, or documentation of the practical limit (about 3.5 GB of such lists)",
-    "proof_impact": "bound in the checked entry only: its slop laws (as R2-04); the frozen decode statements are about _decode"
+    "proof_impact": "bound in the checked entry only: its slop laws (as R2-04); the frozen decode statements are about _decode",
+    "status": "ACCEPTED by decision (Giulio): a capacity limit of the runtime heap, documented in docs/API_CONTRACTS.md; no count cap"
    },
    {
     "id": "R4-01",
@@ -506,7 +507,8 @@
     "call_chain": "X_root -> words_root(_prog) -> wr_cap (last chunk dirty) -> wr_slow (covered) -> wr_clean(words_copy(n, ws)) -> zeros_for(n): (n + 31) >> 5 wraps, 8-word copy, cc_go copies 2^30 words through the index mask",
     "why": "the CH-11 / R2-02(b) clean copy allocates with the U32 chunk rounding, which wraps above NMAX; words_ok has no NMAX bound for big lists, so such an object is valid",
     "fix": "take the clean copy only for n <= NMAX (else the cap_cnt path) or size it wrap-free like bits_nbytes; or bound words_ok by NMAX for big lists (R4-05)",
-    "proof_impact": "first two: src/obj.bend only (root laws hold under rep, below NMAX); the third changes the *_valid statements"
+    "proof_impact": "first two: src/obj.bend only (root laws hold under rep, below NMAX); the third changes the *_valid statements",
+    "status": "FIXED (crash-fix5): the clean copy of the root path is sized without the wrap of n + 31 (O.zeros_copy); with R4-05 such an object is also not valid"
    },
    {
     "id": "R4-04",
@@ -519,7 +521,8 @@
     "call_chain": "X_size -> sz<k>: (m + 1 : U32) with m the payload marker 4294967295",
     "why": "the selector byte is added with a plain U32 sum; with the old marker 2^31 bit 31 survived, with 4294967295 it wraps to 0 (regression of the marker change); _serialize unaffected (checked writer sees valid=0), no container holds a union",
     "fix": "O.padd(m, 1) in the union size pass (generator)",
-    "proof_impact": "union size laws: m + 1 for a valid payload equals padd(m, 1); one rewrite per union"
+    "proof_impact": "union size laws: m + 1 for a valid payload equals padd(m, 1); one rewrite per union",
+    "status": "FIXED (crash-fix5): the union size adds its selector byte with O.padd; audit of every plain + on a size in docs/CRASH_HUNT.md section crash-fix5"
    },
    {
     "id": "R4-03",
@@ -532,7 +535,8 @@
     "call_chain": "X_serialize -> X_size -> pl_pl_VarTestStruct_sz_fin; writer pl_pl_VarTestStruct_pvn_nz",
     "why": "the offset table size is not a checked product; only this list can reach it (other element types are >= 7 bytes, padd saturates first); append bound n < 2^32-1; _decode cannot (4n > NMAX)",
     "fix": "O.mulc(n, 4) in the size pass, or the append bound n < floor(NMAX / 4) for variable-size-element lists",
-    "proof_impact": "var-list size laws (one product) and the append guard text of one list"
+    "proof_impact": "var-list size laws (one product) and the append guard text of one list",
+    "status": "FIXED (crash-fix5): the offset table of a list of variable-size elements is the checked O.mul4c(n) in the size pass"
    },
    {
     "id": "R4-05",
@@ -544,7 +548,8 @@
     "observed": "valid=1 while _serialize refuses (ser_ok=0) and _encode returns length 0",
     "why": "validity tests storage and per-field bounds, not the NMAX size limit; _hash_tree_root takes _valid as its precondition (R4-01)",
     "fix": "document that valid does not imply encodable above NMAX, or bound words_ok for big lists",
-    "proof_impact": "documentation: none"
+    "proof_impact": "documentation: none",
+    "status": "FIXED (crash-fix5): _valid is 0 above NMAX for packed lists (words_ok hi = NMAX), lists of fixed-size elements and containers / unions that can pass NMAX (_valid = the fields part _valid_f and the size pass within NMAX)"
    },
    {
     "id": "R4-06",
@@ -553,8 +558,17 @@
     "entry_point": "docs/API_CONTRACTS.md",
     "observed": "table rows X_decode_checked (size < 2^31), X_serialize (2^31 marker, R3-03 known gap), X_encode (allocates the 2^31 marker), X_set/X_append (17,747,798 validators) contradict the closing paragraph and the code",
     "fix": "update the rows to marker 4294967295, NMAX, _encode empty, 35,495,597 validators",
-    "proof_impact": "none"
+    "proof_impact": "none",
+    "status": "FIXED (crash-fix5): docs/API_CONTRACTS.md table rows"
    }
-  ]
+  ],
+  "fix_status": {
+   "R4-01": "FIXED (crash-fix5): the clean copy of the root path is sized without the wrap of n + 31 (O.zeros_copy); with R4-05 such an object is also not valid",
+   "R4-02": "ACCEPTED by decision (Giulio): a capacity limit of the runtime heap, documented in docs/API_CONTRACTS.md; no count cap",
+   "R4-03": "FIXED (crash-fix5): the offset table of a list of variable-size elements is the checked O.mul4c(n) in the size pass",
+   "R4-04": "FIXED (crash-fix5): the union size adds its selector byte with O.padd; audit of every plain + on a size in docs/CRASH_HUNT.md section crash-fix5",
+   "R4-05": "FIXED (crash-fix5): _valid is 0 above NMAX for packed lists (words_ok hi = NMAX), lists of fixed-size elements and containers / unions that can pass NMAX (_valid = the fields part _valid_f and the size pass within NMAX)",
+   "R4-06": "FIXED (crash-fix5): docs/API_CONTRACTS.md table rows"
+  }
  }
 }

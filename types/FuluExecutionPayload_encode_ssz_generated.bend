@@ -210,9 +210,20 @@ def ExecutionPayload_va0(g1: FuluExecutionPayload_d.ExecutionPayload_g1, +g2: Fu
   (g0, ok) = pair
   ExecutionPayload_va1(g0, g2, Bool.and(acc, ok), ExecutionPayload_g1_valid(g1))
 
-def ExecutionPayload_valid(o: FuluExecutionPayload_d.ExecutionPayload) -> FuluExecutionPayload_d.ExecutionPayload & Bool:
+def ExecutionPayload_valid_f(o: FuluExecutionPayload_d.ExecutionPayload) -> FuluExecutionPayload_d.ExecutionPayload & Bool:
   match o:
     case FuluExecutionPayload_d.ExecutionPayload{g0, g1, +g2}: ExecutionPayload_va0(g1, g2, True{}, ExecutionPayload_g0_valid(g0))
+
+def ExecutionPayload_vsz_go(ok: Bool, pair: FuluExecutionPayload_d.ExecutionPayload & U32) -> FuluExecutionPayload_d.ExecutionPayload & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def ExecutionPayload_vsz(pair: FuluExecutionPayload_d.ExecutionPayload & Bool) -> FuluExecutionPayload_d.ExecutionPayload & Bool:
+  (o, ok) = pair
+  ExecutionPayload_vsz_go(ok, ExecutionPayload_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def ExecutionPayload_valid(o: FuluExecutionPayload_d.ExecutionPayload) -> FuluExecutionPayload_d.ExecutionPayload & Bool: ExecutionPayload_vsz(ExecutionPayload_valid_f(o))
 
 def ExecutionPayload_bx_va_back(pair: FuluExecutionPayload_d.ExecutionPayload & Bool) -> O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & Bool:
   (v, ok) = pair

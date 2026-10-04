@@ -58,11 +58,11 @@ def l1099511627776_Validator_va_cap(ok: Bool, +n: U32, pair: Array<FuluValidator
   (arr, +c) = pair
   (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, n}, Bool.and(ok, U32.is_le(n, c)))
 
-def l1099511627776_Validator_valid(o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool:
+def l1099511627776_Validator_valid_f(o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool:
   match o:
     case Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_va_cap(Bool.or(True{}, U32.is_le(n, 0)), n, Array.size(FuluValidator_d.Validator, arr))
 
-def l1099511627776_Validator_putk(out: Array<U32>, +pos: U32, o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32): l1099511627776_Validator_pk(out, pos, l1099511627776_Validator_valid(o))
+def l1099511627776_Validator_putk(out: Array<U32>, +pos: U32, o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32): l1099511627776_Validator_pk(out, pos, l1099511627776_Validator_valid_f(o))
 
 def l1099511627776_Validator_pvb(+cur: U32, pair: Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32):
   (out, r) = pair
@@ -71,3 +71,14 @@ def l1099511627776_Validator_pvb(+cur: U32, pair: Array<U32> & (Fulu_list_Valida
 
 def l1099511627776_Validator_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32):
   l1099511627776_Validator_pvb(cur, l1099511627776_Validator_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def l1099511627776_Validator_vsz_go(ok: Bool, pair: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def l1099511627776_Validator_vsz(pair: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool:
+  (o, ok) = pair
+  l1099511627776_Validator_vsz_go(ok, l1099511627776_Validator_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def l1099511627776_Validator_valid(o: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool: l1099511627776_Validator_vsz(l1099511627776_Validator_valid_f(o))

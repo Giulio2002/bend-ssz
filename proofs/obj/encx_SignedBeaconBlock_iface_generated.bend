@@ -505,15 +505,23 @@ def sizex(m, hok):
   match m:
     case MW{+m_message, +signature}: sizeC(m_message, signature, hok)
 
-def rvalidC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
+def rvalidC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
   %Equal.sym(FuluBeaconBlock_d.BeaconBlock & Bool, FuluBeaconBlock_e.BeaconBlock_valid(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), True{}), EC_BeaconBlock.validx(m_message, ok_hok_message(m_message, signature, h))) :
     {FuluSignedBeaconBlock_e.SignedBeaconBlock_va0(signature, True{}, _) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
   {==}
 
+# the fields' validity (`_valid_f`) and the size pass within NMAX (docs/CRASH_HUNT.md R4-05)
+def validx_f(m: MW, +hok: {OK(m) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(TH(m)) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
+  match m:
+    case MW{+m_message, +signature}: rvalidC(m_message, signature, hok)
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
   {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(TH(m)) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
 def validx(m, hok):
-  match m:
-    case MW{+m_message, +signature}: rvalidC(m_message, signature, hok)
+  %Equal.sym(FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(TH(m)), (TH(m), True{}), validx_f(m, hok)) : {FuluSignedBeaconBlock_e.SignedBeaconBlock_vsz(_) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  %Equal.sym(FuluSignedBeaconBlock_d.SignedBeaconBlock & U32, FuluSignedBeaconBlock_e.SignedBeaconBlock_size(TH(m)), (TH(m), SZ(m)), sizex(m, hok)) : {FuluSignedBeaconBlock_e.SignedBeaconBlock_vsz_go(True{}, _) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  %Equal.sym(Bool, O.is_poisoned(SZ(m)), False{}, VB.np_qk(SZ(m), List.length(&2, U32, ENC(m)), 28n, {==}, szx(m, hok), bndx(m, hok, 28n, {==}))) :
+    {(TH(m), Bool.and(True{}, Bool.not(_))) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  {==}
+

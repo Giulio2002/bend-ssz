@@ -435,6 +435,13 @@ def mulc_lim(+n: U32, +es: U32, +lim: U32, +hn: {U32.is_le(n, lim) == True{} : B
 def mulc_limn(+n: U32, +es: U32, +lim: U32, +hn: {Nat.is_le(U32.to_nat(n), U32.to_nat(lim)) == True{} : Bool}, +hlk: {U32.is_le(lim, U32.div(VB.NMAX(), es)) == True{} : Bool}) -> {O.mulc(n, es) == U32.mul(n, es) : U32}:
   mulc_lim(n, es, lim, F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(lim)), U32.is_le(n, lim), Equal.sym(Bool, U32.is_le(n, lim), Nat.is_le(U32.to_nat(n), U32.to_nat(lim)), VB.le_u32n(n, lim)), hn), hlk)
 
+# the offset table's checked product (O.mul4c) is 4 * N when 4 N <= NMAX.
+def mul4c_q(+N: U32, +h: {Nat.is_le(A.quad(U32.to_nat(N)), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {O.mul4c(N) == U32.mul(4, N) : U32}:
+  +h4 = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, A.quad(U32.to_nat(N)), Nat.mul(U32.to_nat(N), 4n), Equal.sym(Nat, Nat.mul(U32.to_nat(N), 4n), A.quad(U32.to_nat(N)), VC.quad_mul(U32.to_nat(N))), h)
+  +hK = le_div(N, 4, winit(31n, bits32(4)), small_pad(4, 3n, {==}, {==}), {==}, {==}, h4)
+  %Equal.sym(Bool, U32.is_le(N, U32.div(VB.NMAX(), 4)), True{}, hK) : {O.pick(_, U32.mul(4, N), O.poison()) == U32.mul(4, N) : U32}
+  {==}
+
 # mulc_nat for a small element size es < 2^k (k <= 31): the 31-bit word of es is built here.
 def mulc_nat_k(+n: U32, +es: U32, +k: Nat, +hk: {Nat.is_le(k, 31n) == True{} : Bool}, +hlt: {Nat.is_lt(U32.to_nat(es), F.spec_common__pow2(k)) == True{} : Bool},
     +hes: {Nat.is_le(1n, U32.to_nat(es)) == True{} : Bool}, +hz: {U32.is_zero(es) == False{} : Bool},

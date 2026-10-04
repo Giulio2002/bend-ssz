@@ -42,6 +42,6 @@ def DepositData_bx_rt(+v: FuluDepositData_d.DepositData, pair: B.Buf & D.Digest)
 def DepositData_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluDepositData_d.DepositData>, +seg: U32) -> B.Buf & (O.Boxed<FuluDepositData_d.DepositData> & D.Digest):
   match o:
     case O.BSome{+v, rest}: DepositData_bx_rt(v, DepositData_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluDepositData_d.DepositData_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def DepositData_hash_tree_root(h: B.Buf, +o: FuluDepositData_d.DepositData) -> B.Buf & D.Digest: DepositData_root(64n, h, o, 0)

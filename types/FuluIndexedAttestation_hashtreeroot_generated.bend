@@ -38,6 +38,6 @@ def IndexedAttestation_bx_rt(pair: B.Buf & (FuluIndexedAttestation_d.IndexedAtte
 def IndexedAttestation_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, +seg: U32) -> B.Buf & (O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & D.Digest):
   match o:
     case O.BSome{v, rest}: IndexedAttestation_bx_rt(IndexedAttestation_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluIndexedAttestation_d.IndexedAttestation_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def IndexedAttestation_hash_tree_root(h: B.Buf, o: FuluIndexedAttestation_d.IndexedAttestation) -> B.Buf & (FuluIndexedAttestation_d.IndexedAttestation & D.Digest): IndexedAttestation_root(64n, h, o, 0)

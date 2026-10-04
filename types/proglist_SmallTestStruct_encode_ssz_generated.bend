@@ -81,11 +81,11 @@ def pl_SmallTestStruct_va_cap(ok: Bool, +n: U32, pair: Array<SmallTestStruct_d.S
   (arr, +c) = pair
   pl_SmallTestStruct_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
 
-def pl_SmallTestStruct_valid(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool:
+def pl_SmallTestStruct_valid_f(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool:
   match o:
     case proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_va_cap(True{}, n, Array.size(SmallTestStruct_d.SmallTestStruct, arr))
 
-def pl_SmallTestStruct_putk(out: Array<U32>, +pos: U32, o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32): pl_SmallTestStruct_pk(out, pos, pl_SmallTestStruct_valid(o))
+def pl_SmallTestStruct_putk(out: Array<U32>, +pos: U32, o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32): pl_SmallTestStruct_pk(out, pos, pl_SmallTestStruct_valid_f(o))
 
 def pl_SmallTestStruct_pvb(+cur: U32, pair: Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32)) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32):
   (out, r) = pair
@@ -94,3 +94,14 @@ def pl_SmallTestStruct_pvb(+cur: U32, pair: Array<U32> & (proglist_SmallTestStru
 
 def pl_SmallTestStruct_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32):
   pl_SmallTestStruct_pvb(cur, pl_SmallTestStruct_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def pl_SmallTestStruct_vsz_go(ok: Bool, pair: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def pl_SmallTestStruct_vsz(pair: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool:
+  (o, ok) = pair
+  pl_SmallTestStruct_vsz_go(ok, pl_SmallTestStruct_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def pl_SmallTestStruct_valid(o: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq) -> proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool: pl_SmallTestStruct_vsz(pl_SmallTestStruct_valid_f(o))

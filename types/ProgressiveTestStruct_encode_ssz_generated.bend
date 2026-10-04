@@ -98,15 +98,26 @@ def ProgressiveTestStruct_va2(f_A: O.Words, f_B: O.Words, f_D: proglist_proglist
 
 def ProgressiveTestStruct_va1(f_A: O.Words, f_C: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, f_D: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, acc: Bool, pair: O.Words & Bool) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
   (f_B, ok) = pair
-  ProgressiveTestStruct_va2(f_A, f_B, f_D, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(f_C))
+  ProgressiveTestStruct_va2(f_A, f_B, f_D, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_C))
 
 def ProgressiveTestStruct_va0(f_B: O.Words, f_C: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, f_D: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, acc: Bool, pair: O.Words & Bool) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
   (f_A, ok) = pair
   ProgressiveTestStruct_va1(f_A, f_C, f_D, Bool.and(acc, ok), proglist_uint64_e.pl_u64_valid(f_B))
 
-def ProgressiveTestStruct_valid(o: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
+def ProgressiveTestStruct_valid_f(o: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
   match o:
     case ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}: ProgressiveTestStruct_va0(f_B, f_C, f_D, True{}, proglist_uint8_e.pl_u8_valid(f_A))
+
+def ProgressiveTestStruct_vsz_go(ok: Bool, pair: ProgressiveTestStruct_d.ProgressiveTestStruct & U32) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def ProgressiveTestStruct_vsz(pair: ProgressiveTestStruct_d.ProgressiveTestStruct & Bool) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool:
+  (o, ok) = pair
+  ProgressiveTestStruct_vsz_go(ok, ProgressiveTestStruct_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def ProgressiveTestStruct_valid(o: ProgressiveTestStruct_d.ProgressiveTestStruct) -> ProgressiveTestStruct_d.ProgressiveTestStruct & Bool: ProgressiveTestStruct_vsz(ProgressiveTestStruct_valid_f(o))
 
 def ProgressiveTestStruct_senc_out(+n: U32, out: Array<U32>, o: ProgressiveTestStruct_d.ProgressiveTestStruct, +m: U32) -> ProgressiveTestStruct_d.ProgressiveTestStruct & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))

@@ -86,7 +86,7 @@ def vnz(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +N: U32
         {proglist_SmallTestStruct_e.pl_SmallTestStruct_va_fin(N, True{}, _) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
       {==}
 
-def valid(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}:
+def valid(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}:
   %Equal.sym(Array<SmallTestStruct_d.SmallTestStruct> & U32, Array.size(SmallTestStruct_d.SmallTestStruct, FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A)), (FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), FD.u32__pow2u(da)), FD.array__size_thaw(SmallTestStruct_d.SmallTestStruct, da, A, ok_1(da, A, N, h))) :
     {proglist_SmallTestStruct_e.pl_SmallTestStruct_va_cap(True{}, N, _) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, h)) :
@@ -138,7 +138,7 @@ def ptnz(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +N: U3
 # The hypotheses of the interface, on the mirror's pieces.
 def putk_rt(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.SmallTestStruct>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
     +rtb: B0.RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0)) -> B0.RTX(da, A, N, dd, D, X, P0):
-  %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool, proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}), valid(da, A, N, h)) :
+  %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool, proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}), valid(da, A, N, h)) :
     {proglist_SmallTestStruct_e.pl_SmallTestStruct_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, B0.PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, O.mulc(N, 4))) : Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32)}
   %Equal.sym(Array<U32> & proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, proglist_SmallTestStruct_e.pl_SmallTestStruct_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A)), (FD.array__thaw(U32, B0.PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}), rtb) :
     {proglist_SmallTestStruct_e.pl_SmallTestStruct_ptn_fin(N, _) == (FD.array__thaw(U32, B0.PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, O.mulc(N, 4))) : Array<U32> & (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32)}
@@ -275,13 +275,27 @@ def sizex(m, hok):
         {(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, O.pick(_, O.mulc(N, 4), 4294967295)) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, O.mulc(N, 4)) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32}
       {==}
 
+def validx_f(m: B0.MW, +hok: {OK(m) == True{} : Bool}) -> {proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(B0.TH(m)) == (B0.TH(m), True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}:
+  match m:
+    case B0.MW{+da, +A, +N}: valid(da, A, N, hok)
+
 law validx:
   for +m: B0.MW
   for +hok: {OK(m) == True{} : Bool}
   {proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(B0.TH(m)) == (B0.TH(m), True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
 def validx(m, hok):
   match m:
-    case B0.MW{+da, +A, +N}: valid(da, A, N, hok)
+    case B0.MW{+da, +A, +N}:
+      +h30 = ok_0(da, A, N, hok)
+      +hm = VB.le31_nmax(Nat.mul(U32.to_nat(N), 4n), FD.nat__le_trans(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da)), VB.pw(31n), ok_3(da, A, N, hok),
+        FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(31n)) == True{} : Bool}, VB.pw(2n+da), A.quad(VB.pw(da)), Equal.sym(Nat, A.quad(VB.pw(da)), VB.pw(2n+da), UW.qpw(da)),
+          FD.nat__pow2_mono(2n+da, 31n, FD.nat__lt_succ_le(2n+da, 31n, h30)))))
+      +hb = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.mul(U32.to_nat(N), 4n), U32.to_nat(O.mulc(N, 4)),
+        Equal.sym(Nat, U32.to_nat(O.mulc(N, 4)), Nat.mul(U32.to_nat(N), 4n), VRX.mulck(N, 4, 31n, {==}, {==}, {==}, {==}, hm)), hm)
+      %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool, proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}), valid(da, A, N, hok)) : {proglist_SmallTestStruct_e.pl_SmallTestStruct_vsz(_) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
+      %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & U32, proglist_SmallTestStruct_e.pl_SmallTestStruct_size(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}), (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, O.mulc(N, 4)), sizex(B0.MW{da, A, N}, hok)) : {proglist_SmallTestStruct_e.pl_SmallTestStruct_vsz_go(True{}, _) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
+      %Equal.sym(Bool, O.is_poisoned(O.mulc(N, 4)), False{}, VB.np_le(O.mulc(N, 4), hb)) : {(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, Bool.and(True{}, Bool.not(_))) == (proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq{FD.array__thaw(SmallTestStruct_d.SmallTestStruct, A), N}, True{}) : proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool}
+      {==}
 
 law encx_spec:
   for +m: B0.MW

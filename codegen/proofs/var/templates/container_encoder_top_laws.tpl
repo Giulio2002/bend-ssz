@@ -171,6 +171,23 @@ def validx(m, hok):
   match m:
     case CI.MW{${pat}}: validC(${OAS}, hok)
 
+@@ full_texts_validx_f @@
+
+# The runtime's validity pass accepts the object: its fields' part (`_valid_f`) and its size within NMAX (docs/CRASH_HUNT.md R4-05).
+def validx_f(m: CI.MW, +hok: {CI.OK(m) == ${TRUE}}) -> {T.${K.p}_valid_f(CI.TH(m)) == (CI.TH(m), True{}) : T.${C} & Bool}:
+  match m:
+    case CI.MW{${pat}}: validC(${OAS}, hok)
+law validx:
+  for +m: CI.MW
+  for +hok: {CI.OK(m) == ${TRUE}}
+  {T.${K.p}_valid(CI.TH(m)) == (CI.TH(m), True{}) : T.${C} & Bool}
+def validx(m, hok):
+  %Equal.sym(T.${C} & Bool, T.${K.p}_valid_f(CI.TH(m)), (CI.TH(m), True{}), validx_f(m, hok)) : {T.${K.p}_vsz(_) == (CI.TH(m), True{}) : T.${C} & Bool}
+  %Equal.sym(T.${C} & U32, T.${K.p}_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), sizez(m, hok)) : {T.${K.p}_vsz_go(True{}, _) == (CI.TH(m), True{}) : T.${C} & Bool}
+  %Equal.sym(Bool, O.is_poisoned(CI.SZ(m)), False{}, VB.np_qk(CI.SZ(m), List.length(&2, U32, CI.ENC(m)), 28n, {==}, CI.szx(m, hok), CI.bndx(m, hok, 28n, {==}))) :
+    {(CI.TH(m), Bool.and(True{}, Bool.not(_))) == (CI.TH(m), True{}) : T.${C} & Bool}
+  {==}
+
 @@ body @@
 
 # ---- ${C} at X = 0 of a zero tree ----

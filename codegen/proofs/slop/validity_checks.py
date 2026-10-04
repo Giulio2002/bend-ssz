@@ -211,11 +211,12 @@ def expected_words(t):
         if e.kind == 'bytes':
             return (t.size * e.size, t.size * e.size, False, e.size, False)
     if k == 'plist':
+        # at most NMAX = 4294967264 bytes (docs/CRASH_HUNT.md R4-05: `_valid` agrees with `_serialize`)
         e = t.elem
         if e.kind == 'uint':
-            return (0, 0, True, e.size, False)
+            return (0, 4294967264, False, e.size, False)
         if e.kind == 'bool':
-            return (0, 0, True, 1, True)
+            return (0, 4294967264, False, 1, True)
     return None
 
 

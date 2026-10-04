@@ -42,7 +42,7 @@ def sizeCW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h:
     {FuluSignedBeaconBlock_e.SignedBeaconBlock_sz0(signature, 100, _) == (K.OBJC(m_message, signature), K.SZC(m_message, signature)) : FuluSignedBeaconBlock_d.SignedBeaconBlock & U32}
   {==}
 
-def rvalidCW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OB.OKTW(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
+def rvalidCW(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OB.OKTW(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
   %Equal.sym(FuluBeaconBlock_d.BeaconBlock & Bool, FuluBeaconBlock_e.BeaconBlock_valid(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), True{}), EC_BeaconBlocko.validxO(m_message, OB.ok_hok_messageW(m_message, signature, h))) :
     {FuluSignedBeaconBlock_e.SignedBeaconBlock_va0(signature, True{}, _) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
   {==}
@@ -55,13 +55,28 @@ def sizexO(m, hok):
   match m:
     case OB.MW{+m_message, +signature}: sizeCW(m_message, signature, hok)
 
+def validx_fO(m: OB.MW, +hok: {OB.OKW(m) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(OB.TH(m)) == (OB.TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
+  match m:
+    case OB.MW{+m_message, +signature}: rvalidCW(m_message, signature, hok)
+
+law bndxO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
+def bndxO(m, hok):
+  match m:
+    case OB.MW{+m_message, +signature}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), OB.ENDC(m_message, signature), OB.lenEW(m_message, signature, hok)), OB.ok_bndW(m_message, signature, hok))
+
 law validxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
   {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(OB.TH(m)) == (OB.TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
 def validxO(m, hok):
-  match m:
-    case OB.MW{+m_message, +signature}: rvalidCW(m_message, signature, hok)
+  %Equal.sym(FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool, FuluSignedBeaconBlock_e.SignedBeaconBlock_valid_f(OB.TH(m)), (OB.TH(m), True{}), validx_fO(m, hok)) : {FuluSignedBeaconBlock_e.SignedBeaconBlock_vsz(_) == (OB.TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  %Equal.sym(FuluSignedBeaconBlock_d.SignedBeaconBlock & U32, FuluSignedBeaconBlock_e.SignedBeaconBlock_size(OB.TH(m)), (OB.TH(m), OB.SZ(m)), sizexO(m, hok)) : {FuluSignedBeaconBlock_e.SignedBeaconBlock_vsz_go(True{}, _) == (OB.TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  %Equal.sym(Bool, O.is_poisoned(OB.SZ(m)), False{}, VB.np_le(OB.SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, OB.ENC(m)), U32.to_nat(OB.SZ(m)), Equal.sym(Nat, U32.to_nat(OB.SZ(m)), List.length(&2, U32, OB.ENC(m)), OB.szxO(m, hok)), bndxO(m, hok)))) :
+    {(OB.TH(m), Bool.and(True{}, Bool.not(_))) == (OB.TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
+  {==}
 
 def okwOfOk(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OB.OKT(m_message, signature) == True{} : Bool}) -> {OB.OKTW(m_message, signature) == True{} : Bool}:
   +s0 = h
@@ -72,11 +87,3 @@ def okwOfOk(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
     case OB.MW{+m_message, +signature}: okwOfOk(m_message, signature, hok)
-
-law bndxO:
-  for +m: OB.MW
-  for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
-def bndxO(m, hok):
-  match m:
-    case OB.MW{+m_message, +signature}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(m_message, signature), List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), OB.ENDC(m_message, signature), OB.lenEW(m_message, signature, hok)), OB.ok_bndW(m_message, signature, hok))

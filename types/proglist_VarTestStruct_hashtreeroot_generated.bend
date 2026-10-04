@@ -102,4 +102,4 @@ def pl_VarTestStruct_bx_rt(pair: B.Buf & (proglist_VarTestStruct_d.pl_VarTestStr
 def pl_VarTestStruct_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq>, +seg: U32) -> B.Buf & (O.Boxed<proglist_VarTestStruct_d.pl_VarTestStruct_Seq> & D.Digest):
   match o:
     case O.BSome{v, rest}: pl_VarTestStruct_bx_rt(pl_VarTestStruct_root(hl, h, v, seg))
-    case O.BNone{}: (h, (proglist_VarTestStruct_d.pl_VarTestStruct_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))

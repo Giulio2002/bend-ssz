@@ -374,7 +374,8 @@ def emit_box(s, w):
         w('  (h, d) = pair')
         w(f'  (h, ({p}_wrap(v), d))')
         w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
-        w(unwrap(f'{p}_rt(v, {i.p}_root(hl, h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
+        # an absent box stays absent through the root too (CH-12): its leaf is the zero digest, and a second root (cached or plain) reads it again
+        w(unwrap(f'{p}_rt(v, {i.p}_root(hl, h, v, seg))', '(h, (O.BNone{}, D.zero()))'))
         w(f'def {p}_force(o: {B_}) -> {B_} & U32:')
         w(unwrap(f'({p}_wrap(v), {i.p}_force(v))', f'({p}_default(), 0)'))
         return
@@ -404,7 +405,9 @@ def emit_box(s, w):
     w('  (v, d) = r')
     w(f'  (h, ({p}_wrap(v), d))')
     w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
-    w(unwrap(f'{p}_rt({i.p}_root(hl, h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
+    # an absent box stays absent through the root too (CH-12): its leaf is the zero digest, the same for the cached root after `_ctake`
+    # and the plain root of the uncached list (it came back as the default box, so the next root hashed the default element)
+    w(unwrap(f'{p}_rt({i.p}_root(hl, h, v, seg))', '(h, (O.BNone{}, D.zero()))'))
     w(f'def {p}_force(o: {B_}) -> {B_} & U32:')
     w(unwrap(f'{p}_size_back({i.p}_force(v))', f'({p}_default(), 0)'))
 
@@ -1153,7 +1156,79 @@ def rec_bound(s):
     return None if r == 0 else (s.nw - 1, 1 << r)
 
 
+NMAX_BYTES = 4294967264
+
+
+def max_valid_size(t):
+    """The largest encoding of a value of t that `_valid` admits without a size test (fixed-size element counts are bounded by
+    floor(NMAX / es) in `_valid`, packed byte lengths by NMAX), or None when it is unbounded."""
+    k = t.kind
+    if t.fixed():
+        return t.fixed_size()
+    if k == 'bytelist':
+        return min(t.size, NMAX_BYTES)
+    if k == 'bitlist':
+        return t.size // 8 + 1
+    if k == 'pbits':
+        return ((1 << 32) - 2) // 8 + 1
+    if k in ('list', 'plist', 'vector'):
+        if t.elem.fixed():
+            es = t.elem.fixed_size()
+            c = NMAX_BYTES // es if k == 'plist' else min(t.size, NMAX_BYTES // es)
+            return c * es
+        m = max_valid_size(t.elem)
+        return None if (m is None or k == 'plist') else t.size * (m + 4)
+    if k in ('container', 'pcontainer'):
+        tot = 0
+        for _, ft in t.fields:
+            m = max_valid_size(ft)
+            if m is None:
+                return None
+            tot += m + (0 if ft.fixed() else 4)
+        return tot
+    if k == 'cunion':
+        ms = [max_valid_size(ft) if ft is not None else 0 for _, ft in t.fields]
+        return None if any(m is None for m in ms) else 1 + max(ms)
+    return None
+
+
+def valid_needs_size(s):
+    """`_valid` must also test the size pass (docs/CRASH_HUNT.md R4-05): a container or union whose fields can sum past NMAX, and a list of
+    fixed-size elements whose count can pass floor(NMAX / es) (the packed lists bound their byte length in `_valid` itself). A parent container
+    and the list's checked writer use the fields' part `_valid_f` (the parent tests its own total). Its validity is the fields' (`_valid_f`) and a size pass that does not answer the marker, so `_valid`
+    agrees with `_serialize` above NMAX."""
+    if s.kind == 'seq' and not s.data and s.t.kind in ('list', 'plist') and s.t.elem.fixed():
+        # a list of fixed-size elements whose count can pass floor(NMAX / es): its size pass (O.mulc) answers the marker there
+        return s.t.kind == 'plist' or s.t.size * s.t.elem.fixed_size() > NMAX_BYTES
+    if s.kind not in ('container', 'cunion') or s.data:
+        return False
+    m = max_valid_size(s.t)
+    return m is None or m > NMAX_BYTES
+
+
 def emit_valid(s, w):
+    if not valid_needs_size(s):
+        return emit_valid_f(s, w)
+    lines = []
+    emit_valid_f(s, lines.append)
+    text = '\n'.join(lines)
+    p = s.p
+    m = re.search(r'^def ' + p + r'_valid\(o: ([^)]*)\) -> (.*) & Bool:', text, re.M)
+    assert m, f'{p}: no _valid to wrap'
+    T = m.group(1)
+    text = text.replace(f'def {p}_valid(o: {T})', f'def {p}_valid_f(o: {T})', 1)
+    w(text)
+    w(f'def {p}_vsz_go(ok: Bool, pair: {T} & U32) -> {T} & Bool:')
+    w('  (o, +m) = pair')
+    w('  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))')
+    w(f'def {p}_vsz(pair: {T} & Bool) -> {T} & Bool:')
+    w('  (o, ok) = pair')
+    w(f'  {p}_vsz_go(ok, {p}_size(o))')
+    w(f'# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)')
+    w(f'def {p}_valid(o: {T}) -> {T} & Bool: {p}_vsz({p}_valid_f(o))')
+
+
+def emit_valid_f(s, w):
     p, k, R, t = s.p, s.kind, s.rep, s.t
     if s.data and trivial(s):
         w(f'def {p}_valid({plus(s)}o: {R}) -> Bool: True{{}}')
@@ -1173,17 +1248,14 @@ def emit_valid(s, w):
             nb = t.size if t.kind == 'bytes' else (t.size + 7) // 8
             lo, hi, big, unit = nb, nb, 'False{}', 1
         elif k == 'bytelist':
-            lim, big = u32_limit(t.size)
-            lo, hi, unit = 0, lim, 1
+            lo, hi, big, unit = 0, min(t.size, NMAX_BYTES), 'False{}', 1
         else:
             es = t.elem.fixed_size()
             if t.kind == 'vector':
                 lo, hi, big = t.size * es, t.size * es, 'False{}'
-            elif t.kind == 'plist':
-                lo, hi, big = 0, 0, 'True{}'
             else:
-                lim, big = u32_limit(t.size * es)
-                lo, hi = 0, lim
+                # a packed list holds at most NMAX bytes (docs/CRASH_HUNT.md R4-05: `_valid` agrees with `_serialize`)
+                lo, hi, big = 0, min(t.size * es, NMAX_BYTES) if t.kind == 'list' else NMAX_BYTES, 'False{}'
             unit = es
         call = f'O.words_ok(o, {lo}, {hi}, {big}, {unit})'
         if k == 'packed' and t.elem.kind == 'bool':
@@ -1292,6 +1364,11 @@ def emit_valid(s, w):
         raise ValueError(f'{p}: no validity for kind {k}')
 
 
+def vname(fs):
+    """the validity a parent container calls: a wrapped list's fields part (the parent tests its own size), else `_valid`"""
+    return '_valid_f' if (fs.kind == 'seq' and valid_needs_size(fs)) else '_valid'
+
+
 def emit_valid_fields(w, p, R, F, data):
     names = [f for f, _ in F]
     pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
@@ -1318,11 +1395,11 @@ def emit_valid_fields(w, p, R, F, data):
         else:
             nx = lin[j + 1]
             args = [f for k2, f in enumerate(names) if k2 != nx]
-            w(f'  {p}_va{j + 1}(' + ', '.join(args + ['Bool.and(acc, ok)', f'{F[nx][1].p}_valid({names[nx]})']) + ')')
+            w(f'  {p}_va{j + 1}(' + ', '.join(args + ['Bool.and(acc, ok)', f'{F[nx][1].p}{vname(F[nx][1])}({names[nx]})']) + ')')
     args0 = [f for k2, f in enumerate(names) if k2 != lin[0]]
     w(f'def {p}_valid(o: {R}) -> {R} & Bool:')
     w('  match o:')
-    w(f'    case {pat}: {p}_va0(' + ', '.join(args0 + [dx, f'{F[lin[0]][1].p}_valid({names[lin[0]]})']) + ')')
+    w(f'    case {pat}: {p}_va0(' + ', '.join(args0 + [dx, f'{F[lin[0]][1].p}{vname(F[lin[0]][1])}({names[lin[0]]})']) + ')')
 
 
 def emit_putk(s, w):
@@ -1361,7 +1438,7 @@ def emit_putk(s, w):
         w(f'def {p}_pk_ok(pair: Array<U32> & {R}) -> Array<U32> & ({R} & U32):')
         w('  (out, o) = pair')
         w('  (out, (o, 0))')
-    w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & ({R} & U32): {p}_pk(out, pos, {p}_valid(o))')
+    w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & ({R} & U32): {p}_pk(out, pos, {p}{vname(s)}(o))')
 
 
 def emit_bool(s, w):
@@ -1754,7 +1831,7 @@ def _seq_size_put(w, p, e, R, E, S):
         w(f'def {p}_sz_fin(+n: U32, st: {SP}) -> {S} & U32:')
         w('  (arr, r) = st')
         w('  (m, sp) = r')
-        w(f'  ({S}{{arr, n}}, O.padd((4 * n : U32), m))')
+        w(f'  ({S}{{arr, n}}, O.padd(O.mul4c(n), m))')   # the offset table: checked 4 n (R4-03)
         w(f'def {p}_sz_nz(empty: Bool, arr: Array<{R}>, +n: U32) -> {S} & U32:')
         w('  match empty:')
         w(f'    case True{{}}: ({S}{{arr, n}}, 0)')
@@ -2605,7 +2682,7 @@ def emit_cunion(s, w):
             continue
         w(f'def {p}_sz{i}(pair: {o.rep} & U32) -> {R} & U32:')
         w('  (v, +m) = pair')
-        w(f'  ({R}_c{i}{{v}}, (m + 1 : U32))')
+        w(f'  ({R}_c{i}{{v}}, O.padd(m, 1))')   # the selector byte; padd keeps the marker of an invalid payload (R4-04)
     w(f'def {p}_size(o: {R}) -> {R} & U32:')
     w('  match o:')
     for i, (_, o) in enumerate(opts):

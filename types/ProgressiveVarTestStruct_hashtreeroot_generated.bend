@@ -40,6 +40,6 @@ def ProgressiveVarTestStruct_bx_rt(pair: B.Buf & (ProgressiveVarTestStruct_d.Pro
 def ProgressiveVarTestStruct_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, +seg: U32) -> B.Buf & (O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & D.Digest):
   match o:
     case O.BSome{v, rest}: ProgressiveVarTestStruct_bx_rt(ProgressiveVarTestStruct_root(hl, h, v, seg))
-    case O.BNone{}: (h, (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def ProgressiveVarTestStruct_hash_tree_root(h: B.Buf, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct) -> B.Buf & (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & D.Digest): ProgressiveVarTestStruct_root(64n, h, o, 0)

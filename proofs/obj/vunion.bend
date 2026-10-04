@@ -7,6 +7,7 @@ import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
+import ./venc.bend as VE
 import ./vua.bend as UA
 import ./vuw.bend as UW
 import ./vuwd.bend as WD
@@ -199,3 +200,15 @@ def aroom32(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{
 def aroom31(+q: Nat, +r: Nat, +E: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hs31: {Nat.is_le(1n+E, U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {Nat.is_le(E, U32.to_nat(VB.NMAX())) == True{} : Bool}:
   FD.nat__le_trans(E, 1n+E, U32.to_nat(VB.NMAX()), FD.nat__lt_le(E, 1n+E, FD.nat__lt_succ(E)), hs31)
+
+# The union's size: the payload's size plus the selector byte, by the saturating O.padd (docs/CRASH_HUNT.md R4-04). For an arm whose payload size is
+# i (to_nat(a) == i) with 1 + i <= 2^(2+k), k = 28, the sum does not saturate: it is 1 + i.
+def padd1_at(+a: U32, +i: Nat, +k: Nat, +ek: {k == 28n : Nat}, +ea: {U32.to_nat(a) == i : Nat}, +h: {Nat.is_le(1n+i, VB.pw(2n+k)) == True{} : Bool})
+    -> {U32.to_nat(O.padd(a, 1)) == 1n+i : Nat}:
+  +h31 = FD.logic__subst(Nat, z => {Nat.is_lt(1n+i, VB.pw(1n+(2n+z))) == True{} : Bool}, k, 28n, ek, VB.le_pw_lt(1n+i, 2n+k, h))
+  +hN = VB.le_pw31_nmax(1n+i, h31)
+  +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(a), 1n), Nat.add(i, 1n), 1n+i, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), U32.to_nat(a), i, ea), FD.nat__add_comm(i, 1n))
+  +hA = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, 1n+i, Nat.add(U32.to_nat(a), 1n), Equal.sym(Nat, Nat.add(U32.to_nat(a), 1n), 1n+i, e1), hN)
+  +ep = VE.padd_le(a, 1, hA)
+  +hd = FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==})
+  FD.logic__subst(U32, z => {U32.to_nat(z) == 1n+i : Nat}, U32.add(a, 1), O.padd(a, 1), Equal.sym(U32, O.padd(a, 1), U32.add(a, 1), ep), VB.add_le_at(a, 1, i, 2n+k, ea, hd, h))

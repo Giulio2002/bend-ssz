@@ -33,7 +33,7 @@ def l1_AttesterSlashing_sz(+k: Nat, +i: U32, st: Array<O.Boxed<FuluAttesterSlash
 def l1_AttesterSlashing_sz_fin(+n: U32, st: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32:
   (arr, r) = st
   (m, sp) = r
-  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd((4 * n : U32), m))
+  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(O.mul4c(n), m))
 
 def l1_AttesterSlashing_sz_nz(empty: Bool, arr: Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, +n: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32:
   match empty:

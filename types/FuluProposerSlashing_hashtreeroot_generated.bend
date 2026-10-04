@@ -32,6 +32,6 @@ def ProposerSlashing_bx_rt(pair: B.Buf & (FuluProposerSlashing_d.ProposerSlashin
 def ProposerSlashing_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, +seg: U32) -> B.Buf & (O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & D.Digest):
   match o:
     case O.BSome{v, rest}: ProposerSlashing_bx_rt(ProposerSlashing_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluProposerSlashing_d.ProposerSlashing_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def ProposerSlashing_hash_tree_root(h: B.Buf, o: FuluProposerSlashing_d.ProposerSlashing) -> B.Buf & (FuluProposerSlashing_d.ProposerSlashing & D.Digest): ProposerSlashing_root(64n, h, o, 0)

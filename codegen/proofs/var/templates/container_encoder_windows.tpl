@@ -382,6 +382,27 @@ def validx(m, hok):
   match m:
     case ${MP}: rvalidC(${OAS}, hok)
 
+@@ iface_text_3f @@
+
+def rvalidC(${OPS}, +h: {OKT(${OAS}) == ${TRUE_}}) -> {T.${K.p}_valid_f(K.OBJC(${OAS})) == (K.OBJC(${OAS}), True{}) : T.${C} & Bool}:
+${RTV}
+
+# the fields' validity (`_valid_f`) and the size pass within NMAX (docs/CRASH_HUNT.md R4-05)
+def validx_f(m: MW, +hok: {OK(m) == True{} : Bool}) -> {T.${K.p}_valid_f(TH(m)) == (TH(m), True{}) : T.${C} & Bool}:
+  match m:
+    case ${MP}: rvalidC(${OAS}, hok)
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.${K.p}_valid(TH(m)) == (TH(m), True{}) : T.${C} & Bool}
+def validx(m, hok):
+  %Equal.sym(T.${C} & Bool, T.${K.p}_valid_f(TH(m)), (TH(m), True{}), validx_f(m, hok)) : {T.${K.p}_vsz(_) == (TH(m), True{}) : T.${C} & Bool}
+  %Equal.sym(T.${C} & U32, T.${K.p}_size(TH(m)), (TH(m), SZ(m)), sizex(m, hok)) : {T.${K.p}_vsz_go(True{}, _) == (TH(m), True{}) : T.${C} & Bool}
+  %Equal.sym(Bool, O.is_poisoned(SZ(m)), False{}, VB.np_qk(SZ(m), List.length(&2, U32, ENC(m)), 28n, {==}, szx(m, hok), bndx(m, hok, 28n, {==}))) :
+    {(TH(m), Bool.and(True{}, Bool.not(_))) == (TH(m), True{}) : T.${C} & Bool}
+  {==}
+
+
 @@ full_text @@
 
 # The container's checked writer T.${K.p}_putk is its putn (one definitional step): the writer's fact
@@ -530,8 +551,7 @@ def pfx${j}(+x: ${xt}, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf:
 def bnd${j}(+x: ${xt}, +hok: {OK${j}(x) == ${TRU}}, +k: Nat, +ek: {k == 28n : Nat}) -> {Nat.is_le(List.length(&2, U32, ENC${j}(x)), A.quad(VB.pw(k))) == ${TRU}}:
   FD.logic__subst(Nat, z => {Nat.is_le(1n+${E}, A.quad(VB.pw(z))) == ${TRU}}, 28n, k, Equal.sym(Nat, k, 28n, ek), and_r(${ea}.OK(x), ${B}, hok))
 def szk${j}(+x: ${xt}, +hok: {OK${j}(x) == ${TRU}}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(SZ${j}(x)) == List.length(&2, U32, ENC${j}(x)) : Nat}:
-  VB.add_le_at(${ea}.SZ(x), 1, ${E}, 2n+k, ${ea}.szx(x, and_l(${ea}.OK(x), ${B}, hok)),
-    FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == ${TRU}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), bnd${j}(x, hok, k, ek))
+  VU.padd1_at(${ea}.SZ(x), ${E}, k, ek, ${ea}.szx(x, and_l(${ea}.OK(x), ${B}, hok)), bnd${j}(x, hok, k, ek))
 def spec${j}(+x: ${xt}, +hok: {OK${j}(x) == ${TRU}}) -> {Codec.parts(VAL${j}(x), Spec.${U}()) == Some{[S.Variable{ENC${j}(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_v(${S_}, ${ea}.VAL(x), Spec.${A}(), ${ea}.ENC(x), ${ea}.encx_spec(x, and_l(${ea}.OK(x), ${B}, hok)))
 def size${j}(+x: ${xt}, +hok: {OK${j}(x) == ${TRU}}) -> {T.${U}_size(TH${j}(x)) == (TH${j}(x), SZ${j}(x)) : T.${U} & U32}:

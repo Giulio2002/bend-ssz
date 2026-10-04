@@ -531,15 +531,23 @@ def sizex(m, hok):
   match m:
     case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: sizeC(slot, proposer_index, parent_root, state_root, m_body, hok)
 
-def rvalidC(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKT(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid(K.OBJC(slot, proposer_index, parent_root, state_root, m_body)) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
+def rvalidC(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OKT(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid_f(K.OBJC(slot, proposer_index, parent_root, state_root, m_body)) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
   %Equal.sym(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(O.BSome{EC_BeaconBlockBody.TH(m_body), O.BNone{}}), (O.BSome{EC_BeaconBlockBody.TH(m_body), O.BNone{}}, True{}), Equal.cong(FuluBeaconBlockBody_d.BeaconBlockBody & Bool, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool, z => FuluBeaconBlockBody_e.BeaconBlockBody_bx_va_back(z), FuluBeaconBlockBody_e.BeaconBlockBody_valid(EC_BeaconBlockBody.TH(m_body)), (EC_BeaconBlockBody.TH(m_body), True{}), ES_BeaconBlockBody.validx(m_body, ok_hok_body(slot, proposer_index, parent_root, state_root, m_body, h)))) :
     {FuluBeaconBlock_e.BeaconBlock_va0(slot, proposer_index, parent_root, state_root, True{}, _) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
   {==}
 
+# the fields' validity (`_valid_f`) and the size pass within NMAX (docs/CRASH_HUNT.md R4-05)
+def validx_f(m: MW, +hok: {OK(m) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid_f(TH(m)) == (TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
+  match m:
+    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: rvalidC(slot, proposer_index, parent_root, state_root, m_body, hok)
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
   {FuluBeaconBlock_e.BeaconBlock_valid(TH(m)) == (TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
 def validx(m, hok):
-  match m:
-    case MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: rvalidC(slot, proposer_index, parent_root, state_root, m_body, hok)
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & Bool, FuluBeaconBlock_e.BeaconBlock_valid_f(TH(m)), (TH(m), True{}), validx_f(m, hok)) : {FuluBeaconBlock_e.BeaconBlock_vsz(_) == (TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & U32, FuluBeaconBlock_e.BeaconBlock_size(TH(m)), (TH(m), SZ(m)), sizex(m, hok)) : {FuluBeaconBlock_e.BeaconBlock_vsz_go(True{}, _) == (TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  %Equal.sym(Bool, O.is_poisoned(SZ(m)), False{}, VB.np_qk(SZ(m), List.length(&2, U32, ENC(m)), 28n, {==}, szx(m, hok), bndx(m, hok, 28n, {==}))) :
+    {(TH(m), Bool.and(True{}, Bool.not(_))) == (TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  {==}
+

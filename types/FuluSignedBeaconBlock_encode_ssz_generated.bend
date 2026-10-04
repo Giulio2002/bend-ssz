@@ -63,9 +63,20 @@ def SignedBeaconBlock_va0(+signature: FuluBytes96_d.Bytes96, acc: Bool, pair: Fu
   (message, ok) = pair
   (FuluSignedBeaconBlock_d.SignedBeaconBlock{message, signature}, Bool.and(acc, ok))
 
-def SignedBeaconBlock_valid(o: FuluSignedBeaconBlock_d.SignedBeaconBlock) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool:
+def SignedBeaconBlock_valid_f(o: FuluSignedBeaconBlock_d.SignedBeaconBlock) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool:
   match o:
     case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_va0(signature, True{}, FuluBeaconBlock_e.BeaconBlock_valid(message))
+
+def SignedBeaconBlock_vsz_go(ok: Bool, pair: FuluSignedBeaconBlock_d.SignedBeaconBlock & U32) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def SignedBeaconBlock_vsz(pair: FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool:
+  (o, ok) = pair
+  SignedBeaconBlock_vsz_go(ok, SignedBeaconBlock_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def SignedBeaconBlock_valid(o: FuluSignedBeaconBlock_d.SignedBeaconBlock) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool: SignedBeaconBlock_vsz(SignedBeaconBlock_valid_f(o))
 
 def SignedBeaconBlock_senc_out(+n: U32, out: Array<U32>, o: FuluSignedBeaconBlock_d.SignedBeaconBlock, +m: U32) -> FuluSignedBeaconBlock_d.SignedBeaconBlock & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))

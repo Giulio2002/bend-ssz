@@ -33,7 +33,7 @@ def pl_ProgressiveVarTestStruct_sz(+k: Nat, +i: U32, st: Array<O.Boxed<Progressi
 def pl_ProgressiveVarTestStruct_sz_fin(+n: U32, st: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>> & (U32 & O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>)) -> proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq & U32:
   (arr, r) = st
   (m, sp) = r
-  (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
+  (proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
 
 def pl_ProgressiveVarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>>, +n: U32) -> proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq & U32:
   match empty:

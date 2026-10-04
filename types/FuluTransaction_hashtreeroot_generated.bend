@@ -18,6 +18,6 @@ def bl1073741824_bx_rt(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (O.Boxed<O
 def bl1073741824_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<O.Words>, +seg: U32) -> B.Buf & (O.Boxed<O.Words> & D.Digest):
   match o:
     case O.BSome{v, rest}: bl1073741824_bx_rt(bl1073741824_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluTransaction_d.bl1073741824_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def Transaction_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): bl1073741824_root(64n, h, o, 0)

@@ -36,6 +36,6 @@ def VarTestStruct_bx_rt(pair: B.Buf & (VarTestStruct_d.VarTestStruct & D.Digest)
 def VarTestStruct_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<VarTestStruct_d.VarTestStruct>, +seg: U32) -> B.Buf & (O.Boxed<VarTestStruct_d.VarTestStruct> & D.Digest):
   match o:
     case O.BSome{v, rest}: VarTestStruct_bx_rt(VarTestStruct_root(hl, h, v, seg))
-    case O.BNone{}: (h, (VarTestStruct_d.VarTestStruct_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def VarTestStruct_hash_tree_root(h: B.Buf, o: VarTestStruct_d.VarTestStruct) -> B.Buf & (VarTestStruct_d.VarTestStruct & D.Digest): VarTestStruct_root(64n, h, o, 0)

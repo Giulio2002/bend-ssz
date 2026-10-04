@@ -61,7 +61,7 @@ def proglist_uint64__serialize_valid__proglist_uint64_serialize_vin_0() -> {prog
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vin_8() -> {proglist_uint64_e.proglist_uint64_serialize(P1_O.Words{P1_O.out_at(2n), 8}) == (Pair.fst(P1_O.Words, P1_B.Buf, proglist_uint64_e.proglist_uint64_encode(P1_O.Words{P1_O.out_at(2n), 8})), P1_O.encoded(Pair.snd(P1_O.Words, P1_B.Buf, proglist_uint64_e.proglist_uint64_encode(P1_O.Words{P1_O.out_at(2n), 8})))) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.proglist_uint64_serialize_vin_8()
 
-def proglist_uint64__serialize_valid__proglist_uint64_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint64_e.pl_u64_valid(P1_O.Words{ws, n}) == P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), P1_O.unit_ok(8, n)), n, Array.size(U32, ws)) : P1_O.Words & Bool}:
+def proglist_uint64__serialize_valid__proglist_uint64_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint64_e.pl_u64_valid(P1_O.Words{ws, n}) == P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(False{}, U32.is_le(n, 4294967264))), P1_O.unit_ok(8, n)), n, Array.size(U32, ws)) : P1_O.Words & Bool}:
   P1_PRV.proglist_uint64_serialize_vsym(ws, n)
 
 def proglist_uint64__serialize_valid__proglist_uint64_serialize_vcoll_pl_u64_appb_below() -> {Pair.snd(P2_O.Words, Bool, proglist_uint64_d.pl_u64_append(P2_O.Words{Array.new(U32, 30n, 0), 4294967256}, P2_O.U64{0, 0})) == True{} : Bool}:

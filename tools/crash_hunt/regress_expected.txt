@@ -55,3 +55,12 @@
 55 validator_size_35495598=4294967295
 56 validator_append_at_17747798 ok=1 len=17747799
 57 validator_append_at_35495597 ok=0 len=35495597
+58 copy_words_4294967292=2147483648
+59 pl_u8_valid_nmax_plus_1=0
+60 pl_u8_valid_nmax=1
+61 validator_valid_35495598=0
+62 pts_f_A_4294967249 size=4294967265 valid=0
+63 pts_f_A_4294967248 size=4294967264 valid=1
+64 union_size_invalid_payload=4294967295
+65 plpl_offset_table_2_pow_30=4294967295
+66 deposit_ctake_cached_root_eq_plain=1

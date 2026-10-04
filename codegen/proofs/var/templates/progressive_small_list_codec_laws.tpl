@@ -748,12 +748,16 @@ def validx(m, hok):
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
     -> {T.pl_u8_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(1, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   wok(dw, T, N, 1, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h), {==})
 
 @@ text_valid @@
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
     -> {T.pl_u16_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(2, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   wok(dw, T, N, 2, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h),
     FD.logic__and_left(U32.is_eq(U32.and(N, 1), 0), W.CHKw(T, 0n, 0, N), ok_ex(dw, T, N, h)))
 
@@ -789,6 +793,8 @@ def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True
     -> {T.pl_bool_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
   +pf = ok_pf(dw, T, N, h)
   +hdw32 = FD.nat__lt_trans(dw, 28n, 32n, ok_hd(dw, T, N, h), {==})
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))) :
+    {O.bools_ok(O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(1, N)), N, Array.size(U32, FD.array__thaw(U32, T)))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   %Equal.sym(O.Words & Bool, O.words_ok(O.Words{FD.array__thaw(U32, T), N}, 0, 0, True{}, 1), (O.Words{FD.array__thaw(U32, T), N}, True{}),
       wok(dw, T, N, 1, pf, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h), {==})) :
     {O.bools_ok(_) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
@@ -837,5 +843,7 @@ def req_inv(+b: Bool, +A: Maybe<&2, +List<S.Part>>, +P: +List<S.Part>, +e: {Code
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
     -> {T.pl_u64_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(8, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   wok(dw, T, N, 8, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h),
     FD.logic__and_left(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), ok_ex(dw, T, N, h)))

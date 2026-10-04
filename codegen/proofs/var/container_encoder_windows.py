@@ -770,6 +770,11 @@ def src():
     return SRC
 
 
+def has_valid_f(p):
+    """the runtime's `_valid` of p is the fields' `_valid_f` and the size pass (typed_object_runtime.valid_needs_size, R4-05)"""
+    return re.search(rf'^def {re.escape(p)}_valid_f\(', src(), re.M) is not None
+
+
 def fn_body(name):
     m = re.search(rf'^def {re.escape(name)}\(.*?(?=^def |\Z)', src(), re.M | re.S)
     if not m:
@@ -2178,7 +2183,8 @@ def _iface_rt_chain(rq, cs, K, OBJF, F, OAS, VV):
                 cs.setdefault(fw_.p, []).append((None, fw_.vt, fw_.obj, None, None, vt_))
     def chain_rt(entry, result_t, final_rhs, pair_second):
         """The runtime's pass `entry` (size / valid) over the children, each child's call rewritten by its law."""
-        body_ = fn_body(f'{K.p}_{entry}')
+        # a `_valid` that also tests the size pass (R4-05) proves its fields' part `_valid_f` here (validx adds the size)
+        body_ = fn_body(f'{K.p}_{entry}_f' if entry == 'valid' and has_valid_f(K.p) else f'{K.p}_{entry}')
         mm = re.search(r'case (\w+)\{([^}]*)\}: (.*)$', body_, re.M)
         pv = [v.strip().lstrip('+') for v in mm.group(2).split(',')]
         sub = dict(zip(pv, [OBJF[f] for f, _ in F]))
@@ -2196,7 +2202,7 @@ def _iface_rt_chain(rq, cs, K, OBJF, F, OAS, VV):
                 break
             fname, args = m2.group(1), [a.strip() for a in __import__('codegen.proofs.var.block_body_offset_windows', fromlist=['_']).split_top(m2.group(2))]
             last = args[-1]
-            m3 = re.fullmatch(rf'T\.(\w+)_{entry}\((.*)\)', last)
+            m3 = re.fullmatch(rf'T\.(\w+?)_{entry}(?:_f)?\((.*)\)', last)   # (a wrapped list child: its fields' validity `_valid_f`, R4-05)
             if not m3 or m3.group(1) not in cs:
                 return None
             cp, V = m3.group(1), m3.group(2)
@@ -2206,6 +2212,8 @@ def _iface_rt_chain(rq, cs, K, OBJF, F, OAS, VV):
                 return None
             vt, SZj, hokn = cands[0][1], cands[0][3], cands[0][4]
             prf = cands[0][0] if entry == 'size' else cands[0][5]
+            if entry == 'valid' and re.fullmatch(rf'T\.\w+?_valid_f\(.*\)', last):
+                prf = prf.replace('.validx(', '.validx_f(')   # (a wrapped list child: its fields' validity law, R4-05)
             second = SZj if entry == 'size' else 'True{}'
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
             steps.append(f'  %Equal.sym({vt} & {pair_second}, {last}, ({V}, {second}), {prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == {final_rhs} : {result_t}}}')
@@ -2318,7 +2326,7 @@ def iface_text(C, generic=False):
     if szx_ok:
         ifc += TEMPLATES.render('iface_text_2', OPS=OPS, OAS=OAS, TRUE_=TRUE_, K=K, C=C, RTS=RTS, MP=MP).replace('@H', 'h')
     if RTV is not None:
-        ifc += TEMPLATES.render('iface_text_3', OPS=OPS, OAS=OAS, TRUE_=TRUE_, K=K, C=C, RTV=RTV, MP=MP)
+        ifc += TEMPLATES.render('iface_text_3f' if has_valid_f(K.p) else 'iface_text_3', OPS=OPS, OAS=OAS, TRUE_=TRUE_, K=K, C=C, RTV=RTV, MP=MP)
     return body + ifc
 
 
@@ -3962,7 +3970,7 @@ def _union_arm_names(U, a, j, A, S_, Sb, DS):
         OK = f'Bool.and({ea}.OK(x), Nat.is_le(1n+{E}, A.quad(VB.pw(28n))))'
         ENC = f'Con{{{Sb}, {ea}.ENC(x)}}'
         VAL = f'S.Selected{{{S_}, {ea}.VAL(x)}}'
-        SZ = f'({ea}.SZ(x) + 1 : U32)'
+        SZ = f'O.padd({ea}.SZ(x), 1)'
         PUTX = f'{ea}.PUTX(x, dd, {DS}, VU.AQ(q, r), VU.AR(r))'
     else:
         xt = 'U32'

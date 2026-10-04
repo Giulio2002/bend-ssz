@@ -78,7 +78,7 @@ def proglist_bool__serialize_valid__proglist_bool_serialize_vin_0() -> {proglist
 def proglist_bool__serialize_valid__proglist_bool_serialize_vin_1() -> {proglist_bool_e.proglist_bool_serialize(P1_O.Words{P1_O.out_at(1n), 1}) == (Pair.fst(P1_O.Words, P1_B.Buf, proglist_bool_e.proglist_bool_encode(P1_O.Words{P1_O.out_at(1n), 1})), P1_O.encoded(Pair.snd(P1_O.Words, P1_B.Buf, proglist_bool_e.proglist_bool_encode(P1_O.Words{P1_O.out_at(1n), 1})))) : P1_O.Words & P1_O.Encoded}:
   P1_PRV.proglist_bool_serialize_vin_1()
 
-def proglist_bool__serialize_valid__proglist_bool_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_bool_e.pl_bool_valid(P1_O.Words{ws, n}) == P1_O.bools_ok(P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), P1_O.unit_ok(1, n)), n, Array.size(U32, ws))) : P1_O.Words & Bool}:
+def proglist_bool__serialize_valid__proglist_bool_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_bool_e.pl_bool_valid(P1_O.Words{ws, n}) == P1_O.bools_ok(P1_O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(False{}, U32.is_le(n, 4294967264))), P1_O.unit_ok(1, n)), n, Array.size(U32, ws))) : P1_O.Words & Bool}:
   P1_PRV.proglist_bool_serialize_vsym(ws, n)
 
 def proglist_bool__serialize_valid__proglist_bool_serialize_vcoll_pl_bool_appb_below() -> {Pair.snd(P2_O.Words, Bool, proglist_bool_d.pl_bool_append(P2_O.Words{Array.new(U32, 30n, 0), 4294967263}, False{})) == True{} : Bool}:

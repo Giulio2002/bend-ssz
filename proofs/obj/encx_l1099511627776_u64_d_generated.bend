@@ -111,6 +111,8 @@ def wok(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +unit: U32, +pfT: {FD.array_
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
     -> {Fulu_list_uint64_1099511627776_e.l1099511627776_u64_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_n(N, ok_nm(dw, T, N, h))) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(8, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   wok(dw, T, N, 8, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), hyD(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h), FD.logic__and_left(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), ok_ex(dw, T, N, h)))
 
 def putx_goW(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,

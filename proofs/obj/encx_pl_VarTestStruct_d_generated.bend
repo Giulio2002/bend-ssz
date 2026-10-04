@@ -1305,13 +1305,15 @@ def szsb_val(+b: Bool, +t: F.array__Tree<B0.MB<EM.MW>>, +N: U32, +eb: {U32.is_eq
         Equal.trans(Nat, B0.LL(t, N), Nat.add(A.quad(n), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))),
           Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), BLn, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), Equal.sym(Nat, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), BLn, es)),
           Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), A.quad(n), U32.to_nat(U32.mul(4, N)), Equal.sym(Nat, U32.to_nat(U32.mul(4, N)), A.quad(n), em))), hb)
+      +qN = B0.t31(A.quad(n), kx, ek, B0.lsuc(A.quad(n), kx, hq))
+      F.logic__subst(U32, z => {U32.to_nat(O.padd(z, B0.SZA(n, B0.SL(t), 0n, 0))) == B0.LL(t, N) : Nat}, U32.mul(4, N), O.mul4c(N), Equal.sym(U32, O.mul4c(N), U32.mul(4, N), VE.mul4c_q(N, qN)),
       Equal.trans(Nat, U32.to_nat(O.padd(U32.mul(4, N), B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), B0.LL(t, N),
         B0.padd_nat(U32.mul(4, N), B0.SZA(n, B0.SL(t), 0n, 0), B0.t31s(Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), kx, ek, B0.bsuc(Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), kx, hsum))),
         Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), BLn), B0.LL(t, N),
           Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), BLn),
             Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), U32.to_nat(U32.mul(4, N)), A.quad(n), em),
             Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), BLn, es)),
-          {==}))
+          {==})))
 
 def szs(+t: F.array__Tree<B0.MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +kx: Nat, +ek: {kx == 30n : Nat},
     +hb: {Nat.is_le(B0.LL(t, N), VB.pw(kx)) == True{} : Bool}) -> {U32.to_nat(B0.SZS(t, N)) == B0.LL(t, N) : Nat}:
@@ -1377,13 +1379,14 @@ def szsb_valS(+b: Bool, +t: F.array__Tree<B0.MB<EM.MW>>, +N: U32, +eb: {U32.is_e
         Equal.trans(Nat, B0.LL(t, N), Nat.add(A.quad(n), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))),
           Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), BLn, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), Equal.sym(Nat, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), BLn, es)),
           Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), A.quad(n), U32.to_nat(U32.mul(4, N)), Equal.sym(Nat, U32.to_nat(U32.mul(4, N)), A.quad(n), em))), hb)
+      F.logic__subst(U32, z => {U32.to_nat(O.padd(z, B0.SZA(n, B0.SL(t), 0n, 0))) == B0.LL(t, N) : Nat}, U32.mul(4, N), O.mul4c(N), Equal.sym(U32, O.mul4c(N), U32.mul(4, N), VE.mul4c_q(N, hq)),
       Equal.trans(Nat, U32.to_nat(O.padd(U32.mul(4, N), B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), B0.LL(t, N),
         B0.padd_nat(U32.mul(4, N), B0.SZA(n, B0.SL(t), 0n, 0), hsum),
         Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), BLn), B0.LL(t, N),
           Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), Nat.add(A.quad(n), BLn),
             Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0))), U32.to_nat(U32.mul(4, N)), A.quad(n), em),
             Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), U32.to_nat(B0.SZA(n, B0.SL(t), 0n, 0)), BLn, es)),
-          {==}))
+          {==})))
 
 def szsS(+t: F.array__Tree<B0.MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool},
     +hb: {Nat.is_le(B0.LL(t, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(B0.SZS(t, N)) == B0.LL(t, N) : Nat}:

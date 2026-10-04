@@ -129,6 +129,6 @@ def BeaconBlockBody_bx_rt(pair: B.Buf & (FuluBeaconBlockBody_d.BeaconBlockBody &
 def BeaconBlockBody_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, +seg: U32) -> B.Buf & (O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & D.Digest):
   match o:
     case O.BSome{v, rest}: BeaconBlockBody_bx_rt(BeaconBlockBody_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluBeaconBlockBody_d.BeaconBlockBody_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def BeaconBlockBody_hash_tree_root(h: B.Buf, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> B.Buf & (FuluBeaconBlockBody_d.BeaconBlockBody & D.Digest): BeaconBlockBody_root(64n, h, o, 0)

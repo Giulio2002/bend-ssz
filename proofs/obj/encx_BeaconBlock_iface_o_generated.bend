@@ -44,7 +44,7 @@ def sizeCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Byt
     {FuluBeaconBlock_e.BeaconBlock_sz0(slot, proposer_index, parent_root, state_root, 84, _) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), K.SZC(slot, proposer_index, parent_root, state_root, m_body)) : FuluBeaconBlock_d.BeaconBlock & U32}
   {==}
 
-def rvalidCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OB.OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid(K.OBJC(slot, proposer_index, parent_root, state_root, m_body)) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
+def rvalidCW(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OB.OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid_f(K.OBJC(slot, proposer_index, parent_root, state_root, m_body)) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
   %Equal.sym(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(O.BSome{EC_BeaconBlockBody.TH(m_body), O.BNone{}}), (O.BSome{EC_BeaconBlockBody.TH(m_body), O.BNone{}}, True{}), Equal.cong(FuluBeaconBlockBody_d.BeaconBlockBody & Bool, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool, z => FuluBeaconBlockBody_e.BeaconBlockBody_bx_va_back(z), FuluBeaconBlockBody_e.BeaconBlockBody_valid(EC_BeaconBlockBody.TH(m_body)), (EC_BeaconBlockBody.TH(m_body), True{}), ES_BeaconBlockBodyo.validxO(m_body, OB.ok_hok_bodyW(slot, proposer_index, parent_root, state_root, m_body, h)))) :
     {FuluBeaconBlock_e.BeaconBlock_va0(slot, proposer_index, parent_root, state_root, True{}, _) == (K.OBJC(slot, proposer_index, parent_root, state_root, m_body), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
   {==}
@@ -57,13 +57,28 @@ def sizexO(m, hok):
   match m:
     case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: sizeCW(slot, proposer_index, parent_root, state_root, m_body, hok)
 
+def validx_fO(m: OB.MW, +hok: {OB.OKW(m) == True{} : Bool}) -> {FuluBeaconBlock_e.BeaconBlock_valid_f(OB.TH(m)) == (OB.TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}:
+  match m:
+    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: rvalidCW(slot, proposer_index, parent_root, state_root, m_body, hok)
+
+law bndxO:
+  for +m: OB.MW
+  for +hok: {OB.OKW(m) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
+def bndxO(m, hok):
+  match m:
+    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), OB.lenEW(slot, proposer_index, parent_root, state_root, m_body, hok)), OB.ok_bndW(slot, proposer_index, parent_root, state_root, m_body, hok))
+
 law validxO:
   for +m: OB.MW
   for +hok: {OB.OKW(m) == True{} : Bool}
   {FuluBeaconBlock_e.BeaconBlock_valid(OB.TH(m)) == (OB.TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
 def validxO(m, hok):
-  match m:
-    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: rvalidCW(slot, proposer_index, parent_root, state_root, m_body, hok)
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & Bool, FuluBeaconBlock_e.BeaconBlock_valid_f(OB.TH(m)), (OB.TH(m), True{}), validx_fO(m, hok)) : {FuluBeaconBlock_e.BeaconBlock_vsz(_) == (OB.TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & U32, FuluBeaconBlock_e.BeaconBlock_size(OB.TH(m)), (OB.TH(m), OB.SZ(m)), sizexO(m, hok)) : {FuluBeaconBlock_e.BeaconBlock_vsz_go(True{}, _) == (OB.TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  %Equal.sym(Bool, O.is_poisoned(OB.SZ(m)), False{}, VB.np_le(OB.SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, OB.ENC(m)), U32.to_nat(OB.SZ(m)), Equal.sym(Nat, U32.to_nat(OB.SZ(m)), List.length(&2, U32, OB.ENC(m)), OB.szxO(m, hok)), bndxO(m, hok)))) :
+    {(OB.TH(m), Bool.and(True{}, Bool.not(_))) == (OB.TH(m), True{}) : FuluBeaconBlock_d.BeaconBlock & Bool}
+  {==}
 
 def okwOfOk(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.Bytes32, +state_root: FuluBytes32_d.Bytes32, +m_body: EC_BeaconBlockBody.MW, +h: {OB.OKT(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}) -> {OB.OKTW(slot, proposer_index, parent_root, state_root, m_body) == True{} : Bool}:
   +s0 = h
@@ -74,11 +89,3 @@ def okwOfOk(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluBytes32_d.By
 def okwOfOkM(+m: OB.MW, +hok: {OB.OK(m) == True{} : Bool}) -> {OB.OKW(m) == True{} : Bool}:
   match m:
     case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: okwOfOk(slot, proposer_index, parent_root, state_root, m_body, hok)
-
-law bndxO:
-  for +m: OB.MW
-  for +hok: {OB.OKW(m) == True{} : Bool}
-  {Nat.is_le(List.length(&2, U32, OB.ENC(m)), U32.to_nat(VB.NMAX())) == True{} : Bool}
-def bndxO(m, hok):
-  match m:
-    case OB.MW{+slot, +proposer_index, +parent_root, +state_root, +m_body}: FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(slot, proposer_index, parent_root, state_root, m_body)), OB.ENDC(slot, proposer_index, parent_root, state_root, m_body), OB.lenEW(slot, proposer_index, parent_root, state_root, m_body, hok)), OB.ok_bndW(slot, proposer_index, parent_root, state_root, m_body, hok))

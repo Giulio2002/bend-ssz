@@ -72,9 +72,20 @@ def BeaconBlock_va0(+slot: O.U64, +proposer_index: O.U64, +parent_root: FuluByte
   (body, ok) = pair
   (FuluBeaconBlock_d.BeaconBlock{slot, proposer_index, parent_root, state_root, body}, Bool.and(acc, ok))
 
-def BeaconBlock_valid(o: FuluBeaconBlock_d.BeaconBlock) -> FuluBeaconBlock_d.BeaconBlock & Bool:
+def BeaconBlock_valid_f(o: FuluBeaconBlock_d.BeaconBlock) -> FuluBeaconBlock_d.BeaconBlock & Bool:
   match o:
     case FuluBeaconBlock_d.BeaconBlock{+slot, +proposer_index, +parent_root, +state_root, body}: BeaconBlock_va0(slot, proposer_index, parent_root, state_root, True{}, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(body))
+
+def BeaconBlock_vsz_go(ok: Bool, pair: FuluBeaconBlock_d.BeaconBlock & U32) -> FuluBeaconBlock_d.BeaconBlock & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def BeaconBlock_vsz(pair: FuluBeaconBlock_d.BeaconBlock & Bool) -> FuluBeaconBlock_d.BeaconBlock & Bool:
+  (o, ok) = pair
+  BeaconBlock_vsz_go(ok, BeaconBlock_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def BeaconBlock_valid(o: FuluBeaconBlock_d.BeaconBlock) -> FuluBeaconBlock_d.BeaconBlock & Bool: BeaconBlock_vsz(BeaconBlock_valid_f(o))
 
 def BeaconBlock_senc_out(+n: U32, out: Array<U32>, o: FuluBeaconBlock_d.BeaconBlock, +m: U32) -> FuluBeaconBlock_d.BeaconBlock & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))

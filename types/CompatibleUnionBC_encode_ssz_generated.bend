@@ -14,11 +14,11 @@ import ./CompatibleUnionBC_def_generated.bend as CompatibleUnionBC_d
 
 def CompatibleUnionBC_sz0(pair: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & U32) -> CompatibleUnionBC_d.CompatibleUnionBC & U32:
   (v, +m) = pair
-  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, (m + 1 : U32))
+  (CompatibleUnionBC_d.CompatibleUnionBC_c0{v}, O.padd(m, 1))
 
 def CompatibleUnionBC_sz1(pair: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & U32) -> CompatibleUnionBC_d.CompatibleUnionBC & U32:
   (v, +m) = pair
-  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, (m + 1 : U32))
+  (CompatibleUnionBC_d.CompatibleUnionBC_c1{v}, O.padd(m, 1))
 
 def CompatibleUnionBC_size(o: CompatibleUnionBC_d.CompatibleUnionBC) -> CompatibleUnionBC_d.CompatibleUnionBC & U32:
   match o:

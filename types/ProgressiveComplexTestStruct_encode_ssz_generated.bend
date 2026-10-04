@@ -139,7 +139,7 @@ def ProgressiveComplexTestStruct_va3(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: 
 
 def ProgressiveComplexTestStruct_va2(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, f_F: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, f_G: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq, f_H: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, acc: Bool, pair: O.Words & Bool) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
   (f_D, ok) = pair
-  ProgressiveComplexTestStruct_va3(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(f_E))
+  ProgressiveComplexTestStruct_va3(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(f_E))
 
 def ProgressiveComplexTestStruct_va1(+f_A: U32, f_B: O.Words, f_D: O.Words, f_E: proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq, f_F: proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq, f_G: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq, f_H: proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq, acc: Bool, pair: O.Bits & Bool) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
   (f_C, ok) = pair
@@ -149,9 +149,20 @@ def ProgressiveComplexTestStruct_va0(+f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: 
   (f_B, ok) = pair
   ProgressiveComplexTestStruct_va1(f_A, f_B, f_D, f_E, f_F, f_G, f_H, Bool.and(acc, ok), progbitlist_e.pbits_valid(f_C))
 
-def ProgressiveComplexTestStruct_valid(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
+def ProgressiveComplexTestStruct_valid_f(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
   match o:
     case ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: ProgressiveComplexTestStruct_va0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, uint8_e.u8_valid(f_A), list_uint16_123_e.l123_u16_valid(f_B))
+
+def ProgressiveComplexTestStruct_vsz_go(ok: Bool, pair: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & U32) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def ProgressiveComplexTestStruct_vsz(pair: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool:
+  (o, ok) = pair
+  ProgressiveComplexTestStruct_vsz_go(ok, ProgressiveComplexTestStruct_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def ProgressiveComplexTestStruct_valid(o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & Bool: ProgressiveComplexTestStruct_vsz(ProgressiveComplexTestStruct_valid_f(o))
 
 def ProgressiveComplexTestStruct_senc_out(+n: U32, out: Array<U32>, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +m: U32) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))

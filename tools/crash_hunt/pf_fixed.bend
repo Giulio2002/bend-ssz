@@ -35,6 +35,18 @@ import ../../types/Fulu_list_Withdrawal_16_encode_ssz_generated.bend as LWE
 import ../../types/proglist_uint8_encode_ssz_generated.bend as PlE
 import ../../types/Fulu_list_PendingDeposit_134217728_encode_ssz_generated.bend as LPDE
 import ../../types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend as LVE
+import ../../types/ProgressiveTestStruct_def_generated.bend as PtD
+import ../../types/ProgressiveTestStruct_encode_ssz_generated.bend as PtE
+import ../../types/CompatibleUnionBC_def_generated.bend as UbD
+import ../../types/CompatibleUnionBC_encode_ssz_generated.bend as UbE
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as PslD
+import ../../types/proglist_proglist_VarTestStruct_def_generated.bend as PpD
+import ../../types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend as PpE
+import ../../types/proglist_VarTestStruct_def_generated.bend as PvD
+import ../../types/Fulu_list_Deposit_16_def_generated.bend as LdD
+import ../../types/Fulu_list_Deposit_16_hashtreeroot_generated.bend as LdH
+import ../../types/FuluDeposit_def_generated.bend as DpD
+import ../../types/FuluDepositData_def_generated.bend as DdD
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -271,6 +283,56 @@ def case55() -> IO(Unit): va_size_line("validator_size_35495598", LVE.l109951162
 def case56() -> IO(Unit): va_line("validator_append_at_17747798", LV.l1099511627776_Validator_append(vas(17747798), Va.Validator_default()))
 def case57() -> IO(Unit): va_line("validator_append_at_35495597", LV.l1099511627776_Validator_append(vas(35495597), Va.Validator_default()))
 
+
+# crash-fix5 (docs/CRASH_HUNT.md round 4): R4-01 the clean copy of the root path is sized without the wrap of n + 31 (8 words before);
+# R4-05 `_valid` agrees with `_serialize` above NMAX (packed lists, fixed-size element counts, containers); R4-04 a union's size keeps the
+# marker of an invalid payload (0 before); R4-03 the offset table of a list of variable-size elements is checked (4 n wrapped to 0 before);
+# the cached root after `_ctake` is the plain root of the returned list (an absent box stays absent through the root).
+def case58() -> IO(Unit): IO.print("copy_words_4294967292=" ++ U32.show(Pair.snd(Array<U32>, U32, Array.size(U32, O.zeros_copy(4294967292)))))
+def valid_w_line(label: String, pair: O.Words & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ "=" ++ O.pick_str(ok))
+def case59() -> IO(Unit): valid_w_line("pl_u8_valid_nmax_plus_1", PlE.pl_u8_valid(O.Words{big(), 4294967265}))
+def case60() -> IO(Unit): valid_w_line("pl_u8_valid_nmax", PlE.pl_u8_valid(O.Words{big(), 4294967264}))
+def va_valid_line(label: String, pair: LV.l1099511627776_Validator_Seq & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ "=" ++ O.pick_str(ok))
+def case61() -> IO(Unit): va_valid_line("validator_valid_35495598", LVE.l1099511627776_Validator_valid(vas(35495598)))
+def pt_valid_fin(label: String, +m: U32, pair: PtD.ProgressiveTestStruct & Bool) -> IO(Unit):
+  (o, ok) = pair
+  IO.print(label ++ " size=" ++ U32.show(m) ++ " valid=" ++ O.pick_str(ok))
+def pt_valid_line(label: String, pair: PtD.ProgressiveTestStruct & U32) -> IO(Unit):
+  (o, +m) = pair
+  pt_valid_fin(label, m, PtE.ProgressiveTestStruct_valid(o))
+def pts(+a: U32) -> PtD.ProgressiveTestStruct: PtD.ProgressiveTestStruct_set_f_A(PtD.ProgressiveTestStruct_default(), O.Words{big(), a})
+def case62() -> IO(Unit): pt_valid_line("pts_f_A_4294967249", PtE.ProgressiveTestStruct_size(pts(4294967249)))
+def case63() -> IO(Unit): pt_valid_line("pts_f_A_4294967248", PtE.ProgressiveTestStruct_size(pts(4294967248)))
+def ub_size_line(label: String, pair: UbD.CompatibleUnionBC & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print(label ++ "=" ++ U32.show(n))
+def case64() -> IO(Unit): ub_size_line("union_size_invalid_payload", UbE.CompatibleUnionBC_size(UbD.CompatibleUnionBC_c0{PslD.ProgressiveSingleListContainerTestStruct{O.Bits{Array.new(U32, 0n, 0), 4294967295}}}))
+def pp_size_line(label: String, pair: PpD.pl_pl_VarTestStruct_Seq & U32) -> IO(Unit):
+  (o, +n) = pair
+  IO.print(label ++ "=" ++ U32.show(n))
+def case65() -> IO(Unit): pp_size_line("plpl_offset_table_2_pow_30", PpE.pl_pl_VarTestStruct_sz_fin(1073741824, (PpD.pl_pl_VarTestStruct_fill(0n), (0, O.BNone{}))))
+def dep(+x: U32) -> DpD.Deposit: DpD.Deposit_set_data(DpD.Deposit_default(), DdD.DepositData_bx_wrap(DdD.DepositData_seed(x)))
+def dbuild(+k: Nat, +i: U32, o: LdD.l16_Deposit_Seq) -> LdD.l16_Deposit_Seq:
+  match k:
+    case 0n: o
+    case 1n+q: dbuild(q, (i + 1 : U32), Pair.fst(LdD.l16_Deposit_Seq, Bool, LdD.l16_Deposit_append(o, dep((i + 1 : U32)))))
+def dcroot(c: LdD.l16_Deposit_Cached) -> LdD.l16_Deposit_Cached & D.Digest: Pair.snd(B.Buf, LdD.l16_Deposit_Cached & D.Digest, LdD.l16_Deposit_cached_root(64n, O.hasher(), c, 0))
+def dproot(o: LdD.l16_Deposit_Seq) -> D.Digest: Pair.snd(LdD.l16_Deposit_Seq, D.Digest, Pair.snd(B.Buf, LdD.l16_Deposit_Seq & D.Digest, LdH.l16_Deposit_root(64n, O.hasher(), o, 0)))
+def dcmp(pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
+  (c, +r) = pair
+  IO.print("deposit_ctake_cached_root_eq_plain=" ++ O.pick_str(D.equal(r, dproot(LdD.l16_Deposit_uncache(c)))))
+def dtake(pair: LdD.l16_Deposit_Cached & Maybe<&1, DpD.Deposit>) -> IO(Unit):
+  (c, m) = pair
+  dcmp(dcroot(c))
+def dafter(pair: LdD.l16_Deposit_Cached & D.Digest) -> IO(Unit):
+  (c, +r) = pair
+  dtake(LdD.l16_Deposit_ctake(c, 1))
+def case66() -> IO(Unit): dafter(dcroot(LdD.l16_Deposit_cache(dbuild(3n, 0, LdD.l16_Deposit_default()))))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -329,6 +391,15 @@ def dispatch(+c: U32) -> IO(Unit):
     case 55: case55()
     case 56: case56()
     case 57: case57()
+    case 58: case58()
+    case 59: case59()
+    case 60: case60()
+    case 61: case61()
+    case 62: case62()
+    case 63: case63()
+    case 64: case64()
+    case 65: case65()
+    case 66: case66()
     case _: case12()
 
 def main() -> IO(Unit):

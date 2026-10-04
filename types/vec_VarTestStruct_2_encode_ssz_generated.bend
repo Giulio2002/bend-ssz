@@ -33,7 +33,7 @@ def v2_VarTestStruct_sz(+k: Nat, +i: U32, st: Array<O.Boxed<VarTestStruct_d.VarT
 def v2_VarTestStruct_sz_fin(+n: U32, st: Array<O.Boxed<VarTestStruct_d.VarTestStruct>> & (U32 & O.Boxed<VarTestStruct_d.VarTestStruct>)) -> vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & U32:
   (arr, r) = st
   (m, sp) = r
-  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd((4 * n : U32), m))
+  (vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{arr, n}, O.padd(O.mul4c(n), m))
 
 def v2_VarTestStruct_sz_nz(empty: Bool, arr: Array<O.Boxed<VarTestStruct_d.VarTestStruct>>, +n: U32) -> vec_VarTestStruct_2_d.v2_VarTestStruct_Seq & U32:
   match empty:

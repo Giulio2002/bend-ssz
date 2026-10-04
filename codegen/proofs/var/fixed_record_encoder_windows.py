@@ -910,6 +910,59 @@ def sub_text(p, R, LIM):
 VEC_TAIL = TPL.text('VEC_TAIL')
 
 
+def runtime_has_valid_f(p):
+    from codegen.impl import runtime_file_split as RR_
+    txt = RR_.mono_text('generic') + RR_.mono_text('fulu')
+    return re.search(rf'^def {re.escape(p)}_valid_f\(', txt, re.M) is not None
+
+
+def list_module_p(parent, field):
+    from codegen.proofs.var import record_list_offset_windows as VRG
+    g, names = layout()
+    return VRG.info(g, names, parent, field)['p'], None
+
+
+VALIDX_F = '''def validx(m, hok):
+  match m:
+    case MW{+da, +A, +N}:
+      +h30 = FD.nat__lt_trans(da, 28n, 30n, ok_0(da, A, N, hok), {==})
+      +hm = VB.le31_nmax(Nat.mul(U32.to_nat(N), @RSn), FD.nat__le_trans(Nat.mul(U32.to_nat(N), @RSn), A.quad(VB.pw(da)), VB.pw(31n), ok_3(da, A, N, hok),
+        FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(31n)) == True{} : Bool}, VB.pw(2n+da), A.quad(VB.pw(da)), Equal.sym(Nat, A.quad(VB.pw(da)), VB.pw(2n+da), UW.qpw(da)),
+          FD.nat__pow2_mono(2n+da, 31n, FD.nat__lt_succ_le(2n+da, 31n, h30)))))
+      +hb = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.mul(U32.to_nat(N), @RSn), U32.to_nat(O.mulc(N, @RS)),
+        Equal.sym(Nat, U32.to_nat(O.mulc(N, @RS)), Nat.mul(U32.to_nat(N), @RSn), VRX.mulck(N, @RS, 31n, {==}, {==}, {==}, {==}, hm)), hm)
+      %Equal.sym(@S & Bool, T.@p_valid_f(@S{@TH, N}), (@S{@TH, N}, True{}), valid(da, A, N, hok)) : {T.@p_vsz(_) == (@S{@TH, N}, True{}) : @S & Bool}
+      %Equal.sym(@S & U32, T.@p_size(@S{@TH, N}), (@S{@TH, N}, O.mulc(N, @RS)), sizex(MW{da, A, N}, hok)) : {T.@p_vsz_go(True{}, _) == (@S{@TH, N}, True{}) : @S & Bool}
+      %Equal.sym(Bool, O.is_poisoned(O.mulc(N, @RS)), False{}, VB.np_le(O.mulc(N, @RS), hb)) : {(@S{@TH, N}, Bool.and(True{}, Bool.not(_))) == (@S{@TH, N}, True{}) : @S & Bool}
+      {==}
+'''
+
+
+def valid_f_text(t, p):
+    """the laws of p state its fields' validity `_valid_f`; a validx (the MW law) adds the size pass"""
+    m = re.search(r'^law validx:\n(?:  for [^\n]*\n)*  \{T\.' + re.escape(p) + r'_valid\(TH\(m\)\)[^\n]*\n', t, re.M)
+    law = m.group(0) if m else None
+    t = t.replace(f'T.{p}_valid(', f'T.{p}_valid_f(')
+    if law:
+        t = t.replace(law.replace(f'T.{p}_valid(', f'T.{p}_valid_f('), law)
+        a = t.index('\ndef validx(m, hok):\n', t.index(law)) + 1
+        b = t.index('\n\n', a)
+        mrs = re.search(r'O\.mulc\(N, (\d+)\)', t)
+        mth = re.search(r'case MW\{\+da, \+A, \+N\}: T\.' + re.escape(p) + r'_Seq\{(.*?), N\}', t)
+        assert mrs and mth, p
+        RS, TH = mrs.group(1), mth.group(1)
+        mvx = re.search(r'\ndef validx\(m, hok\):\n  match m:\n    case MW\{\+da, \+A, \+N\}: valid\(da, A, N, hok\)\n', t)
+        assert mvx, p
+        vxf = (f'\ndef validx_f(m: MW, +hok: {{OK(m) == True{{}} : Bool}}) -> {{T.{p}_valid_f(TH(m)) == (TH(m), True{{}}) : T.{p}_Seq & Bool}}:\n'
+               '  match m:\n    case MW{+da, +A, +N}: valid(da, A, N, hok)\n')
+        li = t.index(law)
+        t = t[:li] + vxf.lstrip('\n') + '\n' + t[li:]
+        a = t.index('\ndef validx(m, hok):\n', t.index(law)) + 1
+        b = t.index('\n\n', a)
+        t = t[:a] + VALIDX_F.replace('@RSn', RS + 'n').replace('@RS', RS).replace('@S', f'T.{p}_Seq').replace('@TH', TH).replace('@p', p).rstrip('\n') + t[b:]
+    return t
+
+
 def vec_text(p, R, NV):
     """A vector of NV records R (RVECS): the list machinery of SUBLIST up to its writer's loop, then the
     vector's checked writer (its size flag 0) and its laws in the FixW form (VEC_TAIL)."""
@@ -1256,6 +1309,14 @@ def main():
     for n in URECS:
         out[urec_file(n)] = urec_text(n)
     out[lfile(VLIST)] = vlist_module()
+    # the lists whose `_valid` also tests the size pass (docs/CRASH_HUNT.md R4-05): the laws on the fields' validity state `_valid_f`
+    # (a parent container and the checked writer use it); the list's validx adds the size pass, within NMAX by OK
+    plist = [p_ for p_, _ in [list_module_p(parent, field) for parent, field in LISTS]] + [VLIST] + [p_ for p_, _, _ in SUBLISTS]
+    for f_, t_ in list(out.items()):
+        for p_ in plist:
+            if runtime_has_valid_f(p_) and f'T.{p_}_valid(' in t_:
+                t_ = valid_f_text(t_, p_)
+        out[f_] = t_
     return finish(out, 'stale generated record encoder windows: ', 'generated record encoder windows are current',
                   dify=dict(handled={'rposW', 'mulqW', 'posbW', 'pposW', 'proomW', 'fposW', 'vposW'}, post=rec_strict))
 

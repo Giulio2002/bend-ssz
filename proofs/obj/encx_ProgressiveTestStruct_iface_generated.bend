@@ -545,21 +545,29 @@ def sizex(m, hok):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: sizeC(m_f_A, m_f_B, m_f_C, m_f_D, hok)
 
-def rvalidC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_SmallTestStruct.MW, +m_f_D: EX_pl_pl_VarTestStruct.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {ProgressiveTestStruct_e.ProgressiveTestStruct_valid(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}:
+def rvalidC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_SmallTestStruct.MW, +m_f_D: EX_pl_pl_VarTestStruct.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {ProgressiveTestStruct_e.ProgressiveTestStruct_valid_f(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}:
   %Equal.sym(O.Words & Bool, proglist_uint8_e.pl_u8_valid(EX_pl_u8.TH(m_f_A)), (EX_pl_u8.TH(m_f_A), True{}), EX_pl_u8.validx(m_f_A, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
     {ProgressiveTestStruct_e.ProgressiveTestStruct_va0(EX_pl_u64.TH(m_f_B), EX_pl_SmallTestStruct.TH(m_f_C), EX_pl_pl_VarTestStruct.TH(m_f_D), True{}, _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
   %Equal.sym(O.Words & Bool, proglist_uint64_e.pl_u64_valid(EX_pl_u64.TH(m_f_B)), (EX_pl_u64.TH(m_f_B), True{}), EX_pl_u64.validx(m_f_B, ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
     {ProgressiveTestStruct_e.ProgressiveTestStruct_va1(EX_pl_u8.TH(m_f_A), EX_pl_SmallTestStruct.TH(m_f_C), EX_pl_pl_VarTestStruct.TH(m_f_D), Bool.and(True{}, True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
-  %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool, proglist_SmallTestStruct_e.pl_SmallTestStruct_valid(EX_pl_SmallTestStruct.TH(m_f_C)), (EX_pl_SmallTestStruct.TH(m_f_C), True{}), EX_pl_SmallTestStruct.validx(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+  %Equal.sym(proglist_SmallTestStruct_d.pl_SmallTestStruct_Seq & Bool, proglist_SmallTestStruct_e.pl_SmallTestStruct_valid_f(EX_pl_SmallTestStruct.TH(m_f_C)), (EX_pl_SmallTestStruct.TH(m_f_C), True{}), EX_pl_SmallTestStruct.validx_f(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
     {ProgressiveTestStruct_e.ProgressiveTestStruct_va2(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_pl_VarTestStruct.TH(m_f_D), Bool.and(Bool.and(True{}, True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
   %Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq & Bool, proglist_proglist_VarTestStruct_e.pl_pl_VarTestStruct_valid(EX_pl_pl_VarTestStruct.TH(m_f_D)), (EX_pl_pl_VarTestStruct.TH(m_f_D), True{}), EX_pl_pl_VarTestStruct.validx(m_f_D, ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
     {ProgressiveTestStruct_e.ProgressiveTestStruct_va3(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_SmallTestStruct.TH(m_f_C), Bool.and(Bool.and(Bool.and(True{}, True{}), True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
   {==}
 
+# the fields' validity (`_valid_f`) and the size pass within NMAX (docs/CRASH_HUNT.md R4-05)
+def validx_f(m: MW, +hok: {OK(m) == True{} : Bool}) -> {ProgressiveTestStruct_e.ProgressiveTestStruct_valid_f(TH(m)) == (TH(m), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}:
+  match m:
+    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: rvalidC(m_f_A, m_f_B, m_f_C, m_f_D, hok)
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
   {ProgressiveTestStruct_e.ProgressiveTestStruct_valid(TH(m)) == (TH(m), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
 def validx(m, hok):
-  match m:
-    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: rvalidC(m_f_A, m_f_B, m_f_C, m_f_D, hok)
+  %Equal.sym(ProgressiveTestStruct_d.ProgressiveTestStruct & Bool, ProgressiveTestStruct_e.ProgressiveTestStruct_valid_f(TH(m)), (TH(m), True{}), validx_f(m, hok)) : {ProgressiveTestStruct_e.ProgressiveTestStruct_vsz(_) == (TH(m), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
+  %Equal.sym(ProgressiveTestStruct_d.ProgressiveTestStruct & U32, ProgressiveTestStruct_e.ProgressiveTestStruct_size(TH(m)), (TH(m), SZ(m)), sizex(m, hok)) : {ProgressiveTestStruct_e.ProgressiveTestStruct_vsz_go(True{}, _) == (TH(m), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
+  %Equal.sym(Bool, O.is_poisoned(SZ(m)), False{}, VB.np_qk(SZ(m), List.length(&2, U32, ENC(m)), 28n, {==}, szx(m, hok), bndx(m, hok, 28n, {==}))) :
+    {(TH(m), Bool.and(True{}, Bool.not(_))) == (TH(m), True{}) : ProgressiveTestStruct_d.ProgressiveTestStruct & Bool}
+  {==}
+

@@ -363,7 +363,7 @@ def BeaconState_g1_va1(+eth1_data: FuluEth1Data_d.Eth1Data, eth1_data_votes: Ful
 
 def BeaconState_g1_va0(+eth1_data: FuluEth1Data_d.Eth1Data, +eth1_deposit_index: O.U64, validators: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, balances: O.Words, randao_mixes: O.Words, slashings: O.Words, previous_epoch_participation: O.Words, acc: Bool, pair: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool) -> FuluBeaconState_d.BeaconState_g1 & Bool:
   (eth1_data_votes, ok) = pair
-  BeaconState_g1_va1(eth1_data, eth1_data_votes, eth1_deposit_index, balances, randao_mixes, slashings, previous_epoch_participation, Bool.and(acc, ok), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(validators))
+  BeaconState_g1_va1(eth1_data, eth1_data_votes, eth1_deposit_index, balances, randao_mixes, slashings, previous_epoch_participation, Bool.and(acc, ok), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid_f(validators))
 
 def BeaconState_g1_valid(o: FuluBeaconState_d.BeaconState_g1) -> FuluBeaconState_d.BeaconState_g1 & Bool:
   match o:
@@ -419,7 +419,7 @@ def BeaconState_g4_va0(+consolidation_balance_to_consume: O.U64, +earliest_conso
 
 def BeaconState_g4_valid(o: FuluBeaconState_d.BeaconState_g4) -> FuluBeaconState_d.BeaconState_g4 & Bool:
   match o:
-    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid(pending_deposits))
+    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid_f(pending_deposits))
 
 def BeaconState_va4(g0: FuluBeaconState_d.BeaconState_g0, g1: FuluBeaconState_d.BeaconState_g1, g2: FuluBeaconState_d.BeaconState_g2, g3: FuluBeaconState_d.BeaconState_g3, acc: Bool, pair: FuluBeaconState_d.BeaconState_g4 & Bool) -> FuluBeaconState_d.BeaconState & Bool:
   (g4, ok) = pair
@@ -441,9 +441,20 @@ def BeaconState_va0(g1: FuluBeaconState_d.BeaconState_g1, g2: FuluBeaconState_d.
   (g0, ok) = pair
   BeaconState_va1(g0, g2, g3, g4, Bool.and(acc, ok), BeaconState_g1_valid(g1))
 
-def BeaconState_valid(o: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState & Bool:
+def BeaconState_valid_f(o: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState & Bool:
   match o:
     case FuluBeaconState_d.BeaconState{g0, g1, g2, g3, g4}: BeaconState_va0(g1, g2, g3, g4, True{}, BeaconState_g0_valid(g0))
+
+def BeaconState_vsz_go(ok: Bool, pair: FuluBeaconState_d.BeaconState & U32) -> FuluBeaconState_d.BeaconState & Bool:
+  (o, +m) = pair
+  (o, Bool.and(ok, Bool.not(O.is_poisoned(m))))
+
+def BeaconState_vsz(pair: FuluBeaconState_d.BeaconState & Bool) -> FuluBeaconState_d.BeaconState & Bool:
+  (o, ok) = pair
+  BeaconState_vsz_go(ok, BeaconState_size(o))
+# valid: the fields and a size within NMAX (docs/CRASH_HUNT.md R4-05)
+
+def BeaconState_valid(o: FuluBeaconState_d.BeaconState) -> FuluBeaconState_d.BeaconState & Bool: BeaconState_vsz(BeaconState_valid_f(o))
 
 def BeaconState_senc_out(+n: U32, out: Array<U32>, o: FuluBeaconState_d.BeaconState, +m: U32) -> FuluBeaconState_d.BeaconState & O.Encoded:
   (o, O.ser_done(O.is_poisoned(m), n, out))

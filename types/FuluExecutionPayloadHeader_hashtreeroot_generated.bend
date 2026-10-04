@@ -137,6 +137,6 @@ def ExecutionPayloadHeader_bx_rt(pair: B.Buf & (FuluExecutionPayloadHeader_d.Exe
 def ExecutionPayloadHeader_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +seg: U32) -> B.Buf & (O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & D.Digest):
   match o:
     case O.BSome{v, rest}: ExecutionPayloadHeader_bx_rt(ExecutionPayloadHeader_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def ExecutionPayloadHeader_hash_tree_root(h: B.Buf, o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader) -> B.Buf & (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest): ExecutionPayloadHeader_root(64n, h, o, 0)

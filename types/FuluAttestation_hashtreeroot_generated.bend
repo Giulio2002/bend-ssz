@@ -44,6 +44,6 @@ def Attestation_bx_rt(pair: B.Buf & (FuluAttestation_d.Attestation & D.Digest)) 
 def Attestation_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluAttestation_d.Attestation>, +seg: U32) -> B.Buf & (O.Boxed<FuluAttestation_d.Attestation> & D.Digest):
   match o:
     case O.BSome{v, rest}: Attestation_bx_rt(Attestation_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluAttestation_d.Attestation_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def Attestation_hash_tree_root(h: B.Buf, o: FuluAttestation_d.Attestation) -> B.Buf & (FuluAttestation_d.Attestation & D.Digest): Attestation_root(64n, h, o, 0)

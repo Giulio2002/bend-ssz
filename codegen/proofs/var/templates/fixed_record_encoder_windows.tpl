@@ -345,6 +345,8 @@ def maxx(m, hok):
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
     -> {T.${p}_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  %Equal.sym(Bool, U32.is_le(N, 4294967264), True{}, VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{}, _)), O.unit_ok(${unit}, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}
   wok(dw, T, N, ${unit}, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h), ${hu})
 
 @@ _flist_kinds @@

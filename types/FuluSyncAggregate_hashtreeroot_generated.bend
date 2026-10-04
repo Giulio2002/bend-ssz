@@ -31,6 +31,6 @@ def SyncAggregate_bx_rt(+v: FuluSyncAggregate_d.SyncAggregate, pair: B.Buf & D.D
 def SyncAggregate_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +seg: U32) -> B.Buf & (O.Boxed<FuluSyncAggregate_d.SyncAggregate> & D.Digest):
   match o:
     case O.BSome{+v, rest}: SyncAggregate_bx_rt(v, SyncAggregate_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluSyncAggregate_d.SyncAggregate_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def SyncAggregate_hash_tree_root(h: B.Buf, +o: FuluSyncAggregate_d.SyncAggregate) -> B.Buf & D.Digest: SyncAggregate_root(64n, h, o, 0)

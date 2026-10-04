@@ -750,6 +750,7 @@ def le_pw31_nmax(+x: Nat, +h: {Nat.is_lt(x, pw(31n)) == True{} : Bool}) -> {Nat.
   F.nat__le_trans(x, pw(31n), U32.to_nat(NMAX()), F.nat__lt_le(x, pw(31n), h),
     le_gen(F.u32__pow2u(31n), NMAX(), pw(31n), U32.to_nat(NMAX()), F.u32__pow2u_value(31n, {==}), {==}, {==}))
 
+
 def le_pw30_nmax(+x: Nat, +h: {Nat.is_le(x, pw(30n)) == True{} : Bool}) -> {Nat.is_le(x, U32.to_nat(NMAX())) == True{} : Bool}:
   F.nat__le_trans(x, pw(30n), U32.to_nat(NMAX()), h,
     le_gen(F.u32__pow2u(30n), NMAX(), pw(30n), U32.to_nat(NMAX()), F.u32__pow2u_value(30n, {==}), {==}, {==}))
@@ -813,3 +814,30 @@ def u32le_trans(+n: U32, +m: U32, +c: U32, +h: {U32.is_le(n, m) == True{} : Bool
   +h2 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(m, c), Nat.is_le(U32.to_nat(m), U32.to_nat(c)), le_u32n(m, c), hm)
   F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(c)), U32.is_le(n, c), Equal.sym(Bool, U32.is_le(n, c), Nat.is_le(U32.to_nat(n), U32.to_nat(c)), le_u32n(n, c)),
     F.nat__le_trans(U32.to_nat(n), U32.to_nat(m), U32.to_nat(c), h1, h2))
+
+# a packed list's byte length N <= 4 * 2^dw with dw < 28 is within NMAX (docs/CRASH_HUNT.md R4-05: `_valid` bounds the length by NMAX)
+def u_le_nmax_dw(+N: U32, +dw: Nat, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(N), A.quad(pw(dw))) == True{} : Bool})
+    -> {U32.is_le(N, NMAX()) == True{} : Bool}:
+  +h2 = F.nat__le_trans(U32.to_nat(N), pw(2n+dw), pw(30n), hN, F.nat__pow2_mono(2n+dw, 30n, F.nat__lt_le(dw, 28n, hdw)))
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(NMAX())), U32.is_le(N, NMAX()),
+    Equal.sym(Bool, U32.is_le(N, NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(NMAX())), le_u32n(N, NMAX())), le_pw30_nmax(U32.to_nat(N), h2))
+
+# a size x of L bytes with L <= 4 * 2^k, k = 28, is not the marker (docs/CRASH_HUNT.md R4-05: `_valid` tests the size pass)
+def np_qk(+x: U32, +L: Nat, +k: Nat, +ek: {k == 28n : Nat}, +e: {U32.to_nat(x) == L : Nat}, +h: {Nat.is_le(L, A.quad(pw(k))) == True{} : Bool})
+    -> {O.is_poisoned(x) == False{} : Bool}:
+  +h31 = F.logic__subst(Nat, z => {Nat.is_lt(L, pw(1n+(2n+z))) == True{} : Bool}, k, 28n, ek, le_pw_lt(L, 2n+k, h))
+  +hN = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(NMAX())) == True{} : Bool}, L, U32.to_nat(x), Equal.sym(Nat, U32.to_nat(x), L, e), le_pw31_nmax(L, h31))
+  F.logic__subst(Bool, z => {z == False{} : Bool}, Nat.is_lt(U32.to_nat(NMAX()), U32.to_nat(x)), O.is_poisoned(x),
+    Equal.sym(Bool, O.is_poisoned(x), Nat.is_lt(U32.to_nat(NMAX()), U32.to_nat(x)), F.u32__is_lt_nat(NMAX(), x)),
+    F.nat__le_not_lt(U32.to_nat(NMAX()), U32.to_nat(x), hN))
+
+# N <= NMAX as the runtime compares it
+def u_le_nmax_n(+N: U32, +h: {Nat.is_le(U32.to_nat(N), U32.to_nat(NMAX())) == True{} : Bool}) -> {U32.is_le(N, NMAX()) == True{} : Bool}:
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(NMAX())), U32.is_le(N, NMAX()),
+    Equal.sym(Bool, U32.is_le(N, NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(NMAX())), le_u32n(N, NMAX())), h)
+
+# a size within NMAX is not the marker (vbuf's copy of venc.np_nmax, for the modules that do not import venc)
+def np_le(+x: U32, +h: {Nat.is_le(U32.to_nat(x), U32.to_nat(NMAX())) == True{} : Bool}) -> {O.is_poisoned(x) == False{} : Bool}:
+  F.logic__subst(Bool, z => {z == False{} : Bool}, Nat.is_lt(U32.to_nat(NMAX()), U32.to_nat(x)), O.is_poisoned(x),
+    Equal.sym(Bool, O.is_poisoned(x), Nat.is_lt(U32.to_nat(NMAX()), U32.to_nat(x)), F.u32__is_lt_nat(NMAX(), x)),
+    F.nat__le_not_lt(U32.to_nat(NMAX()), U32.to_nat(x), h))

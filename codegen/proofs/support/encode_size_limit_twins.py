@@ -112,7 +112,7 @@ LIST_D_STEMS = {'encx_VarTestStruct', 'encx_VarTestStruct_iface', 'encx_Progress
                 'encx_ComplexTestStruct', 'encx_ComplexTestStruct_iface', 'encx_ProgressiveTestStruct', 'encx_ProgressiveTestStruct_iface',
                 'encx_ProgressiveComplexTestStruct', 'encx_ProgressiveComplexTestStruct_iface', 'encx_BeaconState', 'encx_BeaconState_iface',
                 'encx_ExecutionPayloadHeader', 'encx_ExecutionPayloadHeader_iface'}
-LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'putxW', 'putx_bytesW', 'domx', 'maxx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
+LD_LAWS = ('OK', 'encx_spec', 'szx', 'sizex', 'validx', 'validx_f', 'putxW', 'putx_bytesW', 'domx', 'maxx', 'fwrtW', 'fwbyW', 'lenv', 'vspec')   # (of those, the ones its D module defines)
 
 
 def list_d_children(t):
@@ -329,6 +329,12 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         for eb in ('putxEW', 'putx_bytesEW'):
             nb = _rewrite_calls(nb, eb, lambda g, eb=eb: eb[:-1] + 'O(' + ', '.join(x for x in g if 'hs31' not in x) + ')')
         t = t[:b] + '\n' + nb.rstrip('\n') + '\n' + t[b:]
+    # a `_valid` that also tests the size pass (R4-05): its fields' part validx_f on OKW (the chain rvalidCW)
+    vab = _block_text(t, 'validx_f')
+    if 'validx' in olaws and vab and 'def validx_fO(' not in t and '{OK(m) == True{} : Bool}' in t[vab[0]:vab[1]]:
+        a, b = vab
+        nf = rw(t[a:b].replace('def validx_f(', 'def validx_fO(', 1).replace('{OK(m) == True{} : Bool}', '{OKW(m) == True{} : Bool}'), False)
+        t = t[:b] + '\n' + nf.rstrip('\n') + '\n' + t[b:]
     for law in olaws:
         ab = _block_text(t, law)
         if not ab or f'law {law}O:' in t or '{OK(m) == True{} : Bool}' not in t[ab[0]:ab[1]]:
@@ -346,6 +352,12 @@ def okw_iface(t, child_okw, olaws=OLAWS, keep=False, dchild=False):
         nb = blk.replace(f'law {law}:', f'law {law}O:', 1).replace(f'def {law}(', f'def {law}O(', 1)
         nb = nb.replace('{OK(m) == True{} : Bool}', '{OKW(m) == True{} : Bool}')
         nb = re.sub(r'(?<![\w.])' + law + r'E\(', law + 'EO(', nb)
+        if law == 'validx' and 'validx_f(m, hok)' in nb:
+            nb = nb.replace('validx_f(m, hok)', 'validx_fO(m, hok)').replace('sizex(m, hok)', 'sizexO(m, hok)')
+            nb = nb.replace('VB.np_qk(SZ(m), List.length(&2, U32, ENC(m)), 28n, {==}, szx(m, hok), bndx(m, hok, 28n, {==}))',
+                            'VB.np_le(SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, ENC(m)), U32.to_nat(SZ(m)), '
+                            'Equal.sym(Nat, U32.to_nat(SZ(m)), List.length(&2, U32, ENC(m)), szxO(m, hok)), bndxO(m, hok)))')
+            assert keep, 'validxO of a wrapped `_valid` reads bndxO (keep)'
         nb = rw(nb, False)
         for l in nb.split('\n'):
             if re.search(r'(?<![\w.])(k|ek)(?![\w.])', l):
@@ -544,6 +556,15 @@ def okw_size(t, child_okw, es_aliases, endc_def=None, dchild=False):
     if ab:
         nb = t[ab[0]:ab[1]].replace('def szsz(', 'def szszW(', 1).replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
         new.append('\n' + rw(nb).rstrip('\n') + '\n')
+    # a `_valid` that also tests the size pass (R4-05): its fields' part validx_f on OKW, and the bound of the bytes from OKW (ok_bndW)
+    ab = _block_text(t, 'validx_f')
+    if ab:
+        nb = t[ab[0]:ab[1]].replace('def validx_f(', 'def validx_fW(', 1).replace('{CI.OK(m) == True{} : Bool}', '{CI.OKW(m) == True{} : Bool}')
+        new.append('\n' + rw(nb).rstrip('\n') + '\n')
+        mp = re.search(r'case CI\.MW\{([^}]*)\}: validC\(', t[ab[0]:ab[1]])
+        new.append('\n' + (f'def bndxW(m: CI.MW, +hok: {{CI.OKW(m) == True{{}} : Bool}}) -> {{Nat.is_le(List.length(&2, U32, CI.ENC(m)), U32.to_nat(VB.NMAX())) == True{{}} : Bool}}:\n'
+                            f'  match m:\n    case CI.MW{{{mp.group(1)}}}: FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{{}} : Bool}}, CI.ENDC({OAS}), '
+                            f'List.length(&2, U32, K.ENCC({OAS})), Equal.sym(Nat, List.length(&2, U32, K.ENCC({OAS})), CI.ENDC({OAS}), CI.lenEW({OAS}, hok)), CI.ok_bndW({OAS}, hok))\n'))
     for law in SLAWS:
         ab = _block_text(t, law)
         if not ab:
@@ -553,6 +574,10 @@ def okw_size(t, child_okw, es_aliases, endc_def=None, dchild=False):
         for l2 in SLAWS:
             nb = re.sub(r'(?<![\w.])' + l2 + r'\(', l2 + 'O(', nb)
         nb = re.sub(r'(?<![\w.])CI\.szx\(', 'CI.szxO(', nb)
+        nb = nb.replace('validx_f(m, hok)', 'validx_fW(m, hok)')
+        nb = nb.replace('VB.np_qk(CI.SZ(m), List.length(&2, U32, CI.ENC(m)), 28n, {==}, CI.szxO(m, hok), CI.bndx(m, hok, 28n, {==}))',
+                        'VB.np_le(CI.SZ(m), FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), '
+                        'Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szxO(m, hok)), bndxW(m, hok)))')
         nb = rw(nb)
         new.append('\n' + nb.rstrip('\n') + '\n')
     head = ('\n# ---- OKW: the laws on CI.OKW (the encoding below 2^31 bytes; codegen/proofs/support/encode_size_limit_twins.py okw_size), the chains with the bound '

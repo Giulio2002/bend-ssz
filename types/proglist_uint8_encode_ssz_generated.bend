@@ -19,7 +19,7 @@ def pl_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (
     case True{}: pl_u8_putn(out, pos, o)
     case False{}: (out, (o, 4294967295))
 
-def pl_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 1)
+def pl_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 4294967264, False{}, 1)
 
 def pl_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u8_pk(out, pos, pl_u8_valid(o))
 

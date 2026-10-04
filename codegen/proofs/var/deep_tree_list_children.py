@@ -118,6 +118,8 @@ def d_twin(text, p):
         seg = re.sub(r', h\)(\n|$)', r', ok0(dw, T, N, h))\1', seg)
         t = t[:a] + seg + t[b:]
         hy_body = ('VC.hyW(0n, N, ok_nm(dw, T, N, h))')
+        # the NMAX bound of `_valid` (R4-05) from OKT's conjunct, not from the base's depth below 28
+        t = t.replace('VB.u_le_nmax_dw(N, dw, ok_hd(dw, T, N, h), ok_hN(dw, T, N, h))', 'VB.u_le_nmax_n(N, ok_nm(dw, T, N, h))')
         hw32 = 'ok_nm(dw, T, N, hok)'
     else:
         if kind == 'lim':

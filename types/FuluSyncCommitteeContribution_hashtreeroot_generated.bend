@@ -50,6 +50,6 @@ def SyncCommitteeContribution_bx_rt(+v: FuluSyncCommitteeContribution_d.SyncComm
 def SyncCommitteeContribution_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, +seg: U32) -> B.Buf & (O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution> & D.Digest):
   match o:
     case O.BSome{+v, rest}: SyncCommitteeContribution_bx_rt(v, SyncCommitteeContribution_root(hl, h, v, seg))
-    case O.BNone{}: (h, (FuluSyncCommitteeContribution_d.SyncCommitteeContribution_bx_default(), D.zero()))
+    case O.BNone{}: (h, (O.BNone{}, D.zero()))
 
 def SyncCommitteeContribution_hash_tree_root(h: B.Buf, +o: FuluSyncCommitteeContribution_d.SyncCommitteeContribution) -> B.Buf & D.Digest: SyncCommitteeContribution_root(64n, h, o, 0)

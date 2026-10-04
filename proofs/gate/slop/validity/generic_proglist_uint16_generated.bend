@@ -13,6 +13,6 @@ def proglist_uint16__serialize_valid__proglist_uint16_serialize_vin_0() -> {prog
 def proglist_uint16__serialize_valid__proglist_uint16_serialize_vin_2() -> {proglist_uint16_e.proglist_uint16_serialize(O.Words{O.out_at(1n), 2}) == (Pair.fst(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(O.Words{O.out_at(1n), 2})), O.encoded(Pair.snd(O.Words, B.Buf, proglist_uint16_e.proglist_uint16_encode(O.Words{O.out_at(1n), 2})))) : O.Words & O.Encoded}:
   PRV.proglist_uint16_serialize_vin_2()
 
-def proglist_uint16__serialize_valid__proglist_uint16_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint16_e.pl_u16_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(True{}, U32.is_le(n, 0))), O.unit_ok(2, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
+def proglist_uint16__serialize_valid__proglist_uint16_serialize_vsym(ws: Array<U32>, +n: U32) -> {proglist_uint16_e.pl_u16_valid(O.Words{ws, n}) == O.wk_cap(Bool.and(Bool.and(U32.is_le(0, n), Bool.or(False{}, U32.is_le(n, 4294967264))), O.unit_ok(2, n)), n, Array.size(U32, ws)) : O.Words & Bool}:
   PRV.proglist_uint16_serialize_vsym(ws, n)
 

@@ -1006,8 +1006,13 @@ def cc_fin(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
   (mask_last(n, out), ws)
 
 # The words of the n bytes of ws in storage of whole chunks, zero past them; the pair is that copy and the array it was read from.
+# The clean copy's storage: ceil(n / 32) * 8 + 8 words without the wrap of n + 31 (zeros_for wraps for n > 2^32 - 32, and the copy then got
+# 8 words for a 4 GiB claim: docs/CRASH_HUNT.md R4-01).
+def zeros_copy(+n: U32) -> Array<U32>:
+  B.zeros(B.words_depth_u((U32.shrn(n, 5n) * 8 + U32.shrn((U32.and(n, 31) + 31 : U32), 5n) * 8 + 8 : U32)))
+
 def words_copy(+n: U32, ws: Array<U32>) -> Array<U32> & Array<U32>:
-  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_for(n), Array.get(U32, ws, 0)))
+  cc_fin(n, cc_go(Nat.div(Nat.add(U32.to_nat(n), 3n), 4n), 0, zeros_copy(n), Array.get(U32, ws, 0)))
 
 def wr_swap(ws: Array<U32>, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Words & D.Digest):
   (h, r) = pair
@@ -1766,6 +1771,9 @@ def out_donem(+m: U32, out: Array<U32>) -> B.Buf: out_donep(is_poisoned(m), m, o
 
 # n * es for a fixed element size es: the product when it does not wrap and is at most NMAX, else the marker (docs/SIZE_LIMIT_DESIGN.md).
 def mulc(+n: U32, +es: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, es)), (n * es : U32), 4294967295)
+
+# 4 * n, the offset table of a list of variable-size elements: the product when n <= NMAX / 4, else the marker (docs/CRASH_HUNT.md R4-03).
+def mul4c(+n: U32) -> U32: pick(U32.is_le(n, U32.div(4294967264, 4)), (4 * n : U32), 4294967295)
 
 def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
   match o:

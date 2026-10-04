@@ -1744,7 +1744,7 @@ def szl(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool},
 def SZSb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32) -> U32:
   match b:
     case True{}: 0
-    case False{}: O.padd(U32.mul(4, N), SZA(U32.to_nat(N), SL(t), 0n, 0))
+    case False{}: O.padd(O.mul4c(N), SZA(U32.to_nat(N), SL(t), 0n, 0))
 def SZS(+t: F.array__Tree<MB<EM.MW>>, +N: U32) -> U32: SZSb(U32.is_eq(N, 0), t, N)
 
 def sizexb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool})
@@ -1781,13 +1781,15 @@ def szsb_val(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +eb: {U32.is_eq(N,
         Equal.trans(Nat, LL(t, N), Nat.add(A.quad(n), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))),
           Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), BLn, U32.to_nat(SZA(n, SL(t), 0n, 0)), Equal.sym(Nat, U32.to_nat(SZA(n, SL(t), 0n, 0)), BLn, es)),
           Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(SZA(n, SL(t), 0n, 0))), A.quad(n), U32.to_nat(U32.mul(4, N)), Equal.sym(Nat, U32.to_nat(U32.mul(4, N)), A.quad(n), em))), hb)
+      +qN = t31(A.quad(n), kx, ek, lsuc(A.quad(n), kx, hq))
+      F.logic__subst(U32, z => {U32.to_nat(O.padd(z, SZA(n, SL(t), 0n, 0))) == LL(t, N) : Nat}, U32.mul(4, N), O.mul4c(N), Equal.sym(U32, O.mul4c(N), U32.mul(4, N), VE.mul4c_q(N, qN)),
       Equal.trans(Nat, U32.to_nat(O.padd(U32.mul(4, N), SZA(n, SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), LL(t, N),
         padd_nat(U32.mul(4, N), SZA(n, SL(t), 0n, 0), t31s(Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), kx, ek, bsuc(Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), kx, hsum))),
         Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), BLn), LL(t, N),
           Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), BLn),
             Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(SZA(n, SL(t), 0n, 0))), U32.to_nat(U32.mul(4, N)), A.quad(n), em),
             Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), U32.to_nat(SZA(n, SL(t), 0n, 0)), BLn, es)),
-          {==}))
+          {==})))
 
 def szs(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +kx: Nat, +ek: {kx == 30n : Nat},
     +hb: {Nat.is_le(LL(t, N), VB.pw(kx)) == True{} : Bool}) -> {U32.to_nat(SZS(t, N)) == LL(t, N) : Nat}:
@@ -1853,13 +1855,14 @@ def szsb_valS(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +eb: {U32.is_eq(N
         Equal.trans(Nat, LL(t, N), Nat.add(A.quad(n), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))),
           Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), BLn, U32.to_nat(SZA(n, SL(t), 0n, 0)), Equal.sym(Nat, U32.to_nat(SZA(n, SL(t), 0n, 0)), BLn, es)),
           Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(SZA(n, SL(t), 0n, 0))), A.quad(n), U32.to_nat(U32.mul(4, N)), Equal.sym(Nat, U32.to_nat(U32.mul(4, N)), A.quad(n), em))), hb)
+      F.logic__subst(U32, z => {U32.to_nat(O.padd(z, SZA(n, SL(t), 0n, 0))) == LL(t, N) : Nat}, U32.mul(4, N), O.mul4c(N), Equal.sym(U32, O.mul4c(N), U32.mul(4, N), VE.mul4c_q(N, hq)),
       Equal.trans(Nat, U32.to_nat(O.padd(U32.mul(4, N), SZA(n, SL(t), 0n, 0))), Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), LL(t, N),
         padd_nat(U32.mul(4, N), SZA(n, SL(t), 0n, 0), hsum),
         Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), BLn), LL(t, N),
           Equal.trans(Nat, Nat.add(U32.to_nat(U32.mul(4, N)), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), U32.to_nat(SZA(n, SL(t), 0n, 0))), Nat.add(A.quad(n), BLn),
             Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(SZA(n, SL(t), 0n, 0))), U32.to_nat(U32.mul(4, N)), A.quad(n), em),
             Equal.cong(Nat, Nat, z => Nat.add(A.quad(n), z), U32.to_nat(SZA(n, SL(t), 0n, 0)), BLn, es)),
-          {==}))
+          {==})))
 
 def szsS(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool},
     +hb: {Nat.is_le(LL(t, N), U32.to_nat(VB.NMAX())) == True{} : Bool}) -> {U32.to_nat(SZS(t, N)) == LL(t, N) : Nat}:

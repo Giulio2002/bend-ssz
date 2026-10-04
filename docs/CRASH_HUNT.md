@@ -601,3 +601,23 @@ closing paragraph and the code (`size <= 4294967264`, marker 4294967295, `_encod
 
 Not run: `proglist_VarTestStruct` inside a decode at the limit (same arithmetic as R4-02: about 11 input bytes per element, not measured); the union selectors and hostile byte corpora (rounds 1 and 3 covered
 2 million mutants and nothing in the decode-window change touches the validators below the top-level window test).
+
+## R4.5 crash-fix5 (agent/crash-fix5): status
+
+| finding | status | fix | evidence |
+|---|---|---|---|
+| R4-01 | FIXED | the clean copy of the root path is allocated by `O.zeros_copy(n)` (no wrap of `n + 31`); with R4-05 such an object is also not valid | `pn_r4` cases 1/2 at 4,294,967,292: `valid=0`, dirty root = clean root = the reference `2732131542,...` (before: `3092528689,...` for the dirty tail); `regress.sh` cases 58-60 |
+| R4-02 | ACCEPTED by decision (Giulio) | none: a resource limit of the native runtime's heap, documented in docs/API_CONTRACTS.md (`X_decode_checked`) | - |
+| R4-03 | FIXED | `O.mul4c(n)` (checked `4 n`) in the size pass of the seven lists of variable-size elements; the writer runs only after a size pass within NMAX | `regress.sh` case 65 (`sz_fin` at 2^30 elements: the marker, was 0) |
+| R4-04 | FIXED | `O.padd(m, 1)` in the four union size defs | `pn_r4` case 17: `size=4294967295` (was 0); `regress.sh` case 64 |
+| R4-05 | FIXED | `_valid` is 0 above NMAX: packed lists `words_ok(.., NMAX, False{}, ..)`, lists of fixed-size elements and containers / unions that can pass NMAX `X_vsz(X_valid_f(o))` | `regress.sh` cases 59-63 (proglist_uint8 at NMAX + 1: 0, at NMAX: 1; 35,495,598 validators: 0; ProgressiveTestStruct of NMAX + 1 bytes: 0, of NMAX: 1) |
+| R4-06 | FIXED | docs/API_CONTRACTS.md rows `X_decode_checked`, `X_serialize`, `X_encode`, `X_hash_tree_root`, `X_set` / `X_append`, `X_take` / `X_ctake` | - |
+| manual audit r4 probe p4_size case 17 (`_ctake` then root) | FIXED | the root of an absent box keeps it absent (`(O.BNone{}, D.zero())`; it came back as the default element, so the next root, cached or plain, hashed a default element) | `regress.sh` case 66 (Deposit list, append 3, cache, root, `ctake(1)`: cached root = plain root of the uncached list) |
+
+Audit of every plain `+` on a size (R4-04's class), in the generated `types/` and `src/`: the size passes add with `O.padd` (containers, groups, variable-element
+lists, unions now) and multiply with `O.mulc` / `O.mul4c`. The remaining plain additions near a size are not on a value that can be the marker: `(i + 1)` loop
+indices; `bits_size` / `bsz_pick` `(k >> 3) + 1` and `(k >> 5) + 1` (a bit count, at most 2^29 + 1); `erp_size` `ew + 7` (a literal element width); the
+storage tests `(n + 3) >> 2` of `wsz_pick` / `wk_cap` (n > NMAX is now refused by `_valid` before, and the size pass answers n itself, past NMAX); `fit_sized`
+`want + 31` (the append's `(n + 1) * es`, bounded by the append guard); `grow_sized` / `scratch_base` (the hash scratch of a buffer); the writers' cursors
+`pos + cur` (they run only after a size pass within NMAX).
+
