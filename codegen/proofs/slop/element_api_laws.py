@@ -50,6 +50,7 @@ import sys
 
 from codegen.core import generated_file_writer as writer  # noqa: E402
 from codegen.core import slop_layout as LAYOUT  # noqa: E402
+from codegen.core.repository_paths import ROOT  # noqa: E402
 from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 from codegen.proofs.slop.collection_guards import owners_of  # noqa: E402
@@ -74,6 +75,18 @@ def limit(tx, kp):
             if m:
                 return int(m.group(1))
     return None
+
+
+def record_decl(tx, E):
+    """the field list of the Data record E: from the runtime's monolith, else from the split type files (the fork's uint256)"""
+    pat = re.compile(rf'^type {re.escape(E)} is Data:\n  {re.escape(E)}\{{([^}}]*)\}}', re.M)
+    m = pat.search(tx.text)
+    if m is None:
+        for f in sorted((ROOT / 'types').glob('*_def_generated.bend')):
+            m = pat.search(f.read_text())
+            if m:
+                break
+    return m
 
 
 class Packed:
@@ -106,7 +119,7 @@ class Packed:
                 raise ValueError(f'{kp}: a uint64 element of {self.U} bytes')
             self.words = 2
         else:
-            m = re.search(rf'^type {re.escape(E)} is Data:\n  {re.escape(E)}\{{([^}}]*)\}}', tx.text, re.M)
+            m = record_decl(tx, E)
             fs = [f.strip() for f in m.group(1).split(',')] if m else []
             if not fs or any(not f.endswith(': U32') for f in fs) or 4 * len(fs) != self.U:
                 raise ValueError(f'{kp}: element {E} is not a record of {self.U // 4} U32 words')
@@ -182,6 +195,8 @@ def api_laws(X, kp, rep, Eq, getter, F, n, el, dl, newval, N, lst, ap_vals, own,
     def fst(call):
         return f'Pair.fst({rep}, Bool, {call})'
     D = f'{T}_default()'
+    helper = f'def obj() -> {rep}: {F}'     # the literal object F, stated once
+    F = 'obj()'
     outside = sorted({n, n + 1, TOP})
     law('get', [(ln(F), str(n), 'U32')] + [(get(F, i), f'Some{{{el(i)}}}', mb) for i in pick_slots(n)] + [(get(F, i), 'None{}', mb) for i in outside])
     if lst:
@@ -217,7 +232,7 @@ def api_laws(X, kp, rep, Eq, getter, F, n, el, dl, newval, N, lst, ap_vals, own,
             ser = f'T.{own}_serialize'
             pairs.append((f'Pair.snd({rep}, O.Encoded, {ser}({s}))', f'Pair.snd({rep}, O.Encoded, {ser}({F}))', 'O.Encoded'))
         law('append', pairs)
-    return out
+    return [helper] + out
 
 
 def selector_law(U, opts, sels):
@@ -315,8 +330,11 @@ def outputs():
     for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
         tx = MC.Text(runtime)
         decls = type_decls(tx)
+        api = set(re.findall(r'^def (\w+)_(?:get|take|set|append|len)\(o: ', tx.text, re.M))     # every kind with an element API
+        done = set(CELL_KINDS)
         for m in re.finditer(r'^def (\w+)_set\(o: ([\w.]+), \+i: U32, (?:\+?)v: ([\w.<>]+)\) -> ', tx.text, re.M):
             kp, rep, E = m.groups()
+            done.add(kp)
             if kp in CELL_KINDS:
                 continue
             try:
@@ -325,6 +343,7 @@ def outputs():
                 missing.append(f'{runtime} {e}')
                 continue
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_api_{kp}')] = module(tmod, X, kp, laws)
+        missing += [f'{runtime} {kp}: an element API without a `set(o, +i: U32, v)` of the expected shape' for kp in sorted(api - done)]
         for m in re.finditer(r'^def (\w+)_selector\((?:o|v): (\w+)\) -> ', tx.text, re.M):
             U = m.group(1)
             if sels is None:
