@@ -1,0 +1,10 @@
+DUP of an earlier round: r5-a03-mulc mulc's poison value is NMAX itself (a size that is not poisoned)
+DUP of an earlier round: r5-a04-markers is_poisoned compares with the marker (only 2^32 - 1 is poisoned; NMAX + 1 .. 2^3
+DUP of an earlier round: r5-a04-markers is_poisoned also poisons NMAX itself (<= for <)
+DUP of an earlier round: r5-a04-markers padd's wrap test compares the sum with b (a + b >= b), which also detects the wr
+DUP of an earlier round: r5-a04-markers out_donep returns the claimed buffer also for a poisoned length
+DUP of an earlier round: r5-a04-markers wsz_pick compares the word count with the storage strictly (a value whose storag
+DUP of an earlier round: r5-a04-markers bsz_pick's storage test is (k >> 5) words (the delimiter's word not required)
+DUP of an earlier round: r5-c03-bitvector-decode the padding test is on byte 63
+DUP of an earlier round: r5-c06-uint-pack the middle words 3 and 4 are exchanged
+faults 161 bad 9

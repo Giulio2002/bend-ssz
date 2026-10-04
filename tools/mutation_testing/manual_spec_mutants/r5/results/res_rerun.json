@@ -1,0 +1,636 @@
+[
+ {
+  "id": "r5-a01-zeros-copy/01",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 17.1,
+    "laws": [
+     "proglist_uint8_vroot_pl_u8_tight_5"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/02",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/03",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 17.1,
+    "laws": [
+     "proglist_uint8_vroot_pl_u8_tight_5"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/04",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 18.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/06",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 17.1,
+    "laws": [
+     "proglist_uint8_vroot_pl_u8_tight_5"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/07",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/08",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 18.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a01-zeros-copy/10",
+  "type": "bytelist_256",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_canon.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_zero.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/words_cap.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluTransaction_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/vec_uint128_3_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint8_hashtreeroot_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a02-mul4c/01",
+  "type": "proglist_VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a02-mul4c/02",
+  "type": "proglist_VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a02-mul4c/03",
+  "type": "proglist_VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "complex_default_serialize_100"
+    ],
+    "msg": "- expected : 108\n- observed : 100",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r5-a02-mul4c/04",
+  "type": "proglist_VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a02-mul4c/05",
+  "type": "proglist_VarTestStruct",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a04-markers/01",
+  "type": "FuluBeaconBlockBody",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Blob_poison_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r5-a04-markers/02",
+  "type": "FuluBeaconBlockBody",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.6,
+    "laws": [
+     "vec_bool_1_serialize_vpoison_pz_false"
+    ],
+    "msg": "- expected : 4294967265\n- observed : 4294967295",
+    "root": "proofs/slop/validity/generic_vec_bool_1_poison_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]
