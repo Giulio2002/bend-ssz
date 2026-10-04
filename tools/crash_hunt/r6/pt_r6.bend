@@ -34,11 +34,14 @@ def said_pc(pair: B.Buf & Maybe<&1, PCd.ProgressiveComplexTestStruct>) -> IO(Uni
     case None{}: IO.print("DEC=0")
     case Some{x}: IO.print("DEC=1")
 
-def dec(+c: U32, +size: U32, +budget: U32, pair: B.Buf & U32) -> IO(Unit):
-  (buf, +total) = pair
+def dec_on(+c: U32, +size: U32, +budget: U32, buf: B.Buf) -> IO(Unit):
   match c:
     case 3: said_ep(EP.ExecutionPayload_decode_checked_budget(buf, size, budget))
     case _: said_pc(PC.ProgressiveComplexTestStruct_decode_checked_budget(buf, size, budget))
+
+def dec(+c: U32, +size: U32, +budget: U32, pair: B.Buf & U32) -> IO(Unit):
+  (buf, +total) = pair
+  dec_on(c, size, budget, buf)
 
 def go(+c: U32, +n: U32) -> IO(Unit):
   match c:

@@ -4,7 +4,8 @@
 The shim (prysm-ffi bendssz/flat-generate.patch) answers a decode with `X_flat(o, [])`: `X_dump` with every leaf as whole 32-bit
 words (one list item per word instead of per byte). Its per-type code is the dump's with the O.dump_* primitives renamed to O.flat_*,
 so redefining the five O.dump_* primitives with the patch's O.flat_* bodies makes every generated `X_dump` compute `X_flat`, and the
-object programs' SSZ_MODE 5 (decode, then dump) the shim's decode + flatten. Never commit the result.
+object programs' SSZ_MODE 5 (decode, then dump) the shim's decode + flatten. Every item is masked to its low byte so
+that the programs File.write_bytes accepts it (same list, same cells; the values are not compared). Never commit the result.
 
     python3 tools/crash_hunt/r6/make_flat_tree.py SCRATCH_TREE
 """
@@ -17,7 +18,7 @@ s = open(p).read()
 FLAT = '''
 def flat_fw_took(t: +List<U32>, pair: Array<U32> & U32) -> Array<U32> & +List<U32>:
   (ws, +w) = pair
-  (ws, w <> t)
+  (ws, (w .&. 255 : U32) <> t)
 
 def flat_fw_step(+i: U32, st: Array<U32> & +List<U32>) -> Array<U32> & +List<U32>:
   (ws, t) = st
@@ -40,11 +41,11 @@ def dump_le(+x: U32, +k: U32, t: +List<U32>) -> +List<U32>:
     case 1: (x .&. 255 : U32) <> t
     case 2: (x .&. 65535 : U32) <> t
     case 3: (x .&. 16777215 : U32) <> t
-    case _: x <> t
+    case _: (x .&. 255 : U32) <> t
 
 def dump_u64(o: U64, t: +List<U32>) -> +List<U32>:
   match o:
-    case U64{+lo, +hi}: lo <> (hi <> t)
+    case U64{+lo, +hi}: (lo .&. 255 : U32) <> ((hi .&. 255 : U32) <> t)
 
 def dump_words(w: Words, t: +List<U32>) -> +List<U32>:
   match w:
@@ -52,11 +53,11 @@ def dump_words(w: Words, t: +List<U32>) -> +List<U32>:
 
 def dump_words_n(w: Words, t: +List<U32>) -> +List<U32>:
   match w:
-    case Words{ws, +n}: n <> flat_bytes(ws, n, t)
+    case Words{ws, +n}: (n .&. 255 : U32) <> flat_bytes(ws, n, t)
 
 def dump_bits_n(b: Bits, t: +List<U32>) -> +List<U32>:
   match b:
-    case Bits{ws, +k}: k <> flat_bytes(ws, U32.shrn((k + 7 : U32), 3n), t)
+    case Bits{ws, +k}: (k .&. 255 : U32) <> flat_bytes(ws, U32.shrn((k + 7 : U32), 3n), t)
 '''
 
 
