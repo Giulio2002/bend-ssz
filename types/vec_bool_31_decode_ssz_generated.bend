@@ -74,7 +74,9 @@ def vec_bool_31_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words
 
 def vec_bool_31_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_31_dchk(size, B.size(buf))
 
-def vec_bool_31_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def vec_bool_31_dk() -> U32: 0
+
+def vec_bool_31_dcost(+size: U32) -> U32: O.dcost(size, vec_bool_31_dk())
 
 def vec_bool_31_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

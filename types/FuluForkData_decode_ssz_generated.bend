@@ -72,7 +72,9 @@ def ForkData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluForkDa
 
 def ForkData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>: ForkData_dchk(size, B.size(buf))
 
-def ForkData_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ForkData_dk() -> U32: 0
+
+def ForkData_dcost(+size: U32) -> U32: O.dcost(size, ForkData_dk())
 
 def ForkData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluForkData_d.ForkData>:
   match ok:

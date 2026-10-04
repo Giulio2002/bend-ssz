@@ -69,7 +69,9 @@ def PendingConsolidation_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
 
 def PendingConsolidation_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>: PendingConsolidation_dchk(size, B.size(buf))
 
-def PendingConsolidation_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def PendingConsolidation_dk() -> U32: 0
+
+def PendingConsolidation_dcost(+size: U32) -> U32: O.dcost(size, PendingConsolidation_dk())
 
 def PendingConsolidation_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>:
   match ok:

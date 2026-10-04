@@ -77,7 +77,9 @@ def Deposit_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluDeposit
 
 def Deposit_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>: Deposit_dchk(size, B.size(buf))
 
-def Deposit_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Deposit_dk() -> U32: 0
+
+def Deposit_dcost(+size: U32) -> U32: O.dcost(size, Deposit_dk())
 
 def Deposit_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
   match ok:

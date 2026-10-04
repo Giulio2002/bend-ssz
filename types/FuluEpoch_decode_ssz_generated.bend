@@ -49,7 +49,9 @@ def Epoch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
 
 def Epoch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: Epoch_dchk(size, B.size(buf))
 
-def Epoch_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Epoch_dk() -> U32: 0
+
+def Epoch_dcost(+size: U32) -> U32: O.dcost(size, Epoch_dk())
 
 def Epoch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
   match ok:

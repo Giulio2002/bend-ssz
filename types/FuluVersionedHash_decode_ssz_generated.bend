@@ -50,7 +50,9 @@ def VersionedHash_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluB
 
 def VersionedHash_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dchk(size, B.size(buf))
 
-def VersionedHash_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def VersionedHash_dk() -> U32: 0
+
+def VersionedHash_dcost(+size: U32) -> U32: O.dcost(size, VersionedHash_dk())
 
 def VersionedHash_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   match ok:

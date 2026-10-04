@@ -85,7 +85,9 @@ def ProgressiveSingleListContainerTestStruct_dchk(+size: U32, pair: B.Buf & U32)
 
 def ProgressiveSingleListContainerTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>: ProgressiveSingleListContainerTestStruct_dchk(size, B.size(buf))
 
-def ProgressiveSingleListContainerTestStruct_dcost(+size: U32) -> U32: O.dcost(size, 7)
+def ProgressiveSingleListContainerTestStruct_dk() -> U32: 7
+
+def ProgressiveSingleListContainerTestStruct_dcost(+size: U32) -> U32: O.dcost(size, ProgressiveSingleListContainerTestStruct_dk())
 
 def ProgressiveSingleListContainerTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>:
   match ok:

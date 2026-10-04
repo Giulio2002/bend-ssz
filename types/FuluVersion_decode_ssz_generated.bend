@@ -50,7 +50,9 @@ def Version_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_
 
 def Version_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dchk(size, B.size(buf))
 
-def Version_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Version_dk() -> U32: 0
+
+def Version_dcost(+size: U32) -> U32: O.dcost(size, Version_dk())
 
 def Version_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
   match ok:

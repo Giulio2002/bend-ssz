@@ -77,7 +77,9 @@ def WithdrawalRequest_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
 
 def WithdrawalRequest_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>: WithdrawalRequest_dchk(size, B.size(buf))
 
-def WithdrawalRequest_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def WithdrawalRequest_dk() -> U32: 0
+
+def WithdrawalRequest_dcost(+size: U32) -> U32: O.dcost(size, WithdrawalRequest_dk())
 
 def WithdrawalRequest_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>:
   match ok:

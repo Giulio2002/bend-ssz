@@ -361,7 +361,9 @@ def BeaconBlockBody_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Ful
 
 def BeaconBlockBody_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>: BeaconBlockBody_dchk(size, B.size(buf))
 
-def BeaconBlockBody_dcost(+size: U32) -> U32: O.dcost(size, 40)
+def BeaconBlockBody_dk() -> U32: 40
+
+def BeaconBlockBody_dcost(+size: U32) -> U32: O.dcost(size, BeaconBlockBody_dk())
 
 def BeaconBlockBody_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>:
   match ok:

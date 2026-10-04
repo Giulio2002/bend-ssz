@@ -59,7 +59,9 @@ def vec_uint32_513_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Wo
 
 def vec_uint32_513_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_513_dchk(size, B.size(buf))
 
-def vec_uint32_513_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def vec_uint32_513_dk() -> U32: 0
+
+def vec_uint32_513_dcost(+size: U32) -> U32: O.dcost(size, vec_uint32_513_dk())
 
 def vec_uint32_513_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

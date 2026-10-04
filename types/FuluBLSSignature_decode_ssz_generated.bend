@@ -50,7 +50,9 @@ def BLSSignature_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBy
 
 def BLSSignature_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dchk(size, B.size(buf))
 
-def BLSSignature_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def BLSSignature_dk() -> U32: 0
+
+def BLSSignature_dcost(+size: U32) -> U32: O.dcost(size, BLSSignature_dk())
 
 def BLSSignature_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>:
   match ok:

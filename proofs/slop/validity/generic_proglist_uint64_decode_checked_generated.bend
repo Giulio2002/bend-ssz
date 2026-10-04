@@ -51,6 +51,18 @@ def proglist_uint64_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget
   %Equal.sym(Bool, Bool.and(U32.is_lt(proglist_uint64_r.proglist_uint64_dcost(size), 4294967295), U32.is_le(proglist_uint64_r.proglist_uint64_dcost(size), budget)), True{}, h) : {proglist_uint64_r.proglist_uint64_dcb(_, buf, size) == proglist_uint64_r.proglist_uint64_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
+def proglist_uint64_decode_vchecked_budget_cost_858980000()
+    -> {proglist_uint64_r.proglist_uint64_dcost(858980000) == 644759294 : U32}:
+  {==}
+
+def proglist_uint64_decode_vchecked_budget_cost_2147483648()
+    -> {proglist_uint64_r.proglist_uint64_dcost(2147483648) == 1611137030 : U32}:
+  {==}
+
+def proglist_uint64_decode_vchecked_budget_cost_4294967264()
+    -> {proglist_uint64_r.proglist_uint64_dcost(4294967264) == 3221749742 : U32}:
+  {==}
+
 def proglist_uint64_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
   {==}

@@ -80,7 +80,9 @@ def MatrixEntry_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluMat
 
 def MatrixEntry_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dchk(size, B.size(buf))
 
-def MatrixEntry_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def MatrixEntry_dk() -> U32: 0
+
+def MatrixEntry_dcost(+size: U32) -> U32: O.dcost(size, MatrixEntry_dk())
 
 def MatrixEntry_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>:
   match ok:

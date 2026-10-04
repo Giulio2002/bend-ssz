@@ -98,7 +98,9 @@ def CompatibleUnionBC_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, C
 
 def CompatibleUnionBC_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dchk(size, B.size(buf))
 
-def CompatibleUnionBC_dcost(+size: U32) -> U32: O.dcost(size, 7)
+def CompatibleUnionBC_dk() -> U32: 7
+
+def CompatibleUnionBC_dcost(+size: U32) -> U32: O.dcost(size, CompatibleUnionBC_dk())
 
 def CompatibleUnionBC_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>:
   match ok:

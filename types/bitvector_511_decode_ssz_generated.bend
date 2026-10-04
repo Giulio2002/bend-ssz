@@ -124,7 +124,9 @@ def bitvector_511_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitve
 
 def bitvector_511_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>: bitvector_511_dchk(size, B.size(buf))
 
-def bitvector_511_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def bitvector_511_dk() -> U32: 0
+
+def bitvector_511_dcost(+size: U32) -> U32: O.dcost(size, bitvector_511_dk())
 
 def bitvector_511_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>:
   match ok:

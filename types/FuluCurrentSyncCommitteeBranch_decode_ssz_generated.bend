@@ -59,7 +59,9 @@ def CurrentSyncCommitteeBranch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Ma
 
 def CurrentSyncCommitteeBranch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: CurrentSyncCommitteeBranch_dchk(size, B.size(buf))
 
-def CurrentSyncCommitteeBranch_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def CurrentSyncCommitteeBranch_dk() -> U32: 0
+
+def CurrentSyncCommitteeBranch_dcost(+size: U32) -> U32: O.dcost(size, CurrentSyncCommitteeBranch_dk())
 
 def CurrentSyncCommitteeBranch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

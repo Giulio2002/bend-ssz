@@ -92,7 +92,9 @@ def uint256_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, uint256_d.U
 
 def uint256_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>: uint256_dchk(size, B.size(buf))
 
-def uint256_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def uint256_dk() -> U32: 0
+
+def uint256_dcost(+size: U32) -> U32: O.dcost(size, uint256_dk())
 
 def uint256_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>:
   match ok:

@@ -77,7 +77,9 @@ def ContributionAndProof_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
 
 def ContributionAndProof_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dchk(size, B.size(buf))
 
-def ContributionAndProof_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ContributionAndProof_dk() -> U32: 0
+
+def ContributionAndProof_dcost(+size: U32) -> U32: O.dcost(size, ContributionAndProof_dk())
 
 def ContributionAndProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>:
   match ok:

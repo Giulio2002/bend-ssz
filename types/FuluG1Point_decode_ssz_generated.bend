@@ -50,7 +50,9 @@ def G1Point_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes48
 
 def G1Point_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dchk(size, B.size(buf))
 
-def G1Point_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def G1Point_dk() -> U32: 0
+
+def G1Point_dcost(+size: U32) -> U32: O.dcost(size, G1Point_dk())
 
 def G1Point_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>:
   match ok:

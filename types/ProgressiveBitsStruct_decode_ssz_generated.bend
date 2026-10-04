@@ -331,7 +331,9 @@ def ProgressiveBitsStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&
 
 def ProgressiveBitsStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>: ProgressiveBitsStruct_dchk(size, B.size(buf))
 
-def ProgressiveBitsStruct_dcost(+size: U32) -> U32: O.dcost(size, 7)
+def ProgressiveBitsStruct_dk() -> U32: 7
+
+def ProgressiveBitsStruct_dcost(+size: U32) -> U32: O.dcost(size, ProgressiveBitsStruct_dk())
 
 def ProgressiveBitsStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>:
   match ok:

@@ -23,11 +23,21 @@ shift, with no change of meaning (as in crash-fix5).
 * `X_decode_vchecked_budget_agree(buf, size, budget, h: (X_dcost(size) < 2^32 - 1 and X_dcost(size) <= budget) == True)`: `X_decode_checked_budget(buf, size, budget) == X_decode_checked(buf, size)`
 * `X_decode_vchecked_budget_cost`: `X_dcost(4096) == ((4096 >> 3) + 1) * K + 524288` (the literal)
 * `X_decode_vchecked_budget_saturated` (K >= 8): `X_decode_checked_budget(B.empty(), 4294967264, 4294967295)` is None (R6-01)
+* `X_decode_vchecked_budget_cost_<size>` (K > 0): `X_dcost` at 858980000, 2^31 and NMAX, and for K >= 8 at the first size whose bound does
+  not fit 32 bits (2^32 - 1) and 8 bytes below it, as literals (manual audit round 7, r7-d01: the saturation guard, its constant and the wrap of
+  the product were pinned by no law before)
+* `X_decode_vchecked_budget_covers_<Y>` (K > 0, every name Y with K > 0 nested in X, aliases included): `U32.is_le(Y_dk(), X_dk())`, on the
+  generated constants (`X_dk()` is the name's K; `X_dcost(size) = O.dcost(size, X_dk())`)
 * `X_decode_vchecked_budget_zero`: `X_decode_checked_budget(B.empty(), 8, 0)` is None
 * `X_decode_vchecked_budget_accept` (names with a valid default window W of at most 2048 bytes): with the budget 2^32 - 1, W decodes, as by `X_decode_checked`
 
 These laws are new (not frozen). Before round 6 the refuse / agree premises were `X_dcost(size) <= budget` alone (R6-01 adds the
 saturation test). The gate facades (proofs/api/<Name>_decode_ssz_proof_generated.bend) restate the symbolic ones.
+
+Replay of the round-7 budget mutants (agent/manual-spec-mutations-r7 c906e07ba, r7-d01-dcost) on this branch, checking
+proofs/slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend: 01 (the guard without the constant), 02 (no saturation) and 04
+(saturated bound 524288) each fail at `ExecutionPayload_decode_vchecked_budget_cost_858980000` (01 and 02 give 457032, 04 524288, the law
+4294967295); with the source restored the file checks (3.4 s; the largest new file, SignedBeaconBlock's, 7.3 s).
 
 ## 3. Frozen lock
 

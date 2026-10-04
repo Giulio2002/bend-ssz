@@ -76,7 +76,9 @@ def PowBlock_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluPowBlo
 
 def PowBlock_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>: PowBlock_dchk(size, B.size(buf))
 
-def PowBlock_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def PowBlock_dk() -> U32: 0
+
+def PowBlock_dcost(+size: U32) -> U32: O.dcost(size, PowBlock_dk())
 
 def PowBlock_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>:
   match ok:

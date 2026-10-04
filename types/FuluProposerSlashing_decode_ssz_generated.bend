@@ -76,7 +76,9 @@ def ProposerSlashing_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fu
 
 def ProposerSlashing_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>: ProposerSlashing_dchk(size, B.size(buf))
 
-def ProposerSlashing_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ProposerSlashing_dk() -> U32: 0
+
+def ProposerSlashing_dcost(+size: U32) -> U32: O.dcost(size, ProposerSlashing_dk())
 
 def ProposerSlashing_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   match ok:

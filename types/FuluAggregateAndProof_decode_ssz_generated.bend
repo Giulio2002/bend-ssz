@@ -97,7 +97,9 @@ def AggregateAndProof_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
 
 def AggregateAndProof_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>: AggregateAndProof_dchk(size, B.size(buf))
 
-def AggregateAndProof_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def AggregateAndProof_dk() -> U32: 0
+
+def AggregateAndProof_dcost(+size: U32) -> U32: O.dcost(size, AggregateAndProof_dk())
 
 def AggregateAndProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>:
   match ok:

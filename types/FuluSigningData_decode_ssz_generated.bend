@@ -70,7 +70,9 @@ def SigningData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluSig
 
 def SigningData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>: SigningData_dchk(size, B.size(buf))
 
-def SigningData_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def SigningData_dk() -> U32: 0
+
+def SigningData_dcost(+size: U32) -> U32: O.dcost(size, SigningData_dk())
 
 def SigningData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSigningData_d.SigningData>:
   match ok:

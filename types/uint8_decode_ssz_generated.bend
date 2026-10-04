@@ -59,7 +59,9 @@ def uint8_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, U32>:
 
 def uint8_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>: uint8_dchk(size, B.size(buf))
 
-def uint8_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def uint8_dk() -> U32: 0
+
+def uint8_dcost(+size: U32) -> U32: O.dcost(size, uint8_dk())
 
 def uint8_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, U32>:
   match ok:

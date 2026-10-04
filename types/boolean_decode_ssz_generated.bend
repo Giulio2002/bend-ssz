@@ -59,7 +59,9 @@ def boolean_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Bool>:
 
 def boolean_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>: boolean_dchk(size, B.size(buf))
 
-def boolean_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def boolean_dk() -> U32: 0
+
+def boolean_dcost(+size: U32) -> U32: O.dcost(size, boolean_dk())
 
 def boolean_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>:
   match ok:

@@ -91,7 +91,9 @@ def BlobSidecar_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBlo
 
 def BlobSidecar_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>: BlobSidecar_dchk(size, B.size(buf))
 
-def BlobSidecar_dcost(+size: U32) -> U32: O.dcost(size, 5)
+def BlobSidecar_dk() -> U32: 5
+
+def BlobSidecar_dcost(+size: U32) -> U32: O.dcost(size, BlobSidecar_dk())
 
 def BlobSidecar_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>:
   match ok:

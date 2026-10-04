@@ -120,7 +120,9 @@ def AttesterSlashing_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fu
 
 def AttesterSlashing_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>: AttesterSlashing_dchk(size, B.size(buf))
 
-def AttesterSlashing_dcost(+size: U32) -> U32: O.dcost(size, 4)
+def AttesterSlashing_dk() -> U32: 4
+
+def AttesterSlashing_dcost(+size: U32) -> U32: O.dcost(size, AttesterSlashing_dk())
 
 def AttesterSlashing_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
   match ok:

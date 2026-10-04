@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
 import ../../../types/ProgressiveSingleListContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_r
 
@@ -58,6 +59,22 @@ def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_refuse(buf: 
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)) == True{} : Bool})
     -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)), True{}, h) : {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcb(_, buf, size) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_858980000()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_2147483648()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_4294967264()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_covers_progbitlist()
+    -> {U32.is_le(progbitlist_r.progbitlist_dk(), ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dk()) == True{} : Bool}:
   {==}
 
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_zero()

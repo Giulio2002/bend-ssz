@@ -61,7 +61,9 @@ def Transaction_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words
 
 def Transaction_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dchk(size, B.size(buf))
 
-def Transaction_dcost(+size: U32) -> U32: O.dcost(size, 5)
+def Transaction_dk() -> U32: 5
+
+def Transaction_dcost(+size: U32) -> U32: O.dcost(size, Transaction_dk())
 
 def Transaction_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

@@ -49,7 +49,9 @@ def CustodyIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>
 
 def CustodyIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: CustodyIndex_dchk(size, B.size(buf))
 
-def CustodyIndex_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def CustodyIndex_dk() -> U32: 0
+
+def CustodyIndex_dcost(+size: U32) -> U32: O.dcost(size, CustodyIndex_dk())
 
 def CustodyIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
   match ok:

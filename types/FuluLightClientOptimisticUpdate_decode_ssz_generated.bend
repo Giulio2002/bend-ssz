@@ -97,7 +97,9 @@ def LightClientOptimisticUpdate_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & M
 
 def LightClientOptimisticUpdate_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>: LightClientOptimisticUpdate_dchk(size, B.size(buf))
 
-def LightClientOptimisticUpdate_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def LightClientOptimisticUpdate_dk() -> U32: 0
+
+def LightClientOptimisticUpdate_dcost(+size: U32) -> U32: O.dcost(size, LightClientOptimisticUpdate_dk())
 
 def LightClientOptimisticUpdate_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>:
   match ok:

@@ -49,7 +49,9 @@ def Gwei_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
 
 def Gwei_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: Gwei_dchk(size, B.size(buf))
 
-def Gwei_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Gwei_dk() -> U32: 0
+
+def Gwei_dcost(+size: U32) -> U32: O.dcost(size, Gwei_dk())
 
 def Gwei_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
   match ok:

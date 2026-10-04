@@ -154,7 +154,9 @@ def DataColumnSidecar_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
 
 def DataColumnSidecar_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>: DataColumnSidecar_dchk(size, B.size(buf))
 
-def DataColumnSidecar_dcost(+size: U32) -> U32: O.dcost(size, 6)
+def DataColumnSidecar_dk() -> U32: 6
+
+def DataColumnSidecar_dcost(+size: U32) -> U32: O.dcost(size, DataColumnSidecar_dk())
 
 def DataColumnSidecar_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>:
   match ok:

@@ -60,6 +60,18 @@ def ExecutionRequests_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budg
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)), True{}, h) : {FuluExecutionRequests_r.ExecutionRequests_dcb(_, buf, size) == FuluExecutionRequests_r.ExecutionRequests_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}
   {==}
 
+def ExecutionRequests_decode_vchecked_budget_cost_858980000()
+    -> {FuluExecutionRequests_r.ExecutionRequests_dcost(858980000) == 537386793 : U32}:
+  {==}
+
+def ExecutionRequests_decode_vchecked_budget_cost_2147483648()
+    -> {FuluExecutionRequests_r.ExecutionRequests_dcost(2147483648) == 1342701573 : U32}:
+  {==}
+
+def ExecutionRequests_decode_vchecked_budget_cost_4294967264()
+    -> {FuluExecutionRequests_r.ExecutionRequests_dcost(4294967264) == 2684878833 : U32}:
+  {==}
+
 def ExecutionRequests_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   {==}

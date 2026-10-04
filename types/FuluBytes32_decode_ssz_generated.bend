@@ -92,7 +92,9 @@ def Bytes32_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes32
 
 def Bytes32_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dchk(size, B.size(buf))
 
-def Bytes32_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Bytes32_dk() -> U32: 0
+
+def Bytes32_dcost(+size: U32) -> U32: O.dcost(size, Bytes32_dk())
 
 def Bytes32_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   match ok:

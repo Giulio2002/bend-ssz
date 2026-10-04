@@ -77,7 +77,9 @@ def BLSToExecutionChange_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
 
 def BLSToExecutionChange_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>: BLSToExecutionChange_dchk(size, B.size(buf))
 
-def BLSToExecutionChange_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def BLSToExecutionChange_dk() -> U32: 0
+
+def BLSToExecutionChange_dcost(+size: U32) -> U32: O.dcost(size, BLSToExecutionChange_dk())
 
 def BLSToExecutionChange_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>:
   match ok:

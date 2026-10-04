@@ -69,7 +69,9 @@ def SmallTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Sma
 
 def SmallTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dchk(size, B.size(buf))
 
-def SmallTestStruct_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def SmallTestStruct_dk() -> U32: 0
+
+def SmallTestStruct_dcost(+size: U32) -> U32: O.dcost(size, SmallTestStruct_dk())
 
 def SmallTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
   match ok:

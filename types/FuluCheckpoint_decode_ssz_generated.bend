@@ -71,7 +71,9 @@ def Checkpoint_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluChec
 
 def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, B.size(buf))
 
-def Checkpoint_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Checkpoint_dk() -> U32: 0
+
+def Checkpoint_dcost(+size: U32) -> U32: O.dcost(size, Checkpoint_dk())
 
 def Checkpoint_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
   match ok:

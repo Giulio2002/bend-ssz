@@ -52,7 +52,9 @@ def proglist_uint256_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.
 
 def proglist_uint256_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint256_dchk(size, B.size(buf))
 
-def proglist_uint256_dcost(+size: U32) -> U32: O.dcost(size, 6)
+def proglist_uint256_dk() -> U32: 6
+
+def proglist_uint256_dcost(+size: U32) -> U32: O.dcost(size, proglist_uint256_dk())
 
 def proglist_uint256_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

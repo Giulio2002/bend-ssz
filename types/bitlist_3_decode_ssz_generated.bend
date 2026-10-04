@@ -52,7 +52,9 @@ def bitlist_3_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def bitlist_3_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_3_dchk(size, B.size(buf))
 
-def bitlist_3_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def bitlist_3_dk() -> U32: 0
+
+def bitlist_3_dcost(+size: U32) -> U32: O.dcost(size, bitlist_3_dk())
 
 def bitlist_3_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
   match ok:

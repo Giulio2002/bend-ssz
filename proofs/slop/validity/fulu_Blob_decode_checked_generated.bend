@@ -51,6 +51,18 @@ def Blob_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: 
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)), True{}, h) : {FuluBlob_r.Blob_dcb(_, buf, size) == FuluBlob_r.Blob_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
+def Blob_decode_vchecked_budget_cost_858980000()
+    -> {FuluBlob_r.Blob_dcost(858980000) == 537386793 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBlob_r.Blob_dcost(2147483648) == 1342701573 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBlob_r.Blob_dcost(4294967264) == 2684878833 : U32}:
+  {==}
+
 def Blob_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
   {==}

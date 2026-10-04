@@ -1,6 +1,13 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
+import ../../../types/FuluAttesterSlashing_decode_ssz_generated.bend as FuluAttesterSlashing_r
+import ../../../types/FuluTransaction_decode_ssz_generated.bend as FuluTransaction_r
+import ../../../types/FuluExecutionRequests_decode_ssz_generated.bend as FuluExecutionRequests_r
+import ../../../types/FuluExecutionPayload_decode_ssz_generated.bend as FuluExecutionPayload_r
+import ../../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
+import ../../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
 import ../../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
 import ../../../types/FuluSignedBeaconBlock_decode_ssz_generated.bend as FuluSignedBeaconBlock_r
 
@@ -58,6 +65,54 @@ def SignedBeaconBlock_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +bud
 def SignedBeaconBlock_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), 4294967295), U32.is_le(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), budget)) == True{} : Bool})
     -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked_budget(buf, size, budget) == FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), 4294967295), U32.is_le(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), budget)), True{}, h) : {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcb(_, buf, size) == FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_cost_858980000()
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(858980000) == 4294967295 : U32}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_cost_2147483648()
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_cost_4294967264()
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_cost_858888592()
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(858888592) == 4294967288 : U32}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_cost_858888600()
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(858888600) == 4294967295 : U32}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_AttesterSlashing()
+    -> {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_BeaconBlock()
+    -> {U32.is_le(FuluBeaconBlock_r.BeaconBlock_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_BeaconBlockBody()
+    -> {U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_ExecutionPayload()
+    -> {U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_ExecutionRequests()
+    -> {U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_IndexedAttestation()
+    -> {U32.is_le(FuluIndexedAttestation_r.IndexedAttestation_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def SignedBeaconBlock_decode_vchecked_budget_covers_Transaction()
+    -> {U32.is_le(FuluTransaction_r.Transaction_dk(), FuluSignedBeaconBlock_r.SignedBeaconBlock_dk()) == True{} : Bool}:
   {==}
 
 def SignedBeaconBlock_decode_vchecked_budget_saturated()

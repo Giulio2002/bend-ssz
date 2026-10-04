@@ -117,7 +117,8 @@ empty lists (bound 2,438,463,519 words) get through.
 
 Laws (proofs/slop/validity/<runtime>_<X>_decode_checked_generated.bend, for every name): `_budget_refuse` (bound saturated or above the budget:
 the buffer and None, for every buffer, size and budget), `_budget_agree` (otherwise `X_decode_checked(buf, size)`), `_budget_cost` (the bound
-of 4096 bytes is the literal ((4096 >> 3) + 1) * K + 524288), `_budget_zero` (a budget of 0 refuses) and, with a valid default window,
+of 4096 bytes is the literal ((4096 >> 3) + 1) * K + 524288), `_budget_cost_<size>` (the bound at 858,980,000 bytes, 2^31, NMAX and, for K >= 8, at the first
+saturated size and 8 bytes below it, as literals), `_budget_covers_<Y>` (K covers every nested name's K, on the generated constants), `_budget_zero` (a budget of 0 refuses) and, with a valid default window,
 `_budget_accept` (the budget 2^32 - 1 decodes it), and for K >= 8 `_budget_saturated` (the bound of NMAX bytes saturates: refused with the
 budget 2^32 - 1). The decode statements are unchanged (docs/decode_amplification_statement_diff.md).
 

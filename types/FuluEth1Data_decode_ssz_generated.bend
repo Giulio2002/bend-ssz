@@ -75,7 +75,9 @@ def Eth1Data_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1Da
 
 def Eth1Data_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dchk(size, B.size(buf))
 
-def Eth1Data_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Eth1Data_dk() -> U32: 0
+
+def Eth1Data_dcost(+size: U32) -> U32: O.dcost(size, Eth1Data_dk())
 
 def Eth1Data_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>:
   match ok:

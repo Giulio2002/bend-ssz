@@ -52,6 +52,18 @@ def HistoricalBatch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), 4294967295), U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget)), True{}, h) : {FuluHistoricalBatch_r.HistoricalBatch_dcb(_, buf, size) == FuluHistoricalBatch_r.HistoricalBatch_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}
   {==}
 
+def HistoricalBatch_decode_vchecked_budget_cost_858980000()
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dcost(858980000) == 430014292 : U32}:
+  {==}
+
+def HistoricalBatch_decode_vchecked_budget_cost_2147483648()
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dcost(2147483648) == 1074266116 : U32}:
+  {==}
+
+def HistoricalBatch_decode_vchecked_budget_cost_4294967264()
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dcost(4294967264) == 2148007924 : U32}:
+  {==}
+
 def HistoricalBatch_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   {==}

@@ -64,7 +64,9 @@ def bitvector_8_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, bitvect
 
 def bitvector_8_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>: bitvector_8_dchk(size, B.size(buf))
 
-def bitvector_8_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def bitvector_8_dk() -> U32: 0
+
+def bitvector_8_dcost(+size: U32) -> U32: O.dcost(size, bitvector_8_dk())
 
 def bitvector_8_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>:
   match ok:

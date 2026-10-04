@@ -50,7 +50,9 @@ def ExecutionAddress_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fu
 
 def ExecutionAddress_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>: ExecutionAddress_dchk(size, B.size(buf))
 
-def ExecutionAddress_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ExecutionAddress_dk() -> U32: 0
+
+def ExecutionAddress_dcost(+size: U32) -> U32: O.dcost(size, ExecutionAddress_dk())
 
 def ExecutionAddress_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>:
   match ok:

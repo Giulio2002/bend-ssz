@@ -1,6 +1,9 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
+import ../../../types/ProgressiveSingleListContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_r
+import ../../../types/ProgressiveVarTestStruct_decode_ssz_generated.bend as ProgressiveVarTestStruct_r
 import ../../../types/CompatibleUnionBC_def_generated.bend as CompatibleUnionBC_d
 import ../../../types/CompatibleUnionBC_decode_ssz_generated.bend as CompatibleUnionBC_r
 
@@ -58,6 +61,30 @@ def CompatibleUnionBC_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +bud
 def CompatibleUnionBC_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)) == True{} : Bool})
     -> {CompatibleUnionBC_r.CompatibleUnionBC_decode_checked_budget(buf, size, budget) == CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)), True{}, h) : {CompatibleUnionBC_r.CompatibleUnionBC_dcb(_, buf, size) == CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_cost_858980000()
+    -> {CompatibleUnionBC_r.CompatibleUnionBC_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_cost_2147483648()
+    -> {CompatibleUnionBC_r.CompatibleUnionBC_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_cost_4294967264()
+    -> {CompatibleUnionBC_r.CompatibleUnionBC_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_covers_ProgressiveSingleListContainerTestStruct()
+    -> {U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dk(), CompatibleUnionBC_r.CompatibleUnionBC_dk()) == True{} : Bool}:
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_covers_ProgressiveVarTestStruct()
+    -> {U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dk(), CompatibleUnionBC_r.CompatibleUnionBC_dk()) == True{} : Bool}:
+  {==}
+
+def CompatibleUnionBC_decode_vchecked_budget_covers_progbitlist()
+    -> {U32.is_le(progbitlist_r.progbitlist_dk(), CompatibleUnionBC_r.CompatibleUnionBC_dk()) == True{} : Bool}:
   {==}
 
 def CompatibleUnionBC_decode_vchecked_budget_zero()

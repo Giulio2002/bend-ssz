@@ -51,6 +51,18 @@ def Transaction_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U3
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluTransaction_r.Transaction_dcost(size), 4294967295), U32.is_le(FuluTransaction_r.Transaction_dcost(size), budget)), True{}, h) : {FuluTransaction_r.Transaction_dcb(_, buf, size) == FuluTransaction_r.Transaction_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
+def Transaction_decode_vchecked_budget_cost_858980000()
+    -> {FuluTransaction_r.Transaction_dcost(858980000) == 537386793 : U32}:
+  {==}
+
+def Transaction_decode_vchecked_budget_cost_2147483648()
+    -> {FuluTransaction_r.Transaction_dcost(2147483648) == 1342701573 : U32}:
+  {==}
+
+def Transaction_decode_vchecked_budget_cost_4294967264()
+    -> {FuluTransaction_r.Transaction_dcost(4294967264) == 2684878833 : U32}:
+  {==}
+
 def Transaction_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluTransaction_r.Transaction_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
   {==}

@@ -60,6 +60,18 @@ def DataColumnSidecar_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budg
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), 4294967295), U32.is_le(FuluDataColumnSidecar_r.DataColumnSidecar_dcost(size), budget)), True{}, h) : {FuluDataColumnSidecar_r.DataColumnSidecar_dcb(_, buf, size) == FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
   {==}
 
+def DataColumnSidecar_decode_vchecked_budget_cost_858980000()
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_dcost(858980000) == 644759294 : U32}:
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_cost_2147483648()
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_dcost(2147483648) == 1611137030 : U32}:
+  {==}
+
+def DataColumnSidecar_decode_vchecked_budget_cost_4294967264()
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_dcost(4294967264) == 3221749742 : U32}:
+  {==}
+
 def DataColumnSidecar_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   {==}

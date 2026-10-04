@@ -25,6 +25,9 @@ The decode budget (docs/DECODE_AMPLIFICATION.md), X_decode_checked_budget(buf, s
   <X>_decode_vchecked_budget_refuse  X_dcost(size) saturated (2^32 - 1) or above the budget: (buf, None), for every buffer, size and budget
   <X>_decode_vchecked_budget_agree   X_dcost(size) < 2^32 - 1 and <= budget: X_decode_checked(buf, size), for every buffer, size and budget
   <X>_decode_vchecked_budget_saturated  (K >= 8) the bound of NMAX bytes saturates: refused with the budget 2^32 - 1 (docs/CRASH_HUNT.md R6-01)
+  <X>_decode_vchecked_budget_cost_<size>  (K > 0) X_dcost at 858980000, 2^31, NMAX and, for K >= 8, the first saturated size and the one
+                                     below it, as literals (manual audit round 7, r7-d01: the saturation guard and the wrap of the product)
+  <X>_decode_vchecked_budget_covers_<Y>  U32.is_le(Y_dk(), X_dk()): X's K covers that of every name Y nested in it (aliases included)
   <X>_decode_vchecked_budget_zero    a budget of 0 refuses (every bound is at least the constant 524288)
   <X>_decode_vchecked_budget_accept  (with W) the budget 2^32 - 1 decodes W, as X_decode_checked does
 
@@ -85,6 +88,17 @@ def nested_k_violations(types, ks):
                 if m != n and ks[m] > ks[n]:
                     bad.append((n, ks[n], m, ks[m]))
     return sorted(set(bad))
+
+
+def dcost_val(size, k):
+    """O.dcost(size, k) (src/obj.bend), for the literal laws"""
+    if k == 0:
+        return 524288
+    w = (size >> 3) + 1
+    return w * k + 524288 if w <= 4294443007 // k else 4294967295
+
+
+NESTED = {}   # name -> the names with K > 0 nested in it (by structure), filled by outputs()
 
 def enc0(t, depth=0):
     """the bytes of the default value of the schema type t (fixed parts zero, variable parts empty, offsets pointing at the end of the fixed part), or None"""
@@ -178,6 +192,18 @@ def laws_of(X, V, win):
         out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{{G} == {val} : Bool}})\n'
                    f'    -> {{T.{X}_decode_checked_budget(buf, size, budget) == {rhs} : B.Buf & {M}}}:\n'
                    f'  %Equal.sym(Bool, {G}, {val}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
+    if k:
+        # the bound's arithmetic pinned at literal sizes (manual audit round 7, r7-d01): large sizes, NMAX, and for K >= 8 the first size whose
+        # bound does not fit 32 bits (saturated) and the size just below it (the largest bound that fits)
+        pts = [858980000, 2147483648, 4294967264]
+        if k >= 8:
+            edge = (4294443007 // k) * 8
+            pts += [edge - 8, edge]
+        for sz in pts:
+            out.append(f'def {X}_decode_vchecked_budget_cost_{sz}()\n    -> {{T.{X}_dcost({sz}) == {dcost_val(sz, k)} : U32}}:\n  {{==}}')
+        # K covers every name nested in X (aliases included, docs/CRASH_HUNT.md R6-04), on the generated constants
+        for m in NESTED.get(X, ()):
+            out.append(f'def {X}_decode_vchecked_budget_covers_{m}()\n    -> {{U32.is_le(T.{m}_dk(), T.{X}_dk()) == True{{}} : Bool}}:\n  {{==}}')
     if k >= 8:
         # the bound of the largest size saturates: refused even with the largest budget (docs/CRASH_HUNT.md R6-01)
         law('budget_saturated', f'{snd(f"T.{X}_decode_checked_budget(B.empty(), 4294967264, 4294967295)")} == None{{}} : {M}')
@@ -212,6 +238,11 @@ def outputs():
             except KeyError:
                 pass
         bad = nested_k_violations({n: known[n] for n in ks}, ks)
+        by = {}
+        for n in ks:
+            by.setdefault(canon(known[n]), []).append(n)
+        for n in ks:
+            NESTED[n] = sorted({m for sub in nested(known[n]) for m in by.get(canon(sub), []) if m != n and ks[m] > 0})
         if bad:
             raise SystemExit(f'decode_checked_laws: a name charges less than a name nested in it (codegen/decode_cost.json): {bad[:5]}')
     for runtime, tmod, names in (('fulu', 'fulu_obj', fu), ('generic', 'generic_obj', gen)):

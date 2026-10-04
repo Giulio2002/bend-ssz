@@ -59,7 +59,9 @@ def FinalityBranch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Wo
 
 def FinalityBranch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: FinalityBranch_dchk(size, B.size(buf))
 
-def FinalityBranch_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def FinalityBranch_dk() -> U32: 0
+
+def FinalityBranch_dcost(+size: U32) -> U32: O.dcost(size, FinalityBranch_dk())
 
 def FinalityBranch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

@@ -105,7 +105,9 @@ def IndexedAttestation_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, 
 
 def IndexedAttestation_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>: IndexedAttestation_dchk(size, B.size(buf))
 
-def IndexedAttestation_dcost(+size: U32) -> U32: O.dcost(size, 3)
+def IndexedAttestation_dk() -> U32: 3
+
+def IndexedAttestation_dcost(+size: U32) -> U32: O.dcost(size, IndexedAttestation_dk())
 
 def IndexedAttestation_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>:
   match ok:

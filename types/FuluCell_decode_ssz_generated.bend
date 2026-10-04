@@ -59,7 +59,9 @@ def Cell_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Cell_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>: Cell_dchk(size, B.size(buf))
 
-def Cell_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Cell_dk() -> U32: 0
+
+def Cell_dcost(+size: U32) -> U32: O.dcost(size, Cell_dk())
 
 def Cell_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
   match ok:

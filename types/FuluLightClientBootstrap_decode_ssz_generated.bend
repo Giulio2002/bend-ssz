@@ -97,7 +97,9 @@ def LightClientBootstrap_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1
 
 def LightClientBootstrap_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>: LightClientBootstrap_dchk(size, B.size(buf))
 
-def LightClientBootstrap_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def LightClientBootstrap_dk() -> U32: 0
+
+def LightClientBootstrap_dcost(+size: U32) -> U32: O.dcost(size, LightClientBootstrap_dk())
 
 def LightClientBootstrap_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>:
   match ok:

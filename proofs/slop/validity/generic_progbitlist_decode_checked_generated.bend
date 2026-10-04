@@ -55,6 +55,18 @@ def progbitlist_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U3
   %Equal.sym(Bool, Bool.and(U32.is_lt(progbitlist_r.progbitlist_dcost(size), 4294967295), U32.is_le(progbitlist_r.progbitlist_dcost(size), budget)), True{}, h) : {progbitlist_r.progbitlist_dcb(_, buf, size) == progbitlist_r.progbitlist_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
+def progbitlist_decode_vchecked_budget_cost_858980000()
+    -> {progbitlist_r.progbitlist_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def progbitlist_decode_vchecked_budget_cost_2147483648()
+    -> {progbitlist_r.progbitlist_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def progbitlist_decode_vchecked_budget_cost_4294967264()
+    -> {progbitlist_r.progbitlist_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
 def progbitlist_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, progbitlist_r.progbitlist_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Bits>}:
   {==}

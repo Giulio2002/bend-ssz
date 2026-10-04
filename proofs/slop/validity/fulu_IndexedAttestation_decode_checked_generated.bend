@@ -60,6 +60,18 @@ def IndexedAttestation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +bud
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluIndexedAttestation_r.IndexedAttestation_dcost(size), 4294967295), U32.is_le(FuluIndexedAttestation_r.IndexedAttestation_dcost(size), budget)), True{}, h) : {FuluIndexedAttestation_r.IndexedAttestation_dcb(_, buf, size) == FuluIndexedAttestation_r.IndexedAttestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
   {==}
 
+def IndexedAttestation_decode_vchecked_budget_cost_858980000()
+    -> {FuluIndexedAttestation_r.IndexedAttestation_dcost(858980000) == 322641791 : U32}:
+  {==}
+
+def IndexedAttestation_decode_vchecked_budget_cost_2147483648()
+    -> {FuluIndexedAttestation_r.IndexedAttestation_dcost(2147483648) == 805830659 : U32}:
+  {==}
+
+def IndexedAttestation_decode_vchecked_budget_cost_4294967264()
+    -> {FuluIndexedAttestation_r.IndexedAttestation_dcost(4294967264) == 1611137015 : U32}:
+  {==}
+
 def IndexedAttestation_decode_vchecked_budget_zero()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   {==}

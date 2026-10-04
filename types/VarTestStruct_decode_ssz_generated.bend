@@ -103,7 +103,9 @@ def VarTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, VarTe
 
 def VarTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dchk(size, B.size(buf))
 
-def VarTestStruct_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def VarTestStruct_dk() -> U32: 0
+
+def VarTestStruct_dcost(+size: U32) -> U32: O.dcost(size, VarTestStruct_dk())
 
 def VarTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>:
   match ok:

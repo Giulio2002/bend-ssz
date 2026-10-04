@@ -69,7 +69,9 @@ def SyncAggregatorSelectionData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & M
 
 def SyncAggregatorSelectionData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dchk(size, B.size(buf))
 
-def SyncAggregatorSelectionData_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def SyncAggregatorSelectionData_dk() -> U32: 0
+
+def SyncAggregatorSelectionData_dcost(+size: U32) -> U32: O.dcost(size, SyncAggregatorSelectionData_dk())
 
 def SyncAggregatorSelectionData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>:
   match ok:

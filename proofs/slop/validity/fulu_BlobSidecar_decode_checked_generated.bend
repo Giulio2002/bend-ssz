@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluBlob_decode_ssz_generated.bend as FuluBlob_r
 import ../../../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
 import ../../../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
 
@@ -50,6 +51,22 @@ def BlobSidecar_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U
 def BlobSidecar_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobSidecar_r.BlobSidecar_dcost(size), 4294967295), U32.is_le(FuluBlobSidecar_r.BlobSidecar_dcost(size), budget)) == True{} : Bool})
     -> {FuluBlobSidecar_r.BlobSidecar_decode_checked_budget(buf, size, budget) == FuluBlobSidecar_r.BlobSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlobSidecar_r.BlobSidecar_dcost(size), 4294967295), U32.is_le(FuluBlobSidecar_r.BlobSidecar_dcost(size), budget)), True{}, h) : {FuluBlobSidecar_r.BlobSidecar_dcb(_, buf, size) == FuluBlobSidecar_r.BlobSidecar_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}
+  {==}
+
+def BlobSidecar_decode_vchecked_budget_cost_858980000()
+    -> {FuluBlobSidecar_r.BlobSidecar_dcost(858980000) == 537386793 : U32}:
+  {==}
+
+def BlobSidecar_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBlobSidecar_r.BlobSidecar_dcost(2147483648) == 1342701573 : U32}:
+  {==}
+
+def BlobSidecar_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBlobSidecar_r.BlobSidecar_dcost(4294967264) == 2684878833 : U32}:
+  {==}
+
+def BlobSidecar_decode_vchecked_budget_covers_Blob()
+    -> {U32.is_le(FuluBlob_r.Blob_dk(), FuluBlobSidecar_r.BlobSidecar_dk()) == True{} : Bool}:
   {==}
 
 def BlobSidecar_decode_vchecked_budget_zero()

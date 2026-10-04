@@ -52,7 +52,9 @@ def progbitlist_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.Bits>
 
 def progbitlist_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>: progbitlist_dchk(size, B.size(buf))
 
-def progbitlist_dcost(+size: U32) -> U32: O.dcost(size, 7)
+def progbitlist_dk() -> U32: 7
+
+def progbitlist_dcost(+size: U32) -> U32: O.dcost(size, progbitlist_dk())
 
 def progbitlist_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
   match ok:

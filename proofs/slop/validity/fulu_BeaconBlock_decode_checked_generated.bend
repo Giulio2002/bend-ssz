@@ -1,6 +1,12 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
+import ../../../types/FuluAttesterSlashing_decode_ssz_generated.bend as FuluAttesterSlashing_r
+import ../../../types/FuluTransaction_decode_ssz_generated.bend as FuluTransaction_r
+import ../../../types/FuluExecutionRequests_decode_ssz_generated.bend as FuluExecutionRequests_r
+import ../../../types/FuluExecutionPayload_decode_ssz_generated.bend as FuluExecutionPayload_r
+import ../../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
 import ../../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
 
@@ -58,6 +64,50 @@ def BeaconBlock_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U
 def BeaconBlock_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlock_r.BeaconBlock_dcost(size), 4294967295), U32.is_le(FuluBeaconBlock_r.BeaconBlock_dcost(size), budget)) == True{} : Bool})
     -> {FuluBeaconBlock_r.BeaconBlock_decode_checked_budget(buf, size, budget) == FuluBeaconBlock_r.BeaconBlock_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconBlock_r.BeaconBlock_dcost(size), 4294967295), U32.is_le(FuluBeaconBlock_r.BeaconBlock_dcost(size), budget)), True{}, h) : {FuluBeaconBlock_r.BeaconBlock_dcb(_, buf, size) == FuluBeaconBlock_r.BeaconBlock_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_cost_858980000()
+    -> {FuluBeaconBlock_r.BeaconBlock_dcost(858980000) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBeaconBlock_r.BeaconBlock_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBeaconBlock_r.BeaconBlock_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_cost_858888592()
+    -> {FuluBeaconBlock_r.BeaconBlock_dcost(858888592) == 4294967288 : U32}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_cost_858888600()
+    -> {FuluBeaconBlock_r.BeaconBlock_dcost(858888600) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_AttesterSlashing()
+    -> {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_BeaconBlockBody()
+    -> {U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_ExecutionPayload()
+    -> {U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_ExecutionRequests()
+    -> {U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_IndexedAttestation()
+    -> {U32.is_le(FuluIndexedAttestation_r.IndexedAttestation_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlock_decode_vchecked_budget_covers_Transaction()
+    -> {U32.is_le(FuluTransaction_r.Transaction_dk(), FuluBeaconBlock_r.BeaconBlock_dk()) == True{} : Bool}:
   {==}
 
 def BeaconBlock_decode_vchecked_budget_saturated()

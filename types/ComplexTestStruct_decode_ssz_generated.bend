@@ -184,7 +184,9 @@ def ComplexTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, C
 
 def ComplexTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dchk(size, B.size(buf))
 
-def ComplexTestStruct_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ComplexTestStruct_dk() -> U32: 0
+
+def ComplexTestStruct_dcost(+size: U32) -> U32: O.dcost(size, ComplexTestStruct_dk())
 
 def ComplexTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>:
   match ok:

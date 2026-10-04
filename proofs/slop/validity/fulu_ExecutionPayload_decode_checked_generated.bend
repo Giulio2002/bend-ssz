@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluTransaction_decode_ssz_generated.bend as FuluTransaction_r
 import ../../../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
 import ../../../types/FuluExecutionPayload_decode_ssz_generated.bend as FuluExecutionPayload_r
 
@@ -58,6 +59,30 @@ def ExecutionPayload_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budg
 def ExecutionPayload_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionPayload_r.ExecutionPayload_dcost(size), 4294967295), U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget)) == True{} : Bool})
     -> {FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(buf, size, budget) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionPayload_r.ExecutionPayload_dcost(size), 4294967295), U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget)), True{}, h) : {FuluExecutionPayload_r.ExecutionPayload_dcb(_, buf, size) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost_858980000()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(858980000) == 4294967295 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost_2147483648()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost_4294967264()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost_858888592()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(858888592) == 4294967288 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_cost_858888600()
+    -> {FuluExecutionPayload_r.ExecutionPayload_dcost(858888600) == 4294967295 : U32}:
+  {==}
+
+def ExecutionPayload_decode_vchecked_budget_covers_Transaction()
+    -> {U32.is_le(FuluTransaction_r.Transaction_dk(), FuluExecutionPayload_r.ExecutionPayload_dk()) == True{} : Bool}:
   {==}
 
 def ExecutionPayload_decode_vchecked_budget_saturated()

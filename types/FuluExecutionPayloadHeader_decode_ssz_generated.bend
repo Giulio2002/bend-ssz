@@ -187,7 +187,9 @@ def ExecutionPayloadHeader_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<
 
 def ExecutionPayloadHeader_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>: ExecutionPayloadHeader_dchk(size, B.size(buf))
 
-def ExecutionPayloadHeader_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def ExecutionPayloadHeader_dk() -> U32: 0
+
+def ExecutionPayloadHeader_dcost(+size: U32) -> U32: O.dcost(size, ExecutionPayloadHeader_dk())
 
 def ExecutionPayloadHeader_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>:
   match ok:

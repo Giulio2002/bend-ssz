@@ -85,7 +85,9 @@ def AttestationData_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Ful
 
 def AttestationData_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>: AttestationData_dchk(size, B.size(buf))
 
-def AttestationData_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def AttestationData_dk() -> U32: 0
+
+def AttestationData_dcost(+size: U32) -> U32: O.dcost(size, AttestationData_dk())
 
 def AttestationData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>:
   match ok:

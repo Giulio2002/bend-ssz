@@ -105,7 +105,9 @@ def BeaconBlock_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBea
 
 def BeaconBlock_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dchk(size, B.size(buf))
 
-def BeaconBlock_dcost(+size: U32) -> U32: O.dcost(size, 40)
+def BeaconBlock_dk() -> U32: 40
+
+def BeaconBlock_dcost(+size: U32) -> U32: O.dcost(size, BeaconBlock_dk())
 
 def BeaconBlock_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>:
   match ok:

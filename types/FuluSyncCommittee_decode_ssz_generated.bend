@@ -71,7 +71,9 @@ def SyncCommittee_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluS
 
 def SyncCommittee_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>: SyncCommittee_dchk(size, B.size(buf))
 
-def SyncCommittee_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def SyncCommittee_dk() -> U32: 0
+
+def SyncCommittee_dcost(+size: U32) -> U32: O.dcost(size, SyncCommittee_dk())
 
 def SyncCommittee_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>:
   match ok:

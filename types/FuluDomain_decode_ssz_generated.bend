@@ -50,7 +50,9 @@ def Domain_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes32_
 
 def Domain_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Domain_dchk(size, B.size(buf))
 
-def Domain_dcost(+size: U32) -> U32: O.dcost(size, 0)
+def Domain_dk() -> U32: 0
+
+def Domain_dcost(+size: U32) -> U32: O.dcost(size, Domain_dk())
 
 def Domain_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
   match ok:
