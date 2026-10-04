@@ -40,6 +40,12 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_f_C() -> {Pa
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vrefuse_poisoned_size() -> {Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_senc_sized((VarTestStruct_d.VarTestStruct_default(), 4294967295))) == O.refused() : O.Encoded}:
   PRV.VarTestStruct_serialize_vrefuse_poisoned_size()
 
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_present_default() -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_default()))) == True{} : Bool}:
+  PRV.VarTestStruct_serialize_vreject_bx_present_default()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_present_f_B() -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  PRV.VarTestStruct_serialize_vreject_bx_present_f_B()
+
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_size() -> {VarTestStruct_e.VarTestStruct_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<VarTestStruct_d.VarTestStruct> & U32}:
   PRV.VarTestStruct_serialize_vreject_bx_size()
 

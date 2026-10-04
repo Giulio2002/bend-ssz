@@ -30,6 +30,14 @@ def Attestation_serialize_vreject_bx_valid()
     -> {FuluAttestation_e.Attestation_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<FuluAttestation_d.Attestation> & Bool}:
   {==}
 
+def Attestation_serialize_vreject_bx_present_default()
+    -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, Bool, FuluAttestation_e.Attestation_bx_valid(FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_default()))) == True{} : Bool}:
+  {==}
+
+def Attestation_serialize_vreject_bx_present_aggregation_bits()
+    -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, Bool, FuluAttestation_e.Attestation_bx_valid(FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64})))) == False{} : Bool}:
+  {==}
+
 def Attestation_serialize_vpoison_bx_absent()
     -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttestation_d.Attestation> & U32, FuluAttestation_e.Attestation_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}

@@ -32,12 +32,6 @@ def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
 
 def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
 
-def rwc4(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32))):
-  (b, +x) = pair
-  (x, rw3(b, (i + 4 : U32)))
-
-def rw4(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32))): rwc4(i, B.read32(b, i))
-
 def ProgressiveVarTestStruct_decode_vlit_rt_f_C_n1()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 768), 10}, 10))))), rw3(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 768), 10}, 10))), 0)) == (10, (2304, (2304, 768))) : U32 & (U32 & (U32 & (U32)))}:
   {==}

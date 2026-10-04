@@ -18,8 +18,6 @@ def rt(m: Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(CompatibleUnionABCA_d.CompatibleUnionABCA, O.Encoded, CompatibleUnionABCA_e.CompatibleUnionABCA_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def CompatibleUnionABCA_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>, CompatibleUnionABCA_r.CompatibleUnionABCA_decode(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 2))) == True{} : Bool}:
   {==}

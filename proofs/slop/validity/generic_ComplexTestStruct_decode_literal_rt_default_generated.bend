@@ -164,18 +164,6 @@ def rwc25(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 
 
 def rw25(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))): rwc25(i, B.read32(b, i))
 
-def rwc26(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))):
-  (b, +x) = pair
-  (x, rw25(b, (i + 4 : U32)))
-
-def rw26(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))): rwc26(i, B.read32(b, i))
-
-def rwc27(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))):
-  (b, +x) = pair
-  (x, rw26(b, (i + 4 : U32)))
-
-def rw27(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))): rwc27(i, B.read32(b, i))
-
 def ComplexTestStruct_decode_vlit_rt_default()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 100))))), rw25(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 100))), 0)) == (100, (4653056, (1191182336, (1191182336, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (1308622848, (0, (1792, (524288, (983040, (0, (7, (117440512, 0))))))))))))))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))}:
   {==}

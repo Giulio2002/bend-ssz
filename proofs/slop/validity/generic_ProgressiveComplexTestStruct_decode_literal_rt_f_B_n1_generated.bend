@@ -62,12 +62,6 @@ def rwc8(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 &
 
 def rw8(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))): rwc8(i, B.read32(b, i))
 
-def rwc9(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))):
-  (b, +x) = pair
-  (x, rw8(b, (i + 4 : U32)))
-
-def rw9(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))): rwc9(i, B.read32(b, i))
-
 def ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n1()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))))), rw8(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))), 0)) == (32, (7424, (7936, (8192, (8192, (8192, (8192, (8192, 16777216)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
   {==}

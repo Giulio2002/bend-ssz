@@ -97,6 +97,12 @@ def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vrejec
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_bx_valid() -> {FuluIndexedAttestation_e.IndexedAttestation_bx_valid(P2_O.BNone{}) == (P2_O.BNone{}, False{}) : P2_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool}:
   P2_PRV.IndexedAttestation_serialize_vreject_bx_valid()
 
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_bx_present_default() -> {Pair.snd(P2_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, Bool, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_default()))) == True{} : Bool}:
+  P2_PRV.IndexedAttestation_serialize_vreject_bx_present_default()
+
+def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vreject_bx_present_attesting_indices() -> {Pair.snd(P2_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, Bool, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), P2_O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  P2_PRV.IndexedAttestation_serialize_vreject_bx_present_attesting_indices()
+
 def FuluIndexedAttestation__serialize_valid__IndexedAttestation_serialize_vpoison_bx_absent() -> {Pair.snd(P2_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, P2_O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 1n, 0), 0, P2_O.BNone{}))) == 4294967295 : U32}:
   P2_PRV.IndexedAttestation_serialize_vpoison_bx_absent()
 

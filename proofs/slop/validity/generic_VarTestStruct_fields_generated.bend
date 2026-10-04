@@ -62,6 +62,14 @@ def VarTestStruct_serialize_vreject_bx_valid()
     -> {VarTestStruct_e.VarTestStruct_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<VarTestStruct_d.VarTestStruct> & Bool}:
   {==}
 
+def VarTestStruct_serialize_vreject_bx_present_default()
+    -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_default()))) == True{} : Bool}:
+  {==}
+
+def VarTestStruct_serialize_vreject_bx_present_f_B()
+    -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  {==}
+
 def VarTestStruct_serialize_vpoison_bx_absent()
     -> {Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}

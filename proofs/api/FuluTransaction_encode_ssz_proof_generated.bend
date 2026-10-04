@@ -101,6 +101,9 @@ def FuluTransaction__serialize_valid__Transaction_serialize_vcoll_bl1073741824_s
 def FuluTransaction__serialize_valid__Transaction_serialize_vcoll_bl1073741824_set_write() -> {(Pair.snd(P3_O.Words, Maybe<&1, U32>, FuluTransaction_d.bl1073741824_get(Pair.fst(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_set(P3_O.words_new(3), 1, 255)), 0)), (Pair.snd(P3_O.Words, Maybe<&1, U32>, FuluTransaction_d.bl1073741824_get(Pair.fst(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_set(P3_O.words_new(3), 1, 255)), 1)), Pair.snd(P3_O.Words, Maybe<&1, U32>, FuluTransaction_d.bl1073741824_get(Pair.fst(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_set(P3_O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   P3_PRV.Transaction_serialize_vcoll_bl1073741824_set_write()
 
+def FuluTransaction__serialize_valid__Transaction_serialize_vcoll_bl1073741824_append_clear() -> {(Pair.snd(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, FuluTransaction_d.bl1073741824_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  P3_PRV.Transaction_serialize_vcoll_bl1073741824_append_clear()
+
 def FuluTransaction__serialize_valid__Transaction_serialize_vrefuse_writer_marker() -> {Pair.snd(P4_O.Words, P4_O.Encoded, FuluTransaction_e.Transaction_senc_out(0, Array.new(U32, 0n, 0), P4_O.words_new(0), 4294967295)) == P4_O.refused() : P4_O.Encoded}:
   P4_PRV.Transaction_serialize_vrefuse_writer_marker()
 

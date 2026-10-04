@@ -18,14 +18,6 @@ def rt(m: Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingle
     case Some{v}: O.ser_out(Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, O.Encoded, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
 def ProgressiveSingleListContainerTestStruct_decode_vlit_bad_off_plus()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 5), 1, 1), 6}, 6))) == False{} : Bool}:
   {==}

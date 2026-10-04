@@ -17,26 +17,6 @@ def rt(m: Maybe<&1, O.Words>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(O.Words, O.Encoded, proglist_uint64_e.proglist_uint64_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
-def rwc4(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32))):
-  (b, +x) = pair
-  (x, rw3(b, (i + 4 : U32)))
-
-def rw4(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32))): rwc4(i, B.read32(b, i))
-
 def proglist_uint64_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint64_r.proglist_uint64_decode(B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == True{} : Bool}:
   {==}

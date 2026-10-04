@@ -30,3 +30,7 @@ def ExecutionPayloadHeader_serialize_vcoll_bl32_set_edge()
 def ExecutionPayloadHeader_serialize_vcoll_bl32_set_write()
     -> {(Pair.snd(O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(O.Words, Bool, Fulu_bytelist_32_d.bl32_set(O.words_new(3), 1, 255)), 0)), (Pair.snd(O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(O.Words, Bool, Fulu_bytelist_32_d.bl32_set(O.words_new(3), 1, 255)), 1)), Pair.snd(O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(O.Words, Bool, Fulu_bytelist_32_d.bl32_set(O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   {==}
+
+def ExecutionPayloadHeader_serialize_vcoll_bl32_append_clear()
+    -> {(Pair.snd(O.Words, Bool, Fulu_bytelist_32_d.bl32_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, Fulu_bytelist_32_d.bl32_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, Fulu_bytelist_32_d.bl32_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  {==}

@@ -17,8 +17,6 @@ def rt(m: Maybe<&1, Bool>) -> B.Buf:
     case Some{v}: O.ser_out(boolean_e.boolean_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def boolean_decode_vlit_bad_short()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode(B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == False{} : Bool}:
   {==}

@@ -132,74 +132,83 @@ import ../../src/obj.bend as P29_O
 import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_D_generated.bend as P29_PRV
 import ../../src/buffer.bend as P30_B
 import ../../src/obj.bend as P30_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_all_generated.bend as P30_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_size_f_D_elem_elem_f_B_ragged_generated.bend as P30_PRV
 import ../../src/buffer.bend as P31_B
 import ../../src/obj.bend as P31_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_default_generated.bend as P31_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_all_generated.bend as P31_PRV
 import ../../src/buffer.bend as P32_B
 import ../../src/obj.bend as P32_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n1_generated.bend as P32_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_default_generated.bend as P32_PRV
 import ../../src/buffer.bend as P33_B
 import ../../src/obj.bend as P33_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n2_generated.bend as P33_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n1_generated.bend as P33_PRV
 import ../../src/buffer.bend as P34_B
 import ../../src/obj.bend as P34_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n1_generated.bend as P34_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n2_generated.bend as P34_PRV
 import ../../src/buffer.bend as P35_B
 import ../../src/obj.bend as P35_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n2_generated.bend as P35_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n1_generated.bend as P35_PRV
 import ../../src/buffer.bend as P36_B
 import ../../src/obj.bend as P36_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n1_generated.bend as P36_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_B_n2_generated.bend as P36_PRV
 import ../../src/buffer.bend as P37_B
 import ../../src/obj.bend as P37_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n2_generated.bend as P37_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n1_generated.bend as P37_PRV
 import ../../src/buffer.bend as P38_B
 import ../../src/obj.bend as P38_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n1_generated.bend as P38_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_C_n2_generated.bend as P38_PRV
 import ../../src/buffer.bend as P39_B
 import ../../src/obj.bend as P39_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend as P39_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n1_generated.bend as P39_PRV
 import ../../src/buffer.bend as P40_B
 import ../../src/obj.bend as P40_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_marked_generated.bend as P40_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend as P40_PRV
 import ../../src/buffer.bend as P41_B
 import ../../src/obj.bend as P41_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend as P41_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_marked_generated.bend as P41_PRV
 import ../../src/buffer.bend as P42_B
 import ../../src/obj.bend as P42_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_default_generated.bend as P42_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_wide_generated.bend as P42_PRV
 import ../../src/buffer.bend as P43_B
 import ../../src/obj.bend as P43_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n1_generated.bend as P43_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend as P43_PRV
 import ../../src/buffer.bend as P44_B
 import ../../src/obj.bend as P44_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n2_generated.bend as P44_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_default_generated.bend as P44_PRV
 import ../../src/buffer.bend as P45_B
 import ../../src/obj.bend as P45_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n1_generated.bend as P45_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n1_generated.bend as P45_PRV
 import ../../src/buffer.bend as P46_B
 import ../../src/obj.bend as P46_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n2_generated.bend as P46_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n2_generated.bend as P46_PRV
 import ../../src/buffer.bend as P47_B
 import ../../src/obj.bend as P47_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n1_generated.bend as P47_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n1_generated.bend as P47_PRV
 import ../../src/buffer.bend as P48_B
 import ../../src/obj.bend as P48_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n2_generated.bend as P48_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_B_n2_generated.bend as P48_PRV
 import ../../src/buffer.bend as P49_B
 import ../../src/obj.bend as P49_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend as P49_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n1_generated.bend as P49_PRV
 import ../../src/buffer.bend as P50_B
 import ../../src/obj.bend as P50_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend as P50_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_C_n2_generated.bend as P50_PRV
 import ../../src/buffer.bend as P51_B
 import ../../src/obj.bend as P51_O
-import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_marked_generated.bend as P51_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend as P51_PRV
 import ../../src/buffer.bend as P52_B
 import ../../src/obj.bend as P52_O
-import ../obj/decode_window_library_generated.bend as P52_DWL
-import ../slop/offsets/ProgressiveTestStruct_generated.bend as P52_PRV
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend as P52_PRV
+import ../../src/buffer.bend as P53_B
+import ../../src/obj.bend as P53_O
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_marked_generated.bend as P53_PRV
+import ../../src/buffer.bend as P54_B
+import ../../src/obj.bend as P54_O
+import ../slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_wide_generated.bend as P54_PRV
+import ../../src/buffer.bend as P55_B
+import ../../src/obj.bend as P55_O
+import ../obj/decode_window_library_generated.bend as P55_DWL
+import ../slop/offsets/ProgressiveTestStruct_generated.bend as P55_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # ProgressiveTestStruct: its decode_ssz laws in the object API's terms, each discharged by its proving law.
@@ -327,72 +336,81 @@ def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_bad
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_bad_order_f_D() -> {P29_PRV.some1(Pair.snd(P29_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P29_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 15), 16}, 16))) == False{} : Bool}:
   P29_PRV.ProgressiveTestStruct_decode_vlit_bad_order_f_D()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_all() -> {P30_PRV.some1(Pair.snd(P30_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P30_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))) == True{} : Bool}:
-  P30_PRV.ProgressiveTestStruct_decode_vlit_ok_all()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_bad_size_f_D_elem_elem_f_B_ragged() -> {P30_PRV.some1(Pair.snd(P30_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P30_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 5, 4), 6, 458752), 34}, 34))) == False{} : Bool}:
+  P30_PRV.ProgressiveTestStruct_decode_vlit_bad_size_f_D_elem_elem_f_B_ragged()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_default() -> {P31_PRV.some1(Pair.snd(P31_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P31_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == True{} : Bool}:
-  P31_PRV.ProgressiveTestStruct_decode_vlit_ok_default()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_all() -> {P31_PRV.some1(Pair.snd(P31_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P31_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))) == True{} : Bool}:
+  P31_PRV.ProgressiveTestStruct_decode_vlit_ok_all()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_A_n1() -> {P32_PRV.some1(Pair.snd(P32_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P32_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))) == True{} : Bool}:
-  P32_PRV.ProgressiveTestStruct_decode_vlit_ok_f_A_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_default() -> {P32_PRV.some1(Pair.snd(P32_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P32_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == True{} : Bool}:
+  P32_PRV.ProgressiveTestStruct_decode_vlit_ok_default()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_A_n2() -> {P33_PRV.some1(Pair.snd(P33_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P33_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))) == True{} : Bool}:
-  P33_PRV.ProgressiveTestStruct_decode_vlit_ok_f_A_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_A_n1() -> {P33_PRV.some1(Pair.snd(P33_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P33_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))) == True{} : Bool}:
+  P33_PRV.ProgressiveTestStruct_decode_vlit_ok_f_A_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_B_n1() -> {P34_PRV.some1(Pair.snd(P34_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P34_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))) == True{} : Bool}:
-  P34_PRV.ProgressiveTestStruct_decode_vlit_ok_f_B_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_A_n2() -> {P34_PRV.some1(Pair.snd(P34_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P34_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))) == True{} : Bool}:
+  P34_PRV.ProgressiveTestStruct_decode_vlit_ok_f_A_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_B_n2() -> {P35_PRV.some1(Pair.snd(P35_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P35_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))) == True{} : Bool}:
-  P35_PRV.ProgressiveTestStruct_decode_vlit_ok_f_B_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_B_n1() -> {P35_PRV.some1(Pair.snd(P35_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P35_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))) == True{} : Bool}:
+  P35_PRV.ProgressiveTestStruct_decode_vlit_ok_f_B_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_C_n1() -> {P36_PRV.some1(Pair.snd(P36_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P36_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))) == True{} : Bool}:
-  P36_PRV.ProgressiveTestStruct_decode_vlit_ok_f_C_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_B_n2() -> {P36_PRV.some1(Pair.snd(P36_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P36_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))) == True{} : Bool}:
+  P36_PRV.ProgressiveTestStruct_decode_vlit_ok_f_B_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_C_n2() -> {P37_PRV.some1(Pair.snd(P37_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P37_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))) == True{} : Bool}:
-  P37_PRV.ProgressiveTestStruct_decode_vlit_ok_f_C_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_C_n1() -> {P37_PRV.some1(Pair.snd(P37_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P37_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))) == True{} : Bool}:
+  P37_PRV.ProgressiveTestStruct_decode_vlit_ok_f_C_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_D_n1() -> {P38_PRV.some1(Pair.snd(P38_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P38_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))) == True{} : Bool}:
-  P38_PRV.ProgressiveTestStruct_decode_vlit_ok_f_D_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_C_n2() -> {P38_PRV.some1(Pair.snd(P38_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P38_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))) == True{} : Bool}:
+  P38_PRV.ProgressiveTestStruct_decode_vlit_ok_f_C_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_D_n2() -> {P39_PRV.some1(Pair.snd(P39_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P39_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))) == True{} : Bool}:
-  P39_PRV.ProgressiveTestStruct_decode_vlit_ok_f_D_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_D_n1() -> {P39_PRV.some1(Pair.snd(P39_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P39_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))) == True{} : Bool}:
+  P39_PRV.ProgressiveTestStruct_decode_vlit_ok_f_D_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_marked() -> {P40_PRV.some1(Pair.snd(P40_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P40_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))) == True{} : Bool}:
-  P40_PRV.ProgressiveTestStruct_decode_vlit_ok_marked()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_f_D_n2() -> {P40_PRV.some1(Pair.snd(P40_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P40_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))) == True{} : Bool}:
+  P40_PRV.ProgressiveTestStruct_decode_vlit_ok_f_D_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_all() -> {(Pair.snd(P41_B.Buf, U32, P41_B.size(P41_PRV.rt(Pair.snd(P41_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P41_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))))), P41_PRV.rw9(P41_PRV.rt(Pair.snd(P41_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P41_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))), 0)) == (33, (16, (17, (25, (29, (0, (0, (0, (1024, 0))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))}:
-  P41_PRV.ProgressiveTestStruct_decode_vlit_rt_all()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_marked() -> {P41_PRV.some1(Pair.snd(P41_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P41_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))) == True{} : Bool}:
+  P41_PRV.ProgressiveTestStruct_decode_vlit_ok_marked()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_default() -> {(Pair.snd(P42_B.Buf, U32, P42_B.size(P42_PRV.rt(Pair.snd(P42_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P42_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))))), P42_PRV.rw4(P42_PRV.rt(Pair.snd(P42_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P42_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))), 0)) == (16, (16, (16, (16, 16)))) : U32 & (U32 & (U32 & (U32 & (U32))))}:
-  P42_PRV.ProgressiveTestStruct_decode_vlit_rt_default()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_ok_wide() -> {P42_PRV.some1(Pair.snd(P42_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P42_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 16), 1, 20), 2, 36), 3, 44), 4, 4), 5, 4), 6, 6), 7, 7), 8, 8), 9, 4), 10, 10), 11, 8), 12, 30), 13, 8), 14, 15), 15, 458763), 16, 201326592), 17, 1792), 18, 524288), 19, 983040), 20, 851968), 21, 7), 22, 117444096), 96}, 96))) == True{} : Bool}:
+  P42_PRV.ProgressiveTestStruct_decode_vlit_ok_wide()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_A_n1() -> {(Pair.snd(P43_B.Buf, U32, P43_B.size(P43_PRV.rt(Pair.snd(P43_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P43_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))))), P43_PRV.rw5(P43_PRV.rt(Pair.snd(P43_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P43_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))), 0)) == (17, (16, (17, (17, (17, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
-  P43_PRV.ProgressiveTestStruct_decode_vlit_rt_f_A_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_all() -> {(Pair.snd(P43_B.Buf, U32, P43_B.size(P43_PRV.rt(Pair.snd(P43_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P43_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))))), P43_PRV.rw9(P43_PRV.rt(Pair.snd(P43_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P43_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))), 0)) == (33, (16, (17, (25, (29, (0, (0, (0, (1024, 0))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))}:
+  P43_PRV.ProgressiveTestStruct_decode_vlit_rt_all()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_A_n2() -> {(Pair.snd(P44_B.Buf, U32, P44_B.size(P44_PRV.rt(Pair.snd(P44_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P44_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))))), P44_PRV.rw5(P44_PRV.rt(Pair.snd(P44_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P44_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))), 0)) == (18, (16, (18, (18, (18, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
-  P44_PRV.ProgressiveTestStruct_decode_vlit_rt_f_A_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_default() -> {(Pair.snd(P44_B.Buf, U32, P44_B.size(P44_PRV.rt(Pair.snd(P44_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P44_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))))), P44_PRV.rw4(P44_PRV.rt(Pair.snd(P44_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P44_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))), 0)) == (16, (16, (16, (16, 16)))) : U32 & (U32 & (U32 & (U32 & (U32))))}:
+  P44_PRV.ProgressiveTestStruct_decode_vlit_rt_default()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_B_n1() -> {(Pair.snd(P45_B.Buf, U32, P45_B.size(P45_PRV.rt(Pair.snd(P45_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P45_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))))), P45_PRV.rw6(P45_PRV.rt(Pair.snd(P45_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P45_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))), 0)) == (24, (16, (16, (24, (24, (0, 0)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
-  P45_PRV.ProgressiveTestStruct_decode_vlit_rt_f_B_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_A_n1() -> {(Pair.snd(P45_B.Buf, U32, P45_B.size(P45_PRV.rt(Pair.snd(P45_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P45_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))))), P45_PRV.rw5(P45_PRV.rt(Pair.snd(P45_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P45_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 17), 2, 17), 3, 17), 17}, 17))), 0)) == (17, (16, (17, (17, (17, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
+  P45_PRV.ProgressiveTestStruct_decode_vlit_rt_f_A_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_B_n2() -> {(Pair.snd(P46_B.Buf, U32, P46_B.size(P46_PRV.rt(Pair.snd(P46_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P46_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))))), P46_PRV.rw8(P46_PRV.rt(Pair.snd(P46_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P46_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))), 0)) == (32, (16, (16, (32, (32, (0, (0, (0, 0)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
-  P46_PRV.ProgressiveTestStruct_decode_vlit_rt_f_B_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_A_n2() -> {(Pair.snd(P46_B.Buf, U32, P46_B.size(P46_PRV.rt(Pair.snd(P46_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P46_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))))), P46_PRV.rw5(P46_PRV.rt(Pair.snd(P46_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P46_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 18), 2, 18), 3, 18), 18}, 18))), 0)) == (18, (16, (18, (18, (18, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
+  P46_PRV.ProgressiveTestStruct_decode_vlit_rt_f_A_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_C_n1() -> {(Pair.snd(P47_B.Buf, U32, P47_B.size(P47_PRV.rt(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))))), P47_PRV.rw5(P47_PRV.rt(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))), 0)) == (20, (16, (16, (16, (20, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
-  P47_PRV.ProgressiveTestStruct_decode_vlit_rt_f_C_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_B_n1() -> {(Pair.snd(P47_B.Buf, U32, P47_B.size(P47_PRV.rt(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))))), P47_PRV.rw6(P47_PRV.rt(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 24), 3, 24), 24}, 24))), 0)) == (24, (16, (16, (24, (24, (0, 0)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
+  P47_PRV.ProgressiveTestStruct_decode_vlit_rt_f_B_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_C_n2() -> {(Pair.snd(P48_B.Buf, U32, P48_B.size(P48_PRV.rt(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))))), P48_PRV.rw6(P48_PRV.rt(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))), 0)) == (24, (16, (16, (16, (24, (0, 0)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
-  P48_PRV.ProgressiveTestStruct_decode_vlit_rt_f_C_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_B_n2() -> {(Pair.snd(P48_B.Buf, U32, P48_B.size(P48_PRV.rt(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))))), P48_PRV.rw8(P48_PRV.rt(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 32), 3, 32), 32}, 32))), 0)) == (32, (16, (16, (32, (32, (0, (0, (0, 0)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
+  P48_PRV.ProgressiveTestStruct_decode_vlit_rt_f_B_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_D_n1() -> {(Pair.snd(P49_B.Buf, U32, P49_B.size(P49_PRV.rt(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))))), P49_PRV.rw5(P49_PRV.rt(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))), 0)) == (20, (16, (16, (16, (16, 4))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
-  P49_PRV.ProgressiveTestStruct_decode_vlit_rt_f_D_n1()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_C_n1() -> {(Pair.snd(P49_B.Buf, U32, P49_B.size(P49_PRV.rt(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))))), P49_PRV.rw5(P49_PRV.rt(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))), 0)) == (20, (16, (16, (16, (20, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
+  P49_PRV.ProgressiveTestStruct_decode_vlit_rt_f_C_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_D_n2() -> {(Pair.snd(P50_B.Buf, U32, P50_B.size(P50_PRV.rt(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))))), P50_PRV.rw6(P50_PRV.rt(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))), 0)) == (24, (16, (16, (16, (16, (8, 8)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
-  P50_PRV.ProgressiveTestStruct_decode_vlit_rt_f_D_n2()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_C_n2() -> {(Pair.snd(P50_B.Buf, U32, P50_B.size(P50_PRV.rt(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))))), P50_PRV.rw6(P50_PRV.rt(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 24), 24}, 24))), 0)) == (24, (16, (16, (16, (24, (0, 0)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
+  P50_PRV.ProgressiveTestStruct_decode_vlit_rt_f_C_n2()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_marked() -> {(Pair.snd(P51_B.Buf, U32, P51_B.size(P51_PRV.rt(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))))), P51_PRV.rw13(P51_PRV.rt(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))), 0)) == (50, (16, (18, (34, (42, (262144, (0, (262144, (0, (262144, (262144, (524288, (524288, 0))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))}:
-  P51_PRV.ProgressiveTestStruct_decode_vlit_rt_marked()
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_D_n1() -> {(Pair.snd(P51_B.Buf, U32, P51_B.size(P51_PRV.rt(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))))), P51_PRV.rw5(P51_PRV.rt(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 4), 20}, 20))), 0)) == (20, (16, (16, (16, (16, 4))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
+  P51_PRV.ProgressiveTestStruct_decode_vlit_rt_f_D_n1()
 
-def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_build(buf: P52_B.Buf, +size: U32, b2: P52_B.Buf, e: {ProgressiveTestStruct_r.ProgressiveTestStruct_ok(buf, 0, size) == (b2, True{}) : P52_B.Buf & Bool}, hwin: {U32.is_le(size, P52_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode(buf, size) == ProgressiveTestStruct_r.ProgressiveTestStruct_some(ProgressiveTestStruct_r.ProgressiveTestStruct_build(b2, size)) : P52_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
-  P52_PRV.ProgressiveTestStruct_decode_build(buf, size, b2, e, hwin)
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_f_D_n2() -> {(Pair.snd(P52_B.Buf, U32, P52_B.size(P52_PRV.rt(Pair.snd(P52_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P52_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))))), P52_PRV.rw6(P52_PRV.rt(Pair.snd(P52_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P52_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 4, 8), 5, 8), 24}, 24))), 0)) == (24, (16, (16, (16, (16, (8, 8)))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))}:
+  P52_PRV.ProgressiveTestStruct_decode_vlit_rt_f_D_n2()
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_marked() -> {(Pair.snd(P53_B.Buf, U32, P53_B.size(P53_PRV.rt(Pair.snd(P53_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P53_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))))), P53_PRV.rw13(P53_PRV.rt(Pair.snd(P53_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P53_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 18), 2, 34), 3, 42), 4, 262144), 6, 262144), 8, 262144), 9, 262144), 10, 524288), 11, 524288), 50}, 50))), 0)) == (50, (16, (18, (34, (42, (262144, (0, (262144, (0, (262144, (262144, (524288, (524288, 0))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))}:
+  P53_PRV.ProgressiveTestStruct_decode_vlit_rt_marked()
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_rt_wide() -> {P54_PRV.rtc24(P54_PRV.rt(Pair.snd(P54_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P54_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 16), 1, 20), 2, 36), 3, 44), 4, 4), 5, 4), 6, 6), 7, 7), 8, 8), 9, 4), 10, 10), 11, 8), 12, 30), 13, 8), 14, 15), 15, 458763), 16, 201326592), 17, 1792), 18, 524288), 19, 983040), 20, 851968), 21, 7), 22, 117444096), 96}, 96)))) == (96, (16, (20, (36, (44, (4, (4, (6, (7, (8, (4, (10, (8, (30, (8, (15, (458763, (201326592, (1792, (524288, (983040, (851968, (7, (117444096, 0)))))))))))))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))}:
+  P54_PRV.ProgressiveTestStruct_decode_vlit_rt_wide()
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_build(buf: P55_B.Buf, +size: U32, b2: P55_B.Buf, e: {ProgressiveTestStruct_r.ProgressiveTestStruct_ok(buf, 0, size) == (b2, True{}) : P55_B.Buf & Bool}, hwin: {U32.is_le(size, P55_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode(buf, size) == ProgressiveTestStruct_r.ProgressiveTestStruct_some(ProgressiveTestStruct_r.ProgressiveTestStruct_build(b2, size)) : P55_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P55_PRV.ProgressiveTestStruct_decode_build(buf, size, b2, e, hwin)
 

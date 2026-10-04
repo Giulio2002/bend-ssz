@@ -17,14 +17,6 @@ def rt(m: Maybe<&1, O.Words>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(O.Words, O.Encoded, vec_uint8_8_e.vec_uint8_8_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
 def vec_uint8_8_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_8_r.vec_uint8_8_decode(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == True{} : Bool}:
   {==}

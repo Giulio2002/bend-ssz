@@ -170,12 +170,6 @@ def rwc26(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 
 
 def rw26(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))): rwc26(i, B.read32(b, i))
 
-def rwc27(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))):
-  (b, +x) = pair
-  (x, rw26(b, (i + 4 : U32)))
-
-def rw27(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))): rwc27(i, B.read32(b, i))
-
 def ComplexTestStruct_decode_vlit_rt_f_B_n1()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1224736768), 2, 1224736768), 16, 1342177280), 18, 117440512), 20, 8), 21, 15), 22, 458752), 24, 1792), 102}, 102))))), rw26(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1224736768), 2, 1224736768), 16, 1342177280), 18, 117440512), 20, 8), 21, 15), 22, 458752), 24, 1792), 102}, 102))), 0)) == (102, (4653056, (1224736768, (1224736768, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (1342177280, (0, (117440512, (0, (8, (15, (458752, (0, (1792, 0)))))))))))))))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))))}:
   {==}

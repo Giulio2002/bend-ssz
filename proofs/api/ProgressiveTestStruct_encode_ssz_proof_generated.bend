@@ -151,6 +151,9 @@ def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcol
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_u8_set_write() -> {(Pair.snd(P4_O.Words, Maybe<&1, U32>, proglist_uint8_d.pl_u8_get(Pair.fst(P4_O.Words, Bool, proglist_uint8_d.pl_u8_set(P4_O.words_new(3), 1, 255)), 0)), (Pair.snd(P4_O.Words, Maybe<&1, U32>, proglist_uint8_d.pl_u8_get(Pair.fst(P4_O.Words, Bool, proglist_uint8_d.pl_u8_set(P4_O.words_new(3), 1, 255)), 1)), Pair.snd(P4_O.Words, Maybe<&1, U32>, proglist_uint8_d.pl_u8_get(Pair.fst(P4_O.Words, Bool, proglist_uint8_d.pl_u8_set(P4_O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   P4_PRV.ProgressiveTestStruct_serialize_vcoll_pl_u8_set_write()
 
+def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vcoll_pl_u8_append_clear() -> {(Pair.snd(P4_O.Words, Bool, proglist_uint8_d.pl_u8_append(P4_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(P4_O.Words, U32, P4_O.words_word(Pair.fst(P4_O.Words, Bool, proglist_uint8_d.pl_u8_append(P4_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(P4_O.Words, U32, P4_O.words_word(Pair.fst(P4_O.Words, Bool, proglist_uint8_d.pl_u8_append(P4_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  P4_PRV.ProgressiveTestStruct_serialize_vcoll_pl_u8_append_clear()
+
 def ProgressiveTestStruct__serialize_valid__ProgressiveTestStruct_serialize_vreject_default_valid() -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, Bool, ProgressiveTestStruct_e.ProgressiveTestStruct_valid(ProgressiveTestStruct_d.ProgressiveTestStruct_default())) == True{} : Bool}:
   P5_PRV.ProgressiveTestStruct_serialize_vreject_default_valid()
 

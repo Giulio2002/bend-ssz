@@ -25,6 +25,12 @@ def Attestation__serialize_valid__Attestation_serialize_vrefuse_poisoned_size() 
 def Attestation__serialize_valid__Attestation_serialize_vreject_aggregation_bits() -> {Pair.snd(FuluAttestation_d.Attestation, Bool, FuluAttestation_e.Attestation_valid(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   PRV.Attestation_serialize_vreject_aggregation_bits()
 
+def Attestation__serialize_valid__Attestation_serialize_vreject_bx_present_aggregation_bits() -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, Bool, FuluAttestation_e.Attestation_bx_valid(FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64})))) == False{} : Bool}:
+  PRV.Attestation_serialize_vreject_bx_present_aggregation_bits()
+
+def Attestation__serialize_valid__Attestation_serialize_vreject_bx_present_default() -> {Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, Bool, FuluAttestation_e.Attestation_bx_valid(FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_default()))) == True{} : Bool}:
+  PRV.Attestation_serialize_vreject_bx_present_default()
+
 def Attestation__serialize_valid__Attestation_serialize_vreject_bx_size() -> {FuluAttestation_e.Attestation_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<FuluAttestation_d.Attestation> & U32}:
   PRV.Attestation_serialize_vreject_bx_size()
 

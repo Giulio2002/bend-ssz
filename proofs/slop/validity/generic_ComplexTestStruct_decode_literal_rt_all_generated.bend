@@ -170,12 +170,6 @@ def rwc26(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 
 
 def rw26(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))): rwc26(i, B.read32(b, i))
 
-def rwc27(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))):
-  (b, +x) = pair
-  (x, rw26(b, (i + 4 : U32)))
-
-def rw27(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))))))))))))))))): rwc27(i, B.read32(b, i))
-
 def ComplexTestStruct_decode_vlit_rt_all()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1224736768), 2, 1241513984), 16, 1358954496), 18, 1792), 19, 7), 20, 2048), 21, 3840), 22, 117440512), 24, 458752), 103}, 103))))), rw26(rt(Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1224736768), 2, 1241513984), 16, 1358954496), 18, 1792), 19, 7), 20, 2048), 21, 3840), 22, 117440512), 24, 458752), 103}, 103))), 0)) == (103, (4653056, (1224736768, (1241513984, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (0, (1358954496, (0, (1792, (7, (2048, (3840, (117440512, (0, (458752, 0)))))))))))))))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))))}:
   {==}

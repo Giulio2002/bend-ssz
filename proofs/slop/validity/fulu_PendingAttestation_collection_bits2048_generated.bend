@@ -22,3 +22,7 @@ def PendingAttestation_serialize_vcoll_bits2048_full()
 def PendingAttestation_serialize_vcoll_bits2048_set_edge()
     -> {(Pair.snd(O.Bits, Bool, Fulu_bitlist_2048_d.bits2048_set(O.bits_zeros(40), 40, True{})), (Pair.snd(O.Bits, Bool, Fulu_bitlist_2048_d.bits2048_set(O.bits_zeros(40), 39, True{})), (Pair.snd(O.Bits, Maybe<&1, Bool>, Fulu_bitlist_2048_d.bits2048_get(Pair.fst(O.Bits, Bool, Fulu_bitlist_2048_d.bits2048_set(O.bits_zeros(40), 39, True{})), 39)), Pair.snd(O.Bits, Maybe<&1, Bool>, Fulu_bitlist_2048_d.bits2048_get(Pair.fst(O.Bits, Bool, Fulu_bitlist_2048_d.bits2048_set(O.bits_zeros(40), 39, True{})), 38))))) == (False{}, (True{}, (Some{True{}}, Some{False{}}))) : Bool & (Bool & (Maybe<&1, Bool> & Maybe<&1, Bool>))}:
   {==}
+
+def PendingAttestation_serialize_vcoll_bits2048_append_clear()
+    -> {(Pair.snd(O.Bits, Bool, Fulu_bitlist_2048_d.bits2048_append(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{})), (Pair.snd(O.Bits, U32, O.bits_word(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{}), 1)), (Pair.snd(O.Bits, U32, O.bits_word(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{}), 0)), Pair.snd(O.Bits, U32, O.bits_sizek(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{})))))) == (True{}, (0, (4294967295, 5))) : Bool & (U32 & (U32 & U32))}:
+  {==}

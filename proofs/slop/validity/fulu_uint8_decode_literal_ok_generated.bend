@@ -17,8 +17,6 @@ def rt(m: Maybe<&1, U32>) -> B.Buf:
     case Some{v}: O.ser_out(uint8_e.uint8_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def uint8_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == True{} : Bool}:
   {==}

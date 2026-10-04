@@ -58,6 +58,14 @@ def ProgressiveVarTestStruct_serialize_vreject_bx_valid()
     -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & Bool}:
   {==}
 
+def ProgressiveVarTestStruct_serialize_vreject_bx_present_default()
+    -> {Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, Bool, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default()))) == True{} : Bool}:
+  {==}
+
+def ProgressiveVarTestStruct_serialize_vreject_bx_present_f_B()
+    -> {Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, Bool, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_valid(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  {==}
+
 def ProgressiveVarTestStruct_serialize_vpoison_bx_absent()
     -> {Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}

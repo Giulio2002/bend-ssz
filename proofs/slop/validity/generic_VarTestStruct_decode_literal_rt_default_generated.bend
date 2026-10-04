@@ -26,12 +26,6 @@ def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
 
 def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
 
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
 def VarTestStruct_decode_vlit_rt_default()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7))))), rw2(rt(Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7))), 0)) == (7, (458752, 0)) : U32 & (U32 & (U32))}:
   {==}

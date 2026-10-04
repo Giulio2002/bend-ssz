@@ -140,6 +140,14 @@ def BeaconBlockBody_serialize_vreject_bx_valid()
     -> {FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & Bool}:
   {==}
 
+def BeaconBlockBody_serialize_vreject_bx_present_default()
+    -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody_default()))) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_serialize_vreject_bx_present_proposer_slashings()
+    -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()}))) == False{} : Bool}:
+  {==}
+
 def BeaconBlockBody_serialize_vpoison_bx_absent()
     -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, Pair.snd(Array<U32>, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}

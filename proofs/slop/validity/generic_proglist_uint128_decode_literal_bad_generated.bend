@@ -17,50 +17,6 @@ def rt(m: Maybe<&1, O.Words>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(O.Words, O.Encoded, proglist_uint128_e.proglist_uint128_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
-def rwc4(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32))):
-  (b, +x) = pair
-  (x, rw3(b, (i + 4 : U32)))
-
-def rw4(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32))): rwc4(i, B.read32(b, i))
-
-def rwc5(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32)))):
-  (b, +x) = pair
-  (x, rw4(b, (i + 4 : U32)))
-
-def rw5(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32)))): rwc5(i, B.read32(b, i))
-
-def rwc6(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))):
-  (b, +x) = pair
-  (x, rw5(b, (i + 4 : U32)))
-
-def rw6(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))): rwc6(i, B.read32(b, i))
-
-def rwc7(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))):
-  (b, +x) = pair
-  (x, rw6(b, (i + 4 : U32)))
-
-def rw7(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))): rwc7(i, B.read32(b, i))
-
-def rwc8(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))):
-  (b, +x) = pair
-  (x, rw7(b, (i + 4 : U32)))
-
-def rw8(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))): rwc8(i, B.read32(b, i))
-
 def proglist_uint128_decode_vlit_bad_ragged()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint128_r.proglist_uint128_decode(B.Buf{Array.new(U32, 3n, 0), 17}, 17))) == False{} : Bool}:
   {==}

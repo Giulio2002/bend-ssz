@@ -18,8 +18,6 @@ def rt(m: Maybe<&1, FuluBytes1_d.Bytes1>) -> B.Buf:
     case Some{v}: O.ser_out(FuluBytes1_e.Bytes1_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def Bytes1_decode_vlit_bad_short()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, FuluBytes1_d.Bytes1>, FuluBytes1_r.Bytes1_decode(B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == False{} : Bool}:
   {==}

@@ -17,8 +17,6 @@ def rt(m: Maybe<&1, O.Bits>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(O.Bits, O.Encoded, bitlist_3_e.bitlist_3_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def bitlist_3_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_3_r.bitlist_3_decode(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == True{} : Bool}:
   {==}

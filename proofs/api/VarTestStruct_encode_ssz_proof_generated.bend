@@ -106,6 +106,9 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vcoll_l1024_u16_set_
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vcoll_l1024_u16_set_write() -> {(Pair.snd(P2_O.Words, Maybe<&1, U32>, list_uint16_1024_d.l1024_u16_get(Pair.fst(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_set(P2_O.words_new(6), 1, 65535)), 0)), (Pair.snd(P2_O.Words, Maybe<&1, U32>, list_uint16_1024_d.l1024_u16_get(Pair.fst(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_set(P2_O.words_new(6), 1, 65535)), 1)), Pair.snd(P2_O.Words, Maybe<&1, U32>, list_uint16_1024_d.l1024_u16_get(Pair.fst(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_set(P2_O.words_new(6), 1, 65535)), 2)))) == (Some{0}, (Some{65535}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   P2_PRV.VarTestStruct_serialize_vcoll_l1024_u16_set_write()
 
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vcoll_l1024_u16_append_clear() -> {(Pair.snd(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_append(P2_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), (Pair.snd(P2_O.Words, U32, P2_O.words_word(Pair.fst(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_append(P2_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 1)), Pair.snd(P2_O.Words, U32, P2_O.words_word(Pair.fst(P2_O.Words, Bool, list_uint16_1024_d.l1024_u16_append(P2_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  P2_PRV.VarTestStruct_serialize_vcoll_l1024_u16_append_clear()
+
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_false_flag() -> {P3_O.is_poisoned(P3_O.pz(False{})) == True{} : Bool}:
   P3_PRV.VarTestStruct_serialize_vpoison_false_flag()
 
@@ -147,6 +150,12 @@ def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_size() ->
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_valid() -> {VarTestStruct_e.VarTestStruct_bx_valid(P3_O.BNone{}) == (P3_O.BNone{}, False{}) : P3_O.Boxed<VarTestStruct_d.VarTestStruct> & Bool}:
   P3_PRV.VarTestStruct_serialize_vreject_bx_valid()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_present_default() -> {Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_default()))) == True{} : Bool}:
+  P3_PRV.VarTestStruct_serialize_vreject_bx_present_default()
+
+def VarTestStruct__serialize_valid__VarTestStruct_serialize_vreject_bx_present_f_B() -> {Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, Bool, VarTestStruct_e.VarTestStruct_bx_valid(VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), P3_O.Words{Array.new(U32, 0n, 0), 5})))) == False{} : Bool}:
+  P3_PRV.VarTestStruct_serialize_vreject_bx_present_f_B()
 
 def VarTestStruct__serialize_valid__VarTestStruct_serialize_vpoison_bx_absent() -> {Pair.snd(P3_O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, P3_O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 1n, 0), 0, P3_O.BNone{}))) == 4294967295 : U32}:
   P3_PRV.VarTestStruct_serialize_vpoison_bx_absent()

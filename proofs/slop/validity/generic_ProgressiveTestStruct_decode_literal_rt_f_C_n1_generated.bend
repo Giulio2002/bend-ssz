@@ -44,54 +44,6 @@ def rwc5(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32)))):
 
 def rw5(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32)))): rwc5(i, B.read32(b, i))
 
-def rwc6(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))):
-  (b, +x) = pair
-  (x, rw5(b, (i + 4 : U32)))
-
-def rw6(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))): rwc6(i, B.read32(b, i))
-
-def rwc7(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))):
-  (b, +x) = pair
-  (x, rw6(b, (i + 4 : U32)))
-
-def rw7(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))): rwc7(i, B.read32(b, i))
-
-def rwc8(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))):
-  (b, +x) = pair
-  (x, rw7(b, (i + 4 : U32)))
-
-def rw8(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))): rwc8(i, B.read32(b, i))
-
-def rwc9(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))):
-  (b, +x) = pair
-  (x, rw8(b, (i + 4 : U32)))
-
-def rw9(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))): rwc9(i, B.read32(b, i))
-
-def rwc10(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))):
-  (b, +x) = pair
-  (x, rw9(b, (i + 4 : U32)))
-
-def rw10(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))): rwc10(i, B.read32(b, i))
-
-def rwc11(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))):
-  (b, +x) = pair
-  (x, rw10(b, (i + 4 : U32)))
-
-def rw11(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))): rwc11(i, B.read32(b, i))
-
-def rwc12(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))):
-  (b, +x) = pair
-  (x, rw11(b, (i + 4 : U32)))
-
-def rw12(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))): rwc12(i, B.read32(b, i))
-
-def rwc13(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))):
-  (b, +x) = pair
-  (x, rw12(b, (i + 4 : U32)))
-
-def rw13(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))): rwc13(i, B.read32(b, i))
-
 def ProgressiveTestStruct_decode_vlit_rt_f_C_n1()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))))), rw5(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 16), 3, 20), 20}, 20))), 0)) == (20, (16, (16, (16, (20, 0))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))}:
   {==}

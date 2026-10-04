@@ -18,8 +18,6 @@ def rt(m: Maybe<&1, bitvector_2_d.Bitvector2>) -> B.Buf:
     case Some{v}: O.ser_out(bitvector_2_e.bitvector_2_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def bitvector_2_decode_vlit_bad_short()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, bitvector_2_d.Bitvector2>, bitvector_2_r.bitvector_2_decode(B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == False{} : Bool}:
   {==}

@@ -18,8 +18,6 @@ def rt(m: Maybe<&1, FuluBytes4_d.Bytes4>) -> B.Buf:
     case Some{v}: O.ser_out(FuluDomainType_e.DomainType_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
 def DomainType_decode_vlit_bad_short()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluDomainType_r.DomainType_decode(B.Buf{Array.new(U32, 0n, 0), 3}, 3))) == False{} : Bool}:
   {==}

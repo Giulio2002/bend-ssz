@@ -186,68 +186,83 @@ import ../../src/obj.bend as P46_O
 import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_H_generated.bend as P46_PRV
 import ../../src/buffer.bend as P47_B
 import ../../src/obj.bend as P47_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_all_generated.bend as P47_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_size_f_F_elem_elem_f_B_ragged_generated.bend as P47_PRV
 import ../../src/buffer.bend as P48_B
 import ../../src/obj.bend as P48_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_default_generated.bend as P48_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_all_generated.bend as P48_PRV
 import ../../src/buffer.bend as P49_B
 import ../../src/obj.bend as P49_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend as P49_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_default_generated.bend as P49_PRV
 import ../../src/buffer.bend as P50_B
 import ../../src/obj.bend as P50_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n2_generated.bend as P50_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend as P50_PRV
 import ../../src/buffer.bend as P51_B
 import ../../src/obj.bend as P51_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_C_n1_generated.bend as P51_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n2_generated.bend as P51_PRV
 import ../../src/buffer.bend as P52_B
 import ../../src/obj.bend as P52_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n1_generated.bend as P52_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_C_n1_generated.bend as P52_PRV
 import ../../src/buffer.bend as P53_B
 import ../../src/obj.bend as P53_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n2_generated.bend as P53_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n1_generated.bend as P53_PRV
 import ../../src/buffer.bend as P54_B
 import ../../src/obj.bend as P54_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n1_generated.bend as P54_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_D_n2_generated.bend as P54_PRV
 import ../../src/buffer.bend as P55_B
 import ../../src/obj.bend as P55_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n2_generated.bend as P55_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n1_generated.bend as P55_PRV
 import ../../src/buffer.bend as P56_B
 import ../../src/obj.bend as P56_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n1_generated.bend as P56_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_E_n2_generated.bend as P56_PRV
 import ../../src/buffer.bend as P57_B
 import ../../src/obj.bend as P57_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n2_generated.bend as P57_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n1_generated.bend as P57_PRV
 import ../../src/buffer.bend as P58_B
 import ../../src/obj.bend as P58_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n1_generated.bend as P58_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_F_n2_generated.bend as P58_PRV
 import ../../src/buffer.bend as P59_B
 import ../../src/obj.bend as P59_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n2_generated.bend as P59_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n1_generated.bend as P59_PRV
 import ../../src/buffer.bend as P60_B
 import ../../src/obj.bend as P60_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n1_generated.bend as P60_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n2_generated.bend as P60_PRV
 import ../../src/buffer.bend as P61_B
 import ../../src/obj.bend as P61_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n2_generated.bend as P61_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n1_generated.bend as P61_PRV
 import ../../src/buffer.bend as P62_B
 import ../../src/obj.bend as P62_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_marked_generated.bend as P62_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n2_generated.bend as P62_PRV
 import ../../src/buffer.bend as P63_B
 import ../../src/obj.bend as P63_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_default_generated.bend as P63_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_fixed_generated.bend as P63_PRV
 import ../../src/buffer.bend as P64_B
 import ../../src/obj.bend as P64_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend as P64_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_marked_generated.bend as P64_PRV
 import ../../src/buffer.bend as P65_B
 import ../../src/obj.bend as P65_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend as P65_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_wide_generated.bend as P65_PRV
 import ../../src/buffer.bend as P66_B
 import ../../src/obj.bend as P66_O
-import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_C_n1_generated.bend as P66_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_default_generated.bend as P66_PRV
 import ../../src/buffer.bend as P67_B
 import ../../src/obj.bend as P67_O
-import ../obj/decode_window_library_generated.bend as P67_DWL
-import ../slop/offsets/ProgressiveComplexTestStruct_generated.bend as P67_PRV
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend as P67_PRV
+import ../../src/buffer.bend as P68_B
+import ../../src/obj.bend as P68_O
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend as P68_PRV
+import ../../src/buffer.bend as P69_B
+import ../../src/obj.bend as P69_O
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_C_n1_generated.bend as P69_PRV
+import ../../src/buffer.bend as P70_B
+import ../../src/obj.bend as P70_O
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_fixed_generated.bend as P70_PRV
+import ../../src/buffer.bend as P71_B
+import ../../src/obj.bend as P71_O
+import ../slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_wide_generated.bend as P71_PRV
+import ../../src/buffer.bend as P72_B
+import ../../src/obj.bend as P72_O
+import ../obj/decode_window_library_generated.bend as P72_DWL
+import ../slop/offsets/ProgressiveComplexTestStruct_generated.bend as P72_PRV
 
 # GENERATED by object_api_facade_proofs (codegen). Do not edit.
 # ProgressiveComplexTestStruct: its decode_ssz laws in the object API's terms, each discharged by its proving law.
@@ -426,66 +441,81 @@ def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_d
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_bad_order_f_H() -> {P46_PRV.some1(Pair.snd(P46_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P46_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7424), 7, 256), 30}, 30))) == False{} : Bool}:
   P46_PRV.ProgressiveComplexTestStruct_decode_vlit_bad_order_f_H()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_all() -> {P47_PRV.some1(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 10240), 4, 11264), 5, 12288), 6, 12544), 7, 50331648), 11, 4), 12, 1024), 13, 589824), 14, 589824), 15, 65536), 63}, 63))) == True{} : Bool}:
-  P47_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_all()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_bad_size_f_F_elem_elem_f_B_ragged() -> {P47_PRV.some1(Pair.snd(P47_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P47_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 12288), 6, 12288), 7, 262400), 8, 262144), 10, 7), 48}, 48))) == False{} : Bool}:
+  P47_PRV.ProgressiveComplexTestStruct_decode_vlit_bad_size_f_F_elem_elem_f_B_ragged()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_default() -> {P48_PRV.some1(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == True{} : Bool}:
-  P48_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_default()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_all() -> {P48_PRV.some1(Pair.snd(P48_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P48_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 10240), 4, 11264), 5, 12288), 6, 12544), 7, 50331648), 11, 4), 12, 1024), 13, 589824), 14, 589824), 15, 65536), 63}, 63))) == True{} : Bool}:
+  P48_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_all()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n1() -> {P49_PRV.some1(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))) == True{} : Bool}:
-  P49_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_default() -> {P49_PRV.some1(Pair.snd(P49_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P49_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == True{} : Bool}:
+  P49_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_default()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n2() -> {P50_PRV.some1(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))) == True{} : Bool}:
-  P50_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n1() -> {P50_PRV.some1(Pair.snd(P50_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P50_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))) == True{} : Bool}:
+  P50_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_C_n1() -> {P51_PRV.some1(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))) == True{} : Bool}:
-  P51_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_C_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n2() -> {P51_PRV.some1(Pair.snd(P51_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P51_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))) == True{} : Bool}:
+  P51_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_B_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n1() -> {P52_PRV.some1(Pair.snd(P52_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P52_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 9728), 4, 9728), 5, 9728), 6, 9728), 7, 256), 38}, 38))) == True{} : Bool}:
-  P52_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_C_n1() -> {P52_PRV.some1(Pair.snd(P52_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P52_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))) == True{} : Bool}:
+  P52_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_C_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n2() -> {P53_PRV.some1(Pair.snd(P53_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P53_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 11776), 4, 11776), 5, 11776), 6, 11776), 7, 256), 46}, 46))) == True{} : Bool}:
-  P53_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n1() -> {P53_PRV.some1(Pair.snd(P53_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P53_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 9728), 4, 9728), 5, 9728), 6, 9728), 7, 256), 38}, 38))) == True{} : Bool}:
+  P53_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n1() -> {P54_PRV.some1(Pair.snd(P54_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P54_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 8704), 5, 8704), 6, 8704), 7, 256), 34}, 34))) == True{} : Bool}:
-  P54_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n2() -> {P54_PRV.some1(Pair.snd(P54_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P54_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 11776), 4, 11776), 5, 11776), 6, 11776), 7, 256), 46}, 46))) == True{} : Bool}:
+  P54_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_D_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n2() -> {P55_PRV.some1(Pair.snd(P55_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P55_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 9728), 5, 9728), 6, 9728), 7, 256), 38}, 38))) == True{} : Bool}:
-  P55_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n1() -> {P55_PRV.some1(Pair.snd(P55_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P55_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 8704), 5, 8704), 6, 8704), 7, 256), 34}, 34))) == True{} : Bool}:
+  P55_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n1() -> {P56_PRV.some1(Pair.snd(P56_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P56_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 8704), 6, 8704), 7, 262400), 34}, 34))) == True{} : Bool}:
-  P56_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n2() -> {P56_PRV.some1(Pair.snd(P56_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P56_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 9728), 5, 9728), 6, 9728), 7, 256), 38}, 38))) == True{} : Bool}:
+  P56_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_E_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n2() -> {P57_PRV.some1(Pair.snd(P57_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P57_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 9728), 6, 9728), 7, 524544), 8, 524288), 38}, 38))) == True{} : Bool}:
-  P57_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n1() -> {P57_PRV.some1(Pair.snd(P57_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P57_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 8704), 6, 8704), 7, 262400), 34}, 34))) == True{} : Bool}:
+  P57_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n1() -> {P58_PRV.some1(Pair.snd(P58_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P58_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7936), 7, 256), 31}, 31))) == True{} : Bool}:
-  P58_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n2() -> {P58_PRV.some1(Pair.snd(P58_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P58_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 9728), 6, 9728), 7, 524544), 8, 524288), 38}, 38))) == True{} : Bool}:
+  P58_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_F_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n2() -> {P59_PRV.some1(Pair.snd(P59_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P59_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 8192), 7, 256), 32}, 32))) == True{} : Bool}:
-  P59_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n1() -> {P59_PRV.some1(Pair.snd(P59_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P59_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7936), 7, 256), 31}, 31))) == True{} : Bool}:
+  P59_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n1() -> {P60_PRV.some1(Pair.snd(P60_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P60_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 262400), 8, 150994944), 9, 150994944), 10, 16777216), 44}, 44))) == True{} : Bool}:
-  P60_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n2() -> {P60_PRV.some1(Pair.snd(P60_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P60_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 8192), 7, 256), 32}, 32))) == True{} : Bool}:
+  P60_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_G_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n2() -> {P61_PRV.some1(Pair.snd(P61_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P61_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 524544), 8, 1179648), 9, 150994944), 10, 150994944), 11, 16777216), 12, 2304), 13, 2304), 14, 256), 58}, 58))) == True{} : Bool}:
-  P61_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n1() -> {P61_PRV.some1(Pair.snd(P61_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P61_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 262400), 8, 150994944), 9, 150994944), 10, 16777216), 44}, 44))) == True{} : Bool}:
+  P61_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n1()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_marked() -> {P62_PRV.some1(Pair.snd(P62_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P62_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 12800), 4, 14848), 5, 16896), 6, 17408), 8, 262912), 10, 262144), 12, 262144), 13, 262144), 14, 524288), 15, 524288), 17, 8), 18, 18), 19, 2304), 20, 2304), 21, 150995200), 22, 150994944), 23, 16777216), 96}, 96))) == True{} : Bool}:
-  P62_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_marked()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n2() -> {P62_PRV.some1(Pair.snd(P62_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P62_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 524544), 8, 1179648), 9, 150994944), 10, 150994944), 11, 16777216), 12, 2304), 13, 2304), 14, 256), 58}, 58))) == True{} : Bool}:
+  P62_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_f_H_n2()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_default() -> {(Pair.snd(P63_B.Buf, U32, P63_B.size(P63_PRV.rt(Pair.snd(P63_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P63_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))))), P63_PRV.rw8(P63_PRV.rt(Pair.snd(P63_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P63_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))), 0)) == (30, (7424, (7424, (7680, (7680, (7680, (7680, (7680, 256)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
-  P63_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_default()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_fixed() -> {P63_PRV.some1(Pair.snd(P63_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P63_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7428), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == True{} : Bool}:
+  P63_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_fixed()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n1() -> {(Pair.snd(P64_B.Buf, U32, P64_B.size(P64_PRV.rt(Pair.snd(P64_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P64_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))))), P64_PRV.rw8(P64_PRV.rt(Pair.snd(P64_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P64_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))), 0)) == (32, (7424, (7936, (8192, (8192, (8192, (8192, (8192, 16777216)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
-  P64_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_marked() -> {P64_PRV.some1(Pair.snd(P64_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P64_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 12800), 4, 14848), 5, 16896), 6, 17408), 8, 262912), 10, 262144), 12, 262144), 13, 262144), 14, 524288), 15, 524288), 17, 8), 18, 18), 19, 2304), 20, 2304), 21, 150995200), 22, 150994944), 23, 16777216), 96}, 96))) == True{} : Bool}:
+  P64_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_marked()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n2() -> {(Pair.snd(P65_B.Buf, U32, P65_B.size(P65_PRV.rt(Pair.snd(P65_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P65_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))))), P65_PRV.rw9(P65_PRV.rt(Pair.snd(P65_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P65_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))), 0)) == (34, (7424, (8448, (8704, (8704, (8704, (8704, (8704, (0, 256))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))}:
-  P65_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n2()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_ok_wide() -> {P65_PRV.some1(Pair.snd(P65_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P65_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 7428), 1, 8448), 2, 8704), 3, 12800), 4, 14848), 5, 28160), 6, 29184), 7, 1024), 8, 275712), 9, 458752), 10, 524288), 11, 589824), 12, 262144), 13, 720896), 14, 524288), 15, 1966080), 16, 524288), 17, 983040), 18, 786432), 19, 7), 20, 117443840), 22, 8), 23, 15), 24, 458766), 25, 251658240), 26, 1792), 27, 262144), 28, 524288), 29, 1179648), 30, 152109056), 31, 150994944), 32, 16777216), 33, 2322), 34, 2304), 35, 256), 142}, 142))) == True{} : Bool}:
+  P65_PRV.ProgressiveComplexTestStruct_decode_vlit_ok_wide()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_C_n1() -> {(Pair.snd(P66_B.Buf, U32, P66_B.size(P66_PRV.rt(Pair.snd(P66_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P66_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))))), P66_PRV.rw8(P66_PRV.rt(Pair.snd(P66_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P66_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))), 0)) == (30, (7424, (7424, (7680, (7680, (7680, (7680, (7680, 768)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
-  P66_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_C_n1()
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_default() -> {(Pair.snd(P66_B.Buf, U32, P66_B.size(P66_PRV.rt(Pair.snd(P66_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P66_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))))), P66_PRV.rw8(P66_PRV.rt(Pair.snd(P66_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P66_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))), 0)) == (30, (7424, (7424, (7680, (7680, (7680, (7680, (7680, 256)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
+  P66_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_default()
 
-def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_build(buf: P67_B.Buf, +size: U32, b2: P67_B.Buf, e: {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_ok(buf, 0, size) == (b2, True{}) : P67_B.Buf & Bool}, hwin: {U32.is_le(size, P67_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(buf, size) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_some(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_build(b2, size)) : P67_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
-  P67_PRV.ProgressiveComplexTestStruct_decode_build(buf, size, b2, e, hwin)
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n1() -> {(Pair.snd(P67_B.Buf, U32, P67_B.size(P67_PRV.rt(Pair.snd(P67_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P67_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))))), P67_PRV.rw8(P67_PRV.rt(Pair.snd(P67_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P67_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7936), 2, 8192), 3, 8192), 4, 8192), 5, 8192), 6, 8192), 7, 16777216), 32}, 32))), 0)) == (32, (7424, (7936, (8192, (8192, (8192, (8192, (8192, 16777216)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
+  P67_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n1()
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n2() -> {(Pair.snd(P68_B.Buf, U32, P68_B.size(P68_PRV.rt(Pair.snd(P68_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P68_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))))), P68_PRV.rw9(P68_PRV.rt(Pair.snd(P68_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P68_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 8448), 2, 8704), 3, 8704), 4, 8704), 5, 8704), 6, 8704), 8, 256), 34}, 34))), 0)) == (34, (7424, (8448, (8704, (8704, (8704, (8704, (8704, (0, 256))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))}:
+  P68_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_B_n2()
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_f_C_n1() -> {(Pair.snd(P69_B.Buf, U32, P69_B.size(P69_PRV.rt(Pair.snd(P69_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P69_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))))), P69_PRV.rw8(P69_PRV.rt(Pair.snd(P69_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P69_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 768), 30}, 30))), 0)) == (30, (7424, (7424, (7680, (7680, (7680, (7680, (7680, 768)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
+  P69_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_f_C_n1()
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_fixed() -> {P70_PRV.rtc8(P70_PRV.rt(Pair.snd(P70_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P70_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7428), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30)))) == (30, (7428, (7424, (7680, (7680, (7680, (7680, (7680, 256)))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))}:
+  P70_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_fixed()
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vlit_rt_wide() -> {P71_PRV.rtc36(P71_PRV.rt(Pair.snd(P71_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(P71_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 7428), 1, 8448), 2, 8704), 3, 12800), 4, 14848), 5, 28160), 6, 29184), 7, 1024), 8, 275712), 9, 458752), 10, 524288), 11, 589824), 12, 262144), 13, 720896), 14, 524288), 15, 1966080), 16, 524288), 17, 983040), 18, 786432), 19, 7), 20, 117443840), 22, 8), 23, 15), 24, 458766), 25, 251658240), 26, 1792), 27, 262144), 28, 524288), 29, 1179648), 30, 152109056), 31, 150994944), 32, 16777216), 33, 2322), 34, 2304), 35, 256), 142}, 142)))) == (142, (7428, (8448, (8704, (12800, (14848, (28160, (29184, (1024, (275712, (458752, (524288, (589824, (262144, (720896, (524288, (1966080, (524288, (983040, (786432, (7, (117443840, (0, (8, (15, (458766, (251658240, (1792, (262144, (524288, (1179648, (152109056, (150994944, (16777216, (2322, (2304, 256)))))))))))))))))))))))))))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))))))))))))))))))))))))))))}:
+  P71_PRV.ProgressiveComplexTestStruct_decode_vlit_rt_wide()
+
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_build(buf: P72_B.Buf, +size: U32, b2: P72_B.Buf, e: {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_ok(buf, 0, size) == (b2, True{}) : P72_B.Buf & Bool}, hwin: {U32.is_le(size, P72_DWL.bsz(buf)) == True{} : Bool}) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(buf, size) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_some(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_build(b2, size)) : P72_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  P72_PRV.ProgressiveComplexTestStruct_decode_build(buf, size, b2, e, hwin)
 

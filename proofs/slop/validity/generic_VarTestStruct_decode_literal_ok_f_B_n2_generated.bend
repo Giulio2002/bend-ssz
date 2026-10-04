@@ -18,20 +18,6 @@ def rt(m: Maybe<&1, VarTestStruct_d.VarTestStruct>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(VarTestStruct_d.VarTestStruct, O.Encoded, VarTestStruct_e.VarTestStruct_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
 def VarTestStruct_decode_vlit_ok_f_B_n2()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(B.Buf{Array.set(U32, Array.new(U32, 2n, 0), 0, 458752), 11}, 11))) == True{} : Bool}:
   {==}

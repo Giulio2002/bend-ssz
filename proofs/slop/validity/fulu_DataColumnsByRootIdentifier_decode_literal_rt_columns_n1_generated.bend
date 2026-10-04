@@ -80,18 +80,6 @@ def rwc11(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 
 
 def rw11(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))): rwc11(i, B.read32(b, i))
 
-def rwc12(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))):
-  (b, +x) = pair
-  (x, rw11(b, (i + 4 : U32)))
-
-def rw12(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))): rwc12(i, B.read32(b, i))
-
-def rwc13(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))):
-  (b, +x) = pair
-  (x, rw12(b, (i + 4 : U32)))
-
-def rw13(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))): rwc13(i, B.read32(b, i))
-
 def DataColumnsByRootIdentifier_decode_vlit_rt_columns_n1()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 44}, 44))))), rw11(rt(Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 44}, 44))), 0)) == (44, (0, (0, (0, (0, (0, (0, (0, (0, (36, (0, 0))))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))}:
   {==}

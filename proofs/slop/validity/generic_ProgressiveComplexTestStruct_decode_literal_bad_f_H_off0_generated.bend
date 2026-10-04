@@ -18,56 +18,6 @@ def rt(m: Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>
     case Some{v}: O.ser_out(Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, O.Encoded, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
-def rwc4(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32))):
-  (b, +x) = pair
-  (x, rw3(b, (i + 4 : U32)))
-
-def rw4(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32))): rwc4(i, B.read32(b, i))
-
-def rwc5(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32)))):
-  (b, +x) = pair
-  (x, rw4(b, (i + 4 : U32)))
-
-def rw5(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32)))): rwc5(i, B.read32(b, i))
-
-def rwc6(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))):
-  (b, +x) = pair
-  (x, rw5(b, (i + 4 : U32)))
-
-def rw6(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32))))): rwc6(i, B.read32(b, i))
-
-def rwc7(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))):
-  (b, +x) = pair
-  (x, rw6(b, (i + 4 : U32)))
-
-def rw7(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))): rwc7(i, B.read32(b, i))
-
-def rwc8(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))):
-  (b, +x) = pair
-  (x, rw7(b, (i + 4 : U32)))
-
-def rw8(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))): rwc8(i, B.read32(b, i))
-
-def rwc9(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))):
-  (b, +x) = pair
-  (x, rw8(b, (i + 4 : U32)))
-
-def rw9(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))): rwc9(i, B.read32(b, i))
-
 def ProgressiveComplexTestStruct_decode_vlit_bad_f_H_off0()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 8, 150994944), 9, 150994944), 10, 16777216), 44}, 44))) == False{} : Bool}:
   {==}

@@ -110,6 +110,9 @@ def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serializ
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vcoll_bl32_set_write() -> {(Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 0)), (Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 1)), Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   P3_PRV.ExecutionPayloadHeader_serialize_vcoll_bl32_set_write()
 
+def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vcoll_bl32_append_clear() -> {(Pair.snd(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  P3_PRV.ExecutionPayloadHeader_serialize_vcoll_bl32_append_clear()
+
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vreject_default_valid() -> {Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, Bool, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_valid(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default())) == True{} : Bool}:
   P4_PRV.ExecutionPayloadHeader_serialize_vreject_default_valid()
 
@@ -124,6 +127,12 @@ def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serializ
 
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vreject_bx_valid() -> {FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_valid(P4_O.BNone{}) == (P4_O.BNone{}, False{}) : P4_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & Bool}:
   P4_PRV.ExecutionPayloadHeader_serialize_vreject_bx_valid()
+
+def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vreject_bx_present_default() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, Bool, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_valid(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default()))) == True{} : Bool}:
+  P4_PRV.ExecutionPayloadHeader_serialize_vreject_bx_present_default()
+
+def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vreject_bx_present_logs_bloom() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, Bool, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_valid(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_bx_wrap(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_set_logs_bloom(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0_default(), P4_O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1_default(), FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2_default()}))) == False{} : Bool}:
+  P4_PRV.ExecutionPayloadHeader_serialize_vreject_bx_present_logs_bloom()
 
 def FuluExecutionPayloadHeader__serialize_valid__ExecutionPayloadHeader_serialize_vpoison_bx_absent() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, U32, Pair.snd(Array<U32>, P4_O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader> & U32, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putk(Array.new(U32, 1n, 0), 0, P4_O.BNone{}))) == 4294967295 : U32}:
   P4_PRV.ExecutionPayloadHeader_serialize_vpoison_bx_absent()

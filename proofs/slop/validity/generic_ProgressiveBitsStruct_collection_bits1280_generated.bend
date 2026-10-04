@@ -22,3 +22,7 @@ def ProgressiveBitsStruct_serialize_vcoll_bits1280_full()
 def ProgressiveBitsStruct_serialize_vcoll_bits1280_set_edge()
     -> {(Pair.snd(O.Bits, Bool, bitlist_1280_d.bits1280_set(O.bits_zeros(40), 40, True{})), (Pair.snd(O.Bits, Bool, bitlist_1280_d.bits1280_set(O.bits_zeros(40), 39, True{})), (Pair.snd(O.Bits, Maybe<&1, Bool>, bitlist_1280_d.bits1280_get(Pair.fst(O.Bits, Bool, bitlist_1280_d.bits1280_set(O.bits_zeros(40), 39, True{})), 39)), Pair.snd(O.Bits, Maybe<&1, Bool>, bitlist_1280_d.bits1280_get(Pair.fst(O.Bits, Bool, bitlist_1280_d.bits1280_set(O.bits_zeros(40), 39, True{})), 38))))) == (False{}, (True{}, (Some{True{}}, Some{False{}}))) : Bool & (Bool & (Maybe<&1, Bool> & Maybe<&1, Bool>))}:
   {==}
+
+def ProgressiveBitsStruct_serialize_vcoll_bits1280_append_clear()
+    -> {(Pair.snd(O.Bits, Bool, bitlist_1280_d.bits1280_append(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{})), (Pair.snd(O.Bits, U32, O.bits_word(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{}), 1)), (Pair.snd(O.Bits, U32, O.bits_word(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{}), 0)), Pair.snd(O.Bits, U32, O.bits_sizek(ap(O.Bits{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, 3735928559), 31}, True{})))))) == (True{}, (0, (4294967295, 5))) : Bool & (U32 & (U32 & U32))}:
+  {==}

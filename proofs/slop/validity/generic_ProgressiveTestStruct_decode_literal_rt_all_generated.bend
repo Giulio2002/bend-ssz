@@ -68,30 +68,6 @@ def rwc9(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 &
 
 def rw9(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))): rwc9(i, B.read32(b, i))
 
-def rwc10(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))):
-  (b, +x) = pair
-  (x, rw9(b, (i + 4 : U32)))
-
-def rw10(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))): rwc10(i, B.read32(b, i))
-
-def rwc11(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))):
-  (b, +x) = pair
-  (x, rw10(b, (i + 4 : U32)))
-
-def rw11(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))): rwc11(i, B.read32(b, i))
-
-def rwc12(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))):
-  (b, +x) = pair
-  (x, rw11(b, (i + 4 : U32)))
-
-def rw12(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32))))))))))): rwc12(i, B.read32(b, i))
-
-def rwc13(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))):
-  (b, +x) = pair
-  (x, rw12(b, (i + 4 : U32)))
-
-def rw13(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))))): rwc13(i, B.read32(b, i))
-
 def ProgressiveTestStruct_decode_vlit_rt_all()
     -> {(Pair.snd(B.Buf, U32, B.size(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))))), rw9(rt(Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 4n, 0), 0, 16), 1, 17), 2, 25), 3, 29), 7, 1024), 33}, 33))), 0)) == (33, (16, (17, (25, (29, (0, (0, (0, (1024, 0))))))))) : U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32 & (U32)))))))))}:
   {==}

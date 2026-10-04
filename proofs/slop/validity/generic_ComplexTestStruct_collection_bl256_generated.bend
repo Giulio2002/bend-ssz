@@ -30,3 +30,7 @@ def ComplexTestStruct_serialize_vcoll_bl256_set_edge()
 def ComplexTestStruct_serialize_vcoll_bl256_set_write()
     -> {(Pair.snd(O.Words, Maybe<&1, U32>, bytelist_256_d.bl256_get(Pair.fst(O.Words, Bool, bytelist_256_d.bl256_set(O.words_new(3), 1, 255)), 0)), (Pair.snd(O.Words, Maybe<&1, U32>, bytelist_256_d.bl256_get(Pair.fst(O.Words, Bool, bytelist_256_d.bl256_set(O.words_new(3), 1, 255)), 1)), Pair.snd(O.Words, Maybe<&1, U32>, bytelist_256_d.bl256_get(Pair.fst(O.Words, Bool, bytelist_256_d.bl256_set(O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   {==}
+
+def ComplexTestStruct_serialize_vcoll_bl256_append_clear()
+    -> {(Pair.snd(O.Words, Bool, bytelist_256_d.bl256_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, bytelist_256_d.bl256_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, bytelist_256_d.bl256_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  {==}

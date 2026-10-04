@@ -17,26 +17,6 @@ def rt(m: Maybe<&1, O.Words>) -> B.Buf:
     case Some{v}: O.ser_out(Pair.snd(O.Words, O.Encoded, vec_uint32_4_e.vec_uint32_4_serialize(v)))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
-def rwc3(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32)):
-  (b, +x) = pair
-  (x, rw2(b, (i + 4 : U32)))
-
-def rw3(b: B.Buf, +i: U32) -> U32 & (U32 & (U32)): rwc3(i, B.read32(b, i))
-
-def rwc4(+i: U32, pair: B.Buf & U32) -> U32 & (U32 & (U32 & (U32))):
-  (b, +x) = pair
-  (x, rw3(b, (i + 4 : U32)))
-
-def rw4(b: B.Buf, +i: U32) -> U32 & (U32 & (U32 & (U32))): rwc4(i, B.read32(b, i))
-
 def vec_uint32_4_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_4_r.vec_uint32_4_decode(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == True{} : Bool}:
   {==}

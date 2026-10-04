@@ -24,6 +24,12 @@ def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vrefuse_poison
 def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vrefuse_withdrawals_limit() -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, O.Encoded, FuluExecutionPayload_e.ExecutionPayload_serialize(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_default(), FuluExecutionPayload_d.ExecutionPayload_g1_set_withdrawals(FuluExecutionPayload_d.ExecutionPayload_g1_default(), Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{Fulu_list_Withdrawal_16_d.l16_Withdrawal_fill(5n), 17}), FuluExecutionPayload_d.ExecutionPayload_g2_default()})) == O.refused() : O.Encoded}:
   PRV.ExecutionPayload_serialize_vrefuse_withdrawals_limit()
 
+def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_present_default() -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload_default()))) == True{} : Bool}:
+  PRV.ExecutionPayload_serialize_vreject_bx_present_default()
+
+def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_present_logs_bloom() -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_set_logs_bloom(FuluExecutionPayload_d.ExecutionPayload_g0_default(), O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayload_d.ExecutionPayload_g1_default(), FuluExecutionPayload_d.ExecutionPayload_g2_default()}))) == False{} : Bool}:
+  PRV.ExecutionPayload_serialize_vreject_bx_present_logs_bloom()
+
 def ExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_size() -> {FuluExecutionPayload_e.ExecutionPayload_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32}:
   PRV.ExecutionPayload_serialize_vreject_bx_size()
 

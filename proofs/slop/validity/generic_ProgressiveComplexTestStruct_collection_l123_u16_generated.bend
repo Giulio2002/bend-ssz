@@ -30,3 +30,7 @@ def ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_set_edge()
 def ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_set_write()
     -> {(Pair.snd(O.Words, Maybe<&1, U32>, list_uint16_123_d.l123_u16_get(Pair.fst(O.Words, Bool, list_uint16_123_d.l123_u16_set(O.words_new(6), 1, 65535)), 0)), (Pair.snd(O.Words, Maybe<&1, U32>, list_uint16_123_d.l123_u16_get(Pair.fst(O.Words, Bool, list_uint16_123_d.l123_u16_set(O.words_new(6), 1, 65535)), 1)), Pair.snd(O.Words, Maybe<&1, U32>, list_uint16_123_d.l123_u16_get(Pair.fst(O.Words, Bool, list_uint16_123_d.l123_u16_set(O.words_new(6), 1, 65535)), 2)))) == (Some{0}, (Some{65535}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   {==}
+
+def ProgressiveComplexTestStruct_serialize_vcoll_l123_u16_append_clear()
+    -> {(Pair.snd(O.Words, Bool, list_uint16_123_d.l123_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), (Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_123_d.l123_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 1)), Pair.snd(O.Words, U32, O.words_word(Pair.fst(O.Words, Bool, list_uint16_123_d.l123_u16_append(O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 2}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  {==}

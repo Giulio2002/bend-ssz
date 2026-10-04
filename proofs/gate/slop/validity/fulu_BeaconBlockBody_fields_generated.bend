@@ -76,6 +76,12 @@ def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vreject_bls_to_e
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vreject_bls_to_execution_changes_limit() -> {Pair.snd(FuluBeaconBlockBody_d.BeaconBlockBody, Bool, FuluBeaconBlockBody_e.BeaconBlockBody_valid(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), FuluBeaconBlockBody_d.BeaconBlockBody_g1_set_bls_to_execution_changes(FuluBeaconBlockBody_d.BeaconBlockBody_g1_default(), Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_fill(5n), 17})})) == False{} : Bool}:
   PRV.BeaconBlockBody_serialize_vreject_bls_to_execution_changes_limit()
 
+def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vreject_bx_present_default() -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody_default()))) == True{} : Bool}:
+  PRV.BeaconBlockBody_serialize_vreject_bx_present_default()
+
+def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vreject_bx_present_proposer_slashings() -> {Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, Bool, FuluBeaconBlockBody_e.BeaconBlockBody_bx_valid(FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()}))) == False{} : Bool}:
+  PRV.BeaconBlockBody_serialize_vreject_bx_present_proposer_slashings()
+
 def BeaconBlockBody__serialize_valid__BeaconBlockBody_serialize_vreject_bx_size() -> {FuluBeaconBlockBody_e.BeaconBlockBody_bx_size(O.BNone{}) == (O.BNone{}, 0) : O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32}:
   PRV.BeaconBlockBody_serialize_vreject_bx_size()
 

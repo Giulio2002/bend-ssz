@@ -1992,6 +1992,10 @@
     "slop/validity/fulu_Attestation_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_Attestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
     "slop/validity/fulu_Attestation_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_Attestation_decode_literal_rt_wide_generated.bend",
     "slop/offsets/Attestation_generated.bend"
    ]
   },
@@ -2029,6 +2033,10 @@
     "slop/validity/fulu_AggregateAndProof_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_AggregateAndProof_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_AggregateAndProof_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_AggregateAndProof_decode_literal_rt_wide_generated.bend",
     "slop/offsets/AggregateAndProof_generated.bend"
    ]
   },
@@ -2069,6 +2077,8 @@
     "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_SignedAggregateAndProof_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_SignedAggregateAndProof_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/SignedAggregateAndProof_generated.bend"
    ]
   },
@@ -2113,6 +2123,10 @@
     "slop/validity/fulu_PendingAttestation_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_PendingAttestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
     "slop/validity/fulu_PendingAttestation_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_PendingAttestation_decode_literal_rt_wide_generated.bend",
     "slop/offsets/PendingAttestation_generated.bend"
    ]
   },
@@ -2160,7 +2174,11 @@
     "slop/validity/fulu_IndexedAttestation_decode_literal_ok_attesting_indices_n1_generated.bend",
     "slop/validity/fulu_IndexedAttestation_decode_literal_ok_attesting_indices_n2_generated.bend",
     "slop/validity/fulu_IndexedAttestation_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_fixed_generated.bend",
     "slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_IndexedAttestation_decode_literal_rt_wide_generated.bend",
     "slop/offsets/IndexedAttestation_generated.bend"
    ]
   },
@@ -2217,6 +2235,10 @@
     "slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_1_marked_generated.bend",
     "slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend",
     "slop/validity/fulu_AttesterSlashing_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_AttesterSlashing_decode_literal_rt_wide_generated.bend",
     "slop/offsets/AttesterSlashing_generated.bend"
    ]
   },
@@ -3174,10 +3196,12 @@
     "slop/validity/fulu_ExecutionRequests_decode_literal_ok_deposits_n1_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_ok_deposits_n2_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_ok_wide_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_ok_withdrawals_n1_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_ok_withdrawals_n2_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_rt_consolidations_n1_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_rt_default_generated.bend",
+    "slop/validity/fulu_ExecutionRequests_decode_literal_rt_wide_generated.bend",
     "slop/validity/fulu_ExecutionRequests_decode_literal_rt_withdrawals_n1_generated.bend",
     "slop/offsets/ExecutionRequests_generated.bend"
    ]
@@ -3326,6 +3350,10 @@
     "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_default_generated.bend",
     "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_extra_data_n1_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ExecutionPayloadHeader_generated.bend"
    ]
   },
@@ -3508,11 +3536,15 @@
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_all_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_default_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_extra_data_n1_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_fixed_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_marked_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n1_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_transactions_n2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_ok_wide_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_withdrawals_n1_generated.bend",
     "slop/validity/fulu_ExecutionPayload_decode_literal_ok_withdrawals_n2_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_ExecutionPayload_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ExecutionPayload_generated.bend"
    ]
   },
@@ -3727,6 +3759,10 @@
     "slop/validity/fulu_LightClientHeader_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_LightClientHeader_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_LightClientHeader_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_ok_wide_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/fulu_LightClientHeader_decode_literal_rt_wide_generated.bend",
     "slop/offsets/LightClientHeader_generated.bend"
    ]
   },
@@ -3769,6 +3805,8 @@
     "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/LightClientOptimisticUpdate_generated.bend"
    ]
   },
@@ -4081,6 +4119,10 @@
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_208_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_415_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_proposer_slashings_ragged_418_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_size_attester_slashings_elem_attestation_1_attesting_indices_ragged_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_size_blob_kzg_commitments_ragged_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_size_bls_to_execution_changes_ragged_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_size_execution_requests_deposits_ragged_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_111_generated.bend",
@@ -4097,10 +4139,12 @@
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_default_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_execution_payload_marked_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_execution_requests_marked_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_fixed_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_proposer_slashings_n1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_proposer_slashings_n2_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_voluntary_exits_n1_generated.bend",
     "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_voluntary_exits_n2_generated.bend",
+    "slop/validity/fulu_BeaconBlockBody_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/BeaconBlockBody_generated.bend"
    ]
   },
@@ -4202,7 +4246,10 @@
     "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_voluntary_exits_generated.bend",
     "slop/validity/fulu_BeaconBlock_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_BeaconBlock_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_bad_size_body_proposer_slashings_ragged_generated.bend",
     "slop/validity/fulu_BeaconBlock_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_BeaconBlock_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/BeaconBlock_generated.bend"
    ]
   },
@@ -4246,7 +4293,10 @@
     "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_off_plus_generated.bend",
     "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_off_minus_generated.bend",
     "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_off_plus_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_size_message_body_proposer_slashings_ragged_generated.bend",
     "slop/validity/fulu_SignedBeaconBlock_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/fulu_SignedBeaconBlock_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/SignedBeaconBlock_generated.bend"
    ]
   },
@@ -4611,11 +4661,15 @@
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_columns_n1_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_columns_n2_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_fixed_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_marked_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_wide_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_columns_n1_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_columns_n2_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_default_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_fixed_generated.bend",
     "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_marked_generated.bend",
+    "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_rt_wide_generated.bend",
     "slop/offsets/DataColumnsByRootIdentifier_generated.bend"
    ]
   },
@@ -4729,10 +4783,12 @@
     "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_order_kzg_commitments_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_order_kzg_proofs_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_default_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_fixed_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_commitments_n1_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_commitments_n2_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_proofs_n1_generated.bend",
     "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_kzg_proofs_n2_generated.bend",
+    "slop/validity/fulu_DataColumnSidecar_decode_literal_rt_fixed_generated.bend",
     "slop/offsets/DataColumnSidecar_generated.bend"
    ]
   },
@@ -4809,8 +4865,10 @@
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_bad_off_plus_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_ok_default_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_rt_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ProgressiveSingleListContainerTestStruct_generated.bend"
    ]
   },
@@ -4897,6 +4955,7 @@
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_F_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_G_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_order_f_H_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_size_f_F_elem_elem_f_B_ragged_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_all_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_default_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend",
@@ -4912,11 +4971,15 @@
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_G_n2_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n1_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_H_n2_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_fixed_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend",
     "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ProgressiveComplexTestStruct_generated.bend"
    ]
   },
@@ -4966,13 +5029,17 @@
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_B_n1_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_B_n2_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_fixed_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_all_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_B_n1_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_B_n2_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_f_C_n1_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_fixed_generated.bend",
     "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_marked_generated.bend",
+    "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ProgressiveVarTestStruct_generated.bend"
    ]
   },
@@ -8377,6 +8444,7 @@
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_B_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_C_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_order_f_D_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_size_f_D_elem_elem_f_B_ragged_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_all_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_default_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_A_n1_generated.bend",
@@ -8388,6 +8456,7 @@
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n1_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_all_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_A_n1_generated.bend",
@@ -8399,6 +8468,7 @@
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n1_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_f_D_n2_generated.bend",
     "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_marked_generated.bend",
+    "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ProgressiveTestStruct_generated.bend"
    ]
   },
@@ -8449,10 +8519,14 @@
     "slop/validity/generic_BitsStruct_decode_literal_ok_default_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_ok_f_A_n1_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_rt_all_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_rt_f_A_n1_generated.bend",
     "slop/validity/generic_BitsStruct_decode_literal_rt_f_D_n1_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/generic_BitsStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/BitsStruct_generated.bend"
    ]
   },
@@ -8542,6 +8616,10 @@
     "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_I_n1_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_K_n1_generated.bend",
     "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_f_L_n1_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_wide_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ProgressiveBitsStruct_generated.bend"
    ]
   },
@@ -8655,9 +8733,13 @@
     "slop/validity/generic_VarTestStruct_decode_literal_ok_default_generated.bend",
     "slop/validity/generic_VarTestStruct_decode_literal_ok_f_B_n1_generated.bend",
     "slop/validity/generic_VarTestStruct_decode_literal_ok_f_B_n2_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_ok_fixed_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n1_generated.bend",
     "slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_rt_fixed_generated.bend",
+    "slop/validity/generic_VarTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/VarTestStruct_generated.bend"
    ]
   },
@@ -8726,13 +8808,17 @@
     "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_B_n1_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_B_n2_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_ok_f_D_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_fixed_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_ok_marked_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_ok_wide_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_all_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_default_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_B_n1_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_B_n2_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_f_D_n1_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_fixed_generated.bend",
     "slop/validity/generic_ComplexTestStruct_decode_literal_rt_marked_generated.bend",
+    "slop/validity/generic_ComplexTestStruct_decode_literal_rt_wide_generated.bend",
     "slop/offsets/ComplexTestStruct_generated.bend"
    ]
   },

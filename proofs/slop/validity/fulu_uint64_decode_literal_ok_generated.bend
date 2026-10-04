@@ -17,14 +17,6 @@ def rt(m: Maybe<&1, O.U64>) -> B.Buf:
     case Some{v}: O.ser_out(uint64_e.uint64_serialize(v))
     case None{}: B.empty()
 
-def rw1(b: B.Buf, +i: U32) -> U32: Pair.snd(B.Buf, U32, B.read32(b, i))
-
-def rwc2(+i: U32, pair: B.Buf & U32) -> U32 & (U32):
-  (b, +x) = pair
-  (x, rw1(b, (i + 4 : U32)))
-
-def rw2(b: B.Buf, +i: U32) -> U32 & (U32): rwc2(i, B.read32(b, i))
-
 def uint64_decode_vlit_ok_default()
     -> {some1(Pair.snd(B.Buf, Maybe<&1, O.U64>, uint64_r.uint64_decode(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == True{} : Bool}:
   {==}

@@ -60,6 +60,14 @@ def ExecutionPayload_serialize_vreject_bx_valid()
     -> {FuluExecutionPayload_e.ExecutionPayload_bx_valid(O.BNone{}) == (O.BNone{}, False{}) : O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & Bool}:
   {==}
 
+def ExecutionPayload_serialize_vreject_bx_present_default()
+    -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload_default()))) == True{} : Bool}:
+  {==}
+
+def ExecutionPayload_serialize_vreject_bx_present_logs_bloom()
+    -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_set_logs_bloom(FuluExecutionPayload_d.ExecutionPayload_g0_default(), O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayload_d.ExecutionPayload_g1_default(), FuluExecutionPayload_d.ExecutionPayload_g2_default()}))) == False{} : Bool}:
+  {==}
+
 def ExecutionPayload_serialize_vpoison_bx_absent()
     -> {Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{}))) == 4294967295 : U32}:
   {==}

@@ -133,6 +133,9 @@ def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vcoll_bl32
 def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vcoll_bl32_set_write() -> {(Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 0)), (Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 1)), Pair.snd(P3_O.Words, Maybe<&1, U32>, Fulu_bytelist_32_d.bl32_get(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_set(P3_O.words_new(3), 1, 255)), 2)))) == (Some{0}, (Some{255}, Some{0})) : Maybe<&1, U32> & (Maybe<&1, U32> & Maybe<&1, U32>)}:
   P3_PRV.ExecutionPayload_serialize_vcoll_bl32_set_write()
 
+def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vcoll_bl32_append_clear() -> {(Pair.snd(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), (Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 1)), Pair.snd(P3_O.Words, U32, P3_O.words_word(Pair.fst(P3_O.Words, Bool, Fulu_bytelist_32_d.bl32_append(P3_O.Words{Array.set(U32, Array.new(U32, 2n, 0), 1, 3735928559), 4}, 1)), 0)))) == (True{}, (1, 0)) : Bool & (U32 & U32)}:
+  P3_PRV.ExecutionPayload_serialize_vcoll_bl32_append_clear()
+
 def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_default_valid() -> {Pair.snd(FuluExecutionPayload_d.ExecutionPayload, Bool, FuluExecutionPayload_e.ExecutionPayload_valid(FuluExecutionPayload_d.ExecutionPayload_default())) == True{} : Bool}:
   P4_PRV.ExecutionPayload_serialize_vreject_default_valid()
 
@@ -171,6 +174,12 @@ def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx
 
 def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_valid() -> {FuluExecutionPayload_e.ExecutionPayload_bx_valid(P4_O.BNone{}) == (P4_O.BNone{}, False{}) : P4_O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & Bool}:
   P4_PRV.ExecutionPayload_serialize_vreject_bx_valid()
+
+def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_present_default() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload_default()))) == True{} : Bool}:
+  P4_PRV.ExecutionPayload_serialize_vreject_bx_present_default()
+
+def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vreject_bx_present_logs_bloom() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, Bool, FuluExecutionPayload_e.ExecutionPayload_bx_valid(FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0_set_logs_bloom(FuluExecutionPayload_d.ExecutionPayload_g0_default(), P4_O.Words{Array.new(U32, 0n, 0), 5}), FuluExecutionPayload_d.ExecutionPayload_g1_default(), FuluExecutionPayload_d.ExecutionPayload_g2_default()}))) == False{} : Bool}:
+  P4_PRV.ExecutionPayload_serialize_vreject_bx_present_logs_bloom()
 
 def FuluExecutionPayload__serialize_valid__ExecutionPayload_serialize_vpoison_bx_absent() -> {Pair.snd(P4_O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, P4_O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 1n, 0), 0, P4_O.BNone{}))) == 4294967295 : U32}:
   P4_PRV.ExecutionPayload_serialize_vpoison_bx_absent()
