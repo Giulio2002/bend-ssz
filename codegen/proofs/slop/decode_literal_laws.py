@@ -38,6 +38,9 @@ for a variable-size container or union, one per kind otherwise: a mutated valida
   <X>_decode_vlit_bad_count_<p>          (every list p of variable elements with a limit N that X validates) symbolic: an aligned first offset inside
                                the window, at least 4, that counts more than N elements makes the head refuse (by rewriting its four tests)
   <X>_decode_vlit_bad_order_sym_o<i>     (every offset i >= 1 of a variable-size container X) symbolic: o_i below o_{i-1} makes the validator refuse
+  <X>_decode_vlit_win_<step> / _win_elem_<p>   symbolic: each step of X's reader that reads an offset slot or a variable field reads the slot and the
+                               window the schema asks for (checked here against the generated reader); element i of a list of variable elements
+                               X reaches is read at off + s_i up to e_i
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vlit_` form).
 """
@@ -520,6 +523,75 @@ def order_laws(tx, X):
     return out
 
 
+RD = re.compile(r'def (\w+)\((.*), pair: B\.Buf & ([^)]*)\) -> (.*):\n  \(buf, (\+?)(\w+)\) = pair\n  (.*)')
+WIN = re.compile(r'(\w+)\(buf, \(off \+ (o_\w+) : U32\), \((\w+) - (o_\w+) : U32\)\)')
+SLOT = re.compile(r'B\.read32\(buf, \(off \+ (\d+) : U32\)\)')
+
+
+def qualify(text, names):
+    """the runtime's own names (definitions and types) as T.<name>"""
+    return re.sub(r'(?<![.\w])(\w+)(?![\w])', lambda m: f'T.{m.group(1)}' if m.group(1) in names else m.group(1), text)
+
+
+def window_laws(tx, X, t, names):
+    """(round 7: r5-d01/10, r5-d02/07, r5-d02/08, c04/10..12) [law]: the reader's windows, symbolic in the buffer and every offset. For each step of X's
+    reader that reads an offset slot or a variable field, the step is the read the schema asks for: the slot of the next variable field at its
+    position (4 bytes per variable field, the fixed sizes before it), the field f at off + o_f up to the next field's offset (the last up to the
+    end); for each list of variable elements X's reader reaches, element i at off + s_i up to e_i. The generator checks the generated reader
+    against the schema (and stops on a difference); the statement unfolds one step, so a reader that reads another slot or window fails it."""
+    if t.kind not in ('container', 'pcontainer') or t.fixed():
+        return []
+    var = [fn for fn, c in t.fields if not c.fixed()]
+    slot, pos = {}, 0
+    for fn, c in t.fields:
+        if not c.fixed():
+            slot[fn] = pos
+        pos += c.fixed_size() if c.fixed() else 4
+    out = []
+    for name, b in sorted(tx.blk.items()):
+        if not re.fullmatch(rf'{re.escape(X)}(_g\d+)?_rd\d+', name):
+            continue
+        m = RD.fullmatch(b)
+        if not m:
+            continue
+        _, prm, pty, ret, plus, v, body = m.groups()
+        sl, wn = SLOT.findall(body), WIN.findall(body)
+        ok = False
+        if len(sl) == 1 and not wn and v.startswith('o_') and v[2:] in var and var.index(v[2:]) + 1 < len(var):
+            nxt = var[var.index(v[2:]) + 1]
+            if int(sl[0]) != slot[nxt]:
+                raise SystemExit(f'{name}: reads the slot of {nxt} at {sl[0]}, the schema says {slot[nxt]}')
+            ok = True
+        elif len(wn) == 1 and not sl:
+            _, a, end, a2 = wn[0]
+            f = a[2:]
+            if a != a2 or f not in var:
+                raise SystemExit(f'{name}: reads a window {wn[0]}')
+            i = var.index(f)
+            want = ('len', 'vend') if i + 1 == len(var) else (f'o_{var[i + 1]}',)
+            if end not in want:
+                raise SystemExit(f'{name}: the window of {f} ends at {end}, the schema says {want[0]}')
+            ok = True
+        if not ok:
+            continue
+        args = ', '.join(p.split(':')[0].strip().lstrip('+') for p in MC.split_top_args(prm))
+        tag = name[len(X) + 1:]
+        out.append(qualify(f'def {X}_decode_vlit_win_{tag}(buf: B.Buf, {prm}, {plus}{v}: {pty})\n'
+                           f'    -> {{{name}({args}, (buf, {v})) == {body} : {ret}}}:\n  {{==}}', names))
+    for p in sorted({p for n, bb in tx.blk.items() if n.startswith(X + '_') for p in re.findall(r'\b(\w+)_read\(buf', bb)}):
+        b = tx.blk.get(f'{p}_elem_win')
+        if not b:
+            continue
+        m = re.fullmatch(rf'def {re.escape(p)}_elem_win\(\+off: U32, \+s: U32, \+e: U32, buf: B\.Buf\) -> (.*): (\w+)\(buf, (.*)\)', b)
+        if not m:
+            continue
+        if m.group(3) != '(off + s : U32), (e - s : U32)':
+            raise SystemExit(f'{p}_elem_win reads ({m.group(3)}): the element window is (off + s, e - s)')
+        out.append(qualify(f'def {X}_decode_vlit_win_elem_{p}(+off: U32, +s: U32, +e: U32, buf: B.Buf)\n'
+                           f'    -> {{{p}_elem_win(off, s, e, buf) == {m.group(2)}(buf, (off + s : U32), (e - s : U32)) : {m.group(1)}}}:\n  {{==}}', names))
+    return out
+
+
 def module(tmod, X, helper, laws):
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '', writer.header('decode_literal_laws'),
          f'# {X}: literal encodings that decode and literal encodings that do not (manual spec-mutation audit, round 5; docs/mutation_testing/MUTATION_PROOFS.md).', '', helper]
@@ -537,6 +609,7 @@ def outputs():
     gen = {n: t for n, t, e in generic.inventory_all() if e is None}
     for runtime, tmod, names in (('fulu', 'fulu_obj', fu), ('generic', 'generic_obj', gen)):
         tx = MC.Text(runtime)
+        rtnames = set(tx.blk) | set(re.findall(r'^type (\w+)', tx.text, re.M))
         for m in DECODE.finditer(tx.text):
             X, V = m.group(1), m.group(2)
             t = names.get(X)
@@ -554,6 +627,9 @@ def outputs():
                 groups.setdefault(f'{kind}_{tag}' if split else kind, []).append(text)
             for key, texts in groups.items():
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_{key}')] = module(tmod, X, helper, texts)
+            wlaws = window_laws(tx, X, t, rtnames)
+            if wlaws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_win')] = module(tmod, X, '', wlaws)
             olaws = order_laws(tx, X)
             if olaws:
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_order_sym')] = module(tmod, X, '', olaws)
