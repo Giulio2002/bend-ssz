@@ -25,21 +25,30 @@ def check_enc(pair: G.Any & B.Buf) -> IO(Unit):
   (a, out) = pair
   check_root(out, G.root(O.hasher(), a))
 
-def st4(q: Nat, +j: U32, +base: U32, +h: U32, buf: B.Buf, pr: G.Any & Bool) -> B.Buf & (G.Any & U32):
+def st4(+h: U32, buf: B.Buf, pr: G.Any & Bool) -> B.Buf & (G.Any & U32):
   (a, ok) = pr
-  chain(q, (j + 1 : U32), base, (h * 31 + O.pick(ok, 1, 0) : U32), (buf, a))
+  (buf, (a, (h * 31 + O.pick(ok, 1, 0) : U32)))
 
-def st3(q: Nat, +j: U32, +base: U32, +h: U32, +sel: U32, +idx: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st3(+j: U32, +base: U32, +h: U32, +sel: U32, +idx: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
   (buf, +seed) = pair
-  st4(q, j, base, h, buf, G.fuzz(a, sel, idx, seed))
+  st4(h, buf, G.fuzz(a, sel, idx, seed))
 
-def st2(q: Nat, +j: U32, +base: U32, +h: U32, +sel: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st2(+j: U32, +base: U32, +h: U32, +sel: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
   (buf, +idx) = pair
-  st3(q, j, base, h, sel, idx, a, B.read32(buf, (base + 12 * j + 8 : U32)))
+  st3(j, base, h, sel, idx, a, B.read32(buf, (base + 12 * j + 8 : U32)))
 
-def st1(q: Nat, +j: U32, +base: U32, +h: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st1(+j: U32, +base: U32, +h: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
   (buf, +sel) = pair
-  st2(q, j, base, h, sel, a, B.read32(buf, (base + 12 * j + 4 : U32)))
+  st2(j, base, h, sel, a, B.read32(buf, (base + 12 * j + 4 : U32)))
+
+def step(+j: U32, +base: U32, +h: U32, st: B.Buf & G.Any) -> B.Buf & (G.Any & U32):
+  (buf, a) = st
+  st1(j, base, h, a, B.read32(buf, (base + 12 * j : U32)))
+
+def unh(pair: B.Buf & (G.Any & U32)) -> (B.Buf & G.Any) & U32:
+  (buf, r) = pair
+  (a, +h) = r
+  ((buf, a), h)
 
 def chain(k: Nat, +j: U32, +base: U32, +h: U32, st: B.Buf & G.Any) -> B.Buf & (G.Any & U32):
   match k:
@@ -47,8 +56,8 @@ def chain(k: Nat, +j: U32, +base: U32, +h: U32, st: B.Buf & G.Any) -> B.Buf & (G
       (buf, a) = st
       (buf, (a, h))
     case 1n+q:
-      (buf, a) = st
-      st1(q, j, base, h, a, B.read32(buf, (base + 12 * j : U32)))
+      (s2, +h2) = unh(step(j, base, h, st))
+      chain(q, (j + 1 : U32), base, h2, s2)
 
 def chained(pair: B.Buf & (G.Any & U32)) -> IO(Unit):
   (buf, r) = pair
