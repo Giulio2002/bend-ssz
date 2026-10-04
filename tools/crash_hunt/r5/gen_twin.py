@@ -8,13 +8,13 @@ serializations too. Prints `bad=<steps whose roots differ> first=<first> ser_eq=
 import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 VT = ('import ../../../../types/VarTestStruct_def_generated.bend as Ev',
-      'Ev.VarTestStruct_set_f_B(fa(Ev.VarTestStruct_set_f_A(Ev.VarTestStruct_default(), (x .&. 65535 : U32))), O.Words{Array.new(U32, 2n, (x .&. 4294901759 : U32)), (2 * U32.mod(x, 7) : U32)})',
+      'Ev.VarTestStruct_set_f_B(fa(Ev.VarTestStruct_set_f_A(Ev.VarTestStruct_default(), (x .&. 65535 : U32))), O.Words{Array.new(U32, 2n, x), (4 * U32.mod(x, 4) : U32)})',
       'Ev.VarTestStruct')
 KINDS = {
  'proglist_VarTestStruct': dict(P='pl_VarTestStruct', E=VT[2], imp=VT[0], mk=VT[1], fa='Ev.VarTestStruct', APP=1),
  'proglist_ProgressiveVarTestStruct': dict(P='pl_ProgressiveVarTestStruct', E='Ev.ProgressiveVarTestStruct',
      imp='import ../../../../types/ProgressiveVarTestStruct_def_generated.bend as Ev', fa='Ev.ProgressiveVarTestStruct', APP=1,
-     mk='Ev.ProgressiveVarTestStruct_set_f_B(fa(Ev.ProgressiveVarTestStruct_set_f_A(Ev.ProgressiveVarTestStruct_default(), (x .&. 255 : U32))), O.Words{Array.new(U32, 2n, (x .&. 4294901759 : U32)), (2 * U32.mod(x, 7) : U32)})'),
+     mk='Ev.ProgressiveVarTestStruct_set_f_B(fa(Ev.ProgressiveVarTestStruct_set_f_A(Ev.ProgressiveVarTestStruct_default(), (x .&. 255 : U32))), O.Words{Array.new(U32, 2n, x), (4 * U32.mod(x, 4) : U32)})'),
  'proglist_proglist_VarTestStruct': dict(P='pl_pl_VarTestStruct', E='Pv.pl_VarTestStruct_Seq', fa='Ev.VarTestStruct', APP=1,
      imp=VT[0] + '\nimport ../../../../types/proglist_VarTestStruct_def_generated.bend as Pv',
      mk='ia(Pv.pl_VarTestStruct_append(Pv.pl_VarTestStruct_default(), ' + VT[1] + '))'),
