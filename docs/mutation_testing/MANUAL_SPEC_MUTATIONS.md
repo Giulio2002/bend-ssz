@@ -1592,6 +1592,6 @@ so a cheaper witness (a closed-literal decode law per name, like the round-4 mar
   decode accepting 258 bits).
 
 What the proofs catch this round: every root fault at a chunk boundary (Bitvector 256/257/511/513, Bitlist depths, uint128/uint256 packing, vector depths,
-progressive mix counts, union selectors, progressive-container trees and active_fields: 36/36), every union-size and offset-table fault (17/17, `sizexb`, `rt0`/`rt1`),
+progressive mix counts, union selectors, progressive-container trees and active_fields: 31/31; the Bitvector validity / padding decode and uint-vector codec faults: 12/12), every union-size and offset-table fault (17/17, `sizexb`, `rt0`/`rt1`),
 every setter / swap on a grouped container (12/12, `fields_4..6`), the size pass on the containers (7/10, `validx`), and the signed wrappers' writers (3/3,
 `vrefuse_writer_marker`).
