@@ -1595,3 +1595,71 @@ What the proofs catch this round: every root fault at a chunk boundary (Bitvecto
 progressive mix counts, union selectors, progressive-container trees and active_fields: 31/31; the Bitvector validity / padding decode and uint-vector codec faults: 12/12), every union-size and offset-table fault (17/17, `sizexb`, `rt0`/`rt1`),
 every setter / swap on a grouped container (12/12, `fields_4..6`), the size pass on the containers (7/10, `validx`), and the signed wrappers' writers (3/3,
 `vrefuse_writer_marker`).
+
+# Round 7 (base e1b65e26f, agent/slop-laws-r6; decode budget on agent/decode-amplification 5c1f48b93)
+
+Definitions `defs/r7_01..03*.txt` (round-6 tree) and `r7/defs_budget/r7_04_decode_budget.txt` (budget branch), patches `patches/r7-*` and
+`r7/patches_budget/r7-d*` (**91 faults**: 74 + 17; 5 more dropped by `r7/mk7.py` as exact duplicates of earlier rounds), driver `r7/mk7.py`, verdict (A) with
+`r4/run4.py` (narrow pass, K = 4, then an explicit-root pass `pass2` on the survivors: the vrootj / coll_bytes / coll_bits / bits_view / fields / decode_literal
+files, wide timeouts), API probes `r7/probes/p7a.bend` (junk storage, appends), `p7b.bend` (X_dcost), `p7d.bend` (the open round-5 decode faults), `p7e.bend`
+(ExecutionPayload / SignedBeaconBlock round trips), compiled from a hard-linked import cone with the patch applied (2.0.34 runtime) and compared with the unmutated
+build. Results `r7/results/` (`run.log`, `pass2.log`, `budget.log`, `replay*.log`, `dopen.log`, `api_p7*.json`, `final.json`), judgements `r7/judgements.json`,
+machine-readable survivors `manual_round_7_survivors.json` (`report7.py`). The reference corpus was not run (valid values only; every survivor below is a
+validity, refusal, junk-storage or reader fault, shown by a probe instead).
+
+## R7.1 Result
+
+| | count |
+|---|---|
+| New faults | **91** (round-6 tree 74, decode budget 17) |
+| (A) killed by a named law | **63** (narrow pass 34 + 12 budget, explicit pass 17) |
+| (A) survived every checked root | **11** |
+| (A) UNJUDGED (checker stack on var_winx / vvl / var_codec, or > 150 s) | **17** (16 decode, 1 validity) |
+| Non-killed, judged through the public API (28) | critical **13** (10 shown by a probe), unjudged-argued-critical 2, gap 1, gap-unreachable 1, equivalent / equivalent-in-context **11** |
+| (a) Replay of the 55 re-derived patches | **49 killed by a named law**, 6 not: 1 **critical** (bl04/02), 5 equivalent; 2 re-derivations drifted to a different fault |
+| (d) Open round-5 decode faults (14) | 0 killed by a named law; **6 critical shown by p7d**, 1 not demonstrated, 7 equivalent / equivalent in context |
+
+## R7.2 Findings (critical: reachable through the public API, no named law kills them)
+
+1. **Replay: the bit-list size pass (`bl04-bitlist-size/02`, re-derived) is no longer killed.** `O.bsz_pick` answering ceil(k / 8): `bitlist_32_serialize` of 32 bits
+   (after `bits32_append`) answers ok = 1 with **4 bytes instead of 5** (the delimiter byte cut off; p7a case 8). `<X>_serialize_vbits_size` states `O.bits_size`,
+   not `O.bits_sizek` (the size pass every `X_serialize` of a bit list uses); round 1's killer (progbitlist encode_eval) no longer covers it.
+2. **The R5-01 append fix can be reverted without a law noticing** (`r7-b01-app-clear/02`, `r7-b02-put-app-gen/01`, `r7-b03-bits-close/01, 02`). With `app_old = old`
+   (or the generator emitting `O.words_write`), `bl1073741824_append(O.Words{a, 4}, 5)` over a valid value whose word 1 holds junk gives `X_valid` 0 and
+   `Transaction_serialize` refuses (unmutated: ok, 5 bytes, equal to the clean value); with `app_old31` testing bit 30 or never clearing,
+   `bits32_append(O.Bits{a, 31}, True)` (a[1] junk) makes `bitlist_32_serialize` refuse. `coll_bytes` / `coll_bits` / `bits_view` state the element view after
+   the append (get, bview), never the words past the new length; the other five app-clear and six close faults are killed (`api_read_append`, `close_thaw`).
+3. **The decode budget's saturation is unpinned** (`r7-d01-dcost/01, 02, 04`). `<X>_decode_vchecked_budget_cost` fixes `X_dcost(4096)` only: with the overflow guard
+   on `(2^32 - 1) / k` (01), no guard (02) or a saturated value of 524288 (04), `ExecutionPayload_dcost(858980000)` = 457032 / `ExecutionPayload_dcost(2^31)` =
+   2148007976 / 524288 instead of 4294967295 (p7b), so `X_decode_checked_budget` admits a 0.86 to 2 GiB ExecutionPayload decode (K = 40: tens of GB of heap) under
+   a budget of 4 MiB to 2.2e9 words. The K literals, the shift, the + 1, the constant and the comparison are all killed (cost / refuse / agree laws).
+   Not checked by any proof: the nested-K rule and the K table itself (`tools/decode_amp/k_table.py`; the laws read the same json, so a wrong K is regenerated
+   into code and law alike).
+4. **Readers of valid encodings (no rt law for ExecutionPayload, SignedBeaconBlock, f_G of ProgressiveComplexTestStruct; the PTS rt laws use empty inner lists).**
+   Shown by a probe (decode of `X_serialize` of a value built with public setters, then serialize again): `r7-c04/11` (transactions read at the extra_data
+   offset: decodes, serialize refuses), `r7-c04/12` (extra_data up to the withdrawals: 639 bytes for 628), `r7-c05/07` (last transaction empty), `r7-c05/08`
+   (transaction read at its relative offset), `r7-c06/03` (signature read over the offset), `r5-d01/09`, `r5-d01/10` (ProgressiveTestStruct f_D = [[VarTestStruct]]),
+   `r5-d02/07` (killed by the OS for memory), `r5-d02/08` (timeout) on a valid 35-byte PTS, `r5-d04/02` (f_G [5, 9] decodes as [5, 5]). Argued, not shown:
+   `r7-c04/10` (withdrawals window from the transactions' start: shows once the transactions hold 44 bytes or more), `r7-c04/13` (gas_used read at timestamp's
+   position: p7e's values had both 0).
+5. **Accepting invalid bytes**: `r5-d02/01` (PTS o2 > o3: `ProgressiveTestStruct_decode` of 24 bytes 16,16,24,16,8,8 answers Some, its serialize refuses; p7d
+   case 4), `r7-c05/01` (more than 2^20 transactions; needs a 4 MiB offset table; argued).
+
+Unjudged, argued critical: `r7-c03/01` (a present body box always valid: `BeaconBlock_fields`' `vreject_body_proposer_slashings` is the law that should kill it
+but did not finish in 150 s on the mutant), `r7-c06/02` (the message window not validated: the `bad_message_*` literal laws state it; each ran past 120 s).
+
+## R7.3 Not critical (reasoned)
+
+* equivalent / equivalent in context: `r7-b04/01, 02` (words_slice's one caller passes n = 2048), `r7-c04/02, 04`, `r7-c05/04`, `r5-d01/01`, `r5-d02/02`, `r5-d03/02`
+  (a wrapped window is refused by a bounded element type), `r7-c04/03`, `r7-c05/03, 05`, `r5-d01/02, 06`, `r5-d03/03` (implied by the remaining offset tests),
+  `r5-d01/04` (the accumulator also guards ew), `r7-d01/08` (no name has K = 1).
+* gap: `r7-d01/03` (one size step saturates early: over-strict). gap-unreachable: `r7-c03/03` (the block's own size pass differs only above NMAX).
+* not demonstrated: `r5-d01/07` (first offset 0 in f_D: the probe input decodes None in both builds).
+* replay, equivalent: `r2-a01-grow/01` and `r3-d01/01` (documented in MUTATION_PROOFS), `r2-d01/06` (re-derived to size < 2^31 - 1 on the fixed-size Checkpoint),
+  `r2-s03/16` (slice of n = 2048), `r3-w04/06` (zeros_copy(n - 1) differs only for n a multiple of 32, where the slow path is never taken).
+* replay drift: `r2-s05-poison/03` now mutates `bits_above_zero` case 31 (killed by `vbits_table_31`), not the poison value of `pz` (the original is an exact
+  duplicate of a round-4 def); `r3-p05/10`'s re-derivation also flips the writer's match arm (its faithful form `r7-s01-faithful-rederive/01` is killed).
+
+What the laws catch this round: every clean-chunk word skip (`pbits_obj` `lcchain` / `lcs`, 13/14; the 14th by `vroot_bl256_past_41`), the partial-word and copy-path
+faults, the size pass at NMAX / es and out_done, the signed wrappers' OR-ed flags (`vreject_message_body`, `vreject_aggregate`), 9 of 13 ExecutionPayload validator
+faults by the literal laws, the transactions list's alignment / order / accumulator, and 12 of 17 decode-budget faults.
