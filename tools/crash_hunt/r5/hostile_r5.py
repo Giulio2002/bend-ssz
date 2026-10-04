@@ -84,7 +84,7 @@ def main():
             rng = random.Random('%d/%s/%d' % (a.seed, n, i))
             v = F.gen(t, rng, ['random', 'zero', 'max', 'full', 'short', 'empty'][i % 6])
             d = F.oracle.serialize(t, v)
-            if len(d) > 300000: continue
+            if len(d) > int(os.environ.get("H5_MAXLEN", "300000")): continue
             for lab, m in muts(d, offset_slots(t, v), rng):
                 cases.append((n, lab, m))
     print('cases', len(cases), flush=True)
