@@ -568,7 +568,7 @@ def window_laws(tx, X, t, names):
             if a != a2 or f not in var:
                 raise SystemExit(f'{name}: reads a window {wn[0]}')
             i = var.index(f)
-            want = ('len', 'vend') if i + 1 == len(var) else (f'o_{var[i + 1]}',)
+            want = ('len', 'vend') if i + 1 == len(var) else (f'o_{var[i + 1]}', 'vend')    # vend: the end of a group's variable parts (the parent's next offset)
             if end not in want:
                 raise SystemExit(f'{name}: the window of {f} ends at {end}, the schema says {want[0]}')
             ok = True
