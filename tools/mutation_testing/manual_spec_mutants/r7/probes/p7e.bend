@@ -23,18 +23,14 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 #  4 case 2's bytes with the transactions' second offset (byte 528 + 1 + 4) set past the transactions window (10 -> 200): invalid
 #  5 case 2's bytes with byte 528 + 1 + 4 set to 4 (offsets 8, 4: descending): invalid
 
-def ck_st(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
-  (ws, +x) = pair
-  ck_go(k, (i + 1 : U32), ((acc * 31 : U32) + x : U32), ws)
-
-def ck_go(+k: Nat, +i: U32, +acc: U32, ws: Array<U32>) -> U32:
-  match k:
-    case 0n: acc
-    case 1n+q: ck_st(q, i, acc, Array.get(U32, ws, i))
+def ck_go(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
+  match k pair:
+    case 0n Tuple{ws, x}: acc
+    case 1n+q Tuple{ws, +x}: ck_go(q, (i + 1 : U32), ((acc * 31 : U32) + x : U32), Array.get(U32, ws, (i + 1 : U32)))
 
 def show_buf(label: String, x: Bool, b: B.Buf) -> IO(Unit):
   match b:
-    case B.Buf{ws, +n}: IO.print(label ++ " reser_ok=" ++ O.pick_str(x) ++ " size=" ++ U32.show(n) ++ " ck=" ++ U32.show(ck_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, 7, ws)))
+    case B.Buf{ws, +n}: IO.print(label ++ " reser_ok=" ++ O.pick_str(x) ++ " size=" ++ U32.show(n) ++ " ck=" ++ U32.show(ck_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, 7, Array.get(U32, ws, 0))))
 def show_enc(label: String, e: O.Encoded) -> IO(Unit):
   match e:
     case O.Encoded{x, b}: show_buf(label, x, b)

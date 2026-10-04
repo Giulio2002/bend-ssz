@@ -24,18 +24,14 @@ import ../../../../../benchmarks/compact/objio.bend as IOx
 #  6 PTS, o3 = 40 > size 24 (f_D's window past the end, f_C's window [16, 40) past the end; storage beyond the size zero): invalid (d02/02)
 #  7 PTS, f_D = [[], []] with the second offset 4 < the first 8 (offsets 16,16,16,16; 8, 4; size 24): invalid (d01/01: non-decreasing dropped)
 
-def ck_st(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
-  (ws, +x) = pair
-  ck_go(k, (i + 1 : U32), ((acc * 31 : U32) + x : U32), ws)
-
-def ck_go(+k: Nat, +i: U32, +acc: U32, ws: Array<U32>) -> U32:
-  match k:
-    case 0n: acc
-    case 1n+q: ck_st(q, i, acc, Array.get(U32, ws, i))
+def ck_go(+k: Nat, +i: U32, +acc: U32, pair: Array<U32> & U32) -> U32:
+  match k pair:
+    case 0n Tuple{ws, x}: acc
+    case 1n+q Tuple{ws, +x}: ck_go(q, (i + 1 : U32), ((acc * 31 : U32) + x : U32), Array.get(U32, ws, (i + 1 : U32)))
 
 def show_buf(label: String, x: Bool, b: B.Buf) -> IO(Unit):
   match b:
-    case B.Buf{ws, +n}: IO.print(label ++ " decoded=some reser_ok=" ++ O.pick_str(x) ++ " size=" ++ U32.show(n) ++ " ck=" ++ U32.show(ck_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, 7, ws)))
+    case B.Buf{ws, +n}: IO.print(label ++ " decoded=some reser_ok=" ++ O.pick_str(x) ++ " size=" ++ U32.show(n) ++ " ck=" ++ U32.show(ck_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, 7, Array.get(U32, ws, 0))))
 
 def show_enc(label: String, e: O.Encoded) -> IO(Unit):
   match e:
