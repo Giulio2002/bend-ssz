@@ -137,13 +137,3 @@ def root_checked(xs: Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:
 
 def uint_root(w: T.Width, v: T.UInt) -> Maybe<&2, +List<U32>>:
   root_checked(uint_serialize(w, v))
-
-# Constructor bridge for hosts: do not guess compiled enum constructor tags.
-def width8() -> T.Width: T.U8{}
-def width16() -> T.Width: T.U16{}
-def width32() -> T.Width: T.U32Width{}
-def width64() -> T.Width: T.U64{}
-def width128() -> T.Width: T.U128{}
-def width256() -> T.Width: T.U256{}
-def make_uint(a: U32, b: U32, c: U32, d: U32, e: U32, f: U32, g: U32, h: U32) -> T.UInt:
-  T.UInt{a, b, c, d, e, f, g, h}

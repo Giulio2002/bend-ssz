@@ -1641,8 +1641,11 @@ def emit_words(s, w):
         else:
             ew = es // 4
             ed = log2ceil(chunks_of(es))
-            core = (f'O.elems_root_prog(hl, h, o, {ew}, {ed}, seg)' if s.prog
-                    else f'O.elems_root(hl, h, o, {ew}, {ed}, {log2ceil(count)}, seg)')
+            if s.prog:
+                # O.elems_root_prog (a progressive list of byte vectors) was removed with the other definitions that had no caller
+                # (round 8): no schema name has that shape; restore it, with its laws, before generating one
+                raise SystemExit(f'{p}: a progressive list of byte vectors needs O.elems_root_prog, removed as dead code (round 8)')
+            core = f'O.elems_root(hl, h, o, {ew}, {ed}, {log2ceil(count)}, seg)'
         if t.kind == 'vector':
             root = core
         else:

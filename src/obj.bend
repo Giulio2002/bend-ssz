@@ -1267,17 +1267,6 @@ def elems_root(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +depth: U32, +s
   match w:
     case Words{ws, +n}: er_size(hl, h, ew, ed, depth, n, Array.size(U32, ws))
 
-# The same over a progressive tree (a progressive list of fixed-size byte
-# vectors); each element's own tree is still binary.
-def erp_size(+hl: Nat, h: B.Buf, +ew: U32, +ed: U32, +n: U32, pair: Array<U32> & U32) -> B.Buf & (Words & D.Digest):
-  (ws, +sz) = pair
-  mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
-    cap_cnt(U32.to_nat(U32.div(n, (4 * ew : U32))), Nat.mul(U32.to_nat(U32.div(n, (4 * ew : U32))), U32.to_nat(ew)), U32.to_nat(ew), U32.to_nat(sz)), h, ws))
-
-def elems_root_prog(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
-  match w:
-    case Words{ws, +n}: erp_size(hl, h, ew, ed, n, Array.size(U32, ws))
-
 # ---- boxed fields ------------------------------------------------------------
 # The native backend lays every non-recursive record out inline, and no
 # function may take more than 255 words of arguments. A container field wider
@@ -1390,10 +1379,6 @@ def words_write_app(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
 def words_write(w: Words, +p: U32, +x: U32, +bytes: U32) -> Words:
   put_in(U32.shrn(p, 2n), x, (p .&. 3 : U32), bytes, words_word(w, U32.shrn(p, 2n)))
 
-def words_read(+bytes: U32, pair: Words & U32) -> Words & U32:
-  (w, +x) = pair
-  (w, keep(bytes, x))
-
 def read_at(+p: U32, +bytes: U32, pair: Words & U32) -> Words & U32:
   (w, +x) = pair
   (w, keep(bytes, shr_bytes(x, (p .&. 3 : U32))))
@@ -1500,10 +1485,6 @@ def bits_cap_sz(+k: U32, pair: Array<U32> & U32) -> Bits & U32:
 def bits_cap(b: Bits) -> Bits & U32:
   match b:
     case Bits{ws, +k}: bits_cap_sz(k, Array.size(U32, ws))
-
-def bits_words(b: Bits) -> Words:
-  match b:
-    case Bits{ws, +k}: Words{ws, bits_nbytes(k)}
 
 def bits_of_words(+k: U32, w: Words) -> Bits:
   match w:

@@ -71,9 +71,6 @@ def chunk_of(r: Read) -> Chunk:
     case Read{c, rest}: c
     case Short{}: Chunk{0, 0, 0, 0, 0, 0, 0, 0}
 
-def read_tail(+n: Nat, +xs: +List<U32>) -> Chunk:
-  chunk_of(read_chunk(P.pad(32n, W.copy(True{}, n, xs))))
-
 # ---------------------------------------------------------------------------
 # Packing a region: `n` bytes at the cursor become chunk storage.
 #
@@ -228,11 +225,6 @@ def uint_of(+s: Slice, +width: Nat) -> Primitive.UInt:
     uint_word_guard(s, 0n, width), uint_word_guard(s, 4n, width), uint_word_guard(s, 8n, width), uint_word_guard(s, 12n, width),
     uint_word_guard(s, 16n, width), uint_word_guard(s, 20n, width), uint_word_guard(s, 24n, width), uint_word_guard(s, 28n, width)}
 
-
-def chunks_of(p: Packed) -> +List<Chunk>:
-  match p:
-    case Packed{n, chunks}: chunks
-
 # ---------------------------------------------------------------------------
 # One pass over the input: chunk storage, the byte count and the byte-domain
 # check are produced together, so the decoder never walks the input twice.
@@ -294,10 +286,6 @@ def pack_spec(+xs: +List<U32>) -> Packing:
 
 def pack_list(+xs: +List<U32>) -> Packing:
   pack_list_go(xs, xs, 0n, True{}, [])
-
-def packing_slice(p: Packing) -> Slice:
-  match p:
-    case Packing{+n, domain, chunks}: Slice{chunks, 0n, n}
 
 def packing_length(p: Packing) -> Nat:
   match p:

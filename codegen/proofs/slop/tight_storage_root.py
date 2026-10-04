@@ -22,6 +22,14 @@ boolean check, whose root is `p_root(hl, h, o, seg)` = `O.words_root` / `O.words
   <X>_vroot_<p>_past_41 / _past_73   the same with a clean tail word and junk only in a word wholly past the length (word 11 / 19)
 
 (the last two only when the type has room for them). Filed by api_gate under `root` (the `_vroot_` late rule).
+
+Round 8 (a03/01: a tail test that read bytes 2..3 of a 1-byte tail): for every packed list or vector of the junk laws below and every tail
+length r = n mod 4 in 1..3 its range allows (the least such n), a valid value whose tail word holds ONE junk byte 0xBE at position b (each b in
+r..3), proofs/slop/validity/<runtime>_<X>_vrootj1_<p>_generated.bend:
+
+  <X>_vroot_<p>_j1_n<n>_b<b>              its root is the clean value's (the clean-copy path)
+  <X>_serialize_vreject_j1_<p>_n<n>_b<b>  `p_valid` is False
+  <X>_serialize_vrefuse_j1_<p>_n<n>_b<b>  X's checked serializer refuses it (X itself, or X_set_<field>(X_default(), value); not for a default above 3000 bytes)
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -141,6 +149,91 @@ def junk_cases(n, bools):
     return out
 
 
+JUNK1 = 0xBE        # one junk byte (round 8: a03/01): a tail test that reads only some of the bytes past the length misses it in the others
+SERIALIZE_MAX = 3000
+
+
+def tails(lo, hi, big, U, n_max=2048):
+    """[n]: one valid length per tail length r = n mod 4 in 1..3 (the least one), for a packed collection lo <= n <= hi (no upper bound when big)"""
+    out = {}
+    for n in range(max(lo, 1), min(n_max, hi if not big else n_max) + 1):
+        if n % U == 0 and n % 4 and n % 4 not in out:
+            out[n % 4] = n
+        if len(out) == 3 or lo == hi:
+            break
+    return [out[r] for r in sorted(out)]
+
+
+def junk1_cases(n, bools):
+    """[(tag, observed, clean)]: a valid value of n bytes (n mod 4 = r > 0) whose tail word holds ONE junk byte, at each position b in r..3"""
+    data = bytes(1 if bools else (i % 250) + 1 for i in range(n))
+    w = (n + 3) // 4
+    vals = {i: int.from_bytes(data[4 * i:4 * i + 4].ljust(4, b"\0"), "little") for i in range(w)}
+    E = 8 * ((n + 31) // 32)
+    log = (E - 1).bit_length()
+    clean = words(log, n, vals)
+    return [(f"n{n}_b{b}", words(log, n, {**vals, w - 1: vals[w - 1] | (JUNK1 << (8 * b))}), clean) for b in range(n % 4, 4)]
+
+
+def field_of(tx, X, p):
+    """(obj, rep): how a Words value w becomes an X to serialize: X itself (its representation is O.Words) or X_set_<field>(X_default(), w) for the
+    field whose validity is p_valid; None when neither"""
+    sig = tx.blk.get(f"{X}_serialize", "").split("\n", 1)[0]
+    if re.match(rf"def {re.escape(X)}_serialize\(o: O\.Words\)", sig):
+        return "{w}", "O.Words"
+    for n, b in tx.blk.items():
+        if re.fullmatch(rf"{re.escape(X)}_(?:g\d+_)?va(?:lid|\d+)", n):     # X_valid, X_va<k> and a group's X_g<k>_valid / _va<k>
+            m = re.search(rf"(?<![\w.]){re.escape(p)}_valid\((\w+)\)", b)
+            if m:
+                st = tx.blk.get(f"{X}_set_{m.group(1)}", "").split("\n", 1)[0]
+                if re.search(r", v: O\.Words\) -> \w+:", st):
+                    return f"T.{X}_set_{m.group(1)}(T.{X}_default(), {{w}})", re.search(r"-> (\w+):", st).group(1)
+    return None
+
+
+def junk1_outputs(out):
+    """(round 8: a03/01, tail_zero tested bytes 2..3 for a tail of 1 byte) every packed list or vector of the j_tail laws, at every tail length its
+    range allows, with ONE junk byte past the length in its tail word, at each position: the root is the clean value's (the clean-copy path), the
+    collection is not valid, and X's checked serializer refuses it"""
+    for runtime, tmod in (("fulu", "fulu_obj"), ("generic", "generic_obj")):
+        tx = MC.Text(runtime)
+        valid = {m.group(1): (bool(m.group(2)), int(m.group(3)), int(m.group(4)), m.group(5) == "True", int(m.group(6))) for m in VALID_ANY.finditer(tx.text)}
+        for m in ROOT.finditer(tx.text):
+            p = m.group(1)
+            if p not in valid:
+                continue
+            bools, lo, hi, big, U = valid[p]
+            n0 = lo if lo > 0 else U
+            if n0 > 2048 or (not big and n0 > hi) or n0 % U:
+                continue
+            owners = owners_of_root(tx, p)
+            if not owners:
+                continue
+            X = owners[0]
+            depth = None if m.group(2) else int(m.group(3))
+            if depth is None:
+                fn = "O.words_root_prog(hl, B.empty(), w, 0)"
+            elif depth <= 8:
+                fn = f"T.{p}_root(hl, B.empty(), w, 0)"
+            else:
+                fn = "O.words_root(hl, B.empty(), w, 8, 0)"
+            obs = f"Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, {fn}))"
+            ser = field_of(tx, X, p)
+            small = MC.default_size(X) is None or MC.default_size(X) <= SERIALIZE_MAX
+            laws = []
+            for n in tails(lo, hi, big, U):
+                for tag, got, want in junk1_cases(n, bools):
+                    laws.append(f"def {X}_vroot_{p}_j1_{tag}(+hl: Nat)\n    -> {{{obs.replace('w,', got + ',', 1)} == {obs.replace('w,', want + ',', 1)} : D.Digest}}:\n  {{==}}")
+                    laws.append(f"def {X}_serialize_vreject_j1_{p}_{tag}()\n    -> {{Pair.snd(O.Words, Bool, T.{p}_valid({got})) == False{{}} : Bool}}:\n  {{==}}")
+                    if ser and small:
+                        obj, rep = ser
+                        rq = rep if rep == "O.Words" else f"T.{rep}"
+                        laws.append(f"def {X}_serialize_vrefuse_j1_{p}_{tag}()\n    -> {{Pair.snd({rq}, O.Encoded, T.{X}_serialize({obj.format(w=got)})) == O.refused() : O.Encoded}}:\n  {{==}}")
+            if laws:
+                out[LAYOUT.module_path("validity", f"{runtime}_{X}_vrootj1_{p}")] = module(tmod, X, p, "\n\n".join(laws))
+    return out
+
+
 def junk_outputs(out):
     """every packed list or vector whose root is O.words_root (binary) or O.words_root_prog: a valid value with junk in its spare storage hashes like
     the same value in clean storage (round 5: a01/08, the binary twin of the progressive law). A type whose tree is deeper than 2^8 chunks is stated on
@@ -177,7 +270,7 @@ def junk_outputs(out):
 
 
 def main():
-    out = junk_outputs(outputs())
+    out = junk1_outputs(junk_outputs(outputs()))
     if LAYOUT.finish(RR.rewire_out(out), 'tight_storage_root', ('validity',), 'stale tight storage root laws: ', 'tight storage root laws are current', '--check' in sys.argv):
         print(f'{len(out)} modules')
 

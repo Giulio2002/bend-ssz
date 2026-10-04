@@ -105,13 +105,6 @@ def swap32(+w: U32) -> U32:
   (U32.shln((w .&. 255 : U32), 24n) .|. U32.shln((U32.shrn(w, 8n) .&. 255 : U32), 16n)
     .|. U32.shln((U32.shrn(w, 16n) .&. 255 : U32), 8n) .|. U32.shrn(w, 24n) : U32)
 
-def swap_pair(pair: Buf & U32) -> Buf & U32:
-  (b, w) = pair
-  (b, swap32(w))
-
-def be_word_at(b: Buf, +i: U32) -> Buf & U32:
-  swap_pair(read32(b, i))
-
 # ---------------------------------------------------------------------------
 # Construction. Building a buffer from a byte list is a transport-boundary
 # operation: files and official test vectors arrive as lists through Base.
@@ -143,31 +136,6 @@ def capacity_go(+fuel: Nat, +need: U32, +depth: Nat) -> Nat:
         case 0: depth
         case 1: depth
         case _: capacity_go(p, U32.shrn((need + 1 : U32), 1n), 1n+depth)
-
-# The same depth, read off a table for the small buffers that dominate the
-# small encodings: ceil(log2(w)) for w words, exactly what the loop computes.
-# Every SSZ value of up to 64 bytes lands here, and those are the ones whose
-# cost is the allocation rather than the bytes.
-def capacity_small(+w: U32) -> Nat:
-  match w:
-    case 0: 0n
-    case 1: 0n
-    case 2: 1n
-    case 3: 2n
-    case 4: 2n
-    case 5: 3n
-    case 6: 3n
-    case 7: 3n
-    case 8: 3n
-    case 9: 4n
-    case 10: 4n
-    case 11: 4n
-    case 12: 4n
-    case 13: 4n
-    case 14: 4n
-    case 15: 4n
-    case 16: 4n
-    case _: capacity_go(32n, w, 0n)
 
 # Array depth for `w` words: the smallest d with 2^d >= w, which is the bit
 # length of w - 1. The halving loop above and the 17-case table below it both
@@ -410,15 +378,6 @@ def words_depth_u(+w: U32) -> U32: words_depth_unz(U32.is_eq(w, 0), w)
 # Zero words for n bytes, at the depth `capacity(n)`.
 def zeros_bytes(+n: U32) -> Array<U32>: zeros(words_depth_u(U32.shrn((n + 3 : U32), 2n)))
 
-
-# ---------------------------------------------------------------------------
-# Merkle scratch. A buffer being hashed carries 1024 digest slots of eight
-# words right after its data, at word (n + 3) / 4: the level stack of the
-# streaming merkleizer (64-slot segments, one per nesting level) and, in slots
-# 960..1023, the zero-subtree roots. So the only mutable state of a hash is the
-# caller's own packed array: no second structure, no sharing, O(1) word access.
-def scratch_words() -> U32: 8192
-
 def scratch_base(+n: U32) -> U32: U32.shrn((n + 3 : U32), 2n)
 
 # Capacity for `n` data bytes plus the scratch.
@@ -517,9 +476,6 @@ def with_scratch(b: Buf) -> Buf:
   match b:
     case Buf{ws, +n}: grow_sized(n, Array.size(U32, ws))
 
-def of_list(+n: U32, xs: +List<U32>) -> Buf:
-  Buf{fill_go(xs, Array.new(U32, capacity(n), 0), 0), n}
-
 def empty() -> Buf: Buf{Array.new(U32, 0n, 0), 0}
 
 # Allocate a buffer of `n` bytes with all words zero; pieces are then written
@@ -534,24 +490,6 @@ def alloc(+n: U32) -> Buf: Buf{Array.new(U32, capacity(n), 0), n}
 def fill_at(b: Buf, +byte_off: U32, xs: +List<U32>) -> Buf:
   match b:
     case Buf{ws, +n}: Buf{fill_go(xs, ws, U32.shrn(byte_off, 2n)), n}
-
-# ---------------------------------------------------------------------------
-# Views used by proofs, transports and test oracles only, never on a measured
-# runtime path. The pending read is threaded as the last argument so that the
-# loop stays a single self-recursive definition: `pair` holds byte i - 1, the
-# next one to prepend. (Until 2026-09-22 the first pending read was byte 0, so
-# the view came out rotated by one byte; proofs/obj/spec_codec.bend found it.)
-def to_list_go(+k: Nat, +i: U32, acc: +List<U32>, pair: Buf & U32) -> Buf & +List<U32>:
-  match k pair:
-    case 0n Tuple{b, v}: (b, acc)
-    case 1n+p Tuple{b, v}: to_list_go(p, (i - 1 : U32), v <> acc, byte_at(b, (i - 2 : U32)))
-
-def to_list_at(pair: Buf & U32) -> Buf & +List<U32>:
-  (b, +n) = pair
-  to_list_go(U32.to_nat(n), n, [], byte_at(b, (n - 1 : U32)))
-
-def to_list(b: Buf) -> Buf & +List<U32>:
-  to_list_at(size(b))
 
 # Consumes a buffer, folding every word so nothing is left unforced.
 def fold(a: Array<U32>) -> U32:

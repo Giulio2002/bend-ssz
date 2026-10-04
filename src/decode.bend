@@ -460,11 +460,6 @@ def gate(ok: Bool, next: Unit -> Maybe<&2, C.CValue>) -> Maybe<&2, C.CValue>:
     case False{}: None{}
     case True{}: next(Unit{})
 
-# The compact decoder over packed storage: the one implementation every
-# public entry point uses.
-def decode_packed(+schema: T.Schema, +input: Pack.Slice) -> Maybe<&2, C.CValue>:
-  gate(S.valid(schema), u => result(go(schema, 1n, 0n, Region{Pack.slice_size(input), input})))
-
 # The list entry point packs its input first, checking the byte domain.
 def decode(+schema: T.Schema, +xs: +List<U32>) -> Maybe<&2, C.CValue>:
   gate(S.valid(schema), u => measured(Pack.pack_list(xs), schema))

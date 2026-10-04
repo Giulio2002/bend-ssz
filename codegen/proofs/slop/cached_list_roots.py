@@ -22,6 +22,13 @@ exactly when the same leaves are hashed in the same tree), with a, b two differe
   <X>_vroot_<kp>_cache_end        cget at the length is None, cget inside is some; cset at the length is refused, inside accepted
   <X>_vroot_<kp>_cache_limit      (limit <= 16) capp at limit - 1 elements is accepted, at the limit refused
   <X>_vroot_<kp>_cache_dok        `O.cache_dok`: a depth of 32 or more is never accepted, a depth needs 2^d slots
+  <X>_vroot_<kp>_cache_take_<i>   (the kinds with `_ctake`; round 8: d01/18) a clean tree of [a b a], ctake i (i = 0, 2), then the root = the root of the
+                                  list the plain `_take` leaves: the taken slot is marked dirty (an absent box is the zero leaf of both)
+
+Round 8 (d01/14, d01/15, d01/18): EVERY list kind with a cached tree has these laws, and the generator stops when one has none (the coverage
+gate). The elements: a progressive container is varied through its unchecked `_go` setter, a container of byte vectors only (HistoricalSummary,
+ConsolidationRequest) through the first word of its first vector, and the transactions list (byte-list elements, whose root unfolds a tree
+of 2^25 chunks unless the list is empty) holds empty byte lists only.
 
 Each is one module (the proofs stay under 2 minutes). Filed by api_gate under `root` (the `_vroot_` late rule).
 """
@@ -47,27 +54,41 @@ LIMIT_MAX = 16
 PLAIN_MAX = 1 << 13        # the largest limit whose plain root the checker unfolds (a unary tree of 2^depth chunks)
 
 
-def variant(tx, decls, E, depth=0):
+def variant(tx, decls, E, depth=0, words=None):
     """a value of the composite E that differs from E_default(), built from its setters (None when no scalar field is reachable)"""
+    if words is None:
+        # a scalar field anywhere first (the laws written before round 8 keep their elements); a word vector only when there is none
+        return variant(tx, decls, E, depth, False) or variant(tx, decls, E, depth, True)
     if depth > 4 or E not in decls:
         return None
+    if words and decls[E] and all(ty == 'U32' for _, ty in decls[E]) and f'{E}_default' not in tx.blk:
+        # a word vector (Bytes20, Bytes32, Bytes48: a record of U32 words with no setters of its own): its first word is 1 (round 8: the
+        # cached trees of HistoricalSummary and ConsolidationRequest, whose fields are all byte vectors)
+        return f'T.{E}{{{", ".join(["1"] + ["0"] * (len(decls[E]) - 1))}}}'
     for fn, ty in decls[E]:
-        setter = f'T.{E}_set_{fn}'
-        if f'{E}_set_{fn}' not in tx.blk:
+        name = f'{E}_set_{fn}'
+        if name not in tx.blk:
             continue
+        # a progressive container's checked setter answers the object and the flag: its unchecked `_go` body (or the first component)
+        pair = ' & Bool' in tx.blk[name].split('\n', 1)[0].split('->')[-1]
+        if pair and f'{name}_go' in tx.blk:
+            name, pair = f'{name}_go', False
+        setter = f'T.{name}'
+
+        def put(v):
+            return f'Pair.fst(T.{E}, Bool, {setter}(T.{E}_default(), {v}))' if pair else f'{setter}(T.{E}_default(), {v})'
         if ty == 'O.U64':
-            return f'{setter}(T.{E}_default(), O.U64{{1, 0}})'
+            return put('O.U64{1, 0}')
         if ty == 'U32':
-            return f'{setter}(T.{E}_default(), 1)'
+            return put('1')
         if ty == 'Bool':
-            return f'{setter}(T.{E}_default(), True{{}})'
+            return put('True{}')
         m = re.fullmatch(r'O\.Boxed<(\w+)>', ty)
         inner = m.group(1) if m else ty
         if inner in decls and not inner.startswith(f'{E}_g'):
-            v = variant(tx, decls, inner, depth + 1)
+            v = variant(tx, decls, inner, depth + 1, words)
             if v is not None:
-                wrapped = f'T.{inner}_bx_wrap({v})' if m else v
-                return f'{setter}(T.{E}_default(), {wrapped})'
+                return put(f'T.{inner}_bx_wrap({v})' if m else v)
     return None
 
 
@@ -151,6 +172,12 @@ def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget'):
         for i in range(Lm - 1):
             almost = f'ca({almost}, {els[i % 2]})'
         law('limit', '', f'({_flag(f"{T}_capp({almost}, {a})")}, {_flag(f"{T}_capp({full}, {a})")}) == (True{{}}, False{{}}) : Bool & Bool')
+    if getter == 'ctake':
+        # (round 8: d01/18) `_ctake` moves the element out of a CLEAN tree and must mark its slot dirty: the cached root afterwards is the root of
+        # the list the plain `_take` leaves (the slot an absent box, a zero leaf for both); a ctake that keeps the dirty window answers the old leaf
+        clean = f'rc(hl, {T}_cache({seq(k3)}))'
+        for i in sorted({0, k3 - 1}):
+            law(f'take_{i}', '+hl: Nat', f'{R(f"Pair.fst(CACHED, MAYBE, {T}_ctake({clean}, {i}))")} == {P(f"Pair.fst({T}_Seq, MAYBE, {T}_take({seq(k3)}, {i}))")} : D.Digest')
     law('dok', '', '(O.cache_dok(Nat.is_lt(32n, 32n), 32n, 4294967295), (O.cache_dok(Nat.is_lt(31n, 32n), 31n, 2147483648), (O.cache_dok(Nat.is_lt(5n, 32n), 5n, 31), O.cache_dok(Nat.is_lt(5n, 32n), 5n, 32)))) == (False{}, (True{}, (False{}, True{}))) : Bool & (Bool & (Bool & Bool))')
     if es is not None and Lm >= 3 and first and ab[1].startswith(f'T.{E}_set_{first}('):
         # fixed-size elements are written back to back: the one non-zero byte of each variant element is where its position says (round 3: l01/04, l01/05)
@@ -204,6 +231,7 @@ def module(tmod, X, kp, E, text):
 
 def outputs():
     out = {}
+    missing = []
     schemas = {'fulu': schema.load(ROOT / 'codegen/fulu.yaml'), 'generic': {n: t for n, t, e in generic.inventory_all() if e is None}}
     for runtime, tmod in (('fulu', 'fulu_obj'), ('generic', 'generic_obj')):
         tx = MC.Text(runtime)
@@ -214,19 +242,25 @@ def outputs():
             lim = re.search(r'U32\.is_lt\(n, (\d+)\)', tx.blk.get(f'{kp}_capp_sz', '') or tx.blk.get(f'{kp}_capp', ''))
             owners = owners_of_root(tx, kp)
             if not (ap and lim and owners):
+                missing.append(f'{kp}: no append, capp limit or owner')
                 continue
             E = ap.group(1)
             ab = elements(tx, decls, E)
             st = schemas[runtime].get(E)
-            if E == 'O.Words' or (st is not None and st.kind == 'pcontainer'):     # byte-list elements root over a tree of 2^25 chunks (a unary Nat); a progressive container's setters answer pairs: documented limitations
-                continue
+            if E == 'O.Words':
+                # (round 8: d01/18) a byte-list element roots over a tree of 2^25 chunks (a unary Nat in the checker) unless it is empty: the
+                # laws of the transactions list hold empty elements only (an empty list roots at once to the zero subtree; an absent box is the zero chunk)
+                ab = ('O.words_new(0)', 'O.words_new(0)')
             es = st.fixed_size() if st is not None and st.kind == 'container' and st.fixed() else None
             if ab is None:
-                print(f'cached_list_roots: no variant element for {kp} ({E})')
+                missing.append(f'{kp}: no variant element ({E})')
                 continue
             X = owners[0]
             for tag, text in laws_of(X, kp, E, int(lim.group(1)), ab, es, decls[E][0][0] if decls.get(E) else None, fold_of(tx, kp, E), 'cget' if f'{kp}_cget' in tx.blk else 'ctake'):
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_vroot_{kp}_cache_{tag}')] = module(tmod, X, kp, E, text)
+    if missing:
+        # the coverage gate (round 8: d01/14, d01/15, the l10 and transactions trees had none): every list kind with a cached tree has its laws
+        raise SystemExit('cached_list_roots: cached list kinds without laws: ' + '; '.join(missing))
     return out
 
 

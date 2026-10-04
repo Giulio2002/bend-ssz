@@ -26,11 +26,6 @@ def unwrap(roots: Maybe<&2, +List<+List<U32>>>) -> Maybe<&2, +List<U32>>:
     case Some{Con{xs, Nil{}}}: Some{xs}
     case _: None{}
 
-def append(a: Maybe<&2, +List<+List<U32>>>, b: Maybe<&2, +List<+List<U32>>>) -> Maybe<&2, +List<+List<U32>>>:
-  match a b:
-    case Some{x} Some{y}: Some{Lists.append(+List<U32>, x, y)}
-    case _ _: None{}
-
 def packed(bytes: Maybe<&2, +List<U32>>) -> Maybe<&2, +List<+List<U32>>>:
   match bytes:
     case None{}: None{}
