@@ -85,4 +85,4 @@ def SignedBeaconBlockHeader_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & May
     case True{}: SignedBeaconBlockHeader_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SignedBeaconBlockHeader_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>: SignedBeaconBlockHeader_dcb(U32.is_le(SignedBeaconBlockHeader_dcost(size), budget), buf, size)
+def SignedBeaconBlockHeader_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>: SignedBeaconBlockHeader_dcb(Bool.and(U32.is_lt(SignedBeaconBlockHeader_dcost(size), 4294967295), U32.is_le(SignedBeaconBlockHeader_dcost(size), budget)), buf, size)

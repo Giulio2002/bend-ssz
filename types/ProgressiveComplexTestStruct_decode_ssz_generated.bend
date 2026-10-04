@@ -263,4 +263,4 @@ def ProgressiveComplexTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf 
     case True{}: ProgressiveComplexTestStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def ProgressiveComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dcb(U32.is_le(ProgressiveComplexTestStruct_dcost(size), budget), buf, size)
+def ProgressiveComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_dcost(size), budget)), buf, size)

@@ -50,14 +50,14 @@ def SignedVoluntaryExit_decode_vchecked_budget_cost()
     -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(4096) == 524288 : U32}:
   {==}
 
-def SignedVoluntaryExit_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget) == False{} : Bool})
+def SignedVoluntaryExit_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget)) == False{} : Bool})
     -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
-  %Equal.sym(Bool, U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget), False{}, h) : {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget)), False{}, h) : {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}
   {==}
 
-def SignedVoluntaryExit_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget) == True{} : Bool})
+def SignedVoluntaryExit_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget)) == True{} : Bool})
     -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked_budget(buf, size, budget) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
-  %Equal.sym(Bool, U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget), True{}, h) : {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcb(_, buf, size) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget)), True{}, h) : {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcb(_, buf, size) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}
   {==}
 
 def SignedVoluntaryExit_decode_vchecked_budget_zero()

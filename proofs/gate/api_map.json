@@ -494,6 +494,14 @@
      "law": "boolean_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/fulu_boolean_decode_checked_generated.bend",
+     "law": "boolean_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_boolean_decode_checked_generated.bend",
+     "law": "boolean_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_boolean_decode_literal_bad_generated.bend",
      "law": "boolean_decode_vlit_bad_short"
     },
@@ -641,6 +649,14 @@
     {
      "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
      "law": "uint8_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
+     "law": "uint8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_uint8_decode_checked_generated.bend",
+     "law": "uint8_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_uint8_decode_literal_bad_generated.bend",
@@ -806,6 +822,14 @@
     {
      "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
      "law": "uint32_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
+     "law": "uint32_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_uint32_decode_checked_generated.bend",
+     "law": "uint32_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_uint32_decode_literal_bad_generated.bend",
@@ -975,6 +999,14 @@
     {
      "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
      "law": "uint64_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
+     "law": "uint64_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_uint64_decode_checked_generated.bend",
+     "law": "uint64_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_uint64_decode_literal_bad_generated.bend",
@@ -1166,6 +1198,14 @@
      "law": "uint256_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_uint256_decode_checked_generated.bend",
+     "law": "uint256_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_uint256_decode_checked_generated.bend",
+     "law": "uint256_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_uint256_decode_literal_bad_generated.bend",
      "law": "uint256_decode_vlit_bad_short"
     },
@@ -1329,6 +1369,14 @@
     {
      "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
      "law": "Bytes1_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
+     "law": "Bytes1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes1_decode_checked_generated.bend",
+     "law": "Bytes1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Bytes1_decode_literal_bad_generated.bend",
@@ -1514,6 +1562,14 @@
     {
      "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
      "law": "Bytes4_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
+     "law": "Bytes4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes4_decode_checked_generated.bend",
+     "law": "Bytes4_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Bytes4_decode_literal_bad_generated.bend",
@@ -1709,6 +1765,14 @@
      "law": "Bytes32_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
+     "law": "Bytes32_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes32_decode_checked_generated.bend",
+     "law": "Bytes32_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Bytes32_decode_literal_bad_generated.bend",
      "law": "Bytes32_decode_vlit_bad_short"
     },
@@ -1902,6 +1966,14 @@
      "law": "Bytes48_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
+     "law": "Bytes48_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes48_decode_checked_generated.bend",
+     "law": "Bytes48_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Bytes48_decode_literal_bad_generated.bend",
      "law": "Bytes48_decode_vlit_bad_short"
     },
@@ -2089,6 +2161,14 @@
     {
      "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
      "law": "Bytes96_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
+     "law": "Bytes96_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes96_decode_checked_generated.bend",
+     "law": "Bytes96_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Bytes96_decode_literal_bad_generated.bend",
@@ -2284,6 +2364,14 @@
      "law": "Bytes8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
+     "law": "Bytes8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes8_decode_checked_generated.bend",
+     "law": "Bytes8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Bytes8_decode_literal_bad_generated.bend",
      "law": "Bytes8_decode_vlit_bad_short"
     },
@@ -2477,6 +2565,14 @@
      "law": "Bytes20_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
+     "law": "Bytes20_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Bytes20_decode_checked_generated.bend",
+     "law": "Bytes20_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Bytes20_decode_literal_bad_generated.bend",
      "law": "Bytes20_decode_vlit_bad_short"
     },
@@ -2644,6 +2740,14 @@
     {
      "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
      "law": "Slot_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
+     "law": "Slot_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Slot_decode_checked_generated.bend",
+     "law": "Slot_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Slot_decode_literal_bad_generated.bend",
@@ -2815,6 +2919,14 @@
      "law": "Epoch_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Epoch_decode_checked_generated.bend",
+     "law": "Epoch_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Epoch_decode_checked_generated.bend",
+     "law": "Epoch_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Epoch_decode_literal_bad_generated.bend",
      "law": "Epoch_decode_vlit_bad_short"
     },
@@ -2982,6 +3094,14 @@
     {
      "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
      "law": "Gwei_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
+     "law": "Gwei_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Gwei_decode_checked_generated.bend",
+     "law": "Gwei_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Gwei_decode_literal_bad_generated.bend",
@@ -3173,6 +3293,14 @@
      "law": "Hash32_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Hash32_decode_checked_generated.bend",
+     "law": "Hash32_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Hash32_decode_checked_generated.bend",
+     "law": "Hash32_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Hash32_decode_literal_bad_generated.bend",
      "law": "Hash32_decode_vlit_bad_short"
     },
@@ -3358,6 +3486,14 @@
      "law": "Version_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/fulu_Version_decode_checked_generated.bend",
+     "law": "Version_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Version_decode_checked_generated.bend",
+     "law": "Version_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Version_decode_literal_bad_generated.bend",
      "law": "Version_decode_vlit_bad_short"
     },
@@ -3541,6 +3677,14 @@
     {
      "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
      "law": "DomainType_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
+     "law": "DomainType_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DomainType_decode_checked_generated.bend",
+     "law": "DomainType_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_DomainType_decode_literal_bad_generated.bend",
@@ -3730,6 +3874,14 @@
     {
      "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
      "law": "BLSSignature_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
+     "law": "BLSSignature_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BLSSignature_decode_checked_generated.bend",
+     "law": "BLSSignature_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_BLSSignature_decode_literal_bad_generated.bend",
@@ -3961,6 +4113,14 @@
      "law": "FinalityBranch_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
+     "law": "FinalityBranch_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_FinalityBranch_decode_checked_generated.bend",
+     "law": "FinalityBranch_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_FinalityBranch_decode_literal_bad_generated.bend",
      "law": "FinalityBranch_decode_vlit_bad_short"
     },
@@ -4144,6 +4304,14 @@
     {
      "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
      "law": "VersionedHash_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
+     "law": "VersionedHash_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_VersionedHash_decode_checked_generated.bend",
+     "law": "VersionedHash_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_VersionedHash_decode_literal_bad_generated.bend",
@@ -4335,6 +4503,14 @@
      "law": "G1Point_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_G1Point_decode_checked_generated.bend",
+     "law": "G1Point_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_G1Point_decode_checked_generated.bend",
+     "law": "G1Point_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_G1Point_decode_literal_bad_generated.bend",
      "law": "G1Point_decode_vlit_bad_short"
     },
@@ -4524,6 +4700,14 @@
      "law": "G2Point_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_G2Point_decode_checked_generated.bend",
+     "law": "G2Point_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_G2Point_decode_checked_generated.bend",
+     "law": "G2Point_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_G2Point_decode_literal_bad_generated.bend",
      "law": "G2Point_decode_vlit_bad_short"
     },
@@ -4699,6 +4883,14 @@
     {
      "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
      "law": "Fork_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
+     "law": "Fork_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Fork_decode_checked_generated.bend",
+     "law": "Fork_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Fork_decode_literal_bad_generated.bend",
@@ -4890,6 +5082,14 @@
      "law": "SyncAggregate_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
+     "law": "SyncAggregate_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregate_decode_checked_generated.bend",
+     "law": "SyncAggregate_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_SyncAggregate_decode_literal_bad_generated.bend",
      "law": "SyncAggregate_decode_vlit_bad_short"
     },
@@ -5065,6 +5265,14 @@
     {
      "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
      "law": "SyncAggregatorSelectionData_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
+     "law": "SyncAggregatorSelectionData_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_checked_generated.bend",
+     "law": "SyncAggregatorSelectionData_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SyncAggregatorSelectionData_decode_literal_bad_generated.bend",
@@ -5248,6 +5456,14 @@
      "law": "PowBlock_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
+     "law": "PowBlock_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PowBlock_decode_checked_generated.bend",
+     "law": "PowBlock_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_PowBlock_decode_literal_bad_generated.bend",
      "law": "PowBlock_decode_vlit_bad_short"
     },
@@ -5421,6 +5637,14 @@
      "law": "CommitteeIndex_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
+     "law": "CommitteeIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_CommitteeIndex_decode_checked_generated.bend",
+     "law": "CommitteeIndex_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_CommitteeIndex_decode_literal_bad_generated.bend",
      "law": "CommitteeIndex_decode_vlit_bad_short"
     },
@@ -5588,6 +5812,14 @@
     {
      "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
      "law": "ValidatorIndex_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
+     "law": "ValidatorIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ValidatorIndex_decode_checked_generated.bend",
+     "law": "ValidatorIndex_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ValidatorIndex_decode_literal_bad_generated.bend",
@@ -5765,6 +5997,14 @@
     {
      "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
      "law": "PendingConsolidation_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
+     "law": "PendingConsolidation_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PendingConsolidation_decode_checked_generated.bend",
+     "law": "PendingConsolidation_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_PendingConsolidation_decode_literal_bad_generated.bend",
@@ -5948,6 +6188,14 @@
      "law": "PendingPartialWithdrawal_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
+     "law": "PendingPartialWithdrawal_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_checked_generated.bend",
+     "law": "PendingPartialWithdrawal_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_PendingPartialWithdrawal_decode_literal_bad_generated.bend",
      "law": "PendingPartialWithdrawal_decode_vlit_bad_short"
     },
@@ -6129,6 +6377,14 @@
      "law": "VoluntaryExit_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
+     "law": "VoluntaryExit_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_VoluntaryExit_decode_checked_generated.bend",
+     "law": "VoluntaryExit_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_VoluntaryExit_decode_literal_bad_generated.bend",
      "law": "VoluntaryExit_decode_vlit_bad_short"
     },
@@ -6308,6 +6564,14 @@
     {
      "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
      "law": "SignedVoluntaryExit_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
+     "law": "SignedVoluntaryExit_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedVoluntaryExit_decode_checked_generated.bend",
+     "law": "SignedVoluntaryExit_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SignedVoluntaryExit_decode_literal_bad_generated.bend",
@@ -6503,6 +6767,14 @@
      "law": "Root_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Root_decode_checked_generated.bend",
+     "law": "Root_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Root_decode_checked_generated.bend",
+     "law": "Root_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Root_decode_literal_bad_generated.bend",
      "law": "Root_decode_vlit_bad_short"
     },
@@ -6678,6 +6950,14 @@
     {
      "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
      "law": "HistoricalSummary_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
+     "law": "HistoricalSummary_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_HistoricalSummary_decode_checked_generated.bend",
+     "law": "HistoricalSummary_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_HistoricalSummary_decode_literal_bad_generated.bend",
@@ -6867,6 +7147,14 @@
     {
      "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
      "law": "SyncCommitteeContribution_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
+     "law": "SyncCommitteeContribution_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeContribution_decode_checked_generated.bend",
+     "law": "SyncCommitteeContribution_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SyncCommitteeContribution_decode_literal_bad_generated.bend",
@@ -7066,6 +7354,14 @@
      "law": "ContributionAndProof_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
+     "law": "ContributionAndProof_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ContributionAndProof_decode_checked_generated.bend",
+     "law": "ContributionAndProof_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ContributionAndProof_decode_literal_bad_generated.bend",
      "law": "ContributionAndProof_decode_vlit_bad_short"
     },
@@ -7263,6 +7559,14 @@
      "law": "SignedContributionAndProof_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
+     "law": "SignedContributionAndProof_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedContributionAndProof_decode_checked_generated.bend",
+     "law": "SignedContributionAndProof_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_SignedContributionAndProof_decode_literal_bad_generated.bend",
      "law": "SignedContributionAndProof_decode_vlit_bad_short"
     },
@@ -7440,6 +7744,14 @@
      "law": "SyncCommitteeMessage_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
+     "law": "SyncCommitteeMessage_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SyncCommitteeMessage_decode_checked_generated.bend",
+     "law": "SyncCommitteeMessage_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_SyncCommitteeMessage_decode_literal_bad_generated.bend",
      "law": "SyncCommitteeMessage_decode_vlit_bad_short"
     },
@@ -7615,6 +7927,14 @@
     {
      "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
      "law": "Eth1Block_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
+     "law": "Eth1Block_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Block_decode_checked_generated.bend",
+     "law": "Eth1Block_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Eth1Block_decode_literal_bad_generated.bend",
@@ -7796,6 +8116,14 @@
     {
      "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
      "law": "BeaconBlockHeader_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
+     "law": "BeaconBlockHeader_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockHeader_decode_checked_generated.bend",
+     "law": "BeaconBlockHeader_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockHeader_decode_literal_bad_generated.bend",
@@ -7985,6 +8313,14 @@
     {
      "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
      "law": "SignedBeaconBlockHeader_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
+     "law": "SignedBeaconBlockHeader_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_checked_generated.bend",
+     "law": "SignedBeaconBlockHeader_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SignedBeaconBlockHeader_decode_literal_bad_generated.bend",
@@ -8201,6 +8537,14 @@
      "law": "ProposerSlashing_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
+     "law": "ProposerSlashing_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ProposerSlashing_decode_checked_generated.bend",
+     "law": "ProposerSlashing_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ProposerSlashing_decode_literal_bad_generated.bend",
      "law": "ProposerSlashing_decode_vlit_bad_short"
     },
@@ -8385,6 +8729,10 @@
      "law": "HistoricalBatch_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_HistoricalBatch_decode_checked_generated.bend",
+     "law": "HistoricalBatch_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/HistoricalBatch_generated.bend",
      "law": "HistoricalBatch_decode_build"
     },
@@ -8548,6 +8896,14 @@
     {
      "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
      "law": "Eth1Data_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
+     "law": "Eth1Data_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Eth1Data_decode_checked_generated.bend",
+     "law": "Eth1Data_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Eth1Data_decode_literal_bad_generated.bend",
@@ -8731,6 +9087,14 @@
      "law": "Checkpoint_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+     "law": "Checkpoint_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Checkpoint_decode_checked_generated.bend",
+     "law": "Checkpoint_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Checkpoint_decode_literal_bad_generated.bend",
      "law": "Checkpoint_decode_vlit_bad_short"
     },
@@ -8912,6 +9276,14 @@
      "law": "AttestationData_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
+     "law": "AttestationData_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_AttestationData_decode_checked_generated.bend",
+     "law": "AttestationData_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_AttestationData_decode_literal_bad_generated.bend",
      "law": "AttestationData_decode_vlit_bad_short"
     },
@@ -9091,6 +9463,14 @@
     {
      "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
      "law": "SingleAttestation_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
+     "law": "SingleAttestation_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SingleAttestation_decode_checked_generated.bend",
+     "law": "SingleAttestation_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SingleAttestation_decode_literal_bad_generated.bend",
@@ -9340,6 +9720,14 @@
      "law": "Attestation_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
+     "law": "Attestation_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_decode_checked_generated.bend",
+     "law": "Attestation_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Attestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend",
      "law": "Attestation_decode_vlit_bad_aggregation_bits_nodelim"
     },
@@ -9516,6 +9904,14 @@
      "law": "AggregateAndProof_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
+     "law": "AggregateAndProof_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_AggregateAndProof_decode_checked_generated.bend",
+     "law": "AggregateAndProof_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_AggregateAndProof_decode_literal_bad_aggregate_aggregation_bits_nodelim_generated.bend",
      "law": "AggregateAndProof_decode_vlit_bad_aggregate_aggregation_bits_nodelim"
     },
@@ -9681,6 +10077,14 @@
     {
      "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
      "law": "SignedAggregateAndProof_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
+     "law": "SignedAggregateAndProof_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedAggregateAndProof_decode_checked_generated.bend",
+     "law": "SignedAggregateAndProof_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_message_aggregate_aggregation_bits_nodelim_generated.bend",
@@ -9921,6 +10325,14 @@
     {
      "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
      "law": "PendingAttestation_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
+     "law": "PendingAttestation_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_decode_checked_generated.bend",
+     "law": "PendingAttestation_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_PendingAttestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend",
@@ -10191,6 +10603,14 @@
      "law": "IndexedAttestation_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
+     "law": "IndexedAttestation_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_checked_generated.bend",
+     "law": "IndexedAttestation_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_IndexedAttestation_decode_literal_bad_attesting_indices_ragged_generated.bend",
      "law": "IndexedAttestation_decode_vlit_bad_attesting_indices_ragged"
     },
@@ -10441,6 +10861,14 @@
     {
      "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
      "law": "AttesterSlashing_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
+     "law": "AttesterSlashing_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_AttesterSlashing_decode_checked_generated.bend",
+     "law": "AttesterSlashing_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_generated.bend",
@@ -10696,6 +11124,14 @@
      "law": "ForkData_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ForkData_decode_checked_generated.bend",
+     "law": "ForkData_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ForkData_decode_checked_generated.bend",
+     "law": "ForkData_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ForkData_decode_literal_bad_generated.bend",
      "law": "ForkData_decode_vlit_bad_short"
     },
@@ -10883,6 +11319,14 @@
     {
      "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
      "law": "ForkDigest_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
+     "law": "ForkDigest_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ForkDigest_decode_checked_generated.bend",
+     "law": "ForkDigest_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ForkDigest_decode_literal_bad_generated.bend",
@@ -11074,6 +11518,14 @@
      "law": "Domain_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Domain_decode_checked_generated.bend",
+     "law": "Domain_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Domain_decode_checked_generated.bend",
+     "law": "Domain_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Domain_decode_literal_bad_generated.bend",
      "law": "Domain_decode_vlit_bad_short"
     },
@@ -11249,6 +11701,14 @@
     {
      "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
      "law": "SigningData_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
+     "law": "SigningData_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SigningData_decode_checked_generated.bend",
+     "law": "SigningData_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SigningData_decode_literal_bad_generated.bend",
@@ -11444,6 +11904,14 @@
      "law": "BLSPubkey_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
+     "law": "BLSPubkey_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BLSPubkey_decode_checked_generated.bend",
+     "law": "BLSPubkey_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_BLSPubkey_decode_literal_bad_generated.bend",
      "law": "BLSPubkey_decode_vlit_bad_short"
     },
@@ -11621,6 +12089,14 @@
      "law": "DepositRequest_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
+     "law": "DepositRequest_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DepositRequest_decode_checked_generated.bend",
+     "law": "DepositRequest_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_DepositRequest_decode_literal_bad_generated.bend",
      "law": "DepositRequest_decode_vlit_bad_short"
     },
@@ -11796,6 +12272,14 @@
     {
      "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
      "law": "PendingDeposit_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
+     "law": "PendingDeposit_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PendingDeposit_decode_checked_generated.bend",
+     "law": "PendingDeposit_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_PendingDeposit_decode_literal_bad_generated.bend",
@@ -11982,6 +12466,10 @@
      "law": "SyncCommittee_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_SyncCommittee_decode_checked_generated.bend",
+     "law": "SyncCommittee_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/SyncCommittee_generated.bend",
      "law": "SyncCommittee_decode_build"
     },
@@ -12153,6 +12641,14 @@
     {
      "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
      "law": "DepositData_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
+     "law": "DepositData_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DepositData_decode_checked_generated.bend",
+     "law": "DepositData_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_DepositData_decode_literal_bad_generated.bend",
@@ -12385,6 +12881,14 @@
      "law": "Deposit_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Deposit_decode_checked_generated.bend",
+     "law": "Deposit_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Deposit_decode_checked_generated.bend",
+     "law": "Deposit_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Deposit_decode_literal_bad_generated.bend",
      "law": "Deposit_decode_vlit_bad_short"
     },
@@ -12562,6 +13066,14 @@
      "law": "DepositMessage_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
+     "law": "DepositMessage_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DepositMessage_decode_checked_generated.bend",
+     "law": "DepositMessage_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_DepositMessage_decode_literal_bad_generated.bend",
      "law": "DepositMessage_decode_vlit_bad_short"
     },
@@ -12716,6 +13228,14 @@
     {
      "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
      "law": "Validator_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
+     "law": "Validator_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Validator_decode_checked_generated.bend",
+     "law": "Validator_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Validator_decode_literal_bad_generated.bend",
@@ -12915,6 +13435,14 @@
      "law": "NodeID_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_NodeID_decode_checked_generated.bend",
+     "law": "NodeID_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_NodeID_decode_checked_generated.bend",
+     "law": "NodeID_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_NodeID_decode_literal_bad_generated.bend",
      "law": "NodeID_decode_vlit_bad_short"
     },
@@ -13082,6 +13610,14 @@
     {
      "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
      "law": "SubnetID_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
+     "law": "SubnetID_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SubnetID_decode_checked_generated.bend",
+     "law": "SubnetID_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SubnetID_decode_literal_bad_generated.bend",
@@ -13253,6 +13789,14 @@
      "law": "Ether_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Ether_decode_checked_generated.bend",
+     "law": "Ether_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Ether_decode_checked_generated.bend",
+     "law": "Ether_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Ether_decode_literal_bad_generated.bend",
      "law": "Ether_decode_vlit_bad_short"
     },
@@ -13396,6 +13940,14 @@
     {
      "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
      "law": "ParticipationFlags_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
+     "law": "ParticipationFlags_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ParticipationFlags_decode_checked_generated.bend",
+     "law": "ParticipationFlags_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ParticipationFlags_decode_literal_bad_generated.bend",
@@ -13623,6 +14175,14 @@
      "law": "CurrentSyncCommitteeBranch_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "CurrentSyncCommitteeBranch_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_CurrentSyncCommitteeBranch_decode_literal_bad_generated.bend",
      "law": "CurrentSyncCommitteeBranch_decode_vlit_bad_short"
     },
@@ -13830,6 +14390,14 @@
     {
      "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
      "law": "NextSyncCommitteeBranch_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "NextSyncCommitteeBranch_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_checked_generated.bend",
+     "law": "NextSyncCommitteeBranch_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_NextSyncCommitteeBranch_decode_literal_bad_generated.bend",
@@ -14047,6 +14615,10 @@
      "law": "Transaction_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Transaction_decode_checked_generated.bend",
+     "law": "Transaction_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/validity/fulu_Transaction_decode_literal_ok_generated.bend",
      "law": "Transaction_decode_vlit_ok_default"
     },
@@ -14232,6 +14804,14 @@
      "law": "ExecutionAddress_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
+     "law": "ExecutionAddress_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionAddress_decode_checked_generated.bend",
+     "law": "ExecutionAddress_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionAddress_decode_literal_bad_generated.bend",
      "law": "ExecutionAddress_decode_vlit_bad_short"
     },
@@ -14407,6 +14987,14 @@
     {
      "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
      "law": "ConsolidationRequest_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
+     "law": "ConsolidationRequest_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ConsolidationRequest_decode_checked_generated.bend",
+     "law": "ConsolidationRequest_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ConsolidationRequest_decode_literal_bad_generated.bend",
@@ -14588,6 +15176,14 @@
     {
      "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
      "law": "WithdrawalRequest_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
+     "law": "WithdrawalRequest_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalRequest_decode_checked_generated.bend",
+     "law": "WithdrawalRequest_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_WithdrawalRequest_decode_literal_bad_generated.bend",
@@ -14929,6 +15525,14 @@
      "law": "ExecutionRequests_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
+     "law": "ExecutionRequests_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_checked_generated.bend",
+     "law": "ExecutionRequests_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_decode_literal_bad_consolidations_over_generated.bend",
      "law": "ExecutionRequests_decode_vlit_bad_consolidations_over"
     },
@@ -15234,6 +15838,14 @@
      "law": "BLSToExecutionChange_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
+     "law": "BLSToExecutionChange_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BLSToExecutionChange_decode_checked_generated.bend",
+     "law": "BLSToExecutionChange_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_BLSToExecutionChange_decode_literal_bad_generated.bend",
      "law": "BLSToExecutionChange_decode_vlit_bad_short"
     },
@@ -15413,6 +16025,14 @@
     {
      "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
      "law": "SignedBLSToExecutionChange_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
+     "law": "SignedBLSToExecutionChange_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_checked_generated.bend",
+     "law": "SignedBLSToExecutionChange_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SignedBLSToExecutionChange_decode_literal_bad_generated.bend",
@@ -15714,6 +16334,14 @@
      "law": "ExecutionPayloadHeader_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_checked_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_bad_extra_data_over_generated.bend",
      "law": "ExecutionPayloadHeader_decode_vlit_bad_extra_data_over"
     },
@@ -15907,6 +16535,14 @@
      "law": "PayloadId_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
+     "law": "PayloadId_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_PayloadId_decode_checked_generated.bend",
+     "law": "PayloadId_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_PayloadId_decode_literal_bad_generated.bend",
      "law": "PayloadId_decode_vlit_bad_short"
     },
@@ -16074,6 +16710,14 @@
     {
      "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
      "law": "WithdrawalIndex_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
+     "law": "WithdrawalIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_WithdrawalIndex_decode_checked_generated.bend",
+     "law": "WithdrawalIndex_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_WithdrawalIndex_decode_literal_bad_generated.bend",
@@ -16251,6 +16895,14 @@
     {
      "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
      "law": "Withdrawal_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
+     "law": "Withdrawal_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Withdrawal_decode_checked_generated.bend",
+     "law": "Withdrawal_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_Withdrawal_decode_literal_bad_generated.bend",
@@ -16582,6 +17234,14 @@
     {
      "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
      "law": "ExecutionPayload_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+     "law": "ExecutionPayload_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_checked_generated.bend",
+     "law": "ExecutionPayload_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ExecutionPayload_decode_literal_bad_extra_data_over_generated.bend",
@@ -17464,6 +18124,10 @@
      "law": "BeaconState_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
+     "law": "BeaconState_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/BeaconState_generated.bend",
      "law": "BeaconState_decode_build"
     }
@@ -17674,6 +18338,14 @@
      "law": "ExecutionBranch_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
+     "law": "ExecutionBranch_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionBranch_decode_checked_generated.bend",
+     "law": "ExecutionBranch_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionBranch_decode_literal_bad_generated.bend",
      "law": "ExecutionBranch_decode_vlit_bad_short"
     },
@@ -17865,6 +18537,14 @@
      "law": "LightClientHeader_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
+     "law": "LightClientHeader_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientHeader_decode_checked_generated.bend",
+     "law": "LightClientHeader_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_LightClientHeader_decode_literal_bad_execution_extra_data_over_generated.bend",
      "law": "LightClientHeader_decode_vlit_bad_execution_extra_data_over"
     },
@@ -18051,6 +18731,14 @@
     {
      "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
      "law": "LightClientOptimisticUpdate_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
+     "law": "LightClientOptimisticUpdate_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_checked_generated.bend",
+     "law": "LightClientOptimisticUpdate_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_LightClientOptimisticUpdate_decode_literal_bad_attested_header_execution_extra_data_over_generated.bend",
@@ -18260,6 +18948,10 @@
      "law": "LightClientFinalityUpdate_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_decode_checked_generated.bend",
+     "law": "LightClientFinalityUpdate_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/LightClientFinalityUpdate_generated.bend",
      "law": "LightClientFinalityUpdate_decode_build"
     }
@@ -18435,6 +19127,10 @@
      "law": "LightClientUpdate_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
+     "law": "LightClientUpdate_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/LightClientUpdate_generated.bend",
      "law": "LightClientUpdate_decode_build"
     }
@@ -18584,6 +19280,10 @@
     {
      "file": "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
      "law": "LightClientBootstrap_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientBootstrap_decode_checked_generated.bend",
+     "law": "LightClientBootstrap_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/LightClientBootstrap_generated.bend",
@@ -18737,6 +19437,14 @@
     {
      "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
      "law": "BlobIndex_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
+     "law": "BlobIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIndex_decode_checked_generated.bend",
+     "law": "BlobIndex_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_BlobIndex_decode_literal_bad_generated.bend",
@@ -18914,6 +19622,14 @@
     {
      "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
      "law": "BlobIdentifier_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
+     "law": "BlobIdentifier_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BlobIdentifier_decode_checked_generated.bend",
+     "law": "BlobIdentifier_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_BlobIdentifier_decode_literal_bad_generated.bend",
@@ -19107,6 +19823,14 @@
     {
      "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
      "law": "KZGCommitment_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
+     "law": "KZGCommitment_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_KZGCommitment_decode_checked_generated.bend",
+     "law": "KZGCommitment_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_KZGCommitment_decode_literal_bad_generated.bend",
@@ -19816,6 +20540,14 @@
      "law": "BeaconBlockBody_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
+     "law": "BeaconBlockBody_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_checked_generated.bend",
+     "law": "BeaconBlockBody_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attestations_elem_aggregation_bits_nodelim_generated.bend",
      "law": "BeaconBlockBody_decode_vlit_bad_attestations_elem_aggregation_bits_nodelim"
     },
@@ -20228,6 +20960,14 @@
      "law": "BeaconBlock_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
+     "law": "BeaconBlock_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlock_decode_checked_generated.bend",
+     "law": "BeaconBlock_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlock_decode_literal_bad_body_off_minus_generated.bend",
      "law": "BeaconBlock_decode_vlit_bad_body_off_minus"
     },
@@ -20421,6 +21161,14 @@
     {
      "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
      "law": "SignedBeaconBlock_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
+     "law": "SignedBeaconBlock_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_SignedBeaconBlock_decode_checked_generated.bend",
+     "law": "SignedBeaconBlock_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_SignedBeaconBlock_decode_literal_bad_message_body_off_minus_generated.bend",
@@ -20653,6 +21401,14 @@
      "law": "KZGProof_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
+     "law": "KZGProof_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_KZGProof_decode_checked_generated.bend",
+     "law": "KZGProof_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_KZGProof_decode_literal_bad_generated.bend",
      "law": "KZGProof_decode_vlit_bad_short"
     },
@@ -20849,6 +21605,10 @@
      "law": "Blob_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Blob_decode_checked_generated.bend",
+     "law": "Blob_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/Blob_generated.bend",
      "law": "Blob_decode_build"
     }
@@ -21023,6 +21783,10 @@
     {
      "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
      "law": "BlobSidecar_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_BlobSidecar_decode_checked_generated.bend",
+     "law": "BlobSidecar_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/BlobSidecar_generated.bend",
@@ -21222,6 +21986,14 @@
      "law": "Cell_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_Cell_decode_checked_generated.bend",
+     "law": "Cell_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_Cell_decode_checked_generated.bend",
+     "law": "Cell_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_Cell_decode_literal_bad_generated.bend",
      "law": "Cell_decode_vlit_bad_short"
     },
@@ -21381,6 +22153,14 @@
     {
      "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
      "law": "CellIndex_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
+     "law": "CellIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_CellIndex_decode_checked_generated.bend",
+     "law": "CellIndex_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_CellIndex_decode_literal_bad_generated.bend",
@@ -21552,6 +22332,14 @@
      "law": "CommitmentIndex_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
+     "law": "CommitmentIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_CommitmentIndex_decode_checked_generated.bend",
+     "law": "CommitmentIndex_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_CommitmentIndex_decode_literal_bad_generated.bend",
      "law": "CommitmentIndex_decode_vlit_bad_short"
     },
@@ -21721,6 +22509,14 @@
      "law": "RowIndex_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
+     "law": "RowIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_RowIndex_decode_checked_generated.bend",
+     "law": "RowIndex_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_RowIndex_decode_literal_bad_generated.bend",
      "law": "RowIndex_decode_vlit_bad_short"
     },
@@ -21888,6 +22684,14 @@
     {
      "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
      "law": "ColumnIndex_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
+     "law": "ColumnIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_ColumnIndex_decode_checked_generated.bend",
+     "law": "ColumnIndex_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_ColumnIndex_decode_literal_bad_generated.bend",
@@ -22107,6 +22911,14 @@
     {
      "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
      "law": "DataColumnsByRootIdentifier_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_checked_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_bad_columns_over_generated.bend",
@@ -22344,6 +23156,10 @@
     {
      "file": "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
      "law": "MatrixEntry_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/fulu_MatrixEntry_decode_checked_generated.bend",
+     "law": "MatrixEntry_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/MatrixEntry_generated.bend",
@@ -22665,6 +23481,14 @@
      "law": "DataColumnSidecar_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
+     "law": "DataColumnSidecar_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_checked_generated.bend",
+     "law": "DataColumnSidecar_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_column_ragged_1_generated.bend",
      "law": "DataColumnSidecar_decode_vlit_bad_column_ragged_1"
     },
@@ -22919,6 +23743,14 @@
      "law": "CustodyIndex_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
+     "law": "CustodyIndex_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_CustodyIndex_decode_checked_generated.bend",
+     "law": "CustodyIndex_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/fulu_CustodyIndex_decode_literal_bad_generated.bend",
      "law": "CustodyIndex_decode_vlit_bad_short"
     },
@@ -23096,6 +23928,14 @@
     {
      "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_ProgressiveSingleListContainerTestStruct_decode_literal_bad_f_C_nodelim_generated.bend",
@@ -23527,6 +24367,14 @@
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveComplexTestStruct_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_B_over_generated.bend",
@@ -24100,6 +24948,14 @@
      "law": "ProgressiveVarTestStruct_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_bad_f_B_over_generated.bend",
      "law": "ProgressiveVarTestStruct_decode_vlit_bad_f_B_over"
     },
@@ -24318,6 +25174,14 @@
     {
      "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveSingleFieldContainerTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_ProgressiveSingleFieldContainerTestStruct_decode_literal_bad_generated.bend",
@@ -24573,6 +25437,10 @@
     {
      "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
      "law": "proglist_bool_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_proglist_bool_decode_checked_generated.bend",
+     "law": "proglist_bool_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/validity/generic_proglist_bool_decode_literal_bad_generated.bend",
@@ -24890,6 +25758,14 @@
      "law": "vec_bool_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
+     "law": "vec_bool_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_16_decode_checked_generated.bend",
+     "law": "vec_bool_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_16_decode_literal_bad_generated.bend",
      "law": "vec_bool_16_decode_vlit_bad_short"
     },
@@ -25201,6 +26077,14 @@
      "law": "vec_bool_1_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
+     "law": "vec_bool_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_1_decode_checked_generated.bend",
+     "law": "vec_bool_1_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_1_decode_literal_bad_generated.bend",
      "law": "vec_bool_1_decode_vlit_bad_short"
     },
@@ -25450,6 +26334,14 @@
     {
      "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
      "law": "vec_bool_2_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
+     "law": "vec_bool_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_decode_checked_generated.bend",
+     "law": "vec_bool_2_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_bool_2_decode_literal_bad_generated.bend",
@@ -25741,6 +26633,14 @@
     {
      "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
      "law": "vec_bool_31_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
+     "law": "vec_bool_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_31_decode_checked_generated.bend",
+     "law": "vec_bool_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_bool_31_decode_literal_bad_generated.bend",
@@ -26122,6 +27022,14 @@
      "law": "vec_bool_3_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
+     "law": "vec_bool_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_decode_checked_generated.bend",
+     "law": "vec_bool_3_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_3_decode_literal_bad_generated.bend",
      "law": "vec_bool_3_decode_vlit_bad_short"
     },
@@ -26407,6 +27315,14 @@
     {
      "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
      "law": "vec_bool_4_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
+     "law": "vec_bool_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_decode_checked_generated.bend",
+     "law": "vec_bool_4_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_bool_4_decode_literal_bad_generated.bend",
@@ -26702,6 +27618,14 @@
     {
      "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
      "law": "vec_bool_512_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
+     "law": "vec_bool_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_decode_checked_generated.bend",
+     "law": "vec_bool_512_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_bool_512_decode_literal_bad_generated.bend",
@@ -27231,6 +28155,14 @@
      "law": "vec_bool_513_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
+     "law": "vec_bool_513_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_513_decode_checked_generated.bend",
+     "law": "vec_bool_513_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_513_decode_literal_bad_generated.bend",
      "law": "vec_bool_513_decode_vlit_bad_short"
     },
@@ -27754,6 +28686,14 @@
      "law": "vec_bool_5_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
+     "law": "vec_bool_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_decode_checked_generated.bend",
+     "law": "vec_bool_5_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_5_decode_literal_bad_generated.bend",
      "law": "vec_bool_5_decode_vlit_bad_short"
     },
@@ -28077,6 +29017,14 @@
      "law": "vec_bool_8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
+     "law": "vec_bool_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_8_decode_checked_generated.bend",
+     "law": "vec_bool_8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_8_decode_literal_bad_generated.bend",
      "law": "vec_bool_8_decode_vlit_bad_short"
     },
@@ -28290,6 +29238,10 @@
     {
      "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
      "law": "proglist_uint128_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_decode_checked_generated.bend",
+     "law": "proglist_uint128_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/validity/generic_proglist_uint128_decode_literal_bad_generated.bend",
@@ -28541,6 +29493,14 @@
      "law": "vec_uint128_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
+     "law": "vec_uint128_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_16_decode_checked_generated.bend",
+     "law": "vec_uint128_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint128_16_decode_literal_bad_generated.bend",
      "law": "vec_uint128_16_decode_vlit_bad_short"
     },
@@ -28770,6 +29730,14 @@
      "law": "vec_uint128_1_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
+     "law": "vec_uint128_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_1_decode_checked_generated.bend",
+     "law": "vec_uint128_1_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint128_1_decode_literal_bad_generated.bend",
      "law": "vec_uint128_1_decode_vlit_bad_short"
     },
@@ -28995,6 +29963,14 @@
      "law": "vec_uint128_2_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
+     "law": "vec_uint128_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_2_decode_checked_generated.bend",
+     "law": "vec_uint128_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint128_2_decode_literal_bad_generated.bend",
      "law": "vec_uint128_2_decode_vlit_bad_short"
     },
@@ -29202,6 +30178,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
      "law": "vec_uint128_31_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
+     "law": "vec_uint128_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_31_decode_checked_generated.bend",
+     "law": "vec_uint128_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint128_31_decode_literal_bad_generated.bend",
@@ -29425,6 +30409,14 @@
      "law": "vec_uint128_3_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
+     "law": "vec_uint128_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_3_decode_checked_generated.bend",
+     "law": "vec_uint128_3_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint128_3_decode_literal_bad_generated.bend",
      "law": "vec_uint128_3_decode_vlit_bad_short"
     },
@@ -29646,6 +30638,14 @@
      "law": "vec_uint128_4_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
+     "law": "vec_uint128_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_4_decode_checked_generated.bend",
+     "law": "vec_uint128_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint128_4_decode_literal_bad_generated.bend",
      "law": "vec_uint128_4_decode_vlit_bad_short"
     },
@@ -29830,6 +30830,10 @@
      "law": "vec_uint128_512_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint128_512_decode_checked_generated.bend",
+     "law": "vec_uint128_512_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/vec_uint128_512_generated.bend",
      "law": "vec_uint128_512_decode_build"
     }
@@ -29992,6 +30996,10 @@
     {
      "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
      "law": "vec_uint128_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_513_decode_checked_generated.bend",
+     "law": "vec_uint128_513_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/vec_uint128_513_generated.bend",
@@ -30201,6 +31209,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
      "law": "vec_uint128_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
+     "law": "vec_uint128_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_5_decode_checked_generated.bend",
+     "law": "vec_uint128_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint128_5_decode_literal_bad_generated.bend",
@@ -30422,6 +31438,14 @@
     {
      "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
      "law": "vec_uint128_8_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
+     "law": "vec_uint128_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint128_8_decode_checked_generated.bend",
+     "law": "vec_uint128_8_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint128_8_decode_literal_bad_generated.bend",
@@ -30667,6 +31691,10 @@
      "law": "proglist_uint8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_proglist_uint8_decode_checked_generated.bend",
+     "law": "proglist_uint8_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint8_decode_literal_ok_generated.bend",
      "law": "proglist_uint8_decode_vlit_ok_default"
     },
@@ -30890,6 +31918,14 @@
      "law": "vec_uint8_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
+     "law": "vec_uint8_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_16_decode_checked_generated.bend",
+     "law": "vec_uint8_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_16_decode_literal_bad_generated.bend",
      "law": "vec_uint8_16_decode_vlit_bad_short"
     },
@@ -31095,6 +32131,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
      "law": "vec_uint8_1_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
+     "law": "vec_uint8_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_1_decode_checked_generated.bend",
+     "law": "vec_uint8_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_1_decode_literal_bad_generated.bend",
@@ -31304,6 +32348,14 @@
      "law": "vec_uint8_2_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
+     "law": "vec_uint8_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_2_decode_checked_generated.bend",
+     "law": "vec_uint8_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_2_decode_literal_bad_generated.bend",
      "law": "vec_uint8_2_decode_vlit_bad_short"
     },
@@ -31501,6 +32553,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
      "law": "vec_uint8_31_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
+     "law": "vec_uint8_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_31_decode_checked_generated.bend",
+     "law": "vec_uint8_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_31_decode_literal_bad_generated.bend",
@@ -31708,6 +32768,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
      "law": "vec_uint8_3_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
+     "law": "vec_uint8_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_3_decode_checked_generated.bend",
+     "law": "vec_uint8_3_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_3_decode_literal_bad_generated.bend",
@@ -31925,6 +32993,14 @@
      "law": "vec_uint8_4_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
+     "law": "vec_uint8_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_4_decode_checked_generated.bend",
+     "law": "vec_uint8_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint8_4_decode_literal_bad_generated.bend",
      "law": "vec_uint8_4_decode_vlit_bad_short"
     },
@@ -32118,6 +33194,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
      "law": "vec_uint8_512_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
+     "law": "vec_uint8_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_512_decode_checked_generated.bend",
+     "law": "vec_uint8_512_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_512_decode_literal_bad_generated.bend",
@@ -32317,6 +33401,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
      "law": "vec_uint8_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
+     "law": "vec_uint8_513_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_513_decode_checked_generated.bend",
+     "law": "vec_uint8_513_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_513_decode_literal_bad_generated.bend",
@@ -32524,6 +33616,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
      "law": "vec_uint8_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
+     "law": "vec_uint8_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_5_decode_checked_generated.bend",
+     "law": "vec_uint8_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_5_decode_literal_bad_generated.bend",
@@ -32743,6 +33843,14 @@
     {
      "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
      "law": "vec_uint8_8_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
+     "law": "vec_uint8_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint8_8_decode_checked_generated.bend",
+     "law": "vec_uint8_8_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint8_8_decode_literal_bad_generated.bend",
@@ -32968,6 +34076,10 @@
      "law": "proglist_uint16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_proglist_uint16_decode_checked_generated.bend",
+     "law": "proglist_uint16_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint16_decode_literal_bad_generated.bend",
      "law": "proglist_uint16_decode_vlit_bad_ragged"
     },
@@ -33191,6 +34303,14 @@
      "law": "vec_uint16_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
+     "law": "vec_uint16_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_16_decode_checked_generated.bend",
+     "law": "vec_uint16_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_16_decode_literal_bad_generated.bend",
      "law": "vec_uint16_16_decode_vlit_bad_short"
     },
@@ -33400,6 +34520,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
      "law": "vec_uint16_1_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
+     "law": "vec_uint16_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_1_decode_checked_generated.bend",
+     "law": "vec_uint16_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint16_1_decode_literal_bad_generated.bend",
@@ -33621,6 +34749,14 @@
      "law": "vec_uint16_2_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
+     "law": "vec_uint16_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_2_decode_checked_generated.bend",
+     "law": "vec_uint16_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_2_decode_literal_bad_generated.bend",
      "law": "vec_uint16_2_decode_vlit_bad_short"
     },
@@ -33818,6 +34954,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
      "law": "vec_uint16_31_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
+     "law": "vec_uint16_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_31_decode_checked_generated.bend",
+     "law": "vec_uint16_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint16_31_decode_literal_bad_generated.bend",
@@ -34029,6 +35173,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
      "law": "vec_uint16_3_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
+     "law": "vec_uint16_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_3_decode_checked_generated.bend",
+     "law": "vec_uint16_3_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint16_3_decode_literal_bad_generated.bend",
@@ -34250,6 +35402,14 @@
      "law": "vec_uint16_4_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
+     "law": "vec_uint16_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_4_decode_checked_generated.bend",
+     "law": "vec_uint16_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_4_decode_literal_bad_generated.bend",
      "law": "vec_uint16_4_decode_vlit_bad_short"
     },
@@ -34443,6 +35603,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
      "law": "vec_uint16_512_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
+     "law": "vec_uint16_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_512_decode_checked_generated.bend",
+     "law": "vec_uint16_512_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint16_512_decode_literal_bad_generated.bend",
@@ -34644,6 +35812,14 @@
      "law": "vec_uint16_513_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
+     "law": "vec_uint16_513_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_513_decode_checked_generated.bend",
+     "law": "vec_uint16_513_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_513_decode_literal_bad_generated.bend",
      "law": "vec_uint16_513_decode_vlit_bad_short"
     },
@@ -34841,6 +36017,14 @@
     {
      "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
      "law": "vec_uint16_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
+     "law": "vec_uint16_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_5_decode_checked_generated.bend",
+     "law": "vec_uint16_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint16_5_decode_literal_bad_generated.bend",
@@ -35062,6 +36246,14 @@
      "law": "vec_uint16_8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
+     "law": "vec_uint16_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint16_8_decode_checked_generated.bend",
+     "law": "vec_uint16_8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint16_8_decode_literal_bad_generated.bend",
      "law": "vec_uint16_8_decode_vlit_bad_short"
     },
@@ -35231,6 +36423,10 @@
     {
      "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
      "law": "proglist_uint256_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_decode_checked_generated.bend",
+     "law": "proglist_uint256_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/validity/generic_proglist_uint256_decode_literal_bad_generated.bend",
@@ -35466,6 +36662,14 @@
      "law": "vec_uint256_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
+     "law": "vec_uint256_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_16_decode_checked_generated.bend",
+     "law": "vec_uint256_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint256_16_decode_literal_bad_generated.bend",
      "law": "vec_uint256_16_decode_vlit_bad_short"
     },
@@ -35685,6 +36889,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
      "law": "vec_uint256_1_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
+     "law": "vec_uint256_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_1_decode_checked_generated.bend",
+     "law": "vec_uint256_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint256_1_decode_literal_bad_generated.bend",
@@ -35912,6 +37124,14 @@
      "law": "vec_uint256_2_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
+     "law": "vec_uint256_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_2_decode_checked_generated.bend",
+     "law": "vec_uint256_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint256_2_decode_literal_bad_generated.bend",
      "law": "vec_uint256_2_decode_vlit_bad_short"
     },
@@ -36119,6 +37339,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
      "law": "vec_uint256_31_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
+     "law": "vec_uint256_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_31_decode_checked_generated.bend",
+     "law": "vec_uint256_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint256_31_decode_literal_bad_generated.bend",
@@ -36342,6 +37570,14 @@
      "law": "vec_uint256_3_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
+     "law": "vec_uint256_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_3_decode_checked_generated.bend",
+     "law": "vec_uint256_3_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint256_3_decode_literal_bad_generated.bend",
      "law": "vec_uint256_3_decode_vlit_bad_short"
     },
@@ -36563,6 +37799,14 @@
      "law": "vec_uint256_4_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
+     "law": "vec_uint256_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_4_decode_checked_generated.bend",
+     "law": "vec_uint256_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint256_4_decode_literal_bad_generated.bend",
      "law": "vec_uint256_4_decode_vlit_bad_short"
     },
@@ -36743,6 +37987,10 @@
      "law": "vec_uint256_512_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_512_decode_checked_generated.bend",
+     "law": "vec_uint256_512_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/vec_uint256_512_generated.bend",
      "law": "vec_uint256_512_decode_build"
     }
@@ -36905,6 +38153,10 @@
     {
      "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
      "law": "vec_uint256_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_513_decode_checked_generated.bend",
+     "law": "vec_uint256_513_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/vec_uint256_513_generated.bend",
@@ -37114,6 +38366,14 @@
     {
      "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
      "law": "vec_uint256_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
+     "law": "vec_uint256_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_5_decode_checked_generated.bend",
+     "law": "vec_uint256_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint256_5_decode_literal_bad_generated.bend",
@@ -37333,6 +38593,14 @@
      "law": "vec_uint256_8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
+     "law": "vec_uint256_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint256_8_decode_checked_generated.bend",
+     "law": "vec_uint256_8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint256_8_decode_literal_bad_generated.bend",
      "law": "vec_uint256_8_decode_vlit_bad_short"
     },
@@ -37530,6 +38798,10 @@
     {
      "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
      "law": "proglist_uint32_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint32_decode_checked_generated.bend",
+     "law": "proglist_uint32_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/validity/generic_proglist_uint32_decode_literal_bad_generated.bend",
@@ -37777,6 +39049,14 @@
      "law": "vec_uint32_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
+     "law": "vec_uint32_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_16_decode_checked_generated.bend",
+     "law": "vec_uint32_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_16_decode_literal_bad_generated.bend",
      "law": "vec_uint32_16_decode_vlit_bad_short"
     },
@@ -38004,6 +39284,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
      "law": "vec_uint32_1_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
+     "law": "vec_uint32_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_1_decode_checked_generated.bend",
+     "law": "vec_uint32_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint32_1_decode_literal_bad_generated.bend",
@@ -38239,6 +39527,14 @@
      "law": "vec_uint32_2_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
+     "law": "vec_uint32_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_2_decode_checked_generated.bend",
+     "law": "vec_uint32_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_2_decode_literal_bad_generated.bend",
      "law": "vec_uint32_2_decode_vlit_bad_short"
     },
@@ -38464,6 +39760,14 @@
      "law": "vec_uint32_31_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
+     "law": "vec_uint32_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_31_decode_checked_generated.bend",
+     "law": "vec_uint32_31_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_31_decode_literal_bad_generated.bend",
      "law": "vec_uint32_31_decode_vlit_bad_short"
     },
@@ -38687,6 +39991,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
      "law": "vec_uint32_3_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
+     "law": "vec_uint32_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_3_decode_checked_generated.bend",
+     "law": "vec_uint32_3_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint32_3_decode_literal_bad_generated.bend",
@@ -38918,6 +40230,14 @@
      "law": "vec_uint32_4_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
+     "law": "vec_uint32_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_4_decode_checked_generated.bend",
+     "law": "vec_uint32_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_4_decode_literal_bad_generated.bend",
      "law": "vec_uint32_4_decode_vlit_bad_short"
     },
@@ -39118,6 +40438,14 @@
      "law": "vec_uint32_512_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
+     "law": "vec_uint32_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_512_decode_checked_generated.bend",
+     "law": "vec_uint32_512_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_512_decode_literal_bad_generated.bend",
      "law": "vec_uint32_512_decode_vlit_bad_short"
     },
@@ -39300,6 +40628,10 @@
     {
      "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
      "law": "vec_uint32_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_513_decode_checked_generated.bend",
+     "law": "vec_uint32_513_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/vec_uint32_513_generated.bend",
@@ -39509,6 +40841,14 @@
     {
      "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
      "law": "vec_uint32_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
+     "law": "vec_uint32_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_5_decode_checked_generated.bend",
+     "law": "vec_uint32_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint32_5_decode_literal_bad_generated.bend",
@@ -39732,6 +41072,14 @@
      "law": "vec_uint32_8_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
+     "law": "vec_uint32_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint32_8_decode_checked_generated.bend",
+     "law": "vec_uint32_8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint32_8_decode_literal_bad_generated.bend",
      "law": "vec_uint32_8_decode_vlit_bad_short"
     },
@@ -39929,6 +41277,10 @@
     {
      "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
      "law": "proglist_uint64_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint64_decode_checked_generated.bend",
+     "law": "proglist_uint64_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/validity/generic_proglist_uint64_decode_literal_bad_generated.bend",
@@ -40180,6 +41532,14 @@
      "law": "vec_uint64_16_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
+     "law": "vec_uint64_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_16_decode_checked_generated.bend",
+     "law": "vec_uint64_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint64_16_decode_literal_bad_generated.bend",
      "law": "vec_uint64_16_decode_vlit_bad_short"
     },
@@ -40411,6 +41771,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
      "law": "vec_uint64_1_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
+     "law": "vec_uint64_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_1_decode_checked_generated.bend",
+     "law": "vec_uint64_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint64_1_decode_literal_bad_generated.bend",
@@ -40646,6 +42014,14 @@
      "law": "vec_uint64_2_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
+     "law": "vec_uint64_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_2_decode_checked_generated.bend",
+     "law": "vec_uint64_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint64_2_decode_literal_bad_generated.bend",
      "law": "vec_uint64_2_decode_vlit_bad_short"
     },
@@ -40871,6 +42247,14 @@
      "law": "vec_uint64_31_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
+     "law": "vec_uint64_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_31_decode_checked_generated.bend",
+     "law": "vec_uint64_31_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint64_31_decode_literal_bad_generated.bend",
      "law": "vec_uint64_31_decode_vlit_bad_short"
     },
@@ -41090,6 +42474,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
      "law": "vec_uint64_3_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
+     "law": "vec_uint64_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_3_decode_checked_generated.bend",
+     "law": "vec_uint64_3_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint64_3_decode_literal_bad_generated.bend",
@@ -41313,6 +42705,14 @@
      "law": "vec_uint64_4_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
+     "law": "vec_uint64_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_4_decode_checked_generated.bend",
+     "law": "vec_uint64_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_vec_uint64_4_decode_literal_bad_generated.bend",
      "law": "vec_uint64_4_decode_vlit_bad_short"
     },
@@ -41505,6 +42905,10 @@
      "law": "vec_uint64_512_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_vec_uint64_512_decode_checked_generated.bend",
+     "law": "vec_uint64_512_decode_vchecked_budget_agree"
+    },
+    {
      "file": "slop/offsets/vec_uint64_512_generated.bend",
      "law": "vec_uint64_512_decode_build"
     }
@@ -41671,6 +43075,10 @@
     {
      "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
      "law": "vec_uint64_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_513_decode_checked_generated.bend",
+     "law": "vec_uint64_513_decode_vchecked_budget_agree"
     },
     {
      "file": "slop/offsets/vec_uint64_513_generated.bend",
@@ -41880,6 +43288,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
      "law": "vec_uint64_5_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
+     "law": "vec_uint64_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_5_decode_checked_generated.bend",
+     "law": "vec_uint64_5_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint64_5_decode_literal_bad_generated.bend",
@@ -42101,6 +43517,14 @@
     {
      "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
      "law": "vec_uint64_8_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
+     "law": "vec_uint64_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_vec_uint64_8_decode_checked_generated.bend",
+     "law": "vec_uint64_8_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_vec_uint64_8_decode_literal_bad_generated.bend",
@@ -42384,6 +43808,14 @@
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
      "law": "ProgressiveTestStruct_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_checked_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
@@ -42780,6 +44212,14 @@
     {
      "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
      "law": "BitsStruct_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
+     "law": "BitsStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_checked_generated.bend",
+     "law": "BitsStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_BitsStruct_decode_literal_bad_f_A_nodelim_generated.bend",
@@ -43334,6 +44774,14 @@
      "law": "ProgressiveBitsStruct_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_checked_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_bad_f_B_nodelim_generated.bend",
      "law": "ProgressiveBitsStruct_decode_vlit_bad_f_B_nodelim"
     },
@@ -43623,6 +45071,14 @@
      "law": "FixedTestStruct_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
+     "law": "FixedTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_FixedTestStruct_decode_checked_generated.bend",
+     "law": "FixedTestStruct_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_FixedTestStruct_decode_literal_bad_generated.bend",
      "law": "FixedTestStruct_decode_vlit_bad_short"
     },
@@ -43785,6 +45241,14 @@
     {
      "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
      "law": "SingleFieldTestStruct_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
+     "law": "SingleFieldTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_SingleFieldTestStruct_decode_checked_generated.bend",
+     "law": "SingleFieldTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_SingleFieldTestStruct_decode_literal_bad_generated.bend",
@@ -44096,6 +45560,14 @@
     {
      "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
      "law": "VarTestStruct_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
+     "law": "VarTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_checked_generated.bend",
+     "law": "VarTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_VarTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
@@ -44546,6 +46018,14 @@
      "law": "ComplexTestStruct_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
+     "law": "ComplexTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_checked_generated.bend",
+     "law": "ComplexTestStruct_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_over_generated.bend",
      "law": "ComplexTestStruct_decode_vlit_bad_f_B_over"
     },
@@ -44837,6 +46317,14 @@
     {
      "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
      "law": "SmallTestStruct_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
+     "law": "SmallTestStruct_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_SmallTestStruct_decode_checked_generated.bend",
+     "law": "SmallTestStruct_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_SmallTestStruct_decode_literal_bad_generated.bend",
@@ -45196,6 +46684,14 @@
     {
      "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
      "law": "bitlist_15_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
+     "law": "bitlist_15_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_decode_checked_generated.bend",
+     "law": "bitlist_15_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_15_decode_literal_bad_generated.bend",
@@ -45561,6 +47057,14 @@
      "law": "bitlist_16_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
+     "law": "bitlist_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_decode_checked_generated.bend",
+     "law": "bitlist_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_16_decode_literal_bad_generated.bend",
      "law": "bitlist_16_decode_vlit_bad_nodelim"
     },
@@ -45924,6 +47428,14 @@
      "law": "bitlist_17_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
+     "law": "bitlist_17_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_decode_checked_generated.bend",
+     "law": "bitlist_17_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_17_decode_literal_bad_generated.bend",
      "law": "bitlist_17_decode_vlit_bad_nodelim"
     },
@@ -46277,6 +47789,14 @@
     {
      "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
      "law": "bitlist_1_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
+     "law": "bitlist_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_checked_generated.bend",
+     "law": "bitlist_1_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_1_decode_literal_bad_generated.bend",
@@ -46636,6 +48156,14 @@
     {
      "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
      "law": "bitlist_2_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
+     "law": "bitlist_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_checked_generated.bend",
+     "law": "bitlist_2_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_2_decode_literal_bad_generated.bend",
@@ -47001,6 +48529,14 @@
      "law": "bitlist_31_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
+     "law": "bitlist_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_decode_checked_generated.bend",
+     "law": "bitlist_31_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_31_decode_literal_bad_generated.bend",
      "law": "bitlist_31_decode_vlit_bad_nodelim"
     },
@@ -47352,6 +48888,14 @@
      "law": "bitlist_32_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
+     "law": "bitlist_32_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_decode_checked_generated.bend",
+     "law": "bitlist_32_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_32_decode_literal_bad_generated.bend",
      "law": "bitlist_32_decode_vlit_bad_nodelim"
     },
@@ -47701,6 +49245,14 @@
     {
      "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
      "law": "bitlist_33_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
+     "law": "bitlist_33_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_checked_generated.bend",
+     "law": "bitlist_33_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_33_decode_literal_bad_generated.bend",
@@ -48066,6 +49618,14 @@
      "law": "bitlist_3_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
+     "law": "bitlist_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_decode_checked_generated.bend",
+     "law": "bitlist_3_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_3_decode_literal_bad_generated.bend",
      "law": "bitlist_3_decode_vlit_bad_nodelim"
     },
@@ -48429,6 +49989,14 @@
      "law": "bitlist_4_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
+     "law": "bitlist_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_decode_checked_generated.bend",
+     "law": "bitlist_4_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_4_decode_literal_bad_generated.bend",
      "law": "bitlist_4_decode_vlit_bad_nodelim"
     },
@@ -48786,6 +50354,14 @@
     {
      "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
      "law": "bitlist_511_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
+     "law": "bitlist_511_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_decode_checked_generated.bend",
+     "law": "bitlist_511_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_511_decode_literal_bad_generated.bend",
@@ -49147,6 +50723,14 @@
      "law": "bitlist_512_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
+     "law": "bitlist_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_decode_checked_generated.bend",
+     "law": "bitlist_512_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_512_decode_literal_bad_generated.bend",
      "law": "bitlist_512_decode_vlit_bad_nodelim"
     },
@@ -49504,6 +51088,14 @@
     {
      "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
      "law": "bitlist_513_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
+     "law": "bitlist_513_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_decode_checked_generated.bend",
+     "law": "bitlist_513_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_513_decode_literal_bad_generated.bend",
@@ -49869,6 +51461,14 @@
      "law": "bitlist_5_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
+     "law": "bitlist_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_decode_checked_generated.bend",
+     "law": "bitlist_5_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_5_decode_literal_bad_generated.bend",
      "law": "bitlist_5_decode_vlit_bad_nodelim"
     },
@@ -50230,6 +51830,14 @@
     {
      "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
      "law": "bitlist_6_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
+     "law": "bitlist_6_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_decode_checked_generated.bend",
+     "law": "bitlist_6_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_6_decode_literal_bad_generated.bend",
@@ -50595,6 +52203,14 @@
      "law": "bitlist_7_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
+     "law": "bitlist_7_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_decode_checked_generated.bend",
+     "law": "bitlist_7_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_7_decode_literal_bad_generated.bend",
      "law": "bitlist_7_decode_vlit_bad_nodelim"
     },
@@ -50956,6 +52572,14 @@
     {
      "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
      "law": "bitlist_8_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
+     "law": "bitlist_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_decode_checked_generated.bend",
+     "law": "bitlist_8_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitlist_8_decode_literal_bad_generated.bend",
@@ -51321,6 +52945,14 @@
      "law": "bitlist_9_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
+     "law": "bitlist_9_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_decode_checked_generated.bend",
+     "law": "bitlist_9_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitlist_9_decode_literal_bad_generated.bend",
      "law": "bitlist_9_decode_vlit_bad_nodelim"
     },
@@ -51485,6 +53117,14 @@
      "law": "bitvector_15_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
+     "law": "bitvector_15_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_15_decode_checked_generated.bend",
+     "law": "bitvector_15_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_15_decode_literal_bad_generated.bend",
      "law": "bitvector_15_decode_vlit_bad_short"
     },
@@ -51641,6 +53281,14 @@
      "law": "bitvector_16_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
+     "law": "bitvector_16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_16_decode_checked_generated.bend",
+     "law": "bitvector_16_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_16_decode_literal_bad_generated.bend",
      "law": "bitvector_16_decode_vlit_bad_short"
     },
@@ -51795,6 +53443,14 @@
     {
      "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
      "law": "bitvector_17_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
+     "law": "bitvector_17_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_17_decode_checked_generated.bend",
+     "law": "bitvector_17_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_17_decode_literal_bad_generated.bend",
@@ -51957,6 +53613,14 @@
      "law": "bitvector_1_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
+     "law": "bitvector_1_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_1_decode_checked_generated.bend",
+     "law": "bitvector_1_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_1_decode_literal_bad_generated.bend",
      "law": "bitvector_1_decode_vlit_bad_short"
     },
@@ -52117,6 +53781,14 @@
      "law": "bitvector_2_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
+     "law": "bitvector_2_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_2_decode_checked_generated.bend",
+     "law": "bitvector_2_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_2_decode_literal_bad_generated.bend",
      "law": "bitvector_2_decode_vlit_bad_short"
     },
@@ -52275,6 +53947,14 @@
     {
      "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
      "law": "bitvector_31_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
+     "law": "bitvector_31_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_31_decode_checked_generated.bend",
+     "law": "bitvector_31_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_31_decode_literal_bad_generated.bend",
@@ -52462,6 +54142,14 @@
      "law": "bitvector_32_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
+     "law": "bitvector_32_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_32_decode_checked_generated.bend",
+     "law": "bitvector_32_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_32_decode_literal_bad_generated.bend",
      "law": "bitvector_32_decode_vlit_bad_short"
     },
@@ -52620,6 +54308,14 @@
     {
      "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
      "law": "bitvector_33_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
+     "law": "bitvector_33_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_33_decode_checked_generated.bend",
+     "law": "bitvector_33_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_33_decode_literal_bad_generated.bend",
@@ -52782,6 +54478,14 @@
      "law": "bitvector_3_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
+     "law": "bitvector_3_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_3_decode_checked_generated.bend",
+     "law": "bitvector_3_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_3_decode_literal_bad_generated.bend",
      "law": "bitvector_3_decode_vlit_bad_short"
     },
@@ -52940,6 +54644,14 @@
     {
      "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
      "law": "bitvector_4_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
+     "law": "bitvector_4_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_4_decode_checked_generated.bend",
+     "law": "bitvector_4_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_4_decode_literal_bad_generated.bend",
@@ -53104,6 +54816,14 @@
     {
      "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
      "law": "bitvector_511_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
+     "law": "bitvector_511_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_511_decode_checked_generated.bend",
+     "law": "bitvector_511_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_511_decode_literal_bad_generated.bend",
@@ -53295,6 +55015,14 @@
      "law": "bitvector_512_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
+     "law": "bitvector_512_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_512_decode_checked_generated.bend",
+     "law": "bitvector_512_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_512_decode_literal_bad_generated.bend",
      "law": "bitvector_512_decode_vlit_bad_short"
     },
@@ -53453,6 +55181,14 @@
     {
      "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
      "law": "bitvector_513_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
+     "law": "bitvector_513_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_513_decode_checked_generated.bend",
+     "law": "bitvector_513_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_513_decode_literal_bad_generated.bend",
@@ -53615,6 +55351,14 @@
      "law": "bitvector_5_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
+     "law": "bitvector_5_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_5_decode_checked_generated.bend",
+     "law": "bitvector_5_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_5_decode_literal_bad_generated.bend",
      "law": "bitvector_5_decode_vlit_bad_short"
     },
@@ -53773,6 +55517,14 @@
     {
      "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
      "law": "bitvector_6_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
+     "law": "bitvector_6_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_6_decode_checked_generated.bend",
+     "law": "bitvector_6_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_6_decode_literal_bad_generated.bend",
@@ -53935,6 +55687,14 @@
      "law": "bitvector_7_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
+     "law": "bitvector_7_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_7_decode_checked_generated.bend",
+     "law": "bitvector_7_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_7_decode_literal_bad_generated.bend",
      "law": "bitvector_7_decode_vlit_bad_short"
     },
@@ -54091,6 +55851,14 @@
      "law": "bitvector_8_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
+     "law": "bitvector_8_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_8_decode_checked_generated.bend",
+     "law": "bitvector_8_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_bitvector_8_decode_literal_bad_generated.bend",
      "law": "bitvector_8_decode_vlit_bad_short"
     },
@@ -54245,6 +56013,14 @@
     {
      "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
      "law": "bitvector_9_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
+     "law": "bitvector_9_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_bitvector_9_decode_checked_generated.bend",
+     "law": "bitvector_9_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_bitvector_9_decode_literal_bad_generated.bend",
@@ -54440,6 +56216,14 @@
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
      "law": "CompatibleUnionBC_decode_vchecked_real"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
+     "law": "CompatibleUnionBC_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_checked_generated.bend",
+     "law": "CompatibleUnionBC_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_arm_f_C_nodelim_generated.bend",
@@ -54690,6 +56474,14 @@
      "law": "CompatibleUnionABCA_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_checked_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_bad_selector_generated.bend",
      "law": "CompatibleUnionABCA_decode_vlit_bad_selector"
     },
@@ -54872,6 +56664,14 @@
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
      "law": "CompatibleUnionA_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
+     "law": "CompatibleUnionA_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_checked_generated.bend",
+     "law": "CompatibleUnionA_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_literal_bad_selector_generated.bend",
@@ -55217,6 +57017,14 @@
      "law": "progbitlist_decode_vchecked_short"
     },
     {
+     "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
+     "law": "progbitlist_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_progbitlist_decode_checked_generated.bend",
+     "law": "progbitlist_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_progbitlist_decode_literal_bad_generated.bend",
      "law": "progbitlist_decode_vlit_bad_nodelim"
     },
@@ -55406,6 +57214,14 @@
      "law": "uint128_decode_vchecked_real"
     },
     {
+     "file": "slop/validity/generic_uint128_decode_checked_generated.bend",
+     "law": "uint128_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_uint128_decode_checked_generated.bend",
+     "law": "uint128_decode_vchecked_budget_accept"
+    },
+    {
      "file": "slop/validity/generic_uint128_decode_literal_bad_generated.bend",
      "law": "uint128_decode_vlit_bad_short"
     },
@@ -55540,6 +57356,14 @@
     {
      "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
      "law": "uint16_decode_vchecked_short"
+    },
+    {
+     "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
+     "law": "uint16_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/generic_uint16_decode_checked_generated.bend",
+     "law": "uint16_decode_vchecked_budget_accept"
     },
     {
      "file": "slop/validity/generic_uint16_decode_literal_bad_generated.bend",

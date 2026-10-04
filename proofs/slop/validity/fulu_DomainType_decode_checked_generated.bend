@@ -46,14 +46,14 @@ def DomainType_decode_vchecked_budget_cost()
     -> {FuluDomainType_r.DomainType_dcost(4096) == 524288 : U32}:
   {==}
 
-def DomainType_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget) == False{} : Bool})
+def DomainType_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDomainType_r.DomainType_dcost(size), 4294967295), U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget)) == False{} : Bool})
     -> {FuluDomainType_r.DomainType_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
-  %Equal.sym(Bool, U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget), False{}, h) : {FuluDomainType_r.DomainType_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDomainType_r.DomainType_dcost(size), 4294967295), U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget)), False{}, h) : {FuluDomainType_r.DomainType_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
   {==}
 
-def DomainType_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget) == True{} : Bool})
+def DomainType_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDomainType_r.DomainType_dcost(size), 4294967295), U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget)) == True{} : Bool})
     -> {FuluDomainType_r.DomainType_decode_checked_budget(buf, size, budget) == FuluDomainType_r.DomainType_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
-  %Equal.sym(Bool, U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget), True{}, h) : {FuluDomainType_r.DomainType_dcb(_, buf, size) == FuluDomainType_r.DomainType_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDomainType_r.DomainType_dcost(size), 4294967295), U32.is_le(FuluDomainType_r.DomainType_dcost(size), budget)), True{}, h) : {FuluDomainType_r.DomainType_dcb(_, buf, size) == FuluDomainType_r.DomainType_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
   {==}
 
 def DomainType_decode_vchecked_budget_zero()

@@ -56,6 +56,7 @@ import ../../types/FuluBeaconState_encode_ssz_generated.bend as BSE
 import ../../types/FuluExecutionPayload_decode_ssz_generated.bend as EPR
 import ../../types/FuluExecutionPayload_def_generated.bend as EPD
 import ../../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as PCR
+import ../../types/ProgressiveComplexTestStruct_def_generated.bend as PCD
 
 # Crash-hunt regression probe: the cases of docs/CRASH_HUNT.md CH-01, CH-04, CH-05, CH-06 and CH-10 after their fixes.
 # SSZ_CASE selects a case; each prints one line. tools/crash_hunt/regress.sh runs them all against regress_expected.txt.
@@ -421,6 +422,16 @@ def case74() -> IO(Unit): ep_line("ep_empty_txs_budget_below", 0, EPR.ExecutionP
 def case75() -> IO(Unit): ep_line("ep_empty_txs_budget_at", 0, EPR.ExecutionPayload_decode_checked_budget(ep_buf(), 262676, EPR.ExecutionPayload_dcost(262676)))
 def case76() -> IO(Unit): IO.print("pcts_600MiB_dcost=" ++ U32.show(PCR.ProgressiveComplexTestStruct_dcost(629145600)) ++ " within_2^30_words=" ++ O.pick_str(U32.is_le(PCR.ProgressiveComplexTestStruct_dcost(629145600), 1073741824)))
 
+# Round 6: a ProgressiveComplexTestStruct of 2^31 bytes has a saturated bound, refused even with the largest budget (R6-01); a slice longer than
+# NMAX is the empty slice at once (R6-03)
+def pc_line(pair: B.Buf & Maybe<&1, PCD.ProgressiveComplexTestStruct>) -> IO(Unit):
+  (b, m) = pair
+  match m:
+    case Some{v}: IO.print("pcts_2^31_budget_max some=1")
+    case None{}: IO.print("pcts_2^31_budget_max some=0")
+def case77() -> IO(Unit): pc_line(PCR.ProgressiveComplexTestStruct_decode_checked_budget(B.empty(), 2147483648, 4294967295))
+def case78() -> IO(Unit): r5_sl("r6_words_slice_max", O.words_slice(O.Words{r5w(), 16}, 0, 4294967295))
+
 def dispatch(+c: U32) -> IO(Unit):
   match c:
     case 1: case1()
@@ -498,6 +509,8 @@ def dispatch(+c: U32) -> IO(Unit):
     case 74: case74()
     case 75: case75()
     case 76: case76()
+    case 77: case77()
+    case 78: case78()
     case _: case12()
 
 def main() -> IO(Unit):

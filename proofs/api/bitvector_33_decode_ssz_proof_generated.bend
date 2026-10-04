@@ -131,6 +131,12 @@ def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_short() -> {Pair.
 def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_real() -> {Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 5}, 5)) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
   P4_PRV.bitvector_33_decode_vchecked_real()
 
+def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitvector_33_r.bitvector_33_dcost(size), 4294967295), U32.is_le(bitvector_33_r.bitvector_33_dcost(size), budget)) == True{} : Bool}) -> {bitvector_33_r.bitvector_33_decode_checked_budget(buf, size, budget) == bitvector_33_r.bitvector_33_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>}:
+  P4_PRV.bitvector_33_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def bitvector_33__decode_offsets__bitvector_33_decode_vchecked_budget_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked_budget(P4_B.Buf{Array.new(U32, 1n, 0), 5}, 5, 4294967295)), Pair.snd(P4_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(P4_B.Buf{Array.new(U32, 1n, 0), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
+  P4_PRV.bitvector_33_decode_vchecked_budget_accept()
+
 def bitvector_33__decode_offsets__bitvector_33_decode_vlit_bad_short() -> {P5_PRV.some1(Pair.snd(P5_B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode(P5_B.Buf{Array.new(U32, 0n, 0), 4}, 4))) == False{} : Bool}:
   P5_PRV.bitvector_33_decode_vlit_bad_short()
 

@@ -83,4 +83,4 @@ def uint128_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, uint128_d
     case True{}: uint128_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def uint128_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>: uint128_dcb(U32.is_le(uint128_dcost(size), budget), buf, size)
+def uint128_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, uint128_d.Uint128>: uint128_dcb(Bool.and(U32.is_lt(uint128_dcost(size), 4294967295), U32.is_le(uint128_dcost(size), budget)), buf, size)

@@ -49,14 +49,14 @@ def SubnetID_decode_vchecked_budget_cost()
     -> {FuluSubnetID_r.SubnetID_dcost(4096) == 524288 : U32}:
   {==}
 
-def SubnetID_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget) == False{} : Bool})
+def SubnetID_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSubnetID_r.SubnetID_dcost(size), 4294967295), U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget)) == False{} : Bool})
     -> {FuluSubnetID_r.SubnetID_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget), False{}, h) : {FuluSubnetID_r.SubnetID_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSubnetID_r.SubnetID_dcost(size), 4294967295), U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget)), False{}, h) : {FuluSubnetID_r.SubnetID_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
-def SubnetID_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget) == True{} : Bool})
+def SubnetID_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSubnetID_r.SubnetID_dcost(size), 4294967295), U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget)) == True{} : Bool})
     -> {FuluSubnetID_r.SubnetID_decode_checked_budget(buf, size, budget) == FuluSubnetID_r.SubnetID_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget), True{}, h) : {FuluSubnetID_r.SubnetID_dcb(_, buf, size) == FuluSubnetID_r.SubnetID_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSubnetID_r.SubnetID_dcost(size), 4294967295), U32.is_le(FuluSubnetID_r.SubnetID_dcost(size), budget)), True{}, h) : {FuluSubnetID_r.SubnetID_dcb(_, buf, size) == FuluSubnetID_r.SubnetID_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
 def SubnetID_decode_vchecked_budget_zero()

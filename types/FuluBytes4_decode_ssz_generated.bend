@@ -71,4 +71,4 @@ def Bytes4_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4
     case True{}: Bytes4_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Bytes4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Bytes4_dcb(U32.is_le(Bytes4_dcost(size), budget), buf, size)
+def Bytes4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Bytes4_dcb(Bool.and(U32.is_lt(Bytes4_dcost(size), 4294967295), U32.is_le(Bytes4_dcost(size), budget)), buf, size)

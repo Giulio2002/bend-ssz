@@ -66,4 +66,4 @@ def ExecutionBranch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O
     case True{}: ExecutionBranch_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def ExecutionBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: ExecutionBranch_dcb(U32.is_le(ExecutionBranch_dcost(size), budget), buf, size)
+def ExecutionBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: ExecutionBranch_dcb(Bool.and(U32.is_lt(ExecutionBranch_dcost(size), 4294967295), U32.is_le(ExecutionBranch_dcost(size), budget)), buf, size)

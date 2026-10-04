@@ -576,4 +576,4 @@ def BeaconState_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluB
     case True{}: BeaconState_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def BeaconState_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dcb(U32.is_le(BeaconState_dcost(size), budget), buf, size)
+def BeaconState_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>: BeaconState_dcb(Bool.and(U32.is_lt(BeaconState_dcost(size), 4294967295), U32.is_le(BeaconState_dcost(size), budget)), buf, size)

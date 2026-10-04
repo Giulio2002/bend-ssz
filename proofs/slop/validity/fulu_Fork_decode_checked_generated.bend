@@ -50,14 +50,14 @@ def Fork_decode_vchecked_budget_cost()
     -> {FuluFork_r.Fork_dcost(4096) == 524288 : U32}:
   {==}
 
-def Fork_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFork_r.Fork_dcost(size), budget) == False{} : Bool})
+def Fork_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluFork_r.Fork_dcost(size), 4294967295), U32.is_le(FuluFork_r.Fork_dcost(size), budget)) == False{} : Bool})
     -> {FuluFork_r.Fork_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluFork_d.Fork>}:
-  %Equal.sym(Bool, U32.is_le(FuluFork_r.Fork_dcost(size), budget), False{}, h) : {FuluFork_r.Fork_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluFork_d.Fork>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluFork_r.Fork_dcost(size), 4294967295), U32.is_le(FuluFork_r.Fork_dcost(size), budget)), False{}, h) : {FuluFork_r.Fork_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluFork_d.Fork>}
   {==}
 
-def Fork_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFork_r.Fork_dcost(size), budget) == True{} : Bool})
+def Fork_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluFork_r.Fork_dcost(size), 4294967295), U32.is_le(FuluFork_r.Fork_dcost(size), budget)) == True{} : Bool})
     -> {FuluFork_r.Fork_decode_checked_budget(buf, size, budget) == FuluFork_r.Fork_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluFork_d.Fork>}:
-  %Equal.sym(Bool, U32.is_le(FuluFork_r.Fork_dcost(size), budget), True{}, h) : {FuluFork_r.Fork_dcb(_, buf, size) == FuluFork_r.Fork_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluFork_d.Fork>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluFork_r.Fork_dcost(size), 4294967295), U32.is_le(FuluFork_r.Fork_dcost(size), budget)), True{}, h) : {FuluFork_r.Fork_dcb(_, buf, size) == FuluFork_r.Fork_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluFork_d.Fork>}
   {==}
 
 def Fork_decode_vchecked_budget_zero()

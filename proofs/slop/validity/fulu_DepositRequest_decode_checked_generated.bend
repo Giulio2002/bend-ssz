@@ -50,14 +50,14 @@ def DepositRequest_decode_vchecked_budget_cost()
     -> {FuluDepositRequest_r.DepositRequest_dcost(4096) == 524288 : U32}:
   {==}
 
-def DepositRequest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget) == False{} : Bool})
+def DepositRequest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositRequest_r.DepositRequest_dcost(size), 4294967295), U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget)) == False{} : Bool})
     -> {FuluDepositRequest_r.DepositRequest_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
-  %Equal.sym(Bool, U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget), False{}, h) : {FuluDepositRequest_r.DepositRequest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositRequest_r.DepositRequest_dcost(size), 4294967295), U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget)), False{}, h) : {FuluDepositRequest_r.DepositRequest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}
   {==}
 
-def DepositRequest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget) == True{} : Bool})
+def DepositRequest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositRequest_r.DepositRequest_dcost(size), 4294967295), U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget)) == True{} : Bool})
     -> {FuluDepositRequest_r.DepositRequest_decode_checked_budget(buf, size, budget) == FuluDepositRequest_r.DepositRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
-  %Equal.sym(Bool, U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget), True{}, h) : {FuluDepositRequest_r.DepositRequest_dcb(_, buf, size) == FuluDepositRequest_r.DepositRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositRequest_r.DepositRequest_dcost(size), 4294967295), U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget)), True{}, h) : {FuluDepositRequest_r.DepositRequest_dcb(_, buf, size) == FuluDepositRequest_r.DepositRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}
   {==}
 
 def DepositRequest_decode_vchecked_budget_zero()

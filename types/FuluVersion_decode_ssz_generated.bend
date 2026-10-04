@@ -57,4 +57,4 @@ def Version_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: Version_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Version_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dcb(U32.is_le(Version_dcost(size), budget), buf, size)
+def Version_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dcb(Bool.and(U32.is_lt(Version_dcost(size), 4294967295), U32.is_le(Version_dcost(size), budget)), buf, size)

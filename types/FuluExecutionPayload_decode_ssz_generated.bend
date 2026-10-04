@@ -242,4 +242,4 @@ def ExecutionPayload_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, 
     case True{}: ExecutionPayload_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(U32.is_le(ExecutionPayload_dcost(size), budget), buf, size)
+def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(Bool.and(U32.is_lt(ExecutionPayload_dcost(size), 4294967295), U32.is_le(ExecutionPayload_dcost(size), budget)), buf, size)

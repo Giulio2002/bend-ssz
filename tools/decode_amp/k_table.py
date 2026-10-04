@@ -18,6 +18,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/decode_amp'))
 import measure as M  # noqa: E402
+sys.path.insert(0, str(ROOT))
 
 CONST_BYTES = 524288 * 8
 FALLBACK = 48
@@ -68,29 +69,18 @@ def main():
             tab[n] = {'k': math.ceil(1.25 * max(0.0, d) + 1), 'density': d, 'by': how, 'shape': p, 'input': b}
         else:
             tab[n] = {'k': FALLBACK, 'max_input': m, 'note': 'no measurement of at least 1 MiB'}
-    # a name holds at least what any name nested in it charges (a block holds its body and its payload)
-    byty = {}
+    # a name holds at least what any name nested in it charges, by structure (aliases included: BlobSidecar holds a Blob)
+    from codegen.proofs.slop.decode_checked_laws import canon, nested
+    by = {}
     for n in T:
-        nm = getattr(T[n][0], 'name', None)
-        if nm:
-            byty.setdefault(nm, []).append(n)
-
-    def inner(t, acc):
-        for _, ft in (t.fields or ()):
-            for m in byty.get(getattr(ft, 'name', None), []):
-                acc.add(m)
-            inner(ft, acc)
-        if t.elem is not None:
-            for m in byty.get(getattr(t.elem, 'name', None), []):
-                acc.add(m)
-            inner(t.elem, acc)
-        return acc
-    for _ in range(3):
+        by.setdefault(canon(T[n][0]), []).append(n)
+    for _ in range(4):
         for n in T:
-            for m in inner(T[n][0], set()):
-                if tab[m]['k'] > tab[n]['k']:
-                    tab[n]['k'] = tab[m]['k']
-                    tab[n]['inherits'] = m
+            for sub in nested(T[n][0]):
+                for m in by.get(canon(sub), []):
+                    if m != n and tab[m]['k'] > tab[n]['k']:
+                        tab[n]['k'] = tab[m]['k']
+                        tab[n]['inherits'] = m
     pathlib.Path(out).write_text(json.dumps({'unit': 'heap bytes per input byte; O.dcost(size, k) = ((size >> 3) + 1) * k + 524288 words of 8 bytes',
                                              'source': 'tools/decode_amp/measure.py + k_table.py, docs/DECODE_AMPLIFICATION.md', 'k': tab}, indent=1) + '\n')
 

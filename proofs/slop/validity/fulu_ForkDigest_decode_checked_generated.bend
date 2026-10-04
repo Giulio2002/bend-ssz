@@ -46,14 +46,14 @@ def ForkDigest_decode_vchecked_budget_cost()
     -> {FuluForkDigest_r.ForkDigest_dcost(4096) == 524288 : U32}:
   {==}
 
-def ForkDigest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget) == False{} : Bool})
+def ForkDigest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluForkDigest_r.ForkDigest_dcost(size), 4294967295), U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget)) == False{} : Bool})
     -> {FuluForkDigest_r.ForkDigest_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
-  %Equal.sym(Bool, U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget), False{}, h) : {FuluForkDigest_r.ForkDigest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluForkDigest_r.ForkDigest_dcost(size), 4294967295), U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget)), False{}, h) : {FuluForkDigest_r.ForkDigest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
   {==}
 
-def ForkDigest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget) == True{} : Bool})
+def ForkDigest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluForkDigest_r.ForkDigest_dcost(size), 4294967295), U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget)) == True{} : Bool})
     -> {FuluForkDigest_r.ForkDigest_decode_checked_budget(buf, size, budget) == FuluForkDigest_r.ForkDigest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
-  %Equal.sym(Bool, U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget), True{}, h) : {FuluForkDigest_r.ForkDigest_dcb(_, buf, size) == FuluForkDigest_r.ForkDigest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluForkDigest_r.ForkDigest_dcost(size), 4294967295), U32.is_le(FuluForkDigest_r.ForkDigest_dcost(size), budget)), True{}, h) : {FuluForkDigest_r.ForkDigest_dcb(_, buf, size) == FuluForkDigest_r.ForkDigest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
   {==}
 
 def ForkDigest_decode_vchecked_budget_zero()

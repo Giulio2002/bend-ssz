@@ -49,14 +49,14 @@ def BlobIndex_decode_vchecked_budget_cost()
     -> {FuluBlobIndex_r.BlobIndex_dcost(4096) == 524288 : U32}:
   {==}
 
-def BlobIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget) == False{} : Bool})
+def BlobIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)) == False{} : Bool})
     -> {FuluBlobIndex_r.BlobIndex_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget), False{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)), False{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
-def BlobIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget) == True{} : Bool})
+def BlobIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)) == True{} : Bool})
     -> {FuluBlobIndex_r.BlobIndex_decode_checked_budget(buf, size, budget) == FuluBlobIndex_r.BlobIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget), True{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == FuluBlobIndex_r.BlobIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlobIndex_r.BlobIndex_dcost(size), 4294967295), U32.is_le(FuluBlobIndex_r.BlobIndex_dcost(size), budget)), True{}, h) : {FuluBlobIndex_r.BlobIndex_dcb(_, buf, size) == FuluBlobIndex_r.BlobIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
 def BlobIndex_decode_vchecked_budget_zero()

@@ -84,4 +84,4 @@ def BLSToExecutionChange_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<
     case True{}: BLSToExecutionChange_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def BLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>: BLSToExecutionChange_dcb(U32.is_le(BLSToExecutionChange_dcost(size), budget), buf, size)
+def BLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>: BLSToExecutionChange_dcb(Bool.and(U32.is_lt(BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(BLSToExecutionChange_dcost(size), budget)), buf, size)

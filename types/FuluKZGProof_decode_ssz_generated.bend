@@ -57,4 +57,4 @@ def KZGProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluByte
     case True{}: KZGProof_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def KZGProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dcb(U32.is_le(KZGProof_dcost(size), budget), buf, size)
+def KZGProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dcb(Bool.and(U32.is_lt(KZGProof_dcost(size), 4294967295), U32.is_le(KZGProof_dcost(size), budget)), buf, size)

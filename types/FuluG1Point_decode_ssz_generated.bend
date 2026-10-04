@@ -57,4 +57,4 @@ def G1Point_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: G1Point_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(U32.is_le(G1Point_dcost(size), budget), buf, size)
+def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(Bool.and(U32.is_lt(G1Point_dcost(size), 4294967295), U32.is_le(G1Point_dcost(size), budget)), buf, size)

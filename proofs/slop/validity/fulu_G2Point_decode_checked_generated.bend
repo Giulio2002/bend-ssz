@@ -50,14 +50,14 @@ def G2Point_decode_vchecked_budget_cost()
     -> {FuluG2Point_r.G2Point_dcost(4096) == 524288 : U32}:
   {==}
 
-def G2Point_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget) == False{} : Bool})
+def G2Point_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluG2Point_r.G2Point_dcost(size), 4294967295), U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget)) == False{} : Bool})
     -> {FuluG2Point_r.G2Point_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
-  %Equal.sym(Bool, U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget), False{}, h) : {FuluG2Point_r.G2Point_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluG2Point_r.G2Point_dcost(size), 4294967295), U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget)), False{}, h) : {FuluG2Point_r.G2Point_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}
   {==}
 
-def G2Point_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget) == True{} : Bool})
+def G2Point_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluG2Point_r.G2Point_dcost(size), 4294967295), U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget)) == True{} : Bool})
     -> {FuluG2Point_r.G2Point_decode_checked_budget(buf, size, budget) == FuluG2Point_r.G2Point_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
-  %Equal.sym(Bool, U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget), True{}, h) : {FuluG2Point_r.G2Point_dcb(_, buf, size) == FuluG2Point_r.G2Point_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluG2Point_r.G2Point_dcost(size), 4294967295), U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget)), True{}, h) : {FuluG2Point_r.G2Point_dcb(_, buf, size) == FuluG2Point_r.G2Point_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}
   {==}
 
 def G2Point_decode_vchecked_budget_zero()

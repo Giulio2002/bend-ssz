@@ -50,14 +50,14 @@ def AttesterSlashing_decode_vchecked_budget_cost()
     -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(4096) == 526340 : U32}:
   {==}
 
-def AttesterSlashing_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget) == False{} : Bool})
+def AttesterSlashing_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)) == False{} : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
-  %Equal.sym(Bool, U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget), False{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)), False{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
   {==}
 
-def AttesterSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget) == True{} : Bool})
+def AttesterSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)) == True{} : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(buf, size, budget) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
-  %Equal.sym(Bool, U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget), True{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)), True{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
   {==}
 
 def AttesterSlashing_decode_vchecked_budget_zero()

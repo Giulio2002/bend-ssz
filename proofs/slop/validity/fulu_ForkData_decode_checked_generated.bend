@@ -50,14 +50,14 @@ def ForkData_decode_vchecked_budget_cost()
     -> {FuluForkData_r.ForkData_dcost(4096) == 524288 : U32}:
   {==}
 
-def ForkData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluForkData_r.ForkData_dcost(size), budget) == False{} : Bool})
+def ForkData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluForkData_r.ForkData_dcost(size), 4294967295), U32.is_le(FuluForkData_r.ForkData_dcost(size), budget)) == False{} : Bool})
     -> {FuluForkData_r.ForkData_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
-  %Equal.sym(Bool, U32.is_le(FuluForkData_r.ForkData_dcost(size), budget), False{}, h) : {FuluForkData_r.ForkData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluForkData_r.ForkData_dcost(size), 4294967295), U32.is_le(FuluForkData_r.ForkData_dcost(size), budget)), False{}, h) : {FuluForkData_r.ForkData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}
   {==}
 
-def ForkData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluForkData_r.ForkData_dcost(size), budget) == True{} : Bool})
+def ForkData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluForkData_r.ForkData_dcost(size), 4294967295), U32.is_le(FuluForkData_r.ForkData_dcost(size), budget)) == True{} : Bool})
     -> {FuluForkData_r.ForkData_decode_checked_budget(buf, size, budget) == FuluForkData_r.ForkData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
-  %Equal.sym(Bool, U32.is_le(FuluForkData_r.ForkData_dcost(size), budget), True{}, h) : {FuluForkData_r.ForkData_dcb(_, buf, size) == FuluForkData_r.ForkData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluForkData_r.ForkData_dcost(size), 4294967295), U32.is_le(FuluForkData_r.ForkData_dcost(size), budget)), True{}, h) : {FuluForkData_r.ForkData_dcb(_, buf, size) == FuluForkData_r.ForkData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}
   {==}
 
 def ForkData_decode_vchecked_budget_zero()

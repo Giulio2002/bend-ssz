@@ -112,6 +112,12 @@ def FuluNextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_
 def FuluNextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, P5_O.Words>}:
   P5_PRV.NextSyncCommitteeBranch_decode_vchecked_real()
 
+def FuluNextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_dcost(size), budget)) == True{} : Bool}) -> {FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(buf, size, budget) == FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.NextSyncCommitteeBranch_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluNextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked_budget(P5_B.Buf{Array.new(U32, 6n, 0), 192}, 192, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode_checked(P5_B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.NextSyncCommitteeBranch_decode_vchecked_budget_accept()
+
 def FuluNextSyncCommitteeBranch__decode_offsets__NextSyncCommitteeBranch_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, P6_O.Words>, FuluNextSyncCommitteeBranch_r.NextSyncCommitteeBranch_decode(P6_B.Buf{Array.new(U32, 6n, 0), 191}, 191))) == False{} : Bool}:
   P6_PRV.NextSyncCommitteeBranch_decode_vlit_bad_short()
 

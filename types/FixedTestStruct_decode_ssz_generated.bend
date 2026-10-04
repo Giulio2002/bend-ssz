@@ -82,4 +82,4 @@ def FixedTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, F
     case True{}: FixedTestStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def FixedTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>: FixedTestStruct_dcb(U32.is_le(FixedTestStruct_dcost(size), budget), buf, size)
+def FixedTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>: FixedTestStruct_dcb(Bool.and(U32.is_lt(FixedTestStruct_dcost(size), 4294967295), U32.is_le(FixedTestStruct_dcost(size), budget)), buf, size)

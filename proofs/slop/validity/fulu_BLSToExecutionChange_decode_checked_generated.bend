@@ -50,14 +50,14 @@ def BLSToExecutionChange_decode_vchecked_budget_cost()
     -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(4096) == 524288 : U32}:
   {==}
 
-def BLSToExecutionChange_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget) == False{} : Bool})
+def BLSToExecutionChange_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget)) == False{} : Bool})
     -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
-  %Equal.sym(Bool, U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget), False{}, h) : {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget)), False{}, h) : {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}
   {==}
 
-def BLSToExecutionChange_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget) == True{} : Bool})
+def BLSToExecutionChange_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget)) == True{} : Bool})
     -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked_budget(buf, size, budget) == FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
-  %Equal.sym(Bool, U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget), True{}, h) : {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcb(_, buf, size) == FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget)), True{}, h) : {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcb(_, buf, size) == FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}
   {==}
 
 def BLSToExecutionChange_decode_vchecked_budget_zero()

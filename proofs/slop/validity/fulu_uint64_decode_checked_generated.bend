@@ -49,14 +49,14 @@ def uint64_decode_vchecked_budget_cost()
     -> {uint64_r.uint64_dcost(4096) == 524288 : U32}:
   {==}
 
-def uint64_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(uint64_r.uint64_dcost(size), budget) == False{} : Bool})
+def uint64_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint64_r.uint64_dcost(size), 4294967295), U32.is_le(uint64_r.uint64_dcost(size), budget)) == False{} : Bool})
     -> {uint64_r.uint64_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(uint64_r.uint64_dcost(size), budget), False{}, h) : {uint64_r.uint64_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint64_r.uint64_dcost(size), 4294967295), U32.is_le(uint64_r.uint64_dcost(size), budget)), False{}, h) : {uint64_r.uint64_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
-def uint64_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(uint64_r.uint64_dcost(size), budget) == True{} : Bool})
+def uint64_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint64_r.uint64_dcost(size), 4294967295), U32.is_le(uint64_r.uint64_dcost(size), budget)) == True{} : Bool})
     -> {uint64_r.uint64_decode_checked_budget(buf, size, budget) == uint64_r.uint64_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(uint64_r.uint64_dcost(size), budget), True{}, h) : {uint64_r.uint64_dcb(_, buf, size) == uint64_r.uint64_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint64_r.uint64_dcost(size), 4294967295), U32.is_le(uint64_r.uint64_dcost(size), budget)), True{}, h) : {uint64_r.uint64_dcb(_, buf, size) == uint64_r.uint64_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
 def uint64_decode_vchecked_budget_zero()

@@ -49,14 +49,14 @@ def FinalityBranch_decode_vchecked_budget_cost()
     -> {FuluFinalityBranch_r.FinalityBranch_dcost(4096) == 524288 : U32}:
   {==}
 
-def FinalityBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget) == False{} : Bool})
+def FinalityBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluFinalityBranch_r.FinalityBranch_dcost(size), 4294967295), U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget)) == False{} : Bool})
     -> {FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget), False{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluFinalityBranch_r.FinalityBranch_dcost(size), 4294967295), U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget)), False{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
-def FinalityBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget) == True{} : Bool})
+def FinalityBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluFinalityBranch_r.FinalityBranch_dcost(size), 4294967295), U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget)) == True{} : Bool})
     -> {FuluFinalityBranch_r.FinalityBranch_decode_checked_budget(buf, size, budget) == FuluFinalityBranch_r.FinalityBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget), True{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == FuluFinalityBranch_r.FinalityBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluFinalityBranch_r.FinalityBranch_dcost(size), 4294967295), U32.is_le(FuluFinalityBranch_r.FinalityBranch_dcost(size), budget)), True{}, h) : {FuluFinalityBranch_r.FinalityBranch_dcb(_, buf, size) == FuluFinalityBranch_r.FinalityBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 def FinalityBranch_decode_vchecked_budget_zero()

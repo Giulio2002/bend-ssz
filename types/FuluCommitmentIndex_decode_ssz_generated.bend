@@ -56,4 +56,4 @@ def CommitmentIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O
     case True{}: CommitmentIndex_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def CommitmentIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CommitmentIndex_dcb(U32.is_le(CommitmentIndex_dcost(size), budget), buf, size)
+def CommitmentIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CommitmentIndex_dcb(Bool.and(U32.is_lt(CommitmentIndex_dcost(size), 4294967295), U32.is_le(CommitmentIndex_dcost(size), budget)), buf, size)

@@ -135,6 +135,12 @@ def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_short() -> {Pai
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 458752), 7}, 7)) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   P3_PRV.VarTestStruct_decode_vchecked_real()
 
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(VarTestStruct_r.VarTestStruct_dcost(size), 4294967295), U32.is_le(VarTestStruct_r.VarTestStruct_dcost(size), budget)) == True{} : Bool}) -> {VarTestStruct_r.VarTestStruct_decode_checked_budget(buf, size, budget) == VarTestStruct_r.VarTestStruct_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  P3_PRV.VarTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_budget_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked_budget(P3_B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7, 4294967295)), Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 7))) == (True{}, True{}) : Bool & Bool}:
+  P3_PRV.VarTestStruct_decode_vchecked_budget_accept()
+
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vlit_bad_f_B_ragged() -> {P4_PRV.some1(Pair.snd(P4_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode(P4_B.Buf{Array.set(U32, Array.new(U32, 2n, 0), 0, 458752), 10}, 10))) == False{} : Bool}:
   P4_PRV.VarTestStruct_decode_vlit_bad_f_B_ragged()
 

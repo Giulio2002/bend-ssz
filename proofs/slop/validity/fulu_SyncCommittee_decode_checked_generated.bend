@@ -42,14 +42,14 @@ def SyncCommittee_decode_vchecked_budget_cost()
     -> {FuluSyncCommittee_r.SyncCommittee_dcost(4096) == 524288 : U32}:
   {==}
 
-def SyncCommittee_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget) == False{} : Bool})
+def SyncCommittee_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommittee_r.SyncCommittee_dcost(size), 4294967295), U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget)) == False{} : Bool})
     -> {FuluSyncCommittee_r.SyncCommittee_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
-  %Equal.sym(Bool, U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget), False{}, h) : {FuluSyncCommittee_r.SyncCommittee_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncCommittee_r.SyncCommittee_dcost(size), 4294967295), U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget)), False{}, h) : {FuluSyncCommittee_r.SyncCommittee_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}
   {==}
 
-def SyncCommittee_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget) == True{} : Bool})
+def SyncCommittee_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommittee_r.SyncCommittee_dcost(size), 4294967295), U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget)) == True{} : Bool})
     -> {FuluSyncCommittee_r.SyncCommittee_decode_checked_budget(buf, size, budget) == FuluSyncCommittee_r.SyncCommittee_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
-  %Equal.sym(Bool, U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget), True{}, h) : {FuluSyncCommittee_r.SyncCommittee_dcb(_, buf, size) == FuluSyncCommittee_r.SyncCommittee_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncCommittee_r.SyncCommittee_dcost(size), 4294967295), U32.is_le(FuluSyncCommittee_r.SyncCommittee_dcost(size), budget)), True{}, h) : {FuluSyncCommittee_r.SyncCommittee_dcb(_, buf, size) == FuluSyncCommittee_r.SyncCommittee_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}
   {==}
 
 def SyncCommittee_decode_vchecked_budget_zero()

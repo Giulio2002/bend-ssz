@@ -50,14 +50,14 @@ def LightClientHeader_decode_vchecked_budget_cost()
     -> {FuluLightClientHeader_r.LightClientHeader_dcost(4096) == 524288 : U32}:
   {==}
 
-def LightClientHeader_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget) == False{} : Bool})
+def LightClientHeader_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientHeader_r.LightClientHeader_dcost(size), 4294967295), U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget)) == False{} : Bool})
     -> {FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
-  %Equal.sym(Bool, U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget), False{}, h) : {FuluLightClientHeader_r.LightClientHeader_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluLightClientHeader_r.LightClientHeader_dcost(size), 4294967295), U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget)), False{}, h) : {FuluLightClientHeader_r.LightClientHeader_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}
   {==}
 
-def LightClientHeader_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget) == True{} : Bool})
+def LightClientHeader_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientHeader_r.LightClientHeader_dcost(size), 4294967295), U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget)) == True{} : Bool})
     -> {FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(buf, size, budget) == FuluLightClientHeader_r.LightClientHeader_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
-  %Equal.sym(Bool, U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget), True{}, h) : {FuluLightClientHeader_r.LightClientHeader_dcb(_, buf, size) == FuluLightClientHeader_r.LightClientHeader_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluLightClientHeader_r.LightClientHeader_dcost(size), 4294967295), U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget)), True{}, h) : {FuluLightClientHeader_r.LightClientHeader_dcb(_, buf, size) == FuluLightClientHeader_r.LightClientHeader_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}
   {==}
 
 def LightClientHeader_decode_vchecked_budget_zero()

@@ -45,14 +45,14 @@ def boolean_decode_vchecked_budget_cost()
     -> {boolean_r.boolean_dcost(4096) == 524288 : U32}:
   {==}
 
-def boolean_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(boolean_r.boolean_dcost(size), budget) == False{} : Bool})
+def boolean_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)) == False{} : Bool})
     -> {boolean_r.boolean_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(Bool, U32.is_le(boolean_r.boolean_dcost(size), budget), False{}, h) : {boolean_r.boolean_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)), False{}, h) : {boolean_r.boolean_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}
   {==}
 
-def boolean_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(boolean_r.boolean_dcost(size), budget) == True{} : Bool})
+def boolean_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)) == True{} : Bool})
     -> {boolean_r.boolean_decode_checked_budget(buf, size, budget) == boolean_r.boolean_decode_checked(buf, size) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(Bool, U32.is_le(boolean_r.boolean_dcost(size), budget), True{}, h) : {boolean_r.boolean_dcb(_, buf, size) == boolean_r.boolean_decode_checked(buf, size) : B.Buf & Maybe<&1, Bool>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)), True{}, h) : {boolean_r.boolean_dcb(_, buf, size) == boolean_r.boolean_decode_checked(buf, size) : B.Buf & Maybe<&1, Bool>}
   {==}
 
 def boolean_decode_vchecked_budget_zero()

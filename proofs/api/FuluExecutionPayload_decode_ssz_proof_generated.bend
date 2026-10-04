@@ -173,6 +173,12 @@ def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_short
 def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 528}, 528)) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   P3_PRV.ExecutionPayload_decode_vchecked_real()
 
+def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionPayload_r.ExecutionPayload_dcost(size), 4294967295), U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget)) == True{} : Bool}) -> {FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(buf, size, budget) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  P3_PRV.ExecutionPayload_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_budget_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528, 4294967295)), Pair.snd(P3_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
+  P3_PRV.ExecutionPayload_decode_vchecked_budget_accept()
+
 def FuluExecutionPayload__decode_offsets__ExecutionPayload_decode_vlit_bad_extra_data_over() -> {P4_PRV.some1(Pair.snd(P4_B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode(P4_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 561), 127, 561), 561}, 561))) == False{} : Bool}:
   P4_PRV.ExecutionPayload_decode_vlit_bad_extra_data_over()
 

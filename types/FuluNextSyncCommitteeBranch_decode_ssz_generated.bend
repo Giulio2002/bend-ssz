@@ -56,4 +56,4 @@ def NextSyncCommitteeBranch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & May
     case True{}: NextSyncCommitteeBranch_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def NextSyncCommitteeBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: NextSyncCommitteeBranch_dcb(U32.is_le(NextSyncCommitteeBranch_dcost(size), budget), buf, size)
+def NextSyncCommitteeBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: NextSyncCommitteeBranch_dcb(Bool.and(U32.is_lt(NextSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(NextSyncCommitteeBranch_dcost(size), budget)), buf, size)

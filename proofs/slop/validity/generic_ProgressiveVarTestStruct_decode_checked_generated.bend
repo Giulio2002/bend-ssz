@@ -50,14 +50,14 @@ def ProgressiveVarTestStruct_decode_vchecked_budget_cost()
     -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(4096) == 527879 : U32}:
   {==}
 
-def ProgressiveVarTestStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget) == False{} : Bool})
+def ProgressiveVarTestStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget)) == False{} : Bool})
     -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
-  %Equal.sym(Bool, U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget), False{}, h) : {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget)), False{}, h) : {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}
   {==}
 
-def ProgressiveVarTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget) == True{} : Bool})
+def ProgressiveVarTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget)) == True{} : Bool})
     -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
-  %Equal.sym(Bool, U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget), True{}, h) : {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcb(_, buf, size) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget)), True{}, h) : {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcb(_, buf, size) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}
   {==}
 
 def ProgressiveVarTestStruct_decode_vchecked_budget_zero()

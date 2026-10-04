@@ -42,14 +42,14 @@ def LightClientBootstrap_decode_vchecked_budget_cost()
     -> {FuluLightClientBootstrap_r.LightClientBootstrap_dcost(4096) == 524288 : U32}:
   {==}
 
-def LightClientBootstrap_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget) == False{} : Bool})
+def LightClientBootstrap_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), 4294967295), U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget)) == False{} : Bool})
     -> {FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
-  %Equal.sym(Bool, U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget), False{}, h) : {FuluLightClientBootstrap_r.LightClientBootstrap_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), 4294967295), U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget)), False{}, h) : {FuluLightClientBootstrap_r.LightClientBootstrap_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
   {==}
 
-def LightClientBootstrap_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget) == True{} : Bool})
+def LightClientBootstrap_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), 4294967295), U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget)) == True{} : Bool})
     -> {FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked_budget(buf, size, budget) == FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
-  %Equal.sym(Bool, U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget), True{}, h) : {FuluLightClientBootstrap_r.LightClientBootstrap_dcb(_, buf, size) == FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), 4294967295), U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget)), True{}, h) : {FuluLightClientBootstrap_r.LightClientBootstrap_dcb(_, buf, size) == FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
   {==}
 
 def LightClientBootstrap_decode_vchecked_budget_zero()

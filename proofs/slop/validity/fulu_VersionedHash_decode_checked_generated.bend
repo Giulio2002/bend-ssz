@@ -50,14 +50,14 @@ def VersionedHash_decode_vchecked_budget_cost()
     -> {FuluVersionedHash_r.VersionedHash_dcost(4096) == 524288 : U32}:
   {==}
 
-def VersionedHash_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget) == False{} : Bool})
+def VersionedHash_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluVersionedHash_r.VersionedHash_dcost(size), 4294967295), U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget)) == False{} : Bool})
     -> {FuluVersionedHash_r.VersionedHash_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
-  %Equal.sym(Bool, U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget), False{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluVersionedHash_r.VersionedHash_dcost(size), 4294967295), U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget)), False{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
   {==}
 
-def VersionedHash_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget) == True{} : Bool})
+def VersionedHash_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluVersionedHash_r.VersionedHash_dcost(size), 4294967295), U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget)) == True{} : Bool})
     -> {FuluVersionedHash_r.VersionedHash_decode_checked_budget(buf, size, budget) == FuluVersionedHash_r.VersionedHash_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
-  %Equal.sym(Bool, U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget), True{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == FuluVersionedHash_r.VersionedHash_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluVersionedHash_r.VersionedHash_dcost(size), 4294967295), U32.is_le(FuluVersionedHash_r.VersionedHash_dcost(size), budget)), True{}, h) : {FuluVersionedHash_r.VersionedHash_dcb(_, buf, size) == FuluVersionedHash_r.VersionedHash_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
   {==}
 
 def VersionedHash_decode_vchecked_budget_zero()

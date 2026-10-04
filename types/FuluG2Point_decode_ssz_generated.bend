@@ -57,4 +57,4 @@ def G2Point_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes
     case True{}: G2Point_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def G2Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: G2Point_dcb(U32.is_le(G2Point_dcost(size), budget), buf, size)
+def G2Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: G2Point_dcb(Bool.and(U32.is_lt(G2Point_dcost(size), 4294967295), U32.is_le(G2Point_dcost(size), budget)), buf, size)

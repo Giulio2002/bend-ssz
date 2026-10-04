@@ -50,14 +50,14 @@ def CompatibleUnionBC_decode_vchecked_budget_cost()
     -> {CompatibleUnionBC_r.CompatibleUnionBC_dcost(4096) == 527879 : U32}:
   {==}
 
-def CompatibleUnionBC_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget) == False{} : Bool})
+def CompatibleUnionBC_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)) == False{} : Bool})
     -> {CompatibleUnionBC_r.CompatibleUnionBC_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
-  %Equal.sym(Bool, U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget), False{}, h) : {CompatibleUnionBC_r.CompatibleUnionBC_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)), False{}, h) : {CompatibleUnionBC_r.CompatibleUnionBC_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}
   {==}
 
-def CompatibleUnionBC_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget) == True{} : Bool})
+def CompatibleUnionBC_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)) == True{} : Bool})
     -> {CompatibleUnionBC_r.CompatibleUnionBC_decode_checked_budget(buf, size, budget) == CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}:
-  %Equal.sym(Bool, U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget), True{}, h) : {CompatibleUnionBC_r.CompatibleUnionBC_dcb(_, buf, size) == CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_r.CompatibleUnionBC_dcost(size), budget)), True{}, h) : {CompatibleUnionBC_r.CompatibleUnionBC_dcb(_, buf, size) == CompatibleUnionBC_r.CompatibleUnionBC_decode_checked(buf, size) : B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>}
   {==}
 
 def CompatibleUnionBC_decode_vchecked_budget_zero()

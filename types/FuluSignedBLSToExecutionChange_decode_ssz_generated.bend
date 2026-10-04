@@ -79,4 +79,4 @@ def SignedBLSToExecutionChange_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & 
     case True{}: SignedBLSToExecutionChange_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SignedBLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>: SignedBLSToExecutionChange_dcb(U32.is_le(SignedBLSToExecutionChange_dcost(size), budget), buf, size)
+def SignedBLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>: SignedBLSToExecutionChange_dcb(Bool.and(U32.is_lt(SignedBLSToExecutionChange_dcost(size), 4294967295), U32.is_le(SignedBLSToExecutionChange_dcost(size), budget)), buf, size)

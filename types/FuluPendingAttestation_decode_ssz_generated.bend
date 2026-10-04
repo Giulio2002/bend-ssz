@@ -107,4 +107,4 @@ def PendingAttestation_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1
     case True{}: PendingAttestation_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def PendingAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>: PendingAttestation_dcb(U32.is_le(PendingAttestation_dcost(size), budget), buf, size)
+def PendingAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>: PendingAttestation_dcb(Bool.and(U32.is_lt(PendingAttestation_dcost(size), 4294967295), U32.is_le(PendingAttestation_dcost(size), budget)), buf, size)

@@ -49,14 +49,14 @@ def CurrentSyncCommitteeBranch_decode_vchecked_budget_cost()
     -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(4096) == 524288 : U32}:
   {==}
 
-def CurrentSyncCommitteeBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget) == False{} : Bool})
+def CurrentSyncCommitteeBranch_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget)) == False{} : Bool})
     -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget), False{}, h) : {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget)), False{}, h) : {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
-def CurrentSyncCommitteeBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget) == True{} : Bool})
+def CurrentSyncCommitteeBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget)) == True{} : Bool})
     -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked_budget(buf, size, budget) == FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget), True{}, h) : {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcb(_, buf, size) == FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), 4294967295), U32.is_le(FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcost(size), budget)), True{}, h) : {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dcb(_, buf, size) == FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 def CurrentSyncCommitteeBranch_decode_vchecked_budget_zero()

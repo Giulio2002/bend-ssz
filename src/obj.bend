@@ -1582,7 +1582,9 @@ def sl_some(empty: Bool, o: Words, +p: U32, +n: U32) -> Words & Words:
     case False{}: sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
       zeros_for(n), words_word(o, U32.shrn(p, 2n))))
 
-def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(U32.is_eq(n, 0), o, p, n)
+# A slice longer than NMAX is not one either (docs/CRASH_HUNT.md R6-03): its word count (n + 3) >> 2 and its storage zeros_for(n) wrap for
+# n >= 2^32 - 3; it is answered as the empty slice.
+def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words: sl_some(Bool.or(U32.is_eq(n, 0), U32.is_lt(4294967264, n)), o, p, n)
 
 def bl_go(+k: Nat, +j: U32, +base: U32, o: Words, pair: Array<U32> & U32) -> Words & Array<U32>:
   match k:

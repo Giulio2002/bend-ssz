@@ -45,14 +45,14 @@ def uint16_decode_vchecked_budget_cost()
     -> {uint16_r.uint16_dcost(4096) == 524288 : U32}:
   {==}
 
-def uint16_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(uint16_r.uint16_dcost(size), budget) == False{} : Bool})
+def uint16_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint16_r.uint16_dcost(size), 4294967295), U32.is_le(uint16_r.uint16_dcost(size), budget)) == False{} : Bool})
     -> {uint16_r.uint16_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_le(uint16_r.uint16_dcost(size), budget), False{}, h) : {uint16_r.uint16_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint16_r.uint16_dcost(size), 4294967295), U32.is_le(uint16_r.uint16_dcost(size), budget)), False{}, h) : {uint16_r.uint16_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
   {==}
 
-def uint16_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(uint16_r.uint16_dcost(size), budget) == True{} : Bool})
+def uint16_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint16_r.uint16_dcost(size), 4294967295), U32.is_le(uint16_r.uint16_dcost(size), budget)) == True{} : Bool})
     -> {uint16_r.uint16_decode_checked_budget(buf, size, budget) == uint16_r.uint16_decode_checked(buf, size) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_le(uint16_r.uint16_dcost(size), budget), True{}, h) : {uint16_r.uint16_dcb(_, buf, size) == uint16_r.uint16_decode_checked(buf, size) : B.Buf & Maybe<&1, U32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint16_r.uint16_dcost(size), 4294967295), U32.is_le(uint16_r.uint16_dcost(size), budget)), True{}, h) : {uint16_r.uint16_dcb(_, buf, size) == uint16_r.uint16_decode_checked(buf, size) : B.Buf & Maybe<&1, U32>}
   {==}
 
 def uint16_decode_vchecked_budget_zero()

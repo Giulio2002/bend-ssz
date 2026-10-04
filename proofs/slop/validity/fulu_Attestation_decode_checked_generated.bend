@@ -50,14 +50,14 @@ def Attestation_decode_vchecked_budget_cost()
     -> {FuluAttestation_r.Attestation_dcost(4096) == 524288 : U32}:
   {==}
 
-def Attestation_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget) == False{} : Bool})
+def Attestation_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttestation_r.Attestation_dcost(size), 4294967295), U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget)) == False{} : Bool})
     -> {FuluAttestation_r.Attestation_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
-  %Equal.sym(Bool, U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget), False{}, h) : {FuluAttestation_r.Attestation_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttestation_r.Attestation_dcost(size), 4294967295), U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget)), False{}, h) : {FuluAttestation_r.Attestation_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
   {==}
 
-def Attestation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget) == True{} : Bool})
+def Attestation_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttestation_r.Attestation_dcost(size), 4294967295), U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget)) == True{} : Bool})
     -> {FuluAttestation_r.Attestation_decode_checked_budget(buf, size, budget) == FuluAttestation_r.Attestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}:
-  %Equal.sym(Bool, U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget), True{}, h) : {FuluAttestation_r.Attestation_dcb(_, buf, size) == FuluAttestation_r.Attestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttestation_r.Attestation_dcost(size), 4294967295), U32.is_le(FuluAttestation_r.Attestation_dcost(size), budget)), True{}, h) : {FuluAttestation_r.Attestation_dcb(_, buf, size) == FuluAttestation_r.Attestation_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttestation_d.Attestation>}
   {==}
 
 def Attestation_decode_vchecked_budget_zero()

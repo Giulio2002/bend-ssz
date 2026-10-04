@@ -66,4 +66,4 @@ def boolean_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Bool>:
     case True{}: boolean_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def boolean_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, Bool>: boolean_dcb(U32.is_le(boolean_dcost(size), budget), buf, size)
+def boolean_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, Bool>: boolean_dcb(Bool.and(U32.is_lt(boolean_dcost(size), 4294967295), U32.is_le(boolean_dcost(size), budget)), buf, size)

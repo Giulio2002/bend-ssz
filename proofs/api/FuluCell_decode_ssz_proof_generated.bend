@@ -115,6 +115,12 @@ def FuluCell__decode_offsets__Cell_decode_vchecked_short() -> {Pair.snd(P5_B.Buf
 def FuluCell__decode_offsets__Cell_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCell_r.Cell_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 2048}, 2048)) == None{} : Maybe<&1, P5_O.Words>}:
   P5_PRV.Cell_decode_vchecked_real()
 
+def FuluCell__decode_offsets__Cell_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)) == True{} : Bool}) -> {FuluCell_r.Cell_decode_checked_budget(buf, size, budget) == FuluCell_r.Cell_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.Cell_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluCell__decode_offsets__Cell_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCell_r.Cell_decode_checked_budget(P5_B.Buf{Array.new(U32, 9n, 0), 2048}, 2048, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, FuluCell_r.Cell_decode_checked(P5_B.Buf{Array.new(U32, 9n, 0), 2048}, 2048))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.Cell_decode_vchecked_budget_accept()
+
 def FuluCell__decode_offsets__Cell_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, P6_O.Words>, FuluCell_r.Cell_decode(P6_B.Buf{Array.new(U32, 9n, 0), 2047}, 2047))) == False{} : Bool}:
   P6_PRV.Cell_decode_vlit_bad_short()
 

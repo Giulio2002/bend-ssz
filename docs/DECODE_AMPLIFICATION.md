@@ -69,8 +69,22 @@ protection is the budget.
 
 The protection is opt-in: only callers of `X_decode_checked_budget` get it. `X_decode_checked` and `_decode` are unchanged and have no
 memory limit. The bound is a MEASURED estimate, not a proved bound: K = ceil(1.25 x the worst density measured over the name's shapes + 1);
-the laws state what the budget does with the bound, not that the bound is the decode's true cost. A budget of 2^32 - 1, or any budget at
-least the saturated `X_dcost(size)`, means no limit and accepts everything `X_decode_checked` accepts, by design.
+the laws state what the budget does with the bound, not that the bound is the decode's true cost. A bound that saturates (2^32 - 1: it
+does not fit 32 bits) is refused whatever the budget (docs/CRASH_HUNT.md R6-01), so the largest budget, 2^32 - 1, means "up to 2^32 - 2
+words" (about 32 GiB), not "no limit": an embedder with a heap of 32 GiB or more clamps to it and still refuses what does not fit.
+
+The bound covers `_decode` alone (R6-02, measured by the round-6 hunter, docs/crash_hunt_evidence/r6): a caller that flattens the decoded
+object (`X_flat`, the Prysm shim's path) or dumps it (`X_dump`) allocates more, and must leave that headroom in its budget:
+
+| name / shape | decode only | decode + X_flat | decode + X_dump | K |
+|---|---:|---:|---:|---:|
+| BeaconState pending_partial_withdrawals / pending_deposits | 2.5 | 6.9 | - | 7 |
+| BeaconState validators | 2.1 | 6.5 | 19.1 | 7 |
+| DataColumnSidecar, column at 4096 | 2.0 | 6.1 | 18.3 | 6 |
+| ExecutionPayload, 2^19 + 1 one-byte transactions | 28.4 | 28.8 | 38.8 | 40 |
+| ProgressiveComplexTestStruct f_F, empty inner lists | 21.6 | 21.8 | 30.6 | 31 |
+
+(heap bytes per input byte; the flat stream adds about 4 per packed input byte, the dump about 16.)
 
 Every name X has (types/<Name>_decode_ssz_generated.bend):
 
@@ -85,7 +99,8 @@ a list of variable-size elements filled with elements of length l costs per inpu
 element's own density, so the worst is one of the measured shapes (empty elements, or the element type's own worst shape one level
 down). Every one of the 438 measured shapes decodes within its bound (section 5, last column: bound / decoded heap, at least 1.4). K is
 measured, not proved: the laws say what the budget does with the bound, not that the bound is the decode's true cost. A name's K is
-at least that of every name nested in it (a block charges at least its body and its payload).
+at least that of every name nested in it, by structure, aliases included (a block charges at least its body and its payload,
+BlobSidecar at least its Blob: docs/CRASH_HUNT.md R6-04); decode_checked_laws.py stops when that does not hold.
 
 K by name (the others 0, or 4 to 7: byte, bit and packed lists 5 to 7, BeaconState 7, DataColumnSidecar 6):
 
@@ -100,16 +115,18 @@ it). An embedder with a fixed heap calls `X_decode_checked_budget` with what its
 8 GiB heap is 2^30 words: a block of up to about 200 MB, any BeaconState of up to about 1 GB, and no 600 MiB progressive container of
 empty lists (bound 2,438,463,519 words) get through.
 
-Laws (proofs/slop/validity/<runtime>_<X>_decode_checked_generated.bend, for every name): `_budget_refuse` (bound above the budget: the
-buffer and None, for every buffer, size and budget), `_budget_agree` (otherwise `X_decode_checked(buf, size)`), `_budget_cost` (the bound
+Laws (proofs/slop/validity/<runtime>_<X>_decode_checked_generated.bend, for every name): `_budget_refuse` (bound saturated or above the budget:
+the buffer and None, for every buffer, size and budget), `_budget_agree` (otherwise `X_decode_checked(buf, size)`), `_budget_cost` (the bound
 of 4096 bytes is the literal ((4096 >> 3) + 1) * K + 524288), `_budget_zero` (a budget of 0 refuses) and, with a valid default window,
-`_budget_accept` (the budget 2^32 - 1 decodes it). The decode statements are unchanged (docs/decode_amplification_statement_diff.md).
+`_budget_accept` (the budget 2^32 - 1 decodes it), and for K >= 8 `_budget_saturated` (the bound of NMAX bytes saturates: refused with the
+budget 2^32 - 1). The decode statements are unchanged (docs/decode_amplification_statement_diff.md).
 
 ## 4. Regression
 
 `tools/crash_hunt/regress.sh` cases 73-76: the bound of an ExecutionPayload of 65,537 empty transactions (262,676 bytes) is 1,837,688
 words; one word below it the budget decode is None, at it the payload decodes; the bound of a 600 MiB ProgressiveComplexTestStruct is
-2,438,463,519 words, above the 2^30 words of an 8 GiB heap.
+2,438,463,519 words, above the 2^30 words of an 8 GiB heap. Cases 77-78 (round 6): ProgressiveComplexTestStruct of 2^31 bytes with
+the budget 2^32 - 1 is refused (its bound saturates, R6-01); `O.words_slice(o, 0, 2^32 - 1)` answers the empty slice at once (R6-03).
 
 ## 5. All names
 
@@ -147,7 +164,7 @@ decoded heap. Peak RSS in KiB; `refused`: the same program refusing the same inp
 | proglist_uint256 | `[]` | 16,777,248 | 68,892 | 36276 | 1.99 | 3.99 | 6 | 3.1 |
 | DataColumnSidecar | `column.[]` | 4,196,708 | 20,152 | 12076 | 1.97 | 3.97 | 6 | 3.6 |
 | IndexedAttestation | `attesting_indices.[]` | 524,524 | 5,532 | 4848 | 1.34 | - | 3 | 8.2 |
-| BlobSidecar | `(fixed)` | 131,928 | 4,564 | 4456 | 0.84 | - | 3 | 41.5 |
+| BlobSidecar | `(fixed)` | 131,928 | 4,564 | 4456 | 0.84 | - | 5 | 43.9 |
 | AggregateAndProof | `aggregate.aggregation_bits.bits` | 16,729 | 2,864 | 2856 | small | - | 0 | 512.0 |
 | Attestation | `aggregation_bits.bits` | 16,621 | 2,896 | 2912 | small | - | 0 | 4194304.0 |
 | AttestationData | `(fixed)` | 128 | 2,484 | 2516 | small | - | 0 | 4194304.0 |

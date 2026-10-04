@@ -74,3 +74,5 @@
 74 ep_empty_txs_budget_below some=0
 75 ep_empty_txs_budget_at some=1
 76 pcts_600MiB_dcost=2438463519 within_2^30_words=0
+77 pcts_2^31_budget_max some=0
+78 r6_words_slice_max n=0

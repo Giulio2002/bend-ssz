@@ -46,14 +46,14 @@ def bitvector_4_decode_vchecked_budget_cost()
     -> {bitvector_4_r.bitvector_4_dcost(4096) == 524288 : U32}:
   {==}
 
-def bitvector_4_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget) == False{} : Bool})
+def bitvector_4_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitvector_4_r.bitvector_4_dcost(size), 4294967295), U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget)) == False{} : Bool})
     -> {bitvector_4_r.bitvector_4_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
-  %Equal.sym(Bool, U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget), False{}, h) : {bitvector_4_r.bitvector_4_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitvector_4_r.bitvector_4_dcost(size), 4294967295), U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget)), False{}, h) : {bitvector_4_r.bitvector_4_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
   {==}
 
-def bitvector_4_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget) == True{} : Bool})
+def bitvector_4_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitvector_4_r.bitvector_4_dcost(size), 4294967295), U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget)) == True{} : Bool})
     -> {bitvector_4_r.bitvector_4_decode_checked_budget(buf, size, budget) == bitvector_4_r.bitvector_4_decode_checked(buf, size) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
-  %Equal.sym(Bool, U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget), True{}, h) : {bitvector_4_r.bitvector_4_dcb(_, buf, size) == bitvector_4_r.bitvector_4_decode_checked(buf, size) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitvector_4_r.bitvector_4_dcost(size), 4294967295), U32.is_le(bitvector_4_r.bitvector_4_dcost(size), budget)), True{}, h) : {bitvector_4_r.bitvector_4_dcb(_, buf, size) == bitvector_4_r.bitvector_4_decode_checked(buf, size) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
   {==}
 
 def bitvector_4_decode_vchecked_budget_zero()

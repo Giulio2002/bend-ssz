@@ -135,6 +135,12 @@ def FuluVoluntaryExit__decode_offsets__VoluntaryExit_decode_vchecked_short() -> 
 def FuluVoluntaryExit__decode_offsets__VoluntaryExit_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 16}, 16)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
   P7_PRV.VoluntaryExit_decode_vchecked_real()
 
+def FuluVoluntaryExit__decode_offsets__VoluntaryExit_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluVoluntaryExit_r.VoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluVoluntaryExit_r.VoluntaryExit_dcost(size), budget)) == True{} : Bool}) -> {FuluVoluntaryExit_r.VoluntaryExit_decode_checked_budget(buf, size, budget) == FuluVoluntaryExit_r.VoluntaryExit_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
+  P7_PRV.VoluntaryExit_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluVoluntaryExit__decode_offsets__VoluntaryExit_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode_checked_budget(P7_B.Buf{Array.new(U32, 2n, 0), 16}, 16, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode_checked(P7_B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.VoluntaryExit_decode_vchecked_budget_accept()
+
 def FuluVoluntaryExit__decode_offsets__VoluntaryExit_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(P8_B.Buf{Array.new(U32, 2n, 0), 15}, 15))) == False{} : Bool}:
   P8_PRV.VoluntaryExit_decode_vlit_bad_short()
 

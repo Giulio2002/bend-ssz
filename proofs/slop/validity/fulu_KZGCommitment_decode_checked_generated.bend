@@ -50,14 +50,14 @@ def KZGCommitment_decode_vchecked_budget_cost()
     -> {FuluKZGCommitment_r.KZGCommitment_dcost(4096) == 524288 : U32}:
   {==}
 
-def KZGCommitment_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget) == False{} : Bool})
+def KZGCommitment_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluKZGCommitment_r.KZGCommitment_dcost(size), 4294967295), U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget)) == False{} : Bool})
     -> {FuluKZGCommitment_r.KZGCommitment_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
-  %Equal.sym(Bool, U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget), False{}, h) : {FuluKZGCommitment_r.KZGCommitment_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluKZGCommitment_r.KZGCommitment_dcost(size), 4294967295), U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget)), False{}, h) : {FuluKZGCommitment_r.KZGCommitment_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
   {==}
 
-def KZGCommitment_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget) == True{} : Bool})
+def KZGCommitment_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluKZGCommitment_r.KZGCommitment_dcost(size), 4294967295), U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget)) == True{} : Bool})
     -> {FuluKZGCommitment_r.KZGCommitment_decode_checked_budget(buf, size, budget) == FuluKZGCommitment_r.KZGCommitment_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
-  %Equal.sym(Bool, U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget), True{}, h) : {FuluKZGCommitment_r.KZGCommitment_dcb(_, buf, size) == FuluKZGCommitment_r.KZGCommitment_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluKZGCommitment_r.KZGCommitment_dcost(size), 4294967295), U32.is_le(FuluKZGCommitment_r.KZGCommitment_dcost(size), budget)), True{}, h) : {FuluKZGCommitment_r.KZGCommitment_dcb(_, buf, size) == FuluKZGCommitment_r.KZGCommitment_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
   {==}
 
 def KZGCommitment_decode_vchecked_budget_zero()

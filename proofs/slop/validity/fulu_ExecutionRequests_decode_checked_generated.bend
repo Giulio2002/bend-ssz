@@ -50,14 +50,14 @@ def ExecutionRequests_decode_vchecked_budget_cost()
     -> {FuluExecutionRequests_r.ExecutionRequests_dcost(4096) == 526853 : U32}:
   {==}
 
-def ExecutionRequests_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget) == False{} : Bool})
+def ExecutionRequests_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)) == False{} : Bool})
     -> {FuluExecutionRequests_r.ExecutionRequests_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
-  %Equal.sym(Bool, U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget), False{}, h) : {FuluExecutionRequests_r.ExecutionRequests_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)), False{}, h) : {FuluExecutionRequests_r.ExecutionRequests_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}
   {==}
 
-def ExecutionRequests_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget) == True{} : Bool})
+def ExecutionRequests_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)) == True{} : Bool})
     -> {FuluExecutionRequests_r.ExecutionRequests_decode_checked_budget(buf, size, budget) == FuluExecutionRequests_r.ExecutionRequests_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
-  %Equal.sym(Bool, U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget), True{}, h) : {FuluExecutionRequests_r.ExecutionRequests_dcb(_, buf, size) == FuluExecutionRequests_r.ExecutionRequests_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)), True{}, h) : {FuluExecutionRequests_r.ExecutionRequests_dcb(_, buf, size) == FuluExecutionRequests_r.ExecutionRequests_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}
   {==}
 
 def ExecutionRequests_decode_vchecked_budget_zero()

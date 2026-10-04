@@ -139,6 +139,12 @@ def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_sho
 def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 76}, 76)) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
   P7_PRV.WithdrawalRequest_decode_vchecked_real()
 
+def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluWithdrawalRequest_r.WithdrawalRequest_dcost(size), 4294967295), U32.is_le(FuluWithdrawalRequest_r.WithdrawalRequest_dcost(size), budget)) == True{} : Bool}) -> {FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked_budget(buf, size, budget) == FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
+  P7_PRV.WithdrawalRequest_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked_budget(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.WithdrawalRequest_decode_vchecked_budget_accept()
+
 def FuluWithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_decode(P8_B.Buf{Array.new(U32, 5n, 0), 75}, 75))) == False{} : Bool}:
   P8_PRV.WithdrawalRequest_decode_vlit_bad_short()
 

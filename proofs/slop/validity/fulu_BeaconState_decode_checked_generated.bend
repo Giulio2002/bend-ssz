@@ -42,14 +42,14 @@ def BeaconState_decode_vchecked_budget_cost()
     -> {FuluBeaconState_r.BeaconState_dcost(4096) == 527879 : U32}:
   {==}
 
-def BeaconState_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget) == False{} : Bool})
+def BeaconState_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)) == False{} : Bool})
     -> {FuluBeaconState_r.BeaconState_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
-  %Equal.sym(Bool, U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget), False{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)), False{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
   {==}
 
-def BeaconState_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget) == True{} : Bool})
+def BeaconState_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)) == True{} : Bool})
     -> {FuluBeaconState_r.BeaconState_decode_checked_budget(buf, size, budget) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
-  %Equal.sym(Bool, U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget), True{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)), True{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
   {==}
 
 def BeaconState_decode_vchecked_budget_zero()

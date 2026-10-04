@@ -50,14 +50,14 @@ def Eth1Data_decode_vchecked_budget_cost()
     -> {FuluEth1Data_r.Eth1Data_dcost(4096) == 524288 : U32}:
   {==}
 
-def Eth1Data_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget) == False{} : Bool})
+def Eth1Data_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluEth1Data_r.Eth1Data_dcost(size), 4294967295), U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget)) == False{} : Bool})
     -> {FuluEth1Data_r.Eth1Data_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
-  %Equal.sym(Bool, U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget), False{}, h) : {FuluEth1Data_r.Eth1Data_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluEth1Data_r.Eth1Data_dcost(size), 4294967295), U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget)), False{}, h) : {FuluEth1Data_r.Eth1Data_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}
   {==}
 
-def Eth1Data_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget) == True{} : Bool})
+def Eth1Data_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluEth1Data_r.Eth1Data_dcost(size), 4294967295), U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget)) == True{} : Bool})
     -> {FuluEth1Data_r.Eth1Data_decode_checked_budget(buf, size, budget) == FuluEth1Data_r.Eth1Data_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
-  %Equal.sym(Bool, U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget), True{}, h) : {FuluEth1Data_r.Eth1Data_dcb(_, buf, size) == FuluEth1Data_r.Eth1Data_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluEth1Data_r.Eth1Data_dcost(size), 4294967295), U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget)), True{}, h) : {FuluEth1Data_r.Eth1Data_dcb(_, buf, size) == FuluEth1Data_r.Eth1Data_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}
   {==}
 
 def Eth1Data_decode_vchecked_budget_zero()

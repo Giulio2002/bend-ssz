@@ -49,14 +49,14 @@ def CustodyIndex_decode_vchecked_budget_cost()
     -> {FuluCustodyIndex_r.CustodyIndex_dcost(4096) == 524288 : U32}:
   {==}
 
-def CustodyIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget) == False{} : Bool})
+def CustodyIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCustodyIndex_r.CustodyIndex_dcost(size), 4294967295), U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget)) == False{} : Bool})
     -> {FuluCustodyIndex_r.CustodyIndex_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget), False{}, h) : {FuluCustodyIndex_r.CustodyIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCustodyIndex_r.CustodyIndex_dcost(size), 4294967295), U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget)), False{}, h) : {FuluCustodyIndex_r.CustodyIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
-def CustodyIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget) == True{} : Bool})
+def CustodyIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCustodyIndex_r.CustodyIndex_dcost(size), 4294967295), U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget)) == True{} : Bool})
     -> {FuluCustodyIndex_r.CustodyIndex_decode_checked_budget(buf, size, budget) == FuluCustodyIndex_r.CustodyIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
-  %Equal.sym(Bool, U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget), True{}, h) : {FuluCustodyIndex_r.CustodyIndex_dcb(_, buf, size) == FuluCustodyIndex_r.CustodyIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCustodyIndex_r.CustodyIndex_dcost(size), 4294967295), U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget)), True{}, h) : {FuluCustodyIndex_r.CustodyIndex_dcb(_, buf, size) == FuluCustodyIndex_r.CustodyIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
   {==}
 
 def CustodyIndex_decode_vchecked_budget_zero()

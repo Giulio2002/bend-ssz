@@ -100,4 +100,4 @@ def SyncCommitteeContribution_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & M
     case True{}: SyncCommitteeContribution_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SyncCommitteeContribution_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>: SyncCommitteeContribution_dcb(U32.is_le(SyncCommitteeContribution_dcost(size), budget), buf, size)
+def SyncCommitteeContribution_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>: SyncCommitteeContribution_dcb(Bool.and(U32.is_lt(SyncCommitteeContribution_dcost(size), 4294967295), U32.is_le(SyncCommitteeContribution_dcost(size), budget)), buf, size)

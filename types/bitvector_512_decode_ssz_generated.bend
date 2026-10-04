@@ -57,4 +57,4 @@ def bitvector_512_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Ful
     case True{}: bitvector_512_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def bitvector_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>: bitvector_512_dcb(U32.is_le(bitvector_512_dcost(size), budget), buf, size)
+def bitvector_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>: bitvector_512_dcb(Bool.and(U32.is_lt(bitvector_512_dcost(size), 4294967295), U32.is_le(bitvector_512_dcost(size), budget)), buf, size)

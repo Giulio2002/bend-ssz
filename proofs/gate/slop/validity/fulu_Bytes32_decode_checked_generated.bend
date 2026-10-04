@@ -14,7 +14,7 @@ def Bytes32__decode_offsets__Bytes32_decode_vchecked_accept() -> {PRV.is_some(Pa
 def Bytes32__decode_offsets__Bytes32_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluBytes32_r.Bytes32_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 32}, 32, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluBytes32_r.Bytes32_decode_checked(B.Buf{Array.new(U32, 3n, 0), 32}, 32))) == (True{}, True{}) : Bool & Bool}:
   PRV.Bytes32_decode_vchecked_budget_accept()
 
-def Bytes32__decode_offsets__Bytes32_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBytes32_r.Bytes32_dcost(size), budget) == True{} : Bool}) -> {FuluBytes32_r.Bytes32_decode_checked_budget(buf, size, budget) == FuluBytes32_r.Bytes32_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+def Bytes32__decode_offsets__Bytes32_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBytes32_r.Bytes32_dcost(size), 4294967295), U32.is_le(FuluBytes32_r.Bytes32_dcost(size), budget)) == True{} : Bool}) -> {FuluBytes32_r.Bytes32_decode_checked_budget(buf, size, budget) == FuluBytes32_r.Bytes32_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Bytes32_decode_vchecked_budget_agree(buf, size, budget, h)
 
 def Bytes32__decode_offsets__Bytes32_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluBytes32_r.Bytes32_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:

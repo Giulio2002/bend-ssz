@@ -82,4 +82,4 @@ def Eth1Data_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1
     case True{}: Eth1Data_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Eth1Data_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dcb(U32.is_le(Eth1Data_dcost(size), budget), buf, size)
+def Eth1Data_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>: Eth1Data_dcb(Bool.and(U32.is_lt(Eth1Data_dcost(size), 4294967295), U32.is_le(Eth1Data_dcost(size), budget)), buf, size)

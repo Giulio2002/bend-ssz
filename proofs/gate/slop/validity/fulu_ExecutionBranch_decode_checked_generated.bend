@@ -13,7 +13,7 @@ def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_accept() ->
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode_checked_budget(B.Buf{Array.new(U32, 5n, 0), 128}, 128, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_decode_checked(B.Buf{Array.new(U32, 5n, 0), 128}, 128))) == (True{}, True{}) : Bool & Bool}:
   PRV.ExecutionBranch_decode_vchecked_budget_accept()
 
-def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluExecutionBranch_r.ExecutionBranch_dcost(size), budget) == True{} : Bool}) -> {FuluExecutionBranch_r.ExecutionBranch_decode_checked_budget(buf, size, budget) == FuluExecutionBranch_r.ExecutionBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionBranch_r.ExecutionBranch_dcost(size), 4294967295), U32.is_le(FuluExecutionBranch_r.ExecutionBranch_dcost(size), budget)) == True{} : Bool}) -> {FuluExecutionBranch_r.ExecutionBranch_decode_checked_budget(buf, size, budget) == FuluExecutionBranch_r.ExecutionBranch_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
   PRV.ExecutionBranch_decode_vchecked_budget_agree(buf, size, budget, h)
 
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:

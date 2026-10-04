@@ -191,4 +191,4 @@ def ComplexTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
     case True{}: ComplexTestStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def ComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dcb(U32.is_le(ComplexTestStruct_dcost(size), budget), buf, size)
+def ComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>: ComplexTestStruct_dcb(Bool.and(U32.is_lt(ComplexTestStruct_dcost(size), 4294967295), U32.is_le(ComplexTestStruct_dcost(size), budget)), buf, size)

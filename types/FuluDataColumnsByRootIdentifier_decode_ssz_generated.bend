@@ -98,4 +98,4 @@ def DataColumnsByRootIdentifier_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf &
     case True{}: DataColumnsByRootIdentifier_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def DataColumnsByRootIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>: DataColumnsByRootIdentifier_dcb(U32.is_le(DataColumnsByRootIdentifier_dcost(size), budget), buf, size)
+def DataColumnsByRootIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>: DataColumnsByRootIdentifier_dcb(Bool.and(U32.is_lt(DataColumnsByRootIdentifier_dcost(size), 4294967295), U32.is_le(DataColumnsByRootIdentifier_dcost(size), budget)), buf, size)

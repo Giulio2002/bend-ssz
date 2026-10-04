@@ -50,14 +50,14 @@ def Bytes8_decode_vchecked_budget_cost()
     -> {FuluBytes8_r.Bytes8_dcost(4096) == 524288 : U32}:
   {==}
 
-def Bytes8_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget) == False{} : Bool})
+def Bytes8_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBytes8_r.Bytes8_dcost(size), 4294967295), U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget)) == False{} : Bool})
     -> {FuluBytes8_r.Bytes8_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
-  %Equal.sym(Bool, U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget), False{}, h) : {FuluBytes8_r.Bytes8_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBytes8_r.Bytes8_dcost(size), 4294967295), U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget)), False{}, h) : {FuluBytes8_r.Bytes8_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}
   {==}
 
-def Bytes8_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget) == True{} : Bool})
+def Bytes8_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBytes8_r.Bytes8_dcost(size), 4294967295), U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget)) == True{} : Bool})
     -> {FuluBytes8_r.Bytes8_decode_checked_budget(buf, size, budget) == FuluBytes8_r.Bytes8_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
-  %Equal.sym(Bool, U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget), True{}, h) : {FuluBytes8_r.Bytes8_dcb(_, buf, size) == FuluBytes8_r.Bytes8_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBytes8_r.Bytes8_dcost(size), 4294967295), U32.is_le(FuluBytes8_r.Bytes8_dcost(size), budget)), True{}, h) : {FuluBytes8_r.Bytes8_dcb(_, buf, size) == FuluBytes8_r.Bytes8_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}
   {==}
 
 def Bytes8_decode_vchecked_budget_zero()

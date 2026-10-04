@@ -120,6 +120,12 @@ def FuluProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_short
 def FuluProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 416}, 416)) == None{} : Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   P5_PRV.ProposerSlashing_decode_vchecked_real()
 
+def FuluProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluProposerSlashing_r.ProposerSlashing_dcost(size), 4294967295), U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget)) == True{} : Bool}) -> {FuluProposerSlashing_r.ProposerSlashing_decode_checked_budget(buf, size, budget) == FuluProposerSlashing_r.ProposerSlashing_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  P5_PRV.ProposerSlashing_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode_checked_budget(P5_B.Buf{Array.new(U32, 7n, 0), 416}, 416, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode_checked(P5_B.Buf{Array.new(U32, 7n, 0), 416}, 416))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.ProposerSlashing_decode_vchecked_budget_accept()
+
 def FuluProposerSlashing__decode_offsets__ProposerSlashing_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_decode(P6_B.Buf{Array.new(U32, 7n, 0), 415}, 415))) == False{} : Bool}:
   P6_PRV.ProposerSlashing_decode_vlit_bad_short()
 

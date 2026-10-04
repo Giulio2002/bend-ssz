@@ -105,4 +105,4 @@ def CompatibleUnionBC_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
     case True{}: CompatibleUnionBC_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def CompatibleUnionBC_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dcb(U32.is_le(CompatibleUnionBC_dcost(size), budget), buf, size)
+def CompatibleUnionBC_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dcb(Bool.and(U32.is_lt(CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_dcost(size), budget)), buf, size)

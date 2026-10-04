@@ -78,4 +78,4 @@ def Checkpoint_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCh
     case True{}: Checkpoint_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Checkpoint_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dcb(U32.is_le(Checkpoint_dcost(size), budget), buf, size)
+def Checkpoint_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dcb(Bool.and(U32.is_lt(Checkpoint_dcost(size), 4294967295), U32.is_le(Checkpoint_dcost(size), budget)), buf, size)

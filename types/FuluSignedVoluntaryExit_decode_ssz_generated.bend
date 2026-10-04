@@ -79,4 +79,4 @@ def SignedVoluntaryExit_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&
     case True{}: SignedVoluntaryExit_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SignedVoluntaryExit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>: SignedVoluntaryExit_dcb(U32.is_le(SignedVoluntaryExit_dcost(size), budget), buf, size)
+def SignedVoluntaryExit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>: SignedVoluntaryExit_dcb(Bool.and(U32.is_lt(SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(SignedVoluntaryExit_dcost(size), budget)), buf, size)

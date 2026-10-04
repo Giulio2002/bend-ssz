@@ -119,6 +119,12 @@ def FuluContributionAndProof__decode_offsets__ContributionAndProof_decode_vcheck
 def FuluContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 264}, 264)) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   P5_PRV.ContributionAndProof_decode_vchecked_real()
 
+def FuluContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluContributionAndProof_r.ContributionAndProof_dcost(size), 4294967295), U32.is_le(FuluContributionAndProof_r.ContributionAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluContributionAndProof_r.ContributionAndProof_decode_checked_budget(buf, size, budget) == FuluContributionAndProof_r.ContributionAndProof_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+  P5_PRV.ContributionAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked_budget(P5_B.Buf{Array.new(U32, 7n, 0), 264}, 264, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(P5_B.Buf{Array.new(U32, 7n, 0), 264}, 264))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.ContributionAndProof_decode_vchecked_budget_accept()
+
 def FuluContributionAndProof__decode_offsets__ContributionAndProof_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode(P6_B.Buf{Array.new(U32, 7n, 0), 263}, 263))) == False{} : Bool}:
   P6_PRV.ContributionAndProof_decode_vlit_bad_short()
 

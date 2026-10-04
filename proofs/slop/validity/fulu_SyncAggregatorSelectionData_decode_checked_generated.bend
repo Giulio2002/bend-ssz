@@ -50,14 +50,14 @@ def SyncAggregatorSelectionData_decode_vchecked_budget_cost()
     -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(4096) == 524288 : U32}:
   {==}
 
-def SyncAggregatorSelectionData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget) == False{} : Bool})
+def SyncAggregatorSelectionData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget)) == False{} : Bool})
     -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
-  %Equal.sym(Bool, U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget), False{}, h) : {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget)), False{}, h) : {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}
   {==}
 
-def SyncAggregatorSelectionData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget) == True{} : Bool})
+def SyncAggregatorSelectionData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget)) == True{} : Bool})
     -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked_budget(buf, size, budget) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
-  %Equal.sym(Bool, U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget), True{}, h) : {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcb(_, buf, size) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(size), budget)), True{}, h) : {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcb(_, buf, size) == FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}
   {==}
 
 def SyncAggregatorSelectionData_decode_vchecked_budget_zero()

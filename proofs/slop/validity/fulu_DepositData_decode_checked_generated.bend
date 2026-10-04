@@ -50,14 +50,14 @@ def DepositData_decode_vchecked_budget_cost()
     -> {FuluDepositData_r.DepositData_dcost(4096) == 524288 : U32}:
   {==}
 
-def DepositData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget) == False{} : Bool})
+def DepositData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositData_r.DepositData_dcost(size), 4294967295), U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget)) == False{} : Bool})
     -> {FuluDepositData_r.DepositData_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}:
-  %Equal.sym(Bool, U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget), False{}, h) : {FuluDepositData_r.DepositData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositData_r.DepositData_dcost(size), 4294967295), U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget)), False{}, h) : {FuluDepositData_r.DepositData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}
   {==}
 
-def DepositData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget) == True{} : Bool})
+def DepositData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositData_r.DepositData_dcost(size), 4294967295), U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget)) == True{} : Bool})
     -> {FuluDepositData_r.DepositData_decode_checked_budget(buf, size, budget) == FuluDepositData_r.DepositData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}:
-  %Equal.sym(Bool, U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget), True{}, h) : {FuluDepositData_r.DepositData_dcb(_, buf, size) == FuluDepositData_r.DepositData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositData_r.DepositData_dcost(size), 4294967295), U32.is_le(FuluDepositData_r.DepositData_dcost(size), budget)), True{}, h) : {FuluDepositData_r.DepositData_dcb(_, buf, size) == FuluDepositData_r.DepositData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}
   {==}
 
 def DepositData_decode_vchecked_budget_zero()

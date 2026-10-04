@@ -49,14 +49,14 @@ def Cell_decode_vchecked_budget_cost()
     -> {FuluCell_r.Cell_dcost(4096) == 524288 : U32}:
   {==}
 
-def Cell_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCell_r.Cell_dcost(size), budget) == False{} : Bool})
+def Cell_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)) == False{} : Bool})
     -> {FuluCell_r.Cell_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluCell_r.Cell_dcost(size), budget), False{}, h) : {FuluCell_r.Cell_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)), False{}, h) : {FuluCell_r.Cell_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
-def Cell_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCell_r.Cell_dcost(size), budget) == True{} : Bool})
+def Cell_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)) == True{} : Bool})
     -> {FuluCell_r.Cell_decode_checked_budget(buf, size, budget) == FuluCell_r.Cell_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(FuluCell_r.Cell_dcost(size), budget), True{}, h) : {FuluCell_r.Cell_dcb(_, buf, size) == FuluCell_r.Cell_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)), True{}, h) : {FuluCell_r.Cell_dcb(_, buf, size) == FuluCell_r.Cell_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 def Cell_decode_vchecked_budget_zero()

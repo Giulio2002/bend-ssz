@@ -104,4 +104,4 @@ def AggregateAndProof_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
     case True{}: AggregateAndProof_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def AggregateAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>: AggregateAndProof_dcb(U32.is_le(AggregateAndProof_dcost(size), budget), buf, size)
+def AggregateAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>: AggregateAndProof_dcb(Bool.and(U32.is_lt(AggregateAndProof_dcost(size), 4294967295), U32.is_le(AggregateAndProof_dcost(size), budget)), buf, size)

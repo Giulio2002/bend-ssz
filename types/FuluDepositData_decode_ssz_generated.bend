@@ -96,4 +96,4 @@ def DepositData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluD
     case True{}: DepositData_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def DepositData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositData_d.DepositData>: DepositData_dcb(U32.is_le(DepositData_dcost(size), budget), buf, size)
+def DepositData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositData_d.DepositData>: DepositData_dcb(Bool.and(U32.is_lt(DepositData_dcost(size), 4294967295), U32.is_le(DepositData_dcost(size), budget)), buf, size)

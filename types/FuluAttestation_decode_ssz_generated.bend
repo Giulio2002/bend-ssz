@@ -118,4 +118,4 @@ def Attestation_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluA
     case True{}: Attestation_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Attestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>: Attestation_dcb(U32.is_le(Attestation_dcost(size), budget), buf, size)
+def Attestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttestation_d.Attestation>: Attestation_dcb(Bool.and(U32.is_lt(Attestation_dcost(size), 4294967295), U32.is_le(Attestation_dcost(size), budget)), buf, size)

@@ -50,14 +50,18 @@ def BeaconBlockBody_decode_vchecked_budget_cost()
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(4096) == 544808 : U32}:
   {==}
 
-def BeaconBlockBody_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget) == False{} : Bool})
+def BeaconBlockBody_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)) == False{} : Bool})
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
-  %Equal.sym(Bool, U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget), False{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)), False{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
   {==}
 
-def BeaconBlockBody_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget) == True{} : Bool})
+def BeaconBlockBody_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)) == True{} : Bool})
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(buf, size, budget) == FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
-  %Equal.sym(Bool, U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget), True{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)), True{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_saturated()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(B.empty(), 4294967264, 4294967295)) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   {==}
 
 def BeaconBlockBody_decode_vchecked_budget_zero()

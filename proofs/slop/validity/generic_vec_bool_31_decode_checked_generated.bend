@@ -49,14 +49,14 @@ def vec_bool_31_decode_vchecked_budget_cost()
     -> {vec_bool_31_r.vec_bool_31_dcost(4096) == 524288 : U32}:
   {==}
 
-def vec_bool_31_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget) == False{} : Bool})
+def vec_bool_31_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(vec_bool_31_r.vec_bool_31_dcost(size), 4294967295), U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget)) == False{} : Bool})
     -> {vec_bool_31_r.vec_bool_31_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget), False{}, h) : {vec_bool_31_r.vec_bool_31_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(vec_bool_31_r.vec_bool_31_dcost(size), 4294967295), U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget)), False{}, h) : {vec_bool_31_r.vec_bool_31_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
-def vec_bool_31_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget) == True{} : Bool})
+def vec_bool_31_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(vec_bool_31_r.vec_bool_31_dcost(size), 4294967295), U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget)) == True{} : Bool})
     -> {vec_bool_31_r.vec_bool_31_decode_checked_budget(buf, size, budget) == vec_bool_31_r.vec_bool_31_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget), True{}, h) : {vec_bool_31_r.vec_bool_31_dcb(_, buf, size) == vec_bool_31_r.vec_bool_31_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(vec_bool_31_r.vec_bool_31_dcost(size), 4294967295), U32.is_le(vec_bool_31_r.vec_bool_31_dcost(size), budget)), True{}, h) : {vec_bool_31_r.vec_bool_31_dcb(_, buf, size) == vec_bool_31_r.vec_bool_31_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 def vec_bool_31_decode_vchecked_budget_zero()

@@ -3264,13 +3264,16 @@ def emit_api(g, name, s, w):
     w(f'def {name}_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dchk(size, B.size(buf))')
     # The decode budget (docs/DECODE_AMPLIFICATION.md): the checked decode within `budget` heap words. `_dcost(size)` bounds what the
     # decode of `size` bytes allocates (O.dcost with the name's heap bytes per input byte, codegen/decode_cost.json); a size whose bound
-    # is above the budget is refused before anything is read, any other is `_decode_checked`.
+    # is above the budget, or saturated, is refused before anything is read, any other is `_decode_checked`.
     w(f'def {name}_dcost(+size: U32) -> U32: O.dcost(size, {decode_cost_k(name)})')
     w(f'def {name}_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, {R}>:')
     w('  match ok:')
     w(f'    case True{{}}: {name}_decode_checked(buf, size)')
     w('    case False{}: (buf, None{})')
-    w(f'def {name}_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, {R}>: {name}_dcb(U32.is_le({name}_dcost(size), budget), buf, size)')
+    # a saturated bound (2^32 - 1: the bound does not fit 32 bits) is refused whatever the budget, so the largest budget means
+    # "up to 2^32 - 2 words", not "no limit" (docs/CRASH_HUNT.md R6-01)
+    w(f'def {name}_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, {R}>: '
+      f'{name}_dcb(Bool.and(U32.is_lt({name}_dcost(size), 4294967295), U32.is_le({name}_dcost(size), budget)), buf, size)')
     # encode
     if s.data:
         # the output of a fixed-size value has a size known here, so the

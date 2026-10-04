@@ -45,14 +45,14 @@ def bitlist_7_decode_vchecked_budget_cost()
     -> {bitlist_7_r.bitlist_7_dcost(4096) == 524288 : U32}:
   {==}
 
-def bitlist_7_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget) == False{} : Bool})
+def bitlist_7_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitlist_7_r.bitlist_7_dcost(size), 4294967295), U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget)) == False{} : Bool})
     -> {bitlist_7_r.bitlist_7_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
-  %Equal.sym(Bool, U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget), False{}, h) : {bitlist_7_r.bitlist_7_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitlist_7_r.bitlist_7_dcost(size), 4294967295), U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget)), False{}, h) : {bitlist_7_r.bitlist_7_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
-def bitlist_7_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget) == True{} : Bool})
+def bitlist_7_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitlist_7_r.bitlist_7_dcost(size), 4294967295), U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget)) == True{} : Bool})
     -> {bitlist_7_r.bitlist_7_decode_checked_budget(buf, size, budget) == bitlist_7_r.bitlist_7_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}:
-  %Equal.sym(Bool, U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget), True{}, h) : {bitlist_7_r.bitlist_7_dcb(_, buf, size) == bitlist_7_r.bitlist_7_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(bitlist_7_r.bitlist_7_dcost(size), 4294967295), U32.is_le(bitlist_7_r.bitlist_7_dcost(size), budget)), True{}, h) : {bitlist_7_r.bitlist_7_dcb(_, buf, size) == bitlist_7_r.bitlist_7_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
 def bitlist_7_decode_vchecked_budget_zero()

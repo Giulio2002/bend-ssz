@@ -135,4 +135,4 @@ def LightClientFinalityUpdate_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & M
     case True{}: LightClientFinalityUpdate_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def LightClientFinalityUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>: LightClientFinalityUpdate_dcb(U32.is_le(LightClientFinalityUpdate_dcost(size), budget), buf, size)
+def LightClientFinalityUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>: LightClientFinalityUpdate_dcb(Bool.and(U32.is_lt(LightClientFinalityUpdate_dcost(size), 4294967295), U32.is_le(LightClientFinalityUpdate_dcost(size), budget)), buf, size)

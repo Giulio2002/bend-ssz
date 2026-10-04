@@ -50,14 +50,14 @@ def Checkpoint_decode_vchecked_budget_cost()
     -> {FuluCheckpoint_r.Checkpoint_dcost(4096) == 524288 : U32}:
   {==}
 
-def Checkpoint_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget) == False{} : Bool})
+def Checkpoint_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCheckpoint_r.Checkpoint_dcost(size), 4294967295), U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget)) == False{} : Bool})
     -> {FuluCheckpoint_r.Checkpoint_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
-  %Equal.sym(Bool, U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget), False{}, h) : {FuluCheckpoint_r.Checkpoint_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCheckpoint_r.Checkpoint_dcost(size), 4294967295), U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget)), False{}, h) : {FuluCheckpoint_r.Checkpoint_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}
   {==}
 
-def Checkpoint_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget) == True{} : Bool})
+def Checkpoint_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCheckpoint_r.Checkpoint_dcost(size), 4294967295), U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget)) == True{} : Bool})
     -> {FuluCheckpoint_r.Checkpoint_decode_checked_budget(buf, size, budget) == FuluCheckpoint_r.Checkpoint_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
-  %Equal.sym(Bool, U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget), True{}, h) : {FuluCheckpoint_r.Checkpoint_dcb(_, buf, size) == FuluCheckpoint_r.Checkpoint_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluCheckpoint_r.Checkpoint_dcost(size), 4294967295), U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget)), True{}, h) : {FuluCheckpoint_r.Checkpoint_dcb(_, buf, size) == FuluCheckpoint_r.Checkpoint_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}
   {==}
 
 def Checkpoint_decode_vchecked_budget_zero()

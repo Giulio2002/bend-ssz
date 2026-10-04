@@ -87,4 +87,4 @@ def MatrixEntry_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluM
     case True{}: MatrixEntry_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def MatrixEntry_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dcb(U32.is_le(MatrixEntry_dcost(size), budget), buf, size)
+def MatrixEntry_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dcb(Bool.and(U32.is_lt(MatrixEntry_dcost(size), 4294967295), U32.is_le(MatrixEntry_dcost(size), budget)), buf, size)

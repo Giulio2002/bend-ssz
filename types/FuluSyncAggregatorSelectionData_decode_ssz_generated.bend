@@ -76,4 +76,4 @@ def SyncAggregatorSelectionData_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf &
     case True{}: SyncAggregatorSelectionData_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SyncAggregatorSelectionData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dcb(U32.is_le(SyncAggregatorSelectionData_dcost(size), budget), buf, size)
+def SyncAggregatorSelectionData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dcb(Bool.and(U32.is_lt(SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(SyncAggregatorSelectionData_dcost(size), budget)), buf, size)

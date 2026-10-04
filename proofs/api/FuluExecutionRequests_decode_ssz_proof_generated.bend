@@ -195,6 +195,12 @@ def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_sho
 def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_real() -> {Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(P1_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 12), 12}, 12)) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   P1_PRV.ExecutionRequests_decode_vchecked_real()
 
+def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_budget_agree(buf: P1_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionRequests_r.ExecutionRequests_dcost(size), 4294967295), U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dcost(size), budget)) == True{} : Bool}) -> {FuluExecutionRequests_r.ExecutionRequests_decode_checked_budget(buf, size, budget) == FuluExecutionRequests_r.ExecutionRequests_decode_checked(buf, size) : P1_B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  P1_PRV.ExecutionRequests_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_budget_accept() -> {P1_PRV.is_some(Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked_budget(P1_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 12, 4294967295)), Pair.snd(P1_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(P1_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 12))) == (True{}, True{}) : Bool & Bool}:
+  P1_PRV.ExecutionRequests_decode_vchecked_budget_accept()
+
 def FuluExecutionRequests__decode_offsets__ExecutionRequests_decode_vlit_bad_consolidations_over() -> {P2_PRV.some1(Pair.snd(P2_B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 12), 1, 12), 2, 12), 360}, 360))) == False{} : Bool}:
   P2_PRV.ExecutionRequests_decode_vlit_bad_consolidations_over()
 

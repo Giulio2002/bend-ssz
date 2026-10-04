@@ -59,4 +59,4 @@ def bitlist_4_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>
     case True{}: bitlist_4_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def bitlist_4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_4_dcb(U32.is_le(bitlist_4_dcost(size), budget), buf, size)
+def bitlist_4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Bits>: bitlist_4_dcb(Bool.and(U32.is_lt(bitlist_4_dcost(size), 4294967295), U32.is_le(bitlist_4_dcost(size), budget)), buf, size)

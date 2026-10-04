@@ -50,14 +50,14 @@ def ProposerSlashing_decode_vchecked_budget_cost()
     -> {FuluProposerSlashing_r.ProposerSlashing_dcost(4096) == 524288 : U32}:
   {==}
 
-def ProposerSlashing_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget) == False{} : Bool})
+def ProposerSlashing_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluProposerSlashing_r.ProposerSlashing_dcost(size), 4294967295), U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget)) == False{} : Bool})
     -> {FuluProposerSlashing_r.ProposerSlashing_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
-  %Equal.sym(Bool, U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget), False{}, h) : {FuluProposerSlashing_r.ProposerSlashing_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluProposerSlashing_r.ProposerSlashing_dcost(size), 4294967295), U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget)), False{}, h) : {FuluProposerSlashing_r.ProposerSlashing_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}
   {==}
 
-def ProposerSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget) == True{} : Bool})
+def ProposerSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluProposerSlashing_r.ProposerSlashing_dcost(size), 4294967295), U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget)) == True{} : Bool})
     -> {FuluProposerSlashing_r.ProposerSlashing_decode_checked_budget(buf, size, budget) == FuluProposerSlashing_r.ProposerSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
-  %Equal.sym(Bool, U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget), True{}, h) : {FuluProposerSlashing_r.ProposerSlashing_dcb(_, buf, size) == FuluProposerSlashing_r.ProposerSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluProposerSlashing_r.ProposerSlashing_dcost(size), 4294967295), U32.is_le(FuluProposerSlashing_r.ProposerSlashing_dcost(size), budget)), True{}, h) : {FuluProposerSlashing_r.ProposerSlashing_dcb(_, buf, size) == FuluProposerSlashing_r.ProposerSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}
   {==}
 
 def ProposerSlashing_decode_vchecked_budget_zero()

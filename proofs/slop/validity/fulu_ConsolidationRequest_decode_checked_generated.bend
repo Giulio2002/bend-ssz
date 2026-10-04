@@ -50,14 +50,14 @@ def ConsolidationRequest_decode_vchecked_budget_cost()
     -> {FuluConsolidationRequest_r.ConsolidationRequest_dcost(4096) == 524288 : U32}:
   {==}
 
-def ConsolidationRequest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget) == False{} : Bool})
+def ConsolidationRequest_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), 4294967295), U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget)) == False{} : Bool})
     -> {FuluConsolidationRequest_r.ConsolidationRequest_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
-  %Equal.sym(Bool, U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget), False{}, h) : {FuluConsolidationRequest_r.ConsolidationRequest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), 4294967295), U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget)), False{}, h) : {FuluConsolidationRequest_r.ConsolidationRequest_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}
   {==}
 
-def ConsolidationRequest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget) == True{} : Bool})
+def ConsolidationRequest_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), 4294967295), U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget)) == True{} : Bool})
     -> {FuluConsolidationRequest_r.ConsolidationRequest_decode_checked_budget(buf, size, budget) == FuluConsolidationRequest_r.ConsolidationRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
-  %Equal.sym(Bool, U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget), True{}, h) : {FuluConsolidationRequest_r.ConsolidationRequest_dcb(_, buf, size) == FuluConsolidationRequest_r.ConsolidationRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), 4294967295), U32.is_le(FuluConsolidationRequest_r.ConsolidationRequest_dcost(size), budget)), True{}, h) : {FuluConsolidationRequest_r.ConsolidationRequest_dcb(_, buf, size) == FuluConsolidationRequest_r.ConsolidationRequest_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}
   {==}
 
 def ConsolidationRequest_decode_vchecked_budget_zero()

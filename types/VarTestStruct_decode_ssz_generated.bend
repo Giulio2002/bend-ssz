@@ -110,4 +110,4 @@ def VarTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Var
     case True{}: VarTestStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def VarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dcb(U32.is_le(VarTestStruct_dcost(size), budget), buf, size)
+def VarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dcb(Bool.and(U32.is_lt(VarTestStruct_dcost(size), 4294967295), U32.is_le(VarTestStruct_dcost(size), budget)), buf, size)

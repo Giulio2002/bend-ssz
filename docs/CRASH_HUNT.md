@@ -846,3 +846,12 @@ Not run: decodes of more than 400 MB (the ratio is constant in N; R6-01's abort 
 scratch tree from its patch, the C side and the input copy were not); appends to limits above 1,100 for the generic names (the Python mirror copies the
 value per step).
 Note: the R5.4 "Not run" sentence of round 5 is split by the R5.5 table (its second half is the last line before this section).
+
+## R6.5 agent/decode-amplification: status
+
+| finding | status | fix | evidence |
+|---|---|---|---|
+| R6-01 | FIXED | `X_decode_checked_budget` refuses a saturated bound (`X_dcost(size) = 2^32 - 1`) whatever the budget; the laws `_budget_refuse` / `_budget_agree` carry the saturation test, `_budget_saturated` (K >= 8) the refusal at NMAX with the budget 2^32 - 1 | `regress.sh` case 77 (ProgressiveComplexTestStruct, 2^31 bytes, budget 2^32 - 1: refused) |
+| R6-02 | DOCUMENTED | the bound covers `_decode` alone; the headroom of `X_flat` / `X_dump` (about 4 / 16 more heap bytes per packed input byte, the hunter's table) in docs/API_CONTRACTS.md and docs/DECODE_AMPLIFICATION.md | - |
+| R6-03 | FIXED | `O.words_slice` answers the empty slice for n > NMAX too | `regress.sh` case 78 (`words_slice(o, 0, 2^32 - 1)`: n = 0 at once) |
+| R6-04 | FIXED | K inherited by structure, aliases included (BlobSidecar 3 -> 5); `decode_checked_laws.py` stops when a name charges less than a name nested in it | codegen/decode_cost.json |

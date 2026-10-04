@@ -149,4 +149,4 @@ def ExecutionRequests_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1,
     case True{}: ExecutionRequests_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def ExecutionRequests_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>: ExecutionRequests_dcb(U32.is_le(ExecutionRequests_dcost(size), budget), buf, size)
+def ExecutionRequests_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>: ExecutionRequests_dcb(Bool.and(U32.is_lt(ExecutionRequests_dcost(size), 4294967295), U32.is_le(ExecutionRequests_dcost(size), budget)), buf, size)

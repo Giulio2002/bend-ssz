@@ -84,4 +84,4 @@ def DepositMessage_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Fu
     case True{}: DepositMessage_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def DepositMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>: DepositMessage_dcb(U32.is_le(DepositMessage_dcost(size), budget), buf, size)
+def DepositMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>: DepositMessage_dcb(Bool.and(U32.is_lt(DepositMessage_dcost(size), 4294967295), U32.is_le(DepositMessage_dcost(size), budget)), buf, size)

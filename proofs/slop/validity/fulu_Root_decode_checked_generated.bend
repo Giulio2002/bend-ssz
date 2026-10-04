@@ -50,14 +50,14 @@ def Root_decode_vchecked_budget_cost()
     -> {FuluRoot_r.Root_dcost(4096) == 524288 : U32}:
   {==}
 
-def Root_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluRoot_r.Root_dcost(size), budget) == False{} : Bool})
+def Root_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluRoot_r.Root_dcost(size), 4294967295), U32.is_le(FuluRoot_r.Root_dcost(size), budget)) == False{} : Bool})
     -> {FuluRoot_r.Root_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
-  %Equal.sym(Bool, U32.is_le(FuluRoot_r.Root_dcost(size), budget), False{}, h) : {FuluRoot_r.Root_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluRoot_r.Root_dcost(size), 4294967295), U32.is_le(FuluRoot_r.Root_dcost(size), budget)), False{}, h) : {FuluRoot_r.Root_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
   {==}
 
-def Root_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluRoot_r.Root_dcost(size), budget) == True{} : Bool})
+def Root_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluRoot_r.Root_dcost(size), 4294967295), U32.is_le(FuluRoot_r.Root_dcost(size), budget)) == True{} : Bool})
     -> {FuluRoot_r.Root_decode_checked_budget(buf, size, budget) == FuluRoot_r.Root_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
-  %Equal.sym(Bool, U32.is_le(FuluRoot_r.Root_dcost(size), budget), True{}, h) : {FuluRoot_r.Root_dcb(_, buf, size) == FuluRoot_r.Root_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluRoot_r.Root_dcost(size), 4294967295), U32.is_le(FuluRoot_r.Root_dcost(size), budget)), True{}, h) : {FuluRoot_r.Root_dcb(_, buf, size) == FuluRoot_r.Root_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
   {==}
 
 def Root_decode_vchecked_budget_zero()

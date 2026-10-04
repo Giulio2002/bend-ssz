@@ -57,4 +57,4 @@ def Domain_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes3
     case True{}: Domain_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def Domain_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Domain_dcb(U32.is_le(Domain_dcost(size), budget), buf, size)
+def Domain_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Domain_dcb(Bool.and(U32.is_lt(Domain_dcost(size), 4294967295), U32.is_le(Domain_dcost(size), budget)), buf, size)

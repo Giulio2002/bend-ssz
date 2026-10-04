@@ -71,4 +71,4 @@ def bitvector_6_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, bitve
     case True{}: bitvector_6_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def bitvector_6_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>: bitvector_6_dcb(U32.is_le(bitvector_6_dcost(size), budget), buf, size)
+def bitvector_6_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_6_d.Bitvector6>: bitvector_6_dcb(Bool.and(U32.is_lt(bitvector_6_dcost(size), 4294967295), U32.is_le(bitvector_6_dcost(size), budget)), buf, size)

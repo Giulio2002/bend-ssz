@@ -22,8 +22,9 @@ parts zero, variable parts empty, offsets at the end of the fixed part; up to 20
   without W (a type with no such default): window X_dchw(5, 4, ..), storage X_dchw(8, 8, (B.empty(), 1)), real X_decode_checked(Buf{one word, 8}, 8), all None.
 The decode budget (docs/DECODE_AMPLIFICATION.md), X_decode_checked_budget(buf, size, budget):
   <X>_decode_vchecked_budget_cost    X_dcost(4096) is ((4096 >> 3) + 1) * K + 524288 (K the name's heap bytes per input byte, codegen/decode_cost.json)
-  <X>_decode_vchecked_budget_refuse  X_dcost(size) > budget: (buf, None), for every buffer, size and budget
-  <X>_decode_vchecked_budget_agree   X_dcost(size) <= budget: X_decode_checked(buf, size), for every buffer, size and budget
+  <X>_decode_vchecked_budget_refuse  X_dcost(size) saturated (2^32 - 1) or above the budget: (buf, None), for every buffer, size and budget
+  <X>_decode_vchecked_budget_agree   X_dcost(size) < 2^32 - 1 and <= budget: X_decode_checked(buf, size), for every buffer, size and budget
+  <X>_decode_vchecked_budget_saturated  (K >= 8) the bound of NMAX bytes saturates: refused with the budget 2^32 - 1 (docs/CRASH_HUNT.md R6-01)
   <X>_decode_vchecked_budget_zero    a budget of 0 refuses (every bound is at least the constant 524288)
   <X>_decode_vchecked_budget_accept  (with W) the budget 2^32 - 1 decodes W, as X_decode_checked does
 
@@ -51,6 +52,39 @@ DCHW = re.compile(r'^def (\w+)_dchw\(\+size: U32, \+n: U32, pair: B\.Buf & U32\)
 CHECKED = re.compile(r'^def (\w+)_decode_checked\(buf: B\.Buf, \+size: U32\) -> B\.Buf & Maybe<&1, [\w.]+>: \w+_dchk\(size, B\.size\(buf\)\)$', re.M)
 DCHK = re.compile(r'^def (\w+)_dchk\(\+size: U32, pair: B\.Buf & U32\) -> B\.Buf & Maybe<&1, [\w.]+>:\n  \(buf, \+n\) = pair\n  \w+_dchw\(size, n, B\.stored\(buf\)\)$', re.M)
 
+
+
+def canon(t):
+    """the structure of a schema type, names and aliases dropped (an alias field such as BlobSidecar.blob has no name)"""
+    if t is None:
+        return None
+    return (t.kind, t.size, canon(t.elem), tuple((f, canon(ft)) for f, ft in t.fields), t.active, t.selectors)
+
+
+def nested(t):
+    """every type strictly inside t"""
+    out = []
+    for _, ft in t.fields:
+        out.append(ft)
+        out += nested(ft)
+    if t.elem is not None:
+        out.append(t.elem)
+        out += nested(t.elem)
+    return out
+
+
+def nested_k_violations(types, ks):
+    """[(name, its K, nested name, its K)] where a name nested in another (by structure, aliases included) charges more than it"""
+    by = {}
+    for n, t in types.items():
+        by.setdefault(canon(t), []).append(n)
+    bad = []
+    for n, t in types.items():
+        for sub in nested(t):
+            for m in by.get(canon(sub), []):
+                if m != n and ks[m] > ks[n]:
+                    bad.append((n, ks[n], m, ks[m]))
+    return sorted(set(bad))
 
 def enc0(t, depth=0):
     """the bytes of the default value of the schema type t (fixed parts zero, variable parts empty, offsets pointing at the end of the fixed part), or None"""
@@ -139,10 +173,14 @@ def laws_of(X, V, win):
     ex = 4096
     cost = ((ex >> 3) + 1) * k + 524288 if k else 524288
     out.append(f'def {X}_decode_vchecked_budget_cost()\n    -> {{T.{X}_dcost({ex}) == {cost} : U32}}:\n  {{==}}')
+    G = f'Bool.and(U32.is_lt(T.{X}_dcost(size), 4294967295), U32.is_le(T.{X}_dcost(size), budget))'
     for tag, val, rhs in (('refuse', 'False{}', '(buf, None{})'), ('agree', 'True{}', f'T.{X}_decode_checked(buf, size)')):
-        out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{U32.is_le(T.{X}_dcost(size), budget) == {val} : Bool}})\n'
+        out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{{G} == {val} : Bool}})\n'
                    f'    -> {{T.{X}_decode_checked_budget(buf, size, budget) == {rhs} : B.Buf & {M}}}:\n'
-                   f'  %Equal.sym(Bool, U32.is_le(T.{X}_dcost(size), budget), {val}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
+                   f'  %Equal.sym(Bool, {G}, {val}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
+    if k >= 8:
+        # the bound of the largest size saturates: refused even with the largest budget (docs/CRASH_HUNT.md R6-01)
+        law('budget_saturated', f'{snd(f"T.{X}_decode_checked_budget(B.empty(), 4294967264, 4294967295)")} == None{{}} : {M}')
     law('budget_zero', f'{snd(f"T.{X}_decode_checked_budget(B.empty(), 8, 0)")} == None{{}} : {M}')
     if win is not None:
         s_ = len(win)
@@ -164,6 +202,18 @@ def outputs():
     out = {}
     fu = schema.load(ROOT / 'codegen/fulu.yaml')
     gen = {n: t for n, t, e in generic.inventory_all() if e is None}
+    # the decode budget's K covers every nested name (docs/DECODE_AMPLIFICATION.md, docs/CRASH_HUNT.md R6-04)
+    for names in (fu, gen):
+        known = {n: t for n, t in names.items() if t is not None}
+        ks = {}
+        for n in known:
+            try:
+                ks[n] = decode_cost_k(n)
+            except KeyError:
+                pass
+        bad = nested_k_violations({n: known[n] for n in ks}, ks)
+        if bad:
+            raise SystemExit(f'decode_checked_laws: a name charges less than a name nested in it (codegen/decode_cost.json): {bad[:5]}')
     for runtime, tmod, names in (('fulu', 'fulu_obj', fu), ('generic', 'generic_obj', gen)):
         tx = MC.Text(runtime)
         want = {m.group(1) for m in CHECKED.finditer(tx.text)}

@@ -14,7 +14,7 @@ def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_accept() -> {PR
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_decode_checked_budget(B.Buf{Array.new(U32, 5n, 0), 65}, 65, 4294967295)), Pair.snd(B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_decode_checked(B.Buf{Array.new(U32, 5n, 0), 65}, 65))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_513_decode_vchecked_budget_accept()
 
-def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(bitvector_513_r.bitvector_513_dcost(size), budget) == True{} : Bool}) -> {bitvector_513_r.bitvector_513_decode_checked_budget(buf, size, budget) == bitvector_513_r.bitvector_513_decode_checked(buf, size) : B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
+def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitvector_513_r.bitvector_513_dcost(size), 4294967295), U32.is_le(bitvector_513_r.bitvector_513_dcost(size), budget)) == True{} : Bool}) -> {bitvector_513_r.bitvector_513_decode_checked_budget(buf, size, budget) == bitvector_513_r.bitvector_513_decode_checked(buf, size) : B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
   PRV.bitvector_513_decode_vchecked_budget_agree(buf, size, budget, h)
 
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_513_d.Bitvector513>}:

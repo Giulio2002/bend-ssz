@@ -50,14 +50,14 @@ def BLSPubkey_decode_vchecked_budget_cost()
     -> {FuluBLSPubkey_r.BLSPubkey_dcost(4096) == 524288 : U32}:
   {==}
 
-def BLSPubkey_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget) == False{} : Bool})
+def BLSPubkey_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSPubkey_r.BLSPubkey_dcost(size), 4294967295), U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget)) == False{} : Bool})
     -> {FuluBLSPubkey_r.BLSPubkey_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
-  %Equal.sym(Bool, U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget), False{}, h) : {FuluBLSPubkey_r.BLSPubkey_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBLSPubkey_r.BLSPubkey_dcost(size), 4294967295), U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget)), False{}, h) : {FuluBLSPubkey_r.BLSPubkey_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
   {==}
 
-def BLSPubkey_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget) == True{} : Bool})
+def BLSPubkey_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSPubkey_r.BLSPubkey_dcost(size), 4294967295), U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget)) == True{} : Bool})
     -> {FuluBLSPubkey_r.BLSPubkey_decode_checked_budget(buf, size, budget) == FuluBLSPubkey_r.BLSPubkey_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
-  %Equal.sym(Bool, U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget), True{}, h) : {FuluBLSPubkey_r.BLSPubkey_dcb(_, buf, size) == FuluBLSPubkey_r.BLSPubkey_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBLSPubkey_r.BLSPubkey_dcost(size), 4294967295), U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget)), True{}, h) : {FuluBLSPubkey_r.BLSPubkey_dcb(_, buf, size) == FuluBLSPubkey_r.BLSPubkey_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
   {==}
 
 def BLSPubkey_decode_vchecked_budget_zero()

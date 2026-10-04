@@ -50,14 +50,14 @@ def PendingPartialWithdrawal_decode_vchecked_budget_cost()
     -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(4096) == 524288 : U32}:
   {==}
 
-def PendingPartialWithdrawal_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget) == False{} : Bool})
+def PendingPartialWithdrawal_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)) == False{} : Bool})
     -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
-  %Equal.sym(Bool, U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget), False{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)), False{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
   {==}
 
-def PendingPartialWithdrawal_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget) == True{} : Bool})
+def PendingPartialWithdrawal_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)) == True{} : Bool})
     -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(buf, size, budget) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
-  %Equal.sym(Bool, U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget), True{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)), True{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
   {==}
 
 def PendingPartialWithdrawal_decode_vchecked_budget_zero()

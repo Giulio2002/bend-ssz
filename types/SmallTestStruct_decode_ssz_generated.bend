@@ -76,4 +76,4 @@ def SmallTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, S
     case True{}: SmallTestStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def SmallTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dcb(U32.is_le(SmallTestStruct_dcost(size), budget), buf, size)
+def SmallTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dcb(Bool.and(U32.is_lt(SmallTestStruct_dcost(size), 4294967295), U32.is_le(SmallTestStruct_dcost(size), budget)), buf, size)

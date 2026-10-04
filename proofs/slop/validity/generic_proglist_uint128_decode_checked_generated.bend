@@ -41,14 +41,14 @@ def proglist_uint128_decode_vchecked_budget_cost()
     -> {proglist_uint128_r.proglist_uint128_dcost(4096) == 527879 : U32}:
   {==}
 
-def proglist_uint128_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget) == False{} : Bool})
+def proglist_uint128_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint128_r.proglist_uint128_dcost(size), 4294967295), U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget)) == False{} : Bool})
     -> {proglist_uint128_r.proglist_uint128_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget), False{}, h) : {proglist_uint128_r.proglist_uint128_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(proglist_uint128_r.proglist_uint128_dcost(size), 4294967295), U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget)), False{}, h) : {proglist_uint128_r.proglist_uint128_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
-def proglist_uint128_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget) == True{} : Bool})
+def proglist_uint128_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint128_r.proglist_uint128_dcost(size), 4294967295), U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget)) == True{} : Bool})
     -> {proglist_uint128_r.proglist_uint128_decode_checked_budget(buf, size, budget) == proglist_uint128_r.proglist_uint128_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget), True{}, h) : {proglist_uint128_r.proglist_uint128_dcb(_, buf, size) == proglist_uint128_r.proglist_uint128_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(proglist_uint128_r.proglist_uint128_dcost(size), 4294967295), U32.is_le(proglist_uint128_r.proglist_uint128_dcost(size), budget)), True{}, h) : {proglist_uint128_r.proglist_uint128_dcb(_, buf, size) == proglist_uint128_r.proglist_uint128_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 def proglist_uint128_decode_vchecked_budget_zero()

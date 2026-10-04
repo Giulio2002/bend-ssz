@@ -79,11 +79,12 @@
    "max_input": 8
   },
   "BlobSidecar": {
-   "k": 3,
+   "k": 5,
    "density": 0.84,
    "by": "ratio",
    "shape": "(fixed)",
-   "input": 131928
+   "input": 131928,
+   "inherits": "Blob"
   },
   "Bytes1": {
    "k": 0,
@@ -439,7 +440,7 @@
    "by": "slope",
    "shape": "message.body.execution_payload.transactions.[1B]",
    "input": 2622565,
-   "inherits": "BeaconBlockBody"
+   "inherits": "BeaconBlock"
   },
   "SignedBeaconBlockHeader": {
    "k": 0,

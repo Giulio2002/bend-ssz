@@ -137,6 +137,12 @@ def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_short() -> {Pair.snd(
 def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 72}, 72)) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
   P7_PRV.Eth1Data_decode_vchecked_real()
 
+def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluEth1Data_r.Eth1Data_dcost(size), 4294967295), U32.is_le(FuluEth1Data_r.Eth1Data_dcost(size), budget)) == True{} : Bool}) -> {FuluEth1Data_r.Eth1Data_decode_checked_budget(buf, size, budget) == FuluEth1Data_r.Eth1Data_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
+  P7_PRV.Eth1Data_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluEth1Data__decode_offsets__Eth1Data_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked_budget(P7_B.Buf{Array.new(U32, 5n, 0), 72}, 72, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 72}, 72))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.Eth1Data_decode_vchecked_budget_accept()
+
 def FuluEth1Data__decode_offsets__Eth1Data_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_decode(P8_B.Buf{Array.new(U32, 5n, 0), 71}, 71))) == False{} : Bool}:
   P8_PRV.Eth1Data_decode_vlit_bad_short()
 

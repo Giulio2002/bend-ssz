@@ -629,7 +629,15 @@
  "round6": {
   "branch": "agent/crash-hunt-r6",
   "base": "e1b65e26f (agent/slop-laws-r6); decode budget: agent/decode-amplification 5c1f48b93",
-  "counts": {"findings": 1, "info": 3, "high": 0, "medium": 0, "low": 1, "CRASH": 0, "WRONG": 1},
+  "counts": {
+   "findings": 1,
+   "info": 3,
+   "high": 0,
+   "medium": 0,
+   "low": 1,
+   "CRASH": 0,
+   "WRONG": 1
+  },
   "ok_suites": [
    "regress.sh: 76 of 76 pass on 5c1f48b93",
    "amp.py decode only: 166 accepted shape runs (162 of 1 MiB or more; transactions of 0..64 bytes in the payload and the three blocks, every BeaconState list to 384 MiB, DataColumnSidecar at its limits, ExecutionRequests, nested progressive shapes, progressive bit lists, a union): 0 over X_dcost; largest density / K 0.72 (one-byte transactions, 28.8 / 40), lowest margin 1.42",
@@ -649,7 +657,8 @@
     "observed": "the saturated bound equals the largest budget and passes; the budget refuses nothing at 2^32 - 1",
     "expected": "a bound that does not fit U32 is above every budget",
     "fix": "refuse a saturated bound: Bool.and(U32.is_lt(dcost, 4294967295), U32.is_le(dcost, budget)); or document that a heap of 32 GiB or more passes 2^32 - 2",
-    "proof_impact": "_budget_agree / _budget_accept restricted to sizes whose bound fits (the _budget_cost and _budget_zero laws unchanged); or documentation only"
+    "proof_impact": "_budget_agree / _budget_accept restricted to sizes whose bound fits (the _budget_cost and _budget_zero laws unchanged); or documentation only",
+    "status": "FIXED (agent/decode-amplification): a saturated bound is refused whatever the budget; laws _budget_refuse/_budget_agree/_budget_saturated; regress case 77"
    },
    {
     "id": "R6-02",
@@ -661,7 +670,8 @@
     "observed": "decode + X_flat: BeaconState 6.91 heap bytes per input byte (K 7, margin 1.016), DataColumnSidecar 6.09 to 6.14 (K 6, above K per byte, inside only by the 4 MiB constant); decode + X_dump: BeaconState 19.05 (margin 0.39), DataColumnSidecar 18.34 (0.44), transactions 38.83 (1.07), progressive 30.59 (1.08)",
     "expected": "the budget the documentation gives the Prysm shim bounds what the shim does with the object",
     "fix": "measure K on decode + flatten (about 9 for BeaconState, 8 for DataColumnSidecar), or document that the budget covers _decode only and a flattening caller reserves about 4 (X_flat) / 16 (X_dump) more heap bytes per input byte",
-    "proof_impact": "none (K is data)"
+    "proof_impact": "none (K is data)",
+    "status": "DOCUMENTED (agent/decode-amplification): the bound covers _decode alone; X_flat / X_dump headroom stated in docs/API_CONTRACTS.md and docs/DECODE_AMPLIFICATION.md"
    },
    {
     "id": "R6-03",
@@ -673,7 +683,8 @@
     "observed": "1.8 / 1.8 / 2.0 / 0.5 s, and a Words claiming n bytes over a 16-word array (n = 0, 8: 0.1 s)",
     "expected": "no 2^32 loop; R5-02's fix proposal had the wrap-free word count",
     "fix": "(n >> 2) + ((n & 3) + 3 >> 2) and O.zeros_copy(n), or a guard n <= NMAX",
-    "proof_impact": "none (proofs/obj/cell_rw.bend states n = 2048)"
+    "proof_impact": "none (proofs/obj/cell_rw.bend states n = 2048)",
+    "status": "FIXED (agent/decode-amplification): O.words_slice answers the empty slice for n > NMAX; regress case 78"
    },
    {
     "id": "R6-04",
@@ -685,8 +696,15 @@
     "observed": "K(BlobSidecar) = 3 < K(Blob) = 5; no bound exceeded (bound 4.59 MB, decode under 0.4 MB)",
     "expected": "the stated invariant",
     "fix": "inherit by structure or by alias name, or drop the sentence",
-    "proof_impact": "none"
+    "proof_impact": "none",
+    "status": "FIXED (agent/decode-amplification): K inherited by structure (aliases included: BlobSidecar 5); decode_checked_laws.py asserts it"
    }
-  ]
+  ],
+  "fix_status": {
+   "R6-01": "FIXED (agent/decode-amplification): a saturated bound is refused whatever the budget; laws _budget_refuse/_budget_agree/_budget_saturated; regress case 77",
+   "R6-02": "DOCUMENTED (agent/decode-amplification): the bound covers _decode alone; X_flat / X_dump headroom stated in docs/API_CONTRACTS.md and docs/DECODE_AMPLIFICATION.md",
+   "R6-03": "FIXED (agent/decode-amplification): O.words_slice answers the empty slice for n > NMAX; regress case 78",
+   "R6-04": "FIXED (agent/decode-amplification): K inherited by structure (aliases included: BlobSidecar 5); decode_checked_laws.py asserts it"
+  }
  }
 }

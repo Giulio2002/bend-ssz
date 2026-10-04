@@ -155,4 +155,4 @@ def BitsStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, BitsSt
     case True{}: BitsStruct_decode_checked(buf, size)
     case False{}: (buf, None{})
 
-def BitsStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>: BitsStruct_dcb(U32.is_le(BitsStruct_dcost(size), budget), buf, size)
+def BitsStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>: BitsStruct_dcb(Bool.and(U32.is_lt(BitsStruct_dcost(size), 4294967295), U32.is_le(BitsStruct_dcost(size), budget)), buf, size)

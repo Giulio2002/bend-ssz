@@ -50,14 +50,14 @@ def SigningData_decode_vchecked_budget_cost()
     -> {FuluSigningData_r.SigningData_dcost(4096) == 524288 : U32}:
   {==}
 
-def SigningData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget) == False{} : Bool})
+def SigningData_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSigningData_r.SigningData_dcost(size), 4294967295), U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget)) == False{} : Bool})
     -> {FuluSigningData_r.SigningData_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
-  %Equal.sym(Bool, U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget), False{}, h) : {FuluSigningData_r.SigningData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSigningData_r.SigningData_dcost(size), 4294967295), U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget)), False{}, h) : {FuluSigningData_r.SigningData_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}
   {==}
 
-def SigningData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget) == True{} : Bool})
+def SigningData_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSigningData_r.SigningData_dcost(size), 4294967295), U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget)) == True{} : Bool})
     -> {FuluSigningData_r.SigningData_decode_checked_budget(buf, size, budget) == FuluSigningData_r.SigningData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
-  %Equal.sym(Bool, U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget), True{}, h) : {FuluSigningData_r.SigningData_dcb(_, buf, size) == FuluSigningData_r.SigningData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSigningData_r.SigningData_dcost(size), 4294967295), U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget)), True{}, h) : {FuluSigningData_r.SigningData_dcb(_, buf, size) == FuluSigningData_r.SigningData_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}
   {==}
 
 def SigningData_decode_vchecked_budget_zero()

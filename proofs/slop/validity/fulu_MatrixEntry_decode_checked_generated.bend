@@ -42,14 +42,14 @@ def MatrixEntry_decode_vchecked_budget_cost()
     -> {FuluMatrixEntry_r.MatrixEntry_dcost(4096) == 524288 : U32}:
   {==}
 
-def MatrixEntry_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget) == False{} : Bool})
+def MatrixEntry_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)) == False{} : Bool})
     -> {FuluMatrixEntry_r.MatrixEntry_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
-  %Equal.sym(Bool, U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget), False{}, h) : {FuluMatrixEntry_r.MatrixEntry_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)), False{}, h) : {FuluMatrixEntry_r.MatrixEntry_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}
   {==}
 
-def MatrixEntry_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget) == True{} : Bool})
+def MatrixEntry_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)) == True{} : Bool})
     -> {FuluMatrixEntry_r.MatrixEntry_decode_checked_budget(buf, size, budget) == FuluMatrixEntry_r.MatrixEntry_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
-  %Equal.sym(Bool, U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget), True{}, h) : {FuluMatrixEntry_r.MatrixEntry_dcb(_, buf, size) == FuluMatrixEntry_r.MatrixEntry_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)), True{}, h) : {FuluMatrixEntry_r.MatrixEntry_dcb(_, buf, size) == FuluMatrixEntry_r.MatrixEntry_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}
   {==}
 
 def MatrixEntry_decode_vchecked_budget_zero()

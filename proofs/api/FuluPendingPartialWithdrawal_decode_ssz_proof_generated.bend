@@ -135,6 +135,12 @@ def FuluPendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decod
 def FuluPendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 24}, 24)) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   P7_PRV.PendingPartialWithdrawal_decode_vchecked_real()
 
+def FuluPendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)) == True{} : Bool}) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(buf, size, budget) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  P7_PRV.PendingPartialWithdrawal_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluPendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(P7_B.Buf{Array.new(U32, 3n, 0), 24}, 24, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(P7_B.Buf{Array.new(U32, 3n, 0), 24}, 24))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.PendingPartialWithdrawal_decode_vchecked_budget_accept()
+
 def FuluPendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode(P8_B.Buf{Array.new(U32, 3n, 0), 23}, 23))) == False{} : Bool}:
   P8_PRV.PendingPartialWithdrawal_decode_vlit_bad_short()
 
