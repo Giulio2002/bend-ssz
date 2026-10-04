@@ -39,8 +39,8 @@ def flat_bytes(ws: Array<U32>, +n: U32, t: +List<U32>) -> +List<U32>:
 def dump_le(+x: U32, +k: U32, t: +List<U32>) -> +List<U32>:
   match k:
     case 1: (x .&. 255 : U32) <> t
-    case 2: (x .&. 65535 : U32) <> t
-    case 3: (x .&. 16777215 : U32) <> t
+    case 2: (x .&. 255 : U32) <> t
+    case 3: (x .&. 255 : U32) <> t
     case _: (x .&. 255 : U32) <> t
 
 def dump_u64(o: U64, t: +List<U32>) -> +List<U32>:
