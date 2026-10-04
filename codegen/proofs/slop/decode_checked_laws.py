@@ -6,13 +6,16 @@
 Public counterexample: `T.uint256_decode_checked(O.Buf{one word, 32 bytes claimed}, 32)` answering a value read from storage that is not there
 (the storage test dropped, or compared with the byte size, or taken from the buffer's size field instead of its storage); a window equal to the buffer
 size refused. `X_decode_checked(buf, size)` is `X_dchk(size, B.size(buf))`, which asks `B.stored(buf)` for the storage words c and calls
-`X_dchw(size, n, (buf, c))`: the window is inside the buffer (size <= n), below 2^31 bytes, and the storage holds ceil(size / 4) words; only then it decodes.
+`X_dchw(size, n, (buf, c))`: the window is inside the buffer (size <= n), at most NMAX = 4294967264 bytes (the size limit; it was below 2^31
+before), and the storage holds ceil(size / 4) words; only then it decodes.
 Only Checkpoint and proglist_uint8 had laws on it (docs/CRASH_HUNT.md CH-05, CH-06).
 
 For every name X with a checked decoder, proofs/slop/validity/<runtime>_<X>_decode_checked_generated.bend holds. W is the default value of X as bytes (fixed
 parts zero, variable parts empty, offsets at the end of the fixed part; up to 2048 bytes), S its length, V the value type of X:
 
-  <X>_decode_vchecked_limit     X_dchw(2^31, 2^31, (B.empty(), 2^29)) is None: a window of 2^31 bytes or more
+  <X>_decode_vchecked_limit     X_dchw(NMAX + 1, NMAX + 1, (B.empty(), 2^30)) is None: one byte past NMAX, with storage for it
+  <X>_decode_vchecked_nmax_above  X_dchw(NMAX + 1, 2^32 - 1, (buf, 2^30)) is None for every buffer: past NMAX inside a larger buffer
+  <X>_decode_vchecked_nmax_wrap   X_dchw(2^32 - 1, 2^32 - 1, (buf, 0)) is None for every buffer: the largest U32 window (ceil(size / 4) wraps)
   with W (every fixed type up to 2048 bytes, every list, bit list, container and union whose default encodes that way):
   <X>_decode_vchecked_accept    the window W with the buffer size S and ceil(S / 4) words of storage is decoded, by X_dchw and by X_decode_checked
   <X>_decode_vchecked_window    a buffer one byte smaller than the window (size field S - 1): None
