@@ -59,11 +59,19 @@ def w8(+v0: U32, +j: U32, +x: U32) -> Array<U32>: Array.set(U32, Array.set(U32, 
 def w8c(+v0: U32) -> Array<U32>: Array.set(U32, Array.new(U32, 3n, 0), 0, v0)
 def v10(+j: U32, +x: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 286331153), 1, 286331153), 2, 4369), j, x)
 
-def tx_out(label: String, w: O.Words) -> IO(Unit):
+def tx_o3(label: String, pair: O.Words & O.Encoded) -> IO(Unit):
+  (w, e) = pair
   do IO<Unit>:
-    pr_ok(label, TxE.bl1073741824_valid(w))
-    IO.print(label ++ " ser " ++ enc_str(Pair.snd(O.Words, O.Encoded, TxE.Transaction_serialize(w))))
+    IO.print(label ++ " ser " ++ enc_str(e))
     pr_root(label, TxH.Transaction_hash_tree_root(O.hasher(), w))
+
+def tx_o2(label: String, pair: O.Words & Bool) -> IO(Unit):
+  (w, ok) = pair
+  do IO<Unit>:
+    IO.print(label ++ " valid=" ++ O.pick_str(ok))
+    tx_o3(label, TxE.Transaction_serialize(w))
+
+def tx_out(label: String, w: O.Words) -> IO(Unit): tx_o2(label, TxE.bl1073741824_valid(w))
 
 def fstw(pair: O.Words & Bool) -> O.Words:
   (w, ok) = pair
@@ -72,10 +80,13 @@ def fstb(pair: O.Bits & Bool) -> O.Bits:
   (w, ok) = pair
   w
 
-def bl_out(label: String, b: O.Bits) -> IO(Unit):
+def bl_o2(label: String, pair: O.Bits & O.Encoded) -> IO(Unit):
+  (b, e) = pair
   do IO<Unit>:
-    IO.print(label ++ " ser " ++ enc_str(Pair.snd(O.Bits, O.Encoded, B32E.bitlist_32_serialize(b))))
+    IO.print(label ++ " ser " ++ enc_str(e))
     pr_rootb(label, B32H.bitlist_32_hash_tree_root(O.hasher(), b))
+
+def bl_out(label: String, b: O.Bits) -> IO(Unit): bl_o2(label, B32E.bitlist_32_serialize(b))
 
 def dispatch(+c: U32) -> IO(Unit):
   match c:
