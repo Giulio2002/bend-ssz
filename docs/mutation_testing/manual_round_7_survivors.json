@@ -127,7 +127,7 @@
       "killed_by": "Transaction_serialize_vcoll_bl1073741824_append_clear",
       "file": "proofs/slop/validity/fulu_Transaction_collection_bl1073741824_generated.bend",
       "replay": "KILLED (checked on the mutant, pinned checker settings, tools/check.sh)",
-      "triage_existing": "SURVIVED the e2e theorems and facades that import the mutated file"
+      "triage_existing": "SURVIVED the e2e theorems of its type that import the mutated file (comp, dec, decode_witness, decrep, encode, root, witness; for c03/01 the SignedBeaconBlock comp and the SignedBeaconBlock / BeaconBlock witnesses)"
     }
   },
   {
@@ -184,7 +184,7 @@
       "killed_by": "ComplexTestStruct_serialize_vcoll_bl256_append_clear",
       "file": "proofs/slop/validity/generic_ComplexTestStruct_collection_bl256_generated.bend",
       "replay": "KILLED (checked on the mutant, pinned checker settings, tools/check.sh)",
-      "triage_existing": "SURVIVED the e2e theorems and facades that import the mutated file"
+      "triage_existing": "SURVIVED the e2e theorems of its type that import the mutated file (comp, dec, decode_witness, decrep, encode, root, witness; for c03/01 the SignedBeaconBlock comp and the SignedBeaconBlock / BeaconBlock witnesses)"
     }
   },
   {
@@ -323,7 +323,7 @@
       "killed_by": "bitlist_32_serialize_vcoll_bits32_append_clear",
       "file": "proofs/slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
       "replay": "KILLED (checked on the mutant, pinned checker settings, tools/check.sh)",
-      "triage_existing": "SURVIVED the e2e theorems and facades that import the mutated file"
+      "triage_existing": "SURVIVED the e2e theorems of its type that import the mutated file (comp, dec, decode_witness, decrep, encode, root, witness; for c03/01 the SignedBeaconBlock comp and the SignedBeaconBlock / BeaconBlock witnesses)"
     }
   },
   {
@@ -462,7 +462,7 @@
       "killed_by": "bitlist_32_serialize_vcoll_bits32_append_clear",
       "file": "proofs/slop/validity/generic_bitlist_32_collection_bits32_generated.bend",
       "replay": "KILLED (checked on the mutant, pinned checker settings, tools/check.sh)",
-      "triage_existing": "SURVIVED the e2e theorems and facades that import the mutated file"
+      "triage_existing": "SURVIVED the e2e theorems of its type that import the mutated file (comp, dec, decode_witness, decrep, encode, root, witness; for c03/01 the SignedBeaconBlock comp and the SignedBeaconBlock / BeaconBlock witnesses)"
     }
   },
   {
@@ -797,7 +797,7 @@
       "killed_by": "BeaconBlockBody_serialize_vreject_bx_present_proposer_slashings",
       "file": "proofs/slop/validity/fulu_BeaconBlockBody_fields_generated.bend",
       "replay": "KILLED (checked on the mutant, pinned checker settings, tools/check.sh)",
-      "triage_existing": "SURVIVED the e2e theorems and facades that import the mutated file"
+      "triage_existing": "SURVIVED the e2e theorems of its type that import the mutated file (comp, dec, decode_witness, decrep, encode, root, witness; for c03/01 the SignedBeaconBlock comp and the SignedBeaconBlock / BeaconBlock witnesses)"
     }
   },
   {

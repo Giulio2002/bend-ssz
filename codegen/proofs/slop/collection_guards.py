@@ -108,7 +108,7 @@ def packed_laws(X, p, L, R, U):
     if U in (1, 2, 4) and (L is None or 4 // U < L):
         # (round 7: b01/02, b02/01) a valid list of 4 / U elements whose spare word 1 holds junk (CH-11): the append of 1 starts word 1, which is
         # cleared first (R5-01), so word 1 is exactly the new element and the bytes past the new length are zero; word 0 is untouched
-        jw = f'O.Words{{Array.set(U32, Array.new(U32, 2n, 0), 1, {JUNK}), {4 // U}}}'
+        jw = f'O.Words{{Array.set(U32, Array.new(U32, 2n, 0), 1, {JUNK}), 4}}'    # n counts bytes: 4 / U elements
         a = f'{T}_append({jw}, 1)'
         w = lambda j: f'Pair.snd({lst}, U32, O.words_word(Pair.fst({lst}, Bool, {a}), {j}))'   # noqa: E731
         law('append_clear', f'({ok(a)}, ({w(1)}, {w(0)})) == (True{{}}, (1, 0)) : Bool & (U32 & U32)')
