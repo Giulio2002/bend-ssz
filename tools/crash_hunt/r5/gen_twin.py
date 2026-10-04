@@ -115,7 +115,7 @@ def vflag(pair: L.%(P)s_Seq & Bool) -> String:
   O.pick_str(ok)
 def fin(s: S) -> IO(Unit):
   match s:
-    case S{a, b, +x, +bad, +first, +j}: IO.print("bad=" ++ U32.show(bad) ++ " first=" ++ U32.show(first) ++ " ser_len_eq=" ++ U32.show(beq(B.size(ser_of(LE.%(F)s_serialize(a))), B.size(ser_of(LE.%(F)s_serialize(b))))))
+    case S{a, b, +x, +bad, +first, +j}: IO.print("bad=" ++ U32.show(bad) ++ " first=" ++ U32.show(first) ++ " valid_a=" ++ vflag(LE.%(P)s_valid(a)) ++ " valid_b=" ++ vflag(LE.%(P)s_valid(b)))
 
 def main() -> IO(Unit):
   do IO<Unit>:
