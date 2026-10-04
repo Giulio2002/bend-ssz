@@ -68,7 +68,7 @@ The progressive record-list families (`pl_SmallTestStruct`, `l10_*`, `pl_VarTest
   (an earlier version of this list named only the first two: audit round 6 F1);
 * the encode side of the same types is lifted: `TOT_ProgressiveTestStruct` / `TOT_ProgressiveComplexTestStruct` are `<= NMAX`, and the decode proofs convert (`VB.le_pw31_nmax`) their strict facts to those premises;
 * the variable-size list twins `encx_pl_*_d` (`OKT`) are now stated at `LL <= NMAX` and use the base size lemmas `szsS`, `szlS`, `speclB`; the strict `*D` copies of the size lemmas are gone;
-* the runtime accepts and encodes progressive lists up to `NMAX`; only the proof coverage of their DECODE for windows between 2^31 and `NMAX` is absent (the decoder returns a value or `None`, never a poisoned buffer: the regression and invalid-object suites cover it by execution).
+* the runtime accepts and encodes progressive lists up to `NMAX`; only the proof coverage of their DECODE for windows between 2^31 and `NMAX` is absent (the decoder returns a value or `None`, never a poisoned buffer: no standing suite decodes these types above their proved bound; the one execution there is the one-off round-4 hunter probe `tools/crash_hunt/pn_r4.bend`, docs/CRASH_HUNT.md R4.1; audit round 7, G4).
 
 ## 5. Runtime: what a reader of the proofs should not assume
 

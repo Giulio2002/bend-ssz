@@ -143,6 +143,12 @@ def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_nma
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_nmax_above(buf: P4_B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   P4_PRV.LightClientHeader_decode_vchecked_nmax_above(buf)
 
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_nmax_at(buf: P4_B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluLightClientHeader_r.LightClientHeader_dgo(True{}, buf, 4294967264) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_vchecked_nmax_at(buf)
+
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_at_2pow31(buf: P4_B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluLightClientHeader_r.LightClientHeader_dgo(True{}, buf, 2147483648) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_vchecked_at_2pow31(buf)
+
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(828, 828, (P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 207))), Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828))) == (True{}, True{}) : Bool & Bool}:
   P4_PRV.LightClientHeader_decode_vchecked_accept()
 
@@ -157,6 +163,12 @@ def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_sho
 
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_real() -> {Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 828}, 828)) == None{} : Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   P4_PRV.LightClientHeader_decode_vchecked_real()
+
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientHeader_r.LightClientHeader_dcost(size), 4294967295), U32.is_le(FuluLightClientHeader_r.LightClientHeader_dcost(size), budget)) == True{} : Bool}) -> {FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(buf, size, budget) == FuluLightClientHeader_r.LightClientHeader_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  P4_PRV.LightClientHeader_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_budget_accept() -> {P4_PRV.is_some(Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked_budget(P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828, 4294967295)), Pair.snd(P4_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode_checked(P4_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 828))) == (True{}, True{}) : Bool & Bool}:
+  P4_PRV.LightClientHeader_decode_vchecked_budget_accept()
 
 def FuluLightClientHeader__decode_offsets__LightClientHeader_decode_vlit_bad_execution_extra_data_over() -> {P5_PRV.some1(Pair.snd(P5_B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_decode(P5_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 861}, 861))) == False{} : Bool}:
   P5_PRV.LightClientHeader_decode_vlit_bad_execution_extra_data_over()

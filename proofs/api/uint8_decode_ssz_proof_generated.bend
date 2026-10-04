@@ -108,6 +108,12 @@ def uint8__decode_offsets__uint8_decode_vchecked_nmax_wrap(buf: P5_B.Buf) -> {ui
 def uint8__decode_offsets__uint8_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {uint8_r.uint8_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, U32>}:
   P5_PRV.uint8_decode_vchecked_nmax_above(buf)
 
+def uint8__decode_offsets__uint8_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {uint8_r.uint8_dchw(4294967264, 4294967264, (buf, 1073741816)) == uint8_r.uint8_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.uint8_decode_vchecked_nmax_at(buf)
+
+def uint8__decode_offsets__uint8_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {uint8_r.uint8_dchw(2147483648, 2147483648, (buf, 536870912)) == uint8_r.uint8_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.uint8_decode_vchecked_at_2pow31(buf)
+
 def uint8__decode_offsets__uint8_decode_vchecked_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_dchw(1, 1, (P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   P5_PRV.uint8_decode_vchecked_accept()
 
@@ -119,6 +125,12 @@ def uint8__decode_offsets__uint8_decode_vchecked_storage() -> {Pair.snd(P5_B.Buf
 
 def uint8__decode_offsets__uint8_decode_vchecked_short() -> {Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, U32>}:
   P5_PRV.uint8_decode_vchecked_short()
+
+def uint8__decode_offsets__uint8_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint8_r.uint8_dcost(size), 4294967295), U32.is_le(uint8_r.uint8_dcost(size), budget)) == True{} : Bool}) -> {uint8_r.uint8_decode_checked_budget(buf, size, budget) == uint8_r.uint8_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, U32>}:
+  P5_PRV.uint8_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def uint8__decode_offsets__uint8_decode_vchecked_budget_accept() -> {P5_PRV.is_some(Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode_checked_budget(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1, 4294967295)), Pair.snd(P5_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
+  P5_PRV.uint8_decode_vchecked_budget_accept()
 
 def uint8__decode_offsets__uint8_decode_vlit_bad_short() -> {P6_PRV.some1(Pair.snd(P6_B.Buf, Maybe<&1, U32>, uint8_r.uint8_decode(P6_B.Buf{Array.new(U32, 0n, 0), 0}, 0))) == False{} : Bool}:
   P6_PRV.uint8_decode_vlit_bad_short()

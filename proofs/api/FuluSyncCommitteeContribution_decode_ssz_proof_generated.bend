@@ -123,6 +123,12 @@ def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_dec
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   P7_PRV.SyncCommitteeContribution_decode_vchecked_nmax_above(buf)
 
+def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  P7_PRV.SyncCommitteeContribution_decode_vchecked_nmax_at(buf)
+
+def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  P7_PRV.SyncCommitteeContribution_decode_vchecked_at_2pow31(buf)
+
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 160, (P7_B.Buf{Array.new(U32, 6n, 0), 160}, 40))), Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(P7_B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.SyncCommitteeContribution_decode_vchecked_accept()
 
@@ -137,6 +143,12 @@ def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_dec
 
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 160}, 160)) == None{} : Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   P7_PRV.SyncCommitteeContribution_decode_vchecked_real()
+
+def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dcost(size), budget)) == True{} : Bool}) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked_budget(buf, size, budget) == FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  P7_PRV.SyncCommitteeContribution_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked_budget(P7_B.Buf{Array.new(U32, 6n, 0), 160}, 160, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(P7_B.Buf{Array.new(U32, 6n, 0), 160}, 160))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.SyncCommitteeContribution_decode_vchecked_budget_accept()
 
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode(P8_B.Buf{Array.new(U32, 6n, 0), 159}, 159))) == False{} : Bool}:
   P8_PRV.SyncCommitteeContribution_decode_vlit_bad_short()

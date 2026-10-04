@@ -11,11 +11,23 @@ import ../../../slop/validity/fulu_ExecutionPayload_decode_checked_generated.ben
 def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(528, 528, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 132))), Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
   PRV.ExecutionPayload_decode_vchecked_accept()
 
+def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluExecutionPayload_r.ExecutionPayload_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  PRV.ExecutionPayload_decode_vchecked_at_2pow31(buf)
+
+def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 109, 528), 126, 528), 127, 528), 528}, 528))) == (True{}, True{}) : Bool & Bool}:
+  PRV.ExecutionPayload_decode_vchecked_budget_accept()
+
+def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionPayload_r.ExecutionPayload_dcost(size), 4294967295), U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dcost(size), budget)) == True{} : Bool}) -> {FuluExecutionPayload_r.ExecutionPayload_decode_checked_budget(buf, size, budget) == FuluExecutionPayload_r.ExecutionPayload_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  PRV.ExecutionPayload_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   PRV.ExecutionPayload_decode_vchecked_limit()
 
 def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   PRV.ExecutionPayload_decode_vchecked_nmax_above(buf)
+
+def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluExecutionPayload_r.ExecutionPayload_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  PRV.ExecutionPayload_decode_vchecked_nmax_at(buf)
 
 def ExecutionPayload__decode_offsets__ExecutionPayload_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluExecutionPayload_r.ExecutionPayload_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   PRV.ExecutionPayload_decode_vchecked_nmax_wrap(buf)

@@ -5,11 +5,11 @@
 # fault: the checked size accumulator adds one extra byte
 # why: accumulator initialised or bumped by one
 # file: src/obj.bend
-# re-derived against 0b80524f4
+# re-derived against e1b65e26f (by hand, round 7 G2: rederive.py OVERRIDES)
 --- a/src/obj.bend
 +++ b/src/obj.bend
 @@ -1798,3 +1798,3 @@
  # Add two counts: the sum when it neither wraps nor reaches the marker, else the marker (so the marker is absorbing).
 -def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b : U32), 4294967295)
-+def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b + 1 : U32), 4294967295)), (a + b : U32), 4294967295)
++def padd(+a: U32, +b: U32) -> U32: pick(Bool.and(U32.is_le(a, (a + b : U32)), U32.is_lt((a + b : U32), 4294967295)), (a + b + 1 : U32), 4294967295)
  

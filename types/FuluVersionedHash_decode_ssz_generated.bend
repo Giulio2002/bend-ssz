@@ -49,3 +49,14 @@ def VersionedHash_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluB
   VersionedHash_dchw(size, n, B.stored(buf))
 
 def VersionedHash_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dchk(size, B.size(buf))
+
+def VersionedHash_dk() -> U32: 0
+
+def VersionedHash_dcost(+size: U32) -> U32: O.dcost(size, VersionedHash_dk())
+
+def VersionedHash_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>:
+  match ok:
+    case True{}: VersionedHash_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def VersionedHash_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dcb(Bool.and(U32.is_lt(VersionedHash_dcost(size), 4294967295), U32.is_le(VersionedHash_dcost(size), budget)), buf, size)

@@ -124,6 +124,12 @@ def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vcheck
 def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_nmax_above(buf: P7_B.Buf) -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
   P7_PRV.BLSToExecutionChange_decode_vchecked_nmax_above(buf)
 
+def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_nmax_at(buf: P7_B.Buf) -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBLSToExecutionChange_r.BLSToExecutionChange_dgo(True{}, buf, 4294967264) : P7_B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
+  P7_PRV.BLSToExecutionChange_decode_vchecked_nmax_at(buf)
+
+def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_at_2pow31(buf: P7_B.Buf) -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBLSToExecutionChange_r.BLSToExecutionChange_dgo(True{}, buf, 2147483648) : P7_B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
+  P7_PRV.BLSToExecutionChange_decode_vchecked_at_2pow31(buf)
+
 def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(76, 76, (P7_B.Buf{Array.new(U32, 5n, 0), 76}, 19))), Pair.snd(P7_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76))) == (True{}, True{}) : Bool & Bool}:
   P7_PRV.BLSToExecutionChange_decode_vchecked_accept()
 
@@ -138,6 +144,12 @@ def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vcheck
 
 def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 76}, 76)) == None{} : Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
   P7_PRV.BLSToExecutionChange_decode_vchecked_real()
+
+def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(size), budget)) == True{} : Bool}) -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked_budget(buf, size, budget) == FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
+  P7_PRV.BLSToExecutionChange_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_budget_accept() -> {P7_PRV.is_some(Pair.snd(P7_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked_budget(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76, 4294967295)), Pair.snd(P7_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(P7_B.Buf{Array.new(U32, 5n, 0), 76}, 76))) == (True{}, True{}) : Bool & Bool}:
+  P7_PRV.BLSToExecutionChange_decode_vchecked_budget_accept()
 
 def FuluBLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vlit_bad_short() -> {P8_PRV.some1(Pair.snd(P8_B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode(P8_B.Buf{Array.new(U32, 5n, 0), 75}, 75))) == False{} : Bool}:
   P8_PRV.BLSToExecutionChange_decode_vlit_bad_short()

@@ -8,3 +8,11 @@ import ../../../types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend as
 def BeaconState_serialize_vunit_l1099511627776_u8_range_lo_0()
     -> {Pair.snd(O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(O.words_new(0))) == True{} : Bool}:
   {==}
+
+def BeaconState_serialize_vunit_l1099511627776_u8_range_hi_full()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  {==}
+
+def BeaconState_serialize_vunit_l1099511627776_u8_range_above_full()
+    -> {Pair.snd(O.Words, Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(O.Words{Array.new(U32, 30n, 0), 4294967265})) == False{} : Bool}:
+  {==}

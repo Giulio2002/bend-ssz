@@ -11,11 +11,23 @@ import ../../../slop/validity/fulu_ContributionAndProof_decode_checked_generated
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(264, 264, (B.Buf{Array.new(U32, 7n, 0), 264}, 66))), Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(B.Buf{Array.new(U32, 7n, 0), 264}, 264))) == (True{}, True{}) : Bool & Bool}:
   PRV.ContributionAndProof_decode_vchecked_accept()
 
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluContributionAndProof_r.ContributionAndProof_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluContributionAndProof_r.ContributionAndProof_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+  PRV.ContributionAndProof_decode_vchecked_at_2pow31(buf)
+
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked_budget(B.Buf{Array.new(U32, 7n, 0), 264}, 264, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_decode_checked(B.Buf{Array.new(U32, 7n, 0), 264}, 264))) == (True{}, True{}) : Bool & Bool}:
+  PRV.ContributionAndProof_decode_vchecked_budget_accept()
+
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluContributionAndProof_r.ContributionAndProof_dcost(size), 4294967295), U32.is_le(FuluContributionAndProof_r.ContributionAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluContributionAndProof_r.ContributionAndProof_decode_checked_budget(buf, size, budget) == FuluContributionAndProof_r.ContributionAndProof_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+  PRV.ContributionAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_limit()
 
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluContributionAndProof_r.ContributionAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_nmax_above(buf)
+
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluContributionAndProof_r.ContributionAndProof_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluContributionAndProof_r.ContributionAndProof_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+  PRV.ContributionAndProof_decode_vchecked_nmax_at(buf)
 
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluContributionAndProof_r.ContributionAndProof_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_nmax_wrap(buf)

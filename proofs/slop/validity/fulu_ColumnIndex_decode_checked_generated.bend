@@ -25,6 +25,14 @@ def ColumnIndex_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluColumnIndex_r.ColumnIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
   {==}
 
+def ColumnIndex_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluColumnIndex_r.ColumnIndex_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluColumnIndex_r.ColumnIndex_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
+def ColumnIndex_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluColumnIndex_r.ColumnIndex_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluColumnIndex_r.ColumnIndex_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 def ColumnIndex_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -43,4 +51,26 @@ def ColumnIndex_decode_vchecked_short()
 
 def ColumnIndex_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def ColumnIndex_decode_vchecked_budget_cost()
+    -> {FuluColumnIndex_r.ColumnIndex_dcost(4096) == 524288 : U32}:
+  {==}
+
+def ColumnIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluColumnIndex_r.ColumnIndex_dcost(size), 4294967295), U32.is_le(FuluColumnIndex_r.ColumnIndex_dcost(size), budget)) == False{} : Bool})
+    -> {FuluColumnIndex_r.ColumnIndex_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluColumnIndex_r.ColumnIndex_dcost(size), 4294967295), U32.is_le(FuluColumnIndex_r.ColumnIndex_dcost(size), budget)), False{}, h) : {FuluColumnIndex_r.ColumnIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def ColumnIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluColumnIndex_r.ColumnIndex_dcost(size), 4294967295), U32.is_le(FuluColumnIndex_r.ColumnIndex_dcost(size), budget)) == True{} : Bool})
+    -> {FuluColumnIndex_r.ColumnIndex_decode_checked_budget(buf, size, budget) == FuluColumnIndex_r.ColumnIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluColumnIndex_r.ColumnIndex_dcost(size), 4294967295), U32.is_le(FuluColumnIndex_r.ColumnIndex_dcost(size), budget)), True{}, h) : {FuluColumnIndex_r.ColumnIndex_dcb(_, buf, size) == FuluColumnIndex_r.ColumnIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def ColumnIndex_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def ColumnIndex_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked_budget(B.Buf{Array.new(U32, 1n, 0), 8}, 8, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   {==}

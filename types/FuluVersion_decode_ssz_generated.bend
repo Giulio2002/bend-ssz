@@ -49,3 +49,14 @@ def Version_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluBytes4_
   Version_dchw(size, n, B.stored(buf))
 
 def Version_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dchk(size, B.size(buf))
+
+def Version_dk() -> U32: 0
+
+def Version_dcost(+size: U32) -> U32: O.dcost(size, Version_dk())
+
+def Version_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>:
+  match ok:
+    case True{}: Version_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Version_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Version_dcb(Bool.and(U32.is_lt(Version_dcost(size), 4294967295), U32.is_le(Version_dcost(size), budget)), buf, size)

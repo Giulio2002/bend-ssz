@@ -26,6 +26,14 @@ def PendingPartialWithdrawal_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   {==}
 
+def PendingPartialWithdrawal_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  {==}
+
 def PendingPartialWithdrawal_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 24, (B.Buf{Array.new(U32, 3n, 0), 24}, 6))), Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(B.Buf{Array.new(U32, 3n, 0), 24}, 24))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +52,26 @@ def PendingPartialWithdrawal_decode_vchecked_short()
 
 def PendingPartialWithdrawal_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(B.Buf{Array.new(U32, 0n, 0), 24}, 24)) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_budget_cost()
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(4096) == 524288 : U32}:
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)) == False{} : Bool})
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)), False{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)) == True{} : Bool})
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(buf, size, budget) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(size), budget)), True{}, h) : {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcb(_, buf, size) == FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  {==}
+
+def PendingPartialWithdrawal_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked_budget(B.Buf{Array.new(U32, 3n, 0), 24}, 24, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(B.Buf{Array.new(U32, 3n, 0), 24}, 24))) == (True{}, True{}) : Bool & Bool}:
   {==}

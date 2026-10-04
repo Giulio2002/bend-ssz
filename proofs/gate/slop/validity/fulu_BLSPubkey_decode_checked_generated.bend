@@ -11,11 +11,23 @@ import ../../../slop/validity/fulu_BLSPubkey_decode_checked_generated.bend as PR
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))), Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked(B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
   PRV.BLSPubkey_decode_vchecked_accept()
 
+def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluBLSPubkey_r.BLSPubkey_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBLSPubkey_r.BLSPubkey_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.BLSPubkey_decode_vchecked_at_2pow31(buf)
+
+def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 48}, 48, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked(B.Buf{Array.new(U32, 4n, 0), 48}, 48))) == (True{}, True{}) : Bool & Bool}:
+  PRV.BLSPubkey_decode_vchecked_budget_accept()
+
+def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSPubkey_r.BLSPubkey_dcost(size), 4294967295), U32.is_le(FuluBLSPubkey_r.BLSPubkey_dcost(size), budget)) == True{} : Bool}) -> {FuluBLSPubkey_r.BLSPubkey_decode_checked_budget(buf, size, budget) == FuluBLSPubkey_r.BLSPubkey_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.BLSPubkey_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.BLSPubkey_decode_vchecked_limit()
 
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluBLSPubkey_r.BLSPubkey_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.BLSPubkey_decode_vchecked_nmax_above(buf)
+
+def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluBLSPubkey_r.BLSPubkey_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBLSPubkey_r.BLSPubkey_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.BLSPubkey_decode_vchecked_nmax_at(buf)
 
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluBLSPubkey_r.BLSPubkey_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.BLSPubkey_decode_vchecked_nmax_wrap(buf)

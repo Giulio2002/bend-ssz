@@ -26,6 +26,14 @@ def SyncCommitteeMessage_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
   {==}
 
+def SyncCommitteeMessage_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  {==}
+
 def SyncCommitteeMessage_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(144, 144, (B.Buf{Array.new(U32, 6n, 0), 144}, 36))), Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 6n, 0), 144}, 144))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +52,26 @@ def SyncCommitteeMessage_decode_vchecked_short()
 
 def SyncCommitteeMessage_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 0n, 0), 144}, 144)) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_budget_cost()
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(4096) == 524288 : U32}:
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), budget)) == False{} : Bool})
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), budget)), False{}, h) : {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), budget)) == True{} : Bool})
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked_budget(buf, size, budget) == FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), budget)), True{}, h) : {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcb(_, buf, size) == FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  {==}
+
+def SyncCommitteeMessage_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 144}, 144, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 6n, 0), 144}, 144))) == (True{}, True{}) : Bool & Bool}:
   {==}

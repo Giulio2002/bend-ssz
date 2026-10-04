@@ -1,6 +1,11 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
+import ../../../types/FuluAttesterSlashing_decode_ssz_generated.bend as FuluAttesterSlashing_r
+import ../../../types/FuluTransaction_decode_ssz_generated.bend as FuluTransaction_r
+import ../../../types/FuluExecutionRequests_decode_ssz_generated.bend as FuluExecutionRequests_r
+import ../../../types/FuluExecutionPayload_decode_ssz_generated.bend as FuluExecutionPayload_r
 import ../../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
 import ../../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
 
@@ -26,6 +31,14 @@ def BeaconBlockBody_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   {==}
 
+def BeaconBlockBody_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBeaconBlockBody_r.BeaconBlockBody_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
 def BeaconBlockBody_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 234))), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 936))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +57,70 @@ def BeaconBlockBody_decode_vchecked_short()
 
 def BeaconBlockBody_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(B.Buf{Array.new(U32, 0n, 0), 936}, 936)) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(4096) == 544808 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)) == False{} : Bool})
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)), False{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)) == True{} : Bool})
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(buf, size, budget) == FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), 4294967295), U32.is_le(FuluBeaconBlockBody_r.BeaconBlockBody_dcost(size), budget)), True{}, h) : {FuluBeaconBlockBody_r.BeaconBlockBody_dcb(_, buf, size) == FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost_858980000()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(858980000) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost_858888592()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(858888592) == 4294967288 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_cost_858888600()
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(858888600) == 4294967295 : U32}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_covers_AttesterSlashing()
+    -> {U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dk(), FuluBeaconBlockBody_r.BeaconBlockBody_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_covers_ExecutionPayload()
+    -> {U32.is_le(FuluExecutionPayload_r.ExecutionPayload_dk(), FuluBeaconBlockBody_r.BeaconBlockBody_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_covers_ExecutionRequests()
+    -> {U32.is_le(FuluExecutionRequests_r.ExecutionRequests_dk(), FuluBeaconBlockBody_r.BeaconBlockBody_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_covers_IndexedAttestation()
+    -> {U32.is_le(FuluIndexedAttestation_r.IndexedAttestation_dk(), FuluBeaconBlockBody_r.BeaconBlockBody_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_covers_Transaction()
+    -> {U32.is_le(FuluTransaction_r.Transaction_dk(), FuluBeaconBlockBody_r.BeaconBlockBody_dk()) == True{} : Bool}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_saturated()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(B.empty(), 4294967264, 4294967295)) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
+def BeaconBlockBody_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 936, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 936))) == (True{}, True{}) : Bool & Bool}:
   {==}

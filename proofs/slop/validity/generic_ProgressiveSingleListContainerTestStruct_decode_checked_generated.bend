@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
 import ../../../types/ProgressiveSingleListContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_r
 
@@ -26,6 +27,14 @@ def ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_above(buf: B.B
     -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   {==}
 
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 2))), Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +53,42 @@ def ProgressiveSingleListContainerTestStruct_decode_vchecked_short()
 
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 4), 5}, 5)) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(4096) == 527879 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)) == False{} : Bool})
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)), False{}, h) : {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)) == True{} : Bool})
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(size), budget)), True{}, h) : {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcb(_, buf, size) == ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_858980000()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_2147483648()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost_4294967264()
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_covers_progbitlist()
+    -> {U32.is_le(progbitlist_r.progbitlist_dk(), ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 5, 4294967295)), Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 5))) == (True{}, True{}) : Bool & Bool}:
   {==}

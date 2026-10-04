@@ -28,3 +28,7 @@ def proglist_uint256_serialize_vunit_pl_u256_accept_64()
 def proglist_uint256_serialize_vunit_pl_u256_range_lo_0()
     -> {Pair.snd(O.Words, Bool, proglist_uint256_e.pl_u256_valid(O.words_new(0))) == True{} : Bool}:
   {==}
+
+def proglist_uint256_serialize_vunit_pl_u256_range_hi_full()
+    -> {Pair.snd(O.Words, Bool, proglist_uint256_e.pl_u256_valid(O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  {==}

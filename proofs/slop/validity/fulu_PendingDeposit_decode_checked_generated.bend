@@ -26,6 +26,14 @@ def PendingDeposit_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluPendingDeposit_r.PendingDeposit_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
   {==}
 
+def PendingDeposit_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluPendingDeposit_r.PendingDeposit_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluPendingDeposit_r.PendingDeposit_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  {==}
+
+def PendingDeposit_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluPendingDeposit_r.PendingDeposit_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluPendingDeposit_r.PendingDeposit_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  {==}
+
 def PendingDeposit_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_dchw(192, 192, (B.Buf{Array.new(U32, 6n, 0), 192}, 48))), Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +52,26 @@ def PendingDeposit_decode_vchecked_short()
 
 def PendingDeposit_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  {==}
+
+def PendingDeposit_decode_vchecked_budget_cost()
+    -> {FuluPendingDeposit_r.PendingDeposit_dcost(4096) == 524288 : U32}:
+  {==}
+
+def PendingDeposit_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingDeposit_r.PendingDeposit_dcost(size), 4294967295), U32.is_le(FuluPendingDeposit_r.PendingDeposit_dcost(size), budget)) == False{} : Bool})
+    -> {FuluPendingDeposit_r.PendingDeposit_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingDeposit_r.PendingDeposit_dcost(size), 4294967295), U32.is_le(FuluPendingDeposit_r.PendingDeposit_dcost(size), budget)), False{}, h) : {FuluPendingDeposit_r.PendingDeposit_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}
+  {==}
+
+def PendingDeposit_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingDeposit_r.PendingDeposit_dcost(size), 4294967295), U32.is_le(FuluPendingDeposit_r.PendingDeposit_dcost(size), budget)) == True{} : Bool})
+    -> {FuluPendingDeposit_r.PendingDeposit_decode_checked_budget(buf, size, budget) == FuluPendingDeposit_r.PendingDeposit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluPendingDeposit_r.PendingDeposit_dcost(size), 4294967295), U32.is_le(FuluPendingDeposit_r.PendingDeposit_dcost(size), budget)), True{}, h) : {FuluPendingDeposit_r.PendingDeposit_dcb(_, buf, size) == FuluPendingDeposit_r.PendingDeposit_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}
+  {==}
+
+def PendingDeposit_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  {==}
+
+def PendingDeposit_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked_budget(B.Buf{Array.new(U32, 6n, 0), 192}, 192, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked(B.Buf{Array.new(U32, 6n, 0), 192}, 192))) == (True{}, True{}) : Bool & Bool}:
   {==}

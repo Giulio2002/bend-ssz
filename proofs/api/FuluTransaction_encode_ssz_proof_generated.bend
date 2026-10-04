@@ -116,6 +116,12 @@ def FuluTransaction__serialize_valid__Transaction_serialize_vrefuse_writer_ok() 
 def FuluTransaction__serialize_valid__Transaction_serialize_vunit_bl1073741824_range_lo_0() -> {Pair.snd(P5_O.Words, Bool, FuluTransaction_e.bl1073741824_valid(P5_O.words_new(0))) == True{} : Bool}:
   P5_PRV.Transaction_serialize_vunit_bl1073741824_range_lo_0()
 
+def FuluTransaction__serialize_valid__Transaction_serialize_vunit_bl1073741824_range_hi_full() -> {Pair.snd(P5_O.Words, Bool, FuluTransaction_e.bl1073741824_valid(P5_O.Words{Array.new(U32, 30n, 0), 1073741824})) == True{} : Bool}:
+  P5_PRV.Transaction_serialize_vunit_bl1073741824_range_hi_full()
+
+def FuluTransaction__serialize_valid__Transaction_serialize_vunit_bl1073741824_range_above_full() -> {Pair.snd(P5_O.Words, Bool, FuluTransaction_e.bl1073741824_valid(P5_O.Words{Array.new(U32, 30n, 0), 1073741825})) == False{} : Bool}:
+  P5_PRV.Transaction_serialize_vunit_bl1073741824_range_above_full()
+
 def FuluTransaction__serialize_valid__Transaction_serialize_vpoison_pk_bl1073741824() -> {P6_O.is_poisoned(Pair.snd(P6_O.Words, U32, Pair.snd(Array<U32>, P6_O.Words & U32, FuluTransaction_e.bl1073741824_pk(Array.new(U32, 0n, 0), 0, (P6_O.words_new(0), False{}))))) == True{} : Bool}:
   P6_PRV.Transaction_serialize_vpoison_pk_bl1073741824()
 

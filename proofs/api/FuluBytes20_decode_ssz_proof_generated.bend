@@ -125,6 +125,12 @@ def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_nmax_wrap(buf: P8_B.Buf
 def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_nmax_above(buf: P8_B.Buf) -> {FuluBytes20_r.Bytes20_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P8_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   P8_PRV.Bytes20_decode_vchecked_nmax_above(buf)
 
+def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_nmax_at(buf: P8_B.Buf) -> {FuluBytes20_r.Bytes20_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBytes20_r.Bytes20_dgo(True{}, buf, 4294967264) : P8_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P8_PRV.Bytes20_decode_vchecked_nmax_at(buf)
+
+def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_at_2pow31(buf: P8_B.Buf) -> {FuluBytes20_r.Bytes20_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBytes20_r.Bytes20_dgo(True{}, buf, 2147483648) : P8_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P8_PRV.Bytes20_decode_vchecked_at_2pow31(buf)
+
 def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_dchw(20, 20, (P8_B.Buf{Array.new(U32, 3n, 0), 20}, 5))), Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked(P8_B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
   P8_PRV.Bytes20_decode_vchecked_accept()
 
@@ -139,6 +145,12 @@ def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_short() -> {Pair.snd(P8
 
 def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_real() -> {Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked(P8_B.Buf{Array.new(U32, 0n, 0), 20}, 20)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   P8_PRV.Bytes20_decode_vchecked_real()
+
+def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_budget_agree(buf: P8_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBytes20_r.Bytes20_dcost(size), 4294967295), U32.is_le(FuluBytes20_r.Bytes20_dcost(size), budget)) == True{} : Bool}) -> {FuluBytes20_r.Bytes20_decode_checked_budget(buf, size, budget) == FuluBytes20_r.Bytes20_decode_checked(buf, size) : P8_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P8_PRV.Bytes20_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluBytes20__decode_offsets__Bytes20_decode_vchecked_budget_accept() -> {P8_PRV.is_some(Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked_budget(P8_B.Buf{Array.new(U32, 3n, 0), 20}, 20, 4294967295)), Pair.snd(P8_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode_checked(P8_B.Buf{Array.new(U32, 3n, 0), 20}, 20))) == (True{}, True{}) : Bool & Bool}:
+  P8_PRV.Bytes20_decode_vchecked_budget_accept()
 
 def FuluBytes20__decode_offsets__Bytes20_decode_vlit_bad_short() -> {P9_PRV.some1(Pair.snd(P9_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluBytes20_r.Bytes20_decode(P9_B.Buf{Array.new(U32, 3n, 0), 19}, 19))) == False{} : Bool}:
   P9_PRV.Bytes20_decode_vlit_bad_short()

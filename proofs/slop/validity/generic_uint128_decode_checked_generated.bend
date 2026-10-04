@@ -26,6 +26,14 @@ def uint128_decode_vchecked_nmax_above(buf: B.Buf)
     -> {uint128_r.uint128_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
   {==}
 
+def uint128_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {uint128_r.uint128_dchw(4294967264, 4294967264, (buf, 1073741816)) == uint128_r.uint128_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+  {==}
+
+def uint128_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {uint128_r.uint128_dchw(2147483648, 2147483648, (buf, 536870912)) == uint128_r.uint128_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+  {==}
+
 def uint128_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_dchw(16, 16, (B.Buf{Array.new(U32, 2n, 0), 16}, 4))), Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +52,26 @@ def uint128_decode_vchecked_short()
 
 def uint128_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked(B.Buf{Array.new(U32, 0n, 0), 16}, 16)) == None{} : Maybe<&1, uint128_d.Uint128>}:
+  {==}
+
+def uint128_decode_vchecked_budget_cost()
+    -> {uint128_r.uint128_dcost(4096) == 524288 : U32}:
+  {==}
+
+def uint128_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint128_r.uint128_dcost(size), 4294967295), U32.is_le(uint128_r.uint128_dcost(size), budget)) == False{} : Bool})
+    -> {uint128_r.uint128_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint128_r.uint128_dcost(size), 4294967295), U32.is_le(uint128_r.uint128_dcost(size), budget)), False{}, h) : {uint128_r.uint128_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, uint128_d.Uint128>}
+  {==}
+
+def uint128_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint128_r.uint128_dcost(size), 4294967295), U32.is_le(uint128_r.uint128_dcost(size), budget)) == True{} : Bool})
+    -> {uint128_r.uint128_decode_checked_budget(buf, size, budget) == uint128_r.uint128_decode_checked(buf, size) : B.Buf & Maybe<&1, uint128_d.Uint128>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(uint128_r.uint128_dcost(size), 4294967295), U32.is_le(uint128_r.uint128_dcost(size), budget)), True{}, h) : {uint128_r.uint128_dcb(_, buf, size) == uint128_r.uint128_decode_checked(buf, size) : B.Buf & Maybe<&1, uint128_d.Uint128>}
+  {==}
+
+def uint128_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, uint128_d.Uint128>}:
+  {==}
+
+def uint128_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked_budget(B.Buf{Array.new(U32, 2n, 0), 16}, 16, 4294967295)), Pair.snd(B.Buf, Maybe<&1, uint128_d.Uint128>, uint128_r.uint128_decode_checked(B.Buf{Array.new(U32, 2n, 0), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   {==}

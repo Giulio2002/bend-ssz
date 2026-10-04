@@ -1,6 +1,9 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
+import ../../../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
+import ../../../types/ProgressiveVarTestStruct_decode_ssz_generated.bend as ProgressiveVarTestStruct_r
 import ../../../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
 import ../../../types/ProgressiveComplexTestStruct_decode_ssz_generated.bend as ProgressiveComplexTestStruct_r
 
@@ -26,6 +29,14 @@ def ProgressiveComplexTestStruct_decode_vchecked_nmax_above(buf: B.Buf)
     -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   {==}
 
+def ProgressiveComplexTestStruct_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
 def ProgressiveComplexTestStruct_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(30, 30, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 8))), Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +55,62 @@ def ProgressiveComplexTestStruct_decode_vchecked_short()
 
 def ProgressiveComplexTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 7424), 30}, 30)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(4096) == 540191 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), budget)) == False{} : Bool})
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), budget)), False{}, h) : {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), budget)) == True{} : Bool})
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), budget)), True{}, h) : {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcb(_, buf, size) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(buf, size) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost_858980000()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(858980000) == 3329071819 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost_2147483648()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(2147483648) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost_4294967264()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(4294967264) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost_1108243344()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(1108243344) == 4294967277 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_cost_1108243352()
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(1108243352) == 4294967295 : U32}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_covers_ProgressiveVarTestStruct()
+    -> {U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dk(), ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_covers_progbitlist()
+    -> {U32.is_le(progbitlist_r.progbitlist_dk(), ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_covers_proglist_uint64()
+    -> {U32.is_le(proglist_uint64_r.proglist_uint64_dk(), ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dk()) == True{} : Bool}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_saturated()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(B.empty(), 4294967264, 4294967295)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30, 4294967295)), Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 7424), 1, 7424), 2, 7680), 3, 7680), 4, 7680), 5, 7680), 6, 7680), 7, 256), 30}, 30))) == (True{}, True{}) : Bool & Bool}:
   {==}

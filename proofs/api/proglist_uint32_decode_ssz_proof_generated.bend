@@ -110,6 +110,12 @@ def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_nmax_wrap(b
 def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {proglist_uint32_r.proglist_uint32_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_uint32_decode_vchecked_nmax_above(buf)
 
+def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {proglist_uint32_r.proglist_uint32_dchw(4294967264, 4294967264, (buf, 1073741816)) == proglist_uint32_r.proglist_uint32_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.proglist_uint32_decode_vchecked_nmax_at(buf)
+
+def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {proglist_uint32_r.proglist_uint32_dchw(2147483648, 2147483648, (buf, 536870912)) == proglist_uint32_r.proglist_uint32_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.proglist_uint32_decode_vchecked_at_2pow31(buf)
+
 def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_window() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_uint32_r.proglist_uint32_dchw(5, 4, (P3_B.empty(), 8))) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_uint32_decode_vchecked_window()
 
@@ -118,6 +124,9 @@ def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_storage() -
 
 def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_uint32_r.proglist_uint32_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_uint32_decode_vchecked_real()
+
+def proglist_uint32__decode_offsets__proglist_uint32_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint32_r.proglist_uint32_dcost(size), 4294967295), U32.is_le(proglist_uint32_r.proglist_uint32_dcost(size), budget)) == True{} : Bool}) -> {proglist_uint32_r.proglist_uint32_decode_checked_budget(buf, size, budget) == proglist_uint32_r.proglist_uint32_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.proglist_uint32_decode_vchecked_budget_agree(buf, size, budget, h)
 
 def proglist_uint32__decode_offsets__proglist_uint32_decode_vlit_bad_ragged() -> {P4_PRV.some1(Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Words>, proglist_uint32_r.proglist_uint32_decode(P4_B.Buf{Array.new(U32, 1n, 0), 5}, 5))) == False{} : Bool}:
   P4_PRV.proglist_uint32_decode_vlit_bad_ragged()

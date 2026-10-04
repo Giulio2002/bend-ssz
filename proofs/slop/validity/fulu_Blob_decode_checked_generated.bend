@@ -25,6 +25,14 @@ def Blob_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluBlob_r.Blob_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def Blob_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluBlob_r.Blob_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBlob_r.Blob_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def Blob_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluBlob_r.Blob_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBlob_r.Blob_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def Blob_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, O.Words>}:
   {==}
@@ -35,4 +43,34 @@ def Blob_decode_vchecked_storage()
 
 def Blob_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.Words>}:
+  {==}
+
+def Blob_decode_vchecked_budget_cost()
+    -> {FuluBlob_r.Blob_dcost(4096) == 526853 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)) == False{} : Bool})
+    -> {FuluBlob_r.Blob_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)), False{}, h) : {FuluBlob_r.Blob_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def Blob_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)) == True{} : Bool})
+    -> {FuluBlob_r.Blob_decode_checked_budget(buf, size, budget) == FuluBlob_r.Blob_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)), True{}, h) : {FuluBlob_r.Blob_dcb(_, buf, size) == FuluBlob_r.Blob_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def Blob_decode_vchecked_budget_cost_858980000()
+    -> {FuluBlob_r.Blob_dcost(858980000) == 537386793 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBlob_r.Blob_dcost(2147483648) == 1342701573 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBlob_r.Blob_dcost(4294967264) == 2684878833 : U32}:
+  {==}
+
+def Blob_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
   {==}

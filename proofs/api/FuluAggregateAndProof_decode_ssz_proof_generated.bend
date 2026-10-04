@@ -115,6 +115,12 @@ def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_nma
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_nmax_above(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   P2_PRV.AggregateAndProof_decode_vchecked_nmax_above(buf)
 
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_nmax_at(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluAggregateAndProof_r.AggregateAndProof_dgo(True{}, buf, 4294967264) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_nmax_at(buf)
+
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_at_2pow31(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluAggregateAndProof_r.AggregateAndProof_dgo(True{}, buf, 2147483648) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_at_2pow31(buf)
+
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 87))), Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 345))) == (True{}, True{}) : Bool & Bool}:
   P2_PRV.AggregateAndProof_decode_vchecked_accept()
 
@@ -129,6 +135,12 @@ def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_sho
 
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(P2_B.Buf{Array.new(U32, 0n, 0), 345}, 345)) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   P2_PRV.AggregateAndProof_decode_vchecked_real()
+
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAggregateAndProof_r.AggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluAggregateAndProof_r.AggregateAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluAggregateAndProof_r.AggregateAndProof_decode_checked_budget(buf, size, budget) == FuluAggregateAndProof_r.AggregateAndProof_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_budget_accept() -> {P2_PRV.is_some(Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked_budget(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 345, 4294967295)), Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(P2_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 345))) == (True{}, True{}) : Bool & Bool}:
+  P2_PRV.AggregateAndProof_decode_vchecked_budget_accept()
 
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vlit_bad_aggregate_aggregation_bits_nodelim() -> {P3_PRV.some1(Pair.snd(P3_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode(P3_B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 345}, 345))) == False{} : Bool}:
   P3_PRV.AggregateAndProof_decode_vlit_bad_aggregate_aggregation_bits_nodelim()

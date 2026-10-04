@@ -26,6 +26,14 @@ def DepositMessage_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluDepositMessage_r.DepositMessage_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   {==}
 
+def DepositMessage_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluDepositMessage_r.DepositMessage_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluDepositMessage_r.DepositMessage_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  {==}
+
+def DepositMessage_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluDepositMessage_r.DepositMessage_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluDepositMessage_r.DepositMessage_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  {==}
+
 def DepositMessage_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_dchw(88, 88, (B.Buf{Array.new(U32, 5n, 0), 88}, 22))), Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(B.Buf{Array.new(U32, 5n, 0), 88}, 88))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +52,26 @@ def DepositMessage_decode_vchecked_short()
 
 def DepositMessage_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(B.Buf{Array.new(U32, 0n, 0), 88}, 88)) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  {==}
+
+def DepositMessage_decode_vchecked_budget_cost()
+    -> {FuluDepositMessage_r.DepositMessage_dcost(4096) == 524288 : U32}:
+  {==}
+
+def DepositMessage_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositMessage_r.DepositMessage_dcost(size), 4294967295), U32.is_le(FuluDepositMessage_r.DepositMessage_dcost(size), budget)) == False{} : Bool})
+    -> {FuluDepositMessage_r.DepositMessage_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositMessage_r.DepositMessage_dcost(size), 4294967295), U32.is_le(FuluDepositMessage_r.DepositMessage_dcost(size), budget)), False{}, h) : {FuluDepositMessage_r.DepositMessage_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}
+  {==}
+
+def DepositMessage_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositMessage_r.DepositMessage_dcost(size), 4294967295), U32.is_le(FuluDepositMessage_r.DepositMessage_dcost(size), budget)) == True{} : Bool})
+    -> {FuluDepositMessage_r.DepositMessage_decode_checked_budget(buf, size, budget) == FuluDepositMessage_r.DepositMessage_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluDepositMessage_r.DepositMessage_dcost(size), 4294967295), U32.is_le(FuluDepositMessage_r.DepositMessage_dcost(size), budget)), True{}, h) : {FuluDepositMessage_r.DepositMessage_dcb(_, buf, size) == FuluDepositMessage_r.DepositMessage_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}
+  {==}
+
+def DepositMessage_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  {==}
+
+def DepositMessage_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked_budget(B.Buf{Array.new(U32, 5n, 0), 88}, 88, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(B.Buf{Array.new(U32, 5n, 0), 88}, 88))) == (True{}, True{}) : Bool & Bool}:
   {==}

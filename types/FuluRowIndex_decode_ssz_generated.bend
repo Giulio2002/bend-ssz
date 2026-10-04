@@ -48,3 +48,14 @@ def RowIndex_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   RowIndex_dchw(size, n, B.stored(buf))
 
 def RowIndex_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: RowIndex_dchk(size, B.size(buf))
+
+def RowIndex_dk() -> U32: 0
+
+def RowIndex_dcost(+size: U32) -> U32: O.dcost(size, RowIndex_dk())
+
+def RowIndex_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: RowIndex_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def RowIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: RowIndex_dcb(Bool.and(U32.is_lt(RowIndex_dcost(size), 4294967295), U32.is_le(RowIndex_dcost(size), budget)), buf, size)

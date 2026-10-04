@@ -141,3 +141,14 @@ def ExecutionRequests_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, F
   ExecutionRequests_dchw(size, n, B.stored(buf))
 
 def ExecutionRequests_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>: ExecutionRequests_dchk(size, B.size(buf))
+
+def ExecutionRequests_dk() -> U32: 5
+
+def ExecutionRequests_dcost(+size: U32) -> U32: O.dcost(size, ExecutionRequests_dk())
+
+def ExecutionRequests_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>:
+  match ok:
+    case True{}: ExecutionRequests_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def ExecutionRequests_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>: ExecutionRequests_dcb(Bool.and(U32.is_lt(ExecutionRequests_dcost(size), 4294967295), U32.is_le(ExecutionRequests_dcost(size), budget)), buf, size)

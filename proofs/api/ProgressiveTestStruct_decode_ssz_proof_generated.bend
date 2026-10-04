@@ -243,6 +243,12 @@ def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_nmax_above(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
   P3_PRV.ProgressiveTestStruct_decode_vchecked_nmax_above(buf)
 
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_nmax_at(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(4294967264, 4294967264, (buf, 1073741816)) == ProgressiveTestStruct_r.ProgressiveTestStruct_dgo(True{}, buf, 4294967264) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_nmax_at(buf)
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_at_2pow31(buf: P3_B.Buf) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(2147483648, 2147483648, (buf, 536870912)) == ProgressiveTestStruct_r.ProgressiveTestStruct_dgo(True{}, buf, 2147483648) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_at_2pow31(buf)
+
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(16, 16, (P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 4))), Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
   P3_PRV.ProgressiveTestStruct_decode_vchecked_accept()
 
@@ -257,6 +263,12 @@ def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked
 
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 16), 16}, 16)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
   P3_PRV.ProgressiveTestStruct_decode_vchecked_real()
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(size), budget)) == True{} : Bool}) -> {ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
+
+def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vchecked_budget_accept() -> {P3_PRV.is_some(Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked_budget(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16, 4294967295)), Pair.snd(P3_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 16), 1, 16), 2, 16), 3, 16), 16}, 16))) == (True{}, True{}) : Bool & Bool}:
+  P3_PRV.ProgressiveTestStruct_decode_vchecked_budget_accept()
 
 def ProgressiveTestStruct__decode_offsets__ProgressiveTestStruct_decode_vlit_bad_f_B_ragged() -> {P4_PRV.some1(Pair.snd(P4_B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode(P4_B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 3n, 0), 0, 16), 1, 16), 2, 25), 3, 25), 25}, 25))) == False{} : Bool}:
   P4_PRV.ProgressiveTestStruct_decode_vlit_bad_f_B_ragged()

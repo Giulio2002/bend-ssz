@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
 import ../../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
 import ../../../types/FuluAttesterSlashing_decode_ssz_generated.bend as FuluAttesterSlashing_r
 
@@ -26,6 +27,14 @@ def AttesterSlashing_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   {==}
 
+def AttesterSlashing_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluAttesterSlashing_r.AttesterSlashing_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluAttesterSlashing_r.AttesterSlashing_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  {==}
+
 def AttesterSlashing_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 116))), Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -44,4 +53,42 @@ def AttesterSlashing_decode_vchecked_short()
 
 def AttesterSlashing_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 8), 464}, 464)) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_cost()
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(4096) == 526340 : U32}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)) == False{} : Bool})
+    -> {FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)), False{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)) == True{} : Bool})
+    -> {FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(buf, size, budget) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), 4294967295), U32.is_le(FuluAttesterSlashing_r.AttesterSlashing_dcost(size), budget)), True{}, h) : {FuluAttesterSlashing_r.AttesterSlashing_dcb(_, buf, size) == FuluAttesterSlashing_r.AttesterSlashing_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_cost_858980000()
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(858980000) == 430014292 : U32}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_cost_2147483648()
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(2147483648) == 1074266116 : U32}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_cost_4294967264()
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(4294967264) == 2148007924 : U32}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_covers_IndexedAttestation()
+    -> {U32.is_le(FuluIndexedAttestation_r.IndexedAttestation_dk(), FuluAttesterSlashing_r.AttesterSlashing_dk()) == True{} : Bool}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  {==}
+
+def AttesterSlashing_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked_budget(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 464))) == (True{}, True{}) : Bool & Bool}:
   {==}

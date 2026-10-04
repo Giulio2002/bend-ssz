@@ -48,3 +48,14 @@ def Epoch_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   Epoch_dchw(size, n, B.stored(buf))
 
 def Epoch_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: Epoch_dchk(size, B.size(buf))
+
+def Epoch_dk() -> U32: 0
+
+def Epoch_dcost(+size: U32) -> U32: O.dcost(size, Epoch_dk())
+
+def Epoch_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: Epoch_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Epoch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Epoch_dcb(Bool.and(U32.is_lt(Epoch_dcost(size), 4294967295), U32.is_le(Epoch_dcost(size), budget)), buf, size)

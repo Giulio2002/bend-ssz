@@ -74,3 +74,14 @@ def Eth1Block_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluEth1B
   Eth1Block_dchw(size, n, B.stored(buf))
 
 def Eth1Block_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dchk(size, B.size(buf))
+
+def Eth1Block_dk() -> U32: 0
+
+def Eth1Block_dcost(+size: U32) -> U32: O.dcost(size, Eth1Block_dk())
+
+def Eth1Block_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>:
+  match ok:
+    case True{}: Eth1Block_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Eth1Block_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dcb(Bool.and(U32.is_lt(Eth1Block_dcost(size), 4294967295), U32.is_le(Eth1Block_dcost(size), budget)), buf, size)

@@ -64,3 +64,14 @@ def SingleFieldTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&
   SingleFieldTestStruct_dchw(size, n, B.stored(buf))
 
 def SingleFieldTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>: SingleFieldTestStruct_dchk(size, B.size(buf))
+
+def SingleFieldTestStruct_dk() -> U32: 0
+
+def SingleFieldTestStruct_dcost(+size: U32) -> U32: O.dcost(size, SingleFieldTestStruct_dk())
+
+def SingleFieldTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>:
+  match ok:
+    case True{}: SingleFieldTestStruct_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SingleFieldTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>: SingleFieldTestStruct_dcb(Bool.and(U32.is_lt(SingleFieldTestStruct_dcost(size), 4294967295), U32.is_le(SingleFieldTestStruct_dcost(size), budget)), buf, size)

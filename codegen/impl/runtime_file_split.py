@@ -30,7 +30,7 @@ uint8, ...); a shape that is some API name's representation takes the first such
 FuluBytes32's); a shape no name has takes a structural name (Fulu_list_Withdrawal_16,
 Fulu_bitlist_131072, list_uint16_1024, ...). Owners with one readable name share its files.
 
-Operations. Within an owner, a definition belongs to the operation whose entry points (decode: _decode,
+Operations. Within an owner, a definition belongs to the operation whose entry points (decode: _decode, _decode_checked_budget, _dcost,
 _ok, _read, _build; encode: _encode, _serialize, _putk, _putn, _put, _putv, _size, _valid;
 hashtreeroot: _hash_tree_root, _root) are the only ones reaching it through the owner's own calls;
 a definition reached by none, or by two, or by a definition of the def file, is the def file's. So a
@@ -68,7 +68,7 @@ TO_SPLIT = './'
 TO_ROOT = '../'
 LETTER = {'def': 'd', 'encode_ssz': 'e', 'decode_ssz': 'r', 'hashtreeroot': 'h'}
 ROOTS = {
-    'decode_ssz': ['decode', 'decode_in', 'ok', 'read', 'build', 'decode_checked'],
+    'decode_ssz': ['decode', 'decode_in', 'ok', 'read', 'build', 'decode_checked', 'decode_checked_budget', 'dcost'],
     'encode_ssz': ['encode', 'serialize', 'putk', 'putn', 'put', 'putv', 'size', 'valid'],
     'hashtreeroot': ['hash_tree_root', 'root'],
 }

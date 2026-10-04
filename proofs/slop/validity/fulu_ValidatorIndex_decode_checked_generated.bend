@@ -25,6 +25,14 @@ def ValidatorIndex_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluValidatorIndex_r.ValidatorIndex_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
   {==}
 
+def ValidatorIndex_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluValidatorIndex_r.ValidatorIndex_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluValidatorIndex_r.ValidatorIndex_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
+def ValidatorIndex_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluValidatorIndex_r.ValidatorIndex_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluValidatorIndex_r.ValidatorIndex_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 def ValidatorIndex_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -43,4 +51,26 @@ def ValidatorIndex_decode_vchecked_short()
 
 def ValidatorIndex_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def ValidatorIndex_decode_vchecked_budget_cost()
+    -> {FuluValidatorIndex_r.ValidatorIndex_dcost(4096) == 524288 : U32}:
+  {==}
+
+def ValidatorIndex_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluValidatorIndex_r.ValidatorIndex_dcost(size), 4294967295), U32.is_le(FuluValidatorIndex_r.ValidatorIndex_dcost(size), budget)) == False{} : Bool})
+    -> {FuluValidatorIndex_r.ValidatorIndex_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluValidatorIndex_r.ValidatorIndex_dcost(size), 4294967295), U32.is_le(FuluValidatorIndex_r.ValidatorIndex_dcost(size), budget)), False{}, h) : {FuluValidatorIndex_r.ValidatorIndex_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def ValidatorIndex_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluValidatorIndex_r.ValidatorIndex_dcost(size), 4294967295), U32.is_le(FuluValidatorIndex_r.ValidatorIndex_dcost(size), budget)) == True{} : Bool})
+    -> {FuluValidatorIndex_r.ValidatorIndex_decode_checked_budget(buf, size, budget) == FuluValidatorIndex_r.ValidatorIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluValidatorIndex_r.ValidatorIndex_dcost(size), 4294967295), U32.is_le(FuluValidatorIndex_r.ValidatorIndex_dcost(size), budget)), True{}, h) : {FuluValidatorIndex_r.ValidatorIndex_dcb(_, buf, size) == FuluValidatorIndex_r.ValidatorIndex_decode_checked(buf, size) : B.Buf & Maybe<&1, O.U64>}
+  {==}
+
+def ValidatorIndex_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.U64>}:
+  {==}
+
+def ValidatorIndex_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode_checked_budget(B.Buf{Array.new(U32, 1n, 0), 8}, 8, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode_checked(B.Buf{Array.new(U32, 1n, 0), 8}, 8))) == (True{}, True{}) : Bool & Bool}:
   {==}

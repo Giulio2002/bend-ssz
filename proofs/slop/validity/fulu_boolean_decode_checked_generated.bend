@@ -25,6 +25,14 @@ def boolean_decode_vchecked_nmax_above(buf: B.Buf)
     -> {boolean_r.boolean_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
 
+def boolean_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {boolean_r.boolean_dchw(4294967264, 4294967264, (buf, 1073741816)) == boolean_r.boolean_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, Bool>}:
+  {==}
+
+def boolean_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {boolean_r.boolean_dchw(2147483648, 2147483648, (buf, 536870912)) == boolean_r.boolean_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, Bool>}:
+  {==}
+
 def boolean_decode_vchecked_accept()
     -> {is_some(Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   {==}
@@ -39,4 +47,26 @@ def boolean_decode_vchecked_storage()
 
 def boolean_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, Bool>}:
+  {==}
+
+def boolean_decode_vchecked_budget_cost()
+    -> {boolean_r.boolean_dcost(4096) == 524288 : U32}:
+  {==}
+
+def boolean_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)) == False{} : Bool})
+    -> {boolean_r.boolean_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)), False{}, h) : {boolean_r.boolean_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}
+  {==}
+
+def boolean_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)) == True{} : Bool})
+    -> {boolean_r.boolean_decode_checked_budget(buf, size, budget) == boolean_r.boolean_decode_checked(buf, size) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)), True{}, h) : {boolean_r.boolean_dcb(_, buf, size) == boolean_r.boolean_decode_checked(buf, size) : B.Buf & Maybe<&1, Bool>}
+  {==}
+
+def boolean_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, Bool>}:
+  {==}
+
+def boolean_decode_vchecked_budget_accept()
+    -> {is_some(Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked_budget(B.Buf{Array.new(U32, 0n, 0), 1}, 1, 4294967295)), Pair.snd(B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   {==}

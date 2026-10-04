@@ -88,6 +88,9 @@ def proglist_uint256__serialize_valid__proglist_uint256_serialize_vunit_pl_u256_
 def proglist_uint256__serialize_valid__proglist_uint256_serialize_vunit_pl_u256_range_lo_0() -> {Pair.snd(P3_O.Words, Bool, proglist_uint256_e.pl_u256_valid(P3_O.words_new(0))) == True{} : Bool}:
   P3_PRV.proglist_uint256_serialize_vunit_pl_u256_range_lo_0()
 
+def proglist_uint256__serialize_valid__proglist_uint256_serialize_vunit_pl_u256_range_hi_full() -> {Pair.snd(P3_O.Words, Bool, proglist_uint256_e.pl_u256_valid(P3_O.Words{Array.new(U32, 30n, 0), 4294967264})) == True{} : Bool}:
+  P3_PRV.proglist_uint256_serialize_vunit_pl_u256_range_hi_full()
+
 def proglist_uint256__serialize_valid__proglist_uint256_serialize_vpoison_pk_pl_u256() -> {P4_O.is_poisoned(Pair.snd(P4_O.Words, U32, Pair.snd(Array<U32>, P4_O.Words & U32, proglist_uint256_e.pl_u256_pk(Array.new(U32, 0n, 0), 0, (P4_O.words_new(0), False{}))))) == True{} : Bool}:
   P4_PRV.proglist_uint256_serialize_vpoison_pk_pl_u256()
 

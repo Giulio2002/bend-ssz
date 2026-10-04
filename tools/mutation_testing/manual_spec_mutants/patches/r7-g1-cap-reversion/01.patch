@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r7-g1-cap-reversion/01
+# type: proglist_uint8
+# ops: decode
+# spec: the checked decoder answers None unless the window [0, size) lies inside the buffer, size <= NMAX and the storage holds it; every accepted window decodes as the unchecked decoder does
+# fault: the cap went back to 2^31 (size < 2^31): a window of 2^31 .. NMAX bytes is refused
+# why: the size limit reverted
+# sym: proglist_uint8_decode_checked,proglist_uint8_dchk,proglist_uint8_dchw
+# file: types/proglist_uint8_decode_ssz_generated.bend
+# re-derived against e1b65e26f (by hand, round 7 G2: rederive.py OVERRIDES)
+--- a/types/proglist_uint8_decode_ssz_generated.bend
++++ b/types/proglist_uint8_decode_ssz_generated.bend
+@@ -46,3 +46,3 @@
+   (buf, +c) = pair
+-  proglist_uint8_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_le(size, 4294967264)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
++  proglist_uint8_dgo(Bool.and(Bool.and(U32.is_le(size, n), U32.is_lt(size, 2147483648)), U32.is_le(U32.shrn((size + 3 : U32), 2n), c)), buf, size)
+ 

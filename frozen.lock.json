@@ -1554,7 +1554,7 @@
     "src/buffer.bend": "b36977a772bdf915579fc2db0f08b361421fd90aaccb6f3c393a01ae44751822",
     "src/digest.bend": "5e043ab2ea38e5d33e6d257a7b92ab9c126e5a15109fe80595b16719370efce1",
     "src/merkle_fast.bend": "ce89ded842656407575e3fae67a19c664b27c0e6f88d87706118d5c7c5b6ef17",
-    "src/obj.bend": "318582b7b4fbd4a88c5dcabf14511ae2bd730a0cc0785faa2dab00789e4fd4e5",
+    "src/obj.bend": "d10b358f44f84876778d77f2d88fa872d7b71debbd4c81addb6e9b893844622e",
     "src/primitives.bend": "eac73e81bb98929a14e3a3fd99439985f5a29944b238ace636c8781171708264",
     "types/BitsStruct_def_generated.bend": "d73575e452d69e9acf8ec00344364c5ba63b254f9351fee683d16b87dcb2c994",
     "types/CompatibleUnionABCA_def_generated.bend": "ca6be97a3d19ad50e5ece57f2bcf5d908fc4d70c084f9a340c45085df2bae6cd",

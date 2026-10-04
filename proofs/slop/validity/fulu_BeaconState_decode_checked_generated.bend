@@ -26,6 +26,14 @@ def BeaconState_decode_vchecked_nmax_above(buf: B.Buf)
     -> {FuluBeaconState_r.BeaconState_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}
 
+def BeaconState_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {FuluBeaconState_r.BeaconState_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluBeaconState_r.BeaconState_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  {==}
+
+def BeaconState_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {FuluBeaconState_r.BeaconState_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluBeaconState_r.BeaconState_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  {==}
+
 def BeaconState_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}
@@ -36,4 +44,34 @@ def BeaconState_decode_vchecked_storage()
 
 def BeaconState_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  {==}
+
+def BeaconState_decode_vchecked_budget_cost()
+    -> {FuluBeaconState_r.BeaconState_dcost(4096) == 527879 : U32}:
+  {==}
+
+def BeaconState_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)) == False{} : Bool})
+    -> {FuluBeaconState_r.BeaconState_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)), False{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
+  {==}
+
+def BeaconState_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)) == True{} : Bool})
+    -> {FuluBeaconState_r.BeaconState_decode_checked_budget(buf, size, budget) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(FuluBeaconState_r.BeaconState_dcost(size), 4294967295), U32.is_le(FuluBeaconState_r.BeaconState_dcost(size), budget)), True{}, h) : {FuluBeaconState_r.BeaconState_dcb(_, buf, size) == FuluBeaconState_r.BeaconState_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>}
+  {==}
+
+def BeaconState_decode_vchecked_budget_cost_858980000()
+    -> {FuluBeaconState_r.BeaconState_dcost(858980000) == 752131795 : U32}:
+  {==}
+
+def BeaconState_decode_vchecked_budget_cost_2147483648()
+    -> {FuluBeaconState_r.BeaconState_dcost(2147483648) == 1879572487 : U32}:
+  {==}
+
+def BeaconState_decode_vchecked_budget_cost_4294967264()
+    -> {FuluBeaconState_r.BeaconState_dcost(4294967264) == 3758620651 : U32}:
+  {==}
+
+def BeaconState_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconState_d.BeaconState>, FuluBeaconState_r.BeaconState_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, FuluBeaconState_d.BeaconState>}:
   {==}

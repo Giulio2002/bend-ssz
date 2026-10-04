@@ -11,11 +11,23 @@ import ../../../slop/validity/generic_bitvector_8_decode_checked_generated.bend 
 def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_8_d.Bitvector8>, bitvector_8_r.bitvector_8_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))), Pair.snd(B.Buf, Maybe<&1, bitvector_8_d.Bitvector8>, bitvector_8_r.bitvector_8_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
   PRV.bitvector_8_decode_vchecked_accept()
 
+def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_at_2pow31(buf: B.Buf) -> {bitvector_8_r.bitvector_8_dchw(2147483648, 2147483648, (buf, 536870912)) == bitvector_8_r.bitvector_8_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
+  PRV.bitvector_8_decode_vchecked_at_2pow31(buf)
+
+def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, bitvector_8_d.Bitvector8>, bitvector_8_r.bitvector_8_decode_checked_budget(B.Buf{Array.new(U32, 0n, 0), 1}, 1, 4294967295)), Pair.snd(B.Buf, Maybe<&1, bitvector_8_d.Bitvector8>, bitvector_8_r.bitvector_8_decode_checked(B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == (True{}, True{}) : Bool & Bool}:
+  PRV.bitvector_8_decode_vchecked_budget_accept()
+
+def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitvector_8_r.bitvector_8_dcost(size), 4294967295), U32.is_le(bitvector_8_r.bitvector_8_dcost(size), budget)) == True{} : Bool}) -> {bitvector_8_r.bitvector_8_decode_checked_budget(buf, size, budget) == bitvector_8_r.bitvector_8_decode_checked(buf, size) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
+  PRV.bitvector_8_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_8_d.Bitvector8>, bitvector_8_r.bitvector_8_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, bitvector_8_d.Bitvector8>}:
   PRV.bitvector_8_decode_vchecked_limit()
 
 def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_nmax_above(buf: B.Buf) -> {bitvector_8_r.bitvector_8_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
   PRV.bitvector_8_decode_vchecked_nmax_above(buf)
+
+def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_nmax_at(buf: B.Buf) -> {bitvector_8_r.bitvector_8_dchw(4294967264, 4294967264, (buf, 1073741816)) == bitvector_8_r.bitvector_8_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
+  PRV.bitvector_8_decode_vchecked_nmax_at(buf)
 
 def bitvector_8__decode_offsets__bitvector_8_decode_vchecked_nmax_wrap(buf: B.Buf) -> {bitvector_8_r.bitvector_8_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
   PRV.bitvector_8_decode_vchecked_nmax_wrap(buf)

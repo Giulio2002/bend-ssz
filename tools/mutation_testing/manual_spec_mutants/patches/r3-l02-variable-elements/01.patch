@@ -4,13 +4,13 @@
 # spec: the size of a list of variable-size elements is 4 n offsets plus the sizes of the elements
 # fault: the offset table is not counted
 # why: term dropped
-# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
 # sym: l1_AttesterSlashing_sz_fin,l1_AttesterSlashing_size
-# re-derived against 0b80524f4
+# file: types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
+# re-derived against e1b65e26f (by hand, round 7 G2: rederive.py OVERRIDES)
 --- a/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
 +++ b/types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend
-@@ -89,3 +89,3 @@
-     case True{}: (out, (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, 0))
--    case False{}: l1_AttesterSlashing_pvn_fin(n, l1_AttesterSlashing_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
-+    case False{}: l1_AttesterSlashing_pvn_fin(n, l1_AttesterSlashing_pv(U32.to_nat(n), 0, pos, (out, (arr, (0, O.BNone{})))))
+@@ -35,3 +35,3 @@
+   (m, sp) = r
+-  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(O.mul4c(n), m))
++  (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{arr, n}, O.padd(0, m))
  

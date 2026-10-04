@@ -109,7 +109,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'encoded_size':
         return enc in concl or f'T.{X}_bx_size(' in concl
     if kind == 'serialize_valid':
-        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok|bx_size|bx_valid)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes|words_blit|bits_size|unit_ok)\(|T\.\w+_(?:append|set|get|len|len_of|bx_putk|putn|senc_go|senc_sized|senc_out)\(', concl) is not None
+        return concl.startswith(f'{{T.{X}_serialize(') or concl.startswith(f'{{Pair.snd(') and f', O.Encoded, T.{X}_serialize(' in concl or re.match(r'\{(?:Pair\.snd\([^,]*, Bool, )?(?:T\.\w+_(?:valid|pk_ok|bx_size|bx_valid)|O\.\w+)\(', concl) is not None or re.search(r'O\.(?:bits_above_zero|bits_nbytes|words_blit|bits_size|unit_ok)\(|T\.\w+_(?:append|set|get|len|len_of|bx_putk|putn|senc_go|senc_sized|senc_out|size)\(', concl) is not None
     if kind == 'decode_offsets':
         return (concl.startswith('{' + dec) and ('Some{' in concl or f'T.{X}_some(' in concl)) or re.search(r'O\.(?:rd_u16|bits_clear|and_pair)\(|T\.\w+_(?:ok|dchw|decode_checked|decode)\(', concl) is not None
     if kind == 'decode_first_offset':

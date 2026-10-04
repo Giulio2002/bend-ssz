@@ -70,3 +70,14 @@ def Checkpoint_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, FuluChec
   Checkpoint_dchw(size, n, B.stored(buf))
 
 def Checkpoint_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dchk(size, B.size(buf))
+
+def Checkpoint_dk() -> U32: 0
+
+def Checkpoint_dcost(+size: U32) -> U32: O.dcost(size, Checkpoint_dk())
+
+def Checkpoint_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>:
+  match ok:
+    case True{}: Checkpoint_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Checkpoint_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>: Checkpoint_dcb(Bool.and(U32.is_lt(Checkpoint_dcost(size), 4294967295), U32.is_le(Checkpoint_dcost(size), budget)), buf, size)

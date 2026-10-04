@@ -25,6 +25,14 @@ def proglist_uint256_decode_vchecked_nmax_above(buf: B.Buf)
     -> {proglist_uint256_r.proglist_uint256_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
+def proglist_uint256_decode_vchecked_nmax_at(buf: B.Buf)
+    -> {proglist_uint256_r.proglist_uint256_dchw(4294967264, 4294967264, (buf, 1073741816)) == proglist_uint256_r.proglist_uint256_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def proglist_uint256_decode_vchecked_at_2pow31(buf: B.Buf)
+    -> {proglist_uint256_r.proglist_uint256_dchw(2147483648, 2147483648, (buf, 536870912)) == proglist_uint256_r.proglist_uint256_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def proglist_uint256_decode_vchecked_window()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_dchw(5, 4, (B.empty(), 8))) == None{} : Maybe<&1, O.Words>}:
   {==}
@@ -35,4 +43,34 @@ def proglist_uint256_decode_vchecked_storage()
 
 def proglist_uint256_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.Words>}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_cost()
+    -> {proglist_uint256_r.proglist_uint256_dcost(4096) == 527366 : U32}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_refuse(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint256_r.proglist_uint256_dcost(size), 4294967295), U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget)) == False{} : Bool})
+    -> {proglist_uint256_r.proglist_uint256_decode_checked_budget(buf, size, budget) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(proglist_uint256_r.proglist_uint256_dcost(size), 4294967295), U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget)), False{}, h) : {proglist_uint256_r.proglist_uint256_dcb(_, buf, size) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint256_r.proglist_uint256_dcost(size), 4294967295), U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget)) == True{} : Bool})
+    -> {proglist_uint256_r.proglist_uint256_decode_checked_budget(buf, size, budget) == proglist_uint256_r.proglist_uint256_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, Bool.and(U32.is_lt(proglist_uint256_r.proglist_uint256_dcost(size), 4294967295), U32.is_le(proglist_uint256_r.proglist_uint256_dcost(size), budget)), True{}, h) : {proglist_uint256_r.proglist_uint256_dcb(_, buf, size) == proglist_uint256_r.proglist_uint256_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_cost_858980000()
+    -> {proglist_uint256_r.proglist_uint256_dcost(858980000) == 644759294 : U32}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_cost_2147483648()
+    -> {proglist_uint256_r.proglist_uint256_dcost(2147483648) == 1611137030 : U32}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_cost_4294967264()
+    -> {proglist_uint256_r.proglist_uint256_dcost(4294967264) == 3221749742 : U32}:
+  {==}
+
+def proglist_uint256_decode_vchecked_budget_zero()
+    -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, proglist_uint256_r.proglist_uint256_decode_checked_budget(B.empty(), 8, 0)) == None{} : Maybe<&1, O.Words>}:
   {==}

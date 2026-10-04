@@ -68,3 +68,14 @@ def SmallTestStruct_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Sma
   SmallTestStruct_dchw(size, n, B.stored(buf))
 
 def SmallTestStruct_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dchk(size, B.size(buf))
+
+def SmallTestStruct_dk() -> U32: 0
+
+def SmallTestStruct_dcost(+size: U32) -> U32: O.dcost(size, SmallTestStruct_dk())
+
+def SmallTestStruct_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>:
+  match ok:
+    case True{}: SmallTestStruct_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def SmallTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>: SmallTestStruct_dcb(Bool.and(U32.is_lt(SmallTestStruct_dcost(size), 4294967295), U32.is_le(SmallTestStruct_dcost(size), budget)), buf, size)

@@ -102,6 +102,12 @@ def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_wrap(buf: 
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_above(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P5_PRV.MatrixEntry_decode_vchecked_nmax_above(buf)
 
+def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_nmax_at(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 4294967264) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  P5_PRV.MatrixEntry_decode_vchecked_nmax_at(buf)
+
+def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_at_2pow31(buf: P5_B.Buf) -> {FuluMatrixEntry_r.MatrixEntry_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 2147483648) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  P5_PRV.MatrixEntry_decode_vchecked_at_2pow31(buf)
+
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_window() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_dchw(5, 4, (P5_B.empty(), 8))) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P5_PRV.MatrixEntry_decode_vchecked_window()
 
@@ -110,6 +116,9 @@ def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_storage() -> {P
 
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P5_PRV.MatrixEntry_decode_vchecked_real()
+
+def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluMatrixEntry_r.MatrixEntry_dcost(size), 4294967295), U32.is_le(FuluMatrixEntry_r.MatrixEntry_dcost(size), budget)) == True{} : Bool}) -> {FuluMatrixEntry_r.MatrixEntry_decode_checked_budget(buf, size, budget) == FuluMatrixEntry_r.MatrixEntry_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  P5_PRV.MatrixEntry_decode_vchecked_budget_agree(buf, size, budget, h)
 
 def FuluMatrixEntry__decode_offsets__MatrixEntry_decode_build(buf: P6_B.Buf, +size: U32, b2: P6_B.Buf, e: {FuluMatrixEntry_r.MatrixEntry_ok(buf, 0, size) == (b2, True{}) : P6_B.Buf & Bool}, hwin: {U32.is_le(size, P6_DWL.bsz(buf)) == True{} : Bool}) -> {FuluMatrixEntry_r.MatrixEntry_decode(buf, size) == FuluMatrixEntry_r.MatrixEntry_some(FuluMatrixEntry_r.MatrixEntry_build(b2, size)) : P6_B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   P6_PRV.MatrixEntry_decode_build(buf, size, b2, e, hwin)

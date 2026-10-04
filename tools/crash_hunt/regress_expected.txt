@@ -70,3 +70,11 @@
 70 r5_progbits_append_dirty append=1 valid=1 ser_ok=1 ser_size=5
 71 r5_words_slice_empty n=0
 72 pd_encode_22369622_len=0
+73 ep_empty_txs_dcost_262676=1837688
+74 ep_empty_txs_budget_below some=0
+75 ep_empty_txs_budget_at some=1
+76 pcts_600MiB_dcost=2438463519 within_2^30_words=0
+77 pcts_2^31_budget_max some=0
+78 r6_words_slice_max n=0
+80 pl_u8_decode_checked_nmax=some len=4294967264
+81 pl_u8_decode_checked_2pow31=some len=2147483648

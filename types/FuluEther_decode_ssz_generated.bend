@@ -48,3 +48,14 @@ def Ether_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, O.U64>:
   Ether_dchw(size, n, B.stored(buf))
 
 def Ether_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>: Ether_dchk(size, B.size(buf))
+
+def Ether_dk() -> U32: 0
+
+def Ether_dcost(+size: U32) -> U32: O.dcost(size, Ether_dk())
+
+def Ether_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.U64>:
+  match ok:
+    case True{}: Ether_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def Ether_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Ether_dcb(Bool.and(U32.is_lt(Ether_dcost(size), 4294967295), U32.is_le(Ether_dcost(size), budget)), buf, size)

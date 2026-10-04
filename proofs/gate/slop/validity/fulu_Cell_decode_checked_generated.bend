@@ -10,11 +10,23 @@ import ../../../slop/validity/fulu_Cell_decode_checked_generated.bend as PRV
 def Cell__decode_offsets__Cell_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_dchw(2048, 2048, (B.Buf{Array.new(U32, 9n, 0), 2048}, 512))), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_decode_checked(B.Buf{Array.new(U32, 9n, 0), 2048}, 2048))) == (True{}, True{}) : Bool & Bool}:
   PRV.Cell_decode_vchecked_accept()
 
+def Cell__decode_offsets__Cell_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluCell_r.Cell_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluCell_r.Cell_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.Cell_decode_vchecked_at_2pow31(buf)
+
+def Cell__decode_offsets__Cell_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_decode_checked_budget(B.Buf{Array.new(U32, 9n, 0), 2048}, 2048, 4294967295)), Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_decode_checked(B.Buf{Array.new(U32, 9n, 0), 2048}, 2048))) == (True{}, True{}) : Bool & Bool}:
+  PRV.Cell_decode_vchecked_budget_accept()
+
+def Cell__decode_offsets__Cell_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCell_r.Cell_dcost(size), 4294967295), U32.is_le(FuluCell_r.Cell_dcost(size), budget)) == True{} : Bool}) -> {FuluCell_r.Cell_decode_checked_budget(buf, size, budget) == FuluCell_r.Cell_decode_checked(buf, size) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.Cell_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def Cell__decode_offsets__Cell_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, O.Words>}:
   PRV.Cell_decode_vchecked_limit()
 
 def Cell__decode_offsets__Cell_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluCell_r.Cell_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.Cell_decode_vchecked_nmax_above(buf)
+
+def Cell__decode_offsets__Cell_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluCell_r.Cell_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluCell_r.Cell_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.Cell_decode_vchecked_nmax_at(buf)
 
 def Cell__decode_offsets__Cell_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluCell_r.Cell_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.Cell_decode_vchecked_nmax_wrap(buf)

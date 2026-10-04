@@ -11,11 +11,23 @@ import ../../../slop/validity/fulu_Checkpoint_decode_checked_generated.bend as P
 def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_dchw(40, 40, (B.Buf{Array.new(U32, 4n, 0), 40}, 10))), Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_decode_checked(B.Buf{Array.new(U32, 4n, 0), 40}, 40))) == (True{}, True{}) : Bool & Bool}:
   PRV.Checkpoint_decode_vchecked_accept()
 
+def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_at_2pow31(buf: B.Buf) -> {FuluCheckpoint_r.Checkpoint_dchw(2147483648, 2147483648, (buf, 536870912)) == FuluCheckpoint_r.Checkpoint_dgo(True{}, buf, 2147483648) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
+  PRV.Checkpoint_decode_vchecked_at_2pow31(buf)
+
+def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_budget_accept() -> {PRV.is_some(Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_decode_checked_budget(B.Buf{Array.new(U32, 4n, 0), 40}, 40, 4294967295)), Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_decode_checked(B.Buf{Array.new(U32, 4n, 0), 40}, 40))) == (True{}, True{}) : Bool & Bool}:
+  PRV.Checkpoint_decode_vchecked_budget_accept()
+
+def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_budget_agree(buf: B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCheckpoint_r.Checkpoint_dcost(size), 4294967295), U32.is_le(FuluCheckpoint_r.Checkpoint_dcost(size), budget)) == True{} : Bool}) -> {FuluCheckpoint_r.Checkpoint_decode_checked_budget(buf, size, budget) == FuluCheckpoint_r.Checkpoint_decode_checked(buf, size) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
+  PRV.Checkpoint_decode_vchecked_budget_agree(buf, size, budget, h)
+
 def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_limit() -> {Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_dchw(4294967265, 4294967265, (B.empty(), 1073741824))) == None{} : Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
   PRV.Checkpoint_decode_vchecked_limit()
 
 def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_nmax_above(buf: B.Buf) -> {FuluCheckpoint_r.Checkpoint_dchw(4294967265, 4294967295, (buf, 1073741824)) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
   PRV.Checkpoint_decode_vchecked_nmax_above(buf)
+
+def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_nmax_at(buf: B.Buf) -> {FuluCheckpoint_r.Checkpoint_dchw(4294967264, 4294967264, (buf, 1073741816)) == FuluCheckpoint_r.Checkpoint_dgo(True{}, buf, 4294967264) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
+  PRV.Checkpoint_decode_vchecked_nmax_at(buf)
 
 def Checkpoint__decode_offsets__Checkpoint_decode_vchecked_nmax_wrap(buf: B.Buf) -> {FuluCheckpoint_r.Checkpoint_dchw(4294967295, 4294967295, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
   PRV.Checkpoint_decode_vchecked_nmax_wrap(buf)

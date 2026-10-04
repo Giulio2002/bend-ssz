@@ -119,3 +119,14 @@ def AttesterSlashing_dchk(+size: U32, pair: B.Buf & U32) -> B.Buf & Maybe<&1, Fu
   AttesterSlashing_dchw(size, n, B.stored(buf))
 
 def AttesterSlashing_decode_checked(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>: AttesterSlashing_dchk(size, B.size(buf))
+
+def AttesterSlashing_dk() -> U32: 4
+
+def AttesterSlashing_dcost(+size: U32) -> U32: O.dcost(size, AttesterSlashing_dk())
+
+def AttesterSlashing_dcb(ok: Bool, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>:
+  match ok:
+    case True{}: AttesterSlashing_decode_checked(buf, size)
+    case False{}: (buf, None{})
+
+def AttesterSlashing_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>: AttesterSlashing_dcb(Bool.and(U32.is_lt(AttesterSlashing_dcost(size), 4294967295), U32.is_le(AttesterSlashing_dcost(size), budget)), buf, size)

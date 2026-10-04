@@ -222,6 +222,12 @@ def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4
 def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_range_lo_0() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(P19_O.words_new(0))) == True{} : Bool}:
   P19_PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_range_lo_0()
 
+def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_range_hi_full() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(P19_O.Words{Array.new(U32, 30n, 0), 8388608})) == True{} : Bool}:
+  P19_PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_range_hi_full()
+
+def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_l4096_b2048_range_above_full() -> {Pair.snd(P19_O.Words, Bool, Fulu_list_bytevec_2048_4096_e.l4096_b2048_valid(P19_O.Words{Array.new(U32, 30n, 0), 8390656})) == False{} : Bool}:
+  P19_PRV.DataColumnSidecar_serialize_vunit_l4096_b2048_range_above_full()
+
 def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vunit_ok_2048() -> {(P19_O.unit_ok(2048, 1), (P19_O.unit_ok(2048, 1024), (P19_O.unit_ok(2048, 2047), (P19_O.unit_ok(2048, 2048), (P19_O.unit_ok(2048, 2049), (P19_O.unit_ok(2048, 4095), (P19_O.unit_ok(2048, 4096), (P19_O.unit_ok(2048, 6144), P19_O.unit_ok(2048, 7168))))))))) == (False{}, (False{}, (False{}, (True{}, (False{}, (False{}, (True{}, (True{}, False{})))))))) : Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool & (Bool))))))))}:
   P19_PRV.DataColumnSidecar_serialize_vunit_ok_2048()
 
@@ -267,6 +273,6 @@ def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_serialize_vpoison_
 def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_ms_size() -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, U32, FuluDataColumnSidecar_e.DataColumnSidecar_size(FuluDataColumnSidecar_d.DataColumnSidecar_default())) == 356 : U32}:
   P24_PRV.DataColumnSidecar_ms_size()
 
-def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_mc_ser() -> {FuluDataColumnSidecar_e.DataColumnSidecar_serialize(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271594991))) == (Pair.fst(FuluDataColumnSidecar_d.DataColumnSidecar, P25_B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271594991)))), P25_O.encoded(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, P25_B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271594991)))))) : FuluDataColumnSidecar_d.DataColumnSidecar & P25_O.Encoded}:
+def FuluDataColumnSidecar__serialize_valid__DataColumnSidecar_mc_ser() -> {FuluDataColumnSidecar_e.DataColumnSidecar_serialize(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271597235))) == (Pair.fst(FuluDataColumnSidecar_d.DataColumnSidecar, P25_B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271597235)))), P25_O.encoded(Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, P25_B.Buf, FuluDataColumnSidecar_e.DataColumnSidecar_encode(FuluDataColumnSidecar_d.DataColumnSidecar_set_index(FuluDataColumnSidecar_d.DataColumnSidecar_default(), uint64_d.u64_seed(2271597235)))))) : FuluDataColumnSidecar_d.DataColumnSidecar & P25_O.Encoded}:
   P25_PRV.DataColumnSidecar_mc_ser()
 

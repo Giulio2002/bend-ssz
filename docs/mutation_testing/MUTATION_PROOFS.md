@@ -448,3 +448,40 @@ Base: main 8bd2fc3e1. New generator `codegen/proofs/slop/decode_literal_laws.py`
   (`docs/mutation_testing/rederive_report_r6.md`): r2-s05/01, 02 mutate the old `padd` / `is_poisoned` definitions, which no longer exist
   (the round-4 a01 / a03 patches mutate the new ones); r3-l01/06 (the size of a fixed-element list as `n * 44`, now `O.mulc`), r3-u01/05 (the union
   size `m + 1`, now `O.padd`) and r4-a10/04 (the vector of variable elements' `O.padd((4 * n : U32), ..)`, now a different expression) changed shape.
+
+### Round 7 regression audit (docs/audit/ROUND7_DROPPED.md): G1, G2
+
+* **G1 (the checked decoder accepts a window between 2^31 and NMAX)**: `decode_checked_laws.py` adds, for every name with a checked decoder,
+  `<X>_decode_vchecked_nmax_at(buf)`: `X_dchw(NMAX, NMAX, (buf, 1073741816)) == X_dgo(True, buf, NMAX)` and `<X>_decode_vchecked_at_2pow31(buf)`: the same at
+  2^31 with 536870912 words, on a symbolic buffer (both sides reduce to the same stuck decode, so the law holds only if the guard lets the window through;
+  for a name whose decoder refuses such a window itself the law pins the guard). A cap reverted to 2^31 (`r7-g1-cap-reversion/01`, proglist_uint8) or an
+  off-by-one at NMAX is killed by them. Regress cases 80 and 81 (`tools/crash_hunt/pf_fixed.bend`) decode an honest proglist_uint8 buffer of NMAX and of
+  2^31 bytes (2^30 words of zero storage) with `proglist_uint8_decode_checked`: Some, with the length.
+* **G2 (re-derived patches that made another fault)**: `rederive.py` now refuses a re-derived patch whose count of removed lines or of hunks differs from
+  the original's (r3-p05/10 had become a two-line patch), and `--redo` rewrites the patches with a hand override even when they apply. Hand overrides
+  (`OVERRIDES`) for: r2-d01/04, /10 (`size <= NMAX + 1`: an off-by-one at NMAX instead of the always-true `size <= 2^32 - 1`), r2-d01/06 (moved to
+  proglist_uint8, `size < NMAX`, where the cap is observable), r3-p05/10 (`words_ok(o, 0, 2^32 - 2, ..)` in `l1099511627776_u8_valid`), r2-s05/03
+  (`O.pz(False)` answering 2^30; the automatic re-derivation had mutated a mask of `tail_zero`), r3-l02/01 (the size pass `O.padd(O.mul4c(n), m)` without
+  the offset table; it had mutated the writer's first offset), c05/09 (`O.padd` answering a + b + 1; it had mutated only the overflow test).
+  New laws for the survivors of the replay:
+  * `writer_poison_laws.py`: `<X>_serialize_vpoison_size_<kp>_storage_short / _storage_tight` for every list of fixed-size composite elements (3 elements
+    claimed on 2 slots: the marker; 2 on 2: the size), also for the lists whose NMAX bound does not fit an array; `<X>_serialize_vpoison_size_<kp>_offsets`
+    for every list of variable-size boxed elements (one and two absent elements: 4 and 8 bytes); `<X>_serialize_vpoison_size_<kp>_storage` for every bit
+    list (k = 8 and 31 on one word: 2 and 4 bytes; k = 32: the marker).
+  * `word_unit_validity.py`: `<X>_serialize_vunit_<p>_range_hi_full / _range_above_full` for a byte-range bound above 2^22 (NMAX for List[uint8, 2^40]
+    and the progressive lists): on a storage of 2^30 words (`Array.new(U32, 30n, 0)` stays lazy, 2 s) the bound is accepted and one element more refused.
+
+Replay of the 55 re-derived patches and r7-g1/01 (exact patch apply; module: the first killing module of the patch's cone; facade: `runner.py` on the
+header type's facade, ERROR when the type has no facade):
+
+| result | patches |
+|---|---|
+| killed at the facade | bl04/02, r2-a03/04, 05, r2-d01/01-13, r2-s05/04, r2-v02/03, r2-v03/05-07, r3-d01/02, 03, 05, r3-m01/01, 02, r3-p01/14, r3-p04/01, 02, 05, r3-p05/09, r3-u01/06, 07, r4-a10/03, s01/04, 05, r7-g1/01 |
+| killed at module level (shape type, no facade) | r2-a01-grow/02, r2-a01-guard/05, r3-g01/12, r3-l01/01, 10, r3-p01/13, r3-w04/01, 02 |
+| killed after the round-7 fixes | r2-s05/03 (`VarTestStruct_serialize_vpoison_false_flag` at the facade; `vpoison_pz_false` in the module), r2-s05/05 (`bitlist_9_serialize_vpoison_size_bits9_storage`, facade and module), r3-l01/02, 03 (`ExecutionPayload_serialize_vpoison_size_l16_Withdrawal_storage_short / _tight`; at the owner facade FuluExecutionPayload encode also `sizex_l16_Withdrawal`), r3-l02/01 (`BeaconBlockBody_serialize_vpoison_size_l1_AttesterSlashing_offsets`; owner facade FuluBeaconBlockBody encode: `sizexb`), r3-p05/10 (`BeaconState_serialize_vunit_l1099511627776_u8_range_above_full`; owner facade FuluBeaconState encode: `valid`), c05/09 (`vpoison_padd` in the module; the ComplexTestStruct facade crashes the checker, as the round-4 padd mutants did) |
+| survive, equivalent | r2-a01-grow/01 (round 3), r2-s03/16 (`words_slice` is called only with n = 2048: floor = ceil), r3-d01/01 (uint256: every accepted window is 32 bytes), r3-w04/06 (the copy keeps a slack chunk: n - 1 bytes allocate enough words for n, only the array size differs; round 3). Checked also at the owner facades: DataColumnSidecar encode and root for r2-s03/16, ComplexTestStruct encode and root for r2-a01-grow/01 and r3-w04/06: the mutants survive there too |
+
+The new size laws were not reaching any facade: `object_api_coverage_gate.py` filed a `serialize_valid` law on a size pass only through `O.` and
+`_valid` heads, so the round-6 F2 laws (`<X>_serialize_vpoison_size_<kp>_above / _at`) were checked only as loose modules. The SHAPE of
+`serialize_valid` now also accepts a conclusion that calls a collection's `T.<kp>_size(`; 98 `vpoison_size_` laws are filed (e.g. in the bitlist_9,
+FuluExecutionPayload and FuluExecutionRequests encode facades).
