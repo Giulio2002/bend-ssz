@@ -63,9 +63,9 @@ def mark(l: L.%(P)s_Seq, c: L.%(P)s_Cached, +x: U32, +bad: U32, +first: U32, +j:
 
 def rc2(+x: U32, +bad: U32, +first: U32, +j: U32, +okf: U32, pl: B.Buf & (L.%(P)s_Seq & D.Digest), pc: B.Buf & (L.%(P)s_Cached & D.Digest)) -> S:
   (h1, r1) = pl
-  (l, +d1) = r1
+  (l, d1) = r1
   (h2, r2) = pc
-  (c, +d2) = r2
+  (c, d2) = r2
   mark(l, c, x, bad, first, j, (okf .&. deqv(d1, d2) : U32))
 
 def rootcmp(l: L.%(P)s_Seq, c: L.%(P)s_Cached, +x: U32, +bad: U32, +first: U32, +j: U32, +okf: U32) -> S:
@@ -103,9 +103,9 @@ def run(k: Nat, s: S) -> S:
 
 def fin3(+bad: U32, +first: U32, pl: B.Buf & (L.%(P)s_Seq & D.Digest), pu: B.Buf & (L.%(P)s_Seq & D.Digest)) -> IO(Unit):
   (h1, r1) = pl
-  (l, +d1) = r1
+  (l, d1) = r1
   (h2, r2) = pu
-  (u, +d2) = r2
+  (u, d2) = r2
   IO.print("bad=" ++ U32.show(bad) ++ " first=" ++ U32.show(first) ++ " final_uncache_eq=" ++ U32.show(deqv(d1, d2)) ++ " root=" ++ IOx.words(d1))
 
 def fin(s: S) -> IO(Unit):
