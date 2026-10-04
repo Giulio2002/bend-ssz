@@ -17,10 +17,14 @@ and the element size U are read from `p_app_c`, `p_set_n` and `p_at`; the genera
                        <X>_serialize_vcoll_append_full     (L * U <= 4096) a list of L zeros refuses one more element, one of L - 1 takes it
                        <X>_serialize_vcoll_set_edge        set at 3 on a list of three zeros is refused, at 2 accepted, with R + 1 refused
                        <X>_serialize_vcoll_set_write       set 1 to R leaves elements 0 and 2 at 0 and reads back R
+                       <X>_serialize_vcoll_append_clear    (U in 1, 2, 4) appending 1 to 4 / U zero elements whose spare word 1 holds junk: accepted, word 1 is
+                                                           exactly 1 (the junk cleared, R5-01; round 7: b01/02, b02/01), word 0 stays 0
   bit list             <X>_serialize_vcoll_first           append True to the empty list: accepted, length 1, get 0 is Some True, get 1 is None
                        <X>_serialize_vcoll_order           appending True, False, True reads back in that order, length 3
                        <X>_serialize_vcoll_full            (L <= 2048) a list of L bits refuses one more, one of L - 1 takes it and reads it back
                        <X>_serialize_vcoll_set_edge        set at the length is refused, inside accepted and read back, neighbours unchanged
+                       <X>_serialize_vcoll_append_clear    (L >= 32 or progressive) pushing True onto 31 one bits whose word 1 holds junk: accepted, word 1
+                                                           (the delimiter word) is 0, word 0 all ones, and O.bits_sizek is 5 bytes (round 7: b03, bl04/02)
 
 Every statement is by computation. They are named so that api_gate files them under serialize_valid (the facade of X's encoder).
 """
@@ -36,6 +40,7 @@ from codegen.impl import runtime_file_split as RR  # noqa: E402
 from codegen.proofs.slop import encoder_constants as MC  # noqa: E402
 
 FULL_MAX = 4096        # bytes or bits a limit-edge law builds whole
+JUNK = 3735928559      # 0xDEADBEEF: what a valid object may hold past its length (CH-11)
 
 
 def owners_of(tx, p):
@@ -100,6 +105,13 @@ def packed_laws(X, p, L, R, U):
     law('set_edge', f'({ok(f"{T}_set({z3}, 3, 0)")}, ({ok(f"{T}_set({z3}, 2, 0)")}, {ok(f"{T}_set({z3}, 1, {R + 1})")})) == (False{{}}, (True{{}}, False{{}})) : Bool & (Bool & Bool)')
     s = f'Pair.fst({lst}, Bool, {T}_set({z3}, 1, {R}))'
     law('set_write', f'({get(s, 0)}, ({get(s, 1)}, {get(s, 2)})) == (Some{{0}}, (Some{{{R}}}, Some{{0}})) : {maybe} & ({maybe} & {maybe})')
+    if U in (1, 2, 4) and (L is None or 4 // U < L):
+        # (round 7: b01/02, b02/01) a valid list of 4 / U elements whose spare word 1 holds junk (CH-11): the append of 1 starts word 1, which is
+        # cleared first (R5-01), so word 1 is exactly the new element and the bytes past the new length are zero; word 0 is untouched
+        jw = f'O.Words{{Array.set(U32, Array.new(U32, 2n, 0), 1, {JUNK}), {4 // U}}}'
+        a = f'{T}_append({jw}, 1)'
+        w = lambda j: f'Pair.snd({lst}, U32, O.words_word(Pair.fst({lst}, Bool, {a}), {j}))'   # noqa: E731
+        law('append_clear', f'({ok(a)}, ({w(1)}, {w(0)})) == (True{{}}, (1, 0)) : Bool & (U32 & U32)')
     helper = f'def ap(o: {lst}, +v: U32) -> {lst}: Pair.fst({lst}, Bool, {T}_append(o, v))\n'
     return helper, out
 
@@ -134,6 +146,14 @@ def bits_laws(X, p, L):
         z = f'O.bits_zeros({n})'
         s = f'Pair.fst({lst}, Bool, {T}_set({z}, {n - 1}, True{{}}))'
         law('set_edge', f'({ok(f"{T}_set({z}, {n}, True{{}})")}, ({ok(f"{T}_set({z}, {n - 1}, True{{}})")}, ({get(s, n - 1)}, {get(s, n - 2)}))) == (False{{}}, (True{{}}, (Some{{True{{}}}}, Some{{False{{}}}}))) : Bool & (Bool & ({maybe} & {maybe}))')
+    if L is None or L >= 32:
+        # (round 7: b03/01, b03/02) a valid list of 31 one bits whose word 1 holds junk (CH-11): the push of bit 31 fills word 0, and word 1 (the
+        # delimiter word of the 32 bits) is cleared (R5-01); the size pass of the checked serializer (`O.bits_sizek`) is then 32 / 8 + 1 = 5 bytes
+        # (round 7 replay: bl04/02)
+        jb = f'O.Bits{{Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2147483647), 1, {JUNK}), 31}}'
+        b = f'ap({jb}, True{{}})'
+        w = lambda j: f'Pair.snd({lst}, U32, O.bits_word({b}, {j}))'   # noqa: E731
+        law('append_clear', f'({ok(f"{T}_append({jb}, True{{}})")}, ({w(1)}, ({w(0)}, Pair.snd({lst}, U32, O.bits_sizek({b}))))) == (True{{}}, (0, (4294967295, 5))) : Bool & (U32 & (U32 & U32))')
     helper = f'def ap(o: {lst}, v: Bool) -> {lst}: Pair.fst({lst}, Bool, {T}_append(o, v))\n'
     return helper, out
 

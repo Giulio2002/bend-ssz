@@ -23,6 +23,9 @@ structs; the Fulu containers have none) proofs/slop/validity/<runtime>_<X>_field
   <X>_serialize_vreject_<field>()    (round 2) for every other field kind too, groups included: an out-of-spec Words / Bits / absent Boxed /
       Seq value (tight storage; `_elem`: an absent element; `_earlier`: an invalid element before a valid one) makes the container invalid,
       the others at their default; `vreject_default_valid`: the default object is valid.
+  <X>_serialize_vreject_bx_present_default() / _bx_present_<tag>()   (round 7: c03/01; every boxed X with a cheap invalid value) a present box is
+      valid exactly when its value is: `X_bx_valid(X_bx_wrap(X_default()))` is True, `X_bx_valid(X_bx_wrap(v))` is False for the invalid value v of
+      `invalid_value` (one invalid field, the others at their default).
 
 They are named so that api_gate files them under serialize_valid (the facade of X's encoder).
 """
@@ -229,6 +232,13 @@ def box_laws(tx, X, t):
     B = f'O.Boxed<T.{X}>'
     out = [f'def {X}_serialize_vreject_bx_size()\n    -> {{T.{X}_bx_size(O.BNone{{}}) == (O.BNone{{}}, 0) : {B} & U32}}:\n  {{==}}',
            f'def {X}_serialize_vreject_bx_valid()\n    -> {{T.{X}_bx_valid(O.BNone{{}}) == (O.BNone{{}}, False{{}}) : {B} & Bool}}:\n  {{==}}']
+    inv = invalid_value(tx, type_decls(tx), X) if tx.get(f'{X}_default') else None
+    if inv and f'{X}_bx_valid' in tx.blk:
+        # a present box is valid exactly when its value is (round 7: c03/01, the content's flag dropped made every present body box valid):
+        # the box of the default is valid, the box of a value with one invalid field is not (the verdict alone: no size pass of a parent)
+        tag, val = inv
+        out.append(f'def {X}_serialize_vreject_bx_present_default()\n    -> {{Pair.snd({B}, Bool, T.{X}_bx_valid(T.{X}_bx_wrap(T.{X}_default()))) == True{{}} : Bool}}:\n  {{==}}')
+        out.append(f'def {X}_serialize_vreject_bx_present_{tag}()\n    -> {{Pair.snd({B}, Bool, T.{X}_bx_valid(T.{X}_bx_wrap({val}))) == False{{}} : Bool}}:\n  {{==}}')
     if f'{X}_bx_putk' in tx.blk and MC.min_size(t) <= SERIALIZE_MAX:
         out.append(f'def {X}_serialize_vpoison_bx_absent()\n    -> {{Pair.snd({B}, U32, Pair.snd(Array<U32>, {B} & U32, T.{X}_bx_putk(Array.new(U32, 1n, 0), 0, O.BNone{{}}))) == 4294967295 : U32}}:\n  {{==}}')
         # a present box holds the verdict of its value: the box of an invalid X is poisoned (the writer's flag), the box of the default is not

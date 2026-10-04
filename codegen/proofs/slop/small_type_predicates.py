@@ -11,6 +11,8 @@ or encodes the same way, so the laws state the shared definition on small concre
   uint16_decode_vread_u16_<off>          `O.rd_u16` of a buffer of known bytes at offsets 0 .. 3 (the aligned read and the three joins)
   <X>_decode_vbits_clear_<k>             (every bit list X) `O.bits_clear(k, (buf, ones))` clears bit k of an all-ones storage (k = 0, 9, 33, 40, 63)
   <X>_serialize_vbits_size               (every bit list X) `O.bits_size` of k bits is floor(k / 8) + 1 bytes (k = 0, 7, 8, 9, 64)
+  <X>_serialize_vbits_sizek              (every bit list X) `O.bits_sizek`, the size pass of the checked serializer, of k bits on 4 words is floor(k / 8) + 1
+                                         bytes, and the marker 2^32 - 1 at k = 128 (round 7 replay: bl04/02)
   <X>_decode_vand_pair                   (every container with a list of composites) `O.and_pair` is the conjunction, four cases
   <X>_decode_vsel_<tag>                  (every union X) the validator refuses the selectors 0 and one past the last arm and a selector with no payload,
                                          and accepts each fixed payload arm of zeros
@@ -67,6 +69,15 @@ def bits_laws(X):
     for _ in for_k[1:]:
         ty = f'U32 & ({ty})'
     out.append(('bits_size', f'def {X}_serialize_vbits_size()\n    -> {{{nest(items)} == {nest(want)} : {ty}}}:\n  {{==}}'))
+    # the size pass of the checked serializer (round 7 replay: bl04/02): `O.bits_sizek` on a storage of 4 words is floor(k / 8) + 1 too, and the
+    # marker when the storage cannot hold the delimiter word (k = 128)
+    for_k = (0, 7, 8, 9, 64, 127, 128)
+    items = [f'Pair.snd(O.Bits, U32, O.bits_sizek(O.Bits{{{array([0, 0, 0, 0], 2)}, {k}}}))' for k in for_k]
+    want = [str(k // 8 + 1) if (k >> 5) + 1 <= 4 else '4294967295' for k in for_k]
+    ty = 'U32'
+    for _ in for_k[1:]:
+        ty = f'U32 & ({ty})'
+    out.append(('bits_sizek', f'def {X}_serialize_vbits_sizek()\n    -> {{{nest(items)} == {nest(want)} : {ty}}}:\n  {{==}}'))
     return out
 
 
