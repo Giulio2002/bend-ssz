@@ -42,7 +42,13 @@ def tailmask(+r: U32) -> U32:
     case 0: 0
     case _: (O.pick(U32.is_lt(r, 32), (M.shl_by(1, r) - 1 : U32), 4294967295))
 
-def lastw(+n: U32, arr: Array<U32>) -> Array<U32>: Array.set(U32, arr, %(WIDX)s, (fill() .&. tailmask(%(TBITS)s) : U32))
+def lw(part: Bool, +n: U32, arr: Array<U32>) -> Array<U32>:
+  match part:
+    case True{}: Array.set(U32, arr, %(WIDX)s, (fill() .&. tailmask(%(TBITS)s) : U32))
+    case False{}: arr
+
+# the word holding the last data bits is written only when it is partial (a whole last word is data; index n >> 2 may be past the storage)
+def lastw(+n: U32, arr: Array<U32>) -> Array<U32>: lw(U32.is_lt(0, %(TBITS)s), n, arr)
 
 def clean(+n: U32, +d: U32) -> %(OT)s: %(OT)s{lastw(n, fw(U32.to_nat(%(WIDX)s), 0, Array.new(U32, U32.to_nat((d + 4 : U32)), 0))), n}
 
