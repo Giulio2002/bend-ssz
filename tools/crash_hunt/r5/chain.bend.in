@@ -25,46 +25,43 @@ def check_enc(pair: G.Any & B.Buf) -> IO(Unit):
   (a, out) = pair
   check_root(out, G.root(O.hasher(), a))
 
-def st4(+h: U32, buf: B.Buf, pr: G.Any & Bool) -> B.Buf & (G.Any & U32):
+type CS is Type:
+  CS{buf: B.Buf, a: G.Any, j: U32, base: U32, h: U32}
+
+def st4(+j: U32, +base: U32, +h: U32, buf: B.Buf, pr: G.Any & Bool) -> CS:
   (a, ok) = pr
-  (buf, (a, (h * 31 + O.pick(ok, 1, 0) : U32)))
+  CS{buf, a, (j + 1 : U32), base, (h * 31 + O.pick(ok, 1, 0) : U32)}
 
-def st3(+j: U32, +base: U32, +h: U32, +sel: U32, +idx: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st3(+j: U32, +base: U32, +h: U32, +sel: U32, +idx: U32, a: G.Any, pair: B.Buf & U32) -> CS:
   (buf, +seed) = pair
-  st4(h, buf, G.fuzz(a, sel, idx, seed))
+  st4(j, base, h, buf, G.fuzz(a, sel, idx, seed))
 
-def st2(+j: U32, +base: U32, +h: U32, +sel: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st2(+j: U32, +base: U32, +h: U32, +sel: U32, a: G.Any, pair: B.Buf & U32) -> CS:
   (buf, +idx) = pair
   st3(j, base, h, sel, idx, a, B.read32(buf, (base + 12 * j + 8 : U32)))
 
-def st1(+j: U32, +base: U32, +h: U32, a: G.Any, pair: B.Buf & U32) -> B.Buf & (G.Any & U32):
+def st1(+j: U32, +base: U32, +h: U32, a: G.Any, pair: B.Buf & U32) -> CS:
   (buf, +sel) = pair
   st2(j, base, h, sel, a, B.read32(buf, (base + 12 * j + 4 : U32)))
 
-def step(+j: U32, +base: U32, +h: U32, st: B.Buf & G.Any) -> B.Buf & (G.Any & U32):
-  (buf, a) = st
-  st1(j, base, h, a, B.read32(buf, (base + 12 * j : U32)))
+def step(cs: CS) -> CS:
+  match cs:
+    case CS{buf, a, +j, +base, +h}: st1(j, base, h, a, B.read32(buf, (base + 12 * j : U32)))
 
-def unh(pair: B.Buf & (G.Any & U32)) -> (B.Buf & G.Any) & U32:
-  (buf, r) = pair
-  (a, +h) = r
-  ((buf, a), h)
-
-def chain(k: Nat, +j: U32, +base: U32, +h: U32, st: B.Buf & G.Any) -> B.Buf & (G.Any & U32):
+def chain(k: Nat, cs: CS) -> CS:
   match k:
-    case 0n:
-      (buf, a) = st
-      (buf, (a, h))
-    case 1n+q:
-      (s2, +h2) = unh(step(j, base, h, st))
-      chain(q, (j + 1 : U32), base, h2, s2)
+    case 0n: cs
+    case 1n+q: chain(q, step(cs))
 
-def chained(pair: B.Buf & (G.Any & U32)) -> IO(Unit):
-  (buf, r) = pair
-  (a, +h) = r
+def chained_p(a: G.Any, +h: U32) -> IO(Unit):
   do IO<Unit>:
     IO.print("FLAGS=" ++ U32.show(h))
     check_enc(G.encode(a))
+
+def chained(cs: CS) -> IO(Unit):
+  match cs:
+    case CS{buf, a, +j, +base, +h}: chained_p(a, h)
+
 
 def on_decoded(m: Maybe<&1, G.Any>, buf: B.Buf, +nops: U32, +base: U32) -> IO(Unit):
   match m:
@@ -72,7 +69,7 @@ def on_decoded(m: Maybe<&1, G.Any>, buf: B.Buf, +nops: U32, +base: U32) -> IO(Un
     case Some{a}:
       do IO<Unit>:
         IO.print("DECODED=1")
-        chained(chain(U32.to_nat(nops), 0, base, 0, (buf, a)))
+        chained(chain(U32.to_nat(nops), CS{buf, a, 0, base, 0}))
 
 def decoded(+nops: U32, +base: U32, pair: B.Buf & Maybe<&1, G.Any>) -> IO(Unit):
   (buf, m) = pair
