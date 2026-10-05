@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/42
+# type: FuluProposerSlashing
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 208 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluProposerSlashing_decode_ssz_generated.bend
+# sym: ProposerSlashing_rd0,ProposerSlashing_decode
+--- a/types/FuluProposerSlashing_decode_ssz_generated.bend
++++ b/types/FuluProposerSlashing_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (buf, signed_header_1) = pair
+-  ProposerSlashing_rd1(off, len, signed_header_1, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_bx_read(buf, (off + 208 : U32), 208))
++  ProposerSlashing_rd1(off, len, signed_header_1, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_bx_read(buf, (off + 0 : U32), 208))
+ 

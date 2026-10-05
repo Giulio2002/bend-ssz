@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/05
+# type: FuluContributionAndProof
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 8 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluContributionAndProof_encode_ssz_generated.bend
+# sym: ContributionAndProof_pw0,ContributionAndProof_putk,ContributionAndProof_serialize,ContributionAndProof_encode
+--- a/types/FuluContributionAndProof_encode_ssz_generated.bend
++++ b/types/FuluContributionAndProof_encode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (contribution, fl) = r
+-  (FuluBytes96_e.b96_put(uint64_e.u64_put(out, (pos + 0 : U32), aggregator_index), (pos + 168 : U32), selection_proof), (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, (cur .|. fl : U32)))
++  (FuluBytes96_e.b96_put(uint64_e.u64_put(out, (pos + 8 : U32), aggregator_index), (pos + 168 : U32), selection_proof), (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, (cur .|. fl : U32)))
+ 
+@@ -24,3 +24,3 @@
+   match o:
+-    case FuluContributionAndProof_d.ContributionAndProof{+aggregator_index, contribution, +selection_proof}: ContributionAndProof_pw0(pos, 0, aggregator_index, selection_proof, FuluSyncCommitteeContribution_e.SyncCommitteeContribution_bx_putk(out, (pos + 8 : U32), contribution))
++    case FuluContributionAndProof_d.ContributionAndProof{+aggregator_index, contribution, +selection_proof}: ContributionAndProof_pw0(pos, 0, aggregator_index, selection_proof, FuluSyncCommitteeContribution_e.SyncCommitteeContribution_bx_putk(out, (pos + 0 : U32), contribution))
+ 

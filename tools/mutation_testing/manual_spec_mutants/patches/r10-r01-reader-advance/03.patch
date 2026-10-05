@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/03
+# type: FixedTestStruct
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 9 is read at byte 1 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FixedTestStruct_decode_ssz_generated.bend
+# sym: FixedTestStruct_rd1,FixedTestStruct_decode
+--- a/types/FixedTestStruct_decode_ssz_generated.bend
++++ b/types/FixedTestStruct_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +f_B) = pair
+-  FixedTestStruct_rd2(off, len, f_A, f_B, uint32_r.u32_read(buf, (off + 9 : U32), 4))
++  FixedTestStruct_rd2(off, len, f_A, f_B, uint32_r.u32_read(buf, (off + 1 : U32), 4))
+ 

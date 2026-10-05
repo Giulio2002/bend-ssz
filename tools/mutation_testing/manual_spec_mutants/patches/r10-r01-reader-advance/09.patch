@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/09
+# type: FuluBeaconBlockHeader
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 80 is read at byte 48 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBeaconBlockHeader_decode_ssz_generated.bend
+# sym: BeaconBlockHeader_rd3,BeaconBlockHeader_decode
+--- a/types/FuluBeaconBlockHeader_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlockHeader_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +state_root) = pair
+-  BeaconBlockHeader_rd4(off, len, slot, proposer_index, parent_root, state_root, FuluBytes32_r.b32_read(buf, (off + 80 : U32), 32))
++  BeaconBlockHeader_rd4(off, len, slot, proposer_index, parent_root, state_root, FuluBytes32_r.b32_read(buf, (off + 48 : U32), 32))
+ 

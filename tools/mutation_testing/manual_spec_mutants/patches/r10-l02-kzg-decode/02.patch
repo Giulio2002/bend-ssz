@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/02
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: same: the byte length is a multiple of the element size
+# fault: the alignment check is dropped (a list of 49 bytes is accepted)
+# why: forgetting the alignment rule
+# file: types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+# sym: l4096_b48_ok,DataColumnSidecar_decode
+--- a/types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def l4096_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 48) * 48 : U32)), U32.is_le(U32.div(len, 48), 4096)))
++def l4096_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, U32.is_le(U32.div(len, 48), 4096))
+ 

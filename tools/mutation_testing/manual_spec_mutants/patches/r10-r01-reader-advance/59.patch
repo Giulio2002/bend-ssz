@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/59
+# type: SmallTestStruct
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 2 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/SmallTestStruct_decode_ssz_generated.bend
+# sym: SmallTestStruct_rd0,SmallTestStruct_decode
+--- a/types/SmallTestStruct_decode_ssz_generated.bend
++++ b/types/SmallTestStruct_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   (buf, +f_A) = pair
+-  SmallTestStruct_rd1(off, len, f_A, uint16_r.u16_read(buf, (off + 2 : U32), 2))
++  SmallTestStruct_rd1(off, len, f_A, uint16_r.u16_read(buf, (off + 0 : U32), 2))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/10
+# type: FuluBeaconBlock
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 48 is read at byte 16 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBeaconBlock_decode_ssz_generated.bend
+# sym: BeaconBlock_rd3,BeaconBlock_decode
+--- a/types/FuluBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlock_decode_ssz_generated.bend
+@@ -25,3 +25,3 @@
+   (buf, +parent_root) = pair
+-  BeaconBlock_rd4(off, len, o_body, slot, proposer_index, parent_root, FuluBytes32_r.b32_read(buf, (off + 48 : U32), 32))
++  BeaconBlock_rd4(off, len, o_body, slot, proposer_index, parent_root, FuluBytes32_r.b32_read(buf, (off + 16 : U32), 32))
+ 

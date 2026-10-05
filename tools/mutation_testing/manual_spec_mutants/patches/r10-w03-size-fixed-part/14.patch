@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/14
+# type: FuluIndexedAttestation
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 232 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluIndexedAttestation_encode_ssz_generated.bend
+# sym: IndexedAttestation_size,IndexedAttestation_serialize,IndexedAttestation_encode
+--- a/types/FuluIndexedAttestation_encode_ssz_generated.bend
++++ b/types/FuluIndexedAttestation_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   match o:
+-    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_sz0(data, signature, 228, Fulu_list_uint64_131072_e.l131072_u64_size(attesting_indices))
++    case FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, +data, +signature}: IndexedAttestation_sz0(data, signature, 232, Fulu_list_uint64_131072_e.l131072_u64_size(attesting_indices))
+ 

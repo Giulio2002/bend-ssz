@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/09
+# type: FuluExecutionBranch,FuluLightClientHeader
+# ops: root
+# spec: merkleize(4 chunks): depth 2
+# fault: the execution branch tree has depth 3 (padded to 8)
+# why: next power of two strictly above N
+# file: types/FuluExecutionBranch_hashtreeroot_generated.bend
+# sym: v4_b32_root,ExecutionBranch_hash_tree_root
+--- a/types/FuluExecutionBranch_hashtreeroot_generated.bend
++++ b/types/FuluExecutionBranch_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v4_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
++def v4_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
+ 

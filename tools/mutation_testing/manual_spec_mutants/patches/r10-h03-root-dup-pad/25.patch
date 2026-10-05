@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/25
+# type: FuluLightClientUpdate
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root signature_slot is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluLightClientUpdate_hashtreeroot_generated.bend
+# sym: LightClientUpdate_rt6,LightClientUpdate_hash_tree_root
+--- a/types/FuluLightClientUpdate_hashtreeroot_generated.bend
++++ b/types/FuluLightClientUpdate_hashtreeroot_generated.bend
+@@ -21,3 +21,3 @@
+   (h, d_signature_slot) = pair
+-  (h, (FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_attested_header, d_next_sync_committee), D.node(hl, d_next_sync_committee_branch, d_finalized_header)), D.node(hl, D.node(hl, d_finality_branch, d_sync_aggregate), D.node(hl, d_signature_slot, D.zero())))))
++  (h, (FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_attested_header, d_next_sync_committee), D.node(hl, d_next_sync_committee_branch, d_finalized_header)), D.node(hl, D.node(hl, d_finality_branch, d_sync_aggregate), d_signature_slot))))
+ 

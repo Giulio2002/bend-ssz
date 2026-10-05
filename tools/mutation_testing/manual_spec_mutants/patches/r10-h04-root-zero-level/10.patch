@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/10
+# type: FuluExecutionPayloadHeader
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluExecutionPayloadHeader_hashtreeroot_generated.bend
+# sym: ExecutionPayloadHeader_g2_rt2,ExecutionPayloadHeader_hash_tree_root
+--- a/types/FuluExecutionPayloadHeader_hashtreeroot_generated.bend
++++ b/types/FuluExecutionPayloadHeader_hashtreeroot_generated.bend
+@@ -95,3 +95,3 @@
+   (h, z2) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_excess_blob_gas, D.zero()), z1), z2))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_excess_blob_gas, D.zero()), D.zero()), z2))
+ 

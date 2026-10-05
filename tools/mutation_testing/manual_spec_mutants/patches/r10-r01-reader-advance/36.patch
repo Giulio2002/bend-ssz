@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/36
+# type: FuluMatrixEntry
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 2104 is read at byte 2096 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluMatrixEntry_decode_ssz_generated.bend
+# sym: MatrixEntry_rd2,MatrixEntry_decode
+--- a/types/FuluMatrixEntry_decode_ssz_generated.bend
++++ b/types/FuluMatrixEntry_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +column_index) = pair
+-  MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (off + 2104 : U32), 8))
++  MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (off + 2096 : U32), 8))
+ 

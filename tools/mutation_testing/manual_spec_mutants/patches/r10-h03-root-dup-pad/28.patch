@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/28
+# type: FuluPowBlock
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root total_difficulty is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluPowBlock_hashtreeroot_generated.bend
+# sym: PowBlock_rt2,PowBlock_hash_tree_root
+--- a/types/FuluPowBlock_hashtreeroot_generated.bend
++++ b/types/FuluPowBlock_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_total_difficulty) = pair
+-  (h, D.node(hl, D.node(hl, d_block_hash, d_parent_hash), D.node(hl, d_total_difficulty, D.zero())))
++  (h, D.node(hl, D.node(hl, d_block_hash, d_parent_hash), d_total_difficulty))
+ 

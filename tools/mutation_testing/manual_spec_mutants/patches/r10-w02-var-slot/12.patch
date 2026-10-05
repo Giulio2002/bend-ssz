@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/12
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 1 and 5 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_putn,ProgressiveComplexTestStruct_pw0,ProgressiveComplexTestStruct_serialize,ProgressiveComplexTestStruct_encode
+--- a/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+@@ -87,3 +87,3 @@
+   (f_B, c) = r
+-  ProgressiveComplexTestStruct_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, progbitlist_e.pbits_putv(out, pos, 5, c, f_C))
++  ProgressiveComplexTestStruct_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, progbitlist_e.pbits_putv(out, pos, 1, c, f_C))
+ 
+@@ -91,3 +91,3 @@
+   match o:
+-    case ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: ProgressiveComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, list_uint16_123_e.l123_u16_putv(out, pos, 1, 29, f_B))
++    case ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: ProgressiveComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, list_uint16_123_e.l123_u16_putv(out, pos, 5, 29, f_B))
+ 

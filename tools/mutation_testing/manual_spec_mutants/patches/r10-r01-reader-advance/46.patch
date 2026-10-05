@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/46
+# type: FuluSignedVoluntaryExit
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 16 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluSignedVoluntaryExit_decode_ssz_generated.bend
+# sym: SignedVoluntaryExit_rd0,SignedVoluntaryExit_decode
+--- a/types/FuluSignedVoluntaryExit_decode_ssz_generated.bend
++++ b/types/FuluSignedVoluntaryExit_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +message) = pair
+-  SignedVoluntaryExit_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 16 : U32), 96))
++  SignedVoluntaryExit_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+ 

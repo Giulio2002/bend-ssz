@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/54
+# type: FuluValidator
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 113 is read at byte 105 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluValidator_decode_ssz_generated.bend
+# sym: Validator_rd6,Validator_decode
+--- a/types/FuluValidator_decode_ssz_generated.bend
++++ b/types/FuluValidator_decode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   (buf, +exit_epoch) = pair
+-  Validator_rd7(off, len, pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, uint64_r.u64_read(buf, (off + 113 : U32), 8))
++  Validator_rd7(off, len, pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, uint64_r.u64_read(buf, (off + 105 : U32), 8))
+ 

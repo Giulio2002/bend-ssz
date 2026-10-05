@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/38
+# type: FuluMatrixEntry
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of cell and kzg_proof are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluMatrixEntry_hashtreeroot_generated.bend
+# sym: MatrixEntry_rt3,MatrixEntry_hash_tree_root
+--- a/types/FuluMatrixEntry_hashtreeroot_generated.bend
++++ b/types/FuluMatrixEntry_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_row_index) = pair
+-  (h, (FuluMatrixEntry_d.MatrixEntry{cell, kzg_proof, column_index, row_index}, D.node(hl, D.node(hl, d_cell, d_kzg_proof), D.node(hl, d_column_index, d_row_index))))
++  (h, (FuluMatrixEntry_d.MatrixEntry{cell, kzg_proof, column_index, row_index}, D.node(hl, D.node(hl, d_kzg_proof, d_cell), D.node(hl, d_column_index, d_row_index))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/02
+# type: ComplexTestStruct
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 15 is read at byte 6 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/ComplexTestStruct_decode_ssz_generated.bend
+# sym: ComplexTestStruct_rd8,ComplexTestStruct_decode
+--- a/types/ComplexTestStruct_decode_ssz_generated.bend
++++ b/types/ComplexTestStruct_decode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+   (buf, f_E) = pair
+-  ComplexTestStruct_rd9(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, f_D, f_E, vec_FixedTestStruct_4_r.v4_FixedTestStruct_read(buf, (off + 15 : U32), 52))
++  ComplexTestStruct_rd9(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, f_D, f_E, vec_FixedTestStruct_4_r.v4_FixedTestStruct_read(buf, (off + 6 : U32), 52))
+ 

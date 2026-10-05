@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/07
+# type: FuluDeposit
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 1056 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluDeposit_encode_ssz_generated.bend
+# sym: Deposit_putk,Deposit_pw0,Deposit_serialize,Deposit_encode
+--- a/types/FuluDeposit_encode_ssz_generated.bend
++++ b/types/FuluDeposit_encode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   (proof, fl) = r
+-  Deposit_pw1(pos, (cur .|. fl : U32), proof, FuluDepositData_e.DepositData_bx_putk(out, (pos + 1056 : U32), data))
++  Deposit_pw1(pos, (cur .|. fl : U32), proof, FuluDepositData_e.DepositData_bx_putk(out, (pos + 0 : U32), data))
+ 
+@@ -27,3 +27,3 @@
+   match o:
+-    case FuluDeposit_d.Deposit{proof, data}: Deposit_pw0(pos, 0, data, Fulu_vec_bytevec_32_33_e.v33_b32_putk(out, (pos + 0 : U32), proof))
++    case FuluDeposit_d.Deposit{proof, data}: Deposit_pw0(pos, 0, data, Fulu_vec_bytevec_32_33_e.v33_b32_putk(out, (pos + 1056 : U32), proof))
+ 

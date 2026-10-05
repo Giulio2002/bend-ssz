@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/06
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of proposer_index and parent_root are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: BeaconBlockHeader_rt5,BeaconBlockHeader_hash_tree_root
+--- a/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_parent_root), D.node(hl, d_proposer_index, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/02
+# type: FuluSyncCommittee
+# ops: root
+# spec: merkleize(chunks, limit=None) pads to next_pow_of_two(512) = 512 leaves: depth 9
+# fault: the pubkeys tree has depth 10 (bit length of 512)
+# why: depth from bit_length(N) instead of ceil(log2(N))
+# file: types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
+# sym: v512_b48_root,SyncCommittee_hash_tree_root
+--- a/types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
++++ b/types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v512_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.elems_root(hl, h, o, 12, 1, 9, seg)
++def v512_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.elems_root(hl, h, o, 12, 1, 10, seg)
+ 

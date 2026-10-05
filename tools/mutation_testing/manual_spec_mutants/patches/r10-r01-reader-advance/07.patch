@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/07
+# type: FuluBLSToExecutionChange
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 56 is read at byte 8 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBLSToExecutionChange_decode_ssz_generated.bend
+# sym: BLSToExecutionChange_rd1,BLSToExecutionChange_decode
+--- a/types/FuluBLSToExecutionChange_decode_ssz_generated.bend
++++ b/types/FuluBLSToExecutionChange_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, +from_bls_pubkey) = pair
+-  BLSToExecutionChange_rd2(off, len, validator_index, from_bls_pubkey, FuluBytes20_r.b20_read(buf, (off + 56 : U32), 20))
++  BLSToExecutionChange_rd2(off, len, validator_index, from_bls_pubkey, FuluBytes20_r.b20_read(buf, (off + 8 : U32), 20))
+ 

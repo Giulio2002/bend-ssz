@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/06
+# type: FuluBeaconBlock
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 80 (fixed part 84)
+# why: fixed part length off by one offset
+# file: types/FuluBeaconBlock_encode_ssz_generated.bend
+# sym: BeaconBlock_putn,BeaconBlock_serialize,BeaconBlock_encode
+--- a/types/FuluBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlock_encode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+   match o:
+-    case FuluBeaconBlock_d.BeaconBlock{+slot, +proposer_index, +parent_root, +state_root, body}: BeaconBlock_pw0(pos, slot, proposer_index, parent_root, state_root, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putv(out, pos, 80, 84, body))
++    case FuluBeaconBlock_d.BeaconBlock{+slot, +proposer_index, +parent_root, +state_root, body}: BeaconBlock_pw0(pos, slot, proposer_index, parent_root, state_root, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putv(out, pos, 80, 80, body))
+ 

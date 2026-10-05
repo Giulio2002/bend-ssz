@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/22
+# type: boolean
+# ops: encode,root
+# spec: Default values: the default of boolean is False
+# fault: the default boolean is True
+# why: non-zero default
+# file: types/boolean_def_generated.bend
+# sym: bool_default
+--- a/types/boolean_def_generated.bend
++++ b/types/boolean_def_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bool_default() -> Bool: False{}
++def bool_default() -> Bool: True{}
+ 

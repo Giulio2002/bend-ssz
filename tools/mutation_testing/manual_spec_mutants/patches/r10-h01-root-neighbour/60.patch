@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/60
+# type: FuluWithdrawalRequest
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of source_address and validator_pubkey are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluWithdrawalRequest_hashtreeroot_generated.bend
+# sym: WithdrawalRequest_rt2,WithdrawalRequest_hash_tree_root
+--- a/types/FuluWithdrawalRequest_hashtreeroot_generated.bend
++++ b/types/FuluWithdrawalRequest_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_amount) = pair
+-  (h, D.node(hl, D.node(hl, d_source_address, d_validator_pubkey), D.node(hl, d_amount, D.zero())))
++  (h, D.node(hl, D.node(hl, d_validator_pubkey, d_source_address), D.node(hl, d_amount, D.zero())))
+ 

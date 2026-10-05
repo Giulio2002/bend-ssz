@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/02
+# type: FuluBytes32
+# ops: encode,root
+# spec: Default values: the default of ByteVector[N] is N zero bytes
+# fault: the first word of the default is 1 (byte 0 is 0x01)
+# why: non-zero default
+# file: types/FuluBytes32_def_generated.bend
+# sym: b32_default
+--- a/types/FuluBytes32_def_generated.bend
++++ b/types/FuluBytes32_def_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def b32_default() -> Bytes32: Bytes32{0, 0, 0, 0, 0, 0, 0, 0}
++def b32_default() -> Bytes32: Bytes32{1, 0, 0, 0, 0, 0, 0, 0}
+ 

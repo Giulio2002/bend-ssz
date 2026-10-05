@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/25
+# type: vec_bool_5
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 4 elements (4 bytes) instead of 5
+# why: off-by-one length in the default constructor
+# file: types/vec_bool_5_def_generated.bend
+# sym: v5_bool_default
+--- a/types/vec_bool_5_def_generated.bend
++++ b/types/vec_bool_5_def_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v5_bool_default() -> O.Words: O.words_new(5)
++def v5_bool_default() -> O.Words: O.words_new(4)
+ 

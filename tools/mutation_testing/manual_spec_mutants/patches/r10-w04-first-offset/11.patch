@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/11
+# type: FuluLightClientBootstrap
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 24816 (fixed part 24820)
+# why: fixed part length off by one offset
+# file: types/FuluLightClientBootstrap_encode_ssz_generated.bend
+# sym: LightClientBootstrap_putn,LightClientBootstrap_serialize,LightClientBootstrap_encode
+--- a/types/FuluLightClientBootstrap_encode_ssz_generated.bend
++++ b/types/FuluLightClientBootstrap_encode_ssz_generated.bend
+@@ -40,3 +40,3 @@
+   match o:
+-    case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_pw0(pos, current_sync_committee, current_sync_committee_branch, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, 24820, header))
++    case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_pw0(pos, current_sync_committee, current_sync_committee_branch, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, 24816, header))
+ 

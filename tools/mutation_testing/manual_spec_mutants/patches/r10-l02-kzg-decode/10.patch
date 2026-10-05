@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/10
+# type: FuluLightClientBootstrap
+# ops: decode
+# spec: the first offset equals the fixed-part length (24820)
+# fault: the first offset may be anything >= 24820
+# why: lower bound instead of equality
+# file: types/FuluLightClientBootstrap_decode_ssz_generated.bend
+# sym: LightClientBootstrap_ok,LightClientBootstrap_decode
+--- a/types/FuluLightClientBootstrap_decode_ssz_generated.bend
++++ b/types/FuluLightClientBootstrap_decode_ssz_generated.bend
+@@ -49,3 +49,3 @@
+   (buf, +o0) = pair
+-  LightClientBootstrap_c0(U32.is_eq(o0, 24820), buf, off, len, o0)
++  LightClientBootstrap_c0(U32.is_le(24820, o0), buf, off, len, o0)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/03
+# type: FuluAggregateAndProof
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 104 (fixed part 108)
+# why: fixed part length off by one offset
+# file: types/FuluAggregateAndProof_encode_ssz_generated.bend
+# sym: AggregateAndProof_putn,AggregateAndProof_serialize,AggregateAndProof_encode
+--- a/types/FuluAggregateAndProof_encode_ssz_generated.bend
++++ b/types/FuluAggregateAndProof_encode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+   match o:
+-    case FuluAggregateAndProof_d.AggregateAndProof{+aggregator_index, aggregate, +selection_proof}: AggregateAndProof_pw0(pos, aggregator_index, selection_proof, FuluAttestation_e.Attestation_bx_putv(out, pos, 8, 108, aggregate))
++    case FuluAggregateAndProof_d.AggregateAndProof{+aggregator_index, aggregate, +selection_proof}: AggregateAndProof_pw0(pos, aggregator_index, selection_proof, FuluAttestation_e.Attestation_bx_putv(out, pos, 8, 104, aggregate))
+ 

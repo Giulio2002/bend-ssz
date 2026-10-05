@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/06
+# type: FuluDataColumnSidecar
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 20 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluDataColumnSidecar_encode_ssz_generated.bend
+# sym: DataColumnSidecar_pw4,DataColumnSidecar_pw2,DataColumnSidecar_serialize,DataColumnSidecar_encode
+--- a/types/FuluDataColumnSidecar_encode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   (kzg_commitments_inclusion_proof, fl) = r
+-  (uint64_e.u64_put(out, (pos + 0 : U32), index), (FuluDataColumnSidecar_d.DataColumnSidecar{index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}, (cur .|. fl : U32)))
++  (uint64_e.u64_put(out, (pos + 20 : U32), index), (FuluDataColumnSidecar_d.DataColumnSidecar{index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}, (cur .|. fl : U32)))
+ 
+@@ -45,3 +45,3 @@
+   (kzg_proofs, c) = r
+-  DataColumnSidecar_pw3(pos, c, index, column, kzg_commitments, kzg_proofs, kzg_commitments_inclusion_proof, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 20 : U32), signed_block_header))
++  DataColumnSidecar_pw3(pos, c, index, column, kzg_commitments, kzg_proofs, kzg_commitments_inclusion_proof, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 0 : U32), signed_block_header))
+ 

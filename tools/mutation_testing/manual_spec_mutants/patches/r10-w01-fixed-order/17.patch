@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/17
+# type: FuluProposerSlashing
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 208 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluProposerSlashing_encode_ssz_generated.bend
+# sym: ProposerSlashing_putk,ProposerSlashing_pw0,ProposerSlashing_serialize,ProposerSlashing_encode
+--- a/types/FuluProposerSlashing_encode_ssz_generated.bend
++++ b/types/FuluProposerSlashing_encode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   (signed_header_1, fl) = r
+-  ProposerSlashing_pw1(pos, (cur .|. fl : U32), signed_header_1, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 208 : U32), signed_header_2))
++  ProposerSlashing_pw1(pos, (cur .|. fl : U32), signed_header_1, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 0 : U32), signed_header_2))
+ 
+@@ -26,3 +26,3 @@
+   match o:
+-    case FuluProposerSlashing_d.ProposerSlashing{signed_header_1, signed_header_2}: ProposerSlashing_pw0(pos, 0, signed_header_2, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 0 : U32), signed_header_1))
++    case FuluProposerSlashing_d.ProposerSlashing{signed_header_1, signed_header_2}: ProposerSlashing_pw0(pos, 0, signed_header_2, FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_bx_putk(out, (pos + 208 : U32), signed_header_1))
+ 

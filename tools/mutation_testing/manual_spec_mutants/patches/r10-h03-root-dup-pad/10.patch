@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/10
+# type: FuluConsolidationRequest
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root target_pubkey is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluConsolidationRequest_hashtreeroot_generated.bend
+# sym: ConsolidationRequest_rt2,ConsolidationRequest_hash_tree_root
+--- a/types/FuluConsolidationRequest_hashtreeroot_generated.bend
++++ b/types/FuluConsolidationRequest_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_target_pubkey) = pair
+-  (h, D.node(hl, D.node(hl, d_source_address, d_source_pubkey), D.node(hl, d_target_pubkey, D.zero())))
++  (h, D.node(hl, D.node(hl, d_source_address, d_source_pubkey), d_target_pubkey))
+ 

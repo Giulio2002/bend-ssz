@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/04
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: BeaconBlockHeader_rt5,BeaconBlockHeader_hash_tree_root
+--- a/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), D.zero())))
+ 

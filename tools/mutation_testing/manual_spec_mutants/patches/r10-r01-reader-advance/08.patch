@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/08
+# type: FuluBeaconBlockBody
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 220 is read at byte 168 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+# sym: BeaconBlockBody_g1_rd3,BeaconBlockBody_decode
+--- a/types/FuluBeaconBlockBody_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_decode_ssz_generated.bend
+@@ -111,3 +111,3 @@
+   (buf, +o_execution_requests) = pair
+-  BeaconBlockBody_g1_rd4(off, len, vend, o_execution_payload, o_bls_to_execution_changes, o_blob_kzg_commitments, o_execution_requests, FuluSyncAggregate_r.SyncAggregate_bx_read(buf, (off + 220 : U32), 160))
++  BeaconBlockBody_g1_rd4(off, len, vend, o_execution_payload, o_bls_to_execution_changes, o_blob_kzg_commitments, o_execution_requests, FuluSyncAggregate_r.SyncAggregate_bx_read(buf, (off + 168 : U32), 160))
+ 

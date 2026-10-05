@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/24
+# type: FuluWithdrawal
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of validator_index and address are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluWithdrawal_hashtreeroot_generated.bend
+# sym: Withdrawal_rt3,Withdrawal_hash_tree_root
+--- a/types/FuluWithdrawal_hashtreeroot_generated.bend
++++ b/types/FuluWithdrawal_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_amount) = pair
+-  (h, D.node(hl, D.node(hl, d_index, d_validator_index), D.node(hl, d_address, d_amount)))
++  (h, D.node(hl, D.node(hl, d_index, d_address), D.node(hl, d_validator_index, d_amount)))
+ 

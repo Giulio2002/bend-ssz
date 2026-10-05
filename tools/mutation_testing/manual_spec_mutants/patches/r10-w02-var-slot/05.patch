@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/05
+# type: FuluBeaconState
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 524464 and 524540 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g0_put,BeaconState_g1_put,BeaconState_serialize,BeaconState_encode
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -71,3 +71,3 @@
+   match o:
+-    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_pw0(pos, genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, Fulu_list_bytevec_32_16777216_e.l16777216_b32_putv(out, pos, 524464, voff, historical_roots))
++    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_pw0(pos, genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, Fulu_list_bytevec_32_16777216_e.l16777216_b32_putv(out, pos, 524540, voff, historical_roots))
+ 
+@@ -125,3 +125,3 @@
+   match o:
+-    case FuluBeaconState_d.BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1_pw0(pos, eth1_data, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_putv(out, pos, 524540, voff, eth1_data_votes))
++    case FuluBeaconState_d.BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1_pw0(pos, eth1_data, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_putv(out, pos, 524464, voff, eth1_data_votes))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/17
+# type: FuluMatrixEntry
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of kzg_proof and column_index are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluMatrixEntry_hashtreeroot_generated.bend
+# sym: MatrixEntry_rt3,MatrixEntry_hash_tree_root
+--- a/types/FuluMatrixEntry_hashtreeroot_generated.bend
++++ b/types/FuluMatrixEntry_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_row_index) = pair
+-  (h, (FuluMatrixEntry_d.MatrixEntry{cell, kzg_proof, column_index, row_index}, D.node(hl, D.node(hl, d_cell, d_kzg_proof), D.node(hl, d_column_index, d_row_index))))
++  (h, (FuluMatrixEntry_d.MatrixEntry{cell, kzg_proof, column_index, row_index}, D.node(hl, D.node(hl, d_cell, d_column_index), D.node(hl, d_kzg_proof, d_row_index))))
+ 

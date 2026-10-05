@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/47
+# type: FuluSigningData
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 32 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluSigningData_decode_ssz_generated.bend
+# sym: SigningData_rd0,SigningData_decode
+--- a/types/FuluSigningData_decode_ssz_generated.bend
++++ b/types/FuluSigningData_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (buf, +object_root) = pair
+-  SigningData_rd1(off, len, object_root, FuluBytes32_r.b32_read(buf, (off + 32 : U32), 32))
++  SigningData_rd1(off, len, object_root, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))
+ 

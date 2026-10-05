@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/04
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: deserialize(Container): each variable field is bytes [offset_i, offset_{i+1}) (the last up to the end)
+# fault: kzg_proofs (the last field) is validated over the kzg_commitments window instead of its own
+# why: copy-paste of the previous field's window
+# file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+# sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+--- a/types/FuluDataColumnSidecar_decode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_decode_ssz_generated.bend
+@@ -65,3 +65,3 @@
+   match ok:
+-    case True{}: DataColumnSidecar_v5(off, len, o0, o1, o2, Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o2 : U32), (len - o2 : U32)))
++    case True{}: DataColumnSidecar_v5(off, len, o0, o1, o2, Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
+     case False{}: (buf, False{})

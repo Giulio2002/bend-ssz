@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/56
+# type: FuluWithdrawalRequest
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 68 is read at byte 20 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluWithdrawalRequest_decode_ssz_generated.bend
+# sym: WithdrawalRequest_rd1,WithdrawalRequest_decode
+--- a/types/FuluWithdrawalRequest_decode_ssz_generated.bend
++++ b/types/FuluWithdrawalRequest_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, +validator_pubkey) = pair
+-  WithdrawalRequest_rd2(off, len, source_address, validator_pubkey, uint64_r.u64_read(buf, (off + 68 : U32), 8))
++  WithdrawalRequest_rd2(off, len, source_address, validator_pubkey, uint64_r.u64_read(buf, (off + 20 : U32), 8))
+ 

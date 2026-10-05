@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/16
+# type: FuluContributionAndProof
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 168 is read at byte 8 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluContributionAndProof_decode_ssz_generated.bend
+# sym: ContributionAndProof_rd1,ContributionAndProof_decode
+--- a/types/FuluContributionAndProof_decode_ssz_generated.bend
++++ b/types/FuluContributionAndProof_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, contribution) = pair
+-  ContributionAndProof_rd2(off, len, aggregator_index, contribution, FuluBytes96_r.b96_read(buf, (off + 168 : U32), 96))
++  ContributionAndProof_rd2(off, len, aggregator_index, contribution, FuluBytes96_r.b96_read(buf, (off + 8 : U32), 96))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/25
+# type: ProgressiveBitsStruct
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of f_J and f_K are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+# sym: ProgressiveBitsStruct_g1_rt4,ProgressiveBitsStruct_hash_tree_root
+--- a/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
++++ b/types/ProgressiveBitsStruct_hashtreeroot_generated.bend
+@@ -65,3 +65,3 @@
+   (h, z2) = pair
+-  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
++  (h, (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_K), D.node(hl, d_f_J, d_f_L)), z2)))
+ 

@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/08
+# type: FuluExecutionRequests
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 0 and 4 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluExecutionRequests_encode_ssz_generated.bend
+# sym: ExecutionRequests_putn,ExecutionRequests_pw0,ExecutionRequests_serialize,ExecutionRequests_encode
+--- a/types/FuluExecutionRequests_encode_ssz_generated.bend
++++ b/types/FuluExecutionRequests_encode_ssz_generated.bend
+@@ -45,3 +45,3 @@
+   (deposits, c) = r
+-  ExecutionRequests_pw1(pos, deposits, consolidations, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putv(out, pos, 4, c, withdrawals))
++  ExecutionRequests_pw1(pos, deposits, consolidations, Fulu_list_WithdrawalRequest_16_e.l16_WithdrawalRequest_putv(out, pos, 0, c, withdrawals))
+ 
+@@ -49,3 +49,3 @@
+   match o:
+-    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_pw0(pos, withdrawals, consolidations, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putv(out, pos, 0, 12, deposits))
++    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_pw0(pos, withdrawals, consolidations, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putv(out, pos, 4, 12, deposits))
+ 

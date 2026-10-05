@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/18
+# type: FuluDataColumnsByRootIdentifier
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of block_root and columns are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluDataColumnsByRootIdentifier_hashtreeroot_generated.bend
+# sym: DataColumnsByRootIdentifier_rt1,DataColumnsByRootIdentifier_hash_tree_root
+--- a/types/FuluDataColumnsByRootIdentifier_hashtreeroot_generated.bend
++++ b/types/FuluDataColumnsByRootIdentifier_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (columns, d_columns) = r
+-  (h, (FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{block_root, columns}, D.node(hl, d_block_root, d_columns)))
++  (h, (FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{block_root, columns}, D.node(hl, d_columns, d_block_root)))
+ 

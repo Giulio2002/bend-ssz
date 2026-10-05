@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/19
+# type: FuluLightClientUpdate
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 25220 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluLightClientUpdate_encode_ssz_generated.bend
+# sym: LightClientUpdate_size,LightClientUpdate_serialize,LightClientUpdate_encode
+--- a/types/FuluLightClientUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_encode_ssz_generated.bend
+@@ -29,3 +29,3 @@
+   match o:
+-    case FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientUpdate_sz0(next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, 25216, FuluLightClientHeader_e.LightClientHeader_size(attested_header))
++    case FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientUpdate_sz0(next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, 25220, FuluLightClientHeader_e.LightClientHeader_size(attested_header))
+ 

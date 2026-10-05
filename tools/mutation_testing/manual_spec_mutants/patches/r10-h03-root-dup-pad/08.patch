@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/08
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root body_root is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: BeaconBlockHeader_rt5,BeaconBlockHeader_hash_tree_root
+--- a/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, d_body_root, z1)))
+ 

@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/11
+# type: ProgressiveBitsStruct
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 32 and 36 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_g0_put,ProgressiveBitsStruct_g0_pw0,ProgressiveBitsStruct_serialize,ProgressiveBitsStruct_encode
+--- a/types/ProgressiveBitsStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_encode_ssz_generated.bend
+@@ -73,3 +73,3 @@
+   (f_B, c) = r
+-  ProgressiveBitsStruct_g0_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, progbitlist_e.pbits_putv(out, pos, 36, c, f_C))
++  ProgressiveBitsStruct_g0_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, progbitlist_e.pbits_putv(out, pos, 32, c, f_C))
+ 
+@@ -77,3 +77,3 @@
+   match o:
+-    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: ProgressiveBitsStruct_g0_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, bitlist_256_e.bits256_putv(out, pos, 32, voff, f_B))
++    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: ProgressiveBitsStruct_g0_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, bitlist_256_e.bits256_putv(out, pos, 36, voff, f_B))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/49
+# type: FuluSyncAggregate
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 64 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluSyncAggregate_decode_ssz_generated.bend
+# sym: SyncAggregate_rd0,SyncAggregate_decode
+--- a/types/FuluSyncAggregate_decode_ssz_generated.bend
++++ b/types/FuluSyncAggregate_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +sync_committee_bits) = pair
+-  SyncAggregate_rd1(off, len, sync_committee_bits, FuluBytes96_r.b96_read(buf, (off + 64 : U32), 96))
++  SyncAggregate_rd1(off, len, sync_committee_bits, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+ 

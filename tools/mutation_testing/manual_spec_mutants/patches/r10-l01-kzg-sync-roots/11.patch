@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/11
+# type: FuluSyncCommitteeContribution
+# ops: root
+# spec: same: the packed bits are right-padded with zeros
+# fault: the 16 bytes of bits are placed in the second half of the chunk
+# why: left padding
+# file: types/Fulu_bitvector_128_hashtreeroot_generated.bend
+# sym: bv128_root,SyncCommitteeContribution_hash_tree_root
+--- a/types/Fulu_bitvector_128_hashtreeroot_generated.bend
++++ b/types/Fulu_bitvector_128_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case Fulu_bitvector_128_d.Bitvector128{+w0, +w1, +w2, +w3}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
++    case Fulu_bitvector_128_d.Bitvector128{+w0, +w1, +w2, +w3}: (h, D.D{0, 0, 0, 0, B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3)})
+ 

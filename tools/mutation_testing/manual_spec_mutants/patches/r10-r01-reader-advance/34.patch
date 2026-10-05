@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/34
+# type: FuluLightClientOptimisticUpdate
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 164 is read at byte 4 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend
+# sym: LightClientOptimisticUpdate_rd2,LightClientOptimisticUpdate_decode
+--- a/types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend
++++ b/types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, sync_aggregate) = pair
+-  LightClientOptimisticUpdate_rd3(off, len, o_attested_header, attested_header, sync_aggregate, uint64_r.u64_read(buf, (off + 164 : U32), 8))
++  LightClientOptimisticUpdate_rd3(off, len, o_attested_header, attested_header, sync_aggregate, uint64_r.u64_read(buf, (off + 4 : U32), 8))
+ 

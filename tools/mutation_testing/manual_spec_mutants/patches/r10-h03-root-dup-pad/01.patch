@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/01
+# type: BitsStruct
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root f_E is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/BitsStruct_hashtreeroot_generated.bend
+# sym: BitsStruct_rt5,BitsStruct_hash_tree_root
+--- a/types/BitsStruct_hashtreeroot_generated.bend
++++ b/types/BitsStruct_hashtreeroot_generated.bend
+@@ -20,3 +20,3 @@
+   (h, z1) = pair
+-  (h, (BitsStruct_d.BitsStruct{f_A, f_B, f_C, f_D, f_E}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, D.zero()), z1))))
++  (h, (BitsStruct_d.BitsStruct{f_A, f_B, f_C, f_D, f_E}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, d_f_E, z1))))
+ 

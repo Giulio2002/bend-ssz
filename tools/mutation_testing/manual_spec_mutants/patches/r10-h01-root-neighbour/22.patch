@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/22
+# type: FuluDeposit
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of proof and data are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluDeposit_hashtreeroot_generated.bend
+# sym: Deposit_rt1,Deposit_hash_tree_root
+--- a/types/FuluDeposit_hashtreeroot_generated.bend
++++ b/types/FuluDeposit_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (data, d_data) = r
+-  (h, (FuluDeposit_d.Deposit{proof, data}, D.node(hl, d_proof, d_data)))
++  (h, (FuluDeposit_d.Deposit{proof, data}, D.node(hl, d_data, d_proof)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/07
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: a Cell (ByteVector[2048]) root is merkleize of 64 chunks: depth 6
+# fault: each cell is hashed as 32 chunks (depth 5: the second half of the cell ignored)
+# why: wrong element subtree depth
+# file: types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+# sym: l4096_b2048_root,DataColumnSidecar_hash_tree_root
+--- a/types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
++++ b/types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+ 
+-def l4096_b2048_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b2048_mix(hl, O.elems_root(hl, h, o, 512, 6, 12, seg))
++def l4096_b2048_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b2048_mix(hl, O.elems_root(hl, h, o, 512, 5, 12, seg))
+ 

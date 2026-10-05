@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/55
+# type: FuluSyncCommitteeContribution
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of slot and beacon_block_root are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+# sym: SyncCommitteeContribution_rt5,SyncCommitteeContribution_hash_tree_root
+--- a/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, D.node(hl, d_signature, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_beacon_block_root, d_slot), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, D.node(hl, d_signature, D.zero()), z1)))
+ 

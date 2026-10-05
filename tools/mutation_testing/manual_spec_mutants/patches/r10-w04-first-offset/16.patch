@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/16
+# type: FuluPendingAttestation
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 144 (fixed part 148)
+# why: fixed part length off by one offset
+# file: types/FuluPendingAttestation_encode_ssz_generated.bend
+# sym: PendingAttestation_putn,PendingAttestation_serialize,PendingAttestation_encode
+--- a/types/FuluPendingAttestation_encode_ssz_generated.bend
++++ b/types/FuluPendingAttestation_encode_ssz_generated.bend
+@@ -29,3 +29,3 @@
+   match o:
+-    case FuluPendingAttestation_d.PendingAttestation{aggregation_bits, +data, +inclusion_delay, +proposer_index}: PendingAttestation_pw0(pos, data, inclusion_delay, proposer_index, Fulu_bitlist_2048_e.bits2048_putv(out, pos, 0, 148, aggregation_bits))
++    case FuluPendingAttestation_d.PendingAttestation{aggregation_bits, +data, +inclusion_delay, +proposer_index}: PendingAttestation_pw0(pos, data, inclusion_delay, proposer_index, Fulu_bitlist_2048_e.bits2048_putv(out, pos, 0, 144, aggregation_bits))
+ 

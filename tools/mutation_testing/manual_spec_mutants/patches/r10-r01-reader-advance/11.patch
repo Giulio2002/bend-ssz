@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/11
+# type: FuluBeaconState
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 2736713 is read at byte 2736693 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBeaconState_decode_ssz_generated.bend
+# sym: BeaconState_g4_rd7,BeaconState_decode
+--- a/types/FuluBeaconState_decode_ssz_generated.bend
++++ b/types/FuluBeaconState_decode_ssz_generated.bend
+@@ -224,3 +224,3 @@
+   (buf, pending_consolidations) = pair
+-  BeaconState_g4_rd8(off, len, vend, o_pending_deposits, o_pending_partial_withdrawals, o_pending_consolidations, consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, Fulu_vec_uint64_64_r.v64_u64_read(buf, (off + 2736713 : U32), 512))
++  BeaconState_g4_rd8(off, len, vend, o_pending_deposits, o_pending_partial_withdrawals, o_pending_consolidations, consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, Fulu_vec_uint64_64_r.v64_u64_read(buf, (off + 2736693 : U32), 512))
+ 

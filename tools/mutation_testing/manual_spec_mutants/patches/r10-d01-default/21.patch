@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/21
+# type: bitvector_5
+# ops: encode,root
+# spec: Default values: the default of Bitvector[N] is N False bits
+# fault: bit 0 of the default is set
+# why: non-zero default
+# file: types/bitvector_5_def_generated.bend
+# sym: bv5_default
+--- a/types/bitvector_5_def_generated.bend
++++ b/types/bitvector_5_def_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def bv5_default() -> Bitvector5: Bitvector5{0}
++def bv5_default() -> Bitvector5: Bitvector5{1}
+ 

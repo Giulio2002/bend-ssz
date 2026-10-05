@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/57
+# type: FuluSyncCommittee
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of pubkeys and aggregate_pubkey are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSyncCommittee_hashtreeroot_generated.bend
+# sym: SyncCommittee_rt1,SyncCommittee_hash_tree_root
+--- a/types/FuluSyncCommittee_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommittee_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_aggregate_pubkey) = pair
+-  (h, (FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey}, D.node(hl, d_pubkeys, d_aggregate_pubkey)))
++  (h, (FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey}, D.node(hl, d_aggregate_pubkey, d_pubkeys)))
+ 

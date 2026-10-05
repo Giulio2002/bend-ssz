@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/12
+# type: FuluExecutionPayload
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 4 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_g1_size,ExecutionPayload_serialize,ExecutionPayload_encode
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+   match o:
+-    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_sz0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, 0, Fulu_bytelist_32_e.bl32_size(extra_data))
++    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_sz0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, 4, Fulu_bytelist_32_e.bl32_size(extra_data))
+ 

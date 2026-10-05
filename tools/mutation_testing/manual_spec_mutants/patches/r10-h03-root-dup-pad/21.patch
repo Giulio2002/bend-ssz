@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/21
+# type: FuluLightClientBootstrap
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root current_sync_committee_branch is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluLightClientBootstrap_hashtreeroot_generated.bend
+# sym: LightClientBootstrap_rt2,LightClientBootstrap_hash_tree_root
+--- a/types/FuluLightClientBootstrap_hashtreeroot_generated.bend
++++ b/types/FuluLightClientBootstrap_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (current_sync_committee_branch, d_current_sync_committee_branch) = r
+-  (h, (FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}, D.node(hl, D.node(hl, d_header, d_current_sync_committee), D.node(hl, d_current_sync_committee_branch, D.zero()))))
++  (h, (FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}, D.node(hl, D.node(hl, d_header, d_current_sync_committee), d_current_sync_committee_branch)))
+ 

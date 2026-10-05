@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/24
+# type: FuluLightClientOptimisticUpdate
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root signature_slot is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluLightClientOptimisticUpdate_hashtreeroot_generated.bend
+# sym: LightClientOptimisticUpdate_rt2,LightClientOptimisticUpdate_hash_tree_root
+--- a/types/FuluLightClientOptimisticUpdate_hashtreeroot_generated.bend
++++ b/types/FuluLightClientOptimisticUpdate_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_signature_slot) = pair
+-  (h, (FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, d_attested_header, d_sync_aggregate), D.node(hl, d_signature_slot, D.zero()))))
++  (h, (FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, d_attested_header, d_sync_aggregate), d_signature_slot)))
+ 

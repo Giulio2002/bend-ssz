@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/28
+# type: FuluHistoricalBatch
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 262144 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluHistoricalBatch_decode_ssz_generated.bend
+# sym: HistoricalBatch_rd0,HistoricalBatch_decode
+--- a/types/FuluHistoricalBatch_decode_ssz_generated.bend
++++ b/types/FuluHistoricalBatch_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   (buf, block_roots) = pair
+-  HistoricalBatch_rd1(off, len, block_roots, Fulu_vec_bytevec_32_8192_r.v8192_b32_read(buf, (off + 262144 : U32), 262144))
++  HistoricalBatch_rd1(off, len, block_roots, Fulu_vec_bytevec_32_8192_r.v8192_b32_read(buf, (off + 0 : U32), 262144))
+ 

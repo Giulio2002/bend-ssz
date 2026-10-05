@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/02
+# type: ComplexTestStruct
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of f_A and f_B are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/ComplexTestStruct_hashtreeroot_generated.bend
+# sym: ComplexTestStruct_rt6,ComplexTestStruct_hash_tree_root
+--- a/types/ComplexTestStruct_hashtreeroot_generated.bend
++++ b/types/ComplexTestStruct_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (f_G, d_f_G) = r
+-  (h, (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, D.zero())))))
++  (h, (ComplexTestStruct_d.ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.node(hl, D.node(hl, D.node(hl, d_f_B, d_f_A), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, D.zero())))))
+ 

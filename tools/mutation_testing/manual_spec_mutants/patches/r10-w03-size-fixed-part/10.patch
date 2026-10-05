@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/10
+# type: FuluDataColumnsByRootIdentifier
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 40 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
+# sym: DataColumnsByRootIdentifier_size,DataColumnsByRootIdentifier_serialize,DataColumnsByRootIdentifier_encode
+--- a/types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
++++ b/types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   match o:
+-    case FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{+block_root, columns}: DataColumnsByRootIdentifier_sz0(block_root, 36, Fulu_list_uint64_128_e.l128_u64_size(columns))
++    case FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{+block_root, columns}: DataColumnsByRootIdentifier_sz0(block_root, 40, Fulu_list_uint64_128_e.l128_u64_size(columns))
+ 

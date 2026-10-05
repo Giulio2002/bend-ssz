@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/43
+# type: FuluPowBlock
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of block_hash and parent_hash are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluPowBlock_hashtreeroot_generated.bend
+# sym: PowBlock_rt2,PowBlock_hash_tree_root
+--- a/types/FuluPowBlock_hashtreeroot_generated.bend
++++ b/types/FuluPowBlock_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_total_difficulty) = pair
+-  (h, D.node(hl, D.node(hl, d_block_hash, d_parent_hash), D.node(hl, d_total_difficulty, D.zero())))
++  (h, D.node(hl, D.node(hl, d_parent_hash, d_block_hash), D.node(hl, d_total_difficulty, D.zero())))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/05
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 4 (fixed part 8)
+# why: fixed part length off by one offset
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_putn,AttesterSlashing_serialize,AttesterSlashing_encode
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -36,3 +36,3 @@
+   match o:
+-    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_pw0(pos, attestation_2, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, 8, attestation_1))
++    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_pw0(pos, attestation_2, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, 4, attestation_1))
+ 

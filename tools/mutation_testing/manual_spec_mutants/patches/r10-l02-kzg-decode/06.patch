@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/06
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: offsets are non-decreasing (offset_i <= offset_{i+1})
+# fault: the kzg_commitments <= kzg_proofs offset order check is dropped
+# why: only the upper bound checked
+# file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+# sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+--- a/types/FuluDataColumnSidecar_decode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_decode_ssz_generated.bend
+@@ -88,3 +88,3 @@
+   (buf, +o2) = pair
+-  DataColumnSidecar_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++  DataColumnSidecar_c2(U32.is_le(o2, len), buf, off, len, o0, o1, o2)
+ 

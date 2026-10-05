@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/02
+# type: FuluAttestationData
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluAttestationData_hashtreeroot_generated.bend
+# sym: AttestationData_rt5,AttestationData_hash_tree_root
+--- a/types/FuluAttestationData_hashtreeroot_generated.bend
++++ b/types/FuluAttestationData_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_index), D.node(hl, d_beacon_block_root, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_index), D.node(hl, d_beacon_block_root, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), D.zero())))
+ 

@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/07
+# type: FuluExecutionPayload
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 436 and 504 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_g1_put,ExecutionPayload_g1_pw0,ExecutionPayload_serialize,ExecutionPayload_encode
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (extra_data, c) = r
+-  ExecutionPayload_g1_pw1(pos, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Fulu_list_bytelist_1073741824_1048576_e.l1048576_bl1073741824_putv(out, pos, 504, c, transactions))
++  ExecutionPayload_g1_pw1(pos, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, withdrawals, blob_gas_used, Fulu_list_bytelist_1073741824_1048576_e.l1048576_bl1073741824_putv(out, pos, 436, c, transactions))
+ 
+@@ -67,3 +67,3 @@
+   match o:
+-    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_pw0(pos, gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, Fulu_bytelist_32_e.bl32_putv(out, pos, 436, voff, extra_data))
++    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_pw0(pos, gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, Fulu_bytelist_32_e.bl32_putv(out, pos, 504, voff, extra_data))
+ 

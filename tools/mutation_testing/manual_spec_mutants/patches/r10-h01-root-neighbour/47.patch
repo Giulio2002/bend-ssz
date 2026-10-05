@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/47
+# type: FuluSignedBeaconBlockHeader
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of message and signature are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSignedBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: SignedBeaconBlockHeader_rt1,SignedBeaconBlockHeader_hash_tree_root
+--- a/types/FuluSignedBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluSignedBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_signature) = pair
+-  (h, D.node(hl, d_message, d_signature))
++  (h, D.node(hl, d_signature, d_message))
+ 

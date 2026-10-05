@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/11
+# type: FuluLightClientFinalityUpdate
+# ops: decode
+# spec: deserialize(Container): the last variable field is [o1, len)
+# fault: finalized_header is validated over [o1, o1 + (o1 - o0)) (the previous field's length)
+# why: window length of the wrong field
+# file: types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend
+# sym: LightClientFinalityUpdate_ok,LightClientFinalityUpdate_decode
+--- a/types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend
++++ b/types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend
+@@ -57,3 +57,3 @@
+   match ok:
+-    case True{}: LightClientFinalityUpdate_v3(off, len, o0, o1, FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (len - o1 : U32)))
++    case True{}: LightClientFinalityUpdate_v3(off, len, o0, o1, FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (o1 - o0 : U32)))
+     case False{}: (buf, False{})

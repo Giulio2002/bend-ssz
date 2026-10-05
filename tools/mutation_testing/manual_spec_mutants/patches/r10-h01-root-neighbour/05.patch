@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/05
+# type: FuluAttestationData
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of slot and index are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluAttestationData_hashtreeroot_generated.bend
+# sym: AttestationData_rt5,AttestationData_hash_tree_root
+--- a/types/FuluAttestationData_hashtreeroot_generated.bend
++++ b/types/FuluAttestationData_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_index), D.node(hl, d_beacon_block_root, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_index, d_slot), D.node(hl, d_beacon_block_root, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), z1)))
+ 

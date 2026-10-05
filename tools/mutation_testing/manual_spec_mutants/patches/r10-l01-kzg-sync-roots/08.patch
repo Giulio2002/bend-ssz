@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/08
+# type: FuluFinalityBranch,FuluLightClientFinalityUpdate
+# ops: root
+# spec: merkleize(7 chunks) pads to 8 leaves: depth 3
+# fault: the finality branch tree has depth 2 (floor log2 7): the 5th to 7th roots are dropped
+# why: floor instead of ceil
+# file: types/FuluFinalityBranch_hashtreeroot_generated.bend
+# sym: v7_b32_root,FinalityBranch_hash_tree_root
+--- a/types/FuluFinalityBranch_hashtreeroot_generated.bend
++++ b/types/FuluFinalityBranch_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v7_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
++def v7_b32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
+ 

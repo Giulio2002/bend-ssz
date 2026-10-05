@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/12
+# type: FuluDepositMessage
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root amount is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluDepositMessage_hashtreeroot_generated.bend
+# sym: DepositMessage_rt2,DepositMessage_hash_tree_root
+--- a/types/FuluDepositMessage_hashtreeroot_generated.bend
++++ b/types/FuluDepositMessage_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_amount) = pair
+-  (h, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_amount, D.zero())))
++  (h, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), d_amount))
+ 

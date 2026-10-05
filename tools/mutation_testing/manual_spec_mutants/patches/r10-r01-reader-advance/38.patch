@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/38
+# type: FuluPendingConsolidation
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 8 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluPendingConsolidation_decode_ssz_generated.bend
+# sym: PendingConsolidation_rd0,PendingConsolidation_decode
+--- a/types/FuluPendingConsolidation_decode_ssz_generated.bend
++++ b/types/FuluPendingConsolidation_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   (buf, +source_index) = pair
+-  PendingConsolidation_rd1(off, len, source_index, uint64_r.u64_read(buf, (off + 8 : U32), 8))
++  PendingConsolidation_rd1(off, len, source_index, uint64_r.u64_read(buf, (off + 0 : U32), 8))
+ 

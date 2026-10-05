@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/13
+# type: FuluBlobIdentifier
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of block_root and index are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluBlobIdentifier_hashtreeroot_generated.bend
+# sym: BlobIdentifier_rt1,BlobIdentifier_hash_tree_root
+--- a/types/FuluBlobIdentifier_hashtreeroot_generated.bend
++++ b/types/FuluBlobIdentifier_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_index) = pair
+-  (h, D.node(hl, d_block_root, d_index))
++  (h, D.node(hl, d_index, d_block_root))
+ 

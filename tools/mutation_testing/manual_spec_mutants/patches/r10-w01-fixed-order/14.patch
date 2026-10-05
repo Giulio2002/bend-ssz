@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/14
+# type: FuluLightClientOptimisticUpdate
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 4 and byte 164 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
+# sym: LightClientOptimisticUpdate_pw0,LightClientOptimisticUpdate_pw1,LightClientOptimisticUpdate_serialize,LightClientOptimisticUpdate_encode
+--- a/types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
+@@ -26,3 +26,3 @@
+   (sync_aggregate, fl) = r
+-  (uint64_e.u64_put(out, (pos + 164 : U32), signature_slot), (FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, signature_slot}, (cur .|. fl : U32)))
++  (uint64_e.u64_put(out, (pos + 4 : U32), signature_slot), (FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, signature_slot}, (cur .|. fl : U32)))
+ 
+@@ -31,3 +31,3 @@
+   (attested_header, c) = r
+-  LightClientOptimisticUpdate_pw1(pos, c, attested_header, signature_slot, FuluSyncAggregate_e.SyncAggregate_bx_putk(out, (pos + 4 : U32), sync_aggregate))
++  LightClientOptimisticUpdate_pw1(pos, c, attested_header, signature_slot, FuluSyncAggregate_e.SyncAggregate_bx_putk(out, (pos + 164 : U32), sync_aggregate))
+ 

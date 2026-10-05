@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/23
+# type: uint64
+# ops: encode,root
+# spec: Default values: the default of uint64 is 0
+# fault: the default uint64 is 1
+# why: non-zero default
+# file: types/uint64_def_generated.bend
+# sym: u64_default
+--- a/types/uint64_def_generated.bend
++++ b/types/uint64_def_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def u64_default() -> O.U64: O.u64_zero()
++def u64_default() -> O.U64: O.U64{1, 0}
+ 

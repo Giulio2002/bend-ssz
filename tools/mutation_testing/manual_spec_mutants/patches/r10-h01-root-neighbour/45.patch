@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/45
+# type: FuluSignedAggregateAndProof
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of message and signature are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend
+# sym: SignedAggregateAndProof_rt1,SignedAggregateAndProof_hash_tree_root
+--- a/types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend
++++ b/types/FuluSignedAggregateAndProof_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_signature) = pair
+-  (h, (FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, signature}, D.node(hl, d_message, d_signature)))
++  (h, (FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, signature}, D.node(hl, d_signature, d_message)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/15
+# type: FuluEth1Data
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root block_hash is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluEth1Data_hashtreeroot_generated.bend
+# sym: Eth1Data_rt2,Eth1Data_hash_tree_root
+--- a/types/FuluEth1Data_hashtreeroot_generated.bend
++++ b/types/FuluEth1Data_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_block_hash) = pair
+-  (h, D.node(hl, D.node(hl, d_deposit_root, d_deposit_count), D.node(hl, d_block_hash, D.zero())))
++  (h, D.node(hl, D.node(hl, d_deposit_root, d_deposit_count), d_block_hash))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/05
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: same
+# fault: kzg_commitments is validated over the window up to the end of the buffer (o1 .. len) instead of o1 .. o2
+# why: last-field rule applied to a middle field
+# file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+# sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+--- a/types/FuluDataColumnSidecar_decode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_decode_ssz_generated.bend
+@@ -74,3 +74,3 @@
+   match ok:
+-    case True{}: DataColumnSidecar_v4(off, len, o0, o1, o2, Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (o2 - o1 : U32)))
++    case True{}: DataColumnSidecar_v4(off, len, o0, o1, o2, Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (len - o1 : U32)))
+     case False{}: (buf, False{})

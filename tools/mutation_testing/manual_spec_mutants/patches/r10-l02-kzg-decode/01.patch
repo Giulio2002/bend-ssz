@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/01
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: deserialize(List[Bytes48, 4096]): len % 48 == 0 and len / 48 <= 4096
+# fault: the limit check is len / 48 < 4096 (a full list of 4096 commitments / proofs is refused)
+# why: off-by-one limit
+# file: types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+# sym: l4096_b48_ok,DataColumnSidecar_decode
+--- a/types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
++++ b/types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+@@ -11,3 +11,3 @@
+ 
+-def l4096_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 48) * 48 : U32)), U32.is_le(U32.div(len, 48), 4096)))
++def l4096_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 48) * 48 : U32)), U32.is_lt(U32.div(len, 48), 4096)))
+ 

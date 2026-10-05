@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/14
+# type: FuluDeposit
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 32 elements (1024 bytes) instead of 33
+# why: off-by-one length in the default constructor
+# file: types/Fulu_vec_bytevec_32_33_def_generated.bend
+# sym: v33_b32_default
+--- a/types/Fulu_vec_bytevec_32_33_def_generated.bend
++++ b/types/Fulu_vec_bytevec_32_33_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v33_b32_default() -> O.Words: O.words_new(1056)
++def v33_b32_default() -> O.Words: O.words_new(1024)
+ 

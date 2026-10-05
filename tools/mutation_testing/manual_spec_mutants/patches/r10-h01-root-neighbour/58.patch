@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/58
+# type: FuluValidator
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of pubkey and withdrawal_credentials are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluValidator_hashtreeroot_generated.bend
+# sym: Validator_rt7,Validator_hash_tree_root
+--- a/types/FuluValidator_hashtreeroot_generated.bend
++++ b/types/FuluValidator_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, d_withdrawable_epoch) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_effective_balance, d_slashed)), D.node(hl, D.node(hl, d_activation_eligibility_epoch, d_activation_epoch), D.node(hl, d_exit_epoch, d_withdrawable_epoch))))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_withdrawal_credentials, d_pubkey), D.node(hl, d_effective_balance, d_slashed)), D.node(hl, D.node(hl, d_activation_eligibility_epoch, d_activation_epoch), D.node(hl, d_exit_epoch, d_withdrawable_epoch))))
+ 

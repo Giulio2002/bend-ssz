@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/44
+# type: FuluProposerSlashing
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of signed_header_1 and signed_header_2 are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluProposerSlashing_hashtreeroot_generated.bend
+# sym: ProposerSlashing_rt1,ProposerSlashing_hash_tree_root
+--- a/types/FuluProposerSlashing_hashtreeroot_generated.bend
++++ b/types/FuluProposerSlashing_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (signed_header_2, d_signed_header_2) = r
+-  (h, (FuluProposerSlashing_d.ProposerSlashing{signed_header_1, signed_header_2}, D.node(hl, d_signed_header_1, d_signed_header_2)))
++  (h, (FuluProposerSlashing_d.ProposerSlashing{signed_header_1, signed_header_2}, D.node(hl, d_signed_header_2, d_signed_header_1)))
+ 

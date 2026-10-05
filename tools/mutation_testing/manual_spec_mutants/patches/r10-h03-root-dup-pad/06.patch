@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/06
+# type: FuluBLSToExecutionChange
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root to_execution_address is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
+# sym: BLSToExecutionChange_rt2,BLSToExecutionChange_hash_tree_root
+--- a/types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
++++ b/types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_to_execution_address) = pair
+-  (h, D.node(hl, D.node(hl, d_validator_index, d_from_bls_pubkey), D.node(hl, d_to_execution_address, D.zero())))
++  (h, D.node(hl, D.node(hl, d_validator_index, d_from_bls_pubkey), d_to_execution_address))
+ 

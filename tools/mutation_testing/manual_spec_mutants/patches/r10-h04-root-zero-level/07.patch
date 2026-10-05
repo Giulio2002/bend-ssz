@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/07
+# type: FuluBlobSidecar
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluBlobSidecar_hashtreeroot_generated.bend
+# sym: BlobSidecar_rt6,BlobSidecar_hash_tree_root
+--- a/types/FuluBlobSidecar_hashtreeroot_generated.bend
++++ b/types/FuluBlobSidecar_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, z1) = pair
+-  (h, (FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}, D.node(hl, D.node(hl, D.node(hl, d_index, d_blob), D.node(hl, d_kzg_commitment, d_kzg_proof)), D.node(hl, D.node(hl, d_signed_block_header, d_kzg_commitment_inclusion_proof), z1))))
++  (h, (FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}, D.node(hl, D.node(hl, D.node(hl, d_index, d_blob), D.node(hl, d_kzg_commitment, d_kzg_proof)), D.node(hl, D.node(hl, d_signed_block_header, d_kzg_commitment_inclusion_proof), D.zero()))))
+ 

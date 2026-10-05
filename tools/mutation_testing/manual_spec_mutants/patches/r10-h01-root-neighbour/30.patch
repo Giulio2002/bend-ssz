@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/30
+# type: FuluHistoricalBatch
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of block_roots and state_roots are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluHistoricalBatch_hashtreeroot_generated.bend
+# sym: HistoricalBatch_rt1,HistoricalBatch_hash_tree_root
+--- a/types/FuluHistoricalBatch_hashtreeroot_generated.bend
++++ b/types/FuluHistoricalBatch_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+   (state_roots, d_state_roots) = r
+-  (h, (FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots}, D.node(hl, d_block_roots, d_state_roots)))
++  (h, (FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots}, D.node(hl, d_state_roots, d_block_roots)))
+ 

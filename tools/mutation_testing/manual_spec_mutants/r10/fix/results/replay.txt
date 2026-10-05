@@ -1,0 +1,61 @@
+== r10-d01-default_01
+FAIL proofs/slop/constants/fulu_b20_default_zero_generated.bend CHECK_TIME 0.64
+FAIL proofs/slop/constants/fulu_Bytes20_default_image_generated.bend CHECK_TIME 0.80
+== r10-d01-default_02
+FAIL proofs/slop/constants/fulu_b32_default_zero_generated.bend CHECK_TIME 0.65
+FAIL proofs/slop/constants/fulu_Checkpoint_default_image_generated.bend CHECK_TIME 0.88
+== r10-d01-default_03
+FAIL proofs/slop/constants/fulu_b48_default_zero_generated.bend CHECK_TIME 0.66
+FAIL proofs/slop/constants/fulu_Bytes48_default_image_generated.bend CHECK_TIME 1.01
+== r10-d01-default_04
+FAIL proofs/slop/constants/fulu_b8_default_zero_generated.bend CHECK_TIME 0.54
+FAIL proofs/slop/constants/fulu_Bytes8_default_image_generated.bend CHECK_TIME 0.68
+== r10-d01-default_05
+FAIL proofs/slop/constants/fulu_b96_default_zero_generated.bend CHECK_TIME 0.67
+FAIL proofs/slop/constants/fulu_Bytes96_default_image_generated.bend CHECK_TIME 1.05
+== r10-d01-default_09
+FAIL proofs/slop/constants/fulu_bv128_default_zero_generated.bend CHECK_TIME 0.61
+FAIL proofs/slop/constants/fulu_SyncCommitteeContribution_default_image_generated.bend CHECK_TIME 1.65
+== r10-d01-default_10
+FAIL proofs/slop/constants/fulu_bv4_default_zero_generated.bend CHECK_TIME 0.50
+== r10-d01-default_11
+FAIL proofs/slop/constants/fulu_bv512_default_zero_generated.bend CHECK_TIME 0.65
+FAIL proofs/slop/constants/fulu_SyncAggregate_default_image_generated.bend CHECK_TIME 1.44
+== r10-d01-default_12
+FAIL proofs/slop/constants/fulu_bv64_default_zero_generated.bend CHECK_TIME 0.54
+FAIL proofs/slop/constants/fulu_Attestation_default_image_generated.bend CHECK_TIME 2.15
+== r10-d01-default_20
+FAIL proofs/slop/constants/generic_bv513_default_zero_generated.bend CHECK_TIME 0.57
+FAIL proofs/slop/constants/generic_bitvector_513_default_image_generated.bend CHECK_TIME 0.88
+== r10-d01-default_21
+FAIL proofs/slop/constants/generic_bv5_default_zero_generated.bend CHECK_TIME 0.56
+FAIL proofs/slop/constants/generic_bitvector_5_default_image_generated.bend CHECK_TIME 0.62
+== r10-d01-default_22
+FAIL proofs/slop/constants/fulu_bool_default_zero_generated.bend CHECK_TIME 0.48
+FAIL proofs/slop/constants/fulu_boolean_default_image_generated.bend CHECK_TIME 0.59
+== r10-d01-default_23
+FAIL proofs/slop/constants/fulu_u64_default_zero_generated.bend CHECK_TIME 0.59
+FAIL proofs/slop/constants/fulu_uint64_default_image_generated.bend CHECK_TIME 0.55
+FAIL proofs/slop/constants/fulu_Checkpoint_default_image_generated.bend CHECK_TIME 0.77
+== r10-l02-kzg-decode_09
+PASS proofs/slop/validity/fulu_LightClientUpdate_decode_literal_bad_order_finalized_header_generated.bend CHECK_TIME 1.26
+== r10-r01-reader-advance_11
+FAIL proofs/slop/validity/fulu_BeaconState_decode_literal_win_generated.bend CHECK_TIME 1.09
+== r10-w01-fixed-order_03
+FAIL proofs/slop/alignment/fulu_BeaconState_writer_win_generated.bend CHECK_TIME 0.97
+== r10-w02-var-slot_05
+FAIL proofs/slop/alignment/fulu_BeaconState_writer_win_generated.bend CHECK_TIME 0.89
+== base(existing laws) d09
+FAIL proofs/slop/validity/fulu_SyncCommitteeContribution_api_bv128_default_generated.bend CHECK_TIME 0.54
+== base(existing laws) d10
+FAIL proofs/slop/validity/fulu_BeaconState_api_bv4_default_generated.bend CHECK_TIME 0.58
+== base(existing laws) d11
+FAIL proofs/slop/validity/fulu_SyncAggregate_api_bv512_default_generated.bend CHECK_TIME 0.59
+== base(existing laws) d12
+FAIL proofs/slop/validity/fulu_Attestation_api_bv64_default_generated.bend CHECK_TIME 0.54
+== base(existing laws) d20
+FAIL proofs/slop/validity/generic_bitvector_513_api_bv513_default_generated.bend CHECK_TIME 0.61
+== base(existing laws) d21
+FAIL proofs/slop/validity/generic_bitvector_5_api_bv5_default_generated.bend CHECK_TIME 0.77
+== base(existing laws) l09
+FAIL proofs/slop/validity/fulu_LightClientUpdate_decode_literal_order_sym_generated.bend CHECK_TIME 0.94

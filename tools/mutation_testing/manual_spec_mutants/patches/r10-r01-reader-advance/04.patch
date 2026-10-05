@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/04
+# type: FuluAggregateAndProof
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 12 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluAggregateAndProof_decode_ssz_generated.bend
+# sym: AggregateAndProof_rd2,AggregateAndProof_decode
+--- a/types/FuluAggregateAndProof_decode_ssz_generated.bend
++++ b/types/FuluAggregateAndProof_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, aggregate) = pair
+-  AggregateAndProof_rd3(off, len, o_aggregate, aggregator_index, aggregate, FuluBytes96_r.b96_read(buf, (off + 12 : U32), 96))
++  AggregateAndProof_rd3(off, len, o_aggregate, aggregator_index, aggregate, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+ 

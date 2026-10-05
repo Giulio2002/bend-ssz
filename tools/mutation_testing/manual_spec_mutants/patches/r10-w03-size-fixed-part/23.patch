@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/23
+# type: ProgressiveBitsStruct
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 4 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_g0_size,ProgressiveBitsStruct_serialize,ProgressiveBitsStruct_encode
+--- a/types/ProgressiveBitsStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_encode_ssz_generated.bend
+@@ -43,3 +43,3 @@
+   match o:
+-    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: ProgressiveBitsStruct_g0_sz0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, 0, bitlist_256_e.bits256_size(f_B))
++    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: ProgressiveBitsStruct_g0_sz0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, 4, bitlist_256_e.bits256_size(f_B))
+ 

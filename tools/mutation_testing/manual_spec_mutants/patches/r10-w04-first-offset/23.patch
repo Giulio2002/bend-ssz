@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/23
+# type: VarTestStruct
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 3 (fixed part 7)
+# why: fixed part length off by one offset
+# file: types/VarTestStruct_encode_ssz_generated.bend
+# sym: VarTestStruct_putn,VarTestStruct_serialize,VarTestStruct_encode
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   match o:
+-    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_pw0(pos, f_A, f_C, list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 7, f_B))
++    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_pw0(pos, f_A, f_C, list_uint16_1024_e.l1024_u16_putv(out, pos, 2, 3, f_B))
+ 

@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/20
+# type: ProgressiveBitsStruct
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 81 are written at each other's position
+# why: fixed part ordering
+# file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_g0_pw5,ProgressiveBitsStruct_g0_pw4,ProgressiveBitsStruct_serialize,ProgressiveBitsStruct_encode
+--- a/types/ProgressiveBitsStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_encode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+   (f_G, fl) = r
+-  (bitvector_257_e.bv257_put(bitvector_256_e.bv256_put(out, (pos + 0 : U32), f_A), (pos + 40 : U32), f_D), (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, ((cur .|. fl : U32) .|. O.pz(bitvector_257_e.bv257_valid(f_D)) : U32)))
++  (bitvector_257_e.bv257_put(bitvector_256_e.bv256_put(out, (pos + 81 : U32), f_A), (pos + 40 : U32), f_D), (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, ((cur .|. fl : U32) .|. O.pz(bitvector_257_e.bv257_valid(f_D)) : U32)))
+ 
+@@ -53,3 +53,3 @@
+   (f_H, c) = r
+-  ProgressiveBitsStruct_g0_pw5(pos, c, f_A, f_B, f_C, f_D, f_E, f_F, f_H, bitvector_1280_e.bv1280_putk(out, (pos + 81 : U32), f_G))
++  ProgressiveBitsStruct_g0_pw5(pos, c, f_A, f_B, f_C, f_D, f_E, f_F, f_H, bitvector_1280_e.bv1280_putk(out, (pos + 0 : U32), f_G))
+ 

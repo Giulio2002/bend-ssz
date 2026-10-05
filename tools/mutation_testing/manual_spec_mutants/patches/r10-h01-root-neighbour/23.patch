@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/23
+# type: FuluEth1Block
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of timestamp and deposit_root are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluEth1Block_hashtreeroot_generated.bend
+# sym: Eth1Block_rt2,Eth1Block_hash_tree_root
+--- a/types/FuluEth1Block_hashtreeroot_generated.bend
++++ b/types/FuluEth1Block_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_deposit_count) = pair
+-  (h, D.node(hl, D.node(hl, d_timestamp, d_deposit_root), D.node(hl, d_deposit_count, D.zero())))
++  (h, D.node(hl, D.node(hl, d_deposit_root, d_timestamp), D.node(hl, d_deposit_count, D.zero())))
+ 

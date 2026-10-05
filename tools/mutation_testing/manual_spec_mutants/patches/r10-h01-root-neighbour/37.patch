@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/37
+# type: FuluLightClientUpdate
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of attested_header and next_sync_committee are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluLightClientUpdate_hashtreeroot_generated.bend
+# sym: LightClientUpdate_rt6,LightClientUpdate_hash_tree_root
+--- a/types/FuluLightClientUpdate_hashtreeroot_generated.bend
++++ b/types/FuluLightClientUpdate_hashtreeroot_generated.bend
+@@ -21,3 +21,3 @@
+   (h, d_signature_slot) = pair
+-  (h, (FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_attested_header, d_next_sync_committee), D.node(hl, d_next_sync_committee_branch, d_finalized_header)), D.node(hl, D.node(hl, d_finality_branch, d_sync_aggregate), D.node(hl, d_signature_slot, D.zero())))))
++  (h, (FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_next_sync_committee, d_attested_header), D.node(hl, d_next_sync_committee_branch, d_finalized_header)), D.node(hl, D.node(hl, d_finality_branch, d_sync_aggregate), D.node(hl, d_signature_slot, D.zero())))))
+ 

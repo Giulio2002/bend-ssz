@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/08
+# type: FuluDataColumnsByRootIdentifier
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 32 (fixed part 36)
+# why: fixed part length off by one offset
+# file: types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
+# sym: DataColumnsByRootIdentifier_putn,DataColumnsByRootIdentifier_serialize,DataColumnsByRootIdentifier_encode
+--- a/types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
++++ b/types/FuluDataColumnsByRootIdentifier_encode_ssz_generated.bend
+@@ -28,3 +28,3 @@
+   match o:
+-    case FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{+block_root, columns}: DataColumnsByRootIdentifier_pw0(pos, block_root, Fulu_list_uint64_128_e.l128_u64_putv(out, pos, 32, 36, columns))
++    case FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{+block_root, columns}: DataColumnsByRootIdentifier_pw0(pos, block_root, Fulu_list_uint64_128_e.l128_u64_putv(out, pos, 32, 32, columns))
+ 

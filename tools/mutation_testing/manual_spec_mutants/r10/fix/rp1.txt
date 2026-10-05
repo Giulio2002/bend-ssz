@@ -1,0 +1,17 @@
+r10-d01-default/01 C/fulu_b20_default_zero C/fulu_Bytes20_default_image
+r10-d01-default/02 C/fulu_b32_default_zero C/fulu_Checkpoint_default_image
+r10-d01-default/03 C/fulu_b48_default_zero C/fulu_Bytes48_default_image
+r10-d01-default/04 C/fulu_b8_default_zero C/fulu_Bytes8_default_image
+r10-d01-default/05 C/fulu_b96_default_zero C/fulu_Bytes96_default_image
+r10-d01-default/09 C/fulu_bv128_default_zero C/fulu_SyncCommitteeContribution_default_image
+r10-d01-default/10 C/fulu_bv4_default_zero
+r10-d01-default/11 C/fulu_bv512_default_zero C/fulu_SyncAggregate_default_image
+r10-d01-default/12 C/fulu_bv64_default_zero C/fulu_Attestation_default_image
+r10-d01-default/20 C/generic_bv513_default_zero C/generic_bitvector_513_default_image
+r10-d01-default/21 C/generic_bv5_default_zero C/generic_bitvector_5_default_image
+r10-d01-default/22 C/fulu_bool_default_zero C/fulu_boolean_default_image
+r10-d01-default/23 C/fulu_u64_default_zero C/fulu_uint64_default_image C/fulu_Checkpoint_default_image
+r10-l02-kzg-decode/09 V/fulu_LightClientUpdate_decode_literal_bad_order_finalized_header
+r10-r01-reader-advance/11 V/fulu_BeaconState_decode_literal_win
+r10-w01-fixed-order/03 A/fulu_BeaconState_writer_win
+r10-w02-var-slot/05 A/fulu_BeaconState_writer_win

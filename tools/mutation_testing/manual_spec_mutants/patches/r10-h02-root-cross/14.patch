@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/14
+# type: FuluExecutionPayload
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of transactions and withdrawals are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluExecutionPayload_hashtreeroot_generated.bend
+# sym: ExecutionPayload_g1_rt7,ExecutionPayload_hash_tree_root
+--- a/types/FuluExecutionPayload_hashtreeroot_generated.bend
++++ b/types/FuluExecutionPayload_hashtreeroot_generated.bend
+@@ -62,3 +62,3 @@
+   (h, d_blob_gas_used) = pair
+-  (h, (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, D.node(hl, D.node(hl, D.node(hl, d_gas_used, d_timestamp), D.node(hl, d_extra_data, d_base_fee_per_gas)), D.node(hl, D.node(hl, d_block_hash, d_transactions), D.node(hl, d_withdrawals, d_blob_gas_used)))))
++  (h, (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, D.node(hl, D.node(hl, D.node(hl, d_gas_used, d_timestamp), D.node(hl, d_extra_data, d_base_fee_per_gas)), D.node(hl, D.node(hl, d_block_hash, d_withdrawals), D.node(hl, d_transactions, d_blob_gas_used)))))
+ 

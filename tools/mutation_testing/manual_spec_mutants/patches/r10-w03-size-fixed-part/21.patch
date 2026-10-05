@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/21
+# type: FuluSignedAggregateAndProof
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 104 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+# sym: SignedAggregateAndProof_size,SignedAggregateAndProof_serialize,SignedAggregateAndProof_encode
+--- a/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
++++ b/types/FuluSignedAggregateAndProof_encode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   match o:
+-    case FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, +signature}: SignedAggregateAndProof_sz0(signature, 100, FuluAggregateAndProof_e.AggregateAndProof_size(message))
++    case FuluSignedAggregateAndProof_d.SignedAggregateAndProof{message, +signature}: SignedAggregateAndProof_sz0(signature, 104, FuluAggregateAndProof_e.AggregateAndProof_size(message))
+ 

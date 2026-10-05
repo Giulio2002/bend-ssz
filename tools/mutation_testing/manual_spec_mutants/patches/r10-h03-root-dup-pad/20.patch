@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/20
+# type: FuluIndexedAttestation
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root signature is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluIndexedAttestation_hashtreeroot_generated.bend
+# sym: IndexedAttestation_rt2,IndexedAttestation_hash_tree_root
+--- a/types/FuluIndexedAttestation_hashtreeroot_generated.bend
++++ b/types/FuluIndexedAttestation_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_signature) = pair
+-  (h, (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, D.node(hl, D.node(hl, d_attesting_indices, d_data), D.node(hl, d_signature, D.zero()))))
++  (h, (FuluIndexedAttestation_d.IndexedAttestation{attesting_indices, data, signature}, D.node(hl, D.node(hl, d_attesting_indices, d_data), d_signature)))
+ 

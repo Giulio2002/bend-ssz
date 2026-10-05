@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/53
+# type: FuluSyncAggregate
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of sync_committee_bits and sync_committee_signature are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSyncAggregate_hashtreeroot_generated.bend
+# sym: SyncAggregate_rt1,SyncAggregate_hash_tree_root
+--- a/types/FuluSyncAggregate_hashtreeroot_generated.bend
++++ b/types/FuluSyncAggregate_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_sync_committee_signature) = pair
+-  (h, D.node(hl, d_sync_committee_bits, d_sync_committee_signature))
++  (h, D.node(hl, d_sync_committee_signature, d_sync_committee_bits))
+ 

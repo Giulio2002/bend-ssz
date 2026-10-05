@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/04
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 200 and 204 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_g0_put,BeaconBlockBody_g0_pw0,BeaconBlockBody_serialize,BeaconBlockBody_encode
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+   (proposer_slashings, c) = r
+-  BeaconBlockBody_g0_pw1(pos, randao_reveal, eth1_data, graffiti, proposer_slashings, attestations, deposits, voluntary_exits, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putv(out, pos, 204, c, attester_slashings))
++  BeaconBlockBody_g0_pw1(pos, randao_reveal, eth1_data, graffiti, proposer_slashings, attestations, deposits, voluntary_exits, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putv(out, pos, 200, c, attester_slashings))
+ 
+@@ -86,3 +86,3 @@
+   match o:
+-    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_pw0(pos, randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_putv(out, pos, 200, voff, proposer_slashings))
++    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_pw0(pos, randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_putv(out, pos, 204, voff, proposer_slashings))
+ 

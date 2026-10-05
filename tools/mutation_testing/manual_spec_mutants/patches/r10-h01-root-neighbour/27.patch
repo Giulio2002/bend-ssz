@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/27
+# type: FuluExecutionRequests
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of deposits and withdrawals are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluExecutionRequests_hashtreeroot_generated.bend
+# sym: ExecutionRequests_rt2,ExecutionRequests_hash_tree_root
+--- a/types/FuluExecutionRequests_hashtreeroot_generated.bend
++++ b/types/FuluExecutionRequests_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (consolidations, d_consolidations) = r
+-  (h, (FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}, D.node(hl, D.node(hl, d_deposits, d_withdrawals), D.node(hl, d_consolidations, D.zero()))))
++  (h, (FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}, D.node(hl, D.node(hl, d_withdrawals, d_deposits), D.node(hl, d_consolidations, D.zero()))))
+ 

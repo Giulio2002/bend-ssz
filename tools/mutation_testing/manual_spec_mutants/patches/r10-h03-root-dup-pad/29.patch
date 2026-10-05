@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/29
+# type: FuluSyncCommitteeContribution
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root signature is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+# sym: SyncCommitteeContribution_rt5,SyncCommitteeContribution_hash_tree_root
+--- a/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, D.node(hl, d_signature, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, d_signature, z1)))
+ 

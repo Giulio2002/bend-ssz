@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/28
+# type: FuluForkData
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of current_version and genesis_validators_root are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluForkData_hashtreeroot_generated.bend
+# sym: ForkData_rt1,ForkData_hash_tree_root
+--- a/types/FuluForkData_hashtreeroot_generated.bend
++++ b/types/FuluForkData_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_genesis_validators_root) = pair
+-  (h, D.node(hl, d_current_version, d_genesis_validators_root))
++  (h, D.node(hl, d_genesis_validators_root, d_current_version))
+ 

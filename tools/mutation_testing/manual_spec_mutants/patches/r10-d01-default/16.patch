@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/16
+# type: FuluHistoricalBatch
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 8191 elements (262112 bytes) instead of 8192
+# why: off-by-one length in the default constructor
+# file: types/Fulu_vec_bytevec_32_8192_def_generated.bend
+# sym: v8192_b32_default
+--- a/types/Fulu_vec_bytevec_32_8192_def_generated.bend
++++ b/types/Fulu_vec_bytevec_32_8192_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v8192_b32_default() -> O.Words: O.words_new(262144)
++def v8192_b32_default() -> O.Words: O.words_new(262112)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/16
+# type: FuluContributionAndProof
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of aggregator_index and contribution are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluContributionAndProof_hashtreeroot_generated.bend
+# sym: ContributionAndProof_rt2,ContributionAndProof_hash_tree_root
+--- a/types/FuluContributionAndProof_hashtreeroot_generated.bend
++++ b/types/FuluContributionAndProof_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_selection_proof) = pair
+-  (h, (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, D.node(hl, D.node(hl, d_aggregator_index, d_contribution), D.node(hl, d_selection_proof, D.zero()))))
++  (h, (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, D.node(hl, D.node(hl, d_contribution, d_aggregator_index), D.node(hl, d_selection_proof, D.zero()))))
+ 

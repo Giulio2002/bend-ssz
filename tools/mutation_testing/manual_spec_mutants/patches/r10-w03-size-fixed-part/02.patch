@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 75 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_size,ComplexTestStruct_serialize,ComplexTestStruct_encode
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -38,3 +38,3 @@
+   match o:
+-    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_sz0(f_A, f_C, f_D, f_E, f_F, f_G, 71, list_uint16_128_e.l128_u16_size(f_B))
++    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_sz0(f_A, f_C, f_D, f_E, f_F, f_G, 75, list_uint16_128_e.l128_u16_size(f_B))
+ 

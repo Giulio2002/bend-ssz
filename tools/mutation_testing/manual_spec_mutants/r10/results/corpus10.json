@@ -1,0 +1,259 @@
+[
+ {
+  "id": "r10-d01-default/06",
+  "type": "FuluCurrentSyncCommitteeBranch",
+  "cases": 294,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 11.5
+ },
+ {
+  "id": "r10-h01-root-neighbour/10",
+  "type": "FuluBeaconBlockHeader",
+  "cases": 279,
+  "official": 0,
+  "corpus_bad": 143,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 143
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockHeader#3087: root differs",
+   "BeaconBlockHeader#3088: root differs",
+   "BeaconBlockHeader#3095: root differs",
+   "BeaconBlockHeader#3096: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 12.5
+ },
+ {
+  "id": "r10-h02-root-cross/06",
+  "type": "FuluBeaconBlockHeader",
+  "cases": 279,
+  "official": 0,
+  "corpus_bad": 229,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 229
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockHeader#3086: root differs",
+   "BeaconBlockHeader#3087: root differs",
+   "BeaconBlockHeader#3088: root differs",
+   "BeaconBlockHeader#3089: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 12.6
+ },
+ {
+  "id": "r10-h03-root-dup-pad/07",
+  "type": "FuluBeaconBlockHeader",
+  "B": "ERROR",
+  "msg": "compile failed g3: est, d_body_root: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:\n   |                                                                                                                                                                                                                                                                                                 ^^^^^^^^^^^\n15 "
+ },
+ {
+  "id": "r10-h04-root-zero-level/04",
+  "type": "FuluBeaconBlockHeader",
+  "cases": 279,
+  "official": 0,
+  "corpus_bad": 254,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 254
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockHeader#3085: root differs",
+   "BeaconBlockHeader#3086: root differs",
+   "BeaconBlockHeader#3087: root differs",
+   "BeaconBlockHeader#3088: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 12.9
+ },
+ {
+  "id": "r10-r01-reader-advance/09",
+  "type": "FuluBeaconBlockHeader",
+  "cases": 279,
+  "official": 0,
+  "corpus_bad": 213,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 213
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockHeader#3087: re-encoding differs",
+   "BeaconBlockHeader#3088: re-encoding differs",
+   "BeaconBlockHeader#3089: re-encoding differs",
+   "BeaconBlockHeader#3101: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 12.8
+ },
+ {
+  "id": "r10-w01-fixed-order/19",
+  "type": "FuluSyncCommittee",
+  "cases": 293,
+  "official": 0,
+  "corpus_bad": 267,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 267
+  },
+  "timeouts": 0,
+  "examples": [
+   "SyncCommittee#26636: re-encoding differs",
+   "SyncCommittee#26637: re-encoding differs",
+   "SyncCommittee#26638: re-encoding differs",
+   "SyncCommittee#26639: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 12.4
+ },
+ {
+  "id": "r10-w02-var-slot/06",
+  "type": "FuluDataColumnSidecar",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 151,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 151
+  },
+  "timeouts": 0,
+  "examples": [
+   "DataColumnSidecar#8256: re-encoding differs",
+   "DataColumnSidecar#8258: re-encoding differs",
+   "DataColumnSidecar#8259: re-encoding differs",
+   "DataColumnSidecar#8260: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 36.4
+ },
+ {
+  "id": "r10-w03-size-fixed-part/09",
+  "type": "FuluDataColumnSidecar",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 215,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 215
+  },
+  "timeouts": 0,
+  "examples": [
+   "DataColumnSidecar#8255: re-encoding differs",
+   "DataColumnSidecar#8256: re-encoding differs",
+   "DataColumnSidecar#8257: re-encoding differs",
+   "DataColumnSidecar#8258: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 36.6
+ },
+ {
+  "id": "r10-w04-first-offset/07",
+  "type": "FuluDataColumnSidecar",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 215,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 215
+  },
+  "timeouts": 0,
+  "examples": [
+   "DataColumnSidecar#8255: re-encoding differs",
+   "DataColumnSidecar#8256: re-encoding differs",
+   "DataColumnSidecar#8257: re-encoding differs",
+   "DataColumnSidecar#8258: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 35.5
+ },
+ {
+  "id": "r10-l01-kzg-sync-roots/01",
+  "type": "FuluSyncCommittee",
+  "cases": 293,
+  "official": 0,
+  "corpus_bad": 268,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 268
+  },
+  "timeouts": 0,
+  "examples": [
+   "SyncCommittee#26635: root differs",
+   "SyncCommittee#26636: root differs",
+   "SyncCommittee#26637: root differs",
+   "SyncCommittee#26638: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 11.9
+ },
+ {
+  "id": "r10-l02-kzg-decode/01",
+  "type": "FuluDataColumnSidecar",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 2,
+  "official_bad": 0,
+  "kinds": {
+   "ref accepts, mutant rejects": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "DataColumnSidecar#8269: ref accepts, mutant rejects",
+   "DataColumnSidecar#8276: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 36.8
+ },
+ {
+  "id": "r10-p01-active-fields/03",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 0,
+  "corpus_bad": 114,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: root differs",
+   "ProgressiveVarTestStruct#22295: root differs",
+   "ProgressiveVarTestStruct#22296: root differs",
+   "ProgressiveVarTestStruct#22297: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 14.4
+ },
+ {
+  "id": "r10-h01-root-neighbour/58",
+  "type": "FuluValidator",
+  "cases": 275,
+  "official": 0,
+  "corpus_bad": 250,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 250
+  },
+  "timeouts": 0,
+  "examples": [
+   "Validator#27662: root differs",
+   "Validator#27663: root differs",
+   "Validator#27664: root differs",
+   "Validator#27665: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 11.7
+ }
+]

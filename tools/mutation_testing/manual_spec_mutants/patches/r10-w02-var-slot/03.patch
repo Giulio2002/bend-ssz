@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/03
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 0 and 4 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_putn,AttesterSlashing_pw0,AttesterSlashing_serialize,AttesterSlashing_encode
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+   (attestation_1, c) = r
+-  AttesterSlashing_pw1(pos, attestation_1, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 4, c, attestation_2))
++  AttesterSlashing_pw1(pos, attestation_1, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, c, attestation_2))
+ 
+@@ -36,3 +36,3 @@
+   match o:
+-    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_pw0(pos, attestation_2, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 0, 8, attestation_1))
++    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_pw0(pos, attestation_2, FuluIndexedAttestation_e.IndexedAttestation_bx_putv(out, pos, 4, 8, attestation_1))
+ 

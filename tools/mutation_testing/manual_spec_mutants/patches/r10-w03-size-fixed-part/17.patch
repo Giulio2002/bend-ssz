@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/17
+# type: FuluLightClientHeader
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 248 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluLightClientHeader_encode_ssz_generated.bend
+# sym: LightClientHeader_size,LightClientHeader_serialize,LightClientHeader_encode
+--- a/types/FuluLightClientHeader_encode_ssz_generated.bend
++++ b/types/FuluLightClientHeader_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   match o:
+-    case FuluLightClientHeader_d.LightClientHeader{+beacon, execution, execution_branch}: LightClientHeader_sz0(beacon, execution_branch, 244, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_size(execution))
++    case FuluLightClientHeader_d.LightClientHeader{+beacon, execution, execution_branch}: LightClientHeader_sz0(beacon, execution_branch, 248, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_size(execution))
+ 

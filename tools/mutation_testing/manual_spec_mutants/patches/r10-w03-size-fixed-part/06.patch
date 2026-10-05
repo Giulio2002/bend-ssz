@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/06
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 4 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_g0_size,BeaconBlockBody_serialize,BeaconBlockBody_encode
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -57,3 +57,3 @@
+   match o:
+-    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_sz0(randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, 0, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_size(proposer_slashings))
++    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_sz0(randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, 4, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_size(proposer_slashings))
+ 

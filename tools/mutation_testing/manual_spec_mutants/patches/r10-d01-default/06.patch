@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/06
+# type: FuluCurrentSyncCommitteeBranch
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 5 elements (160 bytes) instead of 6
+# why: off-by-one length in the default constructor
+# file: types/FuluCurrentSyncCommitteeBranch_def_generated.bend
+# sym: v6_b32_default
+--- a/types/FuluCurrentSyncCommitteeBranch_def_generated.bend
++++ b/types/FuluCurrentSyncCommitteeBranch_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v6_b32_default() -> O.Words: O.words_new(192)
++def v6_b32_default() -> O.Words: O.words_new(160)
+ 

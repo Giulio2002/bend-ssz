@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/26
+# type: vec_uint128_513
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 512 elements (8192 bytes) instead of 513
+# why: off-by-one length in the default constructor
+# file: types/vec_uint128_513_def_generated.bend
+# sym: v513_u128_default
+--- a/types/vec_uint128_513_def_generated.bend
++++ b/types/vec_uint128_513_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v513_u128_default() -> O.Words: O.words_new(8208)
++def v513_u128_default() -> O.Words: O.words_new(8192)
+ 

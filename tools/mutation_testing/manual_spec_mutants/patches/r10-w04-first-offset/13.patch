@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/13
+# type: FuluLightClientHeader
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 240 (fixed part 244)
+# why: fixed part length off by one offset
+# file: types/FuluLightClientHeader_encode_ssz_generated.bend
+# sym: LightClientHeader_putn,LightClientHeader_serialize,LightClientHeader_encode
+--- a/types/FuluLightClientHeader_encode_ssz_generated.bend
++++ b/types/FuluLightClientHeader_encode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+   match o:
+-    case FuluLightClientHeader_d.LightClientHeader{+beacon, execution, execution_branch}: LightClientHeader_pw0(pos, beacon, execution_branch, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putv(out, pos, 112, 244, execution))
++    case FuluLightClientHeader_d.LightClientHeader{+beacon, execution, execution_branch}: LightClientHeader_pw0(pos, beacon, execution_branch, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_putv(out, pos, 112, 240, execution))
+ 

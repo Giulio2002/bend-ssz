@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/25
+# type: FuluExecutionPayload
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 520 is read at byte 512 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_g2_read,ExecutionPayload_decode
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -107,3 +107,3 @@
+ 
+-def ExecutionPayload_g2_read(buf: B.Buf, +off: U32, +len: U32, +vend: U32) -> B.Buf & FuluExecutionPayload_d.ExecutionPayload_g2: ExecutionPayload_g2_rd0(off, len, vend, uint64_r.u64_read(buf, (off + 520 : U32), 8))
++def ExecutionPayload_g2_read(buf: B.Buf, +off: U32, +len: U32, +vend: U32) -> B.Buf & FuluExecutionPayload_d.ExecutionPayload_g2: ExecutionPayload_g2_rd0(off, len, vend, uint64_r.u64_read(buf, (off + 512 : U32), 8))
+ 

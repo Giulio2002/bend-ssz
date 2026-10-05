@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/03
+# type: FixedTestStruct
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root f_C is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+# sym: FixedTestStruct_rt2,FixedTestStruct_hash_tree_root
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_f_C) = pair
+-  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero())))
++  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), d_f_C))
+ 

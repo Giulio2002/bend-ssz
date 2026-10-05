@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/12
+# type: FuluAttestation
+# ops: encode,root
+# spec: Default values: the default of Bitvector[N] is N False bits
+# fault: bit 0 of the default is set
+# why: non-zero default
+# file: types/Fulu_bitvector_64_def_generated.bend
+# sym: bv64_default
+--- a/types/Fulu_bitvector_64_def_generated.bend
++++ b/types/Fulu_bitvector_64_def_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def bv64_default() -> Bitvector64: Bitvector64{0, 0}
++def bv64_default() -> Bitvector64: Bitvector64{1, 0}
+ 

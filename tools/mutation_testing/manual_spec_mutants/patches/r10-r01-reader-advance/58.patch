@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/58
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 249 is read at byte 81 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_g1_rd3,ProgressiveBitsStruct_decode
+--- a/types/ProgressiveBitsStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_decode_ssz_generated.bend
+@@ -89,3 +89,3 @@
+   (buf, f_I) = pair
+-  ProgressiveBitsStruct_g1_rd4(off, len, vend, o_f_I, o_f_K, o_f_L, f_I, bitvector_1281_r.bv1281_read(buf, (off + 249 : U32), 161))
++  ProgressiveBitsStruct_g1_rd4(off, len, vend, o_f_I, o_f_K, o_f_L, f_I, bitvector_1281_r.bv1281_read(buf, (off + 81 : U32), 161))
+ 

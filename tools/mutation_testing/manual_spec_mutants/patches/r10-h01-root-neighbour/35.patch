@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/35
+# type: FuluLightClientHeader
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of beacon and execution are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluLightClientHeader_hashtreeroot_generated.bend
+# sym: LightClientHeader_rt2,LightClientHeader_hash_tree_root
+--- a/types/FuluLightClientHeader_hashtreeroot_generated.bend
++++ b/types/FuluLightClientHeader_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (execution_branch, d_execution_branch) = r
+-  (h, (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, D.node(hl, D.node(hl, d_beacon, d_execution), D.node(hl, d_execution_branch, D.zero()))))
++  (h, (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, D.node(hl, D.node(hl, d_execution, d_beacon), D.node(hl, d_execution_branch, D.zero()))))
+ 

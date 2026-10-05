@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/23
+# type: FuluValidator
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of activation_epoch and exit_epoch are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluValidator_hashtreeroot_generated.bend
+# sym: Validator_rt7,Validator_hash_tree_root
+--- a/types/FuluValidator_hashtreeroot_generated.bend
++++ b/types/FuluValidator_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, d_withdrawable_epoch) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_effective_balance, d_slashed)), D.node(hl, D.node(hl, d_activation_eligibility_epoch, d_activation_epoch), D.node(hl, d_exit_epoch, d_withdrawable_epoch))))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_effective_balance, d_slashed)), D.node(hl, D.node(hl, d_activation_eligibility_epoch, d_exit_epoch), D.node(hl, d_activation_epoch, d_withdrawable_epoch))))
+ 

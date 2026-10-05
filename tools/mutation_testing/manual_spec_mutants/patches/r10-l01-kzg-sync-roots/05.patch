@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/05
+# type: FuluDataColumnSidecar,FuluBeaconBlockBody
+# ops: root
+# spec: mix_in_length mixes the number of elements
+# fault: the length mixed in is the number of 32-byte chunks of the serialization (n / 32)
+# why: chunk count instead of element count
+# file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+# sym: l4096_b48_mix,l4096_b48_root,DataColumnSidecar_hash_tree_root
+--- a/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
++++ b/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+@@ -13,3 +13,3 @@
+   match o:
+-    case O.Words{ws, +n}: (h, (O.Words{ws, n}, O.mix_len(hl, d, U32.div(n, 48))))
++    case O.Words{ws, +n}: (h, (O.Words{ws, n}, O.mix_len(hl, d, U32.div(n, 32))))
+ 

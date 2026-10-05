@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/04
+# type: FuluBytes8
+# ops: encode,root
+# spec: Default values: the default of ByteVector[N] is N zero bytes
+# fault: the first word of the default is 1 (byte 0 is 0x01)
+# why: non-zero default
+# file: types/FuluBytes8_def_generated.bend
+# sym: b8_default
+--- a/types/FuluBytes8_def_generated.bend
++++ b/types/FuluBytes8_def_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def b8_default() -> Bytes8: Bytes8{0, 0}
++def b8_default() -> Bytes8: Bytes8{1, 0}
+ 

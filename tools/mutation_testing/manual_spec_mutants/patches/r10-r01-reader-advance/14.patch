@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/14
+# type: FuluCheckpoint
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 8 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluCheckpoint_decode_ssz_generated.bend
+# sym: Checkpoint_rd0,Checkpoint_decode
+--- a/types/FuluCheckpoint_decode_ssz_generated.bend
++++ b/types/FuluCheckpoint_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +epoch) = pair
+-  Checkpoint_rd1(off, len, epoch, FuluBytes32_r.b32_read(buf, (off + 8 : U32), 32))
++  Checkpoint_rd1(off, len, epoch, FuluBytes32_r.b32_read(buf, (off + 0 : U32), 32))
+ 

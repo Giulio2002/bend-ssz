@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/27
+# type: FuluFork
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 8 is read at byte 4 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluFork_decode_ssz_generated.bend
+# sym: Fork_rd1,Fork_decode
+--- a/types/FuluFork_decode_ssz_generated.bend
++++ b/types/FuluFork_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +current_version) = pair
+-  Fork_rd2(off, len, previous_version, current_version, uint64_r.u64_read(buf, (off + 8 : U32), 8))
++  Fork_rd2(off, len, previous_version, current_version, uint64_r.u64_read(buf, (off + 4 : U32), 8))
+ 

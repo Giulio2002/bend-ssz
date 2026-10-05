@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/15
+# type: FuluConsolidationRequest
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 68 is read at byte 20 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluConsolidationRequest_decode_ssz_generated.bend
+# sym: ConsolidationRequest_rd1,ConsolidationRequest_decode
+--- a/types/FuluConsolidationRequest_decode_ssz_generated.bend
++++ b/types/FuluConsolidationRequest_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +source_pubkey) = pair
+-  ConsolidationRequest_rd2(off, len, source_address, source_pubkey, FuluBytes48_r.b48_read(buf, (off + 68 : U32), 48))
++  ConsolidationRequest_rd2(off, len, source_address, source_pubkey, FuluBytes48_r.b48_read(buf, (off + 20 : U32), 48))
+ 

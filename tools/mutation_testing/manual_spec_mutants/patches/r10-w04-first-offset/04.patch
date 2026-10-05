@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/04
+# type: FuluAttestation
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 232 (fixed part 236)
+# why: fixed part length off by one offset
+# file: types/FuluAttestation_encode_ssz_generated.bend
+# sym: Attestation_putn,Attestation_serialize,Attestation_encode
+--- a/types/FuluAttestation_encode_ssz_generated.bend
++++ b/types/FuluAttestation_encode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+   match o:
+-    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_pw0(pos, data, signature, committee_bits, Fulu_bitlist_131072_e.bits131072_putv(out, pos, 0, 236, aggregation_bits))
++    case FuluAttestation_d.Attestation{aggregation_bits, +data, +signature, +committee_bits}: Attestation_pw0(pos, data, signature, committee_bits, Fulu_bitlist_131072_e.bits131072_putv(out, pos, 0, 232, aggregation_bits))
+ 

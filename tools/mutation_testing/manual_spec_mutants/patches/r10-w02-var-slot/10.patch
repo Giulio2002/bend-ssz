@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/10
+# type: FuluLightClientUpdate
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 0 and 24820 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluLightClientUpdate_encode_ssz_generated.bend
+# sym: LightClientUpdate_putn,LightClientUpdate_pw0,LightClientUpdate_serialize,LightClientUpdate_encode
+--- a/types/FuluLightClientUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_encode_ssz_generated.bend
+@@ -59,3 +59,3 @@
+   (attested_header, c) = r
+-  LightClientUpdate_pw1(pos, attested_header, next_sync_committee, next_sync_committee_branch, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 24820, c, finalized_header))
++  LightClientUpdate_pw1(pos, attested_header, next_sync_committee, next_sync_committee_branch, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, c, finalized_header))
+ 
+@@ -63,3 +63,3 @@
+   match o:
+-    case FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientUpdate_pw0(pos, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, 25216, attested_header))
++    case FuluLightClientUpdate_d.LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientUpdate_pw0(pos, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 24820, 25216, attested_header))
+ 

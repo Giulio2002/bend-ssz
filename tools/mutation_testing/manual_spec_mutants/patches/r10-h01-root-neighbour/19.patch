@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/19
+# type: FuluDepositData
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of pubkey and withdrawal_credentials are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluDepositData_hashtreeroot_generated.bend
+# sym: DepositData_rt3,DepositData_hash_tree_root
+--- a/types/FuluDepositData_hashtreeroot_generated.bend
++++ b/types/FuluDepositData_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, d_signature) = pair
+-  (h, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_amount, d_signature)))
++  (h, D.node(hl, D.node(hl, d_withdrawal_credentials, d_pubkey), D.node(hl, d_amount, d_signature)))
+ 

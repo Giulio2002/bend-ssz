@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/09
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of randao_reveal and eth1_data are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+# sym: BeaconBlockBody_g0_rt7,BeaconBlockBody_hash_tree_root
+--- a/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+@@ -38,3 +38,3 @@
+   (voluntary_exits, d_voluntary_exits) = r
+-  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, D.node(hl, D.node(hl, D.node(hl, d_randao_reveal, d_eth1_data), D.node(hl, d_graffiti, d_proposer_slashings)), D.node(hl, D.node(hl, d_attester_slashings, d_attestations), D.node(hl, d_deposits, d_voluntary_exits)))))
++  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, D.node(hl, D.node(hl, D.node(hl, d_eth1_data, d_randao_reveal), D.node(hl, d_graffiti, d_proposer_slashings)), D.node(hl, D.node(hl, d_attester_slashings, d_attestations), D.node(hl, d_deposits, d_voluntary_exits)))))
+ 

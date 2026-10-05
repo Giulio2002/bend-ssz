@@ -1,0 +1,261 @@
+## round 10, hand-written: sync-committee / light-client branches / DataColumnSidecar KZG lists / progressive active_fields
+=== r10-l01-kzg-sync-roots
+type: FuluSyncCommittee
+ops: root
+file: types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
+sym: v512_b48_root,SyncCommittee_hash_tree_root
+spec: hash_tree_root(Vector[Bytes48, 512]) = merkleize([hash_tree_root(pubkey)...]); a Bytes48 root is merkleize of 2 chunks
+fault: each pubkey's root is its first chunk only (element subtree depth 0 instead of 1)
+why: treating Bytes48 as a basic 32-byte chunk
+-O.elems_root(hl, h, o, 12, 1, 9, seg)
++O.elems_root(hl, h, o, 12, 0, 9, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluSyncCommittee
+ops: root
+file: types/Fulu_vec_bytevec_48_512_hashtreeroot_generated.bend
+sym: v512_b48_root,SyncCommittee_hash_tree_root
+spec: merkleize(chunks, limit=None) pads to next_pow_of_two(512) = 512 leaves: depth 9
+fault: the pubkeys tree has depth 10 (bit length of 512)
+why: depth from bit_length(N) instead of ceil(log2(N))
+-O.elems_root(hl, h, o, 12, 1, 9, seg)
++O.elems_root(hl, h, o, 12, 1, 10, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluDataColumnSidecar,FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+sym: l4096_b48_root,l4096_b48_mix,DataColumnSidecar_hash_tree_root
+spec: hash_tree_root(List[KZGCommitment, 4096]) = mix_in_length(merkleize(roots, limit=4096), len): depth 12
+fault: the KZG list tree has depth 13
+why: limit + 1 / bit length
+-O.elems_root(hl, h, o, 12, 1, 12, seg)
++O.elems_root(hl, h, o, 12, 1, 13, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluDataColumnSidecar,FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+sym: l4096_b48_root,l4096_b48_mix,DataColumnSidecar_hash_tree_root
+spec: a KZGCommitment (Bytes48) root is merkleize of its 2 chunks
+fault: each commitment / proof root is its first chunk only (bytes 32..47 ignored)
+why: treating Bytes48 as one chunk
+-O.elems_root(hl, h, o, 12, 1, 12, seg)
++O.elems_root(hl, h, o, 12, 0, 12, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluDataColumnSidecar,FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+sym: l4096_b48_mix,l4096_b48_root,DataColumnSidecar_hash_tree_root
+spec: mix_in_length mixes the number of elements
+fault: the length mixed in is the number of 32-byte chunks of the serialization (n / 32)
+why: chunk count instead of element count
+-O.mix_len(hl, d, U32.div(n, 48))
++O.mix_len(hl, d, U32.div(n, 32))
+=== r10-l01-kzg-sync-roots
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+sym: l4096_b2048_mix,l4096_b2048_root,DataColumnSidecar_hash_tree_root
+spec: mix_in_length mixes the number of elements (cells)
+fault: the length mixed in is the byte length of the column
+why: byte count instead of element count
+-O.mix_len(hl, d, U32.div(n, 2048))
++O.mix_len(hl, d, n)
+=== r10-l01-kzg-sync-roots
+type: FuluDataColumnSidecar
+ops: root
+file: types/Fulu_list_bytevec_2048_4096_hashtreeroot_generated.bend
+sym: l4096_b2048_root,DataColumnSidecar_hash_tree_root
+spec: a Cell (ByteVector[2048]) root is merkleize of 64 chunks: depth 6
+fault: each cell is hashed as 32 chunks (depth 5: the second half of the cell ignored)
+why: wrong element subtree depth
+-O.elems_root(hl, h, o, 512, 6, 12, seg)
++O.elems_root(hl, h, o, 512, 5, 12, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluFinalityBranch,FuluLightClientFinalityUpdate
+ops: root
+file: types/FuluFinalityBranch_hashtreeroot_generated.bend
+sym: v7_b32_root,FinalityBranch_hash_tree_root
+spec: merkleize(7 chunks) pads to 8 leaves: depth 3
+fault: the finality branch tree has depth 2 (floor log2 7): the 5th to 7th roots are dropped
+why: floor instead of ceil
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluExecutionBranch,FuluLightClientHeader
+ops: root
+file: types/FuluExecutionBranch_hashtreeroot_generated.bend
+sym: v4_b32_root,ExecutionBranch_hash_tree_root
+spec: merkleize(4 chunks): depth 2
+fault: the execution branch tree has depth 3 (padded to 8)
+why: next power of two strictly above N
+-O.words_root(hl, h, o, 2, seg)
++O.words_root(hl, h, o, 3, seg)
+=== r10-l01-kzg-sync-roots
+type: FuluSyncCommitteeContribution
+ops: root
+file: types/Fulu_bitvector_128_hashtreeroot_generated.bend
+sym: bv128_root,SyncCommitteeContribution_hash_tree_root
+spec: hash_tree_root(Bitvector[128]) = merkleize(pack_bits(bits)): 16 bytes then zero padding in one chunk
+fault: the aggregation bits words are written in big-endian order into the chunk (no byte swap)
+why: byte order of the packed bits
+-(h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
++(h, D.D{w0, w1, w2, w3, 0, 0, 0, 0})
+=== r10-l01-kzg-sync-roots
+type: FuluSyncCommitteeContribution
+ops: root
+file: types/Fulu_bitvector_128_hashtreeroot_generated.bend
+sym: bv128_root,SyncCommitteeContribution_hash_tree_root
+spec: same: the packed bits are right-padded with zeros
+fault: the 16 bytes of bits are placed in the second half of the chunk
+why: left padding
+-(h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
++(h, D.D{0, 0, 0, 0, B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3)})
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+sym: l4096_b48_ok,DataColumnSidecar_decode
+spec: deserialize(List[Bytes48, 4096]): len % 48 == 0 and len / 48 <= 4096
+fault: the limit check is len / 48 < 4096 (a full list of 4096 commitments / proofs is refused)
+why: off-by-one limit
+-U32.is_le(U32.div(len, 48), 4096)
++U32.is_lt(U32.div(len, 48), 4096)
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend
+sym: l4096_b48_ok,DataColumnSidecar_decode
+spec: same: the byte length is a multiple of the element size
+fault: the alignment check is dropped (a list of 49 bytes is accepted)
+why: forgetting the alignment rule
+-(buf, Bool.and(U32.is_eq(len, (U32.div(len, 48) * 48 : U32)), U32.is_le(U32.div(len, 48), 4096)))
++(buf, U32.is_le(U32.div(len, 48), 4096))
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/Fulu_list_bytevec_2048_4096_decode_ssz_generated.bend
+sym: l4096_b2048_ok,DataColumnSidecar_decode
+spec: deserialize(List[Cell, 4096]): len % 2048 == 0
+fault: the alignment check is dropped (a column ending in a partial cell is accepted)
+why: forgetting the alignment rule
+-(buf, Bool.and(U32.is_eq(len, (U32.div(len, 2048) * 2048 : U32)), U32.is_le(U32.div(len, 2048), 4096)))
++(buf, U32.is_le(U32.div(len, 2048), 4096))
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+spec: deserialize(Container): each variable field is bytes [offset_i, offset_{i+1}) (the last up to the end)
+fault: kzg_proofs (the last field) is validated over the kzg_commitments window instead of its own
+why: copy-paste of the previous field's window
+-Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o2 : U32), (len - o2 : U32))
++Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (o2 - o1 : U32))
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+spec: same
+fault: kzg_commitments is validated over the window up to the end of the buffer (o1 .. len) instead of o1 .. o2
+why: last-field rule applied to a middle field
+-Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (o2 - o1 : U32))
++Fulu_list_bytevec_48_4096_r.l4096_b48_ok(buf, (off + o1 : U32), (len - o1 : U32))
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+spec: offsets are non-decreasing (offset_i <= offset_{i+1})
+fault: the kzg_commitments <= kzg_proofs offset order check is dropped
+why: only the upper bound checked
+-DataColumnSidecar_c2(Bool.and(U32.is_le(o1, o2), U32.is_le(o2, len)), buf, off, len, o0, o1, o2)
++DataColumnSidecar_c2(U32.is_le(o2, len), buf, off, len, o0, o1, o2)
+=== r10-l02-kzg-decode
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_ok,DataColumnSidecar_decode
+spec: the first offset equals the fixed-part length (356)
+fault: the first offset may be anything >= 356 (a gap after the fixed part is accepted)
+why: lower bound instead of equality
+-DataColumnSidecar_c0(U32.is_eq(o0, 356), buf, off, len, o0)
++DataColumnSidecar_c0(U32.is_le(356, o0), buf, off, len, o0)
+=== r10-l02-kzg-decode
+type: FuluLightClientUpdate
+ops: decode
+file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+sym: LightClientUpdate_ok,LightClientUpdate_decode
+spec: deserialize(Container): the variable field windows are [o0, o1) and [o1, len)
+fault: attested_header is validated over the finalized_header window
+why: window of the wrong variable field
+-FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o0 : U32), (o1 - o0 : U32))
++FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (len - o1 : U32))
+=== r10-l02-kzg-decode
+type: FuluLightClientUpdate
+ops: decode
+file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+sym: LightClientUpdate_ok,LightClientUpdate_decode
+spec: offsets are non-decreasing
+fault: the o0 <= o1 order check is dropped
+why: only the upper bound checked
+-LightClientUpdate_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++LightClientUpdate_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+=== r10-l02-kzg-decode
+type: FuluLightClientBootstrap
+ops: decode
+file: types/FuluLightClientBootstrap_decode_ssz_generated.bend
+sym: LightClientBootstrap_ok,LightClientBootstrap_decode
+spec: the first offset equals the fixed-part length (24820)
+fault: the first offset may be anything >= 24820
+why: lower bound instead of equality
+-LightClientBootstrap_c0(U32.is_eq(o0, 24820), buf, off, len, o0)
++LightClientBootstrap_c0(U32.is_le(24820, o0), buf, off, len, o0)
+=== r10-l02-kzg-decode
+type: FuluLightClientFinalityUpdate
+ops: decode
+file: types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend
+sym: LightClientFinalityUpdate_ok,LightClientFinalityUpdate_decode
+spec: deserialize(Container): the last variable field is [o1, len)
+fault: finalized_header is validated over [o1, o1 + (o1 - o0)) (the previous field's length)
+why: window length of the wrong field
+-FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (len - o1 : U32))
++FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (o1 - o0 : U32))
+=== r10-p01-active-fields
+type: ProgressiveSingleListContainerTestStruct
+ops: root
+file: types/ProgressiveSingleListContainerTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_hash_tree_root
+spec: mix_in_active_fields: active_fields is packed like a Bitvector (bit i of byte i // 8 at position i % 8, little-endian bit order)
+fault: the active_fields bits are packed MSB-first within the byte (field 4 -> 0b00001000 = 8 instead of 16)
+why: bit order inside the byte
+-D.zero()), 16)))
++D.zero()), 8)))
+=== r10-p01-active-fields
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_hash_tree_root
+spec: same (active_fields bytes 0x15 0x31 0x30 = 3158293 little-endian)
+fault: the active_fields bits are packed MSB-first within each byte (0xA8 0x8C 0x0C = 822440)
+why: bit order inside the byte
+-d_f_A), 3158293)))
++d_f_A), 822440)))
+=== r10-p01-active-fields
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/ProgressiveComplexTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveComplexTestStruct_hash_tree_root
+spec: same: the active_fields chunk is the bitvector bytes, little-endian
+fault: the three active_fields bytes are written big-endian (0x15 0x31 0x30 -> 0x30 0x31 0x15 = 1388848 read back)
+why: byte order of the bitmap
+-d_f_A), 3158293)))
++d_f_A), 1388848)))
+=== r10-p01-active-fields
+type: ProgressiveVarTestStruct
+ops: root
+file: types/ProgressiveVarTestStruct_hashtreeroot_generated.bend
+sym: ProgressiveVarTestStruct_hash_tree_root
+spec: active_fields [1, 0, 1, 0, 1] is 0b10101 = 21
+fault: the bitmap of the inactive slots is mixed in (0b01010 = 10)
+why: polarity of active_fields
+-d_f_A), 21)))
++d_f_A), 10)))

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/08
+# type: FuluBLSToExecutionChange
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of validator_index and from_bls_pubkey are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
+# sym: BLSToExecutionChange_rt2,BLSToExecutionChange_hash_tree_root
+--- a/types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
++++ b/types/FuluBLSToExecutionChange_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_to_execution_address) = pair
+-  (h, D.node(hl, D.node(hl, d_validator_index, d_from_bls_pubkey), D.node(hl, d_to_execution_address, D.zero())))
++  (h, D.node(hl, D.node(hl, d_from_bls_pubkey, d_validator_index), D.node(hl, d_to_execution_address, D.zero())))
+ 

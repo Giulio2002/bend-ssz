@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/15
+# type: FuluLightClientUpdate
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 4 and byte 24628 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluLightClientUpdate_encode_ssz_generated.bend
+# sym: LightClientUpdate_pw1,LightClientUpdate_pw2,LightClientUpdate_serialize,LightClientUpdate_encode
+--- a/types/FuluLightClientUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_encode_ssz_generated.bend
+@@ -49,3 +49,3 @@
+   (next_sync_committee, fl) = r
+-  LightClientUpdate_pw3(pos, (cur .|. fl : U32), attested_header, next_sync_committee, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(out, (pos + 24628 : U32), next_sync_committee_branch))
++  LightClientUpdate_pw3(pos, (cur .|. fl : U32), attested_header, next_sync_committee, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(out, (pos + 4 : U32), next_sync_committee_branch))
+ 
+@@ -54,3 +54,3 @@
+   (finalized_header, c) = r
+-  LightClientUpdate_pw2(pos, c, attested_header, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluSyncCommittee_e.SyncCommittee_putk(out, (pos + 4 : U32), next_sync_committee))
++  LightClientUpdate_pw2(pos, c, attested_header, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluSyncCommittee_e.SyncCommittee_putk(out, (pos + 24628 : U32), next_sync_committee))
+ 

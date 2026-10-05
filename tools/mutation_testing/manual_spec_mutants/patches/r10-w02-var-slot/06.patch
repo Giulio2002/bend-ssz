@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/06
+# type: FuluDataColumnSidecar
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 8 and 12 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/FuluDataColumnSidecar_encode_ssz_generated.bend
+# sym: DataColumnSidecar_putn,DataColumnSidecar_pw0,DataColumnSidecar_serialize,DataColumnSidecar_encode
+--- a/types/FuluDataColumnSidecar_encode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_encode_ssz_generated.bend
+@@ -55,3 +55,3 @@
+   (column, c) = r
+-  DataColumnSidecar_pw1(pos, index, column, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, Fulu_list_bytevec_48_4096_e.l4096_b48_putv(out, pos, 12, c, kzg_commitments))
++  DataColumnSidecar_pw1(pos, index, column, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, Fulu_list_bytevec_48_4096_e.l4096_b48_putv(out, pos, 8, c, kzg_commitments))
+ 
+@@ -59,3 +59,3 @@
+   match o:
+-    case FuluDataColumnSidecar_d.DataColumnSidecar{+index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}: DataColumnSidecar_pw0(pos, index, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, Fulu_list_bytevec_2048_4096_e.l4096_b2048_putv(out, pos, 8, 356, column))
++    case FuluDataColumnSidecar_d.DataColumnSidecar{+index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}: DataColumnSidecar_pw0(pos, index, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, Fulu_list_bytevec_2048_4096_e.l4096_b2048_putv(out, pos, 12, 356, column))
+ 

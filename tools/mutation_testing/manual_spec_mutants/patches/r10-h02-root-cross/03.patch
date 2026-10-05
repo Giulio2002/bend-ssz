@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/03
+# type: FuluAttestationData
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of index and beacon_block_root are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluAttestationData_hashtreeroot_generated.bend
+# sym: AttestationData_rt5,AttestationData_hash_tree_root
+--- a/types/FuluAttestationData_hashtreeroot_generated.bend
++++ b/types/FuluAttestationData_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_index), D.node(hl, d_beacon_block_root, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_index, d_source)), D.node(hl, D.node(hl, d_target, D.zero()), z1)))
+ 

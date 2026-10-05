@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/26
+# type: FuluExecutionPayload
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of parent_hash and fee_recipient are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluExecutionPayload_hashtreeroot_generated.bend
+# sym: ExecutionPayload_g0_rt7,ExecutionPayload_hash_tree_root
+--- a/types/FuluExecutionPayload_hashtreeroot_generated.bend
++++ b/types/FuluExecutionPayload_hashtreeroot_generated.bend
+@@ -25,3 +25,3 @@
+   (h, d_gas_limit) = pair
+-  (h, (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, D.node(hl, D.node(hl, D.node(hl, d_parent_hash, d_fee_recipient), D.node(hl, d_state_root, d_receipts_root)), D.node(hl, D.node(hl, d_logs_bloom, d_prev_randao), D.node(hl, d_block_number, d_gas_limit)))))
++  (h, (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, D.node(hl, D.node(hl, D.node(hl, d_fee_recipient, d_parent_hash), D.node(hl, d_state_root, d_receipts_root)), D.node(hl, D.node(hl, d_logs_bloom, d_prev_randao), D.node(hl, d_block_number, d_gas_limit)))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/19
+# type: FuluFork
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root epoch is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluFork_hashtreeroot_generated.bend
+# sym: Fork_rt2,Fork_hash_tree_root
+--- a/types/FuluFork_hashtreeroot_generated.bend
++++ b/types/FuluFork_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, d_epoch) = pair
+-  (h, D.node(hl, D.node(hl, d_previous_version, d_current_version), D.node(hl, d_epoch, D.zero())))
++  (h, D.node(hl, D.node(hl, d_previous_version, d_current_version), d_epoch))
+ 

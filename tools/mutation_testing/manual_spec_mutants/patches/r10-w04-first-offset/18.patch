@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/18
+# type: FuluSignedBeaconBlock
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 96 (fixed part 100)
+# why: fixed part length off by one offset
+# file: types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+# sym: SignedBeaconBlock_putn,SignedBeaconBlock_serialize,SignedBeaconBlock_encode
+--- a/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlock_encode_ssz_generated.bend
+@@ -29,3 +29,3 @@
+   match o:
+-    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_pw0(pos, signature, FuluBeaconBlock_e.BeaconBlock_putv(out, pos, 0, 100, message))
++    case FuluSignedBeaconBlock_d.SignedBeaconBlock{message, +signature}: SignedBeaconBlock_pw0(pos, signature, FuluBeaconBlock_e.BeaconBlock_putv(out, pos, 0, 96, message))
+ 

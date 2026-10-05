@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/11
+# type: FuluContributionAndProof
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root selection_proof is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluContributionAndProof_hashtreeroot_generated.bend
+# sym: ContributionAndProof_rt2,ContributionAndProof_hash_tree_root
+--- a/types/FuluContributionAndProof_hashtreeroot_generated.bend
++++ b/types/FuluContributionAndProof_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_selection_proof) = pair
+-  (h, (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, D.node(hl, D.node(hl, d_aggregator_index, d_contribution), D.node(hl, d_selection_proof, D.zero()))))
++  (h, (FuluContributionAndProof_d.ContributionAndProof{aggregator_index, contribution, selection_proof}, D.node(hl, D.node(hl, d_aggregator_index, d_contribution), d_selection_proof)))
+ 

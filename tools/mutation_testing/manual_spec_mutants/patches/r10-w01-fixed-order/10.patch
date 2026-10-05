@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/10
+# type: FuluHistoricalBatch
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 262144 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluHistoricalBatch_encode_ssz_generated.bend
+# sym: HistoricalBatch_putk,HistoricalBatch_pw0,HistoricalBatch_serialize,HistoricalBatch_encode
+--- a/types/FuluHistoricalBatch_encode_ssz_generated.bend
++++ b/types/FuluHistoricalBatch_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (block_roots, fl) = r
+-  HistoricalBatch_pw1(pos, (cur .|. fl : U32), block_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 262144 : U32), state_roots))
++  HistoricalBatch_pw1(pos, (cur .|. fl : U32), block_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 0 : U32), state_roots))
+ 
+@@ -25,3 +25,3 @@
+   match o:
+-    case FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots}: HistoricalBatch_pw0(pos, 0, state_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 0 : U32), block_roots))
++    case FuluHistoricalBatch_d.HistoricalBatch{block_roots, state_roots}: HistoricalBatch_pw0(pos, 0, state_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 262144 : U32), block_roots))
+ 

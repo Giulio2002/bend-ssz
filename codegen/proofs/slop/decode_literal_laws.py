@@ -41,6 +41,11 @@ for a variable-size container or union, one per kind otherwise: a mutated valida
   <X>_decode_vlit_win_<step> / _win_elem_<p>   symbolic: each step of X's reader that reads an offset slot or a variable field reads the slot and the
                                window the schema asks for (checked here against the generated reader); element i of a list of variable elements
                                X reaches is read at off + s_i up to e_i
+  (round 10)
+  <X>_decode_vlit_win_<step>   also every step that reads a fixed field: the field at its own position and size in the fixed part (BeaconState
+                               r10-r01/11: proposer_lookahead read at the previous field's position; no literal of the 2.7 MB default fits a law)
+  <X>_decode_vlit_bad_order_<f>  the out-of-order literal of the container rule above for every variable-size container up to ORDER_MAX bytes,
+                               above the byte and law caps of the other literals (r10-l02/09: LightClientUpdate, LightClientFinalityUpdate)
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vlit_` form).
 """
@@ -63,6 +68,7 @@ MAX_BYTES = 2048
 MAX_LAWS = 64
 RT_MAX = 128     # bytes: the literal a round-trip law re-encodes word by word
 RT_WIDE = 192    # words: a round-trip law of the round-7 literals (`fixed`, `wide`) compares the size and at most this many words from byte 0
+ORDER_MAX = 65536  # bytes: the out-of-order offset literals (round 10), every container but BeaconState (2.7 MB; its order law is symbolic)
 DEEP = 3         # nesting levels the `wide` literal fills (deeper variable parts stay empty)
 DECODE = re.compile(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\) -> B\.Buf & Maybe<&1, ([\w.]+)>:', re.M)
 
@@ -397,9 +403,9 @@ def laws_of(X, V, t, ser_pair):
     def dec(data):
         return f'Pair.snd(B.Buf, {M}, T.{X}_decode({buffer(data)}, {len(data)}))'
 
-    def law(kind, tag, data, wide=False, r7=False):
+    def law(kind, tag, data, wide=False, r7=False, cap=MAX_BYTES):
         # the round-7 laws (r7) come after the cap of the earlier ones, which they do not displace
-        if len(data) > MAX_BYTES or (kind, data) in seen or (len(out) >= MAX_LAWS and not r7):
+        if len(data) > cap or (kind, data) in seen or (len(out) >= MAX_LAWS and not r7):
             return
         seen.add((kind, data))
         tag = re.sub(r'\W', '_', tag)
@@ -438,6 +444,12 @@ def laws_of(X, V, t, ser_pair):
         # (round 7: c06/02) one size fault deep inside each variable field, every offset right
         for tag, b in size_bad(t):
             law('bad', f'size_{tag}', b, r7=True)
+        # (round 10: r10-l02/09) two consecutive offsets out of order, for every variable-size container: above the byte cap of the other literals
+        # (the light-client updates hold a sync committee) and the law cap (AttesterSlashing); the literal is the default encoding with one
+        # offset one byte below the one before it, so a validator that drops the order test reads a negative window
+        for tag, b in bads(t):
+            if tag.startswith('order_'):
+                law('bad', tag, b, r7=True, cap=ORDER_MAX)
     ser = f'Pair.snd({val}, O.Encoded, T.{X}_serialize(v))' if ser_pair else f'T.{X}_serialize(v)'
     helper = [f'def some1(m: {M}) -> Bool:\n  match m:\n    case Some{{v}}: True{{}}\n    case None{{}}: False{{}}\n',
               f'def rt(m: {M}) -> B.Buf:\n  match m:\n    case Some{{v}}: O.ser_out({ser})\n    case None{{}}: B.empty()\n']
@@ -526,6 +538,7 @@ def order_laws(tx, X):
 RD = re.compile(r'def (\w+)\((.*), pair: B\.Buf & ([^)]*)\) -> (.*):\n  \(buf, (\+?)(\w+)\) = pair\n  (.*)')
 WIN = re.compile(r'(\w+)\(buf, \(off \+ (o_\w+) : U32\), \((\w+) - (o_\w+) : U32\)\)')
 SLOT = re.compile(r'B\.read32\(buf, \(off \+ (\d+) : U32\)\)')
+FIX = re.compile(r'(\w+)_read\(buf, \(off \+ (\d+) : U32\), (\d+)\)')
 
 
 def qualify(text, names):
@@ -542,10 +555,13 @@ def window_laws(tx, X, t, names):
     if t.kind not in ('container', 'pcontainer') or t.fixed():
         return []
     var = [fn for fn, c in t.fields if not c.fixed()]
+    fix = {}     # (round 10) the position and size of every fixed field in the fixed part
     slot, pos = {}, 0
     for fn, c in t.fields:
         if not c.fixed():
             slot[fn] = pos
+        else:
+            fix[fn] = (pos, c.fixed_size())
         pos += c.fixed_size() if c.fixed() else 4
     out = []
     for name, b in sorted(tx.blk.items()):
@@ -555,7 +571,7 @@ def window_laws(tx, X, t, names):
         if not m:
             continue
         _, prm, pty, ret, plus, v, body = m.groups()
-        sl, wn = SLOT.findall(body), WIN.findall(body)
+        sl, wn, fx = SLOT.findall(body), WIN.findall(body), FIX.findall(body)
         ok = False
         if len(sl) == 1 and not wn and v.startswith('o_') and v[2:] in var and var.index(v[2:]) + 1 < len(var):
             nxt = var[var.index(v[2:]) + 1]
@@ -571,6 +587,17 @@ def window_laws(tx, X, t, names):
             want = ('len', 'vend') if i + 1 == len(var) else (f'o_{var[i + 1]}', 'vend')    # vend: the end of a group's variable parts (the parent's next offset)
             if end not in want:
                 raise SystemExit(f'{name}: the window of {f} ends at {end}, the schema says {want[0]}')
+            ok = True
+        elif len(fx) == 1 and not sl and not wn:
+            # (round 10: r10-r01/11, BeaconState) a step that reads a fixed field reads it at its own position and size; the field is the one
+            # the next step binds
+            nm = re.match(r'(\w+)\(', body)
+            nb = RD.fullmatch(tx.blk.get(nm.group(1), '')) if nm else None
+            f = nb.group(6) if nb else None
+            if f not in fix:
+                raise SystemExit(f'{name}: reads a fixed window {fx[0]} for {f}, which is no fixed field of {X}')
+            if (int(fx[0][1]), int(fx[0][2])) != fix[f]:
+                raise SystemExit(f'{name}: reads {f} at ({fx[0][1]}, {fx[0][2]}), the schema says {fix[f]}')
             ok = True
         if not ok:
             continue

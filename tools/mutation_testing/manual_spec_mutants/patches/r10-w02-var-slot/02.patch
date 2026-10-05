@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 2 and 7 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_putn,ComplexTestStruct_pw0,ComplexTestStruct_serialize,ComplexTestStruct_encode
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (f_B, c) = r
+-  ComplexTestStruct_pw1(pos, f_A, f_B, f_C, f_E, f_F, f_G, bytelist_256_e.bl256_putv(out, pos, 7, c, f_D))
++  ComplexTestStruct_pw1(pos, f_A, f_B, f_C, f_E, f_F, f_G, bytelist_256_e.bl256_putv(out, pos, 2, c, f_D))
+ 
+@@ -67,3 +67,3 @@
+   match o:
+-    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, list_uint16_128_e.l128_u16_putv(out, pos, 2, 71, f_B))
++    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, list_uint16_128_e.l128_u16_putv(out, pos, 7, 71, f_B))
+ 

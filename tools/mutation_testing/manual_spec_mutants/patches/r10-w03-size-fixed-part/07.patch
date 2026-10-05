@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/07
+# type: FuluBeaconBlock
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 88 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluBeaconBlock_encode_ssz_generated.bend
+# sym: BeaconBlock_size,BeaconBlock_serialize,BeaconBlock_encode
+--- a/types/FuluBeaconBlock_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlock_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   match o:
+-    case FuluBeaconBlock_d.BeaconBlock{+slot, +proposer_index, +parent_root, +state_root, body}: BeaconBlock_sz0(slot, proposer_index, parent_root, state_root, 84, FuluBeaconBlockBody_e.BeaconBlockBody_bx_size(body))
++    case FuluBeaconBlock_d.BeaconBlock{+slot, +proposer_index, +parent_root, +state_root, body}: BeaconBlock_sz0(slot, proposer_index, parent_root, state_root, 88, FuluBeaconBlockBody_e.BeaconBlockBody_bx_size(body))
+ 

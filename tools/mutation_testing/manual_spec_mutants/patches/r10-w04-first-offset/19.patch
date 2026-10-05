@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/19
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 25 (fixed part 29)
+# why: fixed part length off by one offset
+# file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_putn,ProgressiveComplexTestStruct_serialize,ProgressiveComplexTestStruct_encode
+--- a/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+@@ -91,3 +91,3 @@
+   match o:
+-    case ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: ProgressiveComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, list_uint16_123_e.l123_u16_putv(out, pos, 1, 29, f_B))
++    case ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: ProgressiveComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, list_uint16_123_e.l123_u16_putv(out, pos, 1, 25, f_B))
+ 

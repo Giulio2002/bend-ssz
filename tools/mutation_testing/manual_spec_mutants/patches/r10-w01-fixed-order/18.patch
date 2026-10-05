@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/18
+# type: FuluSignedContributionAndProof
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 264 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluSignedContributionAndProof_encode_ssz_generated.bend
+# sym: SignedContributionAndProof_putk,SignedContributionAndProof_pw0,SignedContributionAndProof_serialize,SignedContributionAndProof_encode
+--- a/types/FuluSignedContributionAndProof_encode_ssz_generated.bend
++++ b/types/FuluSignedContributionAndProof_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (message, fl) = r
+-  (FuluBytes96_e.b96_put(out, (pos + 264 : U32), signature), (FuluSignedContributionAndProof_d.SignedContributionAndProof{message, signature}, (cur .|. fl : U32)))
++  (FuluBytes96_e.b96_put(out, (pos + 0 : U32), signature), (FuluSignedContributionAndProof_d.SignedContributionAndProof{message, signature}, (cur .|. fl : U32)))
+ 
+@@ -23,3 +23,3 @@
+   match o:
+-    case FuluSignedContributionAndProof_d.SignedContributionAndProof{message, +signature}: SignedContributionAndProof_pw0(pos, 0, signature, FuluContributionAndProof_e.ContributionAndProof_putk(out, (pos + 0 : U32), message))
++    case FuluSignedContributionAndProof_d.SignedContributionAndProof{message, +signature}: SignedContributionAndProof_pw0(pos, 0, signature, FuluContributionAndProof_e.ContributionAndProof_putk(out, (pos + 264 : U32), message))
+ 

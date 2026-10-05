@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/09
+# type: FuluExecutionRequests
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 8 (fixed part 12)
+# why: fixed part length off by one offset
+# file: types/FuluExecutionRequests_encode_ssz_generated.bend
+# sym: ExecutionRequests_putn,ExecutionRequests_serialize,ExecutionRequests_encode
+--- a/types/FuluExecutionRequests_encode_ssz_generated.bend
++++ b/types/FuluExecutionRequests_encode_ssz_generated.bend
+@@ -49,3 +49,3 @@
+   match o:
+-    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_pw0(pos, withdrawals, consolidations, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putv(out, pos, 0, 12, deposits))
++    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_pw0(pos, withdrawals, consolidations, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_putv(out, pos, 0, 8, deposits))
+ 

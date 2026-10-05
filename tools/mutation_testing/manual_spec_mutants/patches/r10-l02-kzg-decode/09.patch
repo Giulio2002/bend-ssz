@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/09
+# type: FuluLightClientUpdate
+# ops: decode
+# spec: offsets are non-decreasing
+# fault: the o0 <= o1 order check is dropped
+# why: only the upper bound checked
+# file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+# sym: LightClientUpdate_ok,LightClientUpdate_decode
+--- a/types/FuluLightClientUpdate_decode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_decode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+   (buf, +o1) = pair
+-  LightClientUpdate_c1(Bool.and(U32.is_le(o0, o1), U32.is_le(o1, len)), buf, off, len, o0, o1)
++  LightClientUpdate_c1(U32.is_le(o1, len), buf, off, len, o0, o1)
+ 

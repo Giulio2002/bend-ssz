@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/03
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+# sym: BeaconBlockBody_g1_rt5,BeaconBlockBody_hash_tree_root
+--- a/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+@@ -78,3 +78,3 @@
+   (h, z1) = pair
+-  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_execution_payload), D.node(hl, d_bls_to_execution_changes, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), z1))))
++  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_execution_payload), D.node(hl, d_bls_to_execution_changes, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), D.zero()))))
+ 

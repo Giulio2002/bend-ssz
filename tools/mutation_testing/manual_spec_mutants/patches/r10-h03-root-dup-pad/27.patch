@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/27
+# type: FuluPendingPartialWithdrawal
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root withdrawable_epoch is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluPendingPartialWithdrawal_hashtreeroot_generated.bend
+# sym: PendingPartialWithdrawal_rt2,PendingPartialWithdrawal_hash_tree_root
+--- a/types/FuluPendingPartialWithdrawal_hashtreeroot_generated.bend
++++ b/types/FuluPendingPartialWithdrawal_hashtreeroot_generated.bend
+@@ -13,3 +13,3 @@
+   (h, d_withdrawable_epoch) = pair
+-  (h, D.node(hl, D.node(hl, d_validator_index, d_amount), D.node(hl, d_withdrawable_epoch, D.zero())))
++  (h, D.node(hl, D.node(hl, d_validator_index, d_amount), d_withdrawable_epoch))
+ 

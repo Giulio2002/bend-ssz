@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/08
+# type: FuluBeaconState
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of earliest_consolidation_epoch and pending_deposits are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_g4_rt6,BeaconState_hash_tree_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -207,3 +207,3 @@
+   (h, z1) = pair
+-  (h, (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, D.node(hl, D.node(hl, D.node(hl, d_consolidation_balance_to_consume, d_earliest_consolidation_epoch), D.node(hl, d_pending_deposits, d_pending_partial_withdrawals)), D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), z1))))
++  (h, (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, D.node(hl, D.node(hl, D.node(hl, d_consolidation_balance_to_consume, d_pending_deposits), D.node(hl, d_earliest_consolidation_epoch, d_pending_partial_withdrawals)), D.node(hl, D.node(hl, d_pending_consolidations, d_proposer_lookahead), z1))))
+ 

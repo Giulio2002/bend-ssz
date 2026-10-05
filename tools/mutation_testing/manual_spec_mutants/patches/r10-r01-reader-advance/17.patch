@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/17
+# type: FuluDataColumnSidecar
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 228 is read at byte 20 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+# sym: DataColumnSidecar_rd7,DataColumnSidecar_decode
+--- a/types/FuluDataColumnSidecar_decode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_decode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   (buf, signed_block_header) = pair
+-  DataColumnSidecar_rd8(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, kzg_proofs, signed_block_header, FuluExecutionBranch_r.v4_b32_read(buf, (off + 228 : U32), 128))
++  DataColumnSidecar_rd8(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, kzg_proofs, signed_block_header, FuluExecutionBranch_r.v4_b32_read(buf, (off + 20 : U32), 128))
+ 

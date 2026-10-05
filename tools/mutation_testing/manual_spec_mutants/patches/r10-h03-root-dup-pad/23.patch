@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/23
+# type: FuluLightClientHeader
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root execution_branch is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluLightClientHeader_hashtreeroot_generated.bend
+# sym: LightClientHeader_rt2,LightClientHeader_hash_tree_root
+--- a/types/FuluLightClientHeader_hashtreeroot_generated.bend
++++ b/types/FuluLightClientHeader_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (execution_branch, d_execution_branch) = r
+-  (h, (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, D.node(hl, D.node(hl, d_beacon, d_execution), D.node(hl, d_execution_branch, D.zero()))))
++  (h, (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, D.node(hl, D.node(hl, d_beacon, d_execution), d_execution_branch)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/27
+# type: VarTestStruct
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 11 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/VarTestStruct_encode_ssz_generated.bend
+# sym: VarTestStruct_size,VarTestStruct_serialize,VarTestStruct_encode
+--- a/types/VarTestStruct_encode_ssz_generated.bend
++++ b/types/VarTestStruct_encode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   match o:
+-    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_sz0(f_A, f_C, 7, list_uint16_1024_e.l1024_u16_size(f_B))
++    case VarTestStruct_d.VarTestStruct{+f_A, f_B, +f_C}: VarTestStruct_sz0(f_A, f_C, 11, list_uint16_1024_e.l1024_u16_size(f_B))
+ 

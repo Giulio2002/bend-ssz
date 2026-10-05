@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/12
+# type: FuluBlobIdentifier
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 32 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluBlobIdentifier_decode_ssz_generated.bend
+# sym: BlobIdentifier_rd0,BlobIdentifier_decode
+--- a/types/FuluBlobIdentifier_decode_ssz_generated.bend
++++ b/types/FuluBlobIdentifier_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +block_root) = pair
+-  BlobIdentifier_rd1(off, len, block_root, uint64_r.u64_read(buf, (off + 32 : U32), 8))
++  BlobIdentifier_rd1(off, len, block_root, uint64_r.u64_read(buf, (off + 0 : U32), 8))
+ 

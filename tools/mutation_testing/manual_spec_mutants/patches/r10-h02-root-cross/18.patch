@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/18
+# type: FuluPendingAttestation
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of data and inclusion_delay are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluPendingAttestation_hashtreeroot_generated.bend
+# sym: PendingAttestation_rt3,PendingAttestation_hash_tree_root
+--- a/types/FuluPendingAttestation_hashtreeroot_generated.bend
++++ b/types/FuluPendingAttestation_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_proposer_index) = pair
+-  (h, (FuluPendingAttestation_d.PendingAttestation{aggregation_bits, data, inclusion_delay, proposer_index}, D.node(hl, D.node(hl, d_aggregation_bits, d_data), D.node(hl, d_inclusion_delay, d_proposer_index))))
++  (h, (FuluPendingAttestation_d.PendingAttestation{aggregation_bits, data, inclusion_delay, proposer_index}, D.node(hl, D.node(hl, d_aggregation_bits, d_inclusion_delay), D.node(hl, d_data, d_proposer_index))))
+ 

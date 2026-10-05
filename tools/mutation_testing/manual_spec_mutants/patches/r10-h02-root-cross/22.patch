@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/22
+# type: FuluSyncCommitteeMessage
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of beacon_block_root and validator_index are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluSyncCommitteeMessage_hashtreeroot_generated.bend
+# sym: SyncCommitteeMessage_rt3,SyncCommitteeMessage_hash_tree_root
+--- a/types/FuluSyncCommitteeMessage_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommitteeMessage_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_signature) = pair
+-  (h, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_validator_index, d_signature)))
++  (h, D.node(hl, D.node(hl, d_slot, d_validator_index), D.node(hl, d_beacon_block_root, d_signature)))
+ 

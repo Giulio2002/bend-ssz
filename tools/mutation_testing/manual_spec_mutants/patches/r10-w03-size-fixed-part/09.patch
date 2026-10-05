@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/09
+# type: FuluDataColumnSidecar
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 360 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluDataColumnSidecar_encode_ssz_generated.bend
+# sym: DataColumnSidecar_size,DataColumnSidecar_serialize,DataColumnSidecar_encode
+--- a/types/FuluDataColumnSidecar_encode_ssz_generated.bend
++++ b/types/FuluDataColumnSidecar_encode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+   match o:
+-    case FuluDataColumnSidecar_d.DataColumnSidecar{+index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}: DataColumnSidecar_sz0(index, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, 356, Fulu_list_bytevec_2048_4096_e.l4096_b2048_size(column))
++    case FuluDataColumnSidecar_d.DataColumnSidecar{+index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}: DataColumnSidecar_sz0(index, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof, 360, Fulu_list_bytevec_2048_4096_e.l4096_b2048_size(column))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/10
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of slot and proposer_index are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: BeaconBlockHeader_rt5,BeaconBlockHeader_hash_tree_root
+--- a/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_proposer_index), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_proposer_index, d_slot), D.node(hl, d_parent_root, d_state_root)), D.node(hl, D.node(hl, d_body_root, D.zero()), z1)))
+ 

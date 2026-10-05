@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/01
+# type: BitsStruct
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 7 (fixed part 11)
+# why: fixed part length off by one offset
+# file: types/BitsStruct_encode_ssz_generated.bend
+# sym: BitsStruct_putn,BitsStruct_serialize,BitsStruct_encode
+--- a/types/BitsStruct_encode_ssz_generated.bend
++++ b/types/BitsStruct_encode_ssz_generated.bend
+@@ -42,3 +42,3 @@
+   match o:
+-    case BitsStruct_d.BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: BitsStruct_pw0(pos, f_B, f_C, f_D, f_E, bitlist_5_e.bits5_putv(out, pos, 0, 11, f_A))
++    case BitsStruct_d.BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: BitsStruct_pw0(pos, f_B, f_C, f_D, f_E, bitlist_5_e.bits5_putv(out, pos, 0, 7, f_A))
+ 

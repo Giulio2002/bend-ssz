@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/25
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 20 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveTestStruct_size,ProgressiveTestStruct_serialize,ProgressiveTestStruct_encode
+--- a/types/ProgressiveTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_encode_ssz_generated.bend
+@@ -34,3 +34,3 @@
+   match o:
+-    case ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}: ProgressiveTestStruct_sz0(f_B, f_C, f_D, 16, proglist_uint8_e.pl_u8_size(f_A))
++    case ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}: ProgressiveTestStruct_sz0(f_B, f_C, f_D, 20, proglist_uint8_e.pl_u8_size(f_A))
+ 

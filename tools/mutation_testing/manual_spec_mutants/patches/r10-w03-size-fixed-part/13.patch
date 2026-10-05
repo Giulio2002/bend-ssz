@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/13
+# type: FuluExecutionRequests
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 16 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluExecutionRequests_encode_ssz_generated.bend
+# sym: ExecutionRequests_size,ExecutionRequests_serialize,ExecutionRequests_encode
+--- a/types/FuluExecutionRequests_encode_ssz_generated.bend
++++ b/types/FuluExecutionRequests_encode_ssz_generated.bend
+@@ -30,3 +30,3 @@
+   match o:
+-    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_sz0(withdrawals, consolidations, 12, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_size(deposits))
++    case FuluExecutionRequests_d.ExecutionRequests{deposits, withdrawals, consolidations}: ExecutionRequests_sz0(withdrawals, consolidations, 16, Fulu_list_DepositRequest_8192_e.l8192_DepositRequest_size(deposits))
+ 

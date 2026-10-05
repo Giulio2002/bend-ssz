@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/12
+# type: FuluLightClientFinalityUpdate
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 396 (fixed part 400)
+# why: fixed part length off by one offset
+# file: types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend
+# sym: LightClientFinalityUpdate_putn,LightClientFinalityUpdate_serialize,LightClientFinalityUpdate_encode
+--- a/types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend
+@@ -50,3 +50,3 @@
+   match o:
+-    case FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{attested_header, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientFinalityUpdate_pw0(pos, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, 400, attested_header))
++    case FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{attested_header, finalized_header, finality_branch, sync_aggregate, +signature_slot}: LightClientFinalityUpdate_pw0(pos, finalized_header, finality_branch, sync_aggregate, signature_slot, FuluLightClientHeader_e.LightClientHeader_putv(out, pos, 0, 396, attested_header))
+ 

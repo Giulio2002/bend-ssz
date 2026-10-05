@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/10
+# type: FuluDataColumnSidecar
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of column and kzg_commitments are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluDataColumnSidecar_hashtreeroot_generated.bend
+# sym: DataColumnSidecar_rt6,DataColumnSidecar_hash_tree_root
+--- a/types/FuluDataColumnSidecar_hashtreeroot_generated.bend
++++ b/types/FuluDataColumnSidecar_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, z1) = pair
+-  (h, (FuluDataColumnSidecar_d.DataColumnSidecar{index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}, D.node(hl, D.node(hl, D.node(hl, d_index, d_column), D.node(hl, d_kzg_commitments, d_kzg_proofs)), D.node(hl, D.node(hl, d_signed_block_header, d_kzg_commitments_inclusion_proof), z1))))
++  (h, (FuluDataColumnSidecar_d.DataColumnSidecar{index, column, kzg_commitments, kzg_proofs, signed_block_header, kzg_commitments_inclusion_proof}, D.node(hl, D.node(hl, D.node(hl, d_index, d_kzg_commitments), D.node(hl, d_column, d_kzg_proofs)), D.node(hl, D.node(hl, d_signed_block_header, d_kzg_commitments_inclusion_proof), z1))))
+ 

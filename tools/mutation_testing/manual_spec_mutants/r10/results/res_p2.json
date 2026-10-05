@@ -1,0 +1,2622 @@
+[
+ {
+  "id": "r10-d01-default/01",
+  "type": "FuluBytes20",
+  "file": "types/FuluBytes20_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.6,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBytes20_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.1,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluExecutionAddress_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 37.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluExecutionPayloadHeader_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes20_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes20_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/02",
+  "type": "FuluBytes32",
+  "file": "types/FuluBytes32_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.5,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluRoot_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.0,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBytes32_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.8,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluHash32_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes32_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/03",
+  "type": "FuluBytes48",
+  "file": "types/FuluBytes48_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBLSPubkey_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.4,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBytes48_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.0,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluG1Point_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes48_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes48_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/04",
+  "type": "FuluBytes8",
+  "file": "types/FuluBytes8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.6,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBytes8_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.3,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluPayloadId_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/serialize_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes8_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/05",
+  "type": "FuluBytes96",
+  "file": "types/FuluBytes96_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.3,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBLSSignature_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.4,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluG2Point_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBytes96_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes96_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBytes96_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/09",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/Fulu_bitvector_128_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 9.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluSyncCommitteeContribution_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/10",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_bitvector_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.5,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_4_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.1,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_4_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.6,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBeaconState_e2e_set_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 43.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 40.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-d01-default/11",
+  "type": "FuluSyncAggregate",
+  "file": "types/Fulu_bitvector_512_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 29.8,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_512_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluSyncAggregate_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluSyncAggregate_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/12",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 43.8,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluAttestation_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 49.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluAggregateAndProof_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 50.9,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluSignedAggregateAndProof_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/fields_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 17.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluAttestation_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 15.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/13",
+  "type": "FuluBlobSidecar",
+  "file": "types/Fulu_vec_bytevec_32_17_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 36.6,
+    "laws": [
+     "FuluBlobSidecar_e2e_set_index_root_r"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluBlobSidecar_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/14",
+  "type": "FuluDeposit",
+  "file": "types/Fulu_vec_bytevec_32_33_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 35.5,
+    "laws": [
+     "FuluDeposit_e2e_set_proof_root_r"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluDeposit_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/15",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_bytevec_32_65536_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 57.8,
+    "laws": [
+     "big3"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluBeaconState_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/16",
+  "type": "FuluHistoricalBatch",
+  "file": "types/Fulu_vec_bytevec_32_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 35.2,
+    "laws": [
+     "big1"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluHistoricalBatch_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/17",
+  "type": "FuluSyncCommittee",
+  "file": "types/Fulu_vec_bytevec_48_512_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 25.4,
+    "laws": [
+     "big0"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluSyncCommittee_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/18",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_uint64_64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 87.2,
+    "laws": [
+     "FuluBeaconState_e2e_set_genesis_time_root_r"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluBeaconState_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/19",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_uint64_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 42.4,
+    "laws": [
+     "big5"
+    ],
+    "msg": "- expected : {O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/FuluBeaconState_e2e_set_witness_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/20",
+  "type": "bitvector_513",
+  "file": "types/bitvector_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.0,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_513_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 27.9,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_513_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/sub_bitvector_513_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/bitvector_513_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/bitvector_513_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/21",
+  "type": "bitvector_5",
+  "file": "types/bitvector_5_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 18.8,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_5_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 27.2,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/bitvector_5_e2e_witness_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/sub_bitvector_5_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/bitvector_5_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/bitvector_5_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/22",
+  "type": "boolean",
+  "file": "types/boolean_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.5,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/boolean_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/size/boolean_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/boolean_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/boolean_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/23",
+  "type": "uint64",
+  "file": "types/uint64_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.5,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluRowIndex_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.1,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluCustodyIndex_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.5,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluBlobIndex_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.9,
+    "laws": [],
+    "msg": "",
+    "root": "e2e/FuluCommitteeIndex_e2e_ser_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/uint64_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/uint64_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r10-d01-default/26",
+  "type": "vec_uint128_513",
+  "file": "types/vec_uint128_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 21.3,
+    "laws": [
+     "vec_uint128_513_e2e_valid_default"
+    ],
+    "msg": "- expected : (O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/vec_uint128_513_e2e_ser_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/30",
+  "type": "vec_uint256_513",
+  "file": "types/vec_uint256_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 21.6,
+    "laws": [
+     "vec_uint256_513_e2e_valid_default"
+    ],
+    "msg": "- expected : (O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/vec_uint256_513_e2e_ser_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-d01-default/34",
+  "type": "vec_uint64_513",
+  "file": "types/vec_uint64_513_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 31.6,
+    "laws": [
+     "vec_uint64_513_e2e_valid_default"
+    ],
+    "msg": "- expected : (O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "e2e/vec_uint64_513_e2e_ser_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-r01-reader-advance/01",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/BitsStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_BitsStruct_decode_literal_ok_all_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_BitsStruct_decode_literal_rt_wide_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 8.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_BitsStruct_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/BitsStruct_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/02",
+  "type": "ComplexTestStruct",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/ComplexTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_ok_all_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_off_minus_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_ComplexTestStruct_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/04",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/AggregateAndProof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_win_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 6.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_win_AggregateAndProof_top_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAggregateAndProof_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/08",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 16.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 17.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/10",
+  "type": "FuluBeaconBlock",
+  "file": "types/FuluBeaconBlock_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/BeaconBlock_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attestations_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlock_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 20.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_BeaconBlock_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 19.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/11",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/BeaconState_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_decode_literal_win_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "benchmarks/compact/ocache.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "native_bench/driver.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 14.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/25",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/ExecutionPayload_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_ExecutionPayload_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 8.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/31",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/LightClientBootstrap_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/var_bytes_LightClientBootstrap_win_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/var_bytes_LightClientBootstrap_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/g__var_bytes_LightClientBootstrap_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluLightClientBootstrap_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/35",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/gate/g__var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-r01-reader-advance/58",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/ProgressiveBitsStruct_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 3.7,
+    "laws": [
+     "ProgressiveBitsStruct_decode_vlit_rt_wide"
+    ],
+    "msg": "- expected : (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_wide_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-r01-reader-advance/60",
+  "type": "VarTestStruct",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n2_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/gate/g__var_codec_VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 8.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/02",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconBlockBody_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/03",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "native_bench/driver.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconState_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconState_size_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/08",
+  "type": "FuluExecutionPayloadHeader",
+  "file": "types/FuluExecutionPayloadHeader_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ExecutionPayloadHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/ExecutionPayloadHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/ExecutionPayloadHeader_symbolic_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 3.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_ExecutionPayloadHeader_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 4.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluExecutionPayloadHeader_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/11",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientBootstrap_symbolic_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/size/LightClientBootstrap_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 42.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_LightClientBootstrap_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 42.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/gate/g__var_bytes_LightClientBootstrap_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 41.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/13",
+  "type": "FuluLightClientHeader",
+  "file": "types/FuluLightClientHeader_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/LightClientHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientHeader_symbolic_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 4.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_LightClientHeader_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientHeader_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w01-fixed-order/14",
+  "type": "FuluLightClientOptimisticUpdate",
+  "file": "types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/LightClientOptimisticUpdate_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientOptimisticUpdate_symbolic_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientOptimisticUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_LightClientOptimisticUpdate_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 6.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientOptimisticUpdate_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w02-var-slot/03",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/AttesterSlashing_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 9.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w02-var-slot/04",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconBlockBody_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconBlockBody_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w02-var-slot/05",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "native_bench/driver.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconState_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BeaconState_size_generated.bend"
+   },
+   {
+    "verdict": "TIMEOUT",
+    "secs": 120.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/01",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/BitsStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/BitsStruct_symbolic_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/BitsStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_BitsStruct_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 8.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/BitsStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/02",
+  "type": "ComplexTestStruct",
+  "file": "types/ComplexTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ComplexTestStruct_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "complex_default_serialize_100"
+    ],
+    "msg": "- expected : 104\n- observed : 100",
+    "root": "proofs/slop/crash/crash_fix_laws_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/03",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/AggregateAndProof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_fields_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 22.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "e2e/FuluAggregateAndProof_e2e_set_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 13.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAggregateAndProof_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/04",
+  "type": "FuluAttestation",
+  "file": "types/FuluAttestation_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/Attestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Attestation_decode_literal_bad_off_minus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Attestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/obj/encx_Attestation_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAttestation_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/05",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/AttesterSlashing_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 9.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/07",
+  "type": "FuluBeaconBlock",
+  "file": "types/FuluBeaconBlock_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/BeaconBlock_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attestations_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlock_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 23.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_BeaconBlock_enc_o_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 22.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/14",
+  "type": "FuluIndexedAttestation",
+  "file": "types/FuluIndexedAttestation_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/IndexedAttestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 3.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_IndexedAttestation_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 4.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluIndexedAttestation_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/16",
+  "type": "FuluLightClientFinalityUpdate",
+  "file": "types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/LightClientFinalityUpdate_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientFinalityUpdate_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientFinalityUpdate_symbolic_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 27.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "e2e/FuluLightClientFinalityUpdate_e2e_set_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 17.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientFinalityUpdate_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/19",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientUpdate_symbolic_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "LightClientUpdate_ms_sizesym"
+    ],
+    "msg": "- expected : 26876\n- observed : 26872",
+    "root": "proofs/slop/size/LightClientUpdate_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/21",
+  "type": "FuluSignedAggregateAndProof",
+  "file": "types/FuluSignedAggregateAndProof_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/SignedAggregateAndProof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_SignedAggregateAndProof_fields_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 26.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "e2e/FuluSignedAggregateAndProof_e2e_set_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 17.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluSignedAggregateAndProof_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/22",
+  "type": "FuluSignedBeaconBlock",
+  "file": "types/FuluSignedBeaconBlock_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/SignedBeaconBlock_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 8.5,
+    "laws": [
+     "SignedBeaconBlock_decode_vlit_rt_fixed"
+    ],
+    "msg": "- expected : (1124, 100, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 4, 5, 6, 7, 8, 9, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 84, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46",
+    "root": "proofs/slop/validity/fulu_SignedBeaconBlock_decode_literal_rt_fixed_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/24",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ProgressiveComplexTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_C_n1_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 14.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_ProgressiveComplexTestStruct_enc_o_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/25",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ProgressiveTestStruct_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_10_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_ProgressiveTestStruct_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/26",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/ProgressiveVarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ProgressiveVarTestStruct_decode_vlit_rt_all"
+    ],
+    "msg": "- expected : (16, 2304, 2816, 50331648)\n- observed : (12, 2304, 2816, 50331648)",
+    "root": "proofs/slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_all_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w03-size-fixed-part/27",
+  "type": "VarTestStruct",
+  "file": "types/VarTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/VarTestStruct_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "VarTestStruct_decode_vlit_rt_default"
+    ],
+    "msg": "- expected : (11, 458752, 0)\n- observed : (7, 458752, 0)",
+    "root": "proofs/slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w04-first-offset/03",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/AggregateAndProof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_fields_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 22.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "e2e/FuluAggregateAndProof_e2e_set_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 13.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAggregateAndProof_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w04-first-offset/04",
+  "type": "FuluAttestation",
+  "file": "types/FuluAttestation_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/Attestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Attestation_decode_literal_bad_off_minus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_Attestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 7.7,
+    "laws": [
+     "rt_C"
+    ],
+    "msg": "- expected : {FuluAttestation_e.Attestation_pw0(X, data, signature, committee_bits, Fulu_bitlist_131072_e.bits131072_pvb(232, Fulu_bitlist_131072_e.bits131072_pk(O.w32_pick(Cmp.is_eq(U32.cmp(U32.and(U32.add(X, 0), 3), 0)), FD.array__thaw(U32, D), U32.add(X, 0), 232), U32.add(X, 232), O.bits_ok(EX_bi",
+    "root": "proofs/obj/encx_Attestation_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r10-w04-first-offset/05",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/AttesterSlashing_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 9.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w04-first-offset/10",
+  "type": "FuluIndexedAttestation",
+  "file": "types/FuluIndexedAttestation_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/IndexedAttestation_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_fixed_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 4.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_IndexedAttestation_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 4.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluIndexedAttestation_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w04-first-offset/11",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientBootstrap_symbolic_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/size/LightClientBootstrap_generated.bend"
+   },
+   {
+    "verdict": "ERROR",
+    "secs": 98.4,
+    "laws": [],
+    "msg": "CHECK_STACK ulimit_kb=16384 jsc_bytes=10485760\n",
+    "root": "proofs/obj/var_bytes_LightClientBootstrap_enc_generated.bend"
+   },
+   {
+    "verdict": "ERROR",
+    "secs": 89.2,
+    "laws": [],
+    "msg": "CHECK_STACK ulimit_kb=16384 jsc_bytes=10485760\n",
+    "root": "proofs/gate/g__var_bytes_LightClientBootstrap_enc_generated.bend"
+   },
+   {
+    "verdict": "ERROR",
+    "secs": 95.8,
+    "laws": [],
+    "msg": "CHECK_STACK ulimit_kb=16384 jsc_bytes=10485760\n",
+    "root": "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "ERROR"
+ },
+ {
+  "id": "r10-w04-first-offset/13",
+  "type": "FuluLightClientHeader",
+  "file": "types/FuluLightClientHeader_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/LightClientHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientHeader_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientHeader_symbolic_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_LightClientHeader_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientHeader_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w04-first-offset/14",
+  "type": "FuluLightClientOptimisticUpdate",
+  "file": "types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/LightClientOptimisticUpdate_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientOptimisticUpdate_symbolic_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/capacity/LightClientOptimisticUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 6.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_bytes_LightClientOptimisticUpdate_enc_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientOptimisticUpdate_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-w04-first-offset/17",
+  "type": "FuluSignedAggregateAndProof",
+  "file": "types/FuluSignedAggregateAndProof_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/constants/SignedAggregateAndProof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_SignedAggregateAndProof_fields_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 27.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "e2e/FuluSignedAggregateAndProof_e2e_set_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 16.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluSignedAggregateAndProof_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-l02-kzg-decode/08",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/gate/g__var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.1,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r10-l02-kzg-decode/09",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/offsets/LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/gate/g__var_codec_LightClientUpdate_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 10.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ }
+]

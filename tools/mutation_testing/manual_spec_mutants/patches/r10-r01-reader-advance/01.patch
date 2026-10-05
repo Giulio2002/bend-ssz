@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/01
+# type: BitsStruct
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 10 is read at byte 5 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/BitsStruct_decode_ssz_generated.bend
+# sym: BitsStruct_rd5,BitsStruct_decode
+--- a/types/BitsStruct_decode_ssz_generated.bend
++++ b/types/BitsStruct_decode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+   (buf, f_D) = pair
+-  BitsStruct_rd6(off, len, o_f_A, o_f_D, f_A, f_B, f_C, f_D, bitvector_8_r.bv8_read(buf, (off + 10 : U32), 1))
++  BitsStruct_rd6(off, len, o_f_A, o_f_D, f_A, f_B, f_C, f_D, bitvector_8_r.bv8_read(buf, (off + 5 : U32), 1))
+ 

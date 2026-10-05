@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/51
+# type: FuluSyncCommitteeContribution
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 64 is read at byte 48 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+# sym: SyncCommitteeContribution_rd3,SyncCommitteeContribution_decode
+--- a/types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
++++ b/types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   (buf, +aggregation_bits) = pair
+-  SyncCommitteeContribution_rd4(off, len, slot, beacon_block_root, subcommittee_index, aggregation_bits, FuluBytes96_r.b96_read(buf, (off + 64 : U32), 96))
++  SyncCommitteeContribution_rd4(off, len, slot, beacon_block_root, subcommittee_index, aggregation_bits, FuluBytes96_r.b96_read(buf, (off + 48 : U32), 96))
+ 

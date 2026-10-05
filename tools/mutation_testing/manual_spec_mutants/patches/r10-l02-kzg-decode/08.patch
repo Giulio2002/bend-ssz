@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l02-kzg-decode/08
+# type: FuluLightClientUpdate
+# ops: decode
+# spec: deserialize(Container): the variable field windows are [o0, o1) and [o1, len)
+# fault: attested_header is validated over the finalized_header window
+# why: window of the wrong variable field
+# file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+# sym: LightClientUpdate_ok,LightClientUpdate_decode
+--- a/types/FuluLightClientUpdate_decode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_decode_ssz_generated.bend
+@@ -77,3 +77,3 @@
+   match ok:
+-    case True{}: LightClientUpdate_v2(off, len, o0, o1, FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o0 : U32), (o1 - o0 : U32)))
++    case True{}: LightClientUpdate_v2(off, len, o0, o1, FuluLightClientHeader_r.LightClientHeader_ok(buf, (off + o1 : U32), (len - o1 : U32)))
+     case False{}: (buf, False{})

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/51
+# type: FuluSigningData
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of object_root and domain are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSigningData_hashtreeroot_generated.bend
+# sym: SigningData_rt1,SigningData_hash_tree_root
+--- a/types/FuluSigningData_hashtreeroot_generated.bend
++++ b/types/FuluSigningData_hashtreeroot_generated.bend
+@@ -14,3 +14,3 @@
+   (h, d_domain) = pair
+-  (h, D.node(hl, d_object_root, d_domain))
++  (h, D.node(hl, d_domain, d_object_root))
+ 

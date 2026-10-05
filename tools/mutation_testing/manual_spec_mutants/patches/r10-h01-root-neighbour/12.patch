@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/12
+# type: FuluBeaconState
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of genesis_time and genesis_validators_root are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_g0_rt7,BeaconState_hash_tree_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -49,3 +49,3 @@
+   (historical_roots, d_historical_roots) = r
+-  (h, (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, D.node(hl, D.node(hl, D.node(hl, d_genesis_time, d_genesis_validators_root), D.node(hl, d_slot, d_fork)), D.node(hl, D.node(hl, d_latest_block_header, d_block_roots), D.node(hl, d_state_roots, d_historical_roots)))))
++  (h, (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, D.node(hl, D.node(hl, D.node(hl, d_genesis_validators_root, d_genesis_time), D.node(hl, d_slot, d_fork)), D.node(hl, D.node(hl, d_latest_block_header, d_block_roots), D.node(hl, d_state_roots, d_historical_roots)))))
+ 

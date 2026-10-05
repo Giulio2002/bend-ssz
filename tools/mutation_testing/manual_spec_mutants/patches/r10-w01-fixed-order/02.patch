@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/02
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 220 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_g0_pw4,BeaconBlockBody_g1_pw3,BeaconBlockBody_serialize,BeaconBlockBody_encode
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -62,3 +62,3 @@
+   (voluntary_exits, c) = r
+-  (FuluBytes32_e.b32_put(FuluEth1Data_e.Eth1Data_put(FuluBytes96_e.b96_put(out, (pos + 0 : U32), randao_reveal), (pos + 96 : U32), eth1_data), (pos + 168 : U32), graffiti), (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, c))
++  (FuluBytes32_e.b32_put(FuluEth1Data_e.Eth1Data_put(FuluBytes96_e.b96_put(out, (pos + 220 : U32), randao_reveal), (pos + 96 : U32), eth1_data), (pos + 168 : U32), graffiti), (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, c))
+ 
+@@ -116,3 +116,3 @@
+   (execution_requests, c) = r
+-  BeaconBlockBody_g1_pw4(pos, c, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests, FuluSyncAggregate_e.SyncAggregate_bx_putk(out, (pos + 220 : U32), sync_aggregate))
++  BeaconBlockBody_g1_pw4(pos, c, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests, FuluSyncAggregate_e.SyncAggregate_bx_putk(out, (pos + 0 : U32), sync_aggregate))
+ 

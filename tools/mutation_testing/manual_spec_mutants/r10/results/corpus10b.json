@@ -1,0 +1,853 @@
+[
+ {
+  "id": "r10-r01-reader-advance/01",
+  "type": "BitsStruct",
+  "cases": 350,
+  "official": 0,
+  "corpus_bad": 30,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 30
+  },
+  "timeouts": 0,
+  "examples": [
+   "BitsStruct#3367: re-encoding differs",
+   "BitsStruct#3368: re-encoding differs",
+   "BitsStruct#3370: re-encoding differs",
+   "BitsStruct#3402: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 16.9
+ },
+ {
+  "id": "r10-r01-reader-advance/02",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 100,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: re-encoding differs",
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.1
+ },
+ {
+  "id": "r10-r01-reader-advance/04",
+  "type": "FuluAggregateAndProof",
+  "cases": 387,
+  "official": 0,
+  "corpus_bad": 232,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 232
+  },
+  "timeouts": 0,
+  "examples": [
+   "AggregateAndProof#0: re-encoding differs",
+   "AggregateAndProof#1: re-encoding differs",
+   "AggregateAndProof#2: re-encoding differs",
+   "AggregateAndProof#3: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 15.3
+ },
+ {
+  "id": "r10-r01-reader-advance/08",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 155,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 155
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2685: re-encoding differs",
+   "BeaconBlockBody#2686: re-encoding differs",
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 64.0
+ },
+ {
+  "id": "r10-r01-reader-advance/10",
+  "type": "FuluBeaconBlock",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 20,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 20
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlock#2287: re-encoding differs",
+   "BeaconBlock#2288: re-encoding differs",
+   "BeaconBlock#2289: re-encoding differs",
+   "BeaconBlock#2410: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 63.4
+ },
+ {
+  "id": "r10-r01-reader-advance/11",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 63.6
+ },
+ {
+  "id": "r10-r01-reader-advance/25",
+  "type": "FuluExecutionPayload",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 79,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 79
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionPayload#11915: re-encoding differs",
+   "ExecutionPayload#11916: re-encoding differs",
+   "ExecutionPayload#11917: re-encoding differs",
+   "ExecutionPayload#11942: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 22.2
+ },
+ {
+  "id": "r10-r01-reader-advance/31",
+  "type": "FuluLightClientBootstrap",
+  "cases": 386,
+  "official": 0,
+  "corpus_bad": 90,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 90
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientBootstrap#16479: re-encoding differs",
+   "LightClientBootstrap#16480: re-encoding differs",
+   "LightClientBootstrap#16481: re-encoding differs",
+   "LightClientBootstrap#16546: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 64.0
+ },
+ {
+  "id": "r10-r01-reader-advance/35",
+  "type": "FuluLightClientUpdate",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 66,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 66
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientUpdate#18026: re-encoding differs",
+   "LightClientUpdate#18027: re-encoding differs",
+   "LightClientUpdate#18028: re-encoding differs",
+   "LightClientUpdate#18053: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 63.7
+ },
+ {
+  "id": "r10-r01-reader-advance/58",
+  "type": "ProgressiveBitsStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 239,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 239
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveBitsStruct#20870: re-encoding differs",
+   "ProgressiveBitsStruct#20871: re-encoding differs",
+   "ProgressiveBitsStruct#20872: re-encoding differs",
+   "ProgressiveBitsStruct#20873: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.3
+ },
+ {
+  "id": "r10-r01-reader-advance/60",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 0,
+  "corpus_bad": 67,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 67
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28056: re-encoding differs",
+   "VarTestStruct#28057: re-encoding differs",
+   "VarTestStruct#28081: re-encoding differs",
+   "VarTestStruct#28082: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.1
+ },
+ {
+  "id": "r10-w01-fixed-order/02",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 35,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 35
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2686: re-encoding differs",
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 68.4
+ },
+ {
+  "id": "r10-w01-fixed-order/03",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 61.1
+ },
+ {
+  "id": "r10-w01-fixed-order/08",
+  "type": "FuluExecutionPayloadHeader",
+  "cases": 368,
+  "official": 0,
+  "corpus_bad": 204,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 204
+  },
+  "timeouts": 0,
+  "examples": [
+   "ExecutionPayloadHeader#12314: re-encoding differs",
+   "ExecutionPayloadHeader#12315: re-encoding differs",
+   "ExecutionPayloadHeader#12316: re-encoding differs",
+   "ExecutionPayloadHeader#12317: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 23.1
+ },
+ {
+  "id": "r10-w01-fixed-order/11",
+  "type": "FuluLightClientBootstrap",
+  "cases": 386,
+  "official": 0,
+  "corpus_bad": 199,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 199
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientBootstrap#16477: re-encoding differs",
+   "LightClientBootstrap#16478: re-encoding differs",
+   "LightClientBootstrap#16479: re-encoding differs",
+   "LightClientBootstrap#16480: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 66.1
+ },
+ {
+  "id": "r10-w01-fixed-order/13",
+  "type": "FuluLightClientHeader",
+  "cases": 380,
+  "official": 0,
+  "corpus_bad": 246,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 246
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientHeader#17263: re-encoding differs",
+   "LightClientHeader#17264: re-encoding differs",
+   "LightClientHeader#17265: re-encoding differs",
+   "LightClientHeader#17266: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 67.1
+ },
+ {
+  "id": "r10-w01-fixed-order/14",
+  "type": "FuluLightClientOptimisticUpdate",
+  "cases": 381,
+  "official": 0,
+  "corpus_bad": 198,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 198
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientOptimisticUpdate#17643: re-encoding differs",
+   "LightClientOptimisticUpdate#17644: re-encoding differs",
+   "LightClientOptimisticUpdate#17645: re-encoding differs",
+   "LightClientOptimisticUpdate#17646: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 62.6
+ },
+ {
+  "id": "r10-w02-var-slot/03",
+  "type": "FuluAttesterSlashing",
+  "cases": 394,
+  "official": 0,
+  "corpus_bad": 149,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 149
+  },
+  "timeouts": 0,
+  "examples": [
+   "AttesterSlashing#1021: re-encoding differs",
+   "AttesterSlashing#1022: re-encoding differs",
+   "AttesterSlashing#1023: re-encoding differs",
+   "AttesterSlashing#1024: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "r10-w02-var-slot/04",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 49,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 49
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2686: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2690: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 61.9
+ },
+ {
+  "id": "r10-w02-var-slot/05",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 70.9
+ },
+ {
+  "id": "r10-w03-size-fixed-part/01",
+  "type": "BitsStruct",
+  "cases": 350,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.2
+ },
+ {
+  "id": "r10-w03-size-fixed-part/02",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 100,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 100
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6869: re-encoding differs",
+   "ComplexTestStruct#6870: re-encoding differs",
+   "ComplexTestStruct#6871: re-encoding differs",
+   "ComplexTestStruct#6872: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 18.5
+ },
+ {
+  "id": "r10-w03-size-fixed-part/03",
+  "type": "FuluAggregateAndProof",
+  "cases": 387,
+  "official": 0,
+  "corpus_bad": 232,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 232
+  },
+  "timeouts": 0,
+  "examples": [
+   "AggregateAndProof#0: re-encoding differs",
+   "AggregateAndProof#1: re-encoding differs",
+   "AggregateAndProof#2: re-encoding differs",
+   "AggregateAndProof#3: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.4
+ },
+ {
+  "id": "r10-w03-size-fixed-part/04",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 0,
+  "corpus_bad": 251,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 251
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#387: re-encoding differs",
+   "Attestation#388: re-encoding differs",
+   "Attestation#389: re-encoding differs",
+   "Attestation#390: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.0
+ },
+ {
+  "id": "r10-w03-size-fixed-part/05",
+  "type": "FuluAttesterSlashing",
+  "cases": 394,
+  "official": 0,
+  "corpus_bad": 149,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 149
+  },
+  "timeouts": 0,
+  "examples": [
+   "AttesterSlashing#1021: re-encoding differs",
+   "AttesterSlashing#1022: re-encoding differs",
+   "AttesterSlashing#1023: re-encoding differs",
+   "AttesterSlashing#1024: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 16.7
+ },
+ {
+  "id": "r10-w03-size-fixed-part/07",
+  "type": "FuluBeaconBlock",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 128,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 128
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlock#2285: re-encoding differs",
+   "BeaconBlock#2286: re-encoding differs",
+   "BeaconBlock#2287: re-encoding differs",
+   "BeaconBlock#2288: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 75.7
+ },
+ {
+  "id": "r10-w03-size-fixed-part/14",
+  "type": "FuluIndexedAttestation",
+  "cases": 362,
+  "official": 0,
+  "corpus_bad": 233,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 233
+  },
+  "timeouts": 0,
+  "examples": [
+   "IndexedAttestation#15547: re-encoding differs",
+   "IndexedAttestation#15548: re-encoding differs",
+   "IndexedAttestation#15549: re-encoding differs",
+   "IndexedAttestation#15550: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 18.1
+ },
+ {
+  "id": "r10-w03-size-fixed-part/16",
+  "type": "FuluLightClientFinalityUpdate",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 75.4
+ },
+ {
+  "id": "r10-w03-size-fixed-part/19",
+  "type": "FuluLightClientUpdate",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 71.7
+ },
+ {
+  "id": "r10-w03-size-fixed-part/21",
+  "type": "FuluSignedAggregateAndProof",
+  "cases": 391,
+  "official": 0,
+  "corpus_bad": 191,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 191
+  },
+  "timeouts": 0,
+  "examples": [
+   "SignedAggregateAndProof#23379: re-encoding differs",
+   "SignedAggregateAndProof#23380: re-encoding differs",
+   "SignedAggregateAndProof#23381: re-encoding differs",
+   "SignedAggregateAndProof#23382: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.4
+ },
+ {
+  "id": "r10-w03-size-fixed-part/22",
+  "type": "FuluSignedBeaconBlock",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 110,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 110
+  },
+  "timeouts": 0,
+  "examples": [
+   "SignedBeaconBlock#24056: re-encoding differs",
+   "SignedBeaconBlock#24057: re-encoding differs",
+   "SignedBeaconBlock#24058: re-encoding differs",
+   "SignedBeaconBlock#24059: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 43.6
+ },
+ {
+  "id": "r10-w03-size-fixed-part/24",
+  "type": "ProgressiveComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 171,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 171
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveComplexTestStruct#21270: re-encoding differs",
+   "ProgressiveComplexTestStruct#21271: re-encoding differs",
+   "ProgressiveComplexTestStruct#21272: re-encoding differs",
+   "ProgressiveComplexTestStruct#21273: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 18.7
+ },
+ {
+  "id": "r10-w03-size-fixed-part/25",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 103,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 103
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveTestStruct#21894: re-encoding differs",
+   "ProgressiveTestStruct#21895: re-encoding differs",
+   "ProgressiveTestStruct#21896: re-encoding differs",
+   "ProgressiveTestStruct#21897: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 22.1
+ },
+ {
+  "id": "r10-w03-size-fixed-part/26",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 0,
+  "corpus_bad": 114,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 114
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveVarTestStruct#22294: re-encoding differs",
+   "ProgressiveVarTestStruct#22295: re-encoding differs",
+   "ProgressiveVarTestStruct#22296: re-encoding differs",
+   "ProgressiveVarTestStruct#22297: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 19.4
+ },
+ {
+  "id": "r10-w03-size-fixed-part/27",
+  "type": "VarTestStruct",
+  "cases": 334,
+  "official": 0,
+  "corpus_bad": 138,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 138
+  },
+  "timeouts": 0,
+  "examples": [
+   "VarTestStruct#28053: re-encoding differs",
+   "VarTestStruct#28054: re-encoding differs",
+   "VarTestStruct#28055: re-encoding differs",
+   "VarTestStruct#28056: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 22.4
+ },
+ {
+  "id": "r10-w04-first-offset/03",
+  "type": "FuluAggregateAndProof",
+  "cases": 387,
+  "official": 0,
+  "corpus_bad": 232,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 232
+  },
+  "timeouts": 0,
+  "examples": [
+   "AggregateAndProof#0: re-encoding differs",
+   "AggregateAndProof#1: re-encoding differs",
+   "AggregateAndProof#2: re-encoding differs",
+   "AggregateAndProof#3: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 20.6
+ },
+ {
+  "id": "r10-w04-first-offset/04",
+  "type": "FuluAttestation",
+  "cases": 366,
+  "official": 0,
+  "corpus_bad": 251,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 251
+  },
+  "timeouts": 0,
+  "examples": [
+   "Attestation#387: re-encoding differs",
+   "Attestation#388: re-encoding differs",
+   "Attestation#389: re-encoding differs",
+   "Attestation#390: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 20.6
+ },
+ {
+  "id": "r10-w04-first-offset/05",
+  "type": "FuluAttesterSlashing",
+  "cases": 394,
+  "official": 0,
+  "corpus_bad": 149,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 149
+  },
+  "timeouts": 0,
+  "examples": [
+   "AttesterSlashing#1021: re-encoding differs",
+   "AttesterSlashing#1022: re-encoding differs",
+   "AttesterSlashing#1023: re-encoding differs",
+   "AttesterSlashing#1024: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 17.4
+ },
+ {
+  "id": "r10-w04-first-offset/10",
+  "type": "FuluIndexedAttestation",
+  "cases": 362,
+  "official": 0,
+  "corpus_bad": 233,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 233
+  },
+  "timeouts": 0,
+  "examples": [
+   "IndexedAttestation#15547: re-encoding differs",
+   "IndexedAttestation#15548: re-encoding differs",
+   "IndexedAttestation#15549: re-encoding differs",
+   "IndexedAttestation#15550: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 15.6
+ },
+ {
+  "id": "r10-w04-first-offset/11",
+  "type": "FuluLightClientBootstrap",
+  "cases": 386,
+  "official": 0,
+  "corpus_bad": 199,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 199
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientBootstrap#16477: re-encoding differs",
+   "LightClientBootstrap#16478: re-encoding differs",
+   "LightClientBootstrap#16479: re-encoding differs",
+   "LightClientBootstrap#16480: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 64.0
+ },
+ {
+  "id": "r10-w04-first-offset/13",
+  "type": "FuluLightClientHeader",
+  "cases": 380,
+  "official": 0,
+  "corpus_bad": 246,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 246
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientHeader#17263: re-encoding differs",
+   "LightClientHeader#17264: re-encoding differs",
+   "LightClientHeader#17265: re-encoding differs",
+   "LightClientHeader#17266: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 61.1
+ },
+ {
+  "id": "r10-w04-first-offset/14",
+  "type": "FuluLightClientOptimisticUpdate",
+  "cases": 381,
+  "official": 0,
+  "corpus_bad": 198,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 198
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientOptimisticUpdate#17643: re-encoding differs",
+   "LightClientOptimisticUpdate#17644: re-encoding differs",
+   "LightClientOptimisticUpdate#17645: re-encoding differs",
+   "LightClientOptimisticUpdate#17646: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 62.8
+ },
+ {
+  "id": "r10-w04-first-offset/17",
+  "type": "FuluSignedAggregateAndProof",
+  "cases": 391,
+  "official": 0,
+  "corpus_bad": 191,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 191
+  },
+  "timeouts": 0,
+  "examples": [
+   "SignedAggregateAndProof#23379: re-encoding differs",
+   "SignedAggregateAndProof#23380: re-encoding differs",
+   "SignedAggregateAndProof#23381: re-encoding differs",
+   "SignedAggregateAndProof#23382: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "r10-l02-kzg-decode/08",
+  "type": "FuluLightClientUpdate",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 66,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 66
+  },
+  "timeouts": 0,
+  "examples": [
+   "LightClientUpdate#18037: ref rejects, mutant accepts",
+   "LightClientUpdate#18054: ref rejects, mutant accepts",
+   "LightClientUpdate#18056: ref rejects, mutant accepts",
+   "LightClientUpdate#18063: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 134.1
+ },
+ {
+  "id": "r10-l02-kzg-decode/09",
+  "type": "FuluLightClientUpdate",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 62.8
+ }
+]

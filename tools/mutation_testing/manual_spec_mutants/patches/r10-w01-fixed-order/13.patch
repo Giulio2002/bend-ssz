@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/13
+# type: FuluLightClientHeader
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 116 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluLightClientHeader_encode_ssz_generated.bend
+# sym: LightClientHeader_pw1,LightClientHeader_pw0,LightClientHeader_serialize,LightClientHeader_encode
+--- a/types/FuluLightClientHeader_encode_ssz_generated.bend
++++ b/types/FuluLightClientHeader_encode_ssz_generated.bend
+@@ -26,3 +26,3 @@
+   (execution_branch, fl) = r
+-  (FuluBeaconBlockHeader_e.BeaconBlockHeader_put(out, (pos + 0 : U32), beacon), (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, (cur .|. fl : U32)))
++  (FuluBeaconBlockHeader_e.BeaconBlockHeader_put(out, (pos + 116 : U32), beacon), (FuluLightClientHeader_d.LightClientHeader{beacon, execution, execution_branch}, (cur .|. fl : U32)))
+ 
+@@ -31,3 +31,3 @@
+   (execution, c) = r
+-  LightClientHeader_pw1(pos, c, beacon, execution, FuluExecutionBranch_e.v4_b32_putk(out, (pos + 116 : U32), execution_branch))
++  LightClientHeader_pw1(pos, c, beacon, execution, FuluExecutionBranch_e.v4_b32_putk(out, (pos + 0 : U32), execution_branch))
+ 

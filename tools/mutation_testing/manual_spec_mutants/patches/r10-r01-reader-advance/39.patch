@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/39
+# type: FuluPendingDeposit
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 184 is read at byte 88 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluPendingDeposit_decode_ssz_generated.bend
+# sym: PendingDeposit_rd3,PendingDeposit_decode
+--- a/types/FuluPendingDeposit_decode_ssz_generated.bend
++++ b/types/FuluPendingDeposit_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   (buf, +signature) = pair
+-  PendingDeposit_rd4(off, len, pubkey, withdrawal_credentials, amount, signature, uint64_r.u64_read(buf, (off + 184 : U32), 8))
++  PendingDeposit_rd4(off, len, pubkey, withdrawal_credentials, amount, signature, uint64_r.u64_read(buf, (off + 88 : U32), 8))
+ 

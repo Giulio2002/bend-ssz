@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/33
+# type: FuluLightClientHeader
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 116 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluLightClientHeader_decode_ssz_generated.bend
+# sym: LightClientHeader_rd2,LightClientHeader_decode
+--- a/types/FuluLightClientHeader_decode_ssz_generated.bend
++++ b/types/FuluLightClientHeader_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, execution) = pair
+-  LightClientHeader_rd3(off, len, o_execution, beacon, execution, FuluExecutionBranch_r.v4_b32_read(buf, (off + 116 : U32), 128))
++  LightClientHeader_rd3(off, len, o_execution, beacon, execution, FuluExecutionBranch_r.v4_b32_read(buf, (off + 0 : U32), 128))
+ 

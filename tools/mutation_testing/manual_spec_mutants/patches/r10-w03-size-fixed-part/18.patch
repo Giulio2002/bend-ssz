@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/18
+# type: FuluLightClientOptimisticUpdate
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 176 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
+# sym: LightClientOptimisticUpdate_size,LightClientOptimisticUpdate_serialize,LightClientOptimisticUpdate_encode
+--- a/types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
++++ b/types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   match o:
+-    case FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, +signature_slot}: LightClientOptimisticUpdate_sz0(sync_aggregate, signature_slot, 172, FuluLightClientHeader_e.LightClientHeader_size(attested_header))
++    case FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{attested_header, sync_aggregate, +signature_slot}: LightClientOptimisticUpdate_sz0(sync_aggregate, signature_slot, 176, FuluLightClientHeader_e.LightClientHeader_size(attested_header))
+ 

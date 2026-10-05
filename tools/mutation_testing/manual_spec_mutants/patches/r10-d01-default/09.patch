@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/09
+# type: FuluSyncCommitteeContribution
+# ops: encode,root
+# spec: Default values: the default of Bitvector[N] is N False bits
+# fault: bit 0 of the default is set
+# why: non-zero default
+# file: types/Fulu_bitvector_128_def_generated.bend
+# sym: bv128_default
+--- a/types/Fulu_bitvector_128_def_generated.bend
++++ b/types/Fulu_bitvector_128_def_generated.bend
+@@ -12,3 +12,3 @@
+ 
+-def bv128_default() -> Bitvector128: Bitvector128{0, 0, 0, 0}
++def bv128_default() -> Bitvector128: Bitvector128{1, 0, 0, 0}
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/35
+# type: FuluLightClientUpdate
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 25208 is read at byte 25048 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+# sym: LightClientUpdate_rd7,LightClientUpdate_decode
+--- a/types/FuluLightClientUpdate_decode_ssz_generated.bend
++++ b/types/FuluLightClientUpdate_decode_ssz_generated.bend
+@@ -25,3 +25,3 @@
+   (buf, sync_aggregate) = pair
+-  LightClientUpdate_rd8(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, uint64_r.u64_read(buf, (off + 25208 : U32), 8))
++  LightClientUpdate_rd8(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, uint64_r.u64_read(buf, (off + 25048 : U32), 8))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/11
+# type: FuluDepositData
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of withdrawal_credentials and amount are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluDepositData_hashtreeroot_generated.bend
+# sym: DepositData_rt3,DepositData_hash_tree_root
+--- a/types/FuluDepositData_hashtreeroot_generated.bend
++++ b/types/FuluDepositData_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, d_signature) = pair
+-  (h, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_amount, d_signature)))
++  (h, D.node(hl, D.node(hl, d_pubkey, d_amount), D.node(hl, d_withdrawal_credentials, d_signature)))
+ 

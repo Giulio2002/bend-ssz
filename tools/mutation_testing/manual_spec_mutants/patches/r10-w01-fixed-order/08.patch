@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/08
+# type: FuluExecutionPayloadHeader
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 116 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+# sym: ExecutionPayloadHeader_g0_pw0,ExecutionPayloadHeader_g0_put,ExecutionPayloadHeader_serialize,ExecutionPayloadHeader_encode
+--- a/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+@@ -24,3 +24,3 @@
+   (logs_bloom, fl) = r
+-  (uint64_e.u64_put(uint64_e.u64_put(FuluBytes32_e.b32_put(FuluBytes32_e.b32_put(FuluBytes32_e.b32_put(FuluBytes20_e.b20_put(FuluBytes32_e.b32_put(out, (pos + 0 : U32), parent_hash), (pos + 32 : U32), fee_recipient), (pos + 52 : U32), state_root), (pos + 84 : U32), receipts_root), (pos + 372 : U32), prev_randao), (pos + 404 : U32), block_number), (pos + 412 : U32), gas_limit), (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, (cur .|. fl : U32)))
++  (uint64_e.u64_put(uint64_e.u64_put(FuluBytes32_e.b32_put(FuluBytes32_e.b32_put(FuluBytes32_e.b32_put(FuluBytes20_e.b20_put(FuluBytes32_e.b32_put(out, (pos + 116 : U32), parent_hash), (pos + 32 : U32), fee_recipient), (pos + 52 : U32), state_root), (pos + 84 : U32), receipts_root), (pos + 372 : U32), prev_randao), (pos + 404 : U32), block_number), (pos + 412 : U32), gas_limit), (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, (cur .|. fl : U32)))
+ 
+@@ -28,3 +28,3 @@
+   match o:
+-    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0_pw0(pos, voff, parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, Fulu_bytevec_256_e.b256_putk(out, (pos + 116 : U32), logs_bloom))
++    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0_pw0(pos, voff, parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, Fulu_bytevec_256_e.b256_putk(out, (pos + 0 : U32), logs_bloom))
+ 

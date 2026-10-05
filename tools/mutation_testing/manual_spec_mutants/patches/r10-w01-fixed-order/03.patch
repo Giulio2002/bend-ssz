@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/03
+# type: FuluBeaconState
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 176 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g0_pw2,BeaconState_g0_pw0,BeaconState_serialize,BeaconState_encode
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -57,3 +57,3 @@
+   (state_roots, fl) = r
+-  (FuluBeaconBlockHeader_e.BeaconBlockHeader_put(FuluFork_e.Fork_put(uint64_e.u64_put(FuluBytes32_e.b32_put(uint64_e.u64_put(out, (pos + 0 : U32), genesis_time), (pos + 8 : U32), genesis_validators_root), (pos + 40 : U32), slot), (pos + 48 : U32), fork), (pos + 64 : U32), latest_block_header), (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, (cur .|. fl : U32)))
++  (FuluBeaconBlockHeader_e.BeaconBlockHeader_put(FuluFork_e.Fork_put(uint64_e.u64_put(FuluBytes32_e.b32_put(uint64_e.u64_put(out, (pos + 176 : U32), genesis_time), (pos + 8 : U32), genesis_validators_root), (pos + 40 : U32), slot), (pos + 48 : U32), fork), (pos + 64 : U32), latest_block_header), (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, (cur .|. fl : U32)))
+ 
+@@ -67,3 +67,3 @@
+   (historical_roots, c) = r
+-  BeaconState_g0_pw1(pos, c, genesis_time, genesis_validators_root, slot, fork, latest_block_header, state_roots, historical_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 176 : U32), block_roots))
++  BeaconState_g0_pw1(pos, c, genesis_time, genesis_validators_root, slot, fork, latest_block_header, state_roots, historical_roots, Fulu_vec_bytevec_32_8192_e.v8192_b32_putk(out, (pos + 0 : U32), block_roots))
+ 

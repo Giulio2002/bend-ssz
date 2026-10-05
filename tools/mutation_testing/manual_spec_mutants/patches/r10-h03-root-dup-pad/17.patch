@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h03-root-dup-pad/17
+# type: FuluExecutionPayload
+# ops: root
+# spec: merkleize pads the chunk list with zero chunks up to the next power of two
+# fault: the last odd field root excess_blob_gas is carried up one level unhashed instead of being hashed with the zero chunk
+# why: promoting the odd node (no zero padding)
+# file: types/FuluExecutionPayload_hashtreeroot_generated.bend
+# sym: ExecutionPayload_g2_rt2,ExecutionPayload_hash_tree_root
+--- a/types/FuluExecutionPayload_hashtreeroot_generated.bend
++++ b/types/FuluExecutionPayload_hashtreeroot_generated.bend
+@@ -101,3 +101,3 @@
+   (h, z2) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_excess_blob_gas, D.zero()), z1), z2))
++  (h, D.node(hl, D.node(hl, d_excess_blob_gas, z1), z2))
+ 

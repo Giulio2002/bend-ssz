@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/12
+# type: FuluLightClientFinalityUpdate
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
+# sym: LightClientFinalityUpdate_rt5,LightClientFinalityUpdate_hash_tree_root
+--- a/types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
++++ b/types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (h, z1) = pair
+-  (h, (FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{attested_header, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_attested_header, d_finalized_header), D.node(hl, d_finality_branch, d_sync_aggregate)), D.node(hl, D.node(hl, d_signature_slot, D.zero()), z1))))
++  (h, (FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{attested_header, finalized_header, finality_branch, sync_aggregate, signature_slot}, D.node(hl, D.node(hl, D.node(hl, d_attested_header, d_finalized_header), D.node(hl, d_finality_branch, d_sync_aggregate)), D.node(hl, D.node(hl, d_signature_slot, D.zero()), D.zero()))))
+ 

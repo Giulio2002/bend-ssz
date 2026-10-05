@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/14
+# type: FuluSyncCommitteeContribution
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+# sym: SyncCommitteeContribution_rt5,SyncCommitteeContribution_hash_tree_root
+--- a/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, D.node(hl, d_signature, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_slot, d_beacon_block_root), D.node(hl, d_subcommittee_index, d_aggregation_bits)), D.node(hl, D.node(hl, d_signature, D.zero()), D.zero())))
+ 

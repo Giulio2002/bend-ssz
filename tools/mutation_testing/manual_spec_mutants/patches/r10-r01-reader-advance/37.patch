@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/37
+# type: FuluPendingAttestation
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 140 is read at byte 132 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluPendingAttestation_decode_ssz_generated.bend
+# sym: PendingAttestation_rd3,PendingAttestation_decode
+--- a/types/FuluPendingAttestation_decode_ssz_generated.bend
++++ b/types/FuluPendingAttestation_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +inclusion_delay) = pair
+-  PendingAttestation_rd4(off, len, o_aggregation_bits, aggregation_bits, data, inclusion_delay, uint64_r.u64_read(buf, (off + 140 : U32), 8))
++  PendingAttestation_rd4(off, len, o_aggregation_bits, aggregation_bits, data, inclusion_delay, uint64_r.u64_read(buf, (off + 132 : U32), 8))
+ 

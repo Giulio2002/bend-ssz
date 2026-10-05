@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h02-root-cross/05
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: merkleize pairs chunk 2i with chunk 2i+1 in declaration order
+# fault: the roots of execution_payload and bls_to_execution_changes are exchanged (crossing a pair boundary)
+# why: field order across subtrees
+# file: types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+# sym: BeaconBlockBody_g1_rt5,BeaconBlockBody_hash_tree_root
+--- a/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockBody_hashtreeroot_generated.bend
+@@ -78,3 +78,3 @@
+   (h, z1) = pair
+-  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_execution_payload), D.node(hl, d_bls_to_execution_changes, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), z1))))
++  (h, (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, D.node(hl, D.node(hl, D.node(hl, d_sync_aggregate, d_bls_to_execution_changes), D.node(hl, d_execution_payload, d_blob_kzg_commitments)), D.node(hl, D.node(hl, d_execution_requests, D.zero()), z1))))
+ 

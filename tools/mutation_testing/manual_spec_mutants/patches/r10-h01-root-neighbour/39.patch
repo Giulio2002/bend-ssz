@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/39
+# type: FuluPendingAttestation
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of aggregation_bits and data are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluPendingAttestation_hashtreeroot_generated.bend
+# sym: PendingAttestation_rt3,PendingAttestation_hash_tree_root
+--- a/types/FuluPendingAttestation_hashtreeroot_generated.bend
++++ b/types/FuluPendingAttestation_hashtreeroot_generated.bend
+@@ -16,3 +16,3 @@
+   (h, d_proposer_index) = pair
+-  (h, (FuluPendingAttestation_d.PendingAttestation{aggregation_bits, data, inclusion_delay, proposer_index}, D.node(hl, D.node(hl, d_aggregation_bits, d_data), D.node(hl, d_inclusion_delay, d_proposer_index))))
++  (h, (FuluPendingAttestation_d.PendingAttestation{aggregation_bits, data, inclusion_delay, proposer_index}, D.node(hl, D.node(hl, d_data, d_aggregation_bits), D.node(hl, d_inclusion_delay, d_proposer_index))))
+ 

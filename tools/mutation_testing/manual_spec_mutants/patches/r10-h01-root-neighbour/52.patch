@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/52
+# type: FuluSingleAttestation
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of committee_index and attester_index are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluSingleAttestation_hashtreeroot_generated.bend
+# sym: SingleAttestation_rt3,SingleAttestation_hash_tree_root
+--- a/types/FuluSingleAttestation_hashtreeroot_generated.bend
++++ b/types/FuluSingleAttestation_hashtreeroot_generated.bend
+@@ -17,3 +17,3 @@
+   (h, d_signature) = pair
+-  (h, D.node(hl, D.node(hl, d_committee_index, d_attester_index), D.node(hl, d_data, d_signature)))
++  (h, D.node(hl, D.node(hl, d_attester_index, d_committee_index), D.node(hl, d_data, d_signature)))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/02
+# type: ComplexTestStruct
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 67 (fixed part 71)
+# why: fixed part length off by one offset
+# file: types/ComplexTestStruct_encode_ssz_generated.bend
+# sym: ComplexTestStruct_putn,ComplexTestStruct_serialize,ComplexTestStruct_encode
+--- a/types/ComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ComplexTestStruct_encode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match o:
+-    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, list_uint16_128_e.l128_u16_putv(out, pos, 2, 71, f_B))
++    case ComplexTestStruct_d.ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: ComplexTestStruct_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, list_uint16_128_e.l128_u16_putv(out, pos, 2, 67, f_B))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/31
+# type: FuluLightClientBootstrap
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 24628 is read at byte 4 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluLightClientBootstrap_decode_ssz_generated.bend
+# sym: LightClientBootstrap_rd2,LightClientBootstrap_decode
+--- a/types/FuluLightClientBootstrap_decode_ssz_generated.bend
++++ b/types/FuluLightClientBootstrap_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, current_sync_committee) = pair
+-  LightClientBootstrap_rd3(off, len, o_header, header, current_sync_committee, FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, (off + 24628 : U32), 192))
++  LightClientBootstrap_rd3(off, len, o_header, header, current_sync_committee, FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, (off + 4 : U32), 192))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/23
+# type: FuluEth1Data
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 40 is read at byte 32 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluEth1Data_decode_ssz_generated.bend
+# sym: Eth1Data_rd1,Eth1Data_decode
+--- a/types/FuluEth1Data_decode_ssz_generated.bend
++++ b/types/FuluEth1Data_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +deposit_count) = pair
+-  Eth1Data_rd2(off, len, deposit_root, deposit_count, FuluBytes32_r.b32_read(buf, (off + 40 : U32), 32))
++  Eth1Data_rd2(off, len, deposit_root, deposit_count, FuluBytes32_r.b32_read(buf, (off + 32 : U32), 32))
+ 

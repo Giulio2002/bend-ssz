@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/19
+# type: FuluSyncCommittee
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 24576 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluSyncCommittee_encode_ssz_generated.bend
+# sym: SyncCommittee_putk,SyncCommittee_pw0,SyncCommittee_serialize,SyncCommittee_encode
+--- a/types/FuluSyncCommittee_encode_ssz_generated.bend
++++ b/types/FuluSyncCommittee_encode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+   (pubkeys, fl) = r
+-  (FuluBytes48_e.b48_put(out, (pos + 24576 : U32), aggregate_pubkey), (FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey}, (cur .|. fl : U32)))
++  (FuluBytes48_e.b48_put(out, (pos + 0 : U32), aggregate_pubkey), (FuluSyncCommittee_d.SyncCommittee{pubkeys, aggregate_pubkey}, (cur .|. fl : U32)))
+ 
+@@ -22,3 +22,3 @@
+   match o:
+-    case FuluSyncCommittee_d.SyncCommittee{pubkeys, +aggregate_pubkey}: SyncCommittee_pw0(pos, 0, aggregate_pubkey, Fulu_vec_bytevec_48_512_e.v512_b48_putk(out, (pos + 0 : U32), pubkeys))
++    case FuluSyncCommittee_d.SyncCommittee{pubkeys, +aggregate_pubkey}: SyncCommittee_pw0(pos, 0, aggregate_pubkey, Fulu_vec_bytevec_48_512_e.v512_b48_putk(out, (pos + 24576 : U32), pubkeys))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/33
+# type: FuluLightClientBootstrap
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of header and current_sync_committee are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/FuluLightClientBootstrap_hashtreeroot_generated.bend
+# sym: LightClientBootstrap_rt2,LightClientBootstrap_hash_tree_root
+--- a/types/FuluLightClientBootstrap_hashtreeroot_generated.bend
++++ b/types/FuluLightClientBootstrap_hashtreeroot_generated.bend
+@@ -18,3 +18,3 @@
+   (current_sync_committee_branch, d_current_sync_committee_branch) = r
+-  (h, (FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}, D.node(hl, D.node(hl, d_header, d_current_sync_committee), D.node(hl, d_current_sync_committee_branch, D.zero()))))
++  (h, (FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}, D.node(hl, D.node(hl, d_current_sync_committee, d_header), D.node(hl, d_current_sync_committee_branch, D.zero()))))
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-l01-kzg-sync-roots/03
+# type: FuluDataColumnSidecar,FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[KZGCommitment, 4096]) = mix_in_length(merkleize(roots, limit=4096), len): depth 12
+# fault: the KZG list tree has depth 13
+# why: limit + 1 / bit length
+# file: types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+# sym: l4096_b48_root,l4096_b48_mix,DataColumnSidecar_hash_tree_root
+--- a/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
++++ b/types/Fulu_list_bytevec_48_4096_hashtreeroot_generated.bend
+@@ -15,3 +15,3 @@
+ 
+-def l4096_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b48_mix(hl, O.elems_root(hl, h, o, 12, 1, 12, seg))
++def l4096_b48_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): l4096_b48_mix(hl, O.elems_root(hl, h, o, 12, 1, 13, seg))
+ 

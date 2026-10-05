@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-r01-reader-advance/44
+# type: FuluSignedBeaconBlockHeader
+# ops: decode
+# spec: deserialize(Container): field i is bytes [sum(sizes before i), + size_i)
+# fault: the field at byte 112 is read at byte 0 (the cursor is not advanced past the previous field)
+# why: reader cursor
+# file: types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+# sym: SignedBeaconBlockHeader_rd0,SignedBeaconBlockHeader_decode
+--- a/types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +message) = pair
+-  SignedBeaconBlockHeader_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 112 : U32), 96))
++  SignedBeaconBlockHeader_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96))
+ 

@@ -1,0 +1,3159 @@
+[
+ {
+  "id": "r10-d01-default/01",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "b20_default_zero",
+   "file": "proofs/slop/constants/fulu_b20_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Bytes20_default_serialize (proofs/slop/constants/fulu_Bytes20_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/01.patch",
+  "type": "FuluBytes20",
+  "file": "types/FuluBytes20_def_generated.bend",
+  "rule": "Default values: the default of ByteVector[N] is N zero bytes",
+  "fault": "the first word of the default is 1 (byte 0 is 0x01)",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluBytes20_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.6
+   ],
+   [
+    "e2e/FuluExecutionAddress_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.1
+   ],
+   [
+    "e2e/FuluExecutionPayloadHeader_e2e_witness_generated.bend",
+    "SURVIVED",
+    37.2
+   ],
+   [
+    "proofs/obj/fields_3_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/api/FuluBytes20_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    3.2
+   ],
+   [
+    "proofs/api/FuluBytes20_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.6
+   ]
+  ],
+  "counterexample": "Bytes20_serialize(b20_default()) / Withdrawal_serialize(Withdrawal_default()) (address field): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding FuluBytes20 (ExecutionAddress) goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "b20 ser=ok=1,n=20,ck=200404057 root=0,0",
+      "b20 ser=ok=1,n=20,ck=201327578 root=16777216,0"
+     ]
+    }
+   },
+   "probe_case": "1",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/02",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "b32_default_zero",
+   "file": "proofs/slop/constants/fulu_b32_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Checkpoint_default_serialize (proofs/slop/constants/fulu_Checkpoint_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/02.patch",
+  "type": "FuluBytes32",
+  "file": "types/FuluBytes32_def_generated.bend",
+  "rule": "Default values: the default of ByteVector[N] is N zero bytes",
+  "fault": "the first word of the default is 1 (byte 0 is 0x01)",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluRoot_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.5
+   ],
+   [
+    "e2e/FuluBytes32_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.0
+   ],
+   [
+    "e2e/FuluHash32_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.8
+   ],
+   [
+    "proofs/obj/fields_1_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/api/FuluBytes32_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    3.6
+   ],
+   [
+    "proofs/api/FuluBytes32_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.9
+   ]
+  ],
+  "counterexample": "Checkpoint_serialize(Checkpoint_default()), Bytes32_serialize(b32_default()): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding FuluBytes32 (Root, Hash32: every root field of every Fulu container) goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "checkpoint ser=ok=1,n=40,ck=306242375 root=4121296194,660208459",
+      "checkpoint ser=ok=1,n=40,ck=2049052710 root=3411617860,2699607030"
+     ],
+     "6": [
+      "scc ser=ok=1,n=160,ck=3630247175 root=2996130277,579228176",
+      "scc ser=ok=1,n=160,ck=968083878 root=3870379475,3676433199"
+     ],
+     "8": [
+      "att ser=ok=1,n=237,ck=2763448092 root=1289377985,1621717534",
+      "att ser=ok=1,n=237,ck=3481581215 root=1756535933,4085649805"
+     ],
+     "16": [
+      "blobsidecar ser=ok=1,n=131928,ck=3962439879 root=4005571129,4169512735",
+      "blobsidecar ser=ok=1,n=131928,ck=387325540 root=1396357167,1165153379"
+     ],
+     "17": [
+      "deposit ser=ok=1,n=1240,ck=1755804871 root=2706074012,4133798600",
+      "deposit ser=ok=1,n=1240,ck=2781296870 root=3777667132,916019656"
+     ]
+    }
+   },
+   "probe_case": "2",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/03",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "b48_default_zero",
+   "file": "proofs/slop/constants/fulu_b48_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Bytes48_default_serialize (proofs/slop/constants/fulu_Bytes48_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/03.patch",
+  "type": "FuluBytes48",
+  "file": "types/FuluBytes48_def_generated.bend",
+  "rule": "Default values: the default of ByteVector[N] is N zero bytes",
+  "fault": "the first word of the default is 1 (byte 0 is 0x01)",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluBLSPubkey_e2e_ser_generated.bend",
+    "SURVIVED",
+    26.2
+   ],
+   [
+    "e2e/FuluBytes48_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.4
+   ],
+   [
+    "e2e/FuluG1Point_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.0
+   ],
+   [
+    "proofs/obj/fields_2_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/api/FuluBytes48_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    4.3
+   ],
+   [
+    "proofs/api/FuluBytes48_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.7
+   ]
+  ],
+  "counterexample": "Bytes48_serialize(b48_default()), SyncCommittee_serialize(SyncCommittee_default()) (aggregate_pubkey): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding FuluBytes48 (BLSPubkey, KZGCommitment, KZGProof) goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "3": [
+      "b48 ser=ok=1,n=48,ck=2241146247 root=4121296194,660208459",
+      "b48 ser=ok=1,n=48,ck=2370228966 root=380349236,1228452527"
+     ],
+     "16": [
+      "blobsidecar ser=ok=1,n=131928,ck=3962439879 root=4005571129,4169512735",
+      "blobsidecar ser=ok=1,n=131928,ck=1787182085 root=1474851129,3734825287"
+     ],
+     "17": [
+      "deposit ser=ok=1,n=1240,ck=1755804871 root=2706074012,4133798600",
+      "deposit ser=ok=1,n=1240,ck=572457574 root=1121096811,1028779725"
+     ],
+     "18": [
+      "synccommittee ser=ok=1,n=24624,ck=934292871 root=389441966,2587732810",
+      "synccommittee ser=ok=1,n=24624,ck=1063375590 root=498122962,1991716234"
+     ]
+    }
+   },
+   "probe_case": "3",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/04",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "b8_default_zero",
+   "file": "proofs/slop/constants/fulu_b8_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Bytes8_default_serialize (proofs/slop/constants/fulu_Bytes8_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/04.patch",
+  "type": "FuluBytes8",
+  "file": "types/FuluBytes8_def_generated.bend",
+  "rule": "Default values: the default of ByteVector[N] is N zero bytes",
+  "fault": "the first word of the default is 1 (byte 0 is 0x01)",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluBytes8_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.6
+   ],
+   [
+    "e2e/FuluPayloadId_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.3
+   ],
+   [
+    "proofs/obj/serialize_0_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/api/FuluBytes8_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    3.0
+   ],
+   [
+    "proofs/api/FuluBytes8_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.5
+   ]
+  ],
+  "counterexample": "Bytes8_serialize(b8_default()): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding FuluBytes8 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "4": [
+      "b8 ser=ok=1,n=8,ck=6727 root=0,0",
+      "b8 ser=ok=1,n=8,ck=6758 root=16777216,0"
+     ]
+    }
+   },
+   "probe_case": "4",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/05",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "b96_default_zero",
+   "file": "proofs/slop/constants/fulu_b96_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Bytes96_default_serialize (proofs/slop/constants/fulu_Bytes96_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/05.patch",
+  "type": "FuluBytes96",
+  "file": "types/FuluBytes96_def_generated.bend",
+  "rule": "Default values: the default of ByteVector[N] is N zero bytes",
+  "fault": "the first word of the default is 1 (byte 0 is 0x01)",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluBLSSignature_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.3
+   ],
+   [
+    "e2e/FuluG2Point_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.4
+   ],
+   [
+    "e2e/FuluBytes96_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.2
+   ],
+   [
+    "proofs/obj/fields_1_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/api/FuluBytes96_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    5.7
+   ],
+   [
+    "proofs/api/FuluBytes96_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.2
+   ]
+  ],
+  "counterexample": "Bytes96_serialize(b96_default()), Attestation_serialize(Attestation_default()) (signature): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding FuluBytes96 (BLSSignature) goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "5": [
+      "b96 ser=ok=1,n=96,ck=2639403783 root=3679850830,1955290481",
+      "b96 ser=ok=1,n=96,ck=2572397030 root=1430031567,1956411195"
+     ],
+     "6": [
+      "scc ser=ok=1,n=160,ck=3630247175 root=2996130277,579228176",
+      "scc ser=ok=1,n=160,ck=3563240422 root=1931220103,4291713554"
+     ],
+     "7": [
+      "syncagg ser=ok=1,n=160,ck=3630247175 root=1118851668,3862111407",
+      "syncagg ser=ok=1,n=160,ck=3563240422 root=175277395,1552091378"
+     ],
+     "8": [
+      "att ser=ok=1,n=237,ck=2763448092 root=1289377985,1621717534",
+      "att ser=ok=1,n=237,ck=3725062109 root=4099110303,3497317814"
+     ],
+     "16": [
+      "blobsidecar ser=ok=1,n=131928,ck=3962439879 root=4005571129,4169512735",
+      "blobsidecar ser=ok=1,n=131928,ck=3569440934 root=3331741597,3804851802"
+     ],
+     "17": [
+      "deposit ser=ok=1,n=1240,ck=1755804871 root=2706074012,4133798600",
+      "deposit ser=ok=1,n=1240,ck=1688798118 root=3326125793,2530284567"
+     ]
+    }
+   },
+   "probe_case": "5",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/09",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv128_default_zero",
+   "file": "proofs/slop/constants/fulu_bv128_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "SyncCommitteeContribution_default_serialize (proofs/slop/constants/fulu_SyncCommitteeContribution_default_image_generated.bend)",
+   "existing": "already killed on the base by round 9 (element_api_laws) SyncCommitteeContribution_serialize_vcoll_bv128_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/09.patch",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/Fulu_bitvector_128_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "proofs/obj/fields_0_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/api/FuluSyncCommitteeContribution_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    9.8
+   ],
+   [
+    "proofs/api/FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.7
+   ]
+  ],
+  "counterexample": "SyncCommitteeContribution_serialize(SyncCommitteeContribution_default()) (aggregation_bits): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding Fulu_bitvector_128 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "scc ser=ok=1,n=160,ck=3630247175 root=2996130277,579228176",
+      "scc ser=ok=1,n=160,ck=3375510630 root=603308738,2208208612"
+     ]
+    }
+   },
+   "probe_case": "6",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/10",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv4_default_zero",
+   "file": "proofs/slop/constants/fulu_bv4_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "existing": "already killed on the base by round 9 (element_api_laws) BeaconState_serialize_vcoll_bv4_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/10.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_bitvector_4_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "e2e/bitvector_4_e2e_ser_generated.bend",
+    "SURVIVED",
+    19.5
+   ],
+   [
+    "e2e/bitvector_4_e2e_witness_generated.bend",
+    "SURVIVED",
+    26.1
+   ],
+   [
+    "e2e/FuluBeaconState_e2e_set_witness_generated.bend",
+    "TIMEOUT",
+    120.6
+   ],
+   [
+    "proofs/obj/fields_4_generated.bend",
+    "SURVIVED",
+    1.3
+   ],
+   [
+    "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    43.3
+   ],
+   [
+    "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    40.5
+   ]
+  ],
+  "counterexample": "BeaconState_serialize(BeaconState_default()) (justification_bits): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding Fulu_bitvector_4 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "unjudged",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "NOTAPPLICABLE"
+   },
+   "probe_case": null,
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/11",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv512_default_zero",
+   "file": "proofs/slop/constants/fulu_bv512_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "SyncAggregate_default_serialize (proofs/slop/constants/fulu_SyncAggregate_default_image_generated.bend)",
+   "existing": "already killed on the base by round 9 (element_api_laws) SyncAggregate_serialize_vcoll_bv512_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/11.patch",
+  "type": "FuluSyncAggregate",
+  "file": "types/Fulu_bitvector_512_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/bitvector_512_e2e_ser_generated.bend",
+    "SURVIVED",
+    29.8
+   ],
+   [
+    "proofs/obj/fields_0_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/api/FuluSyncAggregate_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    10.8
+   ],
+   [
+    "proofs/api/FuluSyncAggregate_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.8
+   ]
+  ],
+  "counterexample": "SyncAggregate_serialize(SyncAggregate_default()) (sync_committee_bits): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding Fulu_bitvector_512 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "7": [
+      "syncagg ser=ok=1,n=160,ck=3630247175 root=1118851668,3862111407",
+      "syncagg ser=ok=1,n=160,ck=796859878 root=3913571432,3042426"
+     ]
+    }
+   },
+   "probe_case": "7",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/12",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv64_default_zero",
+   "file": "proofs/slop/constants/fulu_bv64_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "Attestation_default_serialize (proofs/slop/constants/fulu_Attestation_default_image_generated.bend)",
+   "existing": "already killed on the base by round 9 (element_api_laws) Attestation_serialize_vcoll_bv64_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/12.patch",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluAttestation_e2e_witness_generated.bend",
+    "SURVIVED",
+    43.8
+   ],
+   [
+    "e2e/FuluAggregateAndProof_e2e_witness_generated.bend",
+    "SURVIVED",
+    49.2
+   ],
+   [
+    "e2e/FuluSignedAggregateAndProof_e2e_witness_generated.bend",
+    "SURVIVED",
+    50.9
+   ],
+   [
+    "proofs/obj/fields_1_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/api/FuluAttestation_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    17.3
+   ],
+   [
+    "proofs/api/FuluAttestation_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    15.7
+   ]
+  ],
+  "counterexample": "Attestation_serialize(Attestation_default()) (committee_bits): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding Fulu_bitvector_64 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "8": [
+      "att ser=ok=1,n=237,ck=2763448092 root=1289377985,1621717534",
+      "att ser=ok=1,n=237,ck=2763449053 root=3935468138,3832404876"
+     ]
+    }
+   },
+   "probe_case": "8",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/20",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv513_default_zero",
+   "file": "proofs/slop/constants/generic_bv513_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "bitvector_513_default_serialize (proofs/slop/constants/generic_bitvector_513_default_image_generated.bend)",
+   "existing": "already killed on the base by round 9 (element_api_laws) bitvector_513_serialize_vcoll_bv513_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/20.patch",
+  "type": "bitvector_513",
+  "file": "types/bitvector_513_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/bitvector_513_e2e_ser_generated.bend",
+    "SURVIVED",
+    20.0
+   ],
+   [
+    "e2e/bitvector_513_e2e_witness_generated.bend",
+    "SURVIVED",
+    27.9
+   ],
+   [
+    "proofs/obj/sub_bitvector_513_generated.bend",
+    "SURVIVED",
+    2.7
+   ],
+   [
+    "proofs/api/bitvector_513_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    4.5
+   ],
+   [
+    "proofs/api/bitvector_513_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.7
+   ]
+  ],
+  "counterexample": "bitvector_513_serialize(bv513_default()): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding bitvector_513 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "10": [
+      "bv513 ser=ok=1,n=65,ck=1610428121 root=3679850830,1955290481",
+      "bv513 ser=ok=1,n=65,ck=2963737818 root=1430031567,1956411195"
+     ]
+    }
+   },
+   "probe_case": "10",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/21",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bv5_default_zero",
+   "file": "proofs/slop/constants/generic_bv5_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "bitvector_5_default_serialize (proofs/slop/constants/generic_bitvector_5_default_image_generated.bend)",
+   "existing": "already killed on the base by round 9 (element_api_laws) bitvector_5_serialize_vcoll_bv5_api_zero (the auditor planted on agent/r8-fixes, before agent/access-laws)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/21.patch",
+  "type": "bitvector_5",
+  "file": "types/bitvector_5_def_generated.bend",
+  "rule": "Default values: the default of Bitvector[N] is N False bits",
+  "fault": "bit 0 of the default is set",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/bitvector_5_e2e_ser_generated.bend",
+    "SURVIVED",
+    18.8
+   ],
+   [
+    "e2e/bitvector_5_e2e_witness_generated.bend",
+    "SURVIVED",
+    27.2
+   ],
+   [
+    "proofs/obj/sub_bitvector_5_generated.bend",
+    "SURVIVED",
+    2.2
+   ],
+   [
+    "proofs/api/bitvector_5_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    2.6
+   ],
+   [
+    "proofs/api/bitvector_5_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.5
+   ]
+  ],
+  "counterexample": "bitvector_5_serialize(bv5_default()): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding bitvector_5 goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "9": [
+      "bv5 ser=ok=1,n=1,ck=217 root=0,0",
+      "bv5 ser=ok=1,n=1,ck=218 root=16777216,0"
+     ]
+    }
+   },
+   "probe_case": "9",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/22",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "bool_default_zero",
+   "file": "proofs/slop/constants/fulu_bool_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "boolean_default_serialize (proofs/slop/constants/fulu_boolean_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/22.patch",
+  "type": "boolean",
+  "file": "types/boolean_def_generated.bend",
+  "rule": "Default values: the default of boolean is False",
+  "fault": "the default boolean is True",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/boolean_e2e_ser_generated.bend",
+    "SURVIVED",
+    19.5
+   ],
+   [
+    "proofs/gate/slop/size/boolean_generated.bend",
+    "SURVIVED",
+    0.8
+   ],
+   [
+    "proofs/api/boolean_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    7.2
+   ],
+   [
+    "proofs/api/boolean_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    12.0
+   ]
+  ],
+  "counterexample": "boolean_serialize(bool_default()): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding boolean goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "11": [
+      "bool ser=ok=1,n=1,ck=217 root=0,0",
+      "bool ser=ok=1,n=1,ck=218 root=16777216,0"
+     ]
+    }
+   },
+   "probe_case": "11",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-d01-default/23",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "u64_default_zero",
+   "file": "proofs/slop/constants/fulu_u64_default_zero_generated.bend",
+   "generator": "default_value_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "also": "uint64_default_serialize (proofs/slop/constants/fulu_uint64_default_image_generated.bend); Checkpoint_default_serialize (proofs/slop/constants/fulu_Checkpoint_default_image_generated.bend)"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-d01-default/23.patch",
+  "type": "uint64",
+  "file": "types/uint64_def_generated.bend",
+  "rule": "Default values: the default of uint64 is 0",
+  "fault": "the default uint64 is 1",
+  "proofs_A": "SURVIVED",
+  "roots_checked": [
+   [
+    "e2e/FuluRowIndex_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.5
+   ],
+   [
+    "e2e/FuluCustodyIndex_e2e_ser_generated.bend",
+    "SURVIVED",
+    25.1
+   ],
+   [
+    "e2e/FuluBlobIndex_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.5
+   ],
+   [
+    "e2e/FuluCommitteeIndex_e2e_ser_generated.bend",
+    "SURVIVED",
+    24.9
+   ],
+   [
+    "proofs/api/uint64_encode_ssz_proof_generated.bend",
+    "SURVIVED",
+    2.7
+   ],
+   [
+    "proofs/api/uint64_hashtreeroot_proof_generated.bend",
+    "SURVIVED",
+    11.5
+   ]
+  ],
+  "counterexample": "uint64_serialize(u64_default()), Checkpoint_serialize(Checkpoint_default()) (epoch): the spec default is all zero bytes (Default values; API_CONTRACTS X_default: serialize(default()) is the spec zero encoding); the mutant serializes a non-zero byte / bit and hashes to a different root",
+  "reachability": "public: X_default() is the documented constructor of the object API (docs/API_CONTRACTS.md, types/runtime_index.json); every container default of a type holding uint64 (Slot, Epoch, Gwei, every index) goes through it (X_default -> <field>_default); no setter is needed",
+  "verdict": "critical",
+  "evidence": {
+   "probe_p10a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "checkpoint ser=ok=1,n=40,ck=306242375 root=4121296194,660208459",
+      "checkpoint ser=ok=1,n=40,ck=109728870 root=380349236,1228452527"
+     ],
+     "6": [
+      "scc ser=ok=1,n=160,ck=3630247175 root=2996130277,579228176",
+      "scc ser=ok=1,n=160,ck=808176005 root=297250609,1258643248"
+     ],
+     "8": [
+      "att ser=ok=1,n=237,ck=2763448092 root=1289377985,1621717534",
+      "att ser=ok=1,n=237,ck=1679994528 root=3433297826,4157339450"
+     ],
+     "12": [
+      "u64 ser=ok=1,n=8,ck=6727 root=0,0",
+      "u64 ser=ok=1,n=8,ck=6758 root=16777216,0"
+     ],
+     "16": [
+      "blobsidecar ser=ok=1,n=131928,ck=3962439879 root=4005571129,4169512735",
+      "blobsidecar ser=ok=1,n=131928,ck=18963940 root=2348659072,3941852865"
+     ],
+     "17": [
+      "deposit ser=ok=1,n=1240,ck=1755804871 root=2706074012,4133798600",
+      "deposit ser=ok=1,n=1240,ck=1786824678 root=729266971,3553792075"
+     ]
+    }
+   },
+   "probe_case": "12",
+   "corpus": "not run: the corpus decodes valid bytes, re-encodes and hashes them; it never calls X_default, so it cannot observe a default fault"
+  }
+ },
+ {
+  "id": "r10-l02-kzg-decode/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-l02-kzg-decode/08.patch",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): the variable field windows are [o0, o1) and [o1, len)",
+  "fault": "attested_header is validated over the finalized_header window",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/LightClientUpdate_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_winx_LightClientUpdate_generated.bend",
+    "CRASH",
+    11.1
+   ],
+   [
+    "proofs/obj/var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    11.6
+   ],
+   [
+    "proofs/gate/g__var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    11.7
+   ],
+   [
+    "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend",
+    "CRASH",
+    12.1
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (66 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-l02-kzg-decode/08",
+    "type": "FuluLightClientUpdate",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 66,
+    "official_bad": 0,
+    "kinds": {
+     "ref rejects, mutant accepts": 66
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientUpdate#18037: ref rejects, mutant accepts",
+     "LightClientUpdate#18054: ref rejects, mutant accepts",
+     "LightClientUpdate#18056: ref rejects, mutant accepts",
+     "LightClientUpdate#18063: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 134.1
+   }
+  }
+ },
+ {
+  "id": "r10-l02-kzg-decode/09",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "LightClientUpdate_decode_vlit_bad_order_sym_o1",
+   "file": "proofs/slop/validity/fulu_LightClientUpdate_decode_literal_order_sym_generated.bend",
+   "generator": "decode_literal_laws (round 7)",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law",
+   "note": "the existing symbolic order law kills it (the auditor's pass 2 picked roots naming LightClientUpdate_ok / _decode, which this law does not). New: the literal LightClientUpdate_decode_vlit_bad_order_finalized_header (proofs/slop/validity/fulu_LightClientUpdate_decode_literal_bad_order_finalized_header_generated.bend, and the LightClientFinalityUpdate one) is refused by the unmutated decoder AND by the mutant: with o1 < o0 the attested_header window has a wrapped size, which the header's own validator refuses (its last variable field, extra_data, cannot reach the window end), so the dropped test is not observable on any literal; the refusal is pinned by the symbolic law"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-l02-kzg-decode/09.patch",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "rule": "offsets are non-decreasing",
+  "fault": "the o0 <= o1 order check is dropped",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/LightClientUpdate_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/var_winx_LightClientUpdate_generated.bend",
+    "CRASH",
+    10.6
+   ],
+   [
+    "proofs/obj/var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    12.0
+   ],
+   [
+    "proofs/gate/g__var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    12.0
+   ],
+   [
+    "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend",
+    "CRASH",
+    10.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "public: LightClientUpdate_decode(bytes) with the second offset below the first; the valid-only corpus cannot reach the refusal path; not shown by a targeted case this round",
+  "evidence": {
+   "corpus": {
+    "id": "r10-l02-kzg-decode/09",
+    "type": "FuluLightClientUpdate",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 62.8
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/01.patch",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 10 is read at byte 5 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/BitsStruct_generated.bend",
+    "SURVIVED",
+    0.8
+   ],
+   [
+    "proofs/slop/validity/generic_BitsStruct_decode_literal_ok_all_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/generic_BitsStruct_decode_literal_rt_wide_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/obj/var_codec_BitsStruct_generated.bend",
+    "CRASH",
+    8.8
+   ],
+   [
+    "proofs/api/BitsStruct_decode_ssz_proof_generated.bend",
+    "CRASH",
+    10.0
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (30 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/01",
+    "type": "BitsStruct",
+    "cases": 350,
+    "official": 0,
+    "corpus_bad": 30,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 30
+    },
+    "timeouts": 0,
+    "examples": [
+     "BitsStruct#3367: re-encoding differs",
+     "BitsStruct#3368: re-encoding differs",
+     "BitsStruct#3370: re-encoding differs",
+     "BitsStruct#3402: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 16.9
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/02.patch",
+  "type": "ComplexTestStruct",
+  "file": "types/ComplexTestStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 15 is read at byte 6 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/ComplexTestStruct_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_ok_all_generated.bend",
+    "SURVIVED",
+    1.3
+   ],
+   [
+    "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_off_minus_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/var_codec_ComplexTestStruct_generated.bend",
+    "CRASH",
+    10.3
+   ],
+   [
+    "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+    "CRASH",
+    11.7
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (100 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/02",
+    "type": "ComplexTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 100,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 100
+    },
+    "timeouts": 0,
+    "examples": [
+     "ComplexTestStruct#6869: re-encoding differs",
+     "ComplexTestStruct#6870: re-encoding differs",
+     "ComplexTestStruct#6871: re-encoding differs",
+     "ComplexTestStruct#6872: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.1
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/04.patch",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 12 is read at byte 0 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/AggregateAndProof_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_win_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/obj/var_win_AggregateAndProof_top_generated.bend",
+    "CRASH",
+    6.8
+   ],
+   [
+    "proofs/api/FuluAggregateAndProof_decode_ssz_proof_generated.bend",
+    "CRASH",
+    7.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (232 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/04",
+    "type": "FuluAggregateAndProof",
+    "cases": 387,
+    "official": 0,
+    "corpus_bad": 232,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 232
+    },
+    "timeouts": 0,
+    "examples": [
+     "AggregateAndProof#0: re-encoding differs",
+     "AggregateAndProof#1: re-encoding differs",
+     "AggregateAndProof#2: re-encoding differs",
+     "AggregateAndProof#3: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 15.3
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/08.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 220 is read at byte 168 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/BeaconBlockBody_generated.bend",
+    "SURVIVED",
+    1.6
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend",
+    "SURVIVED",
+    2.1
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend",
+    "SURVIVED",
+    2.0
+   ],
+   [
+    "proofs/obj/var_codec_BeaconBlockBody_generated.bend",
+    "CRASH",
+    16.4
+   ],
+   [
+    "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+    "CRASH",
+    17.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (155 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/08",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 155,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 155
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2685: re-encoding differs",
+     "BeaconBlockBody#2686: re-encoding differs",
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 64.0
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/10.patch",
+  "type": "FuluBeaconBlock",
+  "file": "types/FuluBeaconBlock_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 48 is read at byte 16 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/BeaconBlock_generated.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attestations_generated.bend",
+    "SURVIVED",
+    2.0
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlock_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    3.8
+   ],
+   [
+    "proofs/obj/var_codec_BeaconBlock_generated.bend",
+    "CRASH",
+    20.1
+   ],
+   [
+    "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+    "CRASH",
+    19.6
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (20 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/10",
+    "type": "FuluBeaconBlock",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 20,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 20
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlock#2287: re-encoding differs",
+     "BeaconBlock#2288: re-encoding differs",
+     "BeaconBlock#2289: re-encoding differs",
+     "BeaconBlock#2410: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 63.4
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/11",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "BeaconState_decode_vlit_win_g4_rd7",
+   "file": "proofs/slop/validity/fulu_BeaconState_decode_literal_win_generated.bend",
+   "generator": "decode_literal_laws (round 10: fixed-field reader windows)",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/11.patch",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 2736713 is read at byte 2736693 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/BeaconState_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconState_decode_literal_win_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "benchmarks/compact/ocache.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "native_bench/driver.bend",
+    "SURVIVED",
+    1.7
+   ],
+   [
+    "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+    "CRASH",
+    14.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "public: BeaconState_decode(bytes) reads one field at the previous field offset; BeaconState has no corpus case under the size cap",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/11",
+    "type": "FuluBeaconState",
+    "cases": 0,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 63.6
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/25",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/25.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 520 is read at byte 512 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/ExecutionPayload_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/var_codec_ExecutionPayload_generated.bend",
+    "CRASH",
+    7.9
+   ],
+   [
+    "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+    "CRASH",
+    8.5
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (79 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/25",
+    "type": "FuluExecutionPayload",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 79,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 79
+    },
+    "timeouts": 0,
+    "examples": [
+     "ExecutionPayload#11915: re-encoding differs",
+     "ExecutionPayload#11916: re-encoding differs",
+     "ExecutionPayload#11917: re-encoding differs",
+     "ExecutionPayload#11942: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 22.2
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/31",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/31.patch",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 24628 is read at byte 4 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/LightClientBootstrap_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientBootstrap_win_generated.bend",
+    "TIMEOUT",
+    120.4
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientBootstrap_generated.bend",
+    "TIMEOUT",
+    120.5
+   ],
+   [
+    "proofs/gate/g__var_bytes_LightClientBootstrap_generated.bend",
+    "TIMEOUT",
+    120.4
+   ],
+   [
+    "proofs/api/FuluLightClientBootstrap_decode_ssz_proof_generated.bend",
+    "TIMEOUT",
+    120.5
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (90 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/31",
+    "type": "FuluLightClientBootstrap",
+    "cases": 386,
+    "official": 0,
+    "corpus_bad": 90,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 90
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientBootstrap#16479: re-encoding differs",
+     "LightClientBootstrap#16480: re-encoding differs",
+     "LightClientBootstrap#16481: re-encoding differs",
+     "LightClientBootstrap#16546: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 64.0
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/35",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/35.patch",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 25208 is read at byte 25048 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/LightClientUpdate_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/var_winx_LightClientUpdate_generated.bend",
+    "CRASH",
+    10.8
+   ],
+   [
+    "proofs/obj/var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    12.1
+   ],
+   [
+    "proofs/gate/g__var_codec_LightClientUpdate_generated.bend",
+    "CRASH",
+    12.1
+   ],
+   [
+    "proofs/api/FuluLightClientUpdate_decode_ssz_proof_generated.bend",
+    "CRASH",
+    11.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (66 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/35",
+    "type": "FuluLightClientUpdate",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 66,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 66
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientUpdate#18026: re-encoding differs",
+     "LightClientUpdate#18027: re-encoding differs",
+     "LightClientUpdate#18028: re-encoding differs",
+     "LightClientUpdate#18053: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 63.7
+   }
+  }
+ },
+ {
+  "id": "r10-r01-reader-advance/60",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-r01-reader-advance/60.patch",
+  "type": "VarTestStruct",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i is bytes [sum(sizes before i), + size_i)",
+  "fault": "the field at byte 6 is read at byte 0 (the cursor is not advanced past the previous field)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/offsets/VarTestStruct_generated.bend",
+    "SURVIVED",
+    0.8
+   ],
+   [
+    "proofs/slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/validity/generic_VarTestStruct_decode_literal_rt_f_B_n2_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/gate/g__var_codec_VarTestStruct_generated.bend",
+    "CRASH",
+    7.7
+   ],
+   [
+    "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+    "CRASH",
+    8.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (67 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-r01-reader-advance/60",
+    "type": "VarTestStruct",
+    "cases": 334,
+    "official": 0,
+    "corpus_bad": 67,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 67
+    },
+    "timeouts": 0,
+    "examples": [
+     "VarTestStruct#28056: re-encoding differs",
+     "VarTestStruct#28057: re-encoding differs",
+     "VarTestStruct#28081: re-encoding differs",
+     "VarTestStruct#28082: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.1
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/02.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 0 and byte 220 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/BeaconBlockBody_generated.bend",
+    "SURVIVED",
+    3.8
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend",
+    "SURVIVED",
+    2.2
+   ],
+   [
+    "proofs/obj/encx_BeaconBlockBody_generated.bend",
+    "TIMEOUT",
+    120.9
+   ],
+   [
+    "proofs/api/FuluBeaconBlockBody_encode_ssz_proof_generated.bend",
+    "TIMEOUT",
+    120.7
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (35 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/02",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 35,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 35
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2686: re-encoding differs",
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 68.4
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/03",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "BeaconState_serialize_vwin_g0_pw0",
+   "file": "proofs/slop/alignment/fulu_BeaconState_writer_win_generated.bend",
+   "generator": "writer_window_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/03.patch",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 0 and byte 176 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "native_bench/driver.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "proofs/obj/encx_BeaconState_generated.bend",
+    "TIMEOUT",
+    120.8
+   ],
+   [
+    "proofs/obj/encx_BeaconState_size_generated.bend",
+    "TIMEOUT",
+    120.8
+   ],
+   [
+    "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend",
+    "TIMEOUT",
+    120.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "public: BeaconState_serialize(BeaconState_default() with genesis_time set) writes genesis_time and genesis_validators_root at swapped positions; BeaconState has no corpus case under the size cap",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/03",
+    "type": "FuluBeaconState",
+    "cases": 0,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 61.1
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/08.patch",
+  "type": "FuluExecutionPayloadHeader",
+  "file": "types/FuluExecutionPayloadHeader_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 0 and byte 116 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/ExecutionPayloadHeader_generated.bend",
+    "SURVIVED",
+    1.8
+   ],
+   [
+    "proofs/slop/capacity/ExecutionPayloadHeader_generated.bend",
+    "SURVIVED",
+    1.6
+   ],
+   [
+    "proofs/slop/capacity/ExecutionPayloadHeader_symbolic_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_bytes_ExecutionPayloadHeader_enc_generated.bend",
+    "CRASH",
+    3.4
+   ],
+   [
+    "proofs/api/FuluExecutionPayloadHeader_encode_ssz_proof_generated.bend",
+    "CRASH",
+    4.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (204 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/08",
+    "type": "FuluExecutionPayloadHeader",
+    "cases": 368,
+    "official": 0,
+    "corpus_bad": 204,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 204
+    },
+    "timeouts": 0,
+    "examples": [
+     "ExecutionPayloadHeader#12314: re-encoding differs",
+     "ExecutionPayloadHeader#12315: re-encoding differs",
+     "ExecutionPayloadHeader#12316: re-encoding differs",
+     "ExecutionPayloadHeader#12317: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 23.1
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/11.patch",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 4 and byte 24628 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/capacity/LightClientBootstrap_symbolic_generated.bend",
+    "SURVIVED",
+    1.3
+   ],
+   [
+    "proofs/slop/size/LightClientBootstrap_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientBootstrap_enc_generated.bend",
+    "CRASH",
+    42.0
+   ],
+   [
+    "proofs/gate/g__var_bytes_LightClientBootstrap_enc_generated.bend",
+    "CRASH",
+    42.0
+   ],
+   [
+    "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend",
+    "CRASH",
+    41.4
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (199 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/11",
+    "type": "FuluLightClientBootstrap",
+    "cases": 386,
+    "official": 0,
+    "corpus_bad": 199,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 199
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientBootstrap#16477: re-encoding differs",
+     "LightClientBootstrap#16478: re-encoding differs",
+     "LightClientBootstrap#16479: re-encoding differs",
+     "LightClientBootstrap#16480: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 66.1
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/13",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/13.patch",
+  "type": "FuluLightClientHeader",
+  "file": "types/FuluLightClientHeader_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 0 and byte 116 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/LightClientHeader_generated.bend",
+    "SURVIVED",
+    2.2
+   ],
+   [
+    "proofs/slop/capacity/LightClientHeader_generated.bend",
+    "SURVIVED",
+    1.7
+   ],
+   [
+    "proofs/slop/capacity/LightClientHeader_symbolic_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientHeader_enc_generated.bend",
+    "CRASH",
+    4.9
+   ],
+   [
+    "proofs/api/FuluLightClientHeader_encode_ssz_proof_generated.bend",
+    "CRASH",
+    5.4
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (246 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/13",
+    "type": "FuluLightClientHeader",
+    "cases": 380,
+    "official": 0,
+    "corpus_bad": 246,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 246
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientHeader#17263: re-encoding differs",
+     "LightClientHeader#17264: re-encoding differs",
+     "LightClientHeader#17265: re-encoding differs",
+     "LightClientHeader#17266: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 67.1
+   }
+  }
+ },
+ {
+  "id": "r10-w01-fixed-order/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w01-fixed-order/14.patch",
+  "type": "FuluLightClientOptimisticUpdate",
+  "file": "types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend",
+  "rule": "serialize(Container): fixed parts in declaration order",
+  "fault": "the fields at byte 4 and byte 164 are written at each other's position",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/LightClientOptimisticUpdate_generated.bend",
+    "SURVIVED",
+    1.7
+   ],
+   [
+    "proofs/slop/capacity/LightClientOptimisticUpdate_symbolic_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/slop/capacity/LightClientOptimisticUpdate_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientOptimisticUpdate_enc_generated.bend",
+    "CRASH",
+    7.0
+   ],
+   [
+    "proofs/api/FuluLightClientOptimisticUpdate_encode_ssz_proof_generated.bend",
+    "CRASH",
+    6.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (198 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w01-fixed-order/14",
+    "type": "FuluLightClientOptimisticUpdate",
+    "cases": 381,
+    "official": 0,
+    "corpus_bad": 198,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 198
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientOptimisticUpdate#17643: re-encoding differs",
+     "LightClientOptimisticUpdate#17644: re-encoding differs",
+     "LightClientOptimisticUpdate#17645: re-encoding differs",
+     "LightClientOptimisticUpdate#17646: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 62.6
+   }
+  }
+ },
+ {
+  "id": "r10-w02-var-slot/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w02-var-slot/03.patch",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part",
+  "fault": "the offsets of the variable fields at slots 0 and 4 are written into each other's slot",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/AttesterSlashing_generated.bend",
+    "SURVIVED",
+    1.7
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend",
+    "SURVIVED",
+    1.8
+   ],
+   [
+    "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend",
+    "CRASH",
+    9.2
+   ],
+   [
+    "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend",
+    "CRASH",
+    10.0
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (149 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w02-var-slot/03",
+    "type": "FuluAttesterSlashing",
+    "cases": 394,
+    "official": 0,
+    "corpus_bad": 149,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 149
+    },
+    "timeouts": 0,
+    "examples": [
+     "AttesterSlashing#1021: re-encoding differs",
+     "AttesterSlashing#1022: re-encoding differs",
+     "AttesterSlashing#1023: re-encoding differs",
+     "AttesterSlashing#1024: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 15.7
+   }
+  }
+ },
+ {
+  "id": "r10-w02-var-slot/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w02-var-slot/04.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/FuluBeaconBlockBody_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part",
+  "fault": "the offsets of the variable fields at slots 200 and 204 are written into each other's slot",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/BeaconBlockBody_generated.bend",
+    "SURVIVED",
+    4.5
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_blob_kzg_commitments_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_order_voluntary_exits_generated.bend",
+    "SURVIVED",
+    2.3
+   ],
+   [
+    "proofs/obj/encx_BeaconBlockBody_generated.bend",
+    "TIMEOUT",
+    120.8
+   ],
+   [
+    "proofs/api/FuluBeaconBlockBody_encode_ssz_proof_generated.bend",
+    "TIMEOUT",
+    120.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (49 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w02-var-slot/04",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 49,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 49
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2686: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs",
+     "BeaconBlockBody#2690: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 61.9
+   }
+  }
+ },
+ {
+  "id": "r10-w02-var-slot/05",
+  "status": {
+   "r10_fix": "KILLED",
+   "killed_by": "BeaconState_serialize_vwin_g0_put",
+   "file": "proofs/slop/alignment/fulu_BeaconState_writer_win_generated.bend",
+   "generator": "writer_window_laws",
+   "replay": "patch -p1 on a hard-linked copy of the regenerated tree, tools/check.sh (pinned: 16384 KB stack, 10 MB JSC): SOME PROOFS FAIL at the named law"
+  },
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w02-var-slot/05.patch",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part",
+  "fault": "the offsets of the variable fields at slots 524464 and 524540 are written into each other's slot",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "native_bench/driver.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/obj/encx_BeaconState_generated.bend",
+    "TIMEOUT",
+    120.7
+   ],
+   [
+    "proofs/obj/encx_BeaconState_size_generated.bend",
+    "TIMEOUT",
+    120.7
+   ],
+   [
+    "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend",
+    "TIMEOUT",
+    120.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "public: BeaconState_serialize writes two variable-field offsets into swapped slots; BeaconState has no corpus case under the size cap",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w02-var-slot/05",
+    "type": "FuluBeaconState",
+    "cases": 0,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 70.9
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/01.patch",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 15 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/BitsStruct_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/capacity/BitsStruct_symbolic_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/capacity/BitsStruct_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/obj/encx_BitsStruct_generated.bend",
+    "SURVIVED",
+    10.2
+   ],
+   [
+    "proofs/api/BitsStruct_encode_ssz_proof_generated.bend",
+    "CRASH",
+    8.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "equivalent in context: BitsStruct_encode / _serialize size the output with the writer cursor (O.out_at(2n) + out_donem(m)); BitsStruct_size has no caller in types/ or src/ (grep), so no public entry point reaches the mutated constant",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/01",
+    "type": "BitsStruct",
+    "cases": 350,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 18.2
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/03.patch",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 112 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/AggregateAndProof_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "e2e/FuluAggregateAndProof_e2e_set_generated.bend",
+    "CRASH",
+    22.5
+   ],
+   [
+    "proofs/api/FuluAggregateAndProof_encode_ssz_proof_generated.bend",
+    "CRASH",
+    13.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (232 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/03",
+    "type": "FuluAggregateAndProof",
+    "cases": 387,
+    "official": 0,
+    "corpus_bad": 232,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 232
+    },
+    "timeouts": 0,
+    "examples": [
+     "AggregateAndProof#0: re-encoding differs",
+     "AggregateAndProof#1: re-encoding differs",
+     "AggregateAndProof#2: re-encoding differs",
+     "AggregateAndProof#3: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.4
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/04.patch",
+  "type": "FuluAttestation",
+  "file": "types/FuluAttestation_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 240 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/Attestation_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/slop/validity/fulu_Attestation_decode_literal_bad_off_minus_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_Attestation_decode_literal_bad_aggregation_bits_nodelim_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/obj/encx_Attestation_generated.bend",
+    "SURVIVED",
+    12.2
+   ],
+   [
+    "proofs/api/FuluAttestation_encode_ssz_proof_generated.bend",
+    "CRASH",
+    10.7
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (251 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/04",
+    "type": "FuluAttestation",
+    "cases": 366,
+    "official": 0,
+    "corpus_bad": 251,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 251
+    },
+    "timeouts": 0,
+    "examples": [
+     "Attestation#387: re-encoding differs",
+     "Attestation#388: re-encoding differs",
+     "Attestation#389: re-encoding differs",
+     "Attestation#390: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.0
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/05.patch",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 12 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/AttesterSlashing_generated.bend",
+    "SURVIVED",
+    1.8
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend",
+    "CRASH",
+    10.3
+   ],
+   [
+    "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend",
+    "CRASH",
+    9.1
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (149 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/05",
+    "type": "FuluAttesterSlashing",
+    "cases": 394,
+    "official": 0,
+    "corpus_bad": 149,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 149
+    },
+    "timeouts": 0,
+    "examples": [
+     "AttesterSlashing#1021: re-encoding differs",
+     "AttesterSlashing#1022: re-encoding differs",
+     "AttesterSlashing#1023: re-encoding differs",
+     "AttesterSlashing#1024: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 16.7
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/07",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/07.patch",
+  "type": "FuluBeaconBlock",
+  "file": "types/FuluBeaconBlock_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 88 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/BeaconBlock_generated.bend",
+    "SURVIVED",
+    4.3
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlock_decode_literal_bad_body_order_attestations_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/slop/validity/fulu_BeaconBlock_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    3.7
+   ],
+   [
+    "proofs/obj/var_codec_BeaconBlock_enc_o_generated.bend",
+    "CRASH",
+    23.3
+   ],
+   [
+    "proofs/api/FuluBeaconBlock_encode_ssz_proof_generated.bend",
+    "CRASH",
+    22.5
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (128 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/07",
+    "type": "FuluBeaconBlock",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 128,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 128
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlock#2285: re-encoding differs",
+     "BeaconBlock#2286: re-encoding differs",
+     "BeaconBlock#2287: re-encoding differs",
+     "BeaconBlock#2288: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 75.7
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/14.patch",
+  "type": "FuluIndexedAttestation",
+  "file": "types/FuluIndexedAttestation_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 232 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/IndexedAttestation_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    1.3
+   ],
+   [
+    "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_codec_IndexedAttestation_enc_generated.bend",
+    "CRASH",
+    3.9
+   ],
+   [
+    "proofs/api/FuluIndexedAttestation_encode_ssz_proof_generated.bend",
+    "CRASH",
+    4.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (233 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/14",
+    "type": "FuluIndexedAttestation",
+    "cases": 362,
+    "official": 0,
+    "corpus_bad": 233,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 233
+    },
+    "timeouts": 0,
+    "examples": [
+     "IndexedAttestation#15547: re-encoding differs",
+     "IndexedAttestation#15548: re-encoding differs",
+     "IndexedAttestation#15549: re-encoding differs",
+     "IndexedAttestation#15550: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 18.1
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/16",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/16.patch",
+  "type": "FuluLightClientFinalityUpdate",
+  "file": "types/FuluLightClientFinalityUpdate_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 404 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/LightClientFinalityUpdate_generated.bend",
+    "SURVIVED",
+    2.9
+   ],
+   [
+    "proofs/slop/capacity/LightClientFinalityUpdate_generated.bend",
+    "SURVIVED",
+    2.3
+   ],
+   [
+    "proofs/slop/capacity/LightClientFinalityUpdate_symbolic_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "e2e/FuluLightClientFinalityUpdate_e2e_set_generated.bend",
+    "CRASH",
+    27.1
+   ],
+   [
+    "proofs/api/FuluLightClientFinalityUpdate_encode_ssz_proof_generated.bend",
+    "CRASH",
+    17.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: SURVIVED (0 disagreeing corpus cases)",
+  "reachability": "equivalent in context: LightClientFinalityUpdate_encode / _serialize do not call LightClientFinalityUpdate_size (writer cursor sizes the buffer); no other caller in types/ or src/",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/16",
+    "type": "FuluLightClientFinalityUpdate",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 75.4
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/21",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/21.patch",
+  "type": "FuluSignedAggregateAndProof",
+  "file": "types/FuluSignedAggregateAndProof_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 104 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/SignedAggregateAndProof_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_SignedAggregateAndProof_fields_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "e2e/FuluSignedAggregateAndProof_e2e_set_generated.bend",
+    "CRASH",
+    26.5
+   ],
+   [
+    "proofs/api/FuluSignedAggregateAndProof_encode_ssz_proof_generated.bend",
+    "CRASH",
+    17.0
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (191 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/21",
+    "type": "FuluSignedAggregateAndProof",
+    "cases": 391,
+    "official": 0,
+    "corpus_bad": 191,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 191
+    },
+    "timeouts": 0,
+    "examples": [
+     "SignedAggregateAndProof#23379: re-encoding differs",
+     "SignedAggregateAndProof#23380: re-encoding differs",
+     "SignedAggregateAndProof#23381: re-encoding differs",
+     "SignedAggregateAndProof#23382: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.4
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/24",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/24.patch",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 33 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/ProgressiveComplexTestStruct_generated.bend",
+    "SURVIVED",
+    1.5
+   ],
+   [
+    "proofs/slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+    "SURVIVED",
+    1.7
+   ],
+   [
+    "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_f_C_n1_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_codec_ProgressiveComplexTestStruct_enc_o_generated.bend",
+    "CRASH",
+    14.3
+   ],
+   [
+    "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend",
+    "CRASH",
+    15.6
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (171 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/24",
+    "type": "ProgressiveComplexTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 171,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 171
+    },
+    "timeouts": 0,
+    "examples": [
+     "ProgressiveComplexTestStruct#21270: re-encoding differs",
+     "ProgressiveComplexTestStruct#21271: re-encoding differs",
+     "ProgressiveComplexTestStruct#21272: re-encoding differs",
+     "ProgressiveComplexTestStruct#21273: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 18.7
+   }
+  }
+ },
+ {
+  "id": "r10-w03-size-fixed-part/25",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w03-size-fixed-part/25.patch",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "rule": "serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts",
+  "fault": "the size pass counts the fixed part as 20 bytes (4 too many)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/ProgressiveTestStruct_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_B_ragged_10_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_ok_f_D_n2_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_codec_ProgressiveTestStruct_enc_generated.bend",
+    "CRASH",
+    11.3
+   ],
+   [
+    "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend",
+    "CRASH",
+    11.7
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (103 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w03-size-fixed-part/25",
+    "type": "ProgressiveTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 103,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 103
+    },
+    "timeouts": 0,
+    "examples": [
+     "ProgressiveTestStruct#21894: re-encoding differs",
+     "ProgressiveTestStruct#21895: re-encoding differs",
+     "ProgressiveTestStruct#21896: re-encoding differs",
+     "ProgressiveTestStruct#21897: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 22.1
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/03.patch",
+  "type": "FuluAggregateAndProof",
+  "file": "types/FuluAggregateAndProof_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 104 (fixed part 108)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/AggregateAndProof_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_fields_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_AggregateAndProof_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    1.6
+   ],
+   [
+    "e2e/FuluAggregateAndProof_e2e_set_generated.bend",
+    "CRASH",
+    22.2
+   ],
+   [
+    "proofs/api/FuluAggregateAndProof_encode_ssz_proof_generated.bend",
+    "CRASH",
+    13.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (232 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/03",
+    "type": "FuluAggregateAndProof",
+    "cases": 387,
+    "official": 0,
+    "corpus_bad": 232,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 232
+    },
+    "timeouts": 0,
+    "examples": [
+     "AggregateAndProof#0: re-encoding differs",
+     "AggregateAndProof#1: re-encoding differs",
+     "AggregateAndProof#2: re-encoding differs",
+     "AggregateAndProof#3: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 20.6
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/05.patch",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 4 (fixed part 8)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/AttesterSlashing_generated.bend",
+    "SURVIVED",
+    1.8
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/slop/validity/fulu_AttesterSlashing_decode_literal_ok_attestation_2_marked_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/obj/var_codec_AttesterSlashing_enc_generated.bend",
+    "CRASH",
+    9.5
+   ],
+   [
+    "proofs/api/FuluAttesterSlashing_encode_ssz_proof_generated.bend",
+    "CRASH",
+    10.3
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (149 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/05",
+    "type": "FuluAttesterSlashing",
+    "cases": 394,
+    "official": 0,
+    "corpus_bad": 149,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 149
+    },
+    "timeouts": 0,
+    "examples": [
+     "AttesterSlashing#1021: re-encoding differs",
+     "AttesterSlashing#1022: re-encoding differs",
+     "AttesterSlashing#1023: re-encoding differs",
+     "AttesterSlashing#1024: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 17.4
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/10.patch",
+  "type": "FuluIndexedAttestation",
+  "file": "types/FuluIndexedAttestation_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 224 (fixed part 228)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/IndexedAttestation_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_fixed_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/slop/validity/fulu_IndexedAttestation_decode_literal_ok_marked_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_codec_IndexedAttestation_enc_generated.bend",
+    "CRASH",
+    4.0
+   ],
+   [
+    "proofs/api/FuluIndexedAttestation_encode_ssz_proof_generated.bend",
+    "CRASH",
+    4.5
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (233 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/10",
+    "type": "FuluIndexedAttestation",
+    "cases": 362,
+    "official": 0,
+    "corpus_bad": 233,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 233
+    },
+    "timeouts": 0,
+    "examples": [
+     "IndexedAttestation#15547: re-encoding differs",
+     "IndexedAttestation#15548: re-encoding differs",
+     "IndexedAttestation#15549: re-encoding differs",
+     "IndexedAttestation#15550: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 15.6
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/11.patch",
+  "type": "FuluLightClientBootstrap",
+  "file": "types/FuluLightClientBootstrap_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 24816 (fixed part 24820)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/capacity/LightClientBootstrap_symbolic_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/slop/size/LightClientBootstrap_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientBootstrap_enc_generated.bend",
+    "ERROR",
+    98.4
+   ],
+   [
+    "proofs/gate/g__var_bytes_LightClientBootstrap_enc_generated.bend",
+    "ERROR",
+    89.2
+   ],
+   [
+    "proofs/api/FuluLightClientBootstrap_encode_ssz_proof_generated.bend",
+    "ERROR",
+    95.8
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (199 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/11",
+    "type": "FuluLightClientBootstrap",
+    "cases": 386,
+    "official": 0,
+    "corpus_bad": 199,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 199
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientBootstrap#16477: re-encoding differs",
+     "LightClientBootstrap#16478: re-encoding differs",
+     "LightClientBootstrap#16479: re-encoding differs",
+     "LightClientBootstrap#16480: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 64.0
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/13",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/13.patch",
+  "type": "FuluLightClientHeader",
+  "file": "types/FuluLightClientHeader_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 240 (fixed part 244)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/LightClientHeader_generated.bend",
+    "SURVIVED",
+    2.1
+   ],
+   [
+    "proofs/slop/capacity/LightClientHeader_generated.bend",
+    "SURVIVED",
+    1.4
+   ],
+   [
+    "proofs/slop/capacity/LightClientHeader_symbolic_generated.bend",
+    "SURVIVED",
+    0.9
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientHeader_enc_generated.bend",
+    "CRASH",
+    5.3
+   ],
+   [
+    "proofs/api/FuluLightClientHeader_encode_ssz_proof_generated.bend",
+    "CRASH",
+    5.2
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (246 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/13",
+    "type": "FuluLightClientHeader",
+    "cases": 380,
+    "official": 0,
+    "corpus_bad": 246,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 246
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientHeader#17263: re-encoding differs",
+     "LightClientHeader#17264: re-encoding differs",
+     "LightClientHeader#17265: re-encoding differs",
+     "LightClientHeader#17266: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 61.1
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/14.patch",
+  "type": "FuluLightClientOptimisticUpdate",
+  "file": "types/FuluLightClientOptimisticUpdate_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 168 (fixed part 172)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/LightClientOptimisticUpdate_generated.bend",
+    "SURVIVED",
+    2.3
+   ],
+   [
+    "proofs/slop/capacity/LightClientOptimisticUpdate_symbolic_generated.bend",
+    "SURVIVED",
+    1.2
+   ],
+   [
+    "proofs/slop/capacity/LightClientOptimisticUpdate_generated.bend",
+    "SURVIVED",
+    1.9
+   ],
+   [
+    "proofs/obj/var_bytes_LightClientOptimisticUpdate_enc_generated.bend",
+    "CRASH",
+    6.8
+   ],
+   [
+    "proofs/api/FuluLightClientOptimisticUpdate_encode_ssz_proof_generated.bend",
+    "CRASH",
+    7.4
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (198 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/14",
+    "type": "FuluLightClientOptimisticUpdate",
+    "cases": 381,
+    "official": 0,
+    "corpus_bad": 198,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 198
+    },
+    "timeouts": 0,
+    "examples": [
+     "LightClientOptimisticUpdate#17643: re-encoding differs",
+     "LightClientOptimisticUpdate#17644: re-encoding differs",
+     "LightClientOptimisticUpdate#17645: re-encoding differs",
+     "LightClientOptimisticUpdate#17646: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 62.8
+   }
+  }
+ },
+ {
+  "id": "r10-w04-first-offset/17",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r10-w04-first-offset/17.patch",
+  "type": "FuluSignedAggregateAndProof",
+  "file": "types/FuluSignedAggregateAndProof_encode_ssz_generated.bend",
+  "rule": "serialize(Container): the first offset equals the length of the fixed part",
+  "fault": "the first variable field's offset is 96 (fixed part 100)",
+  "proofs_A": "UNJUDGED",
+  "roots_checked": [
+   [
+    "proofs/slop/constants/SignedAggregateAndProof_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_SignedAggregateAndProof_decode_literal_bad_off_plus_generated.bend",
+    "SURVIVED",
+    1.1
+   ],
+   [
+    "proofs/slop/validity/fulu_SignedAggregateAndProof_fields_generated.bend",
+    "SURVIVED",
+    1.0
+   ],
+   [
+    "e2e/FuluSignedAggregateAndProof_e2e_set_generated.bend",
+    "CRASH",
+    27.0
+   ],
+   [
+    "proofs/api/FuluSignedAggregateAndProof_encode_ssz_proof_generated.bend",
+    "CRASH",
+    16.9
+   ]
+  ],
+  "verdict": "unjudged",
+  "counterexample": "corpus: KILLED (191 disagreeing corpus cases)",
+  "reachability": "public decode / serialize entry point of the type (X_decode / X_serialize); see the round-10 report",
+  "evidence": {
+   "corpus": {
+    "id": "r10-w04-first-offset/17",
+    "type": "FuluSignedAggregateAndProof",
+    "cases": 391,
+    "official": 0,
+    "corpus_bad": 191,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 191
+    },
+    "timeouts": 0,
+    "examples": [
+     "SignedAggregateAndProof#23379: re-encoding differs",
+     "SignedAggregateAndProof#23380: re-encoding differs",
+     "SignedAggregateAndProof#23381: re-encoding differs",
+     "SignedAggregateAndProof#23382: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 15.7
+   }
+  }
+ }
+]

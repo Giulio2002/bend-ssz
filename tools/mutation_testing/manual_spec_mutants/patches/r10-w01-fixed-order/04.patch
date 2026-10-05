@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w01-fixed-order/04
+# type: FuluBlobSidecar
+# ops: encode
+# spec: serialize(Container): fixed parts in declaration order
+# fault: the fields at byte 0 and byte 8 are written at each other's position
+# why: fixed part ordering
+# file: types/FuluBlobSidecar_encode_ssz_generated.bend
+# sym: BlobSidecar_pw2,BlobSidecar_putk,BlobSidecar_serialize,BlobSidecar_encode
+--- a/types/FuluBlobSidecar_encode_ssz_generated.bend
++++ b/types/FuluBlobSidecar_encode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   (kzg_commitment_inclusion_proof, fl) = r
+-  (FuluBytes48_e.b48_put(FuluBytes48_e.b48_put(uint64_e.u64_put(out, (pos + 0 : U32), index), (pos + 131080 : U32), kzg_commitment), (pos + 131128 : U32), kzg_proof), (FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}, (cur .|. fl : U32)))
++  (FuluBytes48_e.b48_put(FuluBytes48_e.b48_put(uint64_e.u64_put(out, (pos + 8 : U32), index), (pos + 131080 : U32), kzg_commitment), (pos + 131128 : U32), kzg_proof), (FuluBlobSidecar_d.BlobSidecar{index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}, (cur .|. fl : U32)))
+ 
+@@ -36,3 +36,3 @@
+   match o:
+-    case FuluBlobSidecar_d.BlobSidecar{+index, blob, +kzg_commitment, +kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}: BlobSidecar_pw0(pos, 0, index, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof, FuluBlob_e.b131072_putk(out, (pos + 8 : U32), blob))
++    case FuluBlobSidecar_d.BlobSidecar{+index, blob, +kzg_commitment, +kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}: BlobSidecar_pw0(pos, 0, index, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof, FuluBlob_e.b131072_putk(out, (pos + 0 : U32), blob))
+ 

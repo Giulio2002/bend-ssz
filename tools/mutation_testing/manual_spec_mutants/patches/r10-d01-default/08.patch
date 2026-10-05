@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/08
+# type: FuluFinalityBranch
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 6 elements (192 bytes) instead of 7
+# why: off-by-one length in the default constructor
+# file: types/FuluFinalityBranch_def_generated.bend
+# sym: v7_b32_default
+--- a/types/FuluFinalityBranch_def_generated.bend
++++ b/types/FuluFinalityBranch_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v7_b32_default() -> O.Words: O.words_new(224)
++def v7_b32_default() -> O.Words: O.words_new(192)
+ 

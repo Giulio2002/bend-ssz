@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h01-root-neighbour/64
+# type: SmallTestStruct
+# ops: root
+# spec: hash_tree_root(Container) = merkleize([hash_tree_root(field) for field in value]) in declaration order
+# fault: the roots of f_A and f_B are exchanged in the chunk list
+# why: field order: neighbouring fields hashed in the wrong order
+# file: types/SmallTestStruct_hashtreeroot_generated.bend
+# sym: SmallTestStruct_rt1,SmallTestStruct_hash_tree_root
+--- a/types/SmallTestStruct_hashtreeroot_generated.bend
++++ b/types/SmallTestStruct_hashtreeroot_generated.bend
+@@ -13,3 +13,3 @@
+   (h, d_f_B) = pair
+-  (h, D.node(hl, d_f_A, d_f_B))
++  (h, D.node(hl, d_f_B, d_f_A))
+ 

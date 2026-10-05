@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/05
+# type: FuluAttesterSlashing
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 12 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluAttesterSlashing_encode_ssz_generated.bend
+# sym: AttesterSlashing_size,AttesterSlashing_serialize,AttesterSlashing_encode
+--- a/types/FuluAttesterSlashing_encode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_encode_ssz_generated.bend
+@@ -22,3 +22,3 @@
+   match o:
+-    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_sz0(attestation_2, 8, FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_1))
++    case FuluAttesterSlashing_d.AttesterSlashing{attestation_1, attestation_2}: AttesterSlashing_sz0(attestation_2, 12, FuluIndexedAttestation_e.IndexedAttestation_bx_size(attestation_1))
+ 

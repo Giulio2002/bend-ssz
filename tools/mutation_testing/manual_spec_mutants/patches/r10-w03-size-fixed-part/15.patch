@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/15
+# type: FuluLightClientBootstrap
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 24824 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluLightClientBootstrap_encode_ssz_generated.bend
+# sym: LightClientBootstrap_size,LightClientBootstrap_serialize,LightClientBootstrap_encode
+--- a/types/FuluLightClientBootstrap_encode_ssz_generated.bend
++++ b/types/FuluLightClientBootstrap_encode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   match o:
+-    case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_sz0(current_sync_committee, current_sync_committee_branch, 24820, FuluLightClientHeader_e.LightClientHeader_size(header))
++    case FuluLightClientBootstrap_d.LightClientBootstrap{header, current_sync_committee, current_sync_committee_branch}: LightClientBootstrap_sz0(current_sync_committee, current_sync_committee_branch, 24824, FuluLightClientHeader_e.LightClientHeader_size(header))
+ 

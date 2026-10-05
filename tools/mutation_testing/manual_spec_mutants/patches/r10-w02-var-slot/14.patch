@@ -1,0 +1,20 @@
+# MANUAL SPEC MUTANT r10-w02-var-slot/14
+# type: ProgressiveVarTestStruct
+# ops: encode
+# spec: serialize(Container): the offset of the k-th variable field sits at its own field position in the fixed part
+# fault: the offsets of the variable fields at slots 1 and 5 are written into each other's slot
+# why: offset of the k-th variable field
+# file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveVarTestStruct_putn,ProgressiveVarTestStruct_pw0,ProgressiveVarTestStruct_serialize,ProgressiveVarTestStruct_encode
+--- a/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+@@ -33,3 +33,3 @@
+   (f_B, c) = r
+-  ProgressiveVarTestStruct_pw1(pos, f_A, f_B, progbitlist_e.pbits_putv(out, pos, 5, c, f_C))
++  ProgressiveVarTestStruct_pw1(pos, f_A, f_B, progbitlist_e.pbits_putv(out, pos, 1, c, f_C))
+ 
+@@ -37,3 +37,3 @@
+   match o:
+-    case ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{+f_A, f_B, f_C}: ProgressiveVarTestStruct_pw0(pos, f_A, f_C, list_uint16_123_e.l123_u16_putv(out, pos, 1, 9, f_B))
++    case ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{+f_A, f_B, f_C}: ProgressiveVarTestStruct_pw0(pos, f_A, f_C, list_uint16_123_e.l123_u16_putv(out, pos, 5, 9, f_B))
+ 

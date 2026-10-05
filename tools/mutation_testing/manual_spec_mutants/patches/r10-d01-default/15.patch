@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-d01-default/15
+# type: FuluBeaconState
+# ops: encode,root
+# spec: Default values: the default of Vector[T, N] is N default elements
+# fault: the default vector has 65535 elements (2097120 bytes) instead of 65536
+# why: off-by-one length in the default constructor
+# file: types/Fulu_vec_bytevec_32_65536_def_generated.bend
+# sym: v65536_b32_default
+--- a/types/Fulu_vec_bytevec_32_65536_def_generated.bend
++++ b/types/Fulu_vec_bytevec_32_65536_def_generated.bend
+@@ -10,3 +10,3 @@
+ 
+-def v65536_b32_default() -> O.Words: O.words_new(2097152)
++def v65536_b32_default() -> O.Words: O.words_new(2097120)
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w04-first-offset/22
+# type: ProgressiveVarTestStruct
+# ops: encode
+# spec: serialize(Container): the first offset equals the length of the fixed part
+# fault: the first variable field's offset is 5 (fixed part 9)
+# why: fixed part length off by one offset
+# file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveVarTestStruct_putn,ProgressiveVarTestStruct_serialize,ProgressiveVarTestStruct_encode
+--- a/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+   match o:
+-    case ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{+f_A, f_B, f_C}: ProgressiveVarTestStruct_pw0(pos, f_A, f_C, list_uint16_123_e.l123_u16_putv(out, pos, 1, 9, f_B))
++    case ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{+f_A, f_B, f_C}: ProgressiveVarTestStruct_pw0(pos, f_A, f_C, list_uint16_123_e.l123_u16_putv(out, pos, 1, 5, f_B))
+ 

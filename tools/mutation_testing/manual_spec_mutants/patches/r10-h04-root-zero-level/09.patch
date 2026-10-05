@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-h04-root-zero-level/09
+# type: FuluDepositRequest
+# ops: root
+# spec: merkleize pads with zero chunks: a missing subtree of depth k is zerohashes[k], not the zero chunk
+# fault: the padding subtree z1 is the depth-0 zero chunk
+# why: wrong zero-hash level
+# file: types/FuluDepositRequest_hashtreeroot_generated.bend
+# sym: DepositRequest_rt5,DepositRequest_hash_tree_root
+--- a/types/FuluDepositRequest_hashtreeroot_generated.bend
++++ b/types/FuluDepositRequest_hashtreeroot_generated.bend
+@@ -19,3 +19,3 @@
+   (h, z1) = pair
+-  (h, D.node(hl, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_amount, d_signature)), D.node(hl, D.node(hl, d_index, D.zero()), z1)))
++  (h, D.node(hl, D.node(hl, D.node(hl, d_pubkey, d_withdrawal_credentials), D.node(hl, d_amount, d_signature)), D.node(hl, D.node(hl, d_index, D.zero()), D.zero())))
+ 

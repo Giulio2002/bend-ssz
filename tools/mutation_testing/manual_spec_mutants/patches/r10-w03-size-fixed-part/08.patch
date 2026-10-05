@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r10-w03-size-fixed-part/08
+# type: FuluBeaconState
+# ops: encode
+# spec: serialize(Container): len = fixed part (fixed sizes + 4 per variable field) + variable parts
+# fault: the size pass counts the fixed part as 4 bytes (4 too many)
+# why: one offset too many in the fixed-part length
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g0_size,BeaconState_serialize,BeaconState_encode
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -52,3 +52,3 @@
+   match o:
+-    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_sz0(genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, 0, Fulu_list_bytevec_32_16777216_e.l16777216_b32_size(historical_roots))
++    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_sz0(genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, 4, Fulu_list_bytevec_32_16777216_e.l16777216_b32_size(historical_roots))
+ 
