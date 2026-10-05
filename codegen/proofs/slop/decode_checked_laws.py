@@ -25,6 +25,13 @@ parts zero, variable parts empty, offsets at the end of the fixed part; up to 20
   <X>_decode_vchecked_short     X_decode_checked of a buffer whose array holds W but whose size field is S - 1: None
   <X>_decode_vchecked_real      (S > 4) X_decode_checked of a one-word array claiming S bytes: None (the storage is counted from the array, not from the size field)
   without W (a type with no such default): window X_dchw(5, 4, ..), storage X_dchw(8, 8, (B.empty(), 1)), real X_decode_checked(Buf{one word, 8}, 8), all None.
+  (manual audit round 14, a02/25, a02/05; S the size of a valid encoding: the fixed size, the default's size, or a list of one default element)
+  <X>_decode_vchecked_storage_size (buf)  every name: X_dchw(S, S, (buf, ceil(S / 4) - 1)) == (buf, None): the storage test at the type's own size
+                                    (the old storage law without W used B.empty(), whose claimed size 0 the window test refuses by itself)
+  <X>_decode_vchecked_accept_size (buf)   without W: X_dchw(S, S, (buf, ceil(S / 4))) == X_dgo(True, buf, S)
+  <X>_decode_vchecked_empty         every list, byte list and progressive list: the empty input decodes, by X_decode and X_decode_checked, to
+                                    Some value of length 0 (<p>_len, p the list's validator prefix)
+  The generator stops when a name has no valid size or a list has no length function; the api gate requires storage_size (and empty) per name.
 The decode budget (docs/DECODE_AMPLIFICATION.md), X_decode_checked_budget(buf, size, budget):
   <X>_decode_vchecked_budget_cost    X_dcost(4096) is ((4096 >> 3) + 1) * K + 524288 (K the name's heap bytes per input byte, codegen/decode_cost.json)
   <X>_decode_vchecked_budget_refuse  X_dcost(size) saturated (2^32 - 1) or above the budget: (buf, None), for every buffer, size and budget
@@ -144,6 +151,34 @@ def window_of(t):
     return b if b is not None and 1 <= len(b) <= 2048 else None
 
 
+def valid_size(t):
+    """the size S >= 1 of a valid encoding of the type (manual audit round 14, a02/25): a fixed type's own size, the default encoding's
+    size when it is not empty, for a list whose default is empty the size of a list of one default element; None when none is known"""
+    if t is None:
+        return None
+    if t.fixed():
+        return t.fixed_size()
+    b = enc0(t)
+    if b:
+        return len(b)
+    if t.kind == 'bytelist' and t.size >= 1:
+        return 1
+    if t.kind in ('list', 'plist') and (t.kind == 'plist' or t.size >= 1):
+        if t.elem.fixed():
+            return t.elem.fixed_size()
+        e = enc0(t.elem)
+        return None if e is None else 4 + len(e)
+    return None
+
+
+def empty_valid(t):
+    """the empty encoding is a valid value of the type (a list, byte list or progressive list at top level: the empty list)"""
+    return t is not None and t.kind in ('list', 'bytelist', 'plist')
+
+
+DECIN = re.compile(r'^def (\w+)_decode_in\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', re.M)
+
+
 def buffer(data, size=None):
     n = len(data) if size is None else size
     words = (len(data) + 3) // 4
@@ -158,7 +193,7 @@ def buffer(data, size=None):
     return f'B.Buf{{{arr}, {n}}}'
 
 
-def laws_of(X, V, win):
+def laws_of(X, V, win, S, lenp=None):
     val = V if V.startswith('O.') or V in ('U32', 'Bool') else f'T.{V}'
     M = f'Maybe<&1, {val}>'
     snd = lambda c: f'Pair.snd(B.Buf, {M}, {c})'    # noqa: E731
@@ -191,6 +226,16 @@ def laws_of(X, V, win):
         law('short', f'{snd(f"T.{X}_decode_checked({buffer(win, s - 1)}, {s})")} == None{{}} : {M}')
         if s > 4:
             law('real', f'{snd(f"T.{X}_decode_checked({buffer(win[:4], s)}, {s})")} == None{{}} : {M}')
+    # (manual audit round 14, a02/25) the storage test at the type's own valid size S, for every name: a buffer that claims S bytes but stores one
+    # word fewer than ceil(S / 4) is refused by the guard itself (the buffer is a variable, so a weakened storage test leaves a stuck decode, not
+    # None); without W the matching acceptance at exactly ceil(S / 4) words (with W, `accept` pins it on the literal)
+    w = (S + 3) // 4
+    out.append(f'def {X}_decode_vchecked_storage_size(buf: B.Buf)\n    -> {{T.{X}_dchw({S}, {S}, (buf, {w - 1})) == (buf, None{{}}) : B.Buf & {M}}}:\n  {{==}}')
+    if win is None:
+        out.append(f'def {X}_decode_vchecked_accept_size(buf: B.Buf)\n    -> {{T.{X}_dchw({S}, {S}, (buf, {w})) == T.{X}_dgo(True{{}}, buf, {S}) : B.Buf & {M}}}:\n  {{==}}')
+    if lenp is not None:
+        # (manual audit round 14, a02/05) the empty input is the empty list: Some, of length 0, by the decoder and by the checked decoder
+        law('empty', f'(lenof({snd(f"T.{X}_decode(B.empty(), 0)")}), lenof({snd(f"T.{X}_decode_checked(B.empty(), 0)")})) == (0, 0) : U32 & U32')
     # the decode budget (docs/DECODE_AMPLIFICATION.md): a size whose cost bound is above the budget is refused, any other is the checked decode
     k = decode_cost_k(X)
     ex = 4096
@@ -222,6 +267,9 @@ def laws_of(X, V, win):
         law('budget_accept', f'is_some({snd(f"T.{X}_decode_checked_budget({buffer(win)}, {s_}, 4294967295)")}, {snd(f"T.{X}_decode_checked({buffer(win)}, {s_})")}) == (True{{}}, True{{}}) : Bool & Bool')
     helper = (f'def some1(m: {M}) -> Bool:\n  match m:\n    case Some{{v}}: True{{}}\n    case None{{}}: False{{}}\n\n'
               f'def is_some(a: {M}, b: {M}) -> Bool & Bool: (some1(a), some1(b))\n')
+    if lenp is not None:
+        helper += (f'\ndef lenof(m: {M}) -> U32:\n  match m:\n    case Some{{v}}: Pair.snd({val}, U32, T.{lenp}_len(v))\n'
+                   f'    case None{{}}: 4294967295\n')
     return helper, out
 
 
@@ -262,8 +310,16 @@ def outputs():
         bad = sorted(want - set(have) | want - chk)
         if bad or len(re.findall(r'^def \w+_decode_checked\(', tx.text, re.M)) != len(want):
             raise SystemExit(f'decode_checked_laws: the checked decoder of {bad[:5] or "some name"} does not have the expected shape')
+        prefix = {m.group(1): m.group(2) for m in DECIN.finditer(tx.text)}
+        nosize = sorted(X for X in want if valid_size(names.get(X)) is None or valid_size(names.get(X)) > 4294967264)
+        if nosize:
+            raise SystemExit(f'decode_checked_laws: no valid size known for the storage law of {nosize[:5]} (round 14: every checked decoder has one)')
+        nolen = sorted(X for X in want if empty_valid(names.get(X)) and not re.search(rf'^def {prefix.get(X, "?")}_len\(o: ', tx.text, re.M))
+        if nolen:
+            raise SystemExit(f'decode_checked_laws: no length function for the empty-decode law of {nolen[:5]}')
         for X in sorted(want):
-            helper, laws = laws_of(X, have[X], window_of(names.get(X)))
+            t = names.get(X)
+            helper, laws = laws_of(X, have[X], window_of(t), valid_size(t), prefix[X] if empty_valid(t) else None)
             out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_checked')] = module(tmod, X, helper, laws)
     return out
 

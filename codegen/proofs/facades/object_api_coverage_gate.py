@@ -375,8 +375,29 @@ def gate_module(xlaws, fname, parsed_file, src):
     return '\n'.join(L) + '\n'
 
 
+def required_laws():
+    """{name: [law names that must prove decode_offsets]} (manual audit round 14, a02/25 and a02/05): every name with a checked decoder has
+    the storage law at its own valid size; every list, byte list and progressive list has the empty-input decode law"""
+    from codegen.core import fulu_schema_loader as schema
+    from codegen.core import generic_form_schemas as generic
+    kinds = {n: t.kind for n, t in schema.load(ROOT / 'codegen/fulu.yaml').items() if t is not None}
+    kinds.update({n: t.kind for n, t, e in generic.inventory_all() if e is None})
+    req = {}
+    for f in ('fulu', 'generic'):
+        for X in re.findall(r'^def (\w+)_decode_checked\(buf: B\.Buf, \+size: U32\)', RR.mono_text(f), re.M):
+            req.setdefault(X, []).append(f'{X}_decode_vchecked_storage_size')
+            if kinds.get(X) in ('list', 'bytelist', 'plist'):
+                req[X].append(f'{X}_decode_vchecked_empty')
+    return req
+
+
 def outputs():
     fulu, gen, ent, parsed = scan()
+    U = set(fulu) | set(gen)
+    lack = sorted((X, law) for X, laws in required_laws().items() if X in U for law in laws
+                  if law not in {n for _, n in ent.get((X, 'decode_offsets'), [])})
+    if lack:
+        raise SystemExit(f'api gate: required decode_offsets laws missing ({len(lack)}): {lack[:5]}')
     amap = {}
     missing = []
     for X in fulu + gen:
