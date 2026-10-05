@@ -54,6 +54,10 @@ def SigningData_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:
   {==}
 
+def SigningData_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSigningData_r.SigningData_dchw(64, 64, (buf, 15)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
+  {==}
+
 def SigningData_decode_vchecked_budget_cost()
     -> {FuluSigningData_r.SigningData_dcost(4096) == 524288 : U32}:
   {==}

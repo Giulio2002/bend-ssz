@@ -142,6 +142,9 @@ def FuluSyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vcheck
 def FuluSyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 144}, 144)) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
   P7_PRV.SyncCommitteeMessage_decode_vchecked_real()
 
+def FuluSyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(144, 144, (buf, 35)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  P7_PRV.SyncCommitteeMessage_decode_vchecked_storage_size(buf)
+
 def FuluSyncCommitteeMessage__decode_offsets__SyncCommitteeMessage_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(size), budget)) == True{} : Bool}) -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked_budget(buf, size, budget) == FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
   P7_PRV.SyncCommitteeMessage_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -41,6 +41,9 @@ def IndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_short
 def IndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_dchw(228, 228, (B.Buf{Array.set(U32, Array.new(U32, 6n, 0), 0, 228), 228}, 56))) == None{} : Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   PRV.IndexedAttestation_decode_vchecked_storage()
 
+def IndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_storage_size(buf: B.Buf) -> {FuluIndexedAttestation_r.IndexedAttestation_dchw(228, 228, (buf, 56)) == (buf, None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
+  PRV.IndexedAttestation_decode_vchecked_storage_size(buf)
+
 def IndexedAttestation__decode_offsets__IndexedAttestation_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>, FuluIndexedAttestation_r.IndexedAttestation_dchw(228, 227, (B.Buf{Array.set(U32, Array.new(U32, 6n, 0), 0, 228), 228}, 57))) == None{} : Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   PRV.IndexedAttestation_decode_vchecked_window()
 

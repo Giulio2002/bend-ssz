@@ -46,6 +46,14 @@ def LightClientBootstrap_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   {==}
 
+def LightClientBootstrap_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(25648, 25648, (buf, 6411)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  {==}
+
+def LightClientBootstrap_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(25648, 25648, (buf, 6412)) == FuluLightClientBootstrap_r.LightClientBootstrap_dgo(True{}, buf, 25648) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  {==}
+
 def LightClientBootstrap_decode_vchecked_budget_cost()
     -> {FuluLightClientBootstrap_r.LightClientBootstrap_dcost(4096) == 524288 : U32}:
   {==}

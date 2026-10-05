@@ -54,6 +54,10 @@ def ExecutionAddress_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(B.Buf{Array.new(U32, 0n, 0), 20}, 20)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   {==}
 
+def ExecutionAddress_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (buf, 4)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  {==}
+
 def ExecutionAddress_decode_vchecked_budget_cost()
     -> {FuluExecutionAddress_r.ExecutionAddress_dcost(4096) == 524288 : U32}:
   {==}

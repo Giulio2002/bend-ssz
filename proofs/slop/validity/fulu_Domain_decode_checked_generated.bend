@@ -54,6 +54,10 @@ def Domain_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluDomain_r.Domain_decode_checked(B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   {==}
 
+def Domain_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluDomain_r.Domain_dchw(32, 32, (buf, 7)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  {==}
+
 def Domain_decode_vchecked_budget_cost()
     -> {FuluDomain_r.Domain_dcost(4096) == 524288 : U32}:
   {==}

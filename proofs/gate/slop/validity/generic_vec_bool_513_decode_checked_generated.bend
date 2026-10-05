@@ -40,6 +40,9 @@ def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_short() -> {Pair.
 def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_dchw(513, 513, (B.Buf{Array.new(U32, 8n, 0), 513}, 128))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_513_decode_vchecked_storage()
 
+def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_storage_size(buf: B.Buf) -> {vec_bool_513_r.vec_bool_513_dchw(513, 513, (buf, 128)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_bool_513_decode_vchecked_storage_size(buf)
+
 def vec_bool_513__decode_offsets__vec_bool_513_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_513_r.vec_bool_513_dchw(513, 512, (B.Buf{Array.new(U32, 8n, 0), 513}, 129))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_513_decode_vchecked_window()
 

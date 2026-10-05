@@ -54,6 +54,10 @@ def BLSPubkey_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_decode_checked(B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   {==}
 
+def BLSPubkey_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  {==}
+
 def BLSPubkey_decode_vchecked_budget_cost()
     -> {FuluBLSPubkey_r.BLSPubkey_dcost(4096) == 524288 : U32}:
   {==}

@@ -196,6 +196,9 @@ def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_s
 def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode_checked(P5_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 148), 149}, 149)) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   P5_PRV.PendingAttestation_decode_vchecked_real()
 
+def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_storage_size(buf: P5_B.Buf) -> {FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (buf, 37)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+  P5_PRV.PendingAttestation_decode_vchecked_storage_size(buf)
+
 def FuluPendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluPendingAttestation_r.PendingAttestation_dcost(size), 4294967295), U32.is_le(FuluPendingAttestation_r.PendingAttestation_dcost(size), budget)) == True{} : Bool}) -> {FuluPendingAttestation_r.PendingAttestation_decode_checked_budget(buf, size, budget) == FuluPendingAttestation_r.PendingAttestation_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   P5_PRV.PendingAttestation_decode_vchecked_budget_agree(buf, size, budget, h)
 

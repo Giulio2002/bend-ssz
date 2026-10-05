@@ -41,6 +41,9 @@ def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_short() -> {Pair.snd(
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(13, 13, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 3))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   PRV.BitsStruct_decode_vchecked_storage()
 
+def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_storage_size(buf: B.Buf) -> {BitsStruct_r.BitsStruct_dchw(13, 13, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  PRV.BitsStruct_decode_vchecked_storage_size(buf)
+
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_dchw(13, 12, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 11), 1, 786432), 2, 16777216), 3, 1), 13}, 4))) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   PRV.BitsStruct_decode_vchecked_window()
 

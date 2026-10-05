@@ -54,6 +54,10 @@ def PendingPartialWithdrawal_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_decode_checked(B.Buf{Array.new(U32, 0n, 0), 24}, 24)) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   {==}
 
+def PendingPartialWithdrawal_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 24, (buf, 5)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  {==}
+
 def PendingPartialWithdrawal_decode_vchecked_budget_cost()
     -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dcost(4096) == 524288 : U32}:
   {==}

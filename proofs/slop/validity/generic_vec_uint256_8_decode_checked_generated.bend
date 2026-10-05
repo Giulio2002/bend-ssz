@@ -53,6 +53,10 @@ def vec_uint256_8_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint256_8_r.vec_uint256_8_decode_checked(B.Buf{Array.new(U32, 0n, 0), 256}, 256)) == None{} : Maybe<&1, O.Words>}:
   {==}
 
+def vec_uint256_8_decode_vchecked_storage_size(buf: B.Buf)
+    -> {vec_uint256_8_r.vec_uint256_8_dchw(256, 256, (buf, 63)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def vec_uint256_8_decode_vchecked_budget_cost()
     -> {vec_uint256_8_r.vec_uint256_8_dcost(4096) == 524288 : U32}:
   {==}

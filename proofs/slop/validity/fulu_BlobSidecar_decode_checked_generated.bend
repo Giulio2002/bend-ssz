@@ -47,6 +47,14 @@ def BlobSidecar_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBlobSidecar_d.BlobSidecar>, FuluBlobSidecar_r.BlobSidecar_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
   {==}
 
+def BlobSidecar_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBlobSidecar_r.BlobSidecar_dchw(131928, 131928, (buf, 32981)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  {==}
+
+def BlobSidecar_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluBlobSidecar_r.BlobSidecar_dchw(131928, 131928, (buf, 32982)) == FuluBlobSidecar_r.BlobSidecar_dgo(True{}, buf, 131928) : B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>}:
+  {==}
+
 def BlobSidecar_decode_vchecked_budget_cost()
     -> {FuluBlobSidecar_r.BlobSidecar_dcost(4096) == 526853 : U32}:
   {==}

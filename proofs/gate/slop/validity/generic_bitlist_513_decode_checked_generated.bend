@@ -37,6 +37,9 @@ def bitlist_513__decode_offsets__bitlist_513_decode_vchecked_short() -> {Pair.sn
 def bitlist_513__decode_offsets__bitlist_513_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_513_r.bitlist_513_dchw(1, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 0))) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_513_decode_vchecked_storage()
 
+def bitlist_513__decode_offsets__bitlist_513_decode_vchecked_storage_size(buf: B.Buf) -> {bitlist_513_r.bitlist_513_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  PRV.bitlist_513_decode_vchecked_storage_size(buf)
+
 def bitlist_513__decode_offsets__bitlist_513_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_513_r.bitlist_513_dchw(1, 0, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 1))) == None{} : Maybe<&1, O.Bits>}:
   PRV.bitlist_513_decode_vchecked_window()
 

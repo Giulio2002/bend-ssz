@@ -54,6 +54,10 @@ def VarTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 458752), 7}, 7)) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   {==}
 
+def VarTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {VarTestStruct_r.VarTestStruct_dchw(7, 7, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  {==}
+
 def VarTestStruct_decode_vchecked_budget_cost()
     -> {VarTestStruct_r.VarTestStruct_dcost(4096) == 524288 : U32}:
   {==}

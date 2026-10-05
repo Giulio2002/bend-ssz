@@ -54,6 +54,10 @@ def DepositData_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositData_d.DepositData>, FuluDepositData_r.DepositData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 184}, 184)) == None{} : Maybe<&1, FuluDepositData_d.DepositData>}:
   {==}
 
+def DepositData_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluDepositData_r.DepositData_dchw(184, 184, (buf, 45)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositData_d.DepositData>}:
+  {==}
+
 def DepositData_decode_vchecked_budget_cost()
     -> {FuluDepositData_r.DepositData_dcost(4096) == 524288 : U32}:
   {==}

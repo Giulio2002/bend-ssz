@@ -143,6 +143,9 @@ def FuluBlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_short() -
 def FuluBlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>, FuluBlobIdentifier_r.BlobIdentifier_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 40}, 40)) == None{} : Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
   P7_PRV.BlobIdentifier_decode_vchecked_real()
 
+def FuluBlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluBlobIdentifier_r.BlobIdentifier_dchw(40, 40, (buf, 9)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
+  P7_PRV.BlobIdentifier_decode_vchecked_storage_size(buf)
+
 def FuluBlobIdentifier__decode_offsets__BlobIdentifier_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlobIdentifier_r.BlobIdentifier_dcost(size), 4294967295), U32.is_le(FuluBlobIdentifier_r.BlobIdentifier_dcost(size), budget)) == True{} : Bool}) -> {FuluBlobIdentifier_r.BlobIdentifier_decode_checked_budget(buf, size, budget) == FuluBlobIdentifier_r.BlobIdentifier_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>}:
   P7_PRV.BlobIdentifier_decode_vchecked_budget_agree(buf, size, budget, h)
 

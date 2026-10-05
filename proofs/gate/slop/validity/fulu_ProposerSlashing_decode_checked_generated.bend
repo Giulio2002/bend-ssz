@@ -41,6 +41,9 @@ def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_short() -
 def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_dchw(416, 416, (B.Buf{Array.new(U32, 7n, 0), 416}, 103))) == None{} : Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   PRV.ProposerSlashing_decode_vchecked_storage()
 
+def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_storage_size(buf: B.Buf) -> {FuluProposerSlashing_r.ProposerSlashing_dchw(416, 416, (buf, 103)) == (buf, None{}) : B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
+  PRV.ProposerSlashing_decode_vchecked_storage_size(buf)
+
 def ProposerSlashing__decode_offsets__ProposerSlashing_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>, FuluProposerSlashing_r.ProposerSlashing_dchw(416, 415, (B.Buf{Array.new(U32, 7n, 0), 416}, 104))) == None{} : Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>}:
   PRV.ProposerSlashing_decode_vchecked_window()
 

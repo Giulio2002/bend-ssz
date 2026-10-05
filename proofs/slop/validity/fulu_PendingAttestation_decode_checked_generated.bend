@@ -54,6 +54,10 @@ def PendingAttestation_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 148), 149}, 149)) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   {==}
 
+def PendingAttestation_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (buf, 37)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+  {==}
+
 def PendingAttestation_decode_vchecked_budget_cost()
     -> {FuluPendingAttestation_r.PendingAttestation_dcost(4096) == 524288 : U32}:
   {==}

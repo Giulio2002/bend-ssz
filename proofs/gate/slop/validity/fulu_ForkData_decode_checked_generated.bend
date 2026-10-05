@@ -41,6 +41,9 @@ def ForkData__decode_offsets__ForkData_decode_vchecked_short() -> {Pair.snd(B.Bu
 def ForkData__decode_offsets__ForkData_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(36, 36, (B.Buf{Array.new(U32, 4n, 0), 36}, 8))) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
   PRV.ForkData_decode_vchecked_storage()
 
+def ForkData__decode_offsets__ForkData_decode_vchecked_storage_size(buf: B.Buf) -> {FuluForkData_r.ForkData_dchw(36, 36, (buf, 8)) == (buf, None{}) : B.Buf & Maybe<&1, FuluForkData_d.ForkData>}:
+  PRV.ForkData_decode_vchecked_storage_size(buf)
+
 def ForkData__decode_offsets__ForkData_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluForkData_d.ForkData>, FuluForkData_r.ForkData_dchw(36, 35, (B.Buf{Array.new(U32, 4n, 0), 36}, 9))) == None{} : Maybe<&1, FuluForkData_d.ForkData>}:
   PRV.ForkData_decode_vchecked_window()
 

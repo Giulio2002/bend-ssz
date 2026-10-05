@@ -41,6 +41,9 @@ def DepositMessage__decode_offsets__DepositMessage_decode_vchecked_short() -> {P
 def DepositMessage__decode_offsets__DepositMessage_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_dchw(88, 88, (B.Buf{Array.new(U32, 5n, 0), 88}, 21))) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   PRV.DepositMessage_decode_vchecked_storage()
 
+def DepositMessage__decode_offsets__DepositMessage_decode_vchecked_storage_size(buf: B.Buf) -> {FuluDepositMessage_r.DepositMessage_dchw(88, 88, (buf, 21)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  PRV.DepositMessage_decode_vchecked_storage_size(buf)
+
 def DepositMessage__decode_offsets__DepositMessage_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_dchw(88, 87, (B.Buf{Array.new(U32, 5n, 0), 88}, 22))) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   PRV.DepositMessage_decode_vchecked_window()
 

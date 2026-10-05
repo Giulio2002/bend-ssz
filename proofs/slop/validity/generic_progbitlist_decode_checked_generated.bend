@@ -49,6 +49,10 @@ def progbitlist_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, progbitlist_r.progbitlist_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, O.Bits>}:
   {==}
 
+def progbitlist_decode_vchecked_storage_size(buf: B.Buf)
+    -> {progbitlist_r.progbitlist_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
 def progbitlist_decode_vchecked_budget_cost()
     -> {progbitlist_r.progbitlist_dcost(4096) == 527879 : U32}:
   {==}

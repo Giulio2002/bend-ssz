@@ -142,6 +142,9 @@ def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_short
 def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 20}, 20)) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   P7_PRV.ExecutionAddress_decode_vchecked_real()
 
+def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (buf, 4)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  P7_PRV.ExecutionAddress_decode_vchecked_storage_size(buf)
+
 def FuluExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluExecutionAddress_r.ExecutionAddress_dcost(size), 4294967295), U32.is_le(FuluExecutionAddress_r.ExecutionAddress_dcost(size), budget)) == True{} : Bool}) -> {FuluExecutionAddress_r.ExecutionAddress_decode_checked_budget(buf, size, budget) == FuluExecutionAddress_r.ExecutionAddress_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   P7_PRV.ExecutionAddress_decode_vchecked_budget_agree(buf, size, budget, h)
 

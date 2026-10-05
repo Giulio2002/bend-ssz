@@ -41,6 +41,9 @@ def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_
 def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 160, (B.Buf{Array.new(U32, 6n, 0), 160}, 39))) == None{} : Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   PRV.SyncCommitteeContribution_decode_vchecked_storage()
 
+def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 160, (buf, 39)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  PRV.SyncCommitteeContribution_decode_vchecked_storage_size(buf)
+
 def SyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 159, (B.Buf{Array.new(U32, 6n, 0), 160}, 40))) == None{} : Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   PRV.SyncCommitteeContribution_decode_vchecked_window()
 

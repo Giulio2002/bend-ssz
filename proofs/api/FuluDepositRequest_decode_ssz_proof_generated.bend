@@ -144,6 +144,9 @@ def FuluDepositRequest__decode_offsets__DepositRequest_decode_vchecked_short() -
 def FuluDepositRequest__decode_offsets__DepositRequest_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluDepositRequest_d.DepositRequest>, FuluDepositRequest_r.DepositRequest_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
   P7_PRV.DepositRequest_decode_vchecked_real()
 
+def FuluDepositRequest__decode_offsets__DepositRequest_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluDepositRequest_r.DepositRequest_dchw(192, 192, (buf, 47)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
+  P7_PRV.DepositRequest_decode_vchecked_storage_size(buf)
+
 def FuluDepositRequest__decode_offsets__DepositRequest_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositRequest_r.DepositRequest_dcost(size), 4294967295), U32.is_le(FuluDepositRequest_r.DepositRequest_dcost(size), budget)) == True{} : Bool}) -> {FuluDepositRequest_r.DepositRequest_decode_checked_budget(buf, size, budget) == FuluDepositRequest_r.DepositRequest_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluDepositRequest_d.DepositRequest>}:
   P7_PRV.DepositRequest_decode_vchecked_budget_agree(buf, size, budget, h)
 

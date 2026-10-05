@@ -54,6 +54,10 @@ def HistoricalSummary_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked(B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   {==}
 
+def HistoricalSummary_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 64, (buf, 15)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  {==}
+
 def HistoricalSummary_decode_vchecked_budget_cost()
     -> {FuluHistoricalSummary_r.HistoricalSummary_dcost(4096) == 524288 : U32}:
   {==}

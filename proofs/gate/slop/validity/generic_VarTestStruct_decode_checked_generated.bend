@@ -41,6 +41,9 @@ def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_short() -> {Pai
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(7, 7, (B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 1))) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   PRV.VarTestStruct_decode_vchecked_storage()
 
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {VarTestStruct_r.VarTestStruct_dchw(7, 7, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  PRV.VarTestStruct_decode_vchecked_storage_size(buf)
+
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_dchw(7, 6, (B.Buf{Array.set(U32, Array.new(U32, 1n, 0), 0, 458752), 7}, 2))) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   PRV.VarTestStruct_decode_vchecked_window()
 

@@ -53,6 +53,10 @@ def ColumnIndex_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   {==}
 
+def ColumnIndex_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluColumnIndex_r.ColumnIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 def ColumnIndex_decode_vchecked_budget_cost()
     -> {FuluColumnIndex_r.ColumnIndex_dcost(4096) == 524288 : U32}:
   {==}

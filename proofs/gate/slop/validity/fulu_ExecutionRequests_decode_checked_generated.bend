@@ -41,6 +41,9 @@ def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_short()
 def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 2))) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   PRV.ExecutionRequests_decode_vchecked_storage()
 
+def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_storage_size(buf: B.Buf) -> {FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (buf, 2)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  PRV.ExecutionRequests_decode_vchecked_storage_size(buf)
+
 def ExecutionRequests__decode_offsets__ExecutionRequests_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_dchw(12, 11, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 12), 1, 12), 2, 12), 12}, 3))) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   PRV.ExecutionRequests_decode_vchecked_window()
 

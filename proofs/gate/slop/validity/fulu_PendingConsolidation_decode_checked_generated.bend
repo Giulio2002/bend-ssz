@@ -41,6 +41,9 @@ def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_s
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_dchw(16, 16, (B.Buf{Array.new(U32, 2n, 0), 16}, 3))) == None{} : Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_storage()
 
+def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_storage_size(buf: B.Buf) -> {FuluPendingConsolidation_r.PendingConsolidation_dchw(16, 16, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
+  PRV.PendingConsolidation_decode_vchecked_storage_size(buf)
+
 def PendingConsolidation__decode_offsets__PendingConsolidation_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>, FuluPendingConsolidation_r.PendingConsolidation_dchw(16, 15, (B.Buf{Array.new(U32, 2n, 0), 16}, 4))) == None{} : Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>}:
   PRV.PendingConsolidation_decode_vchecked_window()
 

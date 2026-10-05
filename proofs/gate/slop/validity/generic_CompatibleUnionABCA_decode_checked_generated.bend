@@ -38,6 +38,9 @@ def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_sho
 def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>, CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(2, 2, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 0))) == None{} : Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
   PRV.CompatibleUnionABCA_decode_vchecked_storage()
 
+def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_storage_size(buf: B.Buf) -> {CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(2, 2, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
+  PRV.CompatibleUnionABCA_decode_vchecked_storage_size(buf)
+
 def CompatibleUnionABCA__decode_offsets__CompatibleUnionABCA_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>, CompatibleUnionABCA_r.CompatibleUnionABCA_dchw(2, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 1))) == None{} : Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>}:
   PRV.CompatibleUnionABCA_decode_vchecked_window()
 

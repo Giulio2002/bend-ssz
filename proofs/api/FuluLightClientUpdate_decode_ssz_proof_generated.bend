@@ -90,6 +90,12 @@ def FuluLightClientUpdate__decode_offsets__LightClientUpdate_decode_vchecked_sto
 def FuluLightClientUpdate__decode_offsets__LightClientUpdate_decode_vchecked_real() -> {Pair.snd(P1_B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode_checked(P1_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   P1_PRV.LightClientUpdate_decode_vchecked_real()
 
+def FuluLightClientUpdate__decode_offsets__LightClientUpdate_decode_vchecked_storage_size(buf: P1_B.Buf) -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(26872, 26872, (buf, 6717)) == (buf, None{}) : P1_B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  P1_PRV.LightClientUpdate_decode_vchecked_storage_size(buf)
+
+def FuluLightClientUpdate__decode_offsets__LightClientUpdate_decode_vchecked_accept_size(buf: P1_B.Buf) -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(26872, 26872, (buf, 6718)) == FuluLightClientUpdate_r.LightClientUpdate_dgo(True{}, buf, 26872) : P1_B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  P1_PRV.LightClientUpdate_decode_vchecked_accept_size(buf)
+
 def FuluLightClientUpdate__decode_offsets__LightClientUpdate_decode_vchecked_budget_agree(buf: P1_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), 4294967295), U32.is_le(FuluLightClientUpdate_r.LightClientUpdate_dcost(size), budget)) == True{} : Bool}) -> {FuluLightClientUpdate_r.LightClientUpdate_decode_checked_budget(buf, size, budget) == FuluLightClientUpdate_r.LightClientUpdate_decode_checked(buf, size) : P1_B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   P1_PRV.LightClientUpdate_decode_vchecked_budget_agree(buf, size, budget, h)
 

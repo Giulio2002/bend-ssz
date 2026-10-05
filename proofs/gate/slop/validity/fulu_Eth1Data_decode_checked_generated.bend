@@ -41,6 +41,9 @@ def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_short() -> {Pair.snd(B.Bu
 def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(72, 72, (B.Buf{Array.new(U32, 5n, 0), 72}, 17))) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
   PRV.Eth1Data_decode_vchecked_storage()
 
+def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_storage_size(buf: B.Buf) -> {FuluEth1Data_r.Eth1Data_dchw(72, 72, (buf, 17)) == (buf, None{}) : B.Buf & Maybe<&1, FuluEth1Data_d.Eth1Data>}:
+  PRV.Eth1Data_decode_vchecked_storage_size(buf)
+
 def Eth1Data__decode_offsets__Eth1Data_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Data_d.Eth1Data>, FuluEth1Data_r.Eth1Data_dchw(72, 71, (B.Buf{Array.new(U32, 5n, 0), 72}, 18))) == None{} : Maybe<&1, FuluEth1Data_d.Eth1Data>}:
   PRV.Eth1Data_decode_vchecked_window()
 

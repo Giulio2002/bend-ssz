@@ -142,6 +142,9 @@ def FuluG2Point__decode_offsets__G2Point_decode_vchecked_short() -> {Pair.snd(P7
 def FuluG2Point__decode_offsets__G2Point_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.G2Point_decode_vchecked_real()
 
+def FuluG2Point__decode_offsets__G2Point_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluG2Point_r.G2Point_dchw(96, 96, (buf, 23)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  P7_PRV.G2Point_decode_vchecked_storage_size(buf)
+
 def FuluG2Point__decode_offsets__G2Point_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluG2Point_r.G2Point_dcost(size), 4294967295), U32.is_le(FuluG2Point_r.G2Point_dcost(size), budget)) == True{} : Bool}) -> {FuluG2Point_r.G2Point_decode_checked_budget(buf, size, budget) == FuluG2Point_r.G2Point_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.G2Point_decode_vchecked_budget_agree(buf, size, budget, h)
 

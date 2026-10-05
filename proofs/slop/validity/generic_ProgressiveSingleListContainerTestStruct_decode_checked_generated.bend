@@ -55,6 +55,10 @@ def ProgressiveSingleListContainerTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 4), 5}, 5)) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   {==}
 
+def ProgressiveSingleListContainerTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  {==}
+
 def ProgressiveSingleListContainerTestStruct_decode_vchecked_budget_cost()
     -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dcost(4096) == 527879 : U32}:
   {==}

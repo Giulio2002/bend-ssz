@@ -41,6 +41,9 @@ def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_short() -> {Pair.snd(B.
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 11))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.BLSPubkey_decode_vchecked_storage()
 
+def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBLSPubkey_r.BLSPubkey_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.BLSPubkey_decode_vchecked_storage_size(buf)
+
 def BLSPubkey__decode_offsets__BLSPubkey_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBLSPubkey_r.BLSPubkey_dchw(48, 47, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.BLSPubkey_decode_vchecked_window()
 

@@ -41,6 +41,9 @@ def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_short() -> 
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 233))) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   PRV.BeaconBlockBody_decode_vchecked_storage()
 
+def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (buf, 233)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  PRV.BeaconBlockBody_decode_vchecked_storage_size(buf)
+
 def BeaconBlockBody__decode_offsets__BeaconBlockBody_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 935, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 50, 396), 51, 396), 52, 396), 53, 396), 54, 396), 95, 396), 96, 924), 97, 924), 98, 924), 208, 528), 225, 528), 226, 528), 231, 12), 232, 12), 233, 12), 936}, 234))) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   PRV.BeaconBlockBody_decode_vchecked_window()
 

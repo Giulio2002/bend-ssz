@@ -50,6 +50,10 @@ def CompatibleUnionA_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 1}, 2)) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   {==}
 
+def CompatibleUnionA_decode_vchecked_storage_size(buf: B.Buf)
+    -> {CompatibleUnionA_r.CompatibleUnionA_dchw(2, 2, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  {==}
+
 def CompatibleUnionA_decode_vchecked_budget_cost()
     -> {CompatibleUnionA_r.CompatibleUnionA_dcost(4096) == 524288 : U32}:
   {==}

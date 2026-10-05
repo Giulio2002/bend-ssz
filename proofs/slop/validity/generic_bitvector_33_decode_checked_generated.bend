@@ -54,6 +54,10 @@ def bitvector_33_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, bitvector_33_d.Bitvector33>, bitvector_33_r.bitvector_33_decode_checked(B.Buf{Array.new(U32, 0n, 0), 5}, 5)) == None{} : Maybe<&1, bitvector_33_d.Bitvector33>}:
   {==}
 
+def bitvector_33_decode_vchecked_storage_size(buf: B.Buf)
+    -> {bitvector_33_r.bitvector_33_dchw(5, 5, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>}:
+  {==}
+
 def bitvector_33_decode_vchecked_budget_cost()
     -> {bitvector_33_r.bitvector_33_dcost(4096) == 524288 : U32}:
   {==}

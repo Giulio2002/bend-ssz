@@ -55,6 +55,10 @@ def ExecutionPayload_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>, FuluExecutionPayload_r.ExecutionPayload_decode_checked(B.Buf{Array.new(U32, 0n, 0), 528}, 528)) == None{} : Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
   {==}
 
+def ExecutionPayload_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluExecutionPayload_r.ExecutionPayload_dchw(528, 528, (buf, 131)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>}:
+  {==}
+
 def ExecutionPayload_decode_vchecked_budget_cost()
     -> {FuluExecutionPayload_r.ExecutionPayload_dcost(4096) == 544808 : U32}:
   {==}

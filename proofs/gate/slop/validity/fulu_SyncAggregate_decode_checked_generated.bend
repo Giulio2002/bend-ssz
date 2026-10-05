@@ -41,6 +41,9 @@ def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_short() -> {Pai
 def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(160, 160, (B.Buf{Array.new(U32, 6n, 0), 160}, 39))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   PRV.SyncAggregate_decode_vchecked_storage()
 
+def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSyncAggregate_r.SyncAggregate_dchw(160, 160, (buf, 39)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+  PRV.SyncAggregate_decode_vchecked_storage_size(buf)
+
 def SyncAggregate__decode_offsets__SyncAggregate_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_dchw(160, 159, (B.Buf{Array.new(U32, 6n, 0), 160}, 40))) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   PRV.SyncAggregate_decode_vchecked_window()
 

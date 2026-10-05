@@ -40,6 +40,9 @@ def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_short() -> {P
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_dchw(224, 224, (B.Buf{Array.new(U32, 6n, 0), 224}, 55))) == None{} : Maybe<&1, O.Words>}:
   PRV.FinalityBranch_decode_vchecked_storage()
 
+def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_storage_size(buf: B.Buf) -> {FuluFinalityBranch_r.FinalityBranch_dchw(224, 224, (buf, 55)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.FinalityBranch_decode_vchecked_storage_size(buf)
+
 def FinalityBranch__decode_offsets__FinalityBranch_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_dchw(224, 223, (B.Buf{Array.new(U32, 6n, 0), 224}, 56))) == None{} : Maybe<&1, O.Words>}:
   PRV.FinalityBranch_decode_vchecked_window()
 

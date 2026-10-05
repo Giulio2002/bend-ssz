@@ -145,6 +145,9 @@ def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_short() -
 def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 88}, 88)) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   P7_PRV.DepositMessage_decode_vchecked_real()
 
+def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluDepositMessage_r.DepositMessage_dchw(88, 88, (buf, 21)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  P7_PRV.DepositMessage_decode_vchecked_storage_size(buf)
+
 def FuluDepositMessage__decode_offsets__DepositMessage_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDepositMessage_r.DepositMessage_dcost(size), 4294967295), U32.is_le(FuluDepositMessage_r.DepositMessage_dcost(size), budget)) == True{} : Bool}) -> {FuluDepositMessage_r.DepositMessage_decode_checked_budget(buf, size, budget) == FuluDepositMessage_r.DepositMessage_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   P7_PRV.DepositMessage_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -54,6 +54,10 @@ def BLSToExecutionChange_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_decode_checked(B.Buf{Array.new(U32, 0n, 0), 76}, 76)) == None{} : Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
   {==}
 
+def BLSToExecutionChange_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(76, 76, (buf, 18)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
+  {==}
+
 def BLSToExecutionChange_decode_vchecked_budget_cost()
     -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dcost(4096) == 524288 : U32}:
   {==}

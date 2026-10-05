@@ -144,6 +144,9 @@ def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked
 def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 112}, 112)) == None{} : Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
   P7_PRV.SignedVoluntaryExit_decode_vchecked_real()
 
+def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dchw(112, 112, (buf, 27)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
+  P7_PRV.SignedVoluntaryExit_decode_vchecked_storage_size(buf)
+
 def FuluSignedVoluntaryExit__decode_offsets__SignedVoluntaryExit_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(FuluSignedVoluntaryExit_r.SignedVoluntaryExit_dcost(size), budget)) == True{} : Bool}) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked_budget(buf, size, budget) == FuluSignedVoluntaryExit_r.SignedVoluntaryExit_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>}:
   P7_PRV.SignedVoluntaryExit_decode_vchecked_budget_agree(buf, size, budget, h)
 

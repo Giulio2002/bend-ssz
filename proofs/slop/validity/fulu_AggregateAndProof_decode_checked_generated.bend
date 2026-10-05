@@ -54,6 +54,10 @@ def AggregateAndProof_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 345}, 345)) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   {==}
 
+def AggregateAndProof_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (buf, 86)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  {==}
+
 def AggregateAndProof_decode_vchecked_budget_cost()
     -> {FuluAggregateAndProof_r.AggregateAndProof_dcost(4096) == 524288 : U32}:
   {==}

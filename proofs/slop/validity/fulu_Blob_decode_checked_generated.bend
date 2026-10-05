@@ -45,6 +45,14 @@ def Blob_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluBlob_r.Blob_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.Words>}:
   {==}
 
+def Blob_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBlob_r.Blob_dchw(131072, 131072, (buf, 32767)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
+def Blob_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluBlob_r.Blob_dchw(131072, 131072, (buf, 32768)) == FuluBlob_r.Blob_dgo(True{}, buf, 131072) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def Blob_decode_vchecked_budget_cost()
     -> {FuluBlob_r.Blob_dcost(4096) == 526853 : U32}:
   {==}

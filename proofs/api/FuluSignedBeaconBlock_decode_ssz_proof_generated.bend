@@ -146,6 +146,9 @@ def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_sho
 def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>, FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked(P2_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 100), 1120}, 1120)) == None{} : Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
   P2_PRV.SignedBeaconBlock_decode_vchecked_real()
 
+def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_storage_size(buf: P2_B.Buf) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_dchw(1120, 1120, (buf, 279)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
+  P2_PRV.SignedBeaconBlock_decode_vchecked_storage_size(buf)
+
 def FuluSignedBeaconBlock__decode_offsets__SignedBeaconBlock_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), 4294967295), U32.is_le(FuluSignedBeaconBlock_r.SignedBeaconBlock_dcost(size), budget)) == True{} : Bool}) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked_budget(buf, size, budget) == FuluSignedBeaconBlock_r.SignedBeaconBlock_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>}:
   P2_PRV.SignedBeaconBlock_decode_vchecked_budget_agree(buf, size, budget, h)
 

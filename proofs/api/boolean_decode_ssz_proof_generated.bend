@@ -212,6 +212,9 @@ def boolean__decode_offsets__boolean_decode_vchecked_storage() -> {Pair.snd(P8_B
 def boolean__decode_offsets__boolean_decode_vchecked_short() -> {Pair.snd(P8_B.Buf, Maybe<&1, Bool>, boolean_r.boolean_decode_checked(P8_B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, Bool>}:
   P8_PRV.boolean_decode_vchecked_short()
 
+def boolean__decode_offsets__boolean_decode_vchecked_storage_size(buf: P8_B.Buf) -> {boolean_r.boolean_dchw(1, 1, (buf, 0)) == (buf, None{}) : P8_B.Buf & Maybe<&1, Bool>}:
+  P8_PRV.boolean_decode_vchecked_storage_size(buf)
+
 def boolean__decode_offsets__boolean_decode_vchecked_budget_agree(buf: P8_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(boolean_r.boolean_dcost(size), 4294967295), U32.is_le(boolean_r.boolean_dcost(size), budget)) == True{} : Bool}) -> {boolean_r.boolean_decode_checked_budget(buf, size, budget) == boolean_r.boolean_decode_checked(buf, size) : P8_B.Buf & Maybe<&1, Bool>}:
   P8_PRV.boolean_decode_vchecked_budget_agree(buf, size, budget, h)
 

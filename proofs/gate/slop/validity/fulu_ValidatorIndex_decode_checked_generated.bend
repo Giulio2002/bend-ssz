@@ -40,6 +40,9 @@ def ValidatorIndex__decode_offsets__ValidatorIndex_decode_vchecked_short() -> {P
 def ValidatorIndex__decode_offsets__ValidatorIndex_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, O.U64>}:
   PRV.ValidatorIndex_decode_vchecked_storage()
 
+def ValidatorIndex__decode_offsets__ValidatorIndex_decode_vchecked_storage_size(buf: B.Buf) -> {FuluValidatorIndex_r.ValidatorIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.ValidatorIndex_decode_vchecked_storage_size(buf)
+
 def ValidatorIndex__decode_offsets__ValidatorIndex_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, O.U64>}:
   PRV.ValidatorIndex_decode_vchecked_window()
 

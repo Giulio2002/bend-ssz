@@ -54,6 +54,10 @@ def G2Point_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_decode_checked(B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   {==}
 
+def G2Point_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluG2Point_r.G2Point_dchw(96, 96, (buf, 23)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  {==}
+
 def G2Point_decode_vchecked_budget_cost()
     -> {FuluG2Point_r.G2Point_dcost(4096) == 524288 : U32}:
   {==}

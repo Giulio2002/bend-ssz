@@ -55,6 +55,10 @@ def AttesterSlashing_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 8), 464}, 464)) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   {==}
 
+def AttesterSlashing_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (buf, 115)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  {==}
+
 def AttesterSlashing_decode_vchecked_budget_cost()
     -> {FuluAttesterSlashing_r.AttesterSlashing_dcost(4096) == 526340 : U32}:
   {==}

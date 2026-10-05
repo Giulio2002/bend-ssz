@@ -54,6 +54,10 @@ def Checkpoint_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluCheckpoint_d.Checkpoint>, FuluCheckpoint_r.Checkpoint_decode_checked(B.Buf{Array.new(U32, 0n, 0), 40}, 40)) == None{} : Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
   {==}
 
+def Checkpoint_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluCheckpoint_r.Checkpoint_dchw(40, 40, (buf, 9)) == (buf, None{}) : B.Buf & Maybe<&1, FuluCheckpoint_d.Checkpoint>}:
+  {==}
+
 def Checkpoint_decode_vchecked_budget_cost()
     -> {FuluCheckpoint_r.Checkpoint_dcost(4096) == 524288 : U32}:
   {==}

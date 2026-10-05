@@ -41,6 +41,9 @@ def SingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_short()
 def SingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_dchw(240, 240, (B.Buf{Array.new(U32, 6n, 0), 240}, 59))) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
   PRV.SingleAttestation_decode_vchecked_storage()
 
+def SingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSingleAttestation_r.SingleAttestation_dchw(240, 240, (buf, 59)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  PRV.SingleAttestation_decode_vchecked_storage_size(buf)
+
 def SingleAttestation__decode_offsets__SingleAttestation_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_dchw(240, 239, (B.Buf{Array.new(U32, 6n, 0), 240}, 60))) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
   PRV.SingleAttestation_decode_vchecked_window()
 

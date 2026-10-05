@@ -54,6 +54,10 @@ def SignedBeaconBlockHeader_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_decode_checked(B.Buf{Array.new(U32, 0n, 0), 208}, 208)) == None{} : Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
   {==}
 
+def SignedBeaconBlockHeader_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(208, 208, (buf, 51)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
+  {==}
+
 def SignedBeaconBlockHeader_decode_vchecked_budget_cost()
     -> {FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dcost(4096) == 524288 : U32}:
   {==}

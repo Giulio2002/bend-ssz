@@ -54,6 +54,10 @@ def LightClientOptimisticUpdate_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 172), 1000}, 1000)) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   {==}
 
+def LightClientOptimisticUpdate_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (buf, 249)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  {==}
+
 def LightClientOptimisticUpdate_decode_vchecked_budget_cost()
     -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dcost(4096) == 524288 : U32}:
   {==}

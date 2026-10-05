@@ -41,6 +41,9 @@ def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_short() -
 def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (B.Buf{Array.new(U32, 3n, 0), 20}, 4))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.ExecutionAddress_decode_vchecked_storage()
 
+def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_storage_size(buf: B.Buf) -> {FuluExecutionAddress_r.ExecutionAddress_dchw(20, 20, (buf, 4)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
+  PRV.ExecutionAddress_decode_vchecked_storage_size(buf)
+
 def ExecutionAddress__decode_offsets__ExecutionAddress_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes20_d.Bytes20>, FuluExecutionAddress_r.ExecutionAddress_dchw(20, 19, (B.Buf{Array.new(U32, 3n, 0), 20}, 5))) == None{} : Maybe<&1, FuluBytes20_d.Bytes20>}:
   PRV.ExecutionAddress_decode_vchecked_window()
 

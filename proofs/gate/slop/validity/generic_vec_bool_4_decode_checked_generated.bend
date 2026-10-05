@@ -37,6 +37,9 @@ def vec_bool_4__decode_offsets__vec_bool_4_decode_vchecked_short() -> {Pair.snd(
 def vec_bool_4__decode_offsets__vec_bool_4_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_4_r.vec_bool_4_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 0))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_4_decode_vchecked_storage()
 
+def vec_bool_4__decode_offsets__vec_bool_4_decode_vchecked_storage_size(buf: B.Buf) -> {vec_bool_4_r.vec_bool_4_dchw(4, 4, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_bool_4_decode_vchecked_storage_size(buf)
+
 def vec_bool_4__decode_offsets__vec_bool_4_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_bool_4_r.vec_bool_4_dchw(4, 3, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_bool_4_decode_vchecked_window()
 

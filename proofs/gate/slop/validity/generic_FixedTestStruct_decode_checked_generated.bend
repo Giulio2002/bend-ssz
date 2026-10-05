@@ -41,6 +41,9 @@ def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_short() -> 
 def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_dchw(13, 13, (B.Buf{Array.new(U32, 2n, 0), 13}, 3))) == None{} : Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
   PRV.FixedTestStruct_decode_vchecked_storage()
 
+def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {FixedTestStruct_r.FixedTestStruct_dchw(13, 13, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
+  PRV.FixedTestStruct_decode_vchecked_storage_size(buf)
+
 def FixedTestStruct__decode_offsets__FixedTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FixedTestStruct_d.FixedTestStruct>, FixedTestStruct_r.FixedTestStruct_dchw(13, 12, (B.Buf{Array.new(U32, 2n, 0), 13}, 4))) == None{} : Maybe<&1, FixedTestStruct_d.FixedTestStruct>}:
   PRV.FixedTestStruct_decode_vchecked_window()
 

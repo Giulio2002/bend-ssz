@@ -145,6 +145,9 @@ def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_short()
 def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 128}, 128)) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   P7_PRV.AttestationData_decode_vchecked_real()
 
+def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluAttestationData_r.AttestationData_dchw(128, 128, (buf, 31)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>}:
+  P7_PRV.AttestationData_decode_vchecked_storage_size(buf)
+
 def FuluAttestationData__decode_offsets__AttestationData_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAttestationData_r.AttestationData_dcost(size), 4294967295), U32.is_le(FuluAttestationData_r.AttestationData_dcost(size), budget)) == True{} : Bool}) -> {FuluAttestationData_r.AttestationData_decode_checked_budget(buf, size, budget) == FuluAttestationData_r.AttestationData_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>}:
   P7_PRV.AttestationData_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -117,6 +117,15 @@ def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_storage() -> {P
 def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_bool_decode_vchecked_real()
 
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_storage_size(buf: P3_B.Buf) -> {proglist_bool_r.proglist_bool_dchw(1, 1, (buf, 0)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.proglist_bool_decode_vchecked_storage_size(buf)
+
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_accept_size(buf: P3_B.Buf) -> {proglist_bool_r.proglist_bool_dchw(1, 1, (buf, 1)) == proglist_bool_r.proglist_bool_dgo(True{}, buf, 1) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.proglist_bool_decode_vchecked_accept_size(buf)
+
+def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_empty() -> {(P3_PRV.lenof(Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_decode(P3_B.empty(), 0))), P3_PRV.lenof(Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, proglist_bool_r.proglist_bool_decode_checked(P3_B.empty(), 0)))) == (0, 0) : U32 & U32}:
+  P3_PRV.proglist_bool_decode_vchecked_empty()
+
 def proglist_bool__decode_offsets__proglist_bool_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_bool_r.proglist_bool_dcost(size), 4294967295), U32.is_le(proglist_bool_r.proglist_bool_dcost(size), budget)) == True{} : Bool}) -> {proglist_bool_r.proglist_bool_decode_checked_budget(buf, size, budget) == proglist_bool_r.proglist_bool_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
   P3_PRV.proglist_bool_decode_vchecked_budget_agree(buf, size, budget, h)
 

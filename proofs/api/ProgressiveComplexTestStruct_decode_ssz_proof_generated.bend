@@ -356,6 +356,9 @@ def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_d
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(P2_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 7424), 30}, 30)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_real()
 
+def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_storage_size(buf: P2_B.Buf) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(30, 30, (buf, 7)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveComplexTestStruct__decode_offsets__ProgressiveComplexTestStruct_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(size), budget)) == True{} : Bool}) -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   P2_PRV.ProgressiveComplexTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

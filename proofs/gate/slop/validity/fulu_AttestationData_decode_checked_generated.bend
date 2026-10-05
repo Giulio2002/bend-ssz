@@ -41,6 +41,9 @@ def AttestationData__decode_offsets__AttestationData_decode_vchecked_short() -> 
 def AttestationData__decode_offsets__AttestationData_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(128, 128, (B.Buf{Array.new(U32, 5n, 0), 128}, 31))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   PRV.AttestationData_decode_vchecked_storage()
 
+def AttestationData__decode_offsets__AttestationData_decode_vchecked_storage_size(buf: B.Buf) -> {FuluAttestationData_r.AttestationData_dchw(128, 128, (buf, 31)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>}:
+  PRV.AttestationData_decode_vchecked_storage_size(buf)
+
 def AttestationData__decode_offsets__AttestationData_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttestationData_d.AttestationData>, FuluAttestationData_r.AttestationData_dchw(128, 127, (B.Buf{Array.new(U32, 5n, 0), 128}, 32))) == None{} : Maybe<&1, FuluAttestationData_d.AttestationData>}:
   PRV.AttestationData_decode_vchecked_window()
 

@@ -159,6 +159,9 @@ def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate
 def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 172), 1000}, 1000)) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   P3_PRV.LightClientOptimisticUpdate_decode_vchecked_real()
 
+def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_storage_size(buf: P3_B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (buf, 249)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  P3_PRV.LightClientOptimisticUpdate_decode_vchecked_storage_size(buf)
+
 def FuluLightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dcost(size), 4294967295), U32.is_le(FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dcost(size), budget)) == True{} : Bool}) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked_budget(buf, size, budget) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   P3_PRV.LightClientOptimisticUpdate_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -40,6 +40,9 @@ def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_short() -> {Pair.sn
 def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, O.U64>}:
   PRV.ColumnIndex_decode_vchecked_storage()
 
+def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_storage_size(buf: B.Buf) -> {FuluColumnIndex_r.ColumnIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.ColumnIndex_decode_vchecked_storage_size(buf)
+
 def ColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluColumnIndex_r.ColumnIndex_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, O.U64>}:
   PRV.ColumnIndex_decode_vchecked_window()
 

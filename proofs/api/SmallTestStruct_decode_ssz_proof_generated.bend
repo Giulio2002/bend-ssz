@@ -120,6 +120,9 @@ def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_storage() -
 def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_short() -> {Pair.snd(P4_B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
   P4_PRV.SmallTestStruct_decode_vchecked_short()
 
+def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_storage_size(buf: P4_B.Buf) -> {SmallTestStruct_r.SmallTestStruct_dchw(4, 4, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
+  P4_PRV.SmallTestStruct_decode_vchecked_storage_size(buf)
+
 def SmallTestStruct__decode_offsets__SmallTestStruct_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(SmallTestStruct_r.SmallTestStruct_dcost(size), 4294967295), U32.is_le(SmallTestStruct_r.SmallTestStruct_dcost(size), budget)) == True{} : Bool}) -> {SmallTestStruct_r.SmallTestStruct_decode_checked_budget(buf, size, budget) == SmallTestStruct_r.SmallTestStruct_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
   P4_PRV.SmallTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

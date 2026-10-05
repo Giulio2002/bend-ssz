@@ -142,6 +142,9 @@ def FuluHash32__decode_offsets__Hash32_decode_vchecked_short() -> {Pair.snd(P7_B
 def FuluHash32__decode_offsets__Hash32_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 32}, 32)) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   P7_PRV.Hash32_decode_vchecked_real()
 
+def FuluHash32__decode_offsets__Hash32_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluHash32_r.Hash32_dchw(32, 32, (buf, 7)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  P7_PRV.Hash32_decode_vchecked_storage_size(buf)
+
 def FuluHash32__decode_offsets__Hash32_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluHash32_r.Hash32_dcost(size), 4294967295), U32.is_le(FuluHash32_r.Hash32_dcost(size), budget)) == True{} : Bool}) -> {FuluHash32_r.Hash32_decode_checked_budget(buf, size, budget) == FuluHash32_r.Hash32_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   P7_PRV.Hash32_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -96,6 +96,15 @@ def FuluTransaction__decode_offsets__Transaction_decode_vchecked_storage() -> {P
 def FuluTransaction__decode_offsets__Transaction_decode_vchecked_real() -> {Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_decode_checked(P1_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P1_O.Words>}:
   P1_PRV.Transaction_decode_vchecked_real()
 
+def FuluTransaction__decode_offsets__Transaction_decode_vchecked_storage_size(buf: P1_B.Buf) -> {FuluTransaction_r.Transaction_dchw(1, 1, (buf, 0)) == (buf, None{}) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
+  P1_PRV.Transaction_decode_vchecked_storage_size(buf)
+
+def FuluTransaction__decode_offsets__Transaction_decode_vchecked_accept_size(buf: P1_B.Buf) -> {FuluTransaction_r.Transaction_dchw(1, 1, (buf, 1)) == FuluTransaction_r.Transaction_dgo(True{}, buf, 1) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
+  P1_PRV.Transaction_decode_vchecked_accept_size(buf)
+
+def FuluTransaction__decode_offsets__Transaction_decode_vchecked_empty() -> {(P1_PRV.lenof(Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_decode(P1_B.empty(), 0))), P1_PRV.lenof(Pair.snd(P1_B.Buf, Maybe<&1, P1_O.Words>, FuluTransaction_r.Transaction_decode_checked(P1_B.empty(), 0)))) == (0, 0) : U32 & U32}:
+  P1_PRV.Transaction_decode_vchecked_empty()
+
 def FuluTransaction__decode_offsets__Transaction_decode_vchecked_budget_agree(buf: P1_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluTransaction_r.Transaction_dcost(size), 4294967295), U32.is_le(FuluTransaction_r.Transaction_dcost(size), budget)) == True{} : Bool}) -> {FuluTransaction_r.Transaction_decode_checked_budget(buf, size, budget) == FuluTransaction_r.Transaction_decode_checked(buf, size) : P1_B.Buf & Maybe<&1, P1_O.Words>}:
   P1_PRV.Transaction_decode_vchecked_budget_agree(buf, size, budget, h)
 

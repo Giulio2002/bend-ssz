@@ -53,6 +53,10 @@ def uint64_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, uint64_r.uint64_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   {==}
 
+def uint64_decode_vchecked_storage_size(buf: B.Buf)
+    -> {uint64_r.uint64_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 def uint64_decode_vchecked_budget_cost()
     -> {uint64_r.uint64_dcost(4096) == 524288 : U32}:
   {==}

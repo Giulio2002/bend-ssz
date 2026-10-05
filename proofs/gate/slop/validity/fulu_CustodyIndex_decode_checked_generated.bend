@@ -40,6 +40,9 @@ def CustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_short() -> {Pair.
 def CustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluCustodyIndex_r.CustodyIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, O.U64>}:
   PRV.CustodyIndex_decode_vchecked_storage()
 
+def CustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_storage_size(buf: B.Buf) -> {FuluCustodyIndex_r.CustodyIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.CustodyIndex_decode_vchecked_storage_size(buf)
+
 def CustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluCustodyIndex_r.CustodyIndex_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, O.U64>}:
   PRV.CustodyIndex_decode_vchecked_window()
 

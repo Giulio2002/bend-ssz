@@ -38,6 +38,9 @@ def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_short() -> {Pair.
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(3, 3, (B.Buf{Array.new(U32, 0n, 0), 3}, 0))) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   PRV.bitvector_17_decode_vchecked_storage()
 
+def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_storage_size(buf: B.Buf) -> {bitvector_17_r.bitvector_17_dchw(3, 3, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  PRV.bitvector_17_decode_vchecked_storage_size(buf)
+
 def bitvector_17__decode_offsets__bitvector_17_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_17_d.Bitvector17>, bitvector_17_r.bitvector_17_dchw(3, 2, (B.Buf{Array.new(U32, 0n, 0), 3}, 1))) == None{} : Maybe<&1, bitvector_17_d.Bitvector17>}:
   PRV.bitvector_17_decode_vchecked_window()
 

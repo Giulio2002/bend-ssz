@@ -189,6 +189,9 @@ def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vc
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(P2_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 2304), 10}, 10)) == None{} : Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
   P2_PRV.ProgressiveVarTestStruct_decode_vchecked_real()
 
+def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_storage_size(buf: P2_B.Buf) -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(10, 10, (buf, 2)) == (buf, None{}) : P2_B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  P2_PRV.ProgressiveVarTestStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dcost(size), budget)) == True{} : Bool}) -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked_budget(buf, size, budget) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
   P2_PRV.ProgressiveVarTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

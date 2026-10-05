@@ -54,6 +54,10 @@ def BitsStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 11), 13}, 13)) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   {==}
 
+def BitsStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {BitsStruct_r.BitsStruct_dchw(13, 13, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  {==}
+
 def BitsStruct_decode_vchecked_budget_cost()
     -> {BitsStruct_r.BitsStruct_dcost(4096) == 524288 : U32}:
   {==}

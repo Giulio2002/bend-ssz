@@ -41,6 +41,9 @@ def ExecutionPayloadHeader__decode_offsets__ExecutionPayloadHeader_decode_vcheck
 def ExecutionPayloadHeader__decode_offsets__ExecutionPayloadHeader_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_dchw(584, 584, (B.Buf{Array.set(U32, Array.new(U32, 8n, 0), 109, 584), 584}, 145))) == None{} : Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}:
   PRV.ExecutionPayloadHeader_decode_vchecked_storage()
 
+def ExecutionPayloadHeader__decode_offsets__ExecutionPayloadHeader_decode_vchecked_storage_size(buf: B.Buf) -> {FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_dchw(584, 584, (buf, 145)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}:
+  PRV.ExecutionPayloadHeader_decode_vchecked_storage_size(buf)
+
 def ExecutionPayloadHeader__decode_offsets__ExecutionPayloadHeader_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_dchw(584, 583, (B.Buf{Array.set(U32, Array.new(U32, 8n, 0), 109, 584), 584}, 146))) == None{} : Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}:
   PRV.ExecutionPayloadHeader_decode_vchecked_window()
 

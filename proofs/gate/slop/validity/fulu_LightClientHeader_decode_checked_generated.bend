@@ -41,6 +41,9 @@ def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_short()
 def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(828, 828, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 206))) == None{} : Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   PRV.LightClientHeader_decode_vchecked_storage()
 
+def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_storage_size(buf: B.Buf) -> {FuluLightClientHeader_r.LightClientHeader_dchw(828, 828, (buf, 206)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
+  PRV.LightClientHeader_decode_vchecked_storage_size(buf)
+
 def LightClientHeader__decode_offsets__LightClientHeader_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientHeader_d.LightClientHeader>, FuluLightClientHeader_r.LightClientHeader_dchw(828, 827, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 28, 244), 170, 584), 828}, 207))) == None{} : Maybe<&1, FuluLightClientHeader_d.LightClientHeader>}:
   PRV.LightClientHeader_decode_vchecked_window()
 

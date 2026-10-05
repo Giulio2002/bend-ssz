@@ -41,6 +41,9 @@ def DataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_dec
 def DataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 36, (B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 8))) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   PRV.DataColumnsByRootIdentifier_decode_vchecked_storage()
 
+def DataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_storage_size(buf: B.Buf) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 36, (buf, 8)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  PRV.DataColumnsByRootIdentifier_decode_vchecked_storage_size(buf)
+
 def DataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 35, (B.Buf{Array.set(U32, Array.new(U32, 4n, 0), 8, 36), 36}, 9))) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   PRV.DataColumnsByRootIdentifier_decode_vchecked_window()
 

@@ -143,6 +143,9 @@ def FuluSignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_d
 def FuluSignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 172}, 172)) == None{} : Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
   P7_PRV.SignedBLSToExecutionChange_decode_vchecked_real()
 
+def FuluSignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(172, 172, (buf, 42)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
+  P7_PRV.SignedBLSToExecutionChange_decode_vchecked_storage_size(buf)
+
 def FuluSignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dcost(size), 4294967295), U32.is_le(FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dcost(size), budget)) == True{} : Bool}) -> {FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_decode_checked_budget(buf, size, budget) == FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
   P7_PRV.SignedBLSToExecutionChange_decode_vchecked_budget_agree(buf, size, budget, h)
 

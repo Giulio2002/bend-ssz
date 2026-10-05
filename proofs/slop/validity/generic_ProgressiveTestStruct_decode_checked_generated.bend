@@ -56,6 +56,10 @@ def ProgressiveTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>, ProgressiveTestStruct_r.ProgressiveTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 16), 16}, 16)) == None{} : Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
   {==}
 
+def ProgressiveTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dchw(16, 16, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveTestStruct_d.ProgressiveTestStruct>}:
+  {==}
+
 def ProgressiveTestStruct_decode_vchecked_budget_cost()
     -> {ProgressiveTestStruct_r.ProgressiveTestStruct_dcost(4096) == 540191 : U32}:
   {==}

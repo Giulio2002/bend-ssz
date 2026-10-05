@@ -59,6 +59,10 @@ def BeaconBlockBody_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>, FuluBeaconBlockBody_r.BeaconBlockBody_decode_checked(B.Buf{Array.new(U32, 0n, 0), 936}, 936)) == None{} : Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
   {==}
 
+def BeaconBlockBody_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_dchw(936, 936, (buf, 233)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>}:
+  {==}
+
 def BeaconBlockBody_decode_vchecked_budget_cost()
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_dcost(4096) == 544808 : U32}:
   {==}

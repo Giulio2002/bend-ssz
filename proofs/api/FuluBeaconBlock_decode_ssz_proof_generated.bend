@@ -141,6 +141,9 @@ def FuluBeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_short() -> {Pai
 def FuluBeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_real() -> {Pair.snd(P1_B.Buf, Maybe<&1, FuluBeaconBlock_d.BeaconBlock>, FuluBeaconBlock_r.BeaconBlock_decode_checked(P1_B.Buf{Array.new(U32, 0n, 0), 1020}, 1020)) == None{} : Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
   P1_PRV.BeaconBlock_decode_vchecked_real()
 
+def FuluBeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_storage_size(buf: P1_B.Buf) -> {FuluBeaconBlock_r.BeaconBlock_dchw(1020, 1020, (buf, 254)) == (buf, None{}) : P1_B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
+  P1_PRV.BeaconBlock_decode_vchecked_storage_size(buf)
+
 def FuluBeaconBlock__decode_offsets__BeaconBlock_decode_vchecked_budget_agree(buf: P1_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBeaconBlock_r.BeaconBlock_dcost(size), 4294967295), U32.is_le(FuluBeaconBlock_r.BeaconBlock_dcost(size), budget)) == True{} : Bool}) -> {FuluBeaconBlock_r.BeaconBlock_decode_checked_budget(buf, size, budget) == FuluBeaconBlock_r.BeaconBlock_decode_checked(buf, size) : P1_B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
   P1_PRV.BeaconBlock_decode_vchecked_budget_agree(buf, size, budget, h)
 

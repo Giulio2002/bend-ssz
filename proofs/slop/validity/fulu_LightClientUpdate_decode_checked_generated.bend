@@ -46,6 +46,14 @@ def LightClientUpdate_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>, FuluLightClientUpdate_r.LightClientUpdate_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
   {==}
 
+def LightClientUpdate_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(26872, 26872, (buf, 6717)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  {==}
+
+def LightClientUpdate_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_dchw(26872, 26872, (buf, 6718)) == FuluLightClientUpdate_r.LightClientUpdate_dgo(True{}, buf, 26872) : B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>}:
+  {==}
+
 def LightClientUpdate_decode_vchecked_budget_cost()
     -> {FuluLightClientUpdate_r.LightClientUpdate_dcost(4096) == 524288 : U32}:
   {==}

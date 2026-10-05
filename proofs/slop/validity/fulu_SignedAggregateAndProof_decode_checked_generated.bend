@@ -54,6 +54,10 @@ def SignedAggregateAndProof_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 100), 445}, 445)) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   {==}
 
+def SignedAggregateAndProof_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(445, 445, (buf, 111)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  {==}
+
 def SignedAggregateAndProof_decode_vchecked_budget_cost()
     -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dcost(4096) == 524288 : U32}:
   {==}

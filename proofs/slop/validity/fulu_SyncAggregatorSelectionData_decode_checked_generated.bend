@@ -54,6 +54,10 @@ def SyncAggregatorSelectionData_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_decode_checked(B.Buf{Array.new(U32, 0n, 0), 16}, 16)) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   {==}
 
+def SyncAggregatorSelectionData_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 16, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  {==}
+
 def SyncAggregatorSelectionData_decode_vchecked_budget_cost()
     -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dcost(4096) == 524288 : U32}:
   {==}

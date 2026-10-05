@@ -41,6 +41,9 @@ def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_short() -> {Pai
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 7))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.VersionedHash_decode_vchecked_storage()
 
+def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_storage_size(buf: B.Buf) -> {FuluVersionedHash_r.VersionedHash_dchw(32, 32, (buf, 7)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.VersionedHash_decode_vchecked_storage_size(buf)
+
 def VersionedHash__decode_offsets__VersionedHash_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluVersionedHash_r.VersionedHash_dchw(32, 31, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.VersionedHash_decode_vchecked_window()
 

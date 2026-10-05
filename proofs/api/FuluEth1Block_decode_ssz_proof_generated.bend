@@ -143,6 +143,9 @@ def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_short() -> {Pair.sn
 def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluEth1Block_d.Eth1Block>, FuluEth1Block_r.Eth1Block_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluEth1Block_d.Eth1Block>}:
   P7_PRV.Eth1Block_decode_vchecked_real()
 
+def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluEth1Block_r.Eth1Block_dchw(48, 48, (buf, 11)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
+  P7_PRV.Eth1Block_decode_vchecked_storage_size(buf)
+
 def FuluEth1Block__decode_offsets__Eth1Block_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluEth1Block_r.Eth1Block_dcost(size), 4294967295), U32.is_le(FuluEth1Block_r.Eth1Block_dcost(size), budget)) == True{} : Bool}) -> {FuluEth1Block_r.Eth1Block_decode_checked_budget(buf, size, budget) == FuluEth1Block_r.Eth1Block_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
   P7_PRV.Eth1Block_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -49,6 +49,10 @@ def ParticipationFlags_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, U32>}:
   {==}
 
+def ParticipationFlags_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluParticipationFlags_r.ParticipationFlags_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
+  {==}
+
 def ParticipationFlags_decode_vchecked_budget_cost()
     -> {FuluParticipationFlags_r.ParticipationFlags_dcost(4096) == 524288 : U32}:
   {==}

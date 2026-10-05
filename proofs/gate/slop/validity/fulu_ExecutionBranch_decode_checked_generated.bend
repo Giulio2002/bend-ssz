@@ -40,6 +40,9 @@ def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_short() -> 
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(128, 128, (B.Buf{Array.new(U32, 5n, 0), 128}, 31))) == None{} : Maybe<&1, O.Words>}:
   PRV.ExecutionBranch_decode_vchecked_storage()
 
+def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_storage_size(buf: B.Buf) -> {FuluExecutionBranch_r.ExecutionBranch_dchw(128, 128, (buf, 31)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.ExecutionBranch_decode_vchecked_storage_size(buf)
+
 def ExecutionBranch__decode_offsets__ExecutionBranch_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluExecutionBranch_r.ExecutionBranch_dchw(128, 127, (B.Buf{Array.new(U32, 5n, 0), 128}, 32))) == None{} : Maybe<&1, O.Words>}:
   PRV.ExecutionBranch_decode_vchecked_window()
 

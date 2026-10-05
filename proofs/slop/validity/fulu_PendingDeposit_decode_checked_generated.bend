@@ -54,6 +54,10 @@ def PendingDeposit_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingDeposit_d.PendingDeposit>, FuluPendingDeposit_r.PendingDeposit_decode_checked(B.Buf{Array.new(U32, 0n, 0), 192}, 192)) == None{} : Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
   {==}
 
+def PendingDeposit_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluPendingDeposit_r.PendingDeposit_dchw(192, 192, (buf, 47)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingDeposit_d.PendingDeposit>}:
+  {==}
+
 def PendingDeposit_decode_vchecked_budget_cost()
     -> {FuluPendingDeposit_r.PendingDeposit_dcost(4096) == 524288 : U32}:
   {==}

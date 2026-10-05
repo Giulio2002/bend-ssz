@@ -54,6 +54,10 @@ def Eth1Block_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluEth1Block_d.Eth1Block>, FuluEth1Block_r.Eth1Block_decode_checked(B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluEth1Block_d.Eth1Block>}:
   {==}
 
+def Eth1Block_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluEth1Block_r.Eth1Block_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>}:
+  {==}
+
 def Eth1Block_decode_vchecked_budget_cost()
     -> {FuluEth1Block_r.Eth1Block_dcost(4096) == 524288 : U32}:
   {==}

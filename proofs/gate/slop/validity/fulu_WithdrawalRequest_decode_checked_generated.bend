@@ -41,6 +41,9 @@ def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_short()
 def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(76, 76, (B.Buf{Array.new(U32, 5n, 0), 76}, 18))) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
   PRV.WithdrawalRequest_decode_vchecked_storage()
 
+def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_storage_size(buf: B.Buf) -> {FuluWithdrawalRequest_r.WithdrawalRequest_dchw(76, 76, (buf, 18)) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
+  PRV.WithdrawalRequest_decode_vchecked_storage_size(buf)
+
 def WithdrawalRequest__decode_offsets__WithdrawalRequest_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>, FuluWithdrawalRequest_r.WithdrawalRequest_dchw(76, 75, (B.Buf{Array.new(U32, 5n, 0), 76}, 19))) == None{} : Maybe<&1, FuluWithdrawalRequest_d.WithdrawalRequest>}:
   PRV.WithdrawalRequest_decode_vchecked_window()
 

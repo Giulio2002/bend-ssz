@@ -54,6 +54,10 @@ def Withdrawal_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluWithdrawal_d.Withdrawal>, FuluWithdrawal_r.Withdrawal_decode_checked(B.Buf{Array.new(U32, 0n, 0), 44}, 44)) == None{} : Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
   {==}
 
+def Withdrawal_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluWithdrawal_r.Withdrawal_dchw(44, 44, (buf, 10)) == (buf, None{}) : B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>}:
+  {==}
+
 def Withdrawal_decode_vchecked_budget_cost()
     -> {FuluWithdrawal_r.Withdrawal_dcost(4096) == 524288 : U32}:
   {==}

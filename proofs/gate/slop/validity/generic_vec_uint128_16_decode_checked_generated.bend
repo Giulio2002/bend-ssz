@@ -40,6 +40,9 @@ def vec_uint128_16__decode_offsets__vec_uint128_16_decode_vchecked_short() -> {P
 def vec_uint128_16__decode_offsets__vec_uint128_16_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_16_r.vec_uint128_16_dchw(256, 256, (B.Buf{Array.new(U32, 6n, 0), 256}, 63))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_uint128_16_decode_vchecked_storage()
 
+def vec_uint128_16__decode_offsets__vec_uint128_16_decode_vchecked_storage_size(buf: B.Buf) -> {vec_uint128_16_r.vec_uint128_16_dchw(256, 256, (buf, 63)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.vec_uint128_16_decode_vchecked_storage_size(buf)
+
 def vec_uint128_16__decode_offsets__vec_uint128_16_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint128_16_r.vec_uint128_16_dchw(256, 255, (B.Buf{Array.new(U32, 6n, 0), 256}, 64))) == None{} : Maybe<&1, O.Words>}:
   PRV.vec_uint128_16_decode_vchecked_window()
 

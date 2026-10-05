@@ -242,10 +242,10 @@ def laws_of(X, V, win, S, lenp=None):
     cost = ((ex >> 3) + 1) * k + 524288 if k else 524288
     out.append(f'def {X}_decode_vchecked_budget_cost()\n    -> {{T.{X}_dcost({ex}) == {cost} : U32}}:\n  {{==}}')
     G = f'Bool.and(U32.is_lt(T.{X}_dcost(size), 4294967295), U32.is_le(T.{X}_dcost(size), budget))'
-    for tag, val, rhs in (('refuse', 'False{}', '(buf, None{})'), ('agree', 'True{}', f'T.{X}_decode_checked(buf, size)')):
-        out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{{G} == {val} : Bool}})\n'
+    for tag, bv, rhs in (('refuse', 'False{}', '(buf, None{})'), ('agree', 'True{}', f'T.{X}_decode_checked(buf, size)')):
+        out.append(f'def {X}_decode_vchecked_budget_{tag}(buf: B.Buf, +size: U32, +budget: U32, +h: {{{G} == {bv} : Bool}})\n'
                    f'    -> {{T.{X}_decode_checked_budget(buf, size, budget) == {rhs} : B.Buf & {M}}}:\n'
-                   f'  %Equal.sym(Bool, {G}, {val}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
+                   f'  %Equal.sym(Bool, {G}, {bv}, h) : {{T.{X}_dcb(_, buf, size) == {rhs} : B.Buf & {M}}}\n  {{==}}')
     if k:
         # the bound's arithmetic pinned at literal sizes (manual audit round 7, r7-d01): large sizes, NMAX, and for K >= 8 the first size whose
         # bound does not fit 32 bits (saturated) and the size just below it (the largest bound that fits)

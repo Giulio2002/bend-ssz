@@ -54,6 +54,10 @@ def Validator_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluValidator_d.Validator>, FuluValidator_r.Validator_decode_checked(B.Buf{Array.new(U32, 0n, 0), 121}, 121)) == None{} : Maybe<&1, FuluValidator_d.Validator>}:
   {==}
 
+def Validator_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluValidator_r.Validator_dchw(121, 121, (buf, 30)) == (buf, None{}) : B.Buf & Maybe<&1, FuluValidator_d.Validator>}:
+  {==}
+
 def Validator_decode_vchecked_budget_cost()
     -> {FuluValidator_r.Validator_dcost(4096) == 524288 : U32}:
   {==}

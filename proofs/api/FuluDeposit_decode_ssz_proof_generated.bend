@@ -128,6 +128,9 @@ def FuluDeposit__decode_offsets__Deposit_decode_vchecked_short() -> {Pair.snd(P5
 def FuluDeposit__decode_offsets__Deposit_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluDeposit_d.Deposit>, FuluDeposit_r.Deposit_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 1240}, 1240)) == None{} : Maybe<&1, FuluDeposit_d.Deposit>}:
   P5_PRV.Deposit_decode_vchecked_real()
 
+def FuluDeposit__decode_offsets__Deposit_decode_vchecked_storage_size(buf: P5_B.Buf) -> {FuluDeposit_r.Deposit_dchw(1240, 1240, (buf, 309)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
+  P5_PRV.Deposit_decode_vchecked_storage_size(buf)
+
 def FuluDeposit__decode_offsets__Deposit_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDeposit_r.Deposit_dcost(size), 4294967295), U32.is_le(FuluDeposit_r.Deposit_dcost(size), budget)) == True{} : Bool}) -> {FuluDeposit_r.Deposit_decode_checked_budget(buf, size, budget) == FuluDeposit_r.Deposit_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluDeposit_d.Deposit>}:
   P5_PRV.Deposit_decode_vchecked_budget_agree(buf, size, budget, h)
 

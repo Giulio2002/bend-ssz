@@ -41,6 +41,9 @@ def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vche
 def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(445, 445, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 111))) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   PRV.SignedAggregateAndProof_decode_vchecked_storage()
 
+def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(445, 445, (buf, 111)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
+  PRV.SignedAggregateAndProof_decode_vchecked_storage_size(buf)
+
 def SignedAggregateAndProof__decode_offsets__SignedAggregateAndProof_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_dchw(445, 444, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 100), 27, 108), 52, 236), 111, 1), 445}, 112))) == None{} : Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}:
   PRV.SignedAggregateAndProof_decode_vchecked_window()
 

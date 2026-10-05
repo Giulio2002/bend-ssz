@@ -41,6 +41,9 @@ def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_short()
 def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 356, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 88))) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   PRV.DataColumnSidecar_decode_vchecked_storage()
 
+def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_storage_size(buf: B.Buf) -> {FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 356, (buf, 88)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  PRV.DataColumnSidecar_decode_vchecked_storage_size(buf)
+
 def DataColumnSidecar__decode_offsets__DataColumnSidecar_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 355, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 356), 3, 356), 4, 356), 356}, 89))) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   PRV.DataColumnSidecar_decode_vchecked_window()
 

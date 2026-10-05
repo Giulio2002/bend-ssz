@@ -38,6 +38,9 @@ def Version__decode_offsets__Version_decode_vchecked_short() -> {Pair.snd(B.Buf,
 def Version__decode_offsets__Version_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4, 4, (B.Buf{Array.new(U32, 0n, 0), 4}, 0))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_storage()
 
+def Version__decode_offsets__Version_decode_vchecked_storage_size(buf: B.Buf) -> {FuluVersion_r.Version_dchw(4, 4, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  PRV.Version_decode_vchecked_storage_size(buf)
+
 def Version__decode_offsets__Version_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluVersion_r.Version_dchw(4, 3, (B.Buf{Array.new(U32, 0n, 0), 4}, 1))) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   PRV.Version_decode_vchecked_window()
 

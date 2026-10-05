@@ -41,6 +41,9 @@ def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_dec
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 249))) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_storage()
 
+def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_storage_size(buf: B.Buf) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 1000, (buf, 249)) == (buf, None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
+  PRV.LightClientOptimisticUpdate_decode_vchecked_storage_size(buf)
+
 def LightClientOptimisticUpdate__decode_offsets__LightClientOptimisticUpdate_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_dchw(1000, 999, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 8n, 0), 0, 172), 71, 244), 213, 584), 1000}, 250))) == None{} : Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}:
   PRV.LightClientOptimisticUpdate_decode_vchecked_window()
 

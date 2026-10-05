@@ -50,6 +50,10 @@ def bitvector_7_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, bitvector_7_d.Bitvector7>, bitvector_7_r.bitvector_7_decode_checked(B.Buf{Array.new(U32, 0n, 0), 0}, 1)) == None{} : Maybe<&1, bitvector_7_d.Bitvector7>}:
   {==}
 
+def bitvector_7_decode_vchecked_storage_size(buf: B.Buf)
+    -> {bitvector_7_r.bitvector_7_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>}:
+  {==}
+
 def bitvector_7_decode_vchecked_budget_cost()
     -> {bitvector_7_r.bitvector_7_dcost(4096) == 524288 : U32}:
   {==}

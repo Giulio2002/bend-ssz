@@ -160,6 +160,9 @@ def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_short() -> {Pai
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, VarTestStruct_d.VarTestStruct>, VarTestStruct_r.VarTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 458752), 7}, 7)) == None{} : Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   P3_PRV.VarTestStruct_decode_vchecked_real()
 
+def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_storage_size(buf: P3_B.Buf) -> {VarTestStruct_r.VarTestStruct_dchw(7, 7, (buf, 1)) == (buf, None{}) : P3_B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
+  P3_PRV.VarTestStruct_decode_vchecked_storage_size(buf)
+
 def VarTestStruct__decode_offsets__VarTestStruct_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(VarTestStruct_r.VarTestStruct_dcost(size), 4294967295), U32.is_le(VarTestStruct_r.VarTestStruct_dcost(size), budget)) == True{} : Bool}) -> {VarTestStruct_r.VarTestStruct_decode_checked_budget(buf, size, budget) == VarTestStruct_r.VarTestStruct_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>}:
   P3_PRV.VarTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

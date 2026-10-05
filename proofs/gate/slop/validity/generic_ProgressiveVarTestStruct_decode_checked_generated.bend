@@ -41,6 +41,9 @@ def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vc
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(10, 10, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 256), 10}, 2))) == None{} : Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
   PRV.ProgressiveVarTestStruct_decode_vchecked_storage()
 
+def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(10, 10, (buf, 2)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
+  PRV.ProgressiveVarTestStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveVarTestStruct__decode_offsets__ProgressiveVarTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_dchw(10, 9, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 2n, 0), 0, 2304), 1, 2304), 2, 256), 10}, 3))) == None{} : Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>}:
   PRV.ProgressiveVarTestStruct_decode_vchecked_window()
 

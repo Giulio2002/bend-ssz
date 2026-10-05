@@ -54,6 +54,10 @@ def DepositMessage_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDepositMessage_d.DepositMessage>, FuluDepositMessage_r.DepositMessage_decode_checked(B.Buf{Array.new(U32, 0n, 0), 88}, 88)) == None{} : Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
   {==}
 
+def DepositMessage_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluDepositMessage_r.DepositMessage_dchw(88, 88, (buf, 21)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>}:
+  {==}
+
 def DepositMessage_decode_vchecked_budget_cost()
     -> {FuluDepositMessage_r.DepositMessage_dcost(4096) == 524288 : U32}:
   {==}

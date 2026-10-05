@@ -41,6 +41,9 @@ def SignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decod
 def SignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(172, 172, (B.Buf{Array.new(U32, 6n, 0), 172}, 42))) == None{} : Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
   PRV.SignedBLSToExecutionChange_decode_vchecked_storage()
 
+def SignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(172, 172, (buf, 42)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
+  PRV.SignedBLSToExecutionChange_decode_vchecked_storage_size(buf)
+
 def SignedBLSToExecutionChange__decode_offsets__SignedBLSToExecutionChange_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_dchw(172, 171, (B.Buf{Array.new(U32, 6n, 0), 172}, 43))) == None{} : Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>}:
   PRV.SignedBLSToExecutionChange_decode_vchecked_window()
 

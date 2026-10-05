@@ -118,6 +118,9 @@ def uint16__decode_offsets__uint16_decode_vchecked_storage() -> {Pair.snd(P4_B.B
 def uint16__decode_offsets__uint16_decode_vchecked_short() -> {Pair.snd(P4_B.Buf, Maybe<&1, U32>, uint16_r.uint16_decode_checked(P4_B.Buf{Array.new(U32, 0n, 0), 1}, 2)) == None{} : Maybe<&1, U32>}:
   P4_PRV.uint16_decode_vchecked_short()
 
+def uint16__decode_offsets__uint16_decode_vchecked_storage_size(buf: P4_B.Buf) -> {uint16_r.uint16_dchw(2, 2, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, U32>}:
+  P4_PRV.uint16_decode_vchecked_storage_size(buf)
+
 def uint16__decode_offsets__uint16_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(uint16_r.uint16_dcost(size), 4294967295), U32.is_le(uint16_r.uint16_dcost(size), budget)) == True{} : Bool}) -> {uint16_r.uint16_decode_checked_budget(buf, size, budget) == uint16_r.uint16_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, U32>}:
   P4_PRV.uint16_decode_vchecked_budget_agree(buf, size, budget, h)
 

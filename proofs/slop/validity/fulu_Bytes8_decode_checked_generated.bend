@@ -54,6 +54,10 @@ def Bytes8_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
   {==}
 
+def Bytes8_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBytes8_r.Bytes8_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  {==}
+
 def Bytes8_decode_vchecked_budget_cost()
     -> {FuluBytes8_r.Bytes8_dcost(4096) == 524288 : U32}:
   {==}

@@ -53,6 +53,10 @@ def FinalityBranch_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluFinalityBranch_r.FinalityBranch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 224}, 224)) == None{} : Maybe<&1, O.Words>}:
   {==}
 
+def FinalityBranch_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluFinalityBranch_r.FinalityBranch_dchw(224, 224, (buf, 55)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def FinalityBranch_decode_vchecked_budget_cost()
     -> {FuluFinalityBranch_r.FinalityBranch_dcost(4096) == 524288 : U32}:
   {==}

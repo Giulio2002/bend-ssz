@@ -54,6 +54,10 @@ def Bytes96_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBytes96_r.Bytes96_decode_checked(B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   {==}
 
+def Bytes96_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluBytes96_r.Bytes96_dchw(96, 96, (buf, 23)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  {==}
+
 def Bytes96_decode_vchecked_budget_cost()
     -> {FuluBytes96_r.Bytes96_dcost(4096) == 524288 : U32}:
   {==}

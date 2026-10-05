@@ -54,6 +54,10 @@ def ConsolidationRequest_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_decode_checked(B.Buf{Array.new(U32, 0n, 0), 116}, 116)) == None{} : Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
   {==}
 
+def ConsolidationRequest_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluConsolidationRequest_r.ConsolidationRequest_dchw(116, 116, (buf, 28)) == (buf, None{}) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
+  {==}
+
 def ConsolidationRequest_decode_vchecked_budget_cost()
     -> {FuluConsolidationRequest_r.ConsolidationRequest_dcost(4096) == 524288 : U32}:
   {==}

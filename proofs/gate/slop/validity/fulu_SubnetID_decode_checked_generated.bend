@@ -40,6 +40,9 @@ def SubnetID__decode_offsets__SubnetID_decode_vchecked_short() -> {Pair.snd(B.Bu
 def SubnetID__decode_offsets__SubnetID_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSubnetID_r.SubnetID_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, O.U64>}:
   PRV.SubnetID_decode_vchecked_storage()
 
+def SubnetID__decode_offsets__SubnetID_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSubnetID_r.SubnetID_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.SubnetID_decode_vchecked_storage_size(buf)
+
 def SubnetID__decode_offsets__SubnetID_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSubnetID_r.SubnetID_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, O.U64>}:
   PRV.SubnetID_decode_vchecked_window()
 

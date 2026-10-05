@@ -46,6 +46,14 @@ def HistoricalBatch_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   {==}
 
+def HistoricalBatch_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(524288, 524288, (buf, 131071)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  {==}
+
+def HistoricalBatch_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(524288, 524288, (buf, 131072)) == FuluHistoricalBatch_r.HistoricalBatch_dgo(True{}, buf, 524288) : B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  {==}
+
 def HistoricalBatch_decode_vchecked_budget_cost()
     -> {FuluHistoricalBatch_r.HistoricalBatch_dcost(4096) == 526340 : U32}:
   {==}

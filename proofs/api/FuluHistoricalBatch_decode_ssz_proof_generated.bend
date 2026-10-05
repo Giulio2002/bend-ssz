@@ -100,6 +100,12 @@ def FuluHistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_storage
 def FuluHistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>, FuluHistoricalBatch_r.HistoricalBatch_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   P3_PRV.HistoricalBatch_decode_vchecked_real()
 
+def FuluHistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_storage_size(buf: P3_B.Buf) -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(524288, 524288, (buf, 131071)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  P3_PRV.HistoricalBatch_decode_vchecked_storage_size(buf)
+
+def FuluHistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_accept_size(buf: P3_B.Buf) -> {FuluHistoricalBatch_r.HistoricalBatch_dchw(524288, 524288, (buf, 131072)) == FuluHistoricalBatch_r.HistoricalBatch_dgo(True{}, buf, 524288) : P3_B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
+  P3_PRV.HistoricalBatch_decode_vchecked_accept_size(buf)
+
 def FuluHistoricalBatch__decode_offsets__HistoricalBatch_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), 4294967295), U32.is_le(FuluHistoricalBatch_r.HistoricalBatch_dcost(size), budget)) == True{} : Bool}) -> {FuluHistoricalBatch_r.HistoricalBatch_decode_checked_budget(buf, size, budget) == FuluHistoricalBatch_r.HistoricalBatch_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>}:
   P3_PRV.HistoricalBatch_decode_vchecked_budget_agree(buf, size, budget, h)
 

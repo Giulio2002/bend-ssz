@@ -41,6 +41,9 @@ def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_short
 def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 37))) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   PRV.PendingAttestation_decode_vchecked_storage()
 
+def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_storage_size(buf: B.Buf) -> {FuluPendingAttestation_r.PendingAttestation_dchw(149, 149, (buf, 37)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
+  PRV.PendingAttestation_decode_vchecked_storage_size(buf)
+
 def PendingAttestation__decode_offsets__PendingAttestation_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingAttestation_d.PendingAttestation>, FuluPendingAttestation_r.PendingAttestation_dchw(149, 148, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 6n, 0), 0, 148), 37, 1), 149}, 38))) == None{} : Maybe<&1, FuluPendingAttestation_d.PendingAttestation>}:
   PRV.PendingAttestation_decode_vchecked_window()
 

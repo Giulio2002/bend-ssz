@@ -54,6 +54,10 @@ def SingleAttestation_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSingleAttestation_d.SingleAttestation>, FuluSingleAttestation_r.SingleAttestation_decode_checked(B.Buf{Array.new(U32, 0n, 0), 240}, 240)) == None{} : Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
   {==}
 
+def SingleAttestation_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSingleAttestation_r.SingleAttestation_dchw(240, 240, (buf, 59)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>}:
+  {==}
+
 def SingleAttestation_decode_vchecked_budget_cost()
     -> {FuluSingleAttestation_r.SingleAttestation_dcost(4096) == 524288 : U32}:
   {==}

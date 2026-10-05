@@ -54,6 +54,10 @@ def SyncCommitteeMessage_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>, FuluSyncCommitteeMessage_r.SyncCommitteeMessage_decode_checked(B.Buf{Array.new(U32, 0n, 0), 144}, 144)) == None{} : Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
   {==}
 
+def SyncCommitteeMessage_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dchw(144, 144, (buf, 35)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>}:
+  {==}
+
 def SyncCommitteeMessage_decode_vchecked_budget_cost()
     -> {FuluSyncCommitteeMessage_r.SyncCommitteeMessage_dcost(4096) == 524288 : U32}:
   {==}

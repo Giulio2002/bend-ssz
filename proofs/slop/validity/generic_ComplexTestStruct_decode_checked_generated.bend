@@ -54,6 +54,10 @@ def ComplexTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 4653056), 100}, 100)) == None{} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   {==}
 
+def ComplexTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (buf, 24)) == (buf, None{}) : B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  {==}
+
 def ComplexTestStruct_decode_vchecked_budget_cost()
     -> {ComplexTestStruct_r.ComplexTestStruct_dcost(4096) == 524288 : U32}:
   {==}

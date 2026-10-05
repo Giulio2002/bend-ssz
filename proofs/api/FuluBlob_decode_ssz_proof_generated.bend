@@ -95,6 +95,12 @@ def FuluBlob__decode_offsets__Blob_decode_vchecked_storage() -> {Pair.snd(P3_B.B
 def FuluBlob__decode_offsets__Blob_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, P3_O.Words>, FuluBlob_r.Blob_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P3_O.Words>}:
   P3_PRV.Blob_decode_vchecked_real()
 
+def FuluBlob__decode_offsets__Blob_decode_vchecked_storage_size(buf: P3_B.Buf) -> {FuluBlob_r.Blob_dchw(131072, 131072, (buf, 32767)) == (buf, None{}) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.Blob_decode_vchecked_storage_size(buf)
+
+def FuluBlob__decode_offsets__Blob_decode_vchecked_accept_size(buf: P3_B.Buf) -> {FuluBlob_r.Blob_dchw(131072, 131072, (buf, 32768)) == FuluBlob_r.Blob_dgo(True{}, buf, 131072) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
+  P3_PRV.Blob_decode_vchecked_accept_size(buf)
+
 def FuluBlob__decode_offsets__Blob_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBlob_r.Blob_dcost(size), 4294967295), U32.is_le(FuluBlob_r.Blob_dcost(size), budget)) == True{} : Bool}) -> {FuluBlob_r.Blob_decode_checked_budget(buf, size, budget) == FuluBlob_r.Blob_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, P3_O.Words>}:
   P3_PRV.Blob_decode_vchecked_budget_agree(buf, size, budget, h)
 

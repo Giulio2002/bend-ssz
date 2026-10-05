@@ -41,6 +41,9 @@ def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleL
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 1))) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_storage()
 
+def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 5, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
+  PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveSingleListContainerTestStruct__decode_offsets__ProgressiveSingleListContainerTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>, ProgressiveSingleListContainerTestStruct_r.ProgressiveSingleListContainerTestStruct_dchw(5, 4, (B.Buf{Array.set(U32, Array.set(U32, Array.new(U32, 1n, 0), 0, 4), 1, 1), 5}, 2))) == None{} : Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>}:
   PRV.ProgressiveSingleListContainerTestStruct_decode_vchecked_window()
 

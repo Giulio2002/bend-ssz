@@ -41,6 +41,9 @@ def Bytes48__decode_offsets__Bytes48_decode_vchecked_short() -> {Pair.snd(B.Buf,
 def Bytes48__decode_offsets__Bytes48_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBytes48_r.Bytes48_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 11))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.Bytes48_decode_vchecked_storage()
 
+def Bytes48__decode_offsets__Bytes48_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBytes48_r.Bytes48_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.Bytes48_decode_vchecked_storage_size(buf)
+
 def Bytes48__decode_offsets__Bytes48_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBytes48_r.Bytes48_dchw(48, 47, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.Bytes48_decode_vchecked_window()
 

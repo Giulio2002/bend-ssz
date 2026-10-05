@@ -144,6 +144,9 @@ def bitlist_512__decode_offsets__bitlist_512_decode_vchecked_storage() -> {Pair.
 def bitlist_512__decode_offsets__bitlist_512_decode_vchecked_short() -> {Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Bits>, bitlist_512_r.bitlist_512_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, P4_O.Bits>}:
   P4_PRV.bitlist_512_decode_vchecked_short()
 
+def bitlist_512__decode_offsets__bitlist_512_decode_vchecked_storage_size(buf: P4_B.Buf) -> {bitlist_512_r.bitlist_512_dchw(1, 1, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
+  P4_PRV.bitlist_512_decode_vchecked_storage_size(buf)
+
 def bitlist_512__decode_offsets__bitlist_512_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(bitlist_512_r.bitlist_512_dcost(size), 4294967295), U32.is_le(bitlist_512_r.bitlist_512_dcost(size), budget)) == True{} : Bool}) -> {bitlist_512_r.bitlist_512_decode_checked_budget(buf, size, budget) == bitlist_512_r.bitlist_512_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
   P4_PRV.bitlist_512_decode_vchecked_budget_agree(buf, size, budget, h)
 

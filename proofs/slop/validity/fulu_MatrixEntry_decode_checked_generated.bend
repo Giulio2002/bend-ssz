@@ -46,6 +46,14 @@ def MatrixEntry_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluMatrixEntry_d.MatrixEntry>, FuluMatrixEntry_r.MatrixEntry_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
   {==}
 
+def MatrixEntry_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluMatrixEntry_r.MatrixEntry_dchw(2112, 2112, (buf, 527)) == (buf, None{}) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  {==}
+
+def MatrixEntry_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluMatrixEntry_r.MatrixEntry_dchw(2112, 2112, (buf, 528)) == FuluMatrixEntry_r.MatrixEntry_dgo(True{}, buf, 2112) : B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>}:
+  {==}
+
 def MatrixEntry_decode_vchecked_budget_cost()
     -> {FuluMatrixEntry_r.MatrixEntry_dcost(4096) == 524288 : U32}:
   {==}

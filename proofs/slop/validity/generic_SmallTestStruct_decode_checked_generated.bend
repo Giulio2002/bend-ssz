@@ -50,6 +50,10 @@ def SmallTestStruct_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.SmallTestStruct>, SmallTestStruct_r.SmallTestStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
   {==}
 
+def SmallTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {SmallTestStruct_r.SmallTestStruct_dchw(4, 4, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, SmallTestStruct_d.SmallTestStruct>}:
+  {==}
+
 def SmallTestStruct_decode_vchecked_budget_cost()
     -> {SmallTestStruct_r.SmallTestStruct_dcost(4096) == 524288 : U32}:
   {==}

@@ -55,6 +55,10 @@ def ProgressiveBitsStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(B.Buf{Array.new(U32, 0n, 0), 426}, 426)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   {==}
 
+def ProgressiveBitsStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 426, (buf, 106)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  {==}
+
 def ProgressiveBitsStruct_decode_vchecked_budget_cost()
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(4096) == 527879 : U32}:
   {==}

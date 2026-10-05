@@ -120,6 +120,9 @@ def vec_uint32_2__decode_offsets__vec_uint32_2_decode_vchecked_short() -> {Pair.
 def vec_uint32_2__decode_offsets__vec_uint32_2_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, P5_O.Words>, vec_uint32_2_r.vec_uint32_2_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P5_O.Words>}:
   P5_PRV.vec_uint32_2_decode_vchecked_real()
 
+def vec_uint32_2__decode_offsets__vec_uint32_2_decode_vchecked_storage_size(buf: P5_B.Buf) -> {vec_uint32_2_r.vec_uint32_2_dchw(8, 8, (buf, 1)) == (buf, None{}) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
+  P5_PRV.vec_uint32_2_decode_vchecked_storage_size(buf)
+
 def vec_uint32_2__decode_offsets__vec_uint32_2_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(vec_uint32_2_r.vec_uint32_2_dcost(size), 4294967295), U32.is_le(vec_uint32_2_r.vec_uint32_2_dcost(size), budget)) == True{} : Bool}) -> {vec_uint32_2_r.vec_uint32_2_decode_checked_budget(buf, size, budget) == vec_uint32_2_r.vec_uint32_2_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, P5_O.Words>}:
   P5_PRV.vec_uint32_2_decode_vchecked_budget_agree(buf, size, budget, h)
 

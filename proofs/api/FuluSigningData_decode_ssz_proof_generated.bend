@@ -142,6 +142,9 @@ def FuluSigningData__decode_offsets__SigningData_decode_vchecked_short() -> {Pai
 def FuluSigningData__decode_offsets__SigningData_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSigningData_d.SigningData>, FuluSigningData_r.SigningData_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluSigningData_d.SigningData>}:
   P7_PRV.SigningData_decode_vchecked_real()
 
+def FuluSigningData__decode_offsets__SigningData_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluSigningData_r.SigningData_dchw(64, 64, (buf, 15)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
+  P7_PRV.SigningData_decode_vchecked_storage_size(buf)
+
 def FuluSigningData__decode_offsets__SigningData_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSigningData_r.SigningData_dcost(size), 4294967295), U32.is_le(FuluSigningData_r.SigningData_dcost(size), budget)) == True{} : Bool}) -> {FuluSigningData_r.SigningData_decode_checked_budget(buf, size, budget) == FuluSigningData_r.SigningData_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSigningData_d.SigningData>}:
   P7_PRV.SigningData_decode_vchecked_budget_agree(buf, size, budget, h)
 

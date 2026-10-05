@@ -189,6 +189,9 @@ def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 36}, 36)) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_real()
 
+def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_storage_size(buf: P3_B.Buf) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dchw(36, 36, (buf, 8)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
+  P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_storage_size(buf)
+
 def FuluDataColumnsByRootIdentifier__decode_offsets__DataColumnsByRootIdentifier_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dcost(size), 4294967295), U32.is_le(FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_dcost(size), budget)) == True{} : Bool}) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked_budget(buf, size, budget) == FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   P3_PRV.DataColumnsByRootIdentifier_decode_vchecked_budget_agree(buf, size, budget, h)
 

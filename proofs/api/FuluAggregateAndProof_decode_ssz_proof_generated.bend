@@ -136,6 +136,9 @@ def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_sho
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_decode_checked(P2_B.Buf{Array.new(U32, 0n, 0), 345}, 345)) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   P2_PRV.AggregateAndProof_decode_vchecked_real()
 
+def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_storage_size(buf: P2_B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (buf, 86)) == (buf, None{}) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  P2_PRV.AggregateAndProof_decode_vchecked_storage_size(buf)
+
 def FuluAggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluAggregateAndProof_r.AggregateAndProof_dcost(size), 4294967295), U32.is_le(FuluAggregateAndProof_r.AggregateAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluAggregateAndProof_r.AggregateAndProof_decode_checked_budget(buf, size, budget) == FuluAggregateAndProof_r.AggregateAndProof_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   P2_PRV.AggregateAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
 

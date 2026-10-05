@@ -41,6 +41,9 @@ def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_dec
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 16, (B.Buf{Array.new(U32, 2n, 0), 16}, 3))) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_storage()
 
+def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 16, (buf, 3)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
+  PRV.SyncAggregatorSelectionData_decode_vchecked_storage_size(buf)
+
 def SyncAggregatorSelectionData__decode_offsets__SyncAggregatorSelectionData_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>, FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_dchw(16, 15, (B.Buf{Array.new(U32, 2n, 0), 16}, 4))) == None{} : Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>}:
   PRV.SyncAggregatorSelectionData_decode_vchecked_window()
 

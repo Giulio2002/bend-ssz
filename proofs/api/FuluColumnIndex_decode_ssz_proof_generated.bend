@@ -142,6 +142,9 @@ def FuluColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_short() -> {Pai
 def FuluColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluColumnIndex_r.ColumnIndex_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.ColumnIndex_decode_vchecked_real()
 
+def FuluColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluColumnIndex_r.ColumnIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.ColumnIndex_decode_vchecked_storage_size(buf)
+
 def FuluColumnIndex__decode_offsets__ColumnIndex_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluColumnIndex_r.ColumnIndex_dcost(size), 4294967295), U32.is_le(FuluColumnIndex_r.ColumnIndex_dcost(size), budget)) == True{} : Bool}) -> {FuluColumnIndex_r.ColumnIndex_decode_checked_budget(buf, size, budget) == FuluColumnIndex_r.ColumnIndex_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
   P7_PRV.ColumnIndex_decode_vchecked_budget_agree(buf, size, budget, h)
 

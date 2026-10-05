@@ -46,6 +46,14 @@ def SyncCommittee_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncCommittee_d.SyncCommittee>, FuluSyncCommittee_r.SyncCommittee_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
   {==}
 
+def SyncCommittee_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSyncCommittee_r.SyncCommittee_dchw(24624, 24624, (buf, 6155)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  {==}
+
+def SyncCommittee_decode_vchecked_accept_size(buf: B.Buf)
+    -> {FuluSyncCommittee_r.SyncCommittee_dchw(24624, 24624, (buf, 6156)) == FuluSyncCommittee_r.SyncCommittee_dgo(True{}, buf, 24624) : B.Buf & Maybe<&1, FuluSyncCommittee_d.SyncCommittee>}:
+  {==}
+
 def SyncCommittee_decode_vchecked_budget_cost()
     -> {FuluSyncCommittee_r.SyncCommittee_dcost(4096) == 524288 : U32}:
   {==}

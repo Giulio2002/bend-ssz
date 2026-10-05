@@ -41,6 +41,9 @@ def ConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_s
 def ConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_dchw(116, 116, (B.Buf{Array.new(U32, 5n, 0), 116}, 28))) == None{} : Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
   PRV.ConsolidationRequest_decode_vchecked_storage()
 
+def ConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_storage_size(buf: B.Buf) -> {FuluConsolidationRequest_r.ConsolidationRequest_dchw(116, 116, (buf, 28)) == (buf, None{}) : B.Buf & Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
+  PRV.ConsolidationRequest_decode_vchecked_storage_size(buf)
+
 def ConsolidationRequest__decode_offsets__ConsolidationRequest_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>, FuluConsolidationRequest_r.ConsolidationRequest_dchw(116, 115, (B.Buf{Array.new(U32, 5n, 0), 116}, 29))) == None{} : Maybe<&1, FuluConsolidationRequest_d.ConsolidationRequest>}:
   PRV.ConsolidationRequest_decode_vchecked_window()
 

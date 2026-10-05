@@ -41,6 +41,9 @@ def HistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_short()
 def HistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 64, (B.Buf{Array.new(U32, 4n, 0), 64}, 15))) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   PRV.HistoricalSummary_decode_vchecked_storage()
 
+def HistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_storage_size(buf: B.Buf) -> {FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 64, (buf, 15)) == (buf, None{}) : B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  PRV.HistoricalSummary_decode_vchecked_storage_size(buf)
+
 def HistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 63, (B.Buf{Array.new(U32, 4n, 0), 64}, 16))) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   PRV.HistoricalSummary_decode_vchecked_window()
 

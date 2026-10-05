@@ -128,6 +128,9 @@ def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_d
 def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_real() -> {Pair.snd(P5_B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_decode_checked(P5_B.Buf{Array.new(U32, 0n, 0), 360}, 360)) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   P5_PRV.SignedContributionAndProof_decode_vchecked_real()
 
+def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_storage_size(buf: P5_B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(360, 360, (buf, 89)) == (buf, None{}) : P5_B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  P5_PRV.SignedContributionAndProof_decode_vchecked_storage_size(buf)
+
 def FuluSignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_budget_agree(buf: P5_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSignedContributionAndProof_r.SignedContributionAndProof_dcost(size), 4294967295), U32.is_le(FuluSignedContributionAndProof_r.SignedContributionAndProof_dcost(size), budget)) == True{} : Bool}) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_decode_checked_budget(buf, size, budget) == FuluSignedContributionAndProof_r.SignedContributionAndProof_decode_checked(buf, size) : P5_B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   P5_PRV.SignedContributionAndProof_decode_vchecked_budget_agree(buf, size, budget, h)
 

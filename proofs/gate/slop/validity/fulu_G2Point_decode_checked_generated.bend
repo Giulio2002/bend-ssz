@@ -41,6 +41,9 @@ def G2Point__decode_offsets__G2Point_decode_vchecked_short() -> {Pair.snd(B.Buf,
 def G2Point__decode_offsets__G2Point_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(96, 96, (B.Buf{Array.new(U32, 5n, 0), 96}, 23))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   PRV.G2Point_decode_vchecked_storage()
 
+def G2Point__decode_offsets__G2Point_decode_vchecked_storage_size(buf: B.Buf) -> {FuluG2Point_r.G2Point_dchw(96, 96, (buf, 23)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  PRV.G2Point_decode_vchecked_storage_size(buf)
+
 def G2Point__decode_offsets__G2Point_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluG2Point_r.G2Point_dchw(96, 95, (B.Buf{Array.new(U32, 5n, 0), 96}, 24))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   PRV.G2Point_decode_vchecked_window()
 

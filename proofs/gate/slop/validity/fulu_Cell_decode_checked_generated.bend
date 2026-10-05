@@ -40,6 +40,9 @@ def Cell__decode_offsets__Cell_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe
 def Cell__decode_offsets__Cell_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_dchw(2048, 2048, (B.Buf{Array.new(U32, 9n, 0), 2048}, 511))) == None{} : Maybe<&1, O.Words>}:
   PRV.Cell_decode_vchecked_storage()
 
+def Cell__decode_offsets__Cell_decode_vchecked_storage_size(buf: B.Buf) -> {FuluCell_r.Cell_dchw(2048, 2048, (buf, 511)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.Cell_decode_vchecked_storage_size(buf)
+
 def Cell__decode_offsets__Cell_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCell_r.Cell_dchw(2048, 2047, (B.Buf{Array.new(U32, 9n, 0), 2048}, 512))) == None{} : Maybe<&1, O.Words>}:
   PRV.Cell_decode_vchecked_window()
 

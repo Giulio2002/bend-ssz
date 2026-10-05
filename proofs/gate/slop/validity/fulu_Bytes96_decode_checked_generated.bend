@@ -41,6 +41,9 @@ def Bytes96__decode_offsets__Bytes96_decode_vchecked_short() -> {Pair.snd(B.Buf,
 def Bytes96__decode_offsets__Bytes96_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBytes96_r.Bytes96_dchw(96, 96, (B.Buf{Array.new(U32, 5n, 0), 96}, 23))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   PRV.Bytes96_decode_vchecked_storage()
 
+def Bytes96__decode_offsets__Bytes96_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBytes96_r.Bytes96_dchw(96, 96, (buf, 23)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  PRV.Bytes96_decode_vchecked_storage_size(buf)
+
 def Bytes96__decode_offsets__Bytes96_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBytes96_r.Bytes96_dchw(96, 95, (B.Buf{Array.new(U32, 5n, 0), 96}, 24))) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   PRV.Bytes96_decode_vchecked_window()
 

@@ -38,6 +38,9 @@ def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_short() -
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_dchw(2, 2, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 0))) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   PRV.CompatibleUnionA_decode_vchecked_storage()
 
+def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_storage_size(buf: B.Buf) -> {CompatibleUnionA_r.CompatibleUnionA_dchw(2, 2, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
+  PRV.CompatibleUnionA_decode_vchecked_storage_size(buf)
+
 def CompatibleUnionA__decode_offsets__CompatibleUnionA_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>, CompatibleUnionA_r.CompatibleUnionA_dchw(2, 1, (B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 2}, 1))) == None{} : Maybe<&1, CompatibleUnionA_d.CompatibleUnionA>}:
   PRV.CompatibleUnionA_decode_vchecked_window()
 

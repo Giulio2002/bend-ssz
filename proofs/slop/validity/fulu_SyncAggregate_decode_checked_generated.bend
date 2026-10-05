@@ -54,6 +54,10 @@ def SyncAggregate_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluSyncAggregate_d.SyncAggregate>, FuluSyncAggregate_r.SyncAggregate_decode_checked(B.Buf{Array.new(U32, 0n, 0), 160}, 160)) == None{} : Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
   {==}
 
+def SyncAggregate_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSyncAggregate_r.SyncAggregate_dchw(160, 160, (buf, 39)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>}:
+  {==}
+
 def SyncAggregate_decode_vchecked_budget_cost()
     -> {FuluSyncAggregate_r.SyncAggregate_dcost(4096) == 524288 : U32}:
   {==}

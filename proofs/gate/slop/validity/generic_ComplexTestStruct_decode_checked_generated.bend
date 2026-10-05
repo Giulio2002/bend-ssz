@@ -41,6 +41,9 @@ def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_short()
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 24))) == None{} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   PRV.ComplexTestStruct_decode_vchecked_storage()
 
+def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (buf, 24)) == (buf, None{}) : B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  PRV.ComplexTestStruct_decode_vchecked_storage_size(buf)
+
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_dchw(100, 99, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 5n, 0), 0, 4653056), 1, 1191182336), 2, 1191182336), 16, 1308622848), 18, 1792), 19, 524288), 20, 983040), 22, 7), 23, 117440512), 100}, 25))) == None{} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   PRV.ComplexTestStruct_decode_vchecked_window()
 

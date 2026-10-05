@@ -41,6 +41,9 @@ def Bytes8__decode_offsets__Bytes8_decode_vchecked_short() -> {Pair.snd(B.Buf, M
 def Bytes8__decode_offsets__Bytes8_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
   PRV.Bytes8_decode_vchecked_storage()
 
+def Bytes8__decode_offsets__Bytes8_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBytes8_r.Bytes8_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
+  PRV.Bytes8_decode_vchecked_storage_size(buf)
+
 def Bytes8__decode_offsets__Bytes8_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
   PRV.Bytes8_decode_vchecked_window()
 

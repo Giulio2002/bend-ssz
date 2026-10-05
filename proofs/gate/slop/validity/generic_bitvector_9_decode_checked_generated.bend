@@ -38,6 +38,9 @@ def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_short() -> {Pair.sn
 def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_9_d.Bitvector9>, bitvector_9_r.bitvector_9_dchw(2, 2, (B.Buf{Array.new(U32, 0n, 0), 2}, 0))) == None{} : Maybe<&1, bitvector_9_d.Bitvector9>}:
   PRV.bitvector_9_decode_vchecked_storage()
 
+def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_storage_size(buf: B.Buf) -> {bitvector_9_r.bitvector_9_dchw(2, 2, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_9_d.Bitvector9>}:
+  PRV.bitvector_9_decode_vchecked_storage_size(buf)
+
 def bitvector_9__decode_offsets__bitvector_9_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_9_d.Bitvector9>, bitvector_9_r.bitvector_9_dchw(2, 1, (B.Buf{Array.new(U32, 0n, 0), 2}, 1))) == None{} : Maybe<&1, bitvector_9_d.Bitvector9>}:
   PRV.bitvector_9_decode_vchecked_window()
 

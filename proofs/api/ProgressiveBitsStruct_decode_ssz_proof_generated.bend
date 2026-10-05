@@ -368,6 +368,9 @@ def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 426}, 426)) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   P7_PRV.ProgressiveBitsStruct_decode_vchecked_real()
 
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_storage_size(buf: P7_B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 426, (buf, 106)) == (buf, None{}) : P7_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  P7_PRV.ProgressiveBitsStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), 4294967295), U32.is_le(ProgressiveBitsStruct_r.ProgressiveBitsStruct_dcost(size), budget)) == True{} : Bool}) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked_budget(buf, size, budget) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   P7_PRV.ProgressiveBitsStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

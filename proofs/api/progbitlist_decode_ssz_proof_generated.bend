@@ -144,6 +144,9 @@ def progbitlist__decode_offsets__progbitlist_decode_vchecked_storage() -> {Pair.
 def progbitlist__decode_offsets__progbitlist_decode_vchecked_short() -> {Pair.snd(P4_B.Buf, Maybe<&1, P4_O.Bits>, progbitlist_r.progbitlist_decode_checked(P4_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, P4_O.Bits>}:
   P4_PRV.progbitlist_decode_vchecked_short()
 
+def progbitlist__decode_offsets__progbitlist_decode_vchecked_storage_size(buf: P4_B.Buf) -> {progbitlist_r.progbitlist_dchw(1, 1, (buf, 0)) == (buf, None{}) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
+  P4_PRV.progbitlist_decode_vchecked_storage_size(buf)
+
 def progbitlist__decode_offsets__progbitlist_decode_vchecked_budget_agree(buf: P4_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(progbitlist_r.progbitlist_dcost(size), 4294967295), U32.is_le(progbitlist_r.progbitlist_dcost(size), budget)) == True{} : Bool}) -> {progbitlist_r.progbitlist_decode_checked_budget(buf, size, budget) == progbitlist_r.progbitlist_decode_checked(buf, size) : P4_B.Buf & Maybe<&1, P4_O.Bits>}:
   P4_PRV.progbitlist_decode_vchecked_budget_agree(buf, size, budget, h)
 

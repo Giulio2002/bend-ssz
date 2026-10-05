@@ -53,6 +53,10 @@ def vec_uint32_512_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint32_512_r.vec_uint32_512_decode_checked(B.Buf{Array.new(U32, 0n, 0), 2048}, 2048)) == None{} : Maybe<&1, O.Words>}:
   {==}
 
+def vec_uint32_512_decode_vchecked_storage_size(buf: B.Buf)
+    -> {vec_uint32_512_r.vec_uint32_512_dchw(2048, 2048, (buf, 511)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  {==}
+
 def vec_uint32_512_decode_vchecked_budget_cost()
     -> {vec_uint32_512_r.vec_uint32_512_dcost(4096) == 524288 : U32}:
   {==}

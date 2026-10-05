@@ -41,6 +41,9 @@ def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vc
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 24, (B.Buf{Array.new(U32, 3n, 0), 24}, 5))) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   PRV.PendingPartialWithdrawal_decode_vchecked_storage()
 
+def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_storage_size(buf: B.Buf) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 24, (buf, 5)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
+  PRV.PendingPartialWithdrawal_decode_vchecked_storage_size(buf)
+
 def PendingPartialWithdrawal__decode_offsets__PendingPartialWithdrawal_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_dchw(24, 23, (B.Buf{Array.new(U32, 3n, 0), 24}, 6))) == None{} : Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>}:
   PRV.PendingPartialWithdrawal_decode_vchecked_window()
 

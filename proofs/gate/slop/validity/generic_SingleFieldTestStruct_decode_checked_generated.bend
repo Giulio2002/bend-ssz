@@ -38,6 +38,9 @@ def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(1, 1, (B.Buf{Array.new(U32, 0n, 0), 1}, 0))) == None{} : Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
   PRV.SingleFieldTestStruct_decode_vchecked_storage()
 
+def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_storage_size(buf: B.Buf) -> {SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
+  PRV.SingleFieldTestStruct_decode_vchecked_storage_size(buf)
+
 def SingleFieldTestStruct__decode_offsets__SingleFieldTestStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>, SingleFieldTestStruct_r.SingleFieldTestStruct_dchw(1, 0, (B.Buf{Array.new(U32, 0n, 0), 1}, 1))) == None{} : Maybe<&1, SingleFieldTestStruct_d.SingleFieldTestStruct>}:
   PRV.SingleFieldTestStruct_decode_vchecked_window()
 

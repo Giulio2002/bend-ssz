@@ -144,6 +144,9 @@ def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_dec
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 160}, 160)) == None{} : Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   P7_PRV.SyncCommitteeContribution_decode_vchecked_real()
 
+def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dchw(160, 160, (buf, 39)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
+  P7_PRV.SyncCommitteeContribution_decode_vchecked_storage_size(buf)
+
 def FuluSyncCommitteeContribution__decode_offsets__SyncCommitteeContribution_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dcost(size), 4294967295), U32.is_le(FuluSyncCommitteeContribution_r.SyncCommitteeContribution_dcost(size), budget)) == True{} : Bool}) -> {FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked_budget(buf, size, budget) == FuluSyncCommitteeContribution_r.SyncCommitteeContribution_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>}:
   P7_PRV.SyncCommitteeContribution_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -142,6 +142,9 @@ def FuluEther__decode_offsets__Ether_decode_vchecked_short() -> {Pair.snd(P7_B.B
 def FuluEther__decode_offsets__Ether_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluEther_r.Ether_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.Ether_decode_vchecked_real()
 
+def FuluEther__decode_offsets__Ether_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluEther_r.Ether_dchw(8, 8, (buf, 1)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.Ether_decode_vchecked_storage_size(buf)
+
 def FuluEther__decode_offsets__Ether_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluEther_r.Ether_dcost(size), 4294967295), U32.is_le(FuluEther_r.Ether_dcost(size), budget)) == True{} : Bool}) -> {FuluEther_r.Ether_decode_checked_budget(buf, size, budget) == FuluEther_r.Ether_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
   P7_PRV.Ether_decode_vchecked_budget_agree(buf, size, budget, h)
 

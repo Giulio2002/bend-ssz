@@ -142,6 +142,9 @@ def FuluHistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_sho
 def FuluHistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>, FuluHistoricalSummary_r.HistoricalSummary_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 64}, 64)) == None{} : Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   P7_PRV.HistoricalSummary_decode_vchecked_real()
 
+def FuluHistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluHistoricalSummary_r.HistoricalSummary_dchw(64, 64, (buf, 15)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
+  P7_PRV.HistoricalSummary_decode_vchecked_storage_size(buf)
+
 def FuluHistoricalSummary__decode_offsets__HistoricalSummary_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), 4294967295), U32.is_le(FuluHistoricalSummary_r.HistoricalSummary_dcost(size), budget)) == True{} : Bool}) -> {FuluHistoricalSummary_r.HistoricalSummary_decode_checked_budget(buf, size, budget) == FuluHistoricalSummary_r.HistoricalSummary_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluHistoricalSummary_d.HistoricalSummary>}:
   P7_PRV.HistoricalSummary_decode_vchecked_budget_agree(buf, size, budget, h)
 

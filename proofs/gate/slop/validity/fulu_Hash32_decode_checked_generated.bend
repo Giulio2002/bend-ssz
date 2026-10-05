@@ -41,6 +41,9 @@ def Hash32__decode_offsets__Hash32_decode_vchecked_short() -> {Pair.snd(B.Buf, M
 def Hash32__decode_offsets__Hash32_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 7))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Hash32_decode_vchecked_storage()
 
+def Hash32__decode_offsets__Hash32_decode_vchecked_storage_size(buf: B.Buf) -> {FuluHash32_r.Hash32_dchw(32, 32, (buf, 7)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Hash32_decode_vchecked_storage_size(buf)
+
 def Hash32__decode_offsets__Hash32_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluHash32_r.Hash32_dchw(32, 31, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Hash32_decode_vchecked_window()
 

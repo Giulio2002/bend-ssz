@@ -54,6 +54,10 @@ def ExecutionRequests_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>, FuluExecutionRequests_r.ExecutionRequests_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 12), 12}, 12)) == None{} : Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
   {==}
 
+def ExecutionRequests_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluExecutionRequests_r.ExecutionRequests_dchw(12, 12, (buf, 2)) == (buf, None{}) : B.Buf & Maybe<&1, FuluExecutionRequests_d.ExecutionRequests>}:
+  {==}
+
 def ExecutionRequests_decode_vchecked_budget_cost()
     -> {FuluExecutionRequests_r.ExecutionRequests_dcost(4096) == 526853 : U32}:
   {==}

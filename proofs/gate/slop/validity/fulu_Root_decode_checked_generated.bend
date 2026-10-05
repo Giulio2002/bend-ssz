@@ -41,6 +41,9 @@ def Root__decode_offsets__Root_decode_vchecked_short() -> {Pair.snd(B.Buf, Maybe
 def Root__decode_offsets__Root_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluRoot_r.Root_dchw(32, 32, (B.Buf{Array.new(U32, 3n, 0), 32}, 7))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Root_decode_vchecked_storage()
 
+def Root__decode_offsets__Root_decode_vchecked_storage_size(buf: B.Buf) -> {FuluRoot_r.Root_dchw(32, 32, (buf, 7)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
+  PRV.Root_decode_vchecked_storage_size(buf)
+
 def Root__decode_offsets__Root_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes32_d.Bytes32>, FuluRoot_r.Root_dchw(32, 31, (B.Buf{Array.new(U32, 3n, 0), 32}, 8))) == None{} : Maybe<&1, FuluBytes32_d.Bytes32>}:
   PRV.Root_decode_vchecked_window()
 

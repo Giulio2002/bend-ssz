@@ -53,6 +53,10 @@ def SubnetID_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluSubnetID_r.SubnetID_decode_checked(B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, O.U64>}:
   {==}
 
+def SubnetID_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluSubnetID_r.SubnetID_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 def SubnetID_decode_vchecked_budget_cost()
     -> {FuluSubnetID_r.SubnetID_dcost(4096) == 524288 : U32}:
   {==}

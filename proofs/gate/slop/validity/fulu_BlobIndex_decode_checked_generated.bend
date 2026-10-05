@@ -40,6 +40,9 @@ def BlobIndex__decode_offsets__BlobIndex_decode_vchecked_short() -> {Pair.snd(B.
 def BlobIndex__decode_offsets__BlobIndex_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_dchw(8, 8, (B.Buf{Array.new(U32, 1n, 0), 8}, 1))) == None{} : Maybe<&1, O.U64>}:
   PRV.BlobIndex_decode_vchecked_storage()
 
+def BlobIndex__decode_offsets__BlobIndex_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBlobIndex_r.BlobIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : B.Buf & Maybe<&1, O.U64>}:
+  PRV.BlobIndex_decode_vchecked_storage_size(buf)
+
 def BlobIndex__decode_offsets__BlobIndex_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluBlobIndex_r.BlobIndex_dchw(8, 7, (B.Buf{Array.new(U32, 1n, 0), 8}, 2))) == None{} : Maybe<&1, O.U64>}:
   PRV.BlobIndex_decode_vchecked_window()
 

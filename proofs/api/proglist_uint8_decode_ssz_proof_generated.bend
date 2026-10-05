@@ -105,6 +105,15 @@ def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_storage() -> 
 def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_real() -> {Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, proglist_uint8_r.proglist_uint8_decode_checked(P2_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P2_O.Words>}:
   P2_PRV.proglist_uint8_decode_vchecked_real()
 
+def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_storage_size(buf: P2_B.Buf) -> {proglist_uint8_r.proglist_uint8_dchw(1, 1, (buf, 0)) == (buf, None{}) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
+  P2_PRV.proglist_uint8_decode_vchecked_storage_size(buf)
+
+def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_accept_size(buf: P2_B.Buf) -> {proglist_uint8_r.proglist_uint8_dchw(1, 1, (buf, 1)) == proglist_uint8_r.proglist_uint8_dgo(True{}, buf, 1) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
+  P2_PRV.proglist_uint8_decode_vchecked_accept_size(buf)
+
+def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_empty() -> {(P2_PRV.lenof(Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, proglist_uint8_r.proglist_uint8_decode(P2_B.empty(), 0))), P2_PRV.lenof(Pair.snd(P2_B.Buf, Maybe<&1, P2_O.Words>, proglist_uint8_r.proglist_uint8_decode_checked(P2_B.empty(), 0)))) == (0, 0) : U32 & U32}:
+  P2_PRV.proglist_uint8_decode_vchecked_empty()
+
 def proglist_uint8__decode_offsets__proglist_uint8_decode_vchecked_budget_agree(buf: P2_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(proglist_uint8_r.proglist_uint8_dcost(size), 4294967295), U32.is_le(proglist_uint8_r.proglist_uint8_dcost(size), budget)) == True{} : Bool}) -> {proglist_uint8_r.proglist_uint8_decode_checked_budget(buf, size, budget) == proglist_uint8_r.proglist_uint8_decode_checked(buf, size) : P2_B.Buf & Maybe<&1, P2_O.Words>}:
   P2_PRV.proglist_uint8_decode_vchecked_budget_agree(buf, size, budget, h)
 

@@ -41,6 +41,9 @@ def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vche
 def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(208, 208, (B.Buf{Array.new(U32, 6n, 0), 208}, 51))) == None{} : Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
   PRV.SignedBeaconBlockHeader_decode_vchecked_storage()
 
+def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(208, 208, (buf, 51)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
+  PRV.SignedBeaconBlockHeader_decode_vchecked_storage_size(buf)
+
 def SignedBeaconBlockHeader__decode_offsets__SignedBeaconBlockHeader_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_dchw(208, 207, (B.Buf{Array.new(U32, 6n, 0), 208}, 52))) == None{} : Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>}:
   PRV.SignedBeaconBlockHeader_decode_vchecked_window()
 

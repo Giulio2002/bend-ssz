@@ -54,6 +54,10 @@ def DataColumnSidecar_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>, FuluDataColumnSidecar_r.DataColumnSidecar_decode_checked(B.Buf{Array.new(U32, 0n, 0), 356}, 356)) == None{} : Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   {==}
 
+def DataColumnSidecar_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_dchw(356, 356, (buf, 88)) == (buf, None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
+  {==}
+
 def DataColumnSidecar_decode_vchecked_budget_cost()
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_dcost(4096) == 527366 : U32}:
   {==}

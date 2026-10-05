@@ -41,6 +41,9 @@ def G1Point__decode_offsets__G1Point_decode_vchecked_short() -> {Pair.snd(B.Buf,
 def G1Point__decode_offsets__G1Point_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(48, 48, (B.Buf{Array.new(U32, 4n, 0), 48}, 11))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.G1Point_decode_vchecked_storage()
 
+def G1Point__decode_offsets__G1Point_decode_vchecked_storage_size(buf: B.Buf) -> {FuluG1Point_r.G1Point_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  PRV.G1Point_decode_vchecked_storage_size(buf)
+
 def G1Point__decode_offsets__G1Point_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluG1Point_r.G1Point_dchw(48, 47, (B.Buf{Array.new(U32, 4n, 0), 48}, 12))) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   PRV.G1Point_decode_vchecked_window()
 

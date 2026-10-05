@@ -41,6 +41,9 @@ def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_short() -
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 115))) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   PRV.AttesterSlashing_decode_vchecked_storage()
 
+def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_storage_size(buf: B.Buf) -> {FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 464, (buf, 115)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
+  PRV.AttesterSlashing_decode_vchecked_storage_size(buf)
+
 def AttesterSlashing__decode_offsets__AttesterSlashing_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>, FuluAttesterSlashing_r.AttesterSlashing_dchw(464, 463, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 0, 8), 1, 236), 2, 228), 59, 228), 464}, 116))) == None{} : Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}:
   PRV.AttesterSlashing_decode_vchecked_window()
 

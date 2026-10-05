@@ -41,6 +41,9 @@ def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_short() -> {Pai
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_dchw(65, 65, (B.Buf{Array.new(U32, 5n, 0), 65}, 16))) == None{} : Maybe<&1, bitvector_513_d.Bitvector513>}:
   PRV.bitvector_513_decode_vchecked_storage()
 
+def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_storage_size(buf: B.Buf) -> {bitvector_513_r.bitvector_513_dchw(65, 65, (buf, 16)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_513_d.Bitvector513>}:
+  PRV.bitvector_513_decode_vchecked_storage_size(buf)
+
 def bitvector_513__decode_offsets__bitvector_513_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, bitvector_513_d.Bitvector513>, bitvector_513_r.bitvector_513_dchw(65, 64, (B.Buf{Array.new(U32, 5n, 0), 65}, 17))) == None{} : Maybe<&1, bitvector_513_d.Bitvector513>}:
   PRV.bitvector_513_decode_vchecked_window()
 

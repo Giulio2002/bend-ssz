@@ -41,6 +41,9 @@ def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 426, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 106))) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   PRV.ProgressiveBitsStruct_decode_vchecked_storage()
 
+def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_storage_size(buf: B.Buf) -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 426, (buf, 106)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
+  PRV.ProgressiveBitsStruct_decode_vchecked_storage_size(buf)
+
 def ProgressiveBitsStruct__decode_offsets__ProgressiveBitsStruct_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>, ProgressiveBitsStruct_r.ProgressiveBitsStruct_dchw(426, 425, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 8, 418), 9, 419), 18, 107520), 19, 107776), 60, 108032), 61, 108288), 102, 27787264), 103, 27852800), 104, 16842752), 105, 16843009), 106, 257), 426}, 107))) == None{} : Maybe<&1, ProgressiveBitsStruct_d.ProgressiveBitsStruct>}:
   PRV.ProgressiveBitsStruct_decode_vchecked_window()
 

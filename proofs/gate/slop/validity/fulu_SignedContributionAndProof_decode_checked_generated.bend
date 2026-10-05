@@ -41,6 +41,9 @@ def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decod
 def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(360, 360, (B.Buf{Array.new(U32, 7n, 0), 360}, 89))) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   PRV.SignedContributionAndProof_decode_vchecked_storage()
 
+def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_storage_size(buf: B.Buf) -> {FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(360, 360, (buf, 89)) == (buf, None{}) : B.Buf & Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
+  PRV.SignedContributionAndProof_decode_vchecked_storage_size(buf)
+
 def SignedContributionAndProof__decode_offsets__SignedContributionAndProof_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>, FuluSignedContributionAndProof_r.SignedContributionAndProof_dchw(360, 359, (B.Buf{Array.new(U32, 7n, 0), 360}, 90))) == None{} : Maybe<&1, FuluSignedContributionAndProof_d.SignedContributionAndProof>}:
   PRV.SignedContributionAndProof_decode_vchecked_window()
 

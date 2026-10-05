@@ -57,6 +57,10 @@ def ProgressiveComplexTestStruct_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>, ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 7424), 30}, 30)) == None{} : Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
   {==}
 
+def ProgressiveComplexTestStruct_decode_vchecked_storage_size(buf: B.Buf)
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dchw(30, 30, (buf, 7)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>}:
+  {==}
+
 def ProgressiveComplexTestStruct_decode_vchecked_budget_cost()
     -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_dcost(4096) == 540191 : U32}:
   {==}

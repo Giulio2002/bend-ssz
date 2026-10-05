@@ -54,6 +54,10 @@ def KZGProof_decode_vchecked_real()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluKZGProof_r.KZGProof_decode_checked(B.Buf{Array.new(U32, 0n, 0), 48}, 48)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}:
   {==}
 
+def KZGProof_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluKZGProof_r.KZGProof_dchw(48, 48, (buf, 11)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
+  {==}
+
 def KZGProof_decode_vchecked_budget_cost()
     -> {FuluKZGProof_r.KZGProof_dcost(4096) == 524288 : U32}:
   {==}

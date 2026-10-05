@@ -142,6 +142,9 @@ def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_short() -> {P
 def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, P7_O.U64>, FuluCustodyIndex_r.CustodyIndex_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, P7_O.U64>}:
   P7_PRV.CustodyIndex_decode_vchecked_real()
 
+def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluCustodyIndex_r.CustodyIndex_dchw(8, 8, (buf, 1)) == (buf, None{}) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
+  P7_PRV.CustodyIndex_decode_vchecked_storage_size(buf)
+
 def FuluCustodyIndex__decode_offsets__CustodyIndex_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluCustodyIndex_r.CustodyIndex_dcost(size), 4294967295), U32.is_le(FuluCustodyIndex_r.CustodyIndex_dcost(size), budget)) == True{} : Bool}) -> {FuluCustodyIndex_r.CustodyIndex_decode_checked_budget(buf, size, budget) == FuluCustodyIndex_r.CustodyIndex_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, P7_O.U64>}:
   P7_PRV.CustodyIndex_decode_vchecked_budget_agree(buf, size, budget, h)
 

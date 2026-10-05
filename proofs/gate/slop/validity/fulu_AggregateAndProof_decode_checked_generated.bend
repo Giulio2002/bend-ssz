@@ -41,6 +41,9 @@ def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_short()
 def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 86))) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   PRV.AggregateAndProof_decode_vchecked_storage()
 
+def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_storage_size(buf: B.Buf) -> {FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 345, (buf, 86)) == (buf, None{}) : B.Buf & Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
+  PRV.AggregateAndProof_decode_vchecked_storage_size(buf)
+
 def AggregateAndProof__decode_offsets__AggregateAndProof_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>, FuluAggregateAndProof_r.AggregateAndProof_dchw(345, 344, (B.Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.new(U32, 7n, 0), 2, 108), 27, 236), 86, 1), 345}, 87))) == None{} : Maybe<&1, FuluAggregateAndProof_d.AggregateAndProof>}:
   PRV.AggregateAndProof_decode_vchecked_window()
 

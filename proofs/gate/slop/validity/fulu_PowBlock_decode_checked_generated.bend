@@ -41,6 +41,9 @@ def PowBlock__decode_offsets__PowBlock_decode_vchecked_short() -> {Pair.snd(B.Bu
 def PowBlock__decode_offsets__PowBlock_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_dchw(96, 96, (B.Buf{Array.new(U32, 5n, 0), 96}, 23))) == None{} : Maybe<&1, FuluPowBlock_d.PowBlock>}:
   PRV.PowBlock_decode_vchecked_storage()
 
+def PowBlock__decode_offsets__PowBlock_decode_vchecked_storage_size(buf: B.Buf) -> {FuluPowBlock_r.PowBlock_dchw(96, 96, (buf, 23)) == (buf, None{}) : B.Buf & Maybe<&1, FuluPowBlock_d.PowBlock>}:
+  PRV.PowBlock_decode_vchecked_storage_size(buf)
+
 def PowBlock__decode_offsets__PowBlock_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluPowBlock_d.PowBlock>, FuluPowBlock_r.PowBlock_dchw(96, 95, (B.Buf{Array.new(U32, 5n, 0), 96}, 24))) == None{} : Maybe<&1, FuluPowBlock_d.PowBlock>}:
   PRV.PowBlock_decode_vchecked_window()
 

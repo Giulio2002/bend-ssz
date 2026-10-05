@@ -179,6 +179,9 @@ def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_short() -> {Pair.snd(
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, BitsStruct_d.BitsStruct>, BitsStruct_r.BitsStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 11), 13}, 13)) == None{} : Maybe<&1, BitsStruct_d.BitsStruct>}:
   P3_PRV.BitsStruct_decode_vchecked_real()
 
+def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_storage_size(buf: P3_B.Buf) -> {BitsStruct_r.BitsStruct_dchw(13, 13, (buf, 3)) == (buf, None{}) : P3_B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
+  P3_PRV.BitsStruct_decode_vchecked_storage_size(buf)
+
 def BitsStruct__decode_offsets__BitsStruct_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(BitsStruct_r.BitsStruct_dcost(size), 4294967295), U32.is_le(BitsStruct_r.BitsStruct_dcost(size), budget)) == True{} : Bool}) -> {BitsStruct_r.BitsStruct_decode_checked_budget(buf, size, budget) == BitsStruct_r.BitsStruct_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, BitsStruct_d.BitsStruct>}:
   P3_PRV.BitsStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

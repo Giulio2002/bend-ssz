@@ -41,6 +41,9 @@ def BLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_s
 def BLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(76, 76, (B.Buf{Array.new(U32, 5n, 0), 76}, 18))) == None{} : Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
   PRV.BLSToExecutionChange_decode_vchecked_storage()
 
+def BLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_storage_size(buf: B.Buf) -> {FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(76, 76, (buf, 18)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
+  PRV.BLSToExecutionChange_decode_vchecked_storage_size(buf)
+
 def BLSToExecutionChange__decode_offsets__BLSToExecutionChange_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>, FuluBLSToExecutionChange_r.BLSToExecutionChange_dchw(76, 75, (B.Buf{Array.new(U32, 5n, 0), 76}, 19))) == None{} : Maybe<&1, FuluBLSToExecutionChange_d.BLSToExecutionChange>}:
   PRV.BLSToExecutionChange_decode_vchecked_window()
 

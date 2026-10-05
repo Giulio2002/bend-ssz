@@ -41,6 +41,9 @@ def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_s
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(264, 264, (B.Buf{Array.new(U32, 7n, 0), 264}, 65))) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_storage()
 
+def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_storage_size(buf: B.Buf) -> {FuluContributionAndProof_r.ContributionAndProof_dchw(264, 264, (buf, 65)) == (buf, None{}) : B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
+  PRV.ContributionAndProof_decode_vchecked_storage_size(buf)
+
 def ContributionAndProof__decode_offsets__ContributionAndProof_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>, FuluContributionAndProof_r.ContributionAndProof_dchw(264, 263, (B.Buf{Array.new(U32, 7n, 0), 264}, 66))) == None{} : Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>}:
   PRV.ContributionAndProof_decode_vchecked_window()
 

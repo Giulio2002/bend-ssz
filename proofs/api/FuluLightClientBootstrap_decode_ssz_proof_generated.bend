@@ -125,6 +125,12 @@ def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vcheck
 def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>, FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(P3_B.Buf{Array.new(U32, 0n, 0), 8}, 8)) == None{} : Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P3_PRV.LightClientBootstrap_decode_vchecked_real()
 
+def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_storage_size(buf: P3_B.Buf) -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(25648, 25648, (buf, 6411)) == (buf, None{}) : P3_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  P3_PRV.LightClientBootstrap_decode_vchecked_storage_size(buf)
+
+def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_accept_size(buf: P3_B.Buf) -> {FuluLightClientBootstrap_r.LightClientBootstrap_dchw(25648, 25648, (buf, 6412)) == FuluLightClientBootstrap_r.LightClientBootstrap_dgo(True{}, buf, 25648) : P3_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
+  P3_PRV.LightClientBootstrap_decode_vchecked_accept_size(buf)
+
 def FuluLightClientBootstrap__decode_offsets__LightClientBootstrap_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), 4294967295), U32.is_le(FuluLightClientBootstrap_r.LightClientBootstrap_dcost(size), budget)) == True{} : Bool}) -> {FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked_budget(buf, size, budget) == FuluLightClientBootstrap_r.LightClientBootstrap_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}:
   P3_PRV.LightClientBootstrap_decode_vchecked_budget_agree(buf, size, budget, h)
 

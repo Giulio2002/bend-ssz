@@ -142,6 +142,9 @@ def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_short() -> {P
 def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_real() -> {Pair.snd(P7_B.Buf, Maybe<&1, FuluBytes96_d.Bytes96>, FuluBLSSignature_r.BLSSignature_decode_checked(P7_B.Buf{Array.new(U32, 0n, 0), 96}, 96)) == None{} : Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.BLSSignature_decode_vchecked_real()
 
+def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_storage_size(buf: P7_B.Buf) -> {FuluBLSSignature_r.BLSSignature_dchw(96, 96, (buf, 23)) == (buf, None{}) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
+  P7_PRV.BLSSignature_decode_vchecked_storage_size(buf)
+
 def FuluBLSSignature__decode_offsets__BLSSignature_decode_vchecked_budget_agree(buf: P7_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(FuluBLSSignature_r.BLSSignature_dcost(size), 4294967295), U32.is_le(FuluBLSSignature_r.BLSSignature_dcost(size), budget)) == True{} : Bool}) -> {FuluBLSSignature_r.BLSSignature_decode_checked_budget(buf, size, budget) == FuluBLSSignature_r.BLSSignature_decode_checked(buf, size) : P7_B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
   P7_PRV.BLSSignature_decode_vchecked_budget_agree(buf, size, budget, h)
 

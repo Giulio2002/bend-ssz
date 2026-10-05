@@ -50,6 +50,10 @@ def ForkDigest_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes4_d.Bytes4>, FuluForkDigest_r.ForkDigest_decode_checked(B.Buf{Array.new(U32, 0n, 0), 3}, 4)) == None{} : Maybe<&1, FuluBytes4_d.Bytes4>}:
   {==}
 
+def ForkDigest_decode_vchecked_storage_size(buf: B.Buf)
+    -> {FuluForkDigest_r.ForkDigest_dchw(4, 4, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
+  {==}
+
 def ForkDigest_decode_vchecked_budget_cost()
     -> {FuluForkDigest_r.ForkDigest_dcost(4096) == 524288 : U32}:
   {==}

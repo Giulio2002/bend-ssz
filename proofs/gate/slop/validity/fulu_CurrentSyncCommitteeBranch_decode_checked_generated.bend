@@ -40,6 +40,9 @@ def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decod
 def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_storage() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(192, 192, (B.Buf{Array.new(U32, 6n, 0), 192}, 47))) == None{} : Maybe<&1, O.Words>}:
   PRV.CurrentSyncCommitteeBranch_decode_vchecked_storage()
 
+def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_storage_size(buf: B.Buf) -> {FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(192, 192, (buf, 47)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  PRV.CurrentSyncCommitteeBranch_decode_vchecked_storage_size(buf)
+
 def CurrentSyncCommitteeBranch__decode_offsets__CurrentSyncCommitteeBranch_decode_vchecked_window() -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, FuluCurrentSyncCommitteeBranch_r.CurrentSyncCommitteeBranch_dchw(192, 191, (B.Buf{Array.new(U32, 6n, 0), 192}, 48))) == None{} : Maybe<&1, O.Words>}:
   PRV.CurrentSyncCommitteeBranch_decode_vchecked_window()
 

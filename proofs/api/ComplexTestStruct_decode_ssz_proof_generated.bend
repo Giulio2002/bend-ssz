@@ -254,6 +254,9 @@ def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_short()
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_real() -> {Pair.snd(P3_B.Buf, Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>, ComplexTestStruct_r.ComplexTestStruct_decode_checked(P3_B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 4653056), 100}, 100)) == None{} : Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   P3_PRV.ComplexTestStruct_decode_vchecked_real()
 
+def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_storage_size(buf: P3_B.Buf) -> {ComplexTestStruct_r.ComplexTestStruct_dchw(100, 100, (buf, 24)) == (buf, None{}) : P3_B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
+  P3_PRV.ComplexTestStruct_decode_vchecked_storage_size(buf)
+
 def ComplexTestStruct__decode_offsets__ComplexTestStruct_decode_vchecked_budget_agree(buf: P3_B.Buf, +size: U32, +budget: U32, +h: {Bool.and(U32.is_lt(ComplexTestStruct_r.ComplexTestStruct_dcost(size), 4294967295), U32.is_le(ComplexTestStruct_r.ComplexTestStruct_dcost(size), budget)) == True{} : Bool}) -> {ComplexTestStruct_r.ComplexTestStruct_decode_checked_budget(buf, size, budget) == ComplexTestStruct_r.ComplexTestStruct_decode_checked(buf, size) : P3_B.Buf & Maybe<&1, ComplexTestStruct_d.ComplexTestStruct>}:
   P3_PRV.ComplexTestStruct_decode_vchecked_budget_agree(buf, size, budget, h)
 

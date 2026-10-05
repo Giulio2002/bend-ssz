@@ -49,6 +49,10 @@ def bitlist_5_decode_vchecked_short()
     -> {Pair.snd(B.Buf, Maybe<&1, O.Bits>, bitlist_5_r.bitlist_5_decode_checked(B.Buf{Array.set(U32, Array.new(U32, 0n, 0), 0, 1), 0}, 1)) == None{} : Maybe<&1, O.Bits>}:
   {==}
 
+def bitlist_5_decode_vchecked_storage_size(buf: B.Buf)
+    -> {bitlist_5_r.bitlist_5_dchw(1, 1, (buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Bits>}:
+  {==}
+
 def bitlist_5_decode_vchecked_budget_cost()
     -> {bitlist_5_r.bitlist_5_dcost(4096) == 524288 : U32}:
   {==}
