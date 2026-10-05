@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/16
+# type: FuluPowBlock
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 64 is read at absolute byte 64 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluPowBlock_decode_ssz_generated.bend
+# sym: PowBlock_rd1,PowBlock_read,PowBlock_decode
+--- a/types/FuluPowBlock_decode_ssz_generated.bend
++++ b/types/FuluPowBlock_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +parent_hash) = pair
+-  PowBlock_rd2(off, len, block_hash, parent_hash, uint256_r.u256_read(buf, (off + 64 : U32), 32))
++  PowBlock_rd2(off, len, block_hash, parent_hash, uint256_r.u256_read(buf, (64 : U32), 32))
+ 

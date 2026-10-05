@@ -1,0 +1,111 @@
+## round 11 generated: r11-a03-tail-keep
+=== r11-a03-tail-keep
+type: FuluBytes1
+ops: decode
+file: types/FuluBytes1_decode_ssz_generated.bend
+sym: b1_r0,b1_read,Bytes1_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_15
+ops: decode
+file: types/bitvector_15_decode_ssz_generated.bend
+sym: bv15_r0,bv15_read,bitvector_15_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 2-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(2, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_16
+ops: decode
+file: types/bitvector_16_decode_ssz_generated.bend
+sym: bv16_r0,bv16_read,bitvector_16_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 2-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(2, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_17
+ops: decode
+file: types/bitvector_17_decode_ssz_generated.bend
+sym: bv17_r0,bv17_read,bitvector_17_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 3-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(3, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_33
+ops: decode
+file: types/bitvector_33_decode_ssz_generated.bend
+sym: bv33_r1,bv33_read,bitvector_33_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_3
+ops: decode
+file: types/bitvector_3_decode_ssz_generated.bend
+sym: bv3_r0,bv3_read,bitvector_3_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_513
+ops: decode
+file: types/bitvector_513_decode_ssz_generated.bend
+sym: bv513_r16,bv513_read,bitvector_513_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_5
+ops: decode
+file: types/bitvector_5_decode_ssz_generated.bend
+sym: bv5_r0,bv5_read,bitvector_5_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_6
+ops: decode
+file: types/bitvector_6_decode_ssz_generated.bend
+sym: bv6_r0,bv6_read,bitvector_6_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_7
+ops: decode
+file: types/bitvector_7_decode_ssz_generated.bend
+sym: bv7_r0,bv7_read,bitvector_7_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(1, x)
++x
+=== r11-a03-tail-keep
+type: bitvector_9
+ops: decode
+file: types/bitvector_9_decode_ssz_generated.bend
+sym: bv9_r0,bv9_read,bitvector_9_decode
+spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+fault: the last word keeps all 4 bytes read (bytes past the 2-byte tail read into the value)
+why: a 32-bit read not masked to the value's width
+-O.keep(2, x)
++x

@@ -1,0 +1,120 @@
+=== r9-b01-bitvec-get
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_get_n,bv1280_get
+spec: Bitvector[N] holds ceil(N/8) bytes; byte i exists iff i < ceil(N/8)
+fault: the byte getter accepts i == ceil(N/8)
+why: off-by-one
+-  bv1280_get_in(U32.is_lt(i, n), o, i)
++  bv1280_get_in(U32.is_le(i, n), o, i)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_set_n,bv1280_set
+spec: a byte of a bit vector is < 256
+fault: the byte setter admits 256 (writes 0 and answers ok)
+why: off-by-one range
+-  bv1280_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1280_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 256)), o, i, v)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_set_n,bv1280_set
+spec: Bitvector[N] holds ceil(N/8) bytes
+fault: the byte setter accepts i == ceil(N/8) (writes the byte after the vector)
+why: off-by-one
+-  bv1280_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1280_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 255)), o, i, v)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_set_n,bv1280_set
+spec: Bitvector[N] holds ceil(N/8) bytes
+fault: the byte setter tests i against N bits, not ceil(N/8) bytes
+why: bits-vs-bytes unit
+-  bv1280_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1280_put_at(Bool.and(U32.is_lt(i, 1280), U32.is_le(v, 255)), o, i, v)
+=== r9-b03-bitvec-write
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_put_at,bv1280_set
+spec: set(b, i, x) changes byte i only
+fault: the setter writes two bytes (the next byte is cleared)
+why: width slip
+-    case True{}: (O.words_write(o, i, v, 1), True{})
++    case True{}: (O.words_write(o, i, v, 2), True{})
+=== r9-b04-bitvec-read
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1280_def_generated.bend
+sym: bv1280_get_in,bv1280_get
+spec: get(b, i) is byte i
+fault: the getter reads byte i + 1
+why: off-by-one position
+-    case True{}: bv1280_some(O.words_byte_at(o, i, 1))
++    case True{}: bv1280_some(O.words_byte_at(o, (i + 1 : U32), 1))
+=== r9-b01-bitvec-get
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_get_n,bv1281_get
+spec: Bitvector[N] holds ceil(N/8) bytes; byte i exists iff i < ceil(N/8)
+fault: the byte getter accepts i == ceil(N/8)
+why: off-by-one
+-  bv1281_get_in(U32.is_lt(i, n), o, i)
++  bv1281_get_in(U32.is_le(i, n), o, i)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_set_n,bv1281_set
+spec: a byte of a bit vector is < 256
+fault: the byte setter admits 256 (writes 0 and answers ok)
+why: off-by-one range
+-  bv1281_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1281_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 256)), o, i, v)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_set_n,bv1281_set
+spec: Bitvector[N] holds ceil(N/8) bytes
+fault: the byte setter accepts i == ceil(N/8) (writes the byte after the vector)
+why: off-by-one
+-  bv1281_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1281_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 255)), o, i, v)
+=== r9-b02-bitvec-set
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_set_n,bv1281_set
+spec: Bitvector[N] holds ceil(N/8) bytes
+fault: the byte setter tests i against N bits, not ceil(N/8) bytes
+why: bits-vs-bytes unit
+-  bv1281_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  bv1281_put_at(Bool.and(U32.is_lt(i, 1281), U32.is_le(v, 255)), o, i, v)
+=== r9-b03-bitvec-write
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_put_at,bv1281_set
+spec: set(b, i, x) changes byte i only
+fault: the setter writes two bytes (the next byte is cleared)
+why: width slip
+-    case True{}: (O.words_write(o, i, v, 1), True{})
++    case True{}: (O.words_write(o, i, v, 2), True{})
+=== r9-b04-bitvec-read
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/bitvector_1281_def_generated.bend
+sym: bv1281_get_in,bv1281_get
+spec: get(b, i) is byte i
+fault: the getter reads byte i + 1
+why: off-by-one position
+-    case True{}: bv1281_some(O.words_byte_at(o, i, 1))
++    case True{}: bv1281_some(O.words_byte_at(o, (i + 1 : U32), 1))

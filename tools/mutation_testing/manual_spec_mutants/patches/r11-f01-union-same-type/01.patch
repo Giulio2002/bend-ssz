@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-f01-union-same-type/01
+# type: CompatibleUnionABCA
+# ops: root
+# spec: hash_tree_root(CompatibleUnion) = mix_in_selector(hash_tree_root(value), selector)
+# fault: option 4 mixes in selector 1
+# why: option looked up by payload type
+# file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+# sym: CompatibleUnionABCA_rt3,CompatibleUnionABCA_hash_tree_root
+--- a/types/CompatibleUnionABCA_hashtreeroot_generated.bend
++++ b/types/CompatibleUnionABCA_hashtreeroot_generated.bend
+@@ -32,3 +32,3 @@
+   (h, d) = pair
+-  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 4)))
++  (h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 1)))
+ 

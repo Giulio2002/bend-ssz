@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/47
+# type: FuluSyncAggregate
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls SyncAggregate_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/FuluSyncAggregate_decode_ssz_generated.bend
+# sym: SyncAggregate_dcb,SyncAggregate_decode_checked_budget
+--- a/types/FuluSyncAggregate_decode_ssz_generated.bend
++++ b/types/FuluSyncAggregate_decode_ssz_generated.bend
+@@ -86,3 +86,3 @@
+   match ok:
+-    case True{}: SyncAggregate_decode_checked(buf, size)
++    case True{}: SyncAggregate_decode(buf, size)
+     case False{}: (buf, None{})

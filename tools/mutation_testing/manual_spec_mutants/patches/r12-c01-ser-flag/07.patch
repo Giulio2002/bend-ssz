@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c01-ser-flag/07
+# type: ProgressiveSingleListContainerTestStruct
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: ProgressiveSingleListContainerTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+# why: the serialize result taken from the byte count alone
+# file: types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_senc_out,ProgressiveSingleListContainerTestStruct_serialize
+--- a/types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+ def ProgressiveSingleListContainerTestStruct_senc_out(+n: U32, out: Array<U32>, o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, +m: U32) -> ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

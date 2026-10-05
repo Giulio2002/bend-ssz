@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-e03-bv-pad-pos/03
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+# fault: ProgressiveBitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+# why: field offset slip in the validity pass
+# file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_c7,ProgressiveBitsStruct_ok
+--- a/types/ProgressiveBitsStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_decode_ssz_generated.bend
+@@ -215,3 +215,3 @@
+   match ok:
+-    case True{}: ProgressiveBitsStruct_v8(off, len, o0, o1, o2, o3, o4, o5, o6, o7, bitvector_257_r.bv257_ok_at(buf, (off + 40 : U32)))
++    case True{}: ProgressiveBitsStruct_v8(off, len, o0, o1, o2, o3, o4, o5, o6, o7, bitvector_257_r.bv257_ok_at(buf, (off + 41 : U32)))
+     case False{}: (buf, False{})

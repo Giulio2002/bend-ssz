@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-c01-group-acc/01
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+# fault: the group BeaconBlockBody_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+# why: accumulator overwritten instead of and-ed
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_g0_va4,BeaconBlockBody_g0_valid,BeaconBlockBody_encode,BeaconBlockBody_serialize
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -246,3 +246,3 @@
+   (voluntary_exits, ok) = pair
+-  (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, Bool.and(acc, ok))
++  (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, ok)
+ 

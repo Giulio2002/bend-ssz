@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c04-union-sel-index/02
+# type: CompatibleUnionBC
+# ops: encode
+# spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+# fault: CompatibleUnionBC: option 0 written with selector byte 0 (its index) instead of 2
+# why: selector = position in the option list, not the declared selector
+# file: types/CompatibleUnionBC_encode_ssz_generated.bend
+# sym: CompatibleUnionBC_pt0,CompatibleUnionBC_put
+--- a/types/CompatibleUnionBC_encode_ssz_generated.bend
++++ b/types/CompatibleUnionBC_encode_ssz_generated.bend
+@@ -32,3 +32,3 @@
+ def CompatibleUnionBC_pt0(+pos: U32, v: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, out: Array<U32>) -> Array<U32> & CompatibleUnionBC_d.CompatibleUnionBC:
+-  CompatibleUnionBC_pb0(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
++  CompatibleUnionBC_pb0(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 0), (pos + 1 : U32), v))
+ 

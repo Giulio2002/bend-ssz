@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a02-word-readback/03
+# type: bitvector_511
+# ops: decode
+# spec: deserialize of a basic value / bit vector: little-endian bytes [off, off + size)
+# fault: word 15 (byte 60) is read at byte 56 (the previous word read twice)
+# why: reader cursor not advanced
+# file: types/bitvector_511_decode_ssz_generated.bend
+# sym: bv511_r14,bv511_read,bitvector_511_decode
+--- a/types/bitvector_511_decode_ssz_generated.bend
++++ b/types/bitvector_511_decode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+   (buf, +x) = pair
+-  bv511_r15(off, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, x, B.read32(buf, (off + 60 : U32)))
++  bv511_r15(off, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, x, B.read32(buf, (off + 56 : U32)))
+ 

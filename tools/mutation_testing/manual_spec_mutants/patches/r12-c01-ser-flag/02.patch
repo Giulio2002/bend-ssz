@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c01-ser-flag/02
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: CompatibleUnionABCA_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+# why: the serialize result taken from the byte count alone
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_senc_out,CompatibleUnionABCA_serialize
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -112,3 +112,3 @@
+ def CompatibleUnionABCA_senc_out(+n: U32, out: Array<U32>, o: CompatibleUnionABCA_d.CompatibleUnionABCA, +m: U32) -> CompatibleUnionABCA_d.CompatibleUnionABCA & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

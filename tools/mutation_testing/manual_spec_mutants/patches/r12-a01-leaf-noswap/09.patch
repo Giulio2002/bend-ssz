@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a01-leaf-noswap/09
+# type: FuluAttestation
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: Fulu_bitvector_64: word 0 of the bytes put into the chunk without the byte swap (bytes 0..3 reversed in the chunk)
+# why: the record words are little-endian loads of the bytes; SHA-256 reads the chunk big-endian, so every word must be swapped
+# file: types/Fulu_bitvector_64_hashtreeroot_generated.bend
+# sym: bv64_root
+--- a/types/Fulu_bitvector_64_hashtreeroot_generated.bend
++++ b/types/Fulu_bitvector_64_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: (h, D.D{B.swap32(w0), B.swap32(w1), 0, 0, 0, 0, 0, 0})
++    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: (h, D.D{w0, B.swap32(w1), 0, 0, 0, 0, 0, 0})
+ 

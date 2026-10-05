@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/06
+# type: FuluSignedBeaconBlockHeader
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed SignedBeaconBlockHeader field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+# sym: SignedBeaconBlockHeader_bx_ok,SignedBeaconBlockHeader_decode
+--- a/types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
++++ b/types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+ 
+-def SignedBeaconBlockHeader_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlockHeader_ok(buf, off, len)
++def SignedBeaconBlockHeader_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

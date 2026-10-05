@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/11
+# type: FuluBytes48
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls Bytes48_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/FuluBytes48_decode_ssz_generated.bend
+# sym: Bytes48_dcb,Bytes48_decode_checked_budget
+--- a/types/FuluBytes48_decode_ssz_generated.bend
++++ b/types/FuluBytes48_decode_ssz_generated.bend
+@@ -116,3 +116,3 @@
+   match ok:
+-    case True{}: Bytes48_decode_checked(buf, size)
++    case True{}: Bytes48_decode(buf, size)
+     case False{}: (buf, None{})

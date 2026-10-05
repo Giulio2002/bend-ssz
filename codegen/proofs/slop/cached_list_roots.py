@@ -30,6 +30,22 @@ gate). The elements: a progressive container is varied through its unchecked `_g
 ConsolidationRequest) through the first word of its first vector, and the transactions list (byte-list elements, whose root unfolds a tree
 of 2^25 chunks unless the list is empty) holds empty byte lists only.
 
+Round 11 (d02/01..06, d03/04, d03/05, d04/03: a growth that marks only leaves 0..n dirty, a set after a root that does not widen the window):
+
+  <X>_vroot_<kp>_cache_app_5      five appends then one root (n = 1 .. 5 above): the growth to depth 3, where a padding parent must be the zero subtree;
+                                  the 5-element laws (app_5, grow_5) compare with a fresh cache of the same list: past depth 2 a plain root spells an
+                                  empty subtree as its constant D.zconst(h) and a cached tree as D.node(hl, zero, zero), the same digest at hl = 64 but
+                                  another term for a symbolic hl
+  <X>_vroot_<kp>_cache_grow_k     (k = 1 .. min(5, limit)) the root of the empty tree, then k appends each followed by a root: the root after the k-th
+                                  is the plain root (growths from a clean tree at 1, 2 and 4 elements)
+  <X>_vroot_<kp>_cache_set_<i>    for EVERY kind (limit 1 too): i the lowest (0) and the highest index of a clean tree of min(4, limit) elements (set_1_3
+                                  as well); the transactions list (whose elements cannot vary by computation) states the dirty window after the
+                                  sets: exactly (lowest set, highest set), where the window after a root is the empty (n, 0)
+Round 12 (d01/02, d01/03, d02/03: the cache of a non-empty list with the window starting at leaf 1, or the empty list's depth):
+
+  <X>_vroot_<kp>_cache_nonempty_k R(cache(list of k elements)) = P(the list), k = 1, 2 and (limit >= 4) 3
+The coverage gate asks app_<min(5, limit)>, grow_<min(5, limit)>, set_0, set_<min(4, limit) - 1>, nonempty_1 and nonempty_<min(2, limit)> of every kind.
+
 Each is one module (the proofs stay under 2 minutes). Filed by api_gate under `root` (the `_vroot_` late rule).
 """
 import sys as _sys
@@ -49,7 +65,9 @@ from codegen.proofs.slop.container_field_validity import type_decls  # noqa: E40
 from codegen.proofs.slop.tight_storage_root import owners_of_root  # noqa: E402
 
 CACHED = re.compile(r'^def (\w+)_cached_root\(\+hl: Nat, h: B\.Buf, c: \w+_Cached, \+seg: U32\)', re.M)
-N_MAX = 4
+N_MAX = 4          # the clean tree the set laws start from (and the app_clean law) holds 4 elements
+APP_MAX = 5        # appends from the empty tree before one root (round 11: 5 crosses the growth to depth 3)
+GROW_MAX = 5       # appends from the empty tree, each followed by a root (round 11)
 LIMIT_MAX = 16
 PLAIN_MAX = 1 << 13        # the largest limit whose plain root the checker unfolds (a unary tree of 2^depth chunks)
 
@@ -121,10 +139,10 @@ def fold_of(tx, kp, E):
     return leaf, int(pad.group(1))
 
 
-def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget'):
+def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget', sym=False):
     T = f'T.{kp}'
     a, b = ab
-    els = [a, b, a, b]
+    els = [a, b, a, b, a]
     out = []
 
     def law(tag, params, stmt):
@@ -145,22 +163,56 @@ def laws_of(X, kp, E, Lm, ab, es=None, first=None, fold=None, getter='cget'):
     deep = Lm > PLAIN_MAX
     # the reference of a cached root: the plain root of the list (it unfolds a tree of 2^depth chunks: only for the small limits), else a fresh cache of the same list
     P = (lambda s: f'pd(hl, {s})') if not deep else (lambda s: R(f'{T}_cache({s})'))    # noqa: E731
-    for k in range(1, min(N_MAX, Lm) + 1):     # the tree grows at 2^d elements: the deep kinds compare with a fresh cache of the same list
-        law(f'app_{k}', '+hl: Nat', f'{R(cached(k))} == {P(seq(k))} : D.Digest')
+    # (round 11) past 4 elements (depth 3) a plain root spells an empty subtree of height >= 1 as its constant D.zconst(h), while a cached tree hashes
+    # D.node(hl, zero, zero): equal at hl = 64, different terms for a symbolic hl. The 5-element laws compare with a fresh cache of the same list
+    # (whose window is the whole tree; the nonempty laws tie a fresh cache to the plain root)
+    Pk = lambda k, s: P(s) if k <= N_MAX else R(f"{T}_cache({s})")    # noqa: E731
+    for k in range(1, min(APP_MAX, Lm) + 1):     # the tree grows at 2^d elements: the deep kinds compare with a fresh cache of the same list
+        law(f'app_{k}', '+hl: Nat', f'{R(cached(k))} == {Pk(k, seq(k))} : D.Digest')
     if deep and fold is not None:
         leaf, depth = fold
         r = leaf(a)
         for lvl in range(depth):
             r = f'D.node(hl, {r}, D.zconst({lvl}n))'
         law('app_fold', '+hl: Nat', f'{R(cached(1))} == O.mix_len(hl, {r}, 1) : D.Digest')
+    # (round 11: d02/01..06) the tree grows one level when an append finds it full; each append from the empty tree followed by a root: the
+    # root after the k-th append is the plain root (k up to 5 crosses the growths at 1, 2 and 4 elements, the last one to depth 3, where a
+    # growth that marks only the leaves 0..n dirty leaves a padding parent at D.zero instead of the zero subtree)
+    for k in range(1, min(GROW_MAX, Lm) + 1):
+        c = f'rc(hl, {T}_cache({T}_default()))'
+        for e in els[:k - 1]:
+            c = f'rc(hl, ca({c}, {e}))'
+        law(f'grow_{k}', '+hl: Nat', f'{R(f"ca({c}, {els[k - 1]})")} == {Pk(k, seq(k))} : D.Digest')
+    # (round 12: d01/02, d01/03, d02/03) the cache of a NON-EMPTY list (as a decoder or the plain API hands it over): its fresh dirty window and
+    # depth are those of the list, not of the empty one; 1 element, 2, and 3 (an odd count below a power of two) when the limit allows
+    for k in sorted({1, min(2, Lm), min(3, Lm) if Lm >= 4 else 1}):
+        law(f'nonempty_{k}', '+hl: Nat', f'{R(f"{T}_cache({seq(k)})")} == {Pk(k, seq(k))} : D.Digest')
+    # (round 11: d03/04, d03/05, d04/03) a set after a root moves both ends of the dirty window, for every kind (the limit-1 list too): a set at
+    # the lowest index and at the highest index of a clean tree of min(4, limit) elements; the value set differs from the one there. The
+    # transactions list holds empty byte lists only (a non-empty one roots over 2^25 chunks, past the checker's time; a symbolic one leaves the
+    # leaf pipeline stuck at different points on the two sides): its set laws state the dirty window itself, which must be exactly the set
+    # slots (the window after a root is empty, (n, 0)); the root laws above show that the window is what gets rehashed
+    k0 = min(4, Lm)
+    base = seq(k0)
+    clean = f'rc(hl, {T}_cache({base}))'
+
+    def other(i):
+        return b if els[i] == a else a
+
+    def setlaw(tag, sets):
+        c, s = clean, base
+        for i in sets:
+            c, s = f'cs({c}, {i}, {other(i)})', f'ss({s}, {i}, {other(i)})'
+        if sym:
+            law(tag, '+hl: Nat', f'win({c}) == ({sets[0]}, {sets[-1]}) : U32 & U32')
+        else:
+            law(tag, '+hl: Nat', f'{R(c)} == {P(s)} : D.Digest')
+    for i in sorted({k0 - 1, 0}, reverse=True):
+        setlaw(f'set_{i}', [i])
     if Lm >= N_MAX:
-        base = seq(4)
-        clean = f'rc(hl, {T}_cache({base}))'
-        law('set_3', '+hl: Nat', f'{R(f"cs({clean}, 3, {a})")} == {P(f"ss({base}, 3, {a})")} : D.Digest')
-        law('set_0', '+hl: Nat', f'{R(f"cs({clean}, 0, {b})")} == {P(f"ss({base}, 0, {b})")} : D.Digest')
         # a clean tree of 3 elements (depth 2, room for 4), then an append that fits: the dirty range must reach the new slot (round 4: c01/05)
         law('app_clean', '+hl: Nat', f'{R(f"ca(rc(hl, {T}_cache({seq(3)})), {els[3]})")} == {P(seq(4))} : D.Digest')
-        law('set_1_3', '+hl: Nat', f'{R(f"cs(cs({clean}, 1, {a}), 3, {a})")} == {P(f"ss(ss({base}, 1, {a}), 3, {a})")} : D.Digest')
+        setlaw('set_1_3', [1, 3])
     c3 = cached(min(3, Lm))
     k3 = min(3, Lm)
     law('end', '', f'({_flag(f"{T}_cset({c3}, {k3}, {a})")}, ({_flag(f"{T}_cset({c3}, {k3 - 1}, {b})")}, ({_none(f"{T}_{getter}({c3}, {k3})")}, {_none(f"{T}_{getter}({c3}, {k3 - 1})")}))) == (False{{}}, (True{{}}, (True{{}}, False{{}}))) : Bool & (Bool & (Bool & Bool))')
@@ -223,6 +275,10 @@ def helpers(kp, E0):
 def module(tmod, X, kp, E, text):
     Eq = E if E.startswith('O.') else f'T.{E}'
     body = helpers(kp, E).replace('CACHED', f'T.{kp}_Cached').replace('MAYBE', f'Maybe<&1, {Eq}>')
+    if 'win(' in text:
+        # the dirty window (lo, hi) of a cached tree (round 11: the set laws of the transactions list)
+        body += (f'\n\ndef win(c: T.{kp}_Cached) -> U32 & U32:\n  match c:\n'
+                 f'    case T.{kp}_Cached{{arr, +n, +d, nodes, +lo, +hi}}: (lo, hi)')
     text = text.replace('CACHED', f'T.{kp}_Cached').replace('MAYBE', f'Maybe<&1, {Eq}>')
     return '\n'.join(['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/digest.bend as D', 'import ../../src/obj.bend as O',
                       f'import ../../types/{tmod}.bend as T', '', writer.header('cached_list_roots'),
@@ -256,7 +312,17 @@ def outputs():
                 missing.append(f'{kp}: no variant element ({E})')
                 continue
             X = owners[0]
-            for tag, text in laws_of(X, kp, E, int(lim.group(1)), ab, es, decls[E][0][0] if decls.get(E) else None, fold_of(tx, kp, E), 'cget' if f'{kp}_cget' in tx.blk else 'ctake'):
+            Lm = int(lim.group(1))
+            laws = laws_of(X, kp, E, Lm, ab, es, decls[E][0][0] if decls.get(E) else None, fold_of(tx, kp, E), 'cget' if f'{kp}_cget' in tx.blk else 'ctake',
+                           sym=E == 'O.Words')
+            # (round 11) the coverage gate also asks, for every kind, the growth laws up to 5 appends (one root after all, a root after each)
+            # and the set-after-root laws at the lowest and the highest index
+            tags = {tag for tag, _ in laws}
+            k0 = min(N_MAX, Lm)
+            need = {f'app_{min(APP_MAX, Lm)}', f'grow_{min(GROW_MAX, Lm)}', 'set_0', f'set_{k0 - 1}', 'nonempty_1', f'nonempty_{min(2, Lm)}'}
+            if not need <= tags:
+                missing.append(f'{kp}: no {", ".join(sorted(need - tags))}')
+            for tag, text in laws:
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_vroot_{kp}_cache_{tag}')] = module(tmod, X, kp, E, text)
     if missing:
         # the coverage gate (round 8: d01/14, d01/15, the l10 and transactions trees had none): every list kind with a cached tree has its laws

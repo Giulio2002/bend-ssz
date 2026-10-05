@@ -1,0 +1,131 @@
+## round 11 generated: r11-c01-group-acc
+=== r11-c01-group-acc
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g0_va4,BeaconBlockBody_g0_valid,BeaconBlockBody_encode,BeaconBlockBody_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconBlockBody_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, Bool.and(acc, ok))
++(FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g1_va4,BeaconBlockBody_g1_valid,BeaconBlockBody_encode,BeaconBlockBody_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconBlockBody_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, Bool.and(acc, ok))
++(FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g0_va2,BeaconState_g0_valid,BeaconState_encode,BeaconState_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconState_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, Bool.and(acc, ok))
++(FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g1_va5,BeaconState_g1_valid,BeaconState_encode,BeaconState_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconState_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconState_d.BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, Bool.and(acc, ok))
++(FuluBeaconState_d.BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g2_va3,BeaconState_g2_valid,BeaconState_encode,BeaconState_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconState_g2 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconState_d.BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, Bool.and(acc, ok))
++(FuluBeaconState_d.BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g3_va1,BeaconState_g3_valid,BeaconState_encode,BeaconState_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconState_g3 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, Bool.and(acc, ok))
++(FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, ok)
+=== r11-c01-group-acc
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g4_va3,BeaconState_g4_valid,BeaconState_encode,BeaconState_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group BeaconState_g4 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, Bool.and(acc, ok))
++(FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, ok)
+=== r11-c01-group-acc
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g0_va0,ExecutionPayloadHeader_g0_valid,ExecutionPayloadHeader_encode,ExecutionPayloadHeader_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ExecutionPayloadHeader_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, ok)
+=== r11-c01-group-acc
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g1_va0,ExecutionPayloadHeader_g1_valid,ExecutionPayloadHeader_encode,ExecutionPayloadHeader_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ExecutionPayloadHeader_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, Bool.and(acc, ok))
++(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, ok)
+=== r11-c01-group-acc
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g0_va0,ExecutionPayload_g0_valid,ExecutionPayload_encode,ExecutionPayload_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ExecutionPayload_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++(FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, ok)
+=== r11-c01-group-acc
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va2,ExecutionPayload_g1_valid,ExecutionPayload_encode,ExecutionPayload_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ExecutionPayload_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, Bool.and(acc, ok))
++(FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, ok)
+=== r11-c01-group-acc
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_g0_va5,ProgressiveBitsStruct_g0_valid,ProgressiveBitsStruct_encode,ProgressiveBitsStruct_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ProgressiveBitsStruct_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
++(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, ok)
+=== r11-c01-group-acc
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_g1_va3,ProgressiveBitsStruct_g1_valid,ProgressiveBitsStruct_encode,ProgressiveBitsStruct_serialize
+spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+fault: the group ProgressiveBitsStruct_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+why: accumulator overwritten instead of and-ed
+-(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, Bool.and(acc, ok))
++(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, ok)

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/03
+# type: FuluDepositMessage
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 80 is read at absolute byte 80 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluDepositMessage_decode_ssz_generated.bend
+# sym: DepositMessage_rd1,DepositMessage_read,DepositMessage_decode
+--- a/types/FuluDepositMessage_decode_ssz_generated.bend
++++ b/types/FuluDepositMessage_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, +withdrawal_credentials) = pair
+-  DepositMessage_rd2(off, len, pubkey, withdrawal_credentials, uint64_r.u64_read(buf, (off + 80 : U32), 8))
++  DepositMessage_rd2(off, len, pubkey, withdrawal_credentials, uint64_r.u64_read(buf, (80 : U32), 8))
+ 

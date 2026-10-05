@@ -1,0 +1,70 @@
+=== r12-a04-leaf-word-order
+type: FuluBytes8
+ops: root
+file: types/FuluBytes8_hashtreeroot_generated.bend
+sym: b8_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes8: words 0 and 1 exchanged in the chunk
+why: a word-order slip in the generated chunk literal
+proofs: proofs/api/FuluPayloadId_hashtreeroot_proof_generated.bend
+-B.swap32(w0), B.swap32(w1)
++B.swap32(w1), B.swap32(w0)
+
+=== r12-a04-leaf-word-order
+type: FuluBytes20
+ops: root
+file: types/FuluBytes20_hashtreeroot_generated.bend
+sym: b20_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes20: words 3 and 4 exchanged in the chunk
+why: a word-order slip in the generated chunk literal
+proofs: proofs/api/FuluExecutionAddress_hashtreeroot_proof_generated.bend,proofs/api/FuluWithdrawalRequest_hashtreeroot_proof_generated.bend
+-B.swap32(w3), B.swap32(w4)
++B.swap32(w4), B.swap32(w3)
+
+=== r12-a04-leaf-word-order
+type: FuluBytes32
+ops: root
+file: types/FuluBytes32_hashtreeroot_generated.bend
+sym: b32_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes32: words 6 and 7 exchanged in the chunk
+why: a word-order slip in the generated chunk literal
+proofs: proofs/api/FuluRoot_hashtreeroot_proof_generated.bend,proofs/api/FuluDomain_hashtreeroot_proof_generated.bend
+-B.swap32(w6), B.swap32(w7)
++B.swap32(w7), B.swap32(w6)
+
+=== r12-a04-leaf-word-order
+type: FuluBytes48
+ops: root
+file: types/FuluBytes48_hashtreeroot_generated.bend
+sym: b48_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes48: the last word of a chunk and the first word of the next chunk exchanged
+why: chunk boundary misplaced by one word
+proofs: proofs/api/FuluG1Point_hashtreeroot_proof_generated.bend,proofs/api/FuluKZGProof_hashtreeroot_proof_generated.bend
+-B.swap32(w7)}, D.D{B.swap32(w8)
++B.swap32(w8)}, D.D{B.swap32(w7)
+
+=== r12-a04-leaf-word-order
+type: FuluAttestation
+ops: root
+file: types/Fulu_bitvector_64_hashtreeroot_generated.bend
+sym: bv64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_64: words 0 and 1 exchanged in the chunk
+why: a word-order slip in the generated chunk literal
+-B.swap32(w0), B.swap32(w1)
++B.swap32(w1), B.swap32(w0)
+
+=== r12-a04-leaf-word-order
+type: bitvector_512
+ops: root
+file: types/Fulu_bitvector_512_hashtreeroot_generated.bend
+sym: bv512_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_512: words 8 and 9 exchanged in the chunk
+why: a word-order slip in the generated chunk literal
+proofs: proofs/api/FuluSyncAggregate_hashtreeroot_proof_generated.bend
+-B.swap32(w8), B.swap32(w9)
++B.swap32(w9), B.swap32(w8)

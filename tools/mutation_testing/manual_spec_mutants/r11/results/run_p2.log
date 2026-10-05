@@ -1,0 +1,12 @@
+r11-a01-reader-base/09 UNJUDGED [('FuluBeaconBlockBody_decode_ssz_proof_generated.bend', '')]
+r11-a01-reader-base/10 UNJUDGED [('FuluBeaconBlockBody_decode_ssz_proof_generated.bend', '')]
+r11-a01-reader-base/11 UNJUDGED [('FuluBeaconBlockBody_decode_ssz_proof_generated.bend', '')]
+r11-a01-reader-base/12 UNJUDGED [('FuluBeaconBlockBody_decode_ssz_proof_generated.bend', '')]
+r11-a01-reader-base/21 KILLED [('FuluContributionAndProof_decode_ssz_proof_generated.bend', ['ContributionAndProof_spec_decode'])]
+r11-b03-bx-ok/01 UNJUDGED [('FuluBeaconBlockBody_decode_ssz_proof_generated.bend', '')]
+r11-b03-bx-ok/09 UNJUDGED [('FuluExecutionPayload_decode_ssz_proof_generated.bend', '')]
+r11-b03-bx-ok/10 UNJUDGED [('ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend', '')]
+r11-b03-bx-ok/11 UNJUDGED [('ComplexTestStruct_decode_ssz_proof_generated.bend', '')]
+r11-b03-bx-ok/12 UNJUDGED [('ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend', '')]
+r11-f01-union-same-type/02 UNJUDGED [('CompatibleUnionABCA_decode_ssz_proof_generated.bend', '')]
+done

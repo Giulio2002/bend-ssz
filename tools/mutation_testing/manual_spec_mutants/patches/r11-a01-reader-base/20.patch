@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/20
+# type: FuluSyncAggregatorSelectionData
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 8 is read at absolute byte 8 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend
+# sym: SyncAggregatorSelectionData_rd0,SyncAggregatorSelectionData_read,SyncAggregatorSelectionData_decode
+--- a/types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend
++++ b/types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   (buf, +slot) = pair
+-  SyncAggregatorSelectionData_rd1(off, len, slot, uint64_r.u64_read(buf, (off + 8 : U32), 8))
++  SyncAggregatorSelectionData_rd1(off, len, slot, uint64_r.u64_read(buf, (8 : U32), 8))
+ 

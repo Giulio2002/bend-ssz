@@ -1,0 +1,350 @@
+[
+ {
+  "id": "r12-e03-bv-pad-pos/01",
+  "type": "BitsStruct",
+  "cases": 350,
+  "official": 0,
+  "corpus_bad": 17,
+  "official_bad": 0,
+  "kinds": {
+   "ref accepts, mutant rejects": 12,
+   "ref rejects, mutant accepts": 5
+  },
+  "timeouts": 0,
+  "examples": [
+   "BitsStruct#3367: ref accepts, mutant rejects",
+   "BitsStruct#3370: ref accepts, mutant rejects",
+   "BitsStruct#3397: ref rejects, mutant accepts",
+   "BitsStruct#3431: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 16.4
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/02",
+  "type": "BitsStruct",
+  "cases": 350,
+  "official": 0,
+  "corpus_bad": 10,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 10
+  },
+  "timeouts": 0,
+  "examples": [
+   "BitsStruct#3414: ref rejects, mutant accepts",
+   "BitsStruct#3418: ref rejects, mutant accepts",
+   "BitsStruct#3452: ref rejects, mutant accepts",
+   "BitsStruct#3504: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 15.9
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/03",
+  "type": "ProgressiveBitsStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 239,
+  "official_bad": 0,
+  "kinds": {
+   "ref accepts, mutant rejects": 239
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveBitsStruct#20870: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20871: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20872: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20873: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 15.7
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/04",
+  "type": "ProgressiveBitsStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 39,
+  "official_bad": 0,
+  "kinds": {
+   "ref accepts, mutant rejects": 39
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveBitsStruct#20871: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20872: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20873: ref accepts, mutant rejects",
+   "ProgressiveBitsStruct#20874: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 15.6
+ },
+ {
+  "id": "r12-c02-ser-unchecked/03",
+  "type": "ProgressiveTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 16.3
+ },
+ {
+  "id": "r12-a05-u64-as-u32/01",
+  "type": "FixedTestStruct",
+  "cases": 241,
+  "official": 0,
+  "corpus_bad": 154,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 154
+  },
+  "timeouts": 0,
+  "examples": [
+   "FixedTestStruct#13373: root differs",
+   "FixedTestStruct#13375: root differs",
+   "FixedTestStruct#13376: root differs",
+   "FixedTestStruct#13385: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 15.8
+ },
+ {
+  "id": "r12-a05-u64-as-u32/05",
+  "type": "FuluBlobSidecar",
+  "cases": 5,
+  "official": 0,
+  "corpus_bad": 2,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 2
+  },
+  "timeouts": 0,
+  "examples": [
+   "BlobSidecar#4092: root differs",
+   "BlobSidecar#4093: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 33.0
+ },
+ {
+  "id": "r12-a07-shared-chunks/01",
+  "type": "uint64",
+  "cases": 96,
+  "official": 0,
+  "corpus_bad": 76,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 76
+  },
+  "timeouts": 0,
+  "examples": [
+   "uint64#34251: root differs",
+   "uint64#34259: root differs",
+   "uint64#34260: root differs",
+   "uint64#34261: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.7
+ },
+ {
+  "id": "r12-a07-shared-chunks/03",
+  "type": "boolean",
+  "cases": 10,
+  "official": 0,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "boolean#32373: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.4
+ },
+ {
+  "id": "r12-c04-union-sel-index/02",
+  "type": "CompatibleUnionBC",
+  "cases": 190,
+  "official": 0,
+  "corpus_bad": 10,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 10
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionBC#6679: re-encoding differs",
+   "CompatibleUnionBC#6681: re-encoding differs",
+   "CompatibleUnionBC#6682: re-encoding differs",
+   "CompatibleUnionBC#6713: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "r12-c04-union-sel-index/05",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 0,
+  "corpus_bad": 12,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 12
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6599: re-encoding differs",
+   "CompatibleUnionABCA#6633: re-encoding differs",
+   "CompatibleUnionABCA#6635: re-encoding differs",
+   "CompatibleUnionABCA#6662: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.6
+ },
+ {
+  "id": "r12-e01-bool-pos/01",
+  "type": "FuluValidator",
+  "cases": 275,
+  "official": 0,
+  "corpus_bad": 162,
+  "official_bad": 0,
+  "kinds": {
+   "ref accepts, mutant rejects": 162
+  },
+  "timeouts": 0,
+  "examples": [
+   "Validator#27663: ref accepts, mutant rejects",
+   "Validator#27664: ref accepts, mutant rejects",
+   "Validator#27665: ref accepts, mutant rejects",
+   "Validator#27713: ref accepts, mutant rejects"
+  ],
+  "B": "KILLED",
+  "secs": 10.7
+ },
+ {
+  "id": "r12-b01-bitlist-depth/02",
+  "type": "bitlist_2",
+  "cases": 30,
+  "official": 0,
+  "corpus_bad": 7,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 7
+  },
+  "timeouts": 0,
+  "examples": [
+   "bitlist_2#29855: root differs",
+   "bitlist_2#29856: root differs",
+   "bitlist_2#29857: root differs",
+   "bitlist_2#29858: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "r12-c03-union-payload-ok/01",
+  "type": "CompatibleUnionBC",
+  "cases": 190,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 9.5
+ },
+ {
+  "id": "r12-a04-leaf-word-order/01",
+  "type": "FuluBytes8",
+  "cases": 206,
+  "official": 0,
+  "corpus_bad": 179,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 179
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes8#5076: root differs",
+   "Bytes8#5077: root differs",
+   "Bytes8#5078: root differs",
+   "Bytes8#5084: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "r12-a01-leaf-noswap/02",
+  "type": "FuluBytes4",
+  "cases": 111,
+  "official": 0,
+  "corpus_bad": 89,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 89
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes4#4675: root differs",
+   "Bytes4#4676: root differs",
+   "Bytes4#4677: root differs",
+   "Bytes4#4682: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.7
+ },
+ {
+  "id": "r12-b02-delimiter/01",
+  "type": "bitlist_9",
+  "cases": 64,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.0
+ },
+ {
+  "id": "r12-c05-prog-valid-last/02",
+  "type": "ProgressiveVarTestStruct",
+  "cases": 373,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 14.0
+ },
+ {
+  "id": "r12-a03-leaf-right-align/01",
+  "type": "FuluBytes1",
+  "cases": 26,
+  "official": 0,
+  "corpus_bad": 10,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 10
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes1#4097: root differs",
+   "Bytes1#4098: root differs",
+   "Bytes1#4099: root differs",
+   "Bytes1#4100: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.6
+ }
+]

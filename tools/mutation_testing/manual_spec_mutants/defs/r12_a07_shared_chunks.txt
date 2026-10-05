@@ -1,0 +1,59 @@
+=== r12-a07-shared-chunks
+type: uint64
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: src/obj.bend u64_chunk: the two words of a uint64 chunk exchanged (big-endian word order)
+why: the shared leaf chunk helper used by every container root
+proofs: proofs/api/FuluCheckpoint_hashtreeroot_proof_generated.bend
+-case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+
+=== r12-a07-shared-chunks
+type: uint64
+ops: root
+file: src/obj.bend
+sym: u64_chunk
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: src/obj.bend u64_chunk: the high word of a uint64 chunk not byte-swapped
+why: the shared leaf chunk helper used by every container root
+proofs: proofs/api/FuluCheckpoint_hashtreeroot_proof_generated.bend
+-case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++case U64{+lo, +hi}: D.D{B.swap32(lo), hi, 0, 0, 0, 0, 0, 0}
+
+=== r12-a07-shared-chunks
+type: boolean
+ops: root
+file: src/obj.bend
+sym: bool_chunk
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: src/obj.bend bool_chunk: True packed as the word 1 (byte 3 of the chunk) instead of byte 0
+why: the shared leaf chunk helper used by every container root
+proofs: proofs/api/FuluValidator_hashtreeroot_proof_generated.bend
+-case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++case True{}: D.D{1, 0, 0, 0, 0, 0, 0, 0}
+
+=== r12-a07-shared-chunks
+type: boolean
+ops: root
+file: src/obj.bend
+sym: bool_chunk
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: src/obj.bend bool_chunk: True packed into the last limb of the chunk
+why: the shared leaf chunk helper used by every container root
+proofs: proofs/api/FuluValidator_hashtreeroot_proof_generated.bend
+-case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++case True{}: D.D{0, 0, 0, 0, 0, 0, 0, 16777216}
+
+=== r12-a07-shared-chunks
+type: uint32
+ops: root
+file: src/obj.bend
+sym: u32_chunk
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: src/obj.bend u32_chunk: a uint8/16/32 packed into limb 1 (bytes 4..7)
+why: the shared leaf chunk helper used by every container root
+proofs: proofs/api/FixedTestStruct_hashtreeroot_proof_generated.bend
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{0, B.swap32(v), 0, 0, 0, 0, 0, 0}

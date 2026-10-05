@@ -1,0 +1,1011 @@
+## round 11 generated: r11-h02-budget-unchecked
+=== r11-h02-budget-unchecked
+type: CompatibleUnionA
+ops: decode
+file: types/CompatibleUnionA_decode_ssz_generated.bend
+sym: CompatibleUnionA_dcb,CompatibleUnionA_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls CompatibleUnionA_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: CompatibleUnionA_decode_checked(buf, size)
++    case True{}: CompatibleUnionA_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluAggregateAndProof
+ops: decode
+file: types/FuluAggregateAndProof_decode_ssz_generated.bend
+sym: AggregateAndProof_dcb,AggregateAndProof_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls AggregateAndProof_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: AggregateAndProof_decode_checked(buf, size)
++    case True{}: AggregateAndProof_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluAttestation
+ops: decode
+file: types/FuluAttestation_decode_ssz_generated.bend
+sym: Attestation_dcb,Attestation_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Attestation_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Attestation_decode_checked(buf, size)
++    case True{}: Attestation_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBLSPubkey
+ops: decode
+file: types/FuluBLSPubkey_decode_ssz_generated.bend
+sym: BLSPubkey_dcb,BLSPubkey_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls BLSPubkey_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: BLSPubkey_decode_checked(buf, size)
++    case True{}: BLSPubkey_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBLSToExecutionChange
+ops: decode
+file: types/FuluBLSToExecutionChange_decode_ssz_generated.bend
+sym: BLSToExecutionChange_dcb,BLSToExecutionChange_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls BLSToExecutionChange_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: BLSToExecutionChange_decode_checked(buf, size)
++    case True{}: BLSToExecutionChange_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBeaconBlockHeader
+ops: decode
+file: types/FuluBeaconBlockHeader_decode_ssz_generated.bend
+sym: BeaconBlockHeader_dcb,BeaconBlockHeader_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls BeaconBlockHeader_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: BeaconBlockHeader_decode_checked(buf, size)
++    case True{}: BeaconBlockHeader_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBeaconState
+ops: decode
+file: types/FuluBeaconState_decode_ssz_generated.bend
+sym: BeaconState_dcb,BeaconState_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls BeaconState_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: BeaconState_decode_checked(buf, size)
++    case True{}: BeaconState_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBlobIndex
+ops: decode
+file: types/FuluBlobIndex_decode_ssz_generated.bend
+sym: BlobIndex_dcb,BlobIndex_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls BlobIndex_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: BlobIndex_decode_checked(buf, size)
++    case True{}: BlobIndex_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBlob
+ops: decode
+file: types/FuluBlob_decode_ssz_generated.bend
+sym: Blob_dcb,Blob_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Blob_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Blob_decode_checked(buf, size)
++    case True{}: Blob_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBytes20
+ops: decode
+file: types/FuluBytes20_decode_ssz_generated.bend
+sym: Bytes20_dcb,Bytes20_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Bytes20_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Bytes20_decode_checked(buf, size)
++    case True{}: Bytes20_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBytes48
+ops: decode
+file: types/FuluBytes48_decode_ssz_generated.bend
+sym: Bytes48_dcb,Bytes48_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Bytes48_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Bytes48_decode_checked(buf, size)
++    case True{}: Bytes48_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluBytes8
+ops: decode
+file: types/FuluBytes8_decode_ssz_generated.bend
+sym: Bytes8_dcb,Bytes8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Bytes8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Bytes8_decode_checked(buf, size)
++    case True{}: Bytes8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluCellIndex
+ops: decode
+file: types/FuluCellIndex_decode_ssz_generated.bend
+sym: CellIndex_dcb,CellIndex_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls CellIndex_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: CellIndex_decode_checked(buf, size)
++    case True{}: CellIndex_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluCheckpoint
+ops: decode
+file: types/FuluCheckpoint_decode_ssz_generated.bend
+sym: Checkpoint_dcb,Checkpoint_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Checkpoint_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Checkpoint_decode_checked(buf, size)
++    case True{}: Checkpoint_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluCommitmentIndex
+ops: decode
+file: types/FuluCommitmentIndex_decode_ssz_generated.bend
+sym: CommitmentIndex_dcb,CommitmentIndex_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls CommitmentIndex_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: CommitmentIndex_decode_checked(buf, size)
++    case True{}: CommitmentIndex_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluConsolidationRequest
+ops: decode
+file: types/FuluConsolidationRequest_decode_ssz_generated.bend
+sym: ConsolidationRequest_dcb,ConsolidationRequest_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ConsolidationRequest_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ConsolidationRequest_decode_checked(buf, size)
++    case True{}: ConsolidationRequest_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluCurrentSyncCommitteeBranch
+ops: decode
+file: types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend
+sym: CurrentSyncCommitteeBranch_dcb,CurrentSyncCommitteeBranch_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls CurrentSyncCommitteeBranch_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: CurrentSyncCommitteeBranch_decode_checked(buf, size)
++    case True{}: CurrentSyncCommitteeBranch_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluDataColumnSidecar
+ops: decode
+file: types/FuluDataColumnSidecar_decode_ssz_generated.bend
+sym: DataColumnSidecar_dcb,DataColumnSidecar_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls DataColumnSidecar_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: DataColumnSidecar_decode_checked(buf, size)
++    case True{}: DataColumnSidecar_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluDepositData
+ops: decode
+file: types/FuluDepositData_decode_ssz_generated.bend
+sym: DepositData_dcb,DepositData_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls DepositData_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: DepositData_decode_checked(buf, size)
++    case True{}: DepositData_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluDepositRequest
+ops: decode
+file: types/FuluDepositRequest_decode_ssz_generated.bend
+sym: DepositRequest_dcb,DepositRequest_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls DepositRequest_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: DepositRequest_decode_checked(buf, size)
++    case True{}: DepositRequest_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluDomainType
+ops: decode
+file: types/FuluDomainType_decode_ssz_generated.bend
+sym: DomainType_dcb,DomainType_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls DomainType_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: DomainType_decode_checked(buf, size)
++    case True{}: DomainType_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluEpoch
+ops: decode
+file: types/FuluEpoch_decode_ssz_generated.bend
+sym: Epoch_dcb,Epoch_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Epoch_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Epoch_decode_checked(buf, size)
++    case True{}: Epoch_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluEth1Data
+ops: decode
+file: types/FuluEth1Data_decode_ssz_generated.bend
+sym: Eth1Data_dcb,Eth1Data_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Eth1Data_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Eth1Data_decode_checked(buf, size)
++    case True{}: Eth1Data_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluExecutionAddress
+ops: decode
+file: types/FuluExecutionAddress_decode_ssz_generated.bend
+sym: ExecutionAddress_dcb,ExecutionAddress_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ExecutionAddress_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ExecutionAddress_decode_checked(buf, size)
++    case True{}: ExecutionAddress_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluExecutionPayloadHeader
+ops: decode
+file: types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
+sym: ExecutionPayloadHeader_dcb,ExecutionPayloadHeader_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ExecutionPayloadHeader_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ExecutionPayloadHeader_decode_checked(buf, size)
++    case True{}: ExecutionPayloadHeader_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluExecutionRequests
+ops: decode
+file: types/FuluExecutionRequests_decode_ssz_generated.bend
+sym: ExecutionRequests_dcb,ExecutionRequests_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ExecutionRequests_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ExecutionRequests_decode_checked(buf, size)
++    case True{}: ExecutionRequests_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluForkData
+ops: decode
+file: types/FuluForkData_decode_ssz_generated.bend
+sym: ForkData_dcb,ForkData_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ForkData_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ForkData_decode_checked(buf, size)
++    case True{}: ForkData_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluFork
+ops: decode
+file: types/FuluFork_decode_ssz_generated.bend
+sym: Fork_dcb,Fork_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Fork_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Fork_decode_checked(buf, size)
++    case True{}: Fork_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluG2Point
+ops: decode
+file: types/FuluG2Point_decode_ssz_generated.bend
+sym: G2Point_dcb,G2Point_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls G2Point_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: G2Point_decode_checked(buf, size)
++    case True{}: G2Point_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluHash32
+ops: decode
+file: types/FuluHash32_decode_ssz_generated.bend
+sym: Hash32_dcb,Hash32_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Hash32_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Hash32_decode_checked(buf, size)
++    case True{}: Hash32_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluHistoricalSummary
+ops: decode
+file: types/FuluHistoricalSummary_decode_ssz_generated.bend
+sym: HistoricalSummary_dcb,HistoricalSummary_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls HistoricalSummary_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: HistoricalSummary_decode_checked(buf, size)
++    case True{}: HistoricalSummary_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluKZGCommitment
+ops: decode
+file: types/FuluKZGCommitment_decode_ssz_generated.bend
+sym: KZGCommitment_dcb,KZGCommitment_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls KZGCommitment_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: KZGCommitment_decode_checked(buf, size)
++    case True{}: KZGCommitment_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluLightClientBootstrap
+ops: decode
+file: types/FuluLightClientBootstrap_decode_ssz_generated.bend
+sym: LightClientBootstrap_dcb,LightClientBootstrap_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls LightClientBootstrap_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: LightClientBootstrap_decode_checked(buf, size)
++    case True{}: LightClientBootstrap_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluLightClientHeader
+ops: decode
+file: types/FuluLightClientHeader_decode_ssz_generated.bend
+sym: LightClientHeader_dcb,LightClientHeader_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls LightClientHeader_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: LightClientHeader_decode_checked(buf, size)
++    case True{}: LightClientHeader_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluLightClientUpdate
+ops: decode
+file: types/FuluLightClientUpdate_decode_ssz_generated.bend
+sym: LightClientUpdate_dcb,LightClientUpdate_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls LightClientUpdate_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: LightClientUpdate_decode_checked(buf, size)
++    case True{}: LightClientUpdate_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluNextSyncCommitteeBranch
+ops: decode
+file: types/FuluNextSyncCommitteeBranch_decode_ssz_generated.bend
+sym: NextSyncCommitteeBranch_dcb,NextSyncCommitteeBranch_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls NextSyncCommitteeBranch_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: NextSyncCommitteeBranch_decode_checked(buf, size)
++    case True{}: NextSyncCommitteeBranch_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluParticipationFlags
+ops: decode
+file: types/FuluParticipationFlags_decode_ssz_generated.bend
+sym: ParticipationFlags_dcb,ParticipationFlags_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ParticipationFlags_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ParticipationFlags_decode_checked(buf, size)
++    case True{}: ParticipationFlags_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluPendingAttestation
+ops: decode
+file: types/FuluPendingAttestation_decode_ssz_generated.bend
+sym: PendingAttestation_dcb,PendingAttestation_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls PendingAttestation_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: PendingAttestation_decode_checked(buf, size)
++    case True{}: PendingAttestation_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluPendingDeposit
+ops: decode
+file: types/FuluPendingDeposit_decode_ssz_generated.bend
+sym: PendingDeposit_dcb,PendingDeposit_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls PendingDeposit_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: PendingDeposit_decode_checked(buf, size)
++    case True{}: PendingDeposit_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluPowBlock
+ops: decode
+file: types/FuluPowBlock_decode_ssz_generated.bend
+sym: PowBlock_dcb,PowBlock_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls PowBlock_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: PowBlock_decode_checked(buf, size)
++    case True{}: PowBlock_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluRoot
+ops: decode
+file: types/FuluRoot_decode_ssz_generated.bend
+sym: Root_dcb,Root_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Root_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Root_decode_checked(buf, size)
++    case True{}: Root_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSignedAggregateAndProof
+ops: decode
+file: types/FuluSignedAggregateAndProof_decode_ssz_generated.bend
+sym: SignedAggregateAndProof_dcb,SignedAggregateAndProof_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SignedAggregateAndProof_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SignedAggregateAndProof_decode_checked(buf, size)
++    case True{}: SignedAggregateAndProof_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSignedBeaconBlockHeader
+ops: decode
+file: types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+sym: SignedBeaconBlockHeader_dcb,SignedBeaconBlockHeader_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SignedBeaconBlockHeader_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SignedBeaconBlockHeader_decode_checked(buf, size)
++    case True{}: SignedBeaconBlockHeader_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSignedContributionAndProof
+ops: decode
+file: types/FuluSignedContributionAndProof_decode_ssz_generated.bend
+sym: SignedContributionAndProof_dcb,SignedContributionAndProof_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SignedContributionAndProof_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SignedContributionAndProof_decode_checked(buf, size)
++    case True{}: SignedContributionAndProof_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSigningData
+ops: decode
+file: types/FuluSigningData_decode_ssz_generated.bend
+sym: SigningData_dcb,SigningData_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SigningData_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SigningData_decode_checked(buf, size)
++    case True{}: SigningData_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSlot
+ops: decode
+file: types/FuluSlot_decode_ssz_generated.bend
+sym: Slot_dcb,Slot_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Slot_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Slot_decode_checked(buf, size)
++    case True{}: Slot_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSyncAggregate
+ops: decode
+file: types/FuluSyncAggregate_decode_ssz_generated.bend
+sym: SyncAggregate_dcb,SyncAggregate_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SyncAggregate_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SyncAggregate_decode_checked(buf, size)
++    case True{}: SyncAggregate_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSyncCommitteeContribution
+ops: decode
+file: types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+sym: SyncCommitteeContribution_dcb,SyncCommitteeContribution_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SyncCommitteeContribution_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SyncCommitteeContribution_decode_checked(buf, size)
++    case True{}: SyncCommitteeContribution_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluSyncCommittee
+ops: decode
+file: types/FuluSyncCommittee_decode_ssz_generated.bend
+sym: SyncCommittee_dcb,SyncCommittee_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SyncCommittee_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SyncCommittee_decode_checked(buf, size)
++    case True{}: SyncCommittee_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluValidatorIndex
+ops: decode
+file: types/FuluValidatorIndex_decode_ssz_generated.bend
+sym: ValidatorIndex_dcb,ValidatorIndex_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ValidatorIndex_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ValidatorIndex_decode_checked(buf, size)
++    case True{}: ValidatorIndex_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluVersion
+ops: decode
+file: types/FuluVersion_decode_ssz_generated.bend
+sym: Version_dcb,Version_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls Version_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: Version_decode_checked(buf, size)
++    case True{}: Version_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluVoluntaryExit
+ops: decode
+file: types/FuluVoluntaryExit_decode_ssz_generated.bend
+sym: VoluntaryExit_dcb,VoluntaryExit_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls VoluntaryExit_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: VoluntaryExit_decode_checked(buf, size)
++    case True{}: VoluntaryExit_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: FuluWithdrawalRequest
+ops: decode
+file: types/FuluWithdrawalRequest_decode_ssz_generated.bend
+sym: WithdrawalRequest_dcb,WithdrawalRequest_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls WithdrawalRequest_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: WithdrawalRequest_decode_checked(buf, size)
++    case True{}: WithdrawalRequest_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_dcb,ProgressiveBitsStruct_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ProgressiveBitsStruct_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ProgressiveBitsStruct_decode_checked(buf, size)
++    case True{}: ProgressiveBitsStruct_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: ProgressiveSingleFieldContainerTestStruct
+ops: decode
+file: types/ProgressiveSingleFieldContainerTestStruct_decode_ssz_generated.bend
+sym: ProgressiveSingleFieldContainerTestStruct_dcb,ProgressiveSingleFieldContainerTestStruct_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ProgressiveSingleFieldContainerTestStruct_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ProgressiveSingleFieldContainerTestStruct_decode_checked(buf, size)
++    case True{}: ProgressiveSingleFieldContainerTestStruct_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: ProgressiveTestStruct
+ops: decode
+file: types/ProgressiveTestStruct_decode_ssz_generated.bend
+sym: ProgressiveTestStruct_dcb,ProgressiveTestStruct_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls ProgressiveTestStruct_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: ProgressiveTestStruct_decode_checked(buf, size)
++    case True{}: ProgressiveTestStruct_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: SingleFieldTestStruct
+ops: decode
+file: types/SingleFieldTestStruct_decode_ssz_generated.bend
+sym: SingleFieldTestStruct_dcb,SingleFieldTestStruct_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls SingleFieldTestStruct_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: SingleFieldTestStruct_decode_checked(buf, size)
++    case True{}: SingleFieldTestStruct_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_15
+ops: decode
+file: types/bitvector_15_decode_ssz_generated.bend
+sym: bitvector_15_dcb,bitvector_15_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_15_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_15_decode_checked(buf, size)
++    case True{}: bitvector_15_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_17
+ops: decode
+file: types/bitvector_17_decode_ssz_generated.bend
+sym: bitvector_17_dcb,bitvector_17_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_17_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_17_decode_checked(buf, size)
++    case True{}: bitvector_17_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_32
+ops: decode
+file: types/bitvector_32_decode_ssz_generated.bend
+sym: bitvector_32_dcb,bitvector_32_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_32_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_32_decode_checked(buf, size)
++    case True{}: bitvector_32_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_3
+ops: decode
+file: types/bitvector_3_decode_ssz_generated.bend
+sym: bitvector_3_dcb,bitvector_3_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_3_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_3_decode_checked(buf, size)
++    case True{}: bitvector_3_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_513
+ops: decode
+file: types/bitvector_513_decode_ssz_generated.bend
+sym: bitvector_513_dcb,bitvector_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_513_decode_checked(buf, size)
++    case True{}: bitvector_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_6
+ops: decode
+file: types/bitvector_6_decode_ssz_generated.bend
+sym: bitvector_6_dcb,bitvector_6_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_6_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_6_decode_checked(buf, size)
++    case True{}: bitvector_6_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: bitvector_9
+ops: decode
+file: types/bitvector_9_decode_ssz_generated.bend
+sym: bitvector_9_dcb,bitvector_9_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls bitvector_9_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: bitvector_9_decode_checked(buf, size)
++    case True{}: bitvector_9_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: proglist_uint256
+ops: decode
+file: types/proglist_uint256_decode_ssz_generated.bend
+sym: proglist_uint256_dcb,proglist_uint256_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls proglist_uint256_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: proglist_uint256_decode_checked(buf, size)
++    case True{}: proglist_uint256_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: uint128
+ops: decode
+file: types/uint128_decode_ssz_generated.bend
+sym: uint128_dcb,uint128_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls uint128_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: uint128_decode_checked(buf, size)
++    case True{}: uint128_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_bool_1
+ops: decode
+file: types/vec_bool_1_decode_ssz_generated.bend
+sym: vec_bool_1_dcb,vec_bool_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_bool_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_bool_1_decode_checked(buf, size)
++    case True{}: vec_bool_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_bool_31
+ops: decode
+file: types/vec_bool_31_decode_ssz_generated.bend
+sym: vec_bool_31_dcb,vec_bool_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_bool_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_bool_31_decode_checked(buf, size)
++    case True{}: vec_bool_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_bool_4
+ops: decode
+file: types/vec_bool_4_decode_ssz_generated.bend
+sym: vec_bool_4_dcb,vec_bool_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_bool_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_bool_4_decode_checked(buf, size)
++    case True{}: vec_bool_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_bool_513
+ops: decode
+file: types/vec_bool_513_decode_ssz_generated.bend
+sym: vec_bool_513_dcb,vec_bool_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_bool_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_bool_513_decode_checked(buf, size)
++    case True{}: vec_bool_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_bool_8
+ops: decode
+file: types/vec_bool_8_decode_ssz_generated.bend
+sym: vec_bool_8_dcb,vec_bool_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_bool_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_bool_8_decode_checked(buf, size)
++    case True{}: vec_bool_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint128_1
+ops: decode
+file: types/vec_uint128_1_decode_ssz_generated.bend
+sym: vec_uint128_1_dcb,vec_uint128_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint128_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint128_1_decode_checked(buf, size)
++    case True{}: vec_uint128_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint128_31
+ops: decode
+file: types/vec_uint128_31_decode_ssz_generated.bend
+sym: vec_uint128_31_dcb,vec_uint128_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint128_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint128_31_decode_checked(buf, size)
++    case True{}: vec_uint128_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint128_4
+ops: decode
+file: types/vec_uint128_4_decode_ssz_generated.bend
+sym: vec_uint128_4_dcb,vec_uint128_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint128_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint128_4_decode_checked(buf, size)
++    case True{}: vec_uint128_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint128_513
+ops: decode
+file: types/vec_uint128_513_decode_ssz_generated.bend
+sym: vec_uint128_513_dcb,vec_uint128_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint128_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint128_513_decode_checked(buf, size)
++    case True{}: vec_uint128_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint128_8
+ops: decode
+file: types/vec_uint128_8_decode_ssz_generated.bend
+sym: vec_uint128_8_dcb,vec_uint128_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint128_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint128_8_decode_checked(buf, size)
++    case True{}: vec_uint128_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint16_1
+ops: decode
+file: types/vec_uint16_1_decode_ssz_generated.bend
+sym: vec_uint16_1_dcb,vec_uint16_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint16_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint16_1_decode_checked(buf, size)
++    case True{}: vec_uint16_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint16_31
+ops: decode
+file: types/vec_uint16_31_decode_ssz_generated.bend
+sym: vec_uint16_31_dcb,vec_uint16_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint16_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint16_31_decode_checked(buf, size)
++    case True{}: vec_uint16_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint16_4
+ops: decode
+file: types/vec_uint16_4_decode_ssz_generated.bend
+sym: vec_uint16_4_dcb,vec_uint16_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint16_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint16_4_decode_checked(buf, size)
++    case True{}: vec_uint16_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint16_513
+ops: decode
+file: types/vec_uint16_513_decode_ssz_generated.bend
+sym: vec_uint16_513_dcb,vec_uint16_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint16_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint16_513_decode_checked(buf, size)
++    case True{}: vec_uint16_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint16_8
+ops: decode
+file: types/vec_uint16_8_decode_ssz_generated.bend
+sym: vec_uint16_8_dcb,vec_uint16_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint16_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint16_8_decode_checked(buf, size)
++    case True{}: vec_uint16_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint256_1
+ops: decode
+file: types/vec_uint256_1_decode_ssz_generated.bend
+sym: vec_uint256_1_dcb,vec_uint256_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint256_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint256_1_decode_checked(buf, size)
++    case True{}: vec_uint256_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint256_31
+ops: decode
+file: types/vec_uint256_31_decode_ssz_generated.bend
+sym: vec_uint256_31_dcb,vec_uint256_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint256_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint256_31_decode_checked(buf, size)
++    case True{}: vec_uint256_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint256_4
+ops: decode
+file: types/vec_uint256_4_decode_ssz_generated.bend
+sym: vec_uint256_4_dcb,vec_uint256_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint256_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint256_4_decode_checked(buf, size)
++    case True{}: vec_uint256_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint256_513
+ops: decode
+file: types/vec_uint256_513_decode_ssz_generated.bend
+sym: vec_uint256_513_dcb,vec_uint256_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint256_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint256_513_decode_checked(buf, size)
++    case True{}: vec_uint256_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint256_8
+ops: decode
+file: types/vec_uint256_8_decode_ssz_generated.bend
+sym: vec_uint256_8_dcb,vec_uint256_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint256_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint256_8_decode_checked(buf, size)
++    case True{}: vec_uint256_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint32_1
+ops: decode
+file: types/vec_uint32_1_decode_ssz_generated.bend
+sym: vec_uint32_1_dcb,vec_uint32_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint32_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint32_1_decode_checked(buf, size)
++    case True{}: vec_uint32_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint32_31
+ops: decode
+file: types/vec_uint32_31_decode_ssz_generated.bend
+sym: vec_uint32_31_dcb,vec_uint32_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint32_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint32_31_decode_checked(buf, size)
++    case True{}: vec_uint32_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint32_4
+ops: decode
+file: types/vec_uint32_4_decode_ssz_generated.bend
+sym: vec_uint32_4_dcb,vec_uint32_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint32_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint32_4_decode_checked(buf, size)
++    case True{}: vec_uint32_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint32_513
+ops: decode
+file: types/vec_uint32_513_decode_ssz_generated.bend
+sym: vec_uint32_513_dcb,vec_uint32_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint32_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint32_513_decode_checked(buf, size)
++    case True{}: vec_uint32_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint32_8
+ops: decode
+file: types/vec_uint32_8_decode_ssz_generated.bend
+sym: vec_uint32_8_dcb,vec_uint32_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint32_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint32_8_decode_checked(buf, size)
++    case True{}: vec_uint32_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint64_1
+ops: decode
+file: types/vec_uint64_1_decode_ssz_generated.bend
+sym: vec_uint64_1_dcb,vec_uint64_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint64_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint64_1_decode_checked(buf, size)
++    case True{}: vec_uint64_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint64_31
+ops: decode
+file: types/vec_uint64_31_decode_ssz_generated.bend
+sym: vec_uint64_31_dcb,vec_uint64_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint64_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint64_31_decode_checked(buf, size)
++    case True{}: vec_uint64_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint64_4
+ops: decode
+file: types/vec_uint64_4_decode_ssz_generated.bend
+sym: vec_uint64_4_dcb,vec_uint64_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint64_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint64_4_decode_checked(buf, size)
++    case True{}: vec_uint64_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint64_513
+ops: decode
+file: types/vec_uint64_513_decode_ssz_generated.bend
+sym: vec_uint64_513_dcb,vec_uint64_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint64_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint64_513_decode_checked(buf, size)
++    case True{}: vec_uint64_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint64_8
+ops: decode
+file: types/vec_uint64_8_decode_ssz_generated.bend
+sym: vec_uint64_8_dcb,vec_uint64_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint64_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint64_8_decode_checked(buf, size)
++    case True{}: vec_uint64_8_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint8_1
+ops: decode
+file: types/vec_uint8_1_decode_ssz_generated.bend
+sym: vec_uint8_1_dcb,vec_uint8_1_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint8_1_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint8_1_decode_checked(buf, size)
++    case True{}: vec_uint8_1_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint8_31
+ops: decode
+file: types/vec_uint8_31_decode_ssz_generated.bend
+sym: vec_uint8_31_dcb,vec_uint8_31_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint8_31_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint8_31_decode_checked(buf, size)
++    case True{}: vec_uint8_31_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint8_4
+ops: decode
+file: types/vec_uint8_4_decode_ssz_generated.bend
+sym: vec_uint8_4_dcb,vec_uint8_4_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint8_4_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint8_4_decode_checked(buf, size)
++    case True{}: vec_uint8_4_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint8_513
+ops: decode
+file: types/vec_uint8_513_decode_ssz_generated.bend
+sym: vec_uint8_513_dcb,vec_uint8_513_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint8_513_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint8_513_decode_checked(buf, size)
++    case True{}: vec_uint8_513_decode(buf, size)
+=== r11-h02-budget-unchecked
+type: vec_uint8_8
+ops: decode
+file: types/vec_uint8_8_decode_ssz_generated.bend
+sym: vec_uint8_8_dcb,vec_uint8_8_decode_checked_budget
+spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+fault: the admitted branch calls vec_uint8_8_decode (the size <= stored-words test of decode_checked is skipped)
+why: wrapper composed with the unchecked decoder
+-    case True{}: vec_uint8_8_decode_checked(buf, size)
++    case True{}: vec_uint8_8_decode(buf, size)

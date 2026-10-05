@@ -1,0 +1,56 @@
+=== r12-a03-leaf-right-align
+type: FuluBytes1
+ops: root
+file: types/FuluBytes1_hashtreeroot_generated.bend
+sym: b1_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes1: the bytes right-aligned in the chunk (zero padding on the left)
+why: big-endian intuition: padding a short value on the left, as a number
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)}
+
+=== r12-a03-leaf-right-align
+type: FuluBytes4
+ops: root
+file: types/FuluBytes4_hashtreeroot_generated.bend
+sym: b4_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes4: the bytes right-aligned in the chunk (zero padding on the left)
+why: big-endian intuition: padding a short value on the left, as a number
+proofs: proofs/api/FuluVersion_hashtreeroot_proof_generated.bend,proofs/api/FuluDomainType_hashtreeroot_proof_generated.bend
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)}
+
+=== r12-a03-leaf-right-align
+type: bitvector_4
+ops: root
+file: types/Fulu_bitvector_4_hashtreeroot_generated.bend
+sym: bv4_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_4: the bytes right-aligned in the chunk (zero padding on the left)
+why: big-endian intuition: padding a short value on the left, as a number
+proofs: proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)}
+
+=== r12-a03-leaf-right-align
+type: bitvector_15
+ops: root
+file: types/bitvector_15_hashtreeroot_generated.bend
+sym: bv15_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: bitvector_15: the bytes right-aligned in the chunk (zero padding on the left)
+why: big-endian intuition: padding a short value on the left, as a number
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)}
+
+=== r12-a03-leaf-right-align
+type: bitvector_31
+ops: root
+file: types/bitvector_31_hashtreeroot_generated.bend
+sym: bv31_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: bitvector_31: the bytes right-aligned in the chunk (zero padding on the left)
+why: big-endian intuition: padding a short value on the left, as a number
+-D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
++D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)}

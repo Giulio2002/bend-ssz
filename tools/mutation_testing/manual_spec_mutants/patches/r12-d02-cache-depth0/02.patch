@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-d02-cache-depth0/02
+# type: Fulu_list_AttesterSlashing_1
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+# fault: l1_AttesterSlashing_cache: the tree depth taken for an empty list (cap(0)), not for the list's length
+# why: the cache sized for the default value it was first written for
+# file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+# sym: l1_AttesterSlashing_cache
+# proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend
+--- a/types/Fulu_list_AttesterSlashing_1_def_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_def_generated.bend
+@@ -165,3 +165,3 @@
+   match o:
+-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_cache_at(arr, n, l1_AttesterSlashing_cap(n))
++    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_cache_at(arr, n, l1_AttesterSlashing_cap(0))
+ 

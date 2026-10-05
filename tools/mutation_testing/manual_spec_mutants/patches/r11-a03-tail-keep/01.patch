@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a03-tail-keep/01
+# type: FuluBytes1
+# ops: decode
+# spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+# fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+# why: a 32-bit read not masked to the value's width
+# file: types/FuluBytes1_decode_ssz_generated.bend
+# sym: b1_r0,b1_read,Bytes1_decode
+--- a/types/FuluBytes1_decode_ssz_generated.bend
++++ b/types/FuluBytes1_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, FuluBytes1_d.Bytes1{O.keep(1, x)})
++  (buf, FuluBytes1_d.Bytes1{x})
+ 

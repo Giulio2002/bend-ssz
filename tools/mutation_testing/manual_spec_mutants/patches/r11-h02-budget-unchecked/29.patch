@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/29
+# type: FuluG2Point
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls G2Point_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/FuluG2Point_decode_ssz_generated.bend
+# sym: G2Point_dcb,G2Point_decode_checked_budget
+--- a/types/FuluG2Point_decode_ssz_generated.bend
++++ b/types/FuluG2Point_decode_ssz_generated.bend
+@@ -58,3 +58,3 @@
+   match ok:
+-    case True{}: G2Point_decode_checked(buf, size)
++    case True{}: G2Point_decode(buf, size)
+     case False{}: (buf, None{})

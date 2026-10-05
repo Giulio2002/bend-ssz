@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/59
+# type: bitvector_16
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/bitvector_16_decode_ssz_generated.bend
+# sym: bitvector_16_decode_checked_budget,bitvector_16_dcb
+--- a/types/bitvector_16_decode_ssz_generated.bend
++++ b/types/bitvector_16_decode_ssz_generated.bend
+@@ -75,3 +75,3 @@
+ 
+-def bitvector_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>: bitvector_16_dcb(Bool.and(U32.is_lt(bitvector_16_dcost(size), 4294967295), U32.is_le(bitvector_16_dcost(size), budget)), buf, size)
++def bitvector_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>: bitvector_16_dcb(Bool.and(U32.is_lt(bitvector_16_dcost(size), 4294967295), U32.is_lt(bitvector_16_dcost(size), budget)), buf, size)
+ 

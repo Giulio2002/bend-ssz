@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/15
+# type: FuluSingleAttestation
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluSingleAttestation: the uint64 field `attester_index` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluSingleAttestation_hashtreeroot_generated.bend
+# sym: SingleAttestation_rt0,u64_root
+--- a/types/FuluSingleAttestation_hashtreeroot_generated.bend
++++ b/types/FuluSingleAttestation_hashtreeroot_generated.bend
+@@ -29,3 +29,3 @@
+   (h, d_committee_index) = pair
+-  SingleAttestation_rt1(hl, seg, committee_index, attester_index, data, signature, d_committee_index, uint64_h.u64_root(hl, h, attester_index, seg))
++  SingleAttestation_rt1(hl, seg, committee_index, attester_index, data, signature, d_committee_index, (h, O.u32_chunk(O.u64_lo_of(attester_index))))
+ 

@@ -1,0 +1,61 @@
+## round 11 hand-designed: r11-d05-cache-depth
+=== r11-d05-cache-depth
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp,l16_ProposerSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l16_ProposerSlashing_cache_at(arr, n, l16_ProposerSlashing_cap(n))
++l16_ProposerSlashing_cache_at(arr, n, l16_ProposerSlashing_cap((n + 1 : U32)))
+=== r11-d05-cache-depth
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_cache,l16_Deposit_cached_root,l16_Deposit_cset,l16_Deposit_capp,l16_Deposit_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l16_Deposit_cache_at(arr, n, l16_Deposit_cap(n))
++l16_Deposit_cache_at(arr, n, l16_Deposit_cap((n + 1 : U32)))
+=== r11-d05-cache-depth
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_cache,l8_Attestation_cached_root,l8_Attestation_cset,l8_Attestation_capp,l8_Attestation_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l8_Attestation_cache_at(arr, n, l8_Attestation_cap(n))
++l8_Attestation_cache_at(arr, n, l8_Attestation_cap((n + 1 : U32)))
+=== r11-d05-cache-depth
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+sym: l1_AttesterSlashing_cache,l1_AttesterSlashing_cached_root,l1_AttesterSlashing_cset,l1_AttesterSlashing_capp,l1_AttesterSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l1_AttesterSlashing_cache_at(arr, n, l1_AttesterSlashing_cap(n))
++l1_AttesterSlashing_cache_at(arr, n, l1_AttesterSlashing_cap((n + 1 : U32)))
+=== r11-d05-cache-depth
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+sym: l1048576_bl1073741824_cache,l1048576_bl1073741824_cached_root,l1048576_bl1073741824_cset,l1048576_bl1073741824_capp,l1048576_bl1073741824_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l1048576_bl1073741824_cache_at(arr, n, l1048576_bl1073741824_cap(n))
++l1048576_bl1073741824_cache_at(arr, n, l1048576_bl1073741824_cap((n + 1 : U32)))
+=== r11-d05-cache-depth
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_cache,l10_ProgressiveSingleFieldContainerTestStruct_cached_root,l10_ProgressiveSingleFieldContainerTestStruct_cset,l10_ProgressiveSingleFieldContainerTestStruct_capp,l10_ProgressiveSingleFieldContainerTestStruct_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)
+why: depth from bit length
+-l10_ProgressiveSingleFieldContainerTestStruct_cache_at(arr, n, l10_ProgressiveSingleFieldContainerTestStruct_cap(n))
++l10_ProgressiveSingleFieldContainerTestStruct_cache_at(arr, n, l10_ProgressiveSingleFieldContainerTestStruct_cap((n + 1 : U32)))

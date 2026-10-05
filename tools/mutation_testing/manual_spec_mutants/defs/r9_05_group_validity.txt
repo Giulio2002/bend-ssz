@@ -1,0 +1,260 @@
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g0_va2,BeaconState_g0_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here field historical_roots of group 0)
+fault: group 0 ignores the validity of its field historical_roots (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g0_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here the first variable field block_roots of group 0)
+fault: group 0 does not check its first field block_roots (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_va0(genesis_time, genesis_validators_root, slot, fork, latest_block_header, state_roots, historical_roots, True{}, Fulu_vec_bytevec_32_8192_e.v8192_b32_valid(block_roots))
++    case FuluBeaconState_d.BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0_va0(genesis_time, genesis_validators_root, slot, fork, latest_block_header, state_roots, historical_roots, True{}, (block_roots, True{}))
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g1_va5,BeaconState_g1_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here field previous_epoch_participation of group 1)
+fault: group 1 ignores the validity of its field previous_epoch_participation (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconState_d.BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g1{eth1_data, eth1_data_votes, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g1_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here the first variable field eth1_data_votes of group 1)
+fault: group 1 does not check its first field eth1_data_votes (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconState_d.BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1_va0(eth1_data, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation, True{}, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_valid(eth1_data_votes))
++    case FuluBeaconState_d.BeaconState_g1{+eth1_data, eth1_data_votes, +eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation}: BeaconState_g1_va0(eth1_data, eth1_deposit_index, validators, balances, randao_mixes, slashings, previous_epoch_participation, True{}, (eth1_data_votes, True{}))
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g2_va3,BeaconState_g2_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here field next_sync_committee of group 2)
+fault: group 2 ignores the validity of its field next_sync_committee (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconState_d.BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g3_va1,BeaconState_g3_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here field historical_summaries of group 3)
+fault: group 3 ignores the validity of its field historical_summaries (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g3_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here the first variable field latest_execution_payload_header of group 3)
+fault: group 3 does not check its first field latest_execution_payload_header (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: BeaconState_g3_va0(next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch, True{}, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_bx_valid(latest_execution_payload_header))
++    case FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, +next_withdrawal_index, +next_withdrawal_validator_index, historical_summaries, +deposit_requests_start_index, +deposit_balance_to_consume, +exit_balance_to_consume, +earliest_exit_epoch}: BeaconState_g3_va0(next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch, True{}, (latest_execution_payload_header, True{}))
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g4_va3,BeaconState_g4_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here field proposer_lookahead of group 4)
+fault: group 4 ignores the validity of its field proposer_lookahead (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g4{consolidation_balance_to_consume, earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g4_valid,BeaconState_valid_f,BeaconState_valid
+spec: a container value is valid iff every field is valid (here the first variable field pending_deposits of group 4)
+fault: group 4 does not check its first field pending_deposits (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid_f(pending_deposits))
++    case FuluBeaconState_d.BeaconState_g4{+consolidation_balance_to_consume, +earliest_consolidation_epoch, pending_deposits, pending_partial_withdrawals, pending_consolidations, proposer_lookahead}: BeaconState_g4_va0(consolidation_balance_to_consume, earliest_consolidation_epoch, pending_partial_withdrawals, pending_consolidations, proposer_lookahead, True{}, (pending_deposits, True{}))
+=== r9-e01-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g0_va0,ExecutionPayload_g0_valid,ExecutionPayload_valid_f,ExecutionPayload_valid
+spec: a container value is valid iff every field is valid (here field logs_bloom of group 0)
+fault: group 0 ignores the validity of its field logs_bloom (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, acc)
+=== r9-e01-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g0_valid,ExecutionPayload_valid_f,ExecutionPayload_valid
+spec: a container value is valid iff every field is valid (here the first variable field logs_bloom of group 0)
+fault: group 0 does not check its first field logs_bloom (its validity is replaced by True)
+why: dropped check
+-    case FuluExecutionPayload_d.ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0_va0(parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, True{}, Fulu_bytevec_256_e.b256_valid(logs_bloom))
++    case FuluExecutionPayload_d.ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0_va0(parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, True{}, (logs_bloom, True{}))
+=== r9-e01-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_va2,ExecutionPayload_g1_valid,ExecutionPayload_valid_f,ExecutionPayload_valid
+spec: a container value is valid iff every field is valid (here field withdrawals of group 1)
+fault: group 1 ignores the validity of its field withdrawals (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, acc)
+=== r9-e01-group-validity
+type: FuluExecutionPayload
+ops: encode
+file: types/FuluExecutionPayload_encode_ssz_generated.bend
+sym: ExecutionPayload_g1_valid,ExecutionPayload_valid_f,ExecutionPayload_valid
+spec: a container value is valid iff every field is valid (here the first variable field extra_data of group 1)
+fault: group 1 does not check its first field extra_data (its validity is replaced by True)
+why: dropped check
+-    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, True{}, Fulu_bytelist_32_e.bl32_valid(extra_data))
++    case FuluExecutionPayload_d.ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: ExecutionPayload_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used, True{}, (extra_data, True{}))
+=== r9-e01-group-validity
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g0_va0,ExecutionPayloadHeader_g0_valid,ExecutionPayloadHeader_valid_f,ExecutionPayloadHeader_valid
+spec: a container value is valid iff every field is valid (here field logs_bloom of group 0)
+fault: group 0 ignores the validity of its field logs_bloom (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++  (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, acc)
+=== r9-e01-group-validity
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g0_valid,ExecutionPayloadHeader_valid_f,ExecutionPayloadHeader_valid
+spec: a container value is valid iff every field is valid (here the first variable field logs_bloom of group 0)
+fault: group 0 does not check its first field logs_bloom (its validity is replaced by True)
+why: dropped check
+-    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0_va0(parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, True{}, Fulu_bytevec_256_e.b256_valid(logs_bloom))
++    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0_va0(parent_hash, fee_recipient, state_root, receipts_root, prev_randao, block_number, gas_limit, True{}, (logs_bloom, True{}))
+=== r9-e01-group-validity
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g1_va0,ExecutionPayloadHeader_g1_valid,ExecutionPayloadHeader_valid_f,ExecutionPayloadHeader_valid
+spec: a container value is valid iff every field is valid (here field extra_data of group 1)
+fault: group 1 ignores the validity of its field extra_data (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, Bool.and(acc, ok))
++  (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, acc)
+=== r9-e01-group-validity
+type: FuluExecutionPayloadHeader
+ops: encode
+file: types/FuluExecutionPayloadHeader_encode_ssz_generated.bend
+sym: ExecutionPayloadHeader_g1_valid,ExecutionPayloadHeader_valid_f,ExecutionPayloadHeader_valid
+spec: a container value is valid iff every field is valid (here the first variable field extra_data of group 1)
+fault: group 1 does not check its first field extra_data (its validity is replaced by True)
+why: dropped check
+-    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, +transactions_root, +withdrawals_root, +blob_gas_used}: ExecutionPayloadHeader_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used, True{}, Fulu_bytelist_32_e.bl32_valid(extra_data))
++    case FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, +transactions_root, +withdrawals_root, +blob_gas_used}: ExecutionPayloadHeader_g1_va0(gas_used, timestamp, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used, True{}, (extra_data, True{}))
+=== r9-e01-group-validity
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g0_va4,BeaconBlockBody_g0_valid,BeaconBlockBody_valid_f,BeaconBlockBody_valid
+spec: a container value is valid iff every field is valid (here field voluntary_exits of group 0)
+fault: group 0 ignores the validity of its field voluntary_exits (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, Bool.and(acc, ok))
++  (FuluBeaconBlockBody_d.BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g0_valid,BeaconBlockBody_valid_f,BeaconBlockBody_valid
+spec: a container value is valid iff every field is valid (here the first variable field proposer_slashings of group 0)
+fault: group 0 does not check its first field proposer_slashings (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_va0(randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, True{}, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_valid(proposer_slashings))
++    case FuluBeaconBlockBody_d.BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: BeaconBlockBody_g0_va0(randao_reveal, eth1_data, graffiti, attester_slashings, attestations, deposits, voluntary_exits, True{}, (proposer_slashings, True{}))
+=== r9-e01-group-validity
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g1_va4,BeaconBlockBody_g1_valid,BeaconBlockBody_valid_f,BeaconBlockBody_valid
+spec: a container value is valid iff every field is valid (here field execution_requests of group 1)
+fault: group 1 ignores the validity of its field execution_requests (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, Bool.and(acc, ok))
++  (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, acc)
+=== r9-e01-group-validity
+type: FuluBeaconBlockBody
+ops: encode
+file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+sym: BeaconBlockBody_g1_valid,BeaconBlockBody_valid_f,BeaconBlockBody_valid
+spec: a container value is valid iff every field is valid (here the first variable field sync_aggregate of group 1)
+fault: group 1 does not check its first field sync_aggregate (its validity is replaced by True)
+why: dropped check
+-    case FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}: BeaconBlockBody_g1_va0(execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests, True{}, FuluSyncAggregate_e.SyncAggregate_bx_valid(sync_aggregate))
++    case FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}: BeaconBlockBody_g1_va0(execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests, True{}, (sync_aggregate, True{}))
+=== r9-e01-group-validity
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_g0_va5,ProgressiveBitsStruct_g0_valid,ProgressiveBitsStruct_valid_f,ProgressiveBitsStruct_valid
+spec: a container value is valid iff every field is valid (here field f_H of group 0)
+fault: group 0 ignores the validity of its field f_H (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
++  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, acc)
+=== r9-e01-group-validity
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_g1_va3,ProgressiveBitsStruct_g1_valid,ProgressiveBitsStruct_valid_f,ProgressiveBitsStruct_valid
+spec: a container value is valid iff every field is valid (here field f_L of group 1)
+fault: group 1 ignores the validity of its field f_L (Bool.and(acc, ok) -> acc)
+why: dropped conjunct
+-  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, Bool.and(acc, ok))
++  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}, acc)
+=== r9-e01-group-validity
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_g1_valid,ProgressiveBitsStruct_valid_f,ProgressiveBitsStruct_valid
+spec: a container value is valid iff every field is valid (here the first variable field f_I of group 1)
+fault: group 1 does not check its first field f_I (its validity is replaced by True)
+why: dropped check
+-    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}: ProgressiveBitsStruct_g1_va0(f_J, f_K, f_L, True{}, progbitlist_e.pbits_valid(f_I))
++    case ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1{f_I, f_J, f_K, f_L}: ProgressiveBitsStruct_g1_va0(f_J, f_K, f_L, True{}, (f_I, True{}))
+=== r9-e02-state-serialize
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_senc_out,BeaconState_serialize
+spec: serialize refuses a value whose checked writer reports an invalid field
+fault: BeaconState_serialize ignores the writers' flag
+why: refusal dropped (the size pass alone decides)
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+=== r9-e02-state-serialize
+type: FuluBeaconState
+ops: encode
+file: types/FuluBeaconState_encode_ssz_generated.bend
+sym: BeaconState_g2_pw0,BeaconState_putk,BeaconState_serialize
+spec: Bitvector[4] has zero padding bits; serialize refuses a justification_bits byte above 15
+fault: the checked writer of group 2 does not flag an invalid justification_bits
+why: refusal dropped
+- .|. O.pz(Fulu_bitvector_4_e.bv4_valid(justification_bits)) : U32)
++ : U32)

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/17
+# type: FuluSignedContributionAndProof
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 264 is read at absolute byte 264 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluSignedContributionAndProof_decode_ssz_generated.bend
+# sym: SignedContributionAndProof_rd0,SignedContributionAndProof_read,SignedContributionAndProof_decode
+--- a/types/FuluSignedContributionAndProof_decode_ssz_generated.bend
++++ b/types/FuluSignedContributionAndProof_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, message) = pair
+-  SignedContributionAndProof_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (off + 264 : U32), 96))
++  SignedContributionAndProof_rd1(off, len, message, FuluBytes96_r.b96_read(buf, (264 : U32), 96))
+ 

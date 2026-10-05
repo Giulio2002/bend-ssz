@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a06-uint-width-mask/01
+# type: uint16
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: uint16 root: uint16 masked to its low byte before packing
+# why: a width table off by one size
+# file: types/uint16_hashtreeroot_generated.bend
+# sym: u16_root
+# proofs: proofs/api/SmallTestStruct_hashtreeroot_proof_generated.bend,proofs/api/VarTestStruct_hashtreeroot_proof_generated.bend
+--- a/types/uint16_hashtreeroot_generated.bend
++++ b/types/uint16_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def u16_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
++def u16_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk((o .&. 255 : U32)))
+ 

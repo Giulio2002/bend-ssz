@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/53
+# type: FuluWithdrawalIndex
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluWithdrawalIndex_decode_ssz_generated.bend
+# sym: WithdrawalIndex_decode_checked_budget,WithdrawalIndex_dcb
+--- a/types/FuluWithdrawalIndex_decode_ssz_generated.bend
++++ b/types/FuluWithdrawalIndex_decode_ssz_generated.bend
+@@ -60,3 +60,3 @@
+ 
+-def WithdrawalIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: WithdrawalIndex_dcb(Bool.and(U32.is_lt(WithdrawalIndex_dcost(size), 4294967295), U32.is_le(WithdrawalIndex_dcost(size), budget)), buf, size)
++def WithdrawalIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: WithdrawalIndex_dcb(Bool.and(U32.is_lt(WithdrawalIndex_dcost(size), 4294967295), U32.is_lt(WithdrawalIndex_dcost(size), budget)), buf, size)
+ 

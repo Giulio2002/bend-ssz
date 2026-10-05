@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/07
+# type: FuluBeaconBlock
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluBeaconBlock_decode_ssz_generated.bend
+# sym: BeaconBlock_decode_checked_budget,BeaconBlock_dcb
+--- a/types/FuluBeaconBlock_decode_ssz_generated.bend
++++ b/types/FuluBeaconBlock_decode_ssz_generated.bend
+@@ -116,3 +116,3 @@
+ 
+-def BeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dcb(Bool.and(U32.is_lt(BeaconBlock_dcost(size), 4294967295), U32.is_le(BeaconBlock_dcost(size), budget)), buf, size)
++def BeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dcb(Bool.and(U32.is_lt(BeaconBlock_dcost(size), 4294967295), U32.is_lt(BeaconBlock_dcost(size), budget)), buf, size)
+ 

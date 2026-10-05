@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/01
+# type: FuluAttesterSlashing
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed AttesterSlashing field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+# sym: AttesterSlashing_bx_ok,AttesterSlashing_decode
+--- a/types/FuluAttesterSlashing_decode_ssz_generated.bend
++++ b/types/FuluAttesterSlashing_decode_ssz_generated.bend
+@@ -79,3 +79,3 @@
+ 
+-def AttesterSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok(buf, off, len)
++def AttesterSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

@@ -1,0 +1,215 @@
+=== r12-d01-cache-lo
+type: Fulu_list_Attestation_8
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_cache_fin,l8_Attestation_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l8_Attestation_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend
+-l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l8_Attestation_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_AttesterSlashing_1
+ops: root
+file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+sym: l1_AttesterSlashing_cache_fin,l1_AttesterSlashing_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l1_AttesterSlashing_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend
+-l1_AttesterSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1_AttesterSlashing_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_ConsolidationRequest_2
+ops: root
+file: types/Fulu_list_ConsolidationRequest_2_def_generated.bend
+sym: l2_ConsolidationRequest_cache_fin,l2_ConsolidationRequest_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l2_ConsolidationRequest_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend
+-l2_ConsolidationRequest_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l2_ConsolidationRequest_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_DepositRequest_8192
+ops: root
+file: types/Fulu_list_DepositRequest_8192_def_generated.bend
+sym: l8192_DepositRequest_cache_fin,l8192_DepositRequest_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l8192_DepositRequest_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_3_generated.bend
+-l8192_DepositRequest_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l8192_DepositRequest_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_Deposit_16
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_cache_fin,l16_Deposit_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_Deposit_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_3_generated.bend
+-l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_Deposit_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_Eth1Data_2048
+ops: root
+file: types/Fulu_list_Eth1Data_2048_def_generated.bend
+sym: l2048_Eth1Data_cache_fin,l2048_Eth1Data_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l2048_Eth1Data_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_3_generated.bend
+-l2048_Eth1Data_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l2048_Eth1Data_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_HistoricalSummary_16777216
+ops: root
+file: types/Fulu_list_HistoricalSummary_16777216_def_generated.bend
+sym: l16777216_HistoricalSummary_cache_fin,l16777216_HistoricalSummary_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16777216_HistoricalSummary_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_3_generated.bend
+-l16777216_HistoricalSummary_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16777216_HistoricalSummary_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_PendingConsolidation_262144
+ops: root
+file: types/Fulu_list_PendingConsolidation_262144_def_generated.bend
+sym: l262144_PendingConsolidation_cache_fin,l262144_PendingConsolidation_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l262144_PendingConsolidation_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend
+-l262144_PendingConsolidation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l262144_PendingConsolidation_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_PendingDeposit_134217728
+ops: root
+file: types/Fulu_list_PendingDeposit_134217728_def_generated.bend
+sym: l134217728_PendingDeposit_cache_fin,l134217728_PendingDeposit_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l134217728_PendingDeposit_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_3_generated.bend
+-l134217728_PendingDeposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l134217728_PendingDeposit_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_PendingPartialWithdrawal_134217728
+ops: root
+file: types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend
+sym: l134217728_PendingPartialWithdrawal_cache_fin,l134217728_PendingPartialWithdrawal_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l134217728_PendingPartialWithdrawal_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3_generated.bend
+-l134217728_PendingPartialWithdrawal_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l134217728_PendingPartialWithdrawal_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_ProposerSlashing_16
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_ProposerSlashing_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend
+-l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_ProposerSlashing_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_SignedBLSToExecutionChange_16
+ops: root
+file: types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend
+sym: l16_SignedBLSToExecutionChange_cache_fin,l16_SignedBLSToExecutionChange_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_SignedBLSToExecutionChange_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_3_generated.bend
+-l16_SignedBLSToExecutionChange_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_SignedBLSToExecutionChange_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_SignedVoluntaryExit_16
+ops: root
+file: types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend
+sym: l16_SignedVoluntaryExit_cache_fin,l16_SignedVoluntaryExit_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_SignedVoluntaryExit_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_3_generated.bend
+-l16_SignedVoluntaryExit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_SignedVoluntaryExit_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_Validator_1099511627776
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_cache_fin,l1099511627776_Validator_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l1099511627776_Validator_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_1_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_2_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_3_generated.bend
+-l1099511627776_Validator_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1099511627776_Validator_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_WithdrawalRequest_16
+ops: root
+file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+sym: l16_WithdrawalRequest_cache_fin,l16_WithdrawalRequest_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_WithdrawalRequest_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend
+-l16_WithdrawalRequest_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_WithdrawalRequest_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_Withdrawal_16
+ops: root
+file: types/Fulu_list_Withdrawal_16_def_generated.bend
+sym: l16_Withdrawal_cache_fin,l16_Withdrawal_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l16_Withdrawal_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_3_generated.bend
+-l16_Withdrawal_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_Withdrawal_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: Fulu_list_bytelist_1073741824_1048576
+ops: root
+file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+sym: l1048576_bl1073741824_cache_fin,l1048576_bl1073741824_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l1048576_bl1073741824_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend
+-l1048576_bl1073741824_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1048576_bl1073741824_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+
+=== r12-d01-cache-lo
+type: list_ProgressiveSingleFieldContainerTestStruct_10
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_cache_fin,l10_ProgressiveSingleFieldContainerTestStruct_cache
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+fault: l10_ProgressiveSingleFieldContainerTestStruct_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+why: window initialised with a 1-based index
+proofs: proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend,proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend,proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend,proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend,proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3_generated.bend,proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_3_generated.bend
+-l10_ProgressiveSingleFieldContainerTestStruct_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l10_ProgressiveSingleFieldContainerTestStruct_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}

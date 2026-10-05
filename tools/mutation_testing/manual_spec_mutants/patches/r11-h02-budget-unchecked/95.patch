@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/95
+# type: vec_uint64_513
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls vec_uint64_513_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/vec_uint64_513_decode_ssz_generated.bend
+# sym: vec_uint64_513_dcb,vec_uint64_513_decode_checked_budget
+--- a/types/vec_uint64_513_decode_ssz_generated.bend
++++ b/types/vec_uint64_513_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match ok:
+-    case True{}: vec_uint64_513_decode_checked(buf, size)
++    case True{}: vec_uint64_513_decode(buf, size)
+     case False{}: (buf, None{})

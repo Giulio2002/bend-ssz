@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a03-tail-keep/07
+# type: bitvector_513
+# ops: decode
+# spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+# fault: the last word keeps all 4 bytes read (bytes past the 1-byte tail read into the value)
+# why: a 32-bit read not masked to the value's width
+# file: types/bitvector_513_decode_ssz_generated.bend
+# sym: bv513_r16,bv513_read,bitvector_513_decode
+--- a/types/bitvector_513_decode_ssz_generated.bend
++++ b/types/bitvector_513_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, bitvector_513_d.Bitvector513{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, O.keep(1, x)})
++  (buf, bitvector_513_d.Bitvector513{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, x})
+ 

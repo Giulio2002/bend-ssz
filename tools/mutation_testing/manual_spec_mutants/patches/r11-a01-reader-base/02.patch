@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/02
+# type: FuluBlobSidecar
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 131384 is read at absolute byte 131384 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluBlobSidecar_decode_ssz_generated.bend
+# sym: BlobSidecar_rd4,BlobSidecar_read,BlobSidecar_decode
+--- a/types/FuluBlobSidecar_decode_ssz_generated.bend
++++ b/types/FuluBlobSidecar_decode_ssz_generated.bend
+@@ -23,3 +23,3 @@
+   (buf, signed_block_header) = pair
+-  BlobSidecar_rd5(off, len, index, blob, kzg_commitment, kzg_proof, signed_block_header, Fulu_vec_bytevec_32_17_r.v17_b32_read(buf, (off + 131384 : U32), 544))
++  BlobSidecar_rd5(off, len, index, blob, kzg_commitment, kzg_proof, signed_block_header, Fulu_vec_bytevec_32_17_r.v17_b32_read(buf, (131384 : U32), 544))
+ 

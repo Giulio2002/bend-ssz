@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-e02-prog-len/01
+# type: proglist_uint64
+# ops: encode,root
+# spec: len(ProgressiveList[uint64]) = byte length / 8
+# fault: len computed as n >> 3 (EXPECTED EQUIVALENT: same value for every U32)
+# why: shift for division
+# file: types/proglist_uint64_def_generated.bend
+# sym: pl_u64_len_of,pl_u64_len,pl_u64_append
+--- a/types/proglist_uint64_def_generated.bend
++++ b/types/proglist_uint64_def_generated.bend
+@@ -17,3 +17,3 @@
+   (o, +n) = pair
+-  (o, U32.div(n, 8))
++  (o, U32.shrn(n, 3n))
+ 

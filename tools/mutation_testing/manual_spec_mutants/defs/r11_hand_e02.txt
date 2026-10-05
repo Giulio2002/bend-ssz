@@ -1,0 +1,21 @@
+## round 11 hand-designed: r11-e02-prog-len
+=== r11-e02-prog-len
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_len_of,pl_u64_len,pl_u64_append
+spec: len(ProgressiveList[uint64]) = byte length / 8
+fault: len computed as n >> 3 (EXPECTED EQUIVALENT: same value for every U32)
+why: shift for division
+-(o, U32.div(n, 8))
++(o, U32.shrn(n, 3n))
+=== r11-e02-prog-len
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_len_of,pl_u128_len,pl_u128_append
+spec: len(ProgressiveList[uint128]) = byte length / 16
+fault: len rounds up: (n + 15) / 16 (EXPECTED EQUIVALENT in context: every public writer keeps the byte length a multiple of 16)
+why: ceiling for floor
+-(o, U32.div(n, 16))
++(o, U32.div((n + 15 : U32), 16))

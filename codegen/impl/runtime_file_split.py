@@ -31,7 +31,7 @@ FuluBytes32's); a shape no name has takes a structural name (Fulu_list_Withdrawa
 Fulu_bitlist_131072, list_uint16_1024, ...). Owners with one readable name share its files.
 
 Operations. Within an owner, a definition belongs to the operation whose entry points (decode: _decode, _decode_checked_budget, _dcost,
-_ok, _read, _build; encode: _encode, _serialize, _putk, _putn, _put, _putv, _size, _valid;
+_ok (or _ok_at for a kind validated only in place, which has no _ok: round 11), _read, _build; encode: _encode, _serialize, _putk, _putn, _put, _putv, _size, _valid;
 hashtreeroot: _hash_tree_root, _root) are the only ones reaching it through the owner's own calls;
 a definition reached by none, or by two, or by a definition of the def file, is the def file's. So a
 def file calls only def files, an operation's file its own owner's def file and other owners' files,
@@ -220,6 +220,10 @@ def assign(text, g, names, readable, fork, prior=None):
         R = {}
         for opn, sufs in ROOTS.items():
             roots = [f'{o}_{s_}' for o in os_ for s_ in sufs if f'{o}_{s_}' in top and fown[f'{o}_{s_}'] == f]
+            if opn == 'decode_ssz':
+                # (round 11) a fixed-size kind validated only in place (its parents call `_ok_at`) has no window validator `_ok`: its `_ok_at`
+                # is its decode entry (where `_ok` kept it); a box's stays where it was
+                roots += [f'{o}_ok_at' for o in os_ if not o.endswith('_bx') and f'{o}_ok' not in top and f'{o}_ok_at' in top and fown[f'{o}_ok_at'] == f]
             for x in reach(roots):
                 R.setdefault(x, set()).add(opn)
         # the def roots: what no operation reaches; what they reach is shared (def)

@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a02-leaf-last-drop/01
+# type: FuluBytes8
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: FuluBytes8: the last word (w1) left out of the chunk (zero)
+# why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+# file: types/FuluBytes8_hashtreeroot_generated.bend
+# sym: b8_root
+# proofs: proofs/api/FuluPayloadId_hashtreeroot_proof_generated.bend
+--- a/types/FuluBytes8_hashtreeroot_generated.bend
++++ b/types/FuluBytes8_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case FuluBytes8_d.Bytes8{+w0, +w1}: (h, D.D{B.swap32(w0), B.swap32(w1), 0, 0, 0, 0, 0, 0})
++    case FuluBytes8_d.Bytes8{+w0, +w1}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
+ 

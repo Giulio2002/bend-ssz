@@ -1,0 +1,1011 @@
+## round 11 generated: r11-h01-budget-strict
+=== r11-h01-budget-strict
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_decode_checked_budget,CompatibleUnionABCA_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def CompatibleUnionABCA_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dcb(Bool.and(U32.is_lt(CompatibleUnionABCA_dcost(size), 4294967295), U32.is_le(CompatibleUnionABCA_dcost(size), budget)), buf, size)
++def CompatibleUnionABCA_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionABCA_d.CompatibleUnionABCA>: CompatibleUnionABCA_dcb(Bool.and(U32.is_lt(CompatibleUnionABCA_dcost(size), 4294967295), U32.is_lt(CompatibleUnionABCA_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: CompatibleUnionBC
+ops: decode
+file: types/CompatibleUnionBC_decode_ssz_generated.bend
+sym: CompatibleUnionBC_decode_checked_budget,CompatibleUnionBC_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def CompatibleUnionBC_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dcb(Bool.and(U32.is_lt(CompatibleUnionBC_dcost(size), 4294967295), U32.is_le(CompatibleUnionBC_dcost(size), budget)), buf, size)
++def CompatibleUnionBC_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, CompatibleUnionBC_d.CompatibleUnionBC>: CompatibleUnionBC_dcb(Bool.and(U32.is_lt(CompatibleUnionBC_dcost(size), 4294967295), U32.is_lt(CompatibleUnionBC_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluAttestationData
+ops: decode
+file: types/FuluAttestationData_decode_ssz_generated.bend
+sym: AttestationData_decode_checked_budget,AttestationData_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def AttestationData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>: AttestationData_dcb(Bool.and(U32.is_lt(AttestationData_dcost(size), 4294967295), U32.is_le(AttestationData_dcost(size), budget)), buf, size)
++def AttestationData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttestationData_d.AttestationData>: AttestationData_dcb(Bool.and(U32.is_lt(AttestationData_dcost(size), 4294967295), U32.is_lt(AttestationData_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_decode_checked_budget,AttesterSlashing_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def AttesterSlashing_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>: AttesterSlashing_dcb(Bool.and(U32.is_lt(AttesterSlashing_dcost(size), 4294967295), U32.is_le(AttesterSlashing_dcost(size), budget)), buf, size)
++def AttesterSlashing_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>: AttesterSlashing_dcb(Bool.and(U32.is_lt(AttesterSlashing_dcost(size), 4294967295), U32.is_lt(AttesterSlashing_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBLSSignature
+ops: decode
+file: types/FuluBLSSignature_decode_ssz_generated.bend
+sym: BLSSignature_decode_checked_budget,BLSSignature_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def BLSSignature_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dcb(Bool.and(U32.is_lt(BLSSignature_dcost(size), 4294967295), U32.is_le(BLSSignature_dcost(size), budget)), buf, size)
++def BLSSignature_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: BLSSignature_dcb(Bool.and(U32.is_lt(BLSSignature_dcost(size), 4294967295), U32.is_lt(BLSSignature_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBeaconBlockBody
+ops: decode
+file: types/FuluBeaconBlockBody_decode_ssz_generated.bend
+sym: BeaconBlockBody_decode_checked_budget,BeaconBlockBody_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def BeaconBlockBody_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>: BeaconBlockBody_dcb(Bool.and(U32.is_lt(BeaconBlockBody_dcost(size), 4294967295), U32.is_le(BeaconBlockBody_dcost(size), budget)), buf, size)
++def BeaconBlockBody_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>: BeaconBlockBody_dcb(Bool.and(U32.is_lt(BeaconBlockBody_dcost(size), 4294967295), U32.is_lt(BeaconBlockBody_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBeaconBlock
+ops: decode
+file: types/FuluBeaconBlock_decode_ssz_generated.bend
+sym: BeaconBlock_decode_checked_budget,BeaconBlock_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def BeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dcb(Bool.and(U32.is_lt(BeaconBlock_dcost(size), 4294967295), U32.is_le(BeaconBlock_dcost(size), budget)), buf, size)
++def BeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>: BeaconBlock_dcb(Bool.and(U32.is_lt(BeaconBlock_dcost(size), 4294967295), U32.is_lt(BeaconBlock_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBlobIdentifier
+ops: decode
+file: types/FuluBlobIdentifier_decode_ssz_generated.bend
+sym: BlobIdentifier_decode_checked_budget,BlobIdentifier_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def BlobIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>: BlobIdentifier_dcb(Bool.and(U32.is_lt(BlobIdentifier_dcost(size), 4294967295), U32.is_le(BlobIdentifier_dcost(size), budget)), buf, size)
++def BlobIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBlobIdentifier_d.BlobIdentifier>: BlobIdentifier_dcb(Bool.and(U32.is_lt(BlobIdentifier_dcost(size), 4294967295), U32.is_lt(BlobIdentifier_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBlobSidecar
+ops: decode
+file: types/FuluBlobSidecar_decode_ssz_generated.bend
+sym: BlobSidecar_decode_checked_budget,BlobSidecar_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def BlobSidecar_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>: BlobSidecar_dcb(Bool.and(U32.is_lt(BlobSidecar_dcost(size), 4294967295), U32.is_le(BlobSidecar_dcost(size), budget)), buf, size)
++def BlobSidecar_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBlobSidecar_d.BlobSidecar>: BlobSidecar_dcb(Bool.and(U32.is_lt(BlobSidecar_dcost(size), 4294967295), U32.is_lt(BlobSidecar_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBytes1
+ops: decode
+file: types/FuluBytes1_decode_ssz_generated.bend
+sym: Bytes1_decode_checked_budget,Bytes1_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Bytes1_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes1_d.Bytes1>: Bytes1_dcb(Bool.and(U32.is_lt(Bytes1_dcost(size), 4294967295), U32.is_le(Bytes1_dcost(size), budget)), buf, size)
++def Bytes1_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes1_d.Bytes1>: Bytes1_dcb(Bool.and(U32.is_lt(Bytes1_dcost(size), 4294967295), U32.is_lt(Bytes1_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBytes32
+ops: decode
+file: types/FuluBytes32_decode_ssz_generated.bend
+sym: Bytes32_decode_checked_budget,Bytes32_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Bytes32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dcb(Bool.and(U32.is_lt(Bytes32_dcost(size), 4294967295), U32.is_le(Bytes32_dcost(size), budget)), buf, size)
++def Bytes32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dcb(Bool.and(U32.is_lt(Bytes32_dcost(size), 4294967295), U32.is_lt(Bytes32_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBytes4
+ops: decode
+file: types/FuluBytes4_decode_ssz_generated.bend
+sym: Bytes4_decode_checked_budget,Bytes4_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Bytes4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Bytes4_dcb(Bool.and(U32.is_lt(Bytes4_dcost(size), 4294967295), U32.is_le(Bytes4_dcost(size), budget)), buf, size)
++def Bytes4_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: Bytes4_dcb(Bool.and(U32.is_lt(Bytes4_dcost(size), 4294967295), U32.is_lt(Bytes4_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluBytes96
+ops: decode
+file: types/FuluBytes96_decode_ssz_generated.bend
+sym: Bytes96_decode_checked_budget,Bytes96_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Bytes96_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: Bytes96_dcb(Bool.and(U32.is_lt(Bytes96_dcost(size), 4294967295), U32.is_le(Bytes96_dcost(size), budget)), buf, size)
++def Bytes96_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>: Bytes96_dcb(Bool.and(U32.is_lt(Bytes96_dcost(size), 4294967295), U32.is_lt(Bytes96_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluCell
+ops: decode
+file: types/FuluCell_decode_ssz_generated.bend
+sym: Cell_decode_checked_budget,Cell_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Cell_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Cell_dcb(Bool.and(U32.is_lt(Cell_dcost(size), 4294967295), U32.is_le(Cell_dcost(size), budget)), buf, size)
++def Cell_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Cell_dcb(Bool.and(U32.is_lt(Cell_dcost(size), 4294967295), U32.is_lt(Cell_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluColumnIndex
+ops: decode
+file: types/FuluColumnIndex_decode_ssz_generated.bend
+sym: ColumnIndex_decode_checked_budget,ColumnIndex_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ColumnIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: ColumnIndex_dcb(Bool.and(U32.is_lt(ColumnIndex_dcost(size), 4294967295), U32.is_le(ColumnIndex_dcost(size), budget)), buf, size)
++def ColumnIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: ColumnIndex_dcb(Bool.and(U32.is_lt(ColumnIndex_dcost(size), 4294967295), U32.is_lt(ColumnIndex_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluCommitteeIndex
+ops: decode
+file: types/FuluCommitteeIndex_decode_ssz_generated.bend
+sym: CommitteeIndex_decode_checked_budget,CommitteeIndex_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def CommitteeIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CommitteeIndex_dcb(Bool.and(U32.is_lt(CommitteeIndex_dcost(size), 4294967295), U32.is_le(CommitteeIndex_dcost(size), budget)), buf, size)
++def CommitteeIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CommitteeIndex_dcb(Bool.and(U32.is_lt(CommitteeIndex_dcost(size), 4294967295), U32.is_lt(CommitteeIndex_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluContributionAndProof
+ops: decode
+file: types/FuluContributionAndProof_decode_ssz_generated.bend
+sym: ContributionAndProof_decode_checked_budget,ContributionAndProof_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ContributionAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dcb(Bool.and(U32.is_lt(ContributionAndProof_dcost(size), 4294967295), U32.is_le(ContributionAndProof_dcost(size), budget)), buf, size)
++def ContributionAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dcb(Bool.and(U32.is_lt(ContributionAndProof_dcost(size), 4294967295), U32.is_lt(ContributionAndProof_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluCustodyIndex
+ops: decode
+file: types/FuluCustodyIndex_decode_ssz_generated.bend
+sym: CustodyIndex_decode_checked_budget,CustodyIndex_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def CustodyIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CustodyIndex_dcb(Bool.and(U32.is_lt(CustodyIndex_dcost(size), 4294967295), U32.is_le(CustodyIndex_dcost(size), budget)), buf, size)
++def CustodyIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: CustodyIndex_dcb(Bool.and(U32.is_lt(CustodyIndex_dcost(size), 4294967295), U32.is_lt(CustodyIndex_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluDataColumnsByRootIdentifier
+ops: decode
+file: types/FuluDataColumnsByRootIdentifier_decode_ssz_generated.bend
+sym: DataColumnsByRootIdentifier_decode_checked_budget,DataColumnsByRootIdentifier_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def DataColumnsByRootIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>: DataColumnsByRootIdentifier_dcb(Bool.and(U32.is_lt(DataColumnsByRootIdentifier_dcost(size), 4294967295), U32.is_le(DataColumnsByRootIdentifier_dcost(size), budget)), buf, size)
++def DataColumnsByRootIdentifier_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>: DataColumnsByRootIdentifier_dcb(Bool.and(U32.is_lt(DataColumnsByRootIdentifier_dcost(size), 4294967295), U32.is_lt(DataColumnsByRootIdentifier_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluDepositMessage
+ops: decode
+file: types/FuluDepositMessage_decode_ssz_generated.bend
+sym: DepositMessage_decode_checked_budget,DepositMessage_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def DepositMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>: DepositMessage_dcb(Bool.and(U32.is_lt(DepositMessage_dcost(size), 4294967295), U32.is_le(DepositMessage_dcost(size), budget)), buf, size)
++def DepositMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDepositMessage_d.DepositMessage>: DepositMessage_dcb(Bool.and(U32.is_lt(DepositMessage_dcost(size), 4294967295), U32.is_lt(DepositMessage_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluDeposit
+ops: decode
+file: types/FuluDeposit_decode_ssz_generated.bend
+sym: Deposit_decode_checked_budget,Deposit_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Deposit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>: Deposit_dcb(Bool.and(U32.is_lt(Deposit_dcost(size), 4294967295), U32.is_le(Deposit_dcost(size), budget)), buf, size)
++def Deposit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>: Deposit_dcb(Bool.and(U32.is_lt(Deposit_dcost(size), 4294967295), U32.is_lt(Deposit_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluDomain
+ops: decode
+file: types/FuluDomain_decode_ssz_generated.bend
+sym: Domain_decode_checked_budget,Domain_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Domain_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Domain_dcb(Bool.and(U32.is_lt(Domain_dcost(size), 4294967295), U32.is_le(Domain_dcost(size), budget)), buf, size)
++def Domain_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Domain_dcb(Bool.and(U32.is_lt(Domain_dcost(size), 4294967295), U32.is_lt(Domain_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluEth1Block
+ops: decode
+file: types/FuluEth1Block_decode_ssz_generated.bend
+sym: Eth1Block_decode_checked_budget,Eth1Block_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Eth1Block_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dcb(Bool.and(U32.is_lt(Eth1Block_dcost(size), 4294967295), U32.is_le(Eth1Block_dcost(size), budget)), buf, size)
++def Eth1Block_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dcb(Bool.and(U32.is_lt(Eth1Block_dcost(size), 4294967295), U32.is_lt(Eth1Block_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluEther
+ops: decode
+file: types/FuluEther_decode_ssz_generated.bend
+sym: Ether_decode_checked_budget,Ether_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Ether_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Ether_dcb(Bool.and(U32.is_lt(Ether_dcost(size), 4294967295), U32.is_le(Ether_dcost(size), budget)), buf, size)
++def Ether_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Ether_dcb(Bool.and(U32.is_lt(Ether_dcost(size), 4294967295), U32.is_lt(Ether_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluExecutionBranch
+ops: decode
+file: types/FuluExecutionBranch_decode_ssz_generated.bend
+sym: ExecutionBranch_decode_checked_budget,ExecutionBranch_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ExecutionBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: ExecutionBranch_dcb(Bool.and(U32.is_lt(ExecutionBranch_dcost(size), 4294967295), U32.is_le(ExecutionBranch_dcost(size), budget)), buf, size)
++def ExecutionBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: ExecutionBranch_dcb(Bool.and(U32.is_lt(ExecutionBranch_dcost(size), 4294967295), U32.is_lt(ExecutionBranch_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluExecutionPayload
+ops: decode
+file: types/FuluExecutionPayload_decode_ssz_generated.bend
+sym: ExecutionPayload_decode_checked_budget,ExecutionPayload_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(Bool.and(U32.is_lt(ExecutionPayload_dcost(size), 4294967295), U32.is_le(ExecutionPayload_dcost(size), budget)), buf, size)
++def ExecutionPayload_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>: ExecutionPayload_dcb(Bool.and(U32.is_lt(ExecutionPayload_dcost(size), 4294967295), U32.is_lt(ExecutionPayload_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluFinalityBranch
+ops: decode
+file: types/FuluFinalityBranch_decode_ssz_generated.bend
+sym: FinalityBranch_decode_checked_budget,FinalityBranch_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def FinalityBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: FinalityBranch_dcb(Bool.and(U32.is_lt(FinalityBranch_dcost(size), 4294967295), U32.is_le(FinalityBranch_dcost(size), budget)), buf, size)
++def FinalityBranch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: FinalityBranch_dcb(Bool.and(U32.is_lt(FinalityBranch_dcost(size), 4294967295), U32.is_lt(FinalityBranch_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluForkDigest
+ops: decode
+file: types/FuluForkDigest_decode_ssz_generated.bend
+sym: ForkDigest_decode_checked_budget,ForkDigest_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ForkDigest_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: ForkDigest_dcb(Bool.and(U32.is_lt(ForkDigest_dcost(size), 4294967295), U32.is_le(ForkDigest_dcost(size), budget)), buf, size)
++def ForkDigest_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>: ForkDigest_dcb(Bool.and(U32.is_lt(ForkDigest_dcost(size), 4294967295), U32.is_lt(ForkDigest_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluG1Point
+ops: decode
+file: types/FuluG1Point_decode_ssz_generated.bend
+sym: G1Point_decode_checked_budget,G1Point_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(Bool.and(U32.is_lt(G1Point_dcost(size), 4294967295), U32.is_le(G1Point_dcost(size), budget)), buf, size)
++def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(Bool.and(U32.is_lt(G1Point_dcost(size), 4294967295), U32.is_lt(G1Point_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluGwei
+ops: decode
+file: types/FuluGwei_decode_ssz_generated.bend
+sym: Gwei_decode_checked_budget,Gwei_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Gwei_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Gwei_dcb(Bool.and(U32.is_lt(Gwei_dcost(size), 4294967295), U32.is_le(Gwei_dcost(size), budget)), buf, size)
++def Gwei_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: Gwei_dcb(Bool.and(U32.is_lt(Gwei_dcost(size), 4294967295), U32.is_lt(Gwei_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluHistoricalBatch
+ops: decode
+file: types/FuluHistoricalBatch_decode_ssz_generated.bend
+sym: HistoricalBatch_decode_checked_budget,HistoricalBatch_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def HistoricalBatch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>: HistoricalBatch_dcb(Bool.and(U32.is_lt(HistoricalBatch_dcost(size), 4294967295), U32.is_le(HistoricalBatch_dcost(size), budget)), buf, size)
++def HistoricalBatch_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluHistoricalBatch_d.HistoricalBatch>: HistoricalBatch_dcb(Bool.and(U32.is_lt(HistoricalBatch_dcost(size), 4294967295), U32.is_lt(HistoricalBatch_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluIndexedAttestation
+ops: decode
+file: types/FuluIndexedAttestation_decode_ssz_generated.bend
+sym: IndexedAttestation_decode_checked_budget,IndexedAttestation_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def IndexedAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>: IndexedAttestation_dcb(Bool.and(U32.is_lt(IndexedAttestation_dcost(size), 4294967295), U32.is_le(IndexedAttestation_dcost(size), budget)), buf, size)
++def IndexedAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>: IndexedAttestation_dcb(Bool.and(U32.is_lt(IndexedAttestation_dcost(size), 4294967295), U32.is_lt(IndexedAttestation_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluKZGProof
+ops: decode
+file: types/FuluKZGProof_decode_ssz_generated.bend
+sym: KZGProof_decode_checked_budget,KZGProof_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def KZGProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dcb(Bool.and(U32.is_lt(KZGProof_dcost(size), 4294967295), U32.is_le(KZGProof_dcost(size), budget)), buf, size)
++def KZGProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: KZGProof_dcb(Bool.and(U32.is_lt(KZGProof_dcost(size), 4294967295), U32.is_lt(KZGProof_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluLightClientFinalityUpdate
+ops: decode
+file: types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend
+sym: LightClientFinalityUpdate_decode_checked_budget,LightClientFinalityUpdate_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def LightClientFinalityUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>: LightClientFinalityUpdate_dcb(Bool.and(U32.is_lt(LightClientFinalityUpdate_dcost(size), 4294967295), U32.is_le(LightClientFinalityUpdate_dcost(size), budget)), buf, size)
++def LightClientFinalityUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>: LightClientFinalityUpdate_dcb(Bool.and(U32.is_lt(LightClientFinalityUpdate_dcost(size), 4294967295), U32.is_lt(LightClientFinalityUpdate_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluLightClientOptimisticUpdate
+ops: decode
+file: types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend
+sym: LightClientOptimisticUpdate_decode_checked_budget,LightClientOptimisticUpdate_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def LightClientOptimisticUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>: LightClientOptimisticUpdate_dcb(Bool.and(U32.is_lt(LightClientOptimisticUpdate_dcost(size), 4294967295), U32.is_le(LightClientOptimisticUpdate_dcost(size), budget)), buf, size)
++def LightClientOptimisticUpdate_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>: LightClientOptimisticUpdate_dcb(Bool.and(U32.is_lt(LightClientOptimisticUpdate_dcost(size), 4294967295), U32.is_lt(LightClientOptimisticUpdate_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluMatrixEntry
+ops: decode
+file: types/FuluMatrixEntry_decode_ssz_generated.bend
+sym: MatrixEntry_decode_checked_budget,MatrixEntry_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def MatrixEntry_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dcb(Bool.and(U32.is_lt(MatrixEntry_dcost(size), 4294967295), U32.is_le(MatrixEntry_dcost(size), budget)), buf, size)
++def MatrixEntry_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluMatrixEntry_d.MatrixEntry>: MatrixEntry_dcb(Bool.and(U32.is_lt(MatrixEntry_dcost(size), 4294967295), U32.is_lt(MatrixEntry_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluNodeID
+ops: decode
+file: types/FuluNodeID_decode_ssz_generated.bend
+sym: NodeID_decode_checked_budget,NodeID_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def NodeID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>: NodeID_dcb(Bool.and(U32.is_lt(NodeID_dcost(size), 4294967295), U32.is_le(NodeID_dcost(size), budget)), buf, size)
++def NodeID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, uint256_d.Uint256>: NodeID_dcb(Bool.and(U32.is_lt(NodeID_dcost(size), 4294967295), U32.is_lt(NodeID_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluPayloadId
+ops: decode
+file: types/FuluPayloadId_decode_ssz_generated.bend
+sym: PayloadId_decode_checked_budget,PayloadId_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def PayloadId_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>: PayloadId_dcb(Bool.and(U32.is_lt(PayloadId_dcost(size), 4294967295), U32.is_le(PayloadId_dcost(size), budget)), buf, size)
++def PayloadId_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>: PayloadId_dcb(Bool.and(U32.is_lt(PayloadId_dcost(size), 4294967295), U32.is_lt(PayloadId_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluPendingConsolidation
+ops: decode
+file: types/FuluPendingConsolidation_decode_ssz_generated.bend
+sym: PendingConsolidation_decode_checked_budget,PendingConsolidation_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def PendingConsolidation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>: PendingConsolidation_dcb(Bool.and(U32.is_lt(PendingConsolidation_dcost(size), 4294967295), U32.is_le(PendingConsolidation_dcost(size), budget)), buf, size)
++def PendingConsolidation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingConsolidation_d.PendingConsolidation>: PendingConsolidation_dcb(Bool.and(U32.is_lt(PendingConsolidation_dcost(size), 4294967295), U32.is_lt(PendingConsolidation_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluPendingPartialWithdrawal
+ops: decode
+file: types/FuluPendingPartialWithdrawal_decode_ssz_generated.bend
+sym: PendingPartialWithdrawal_decode_checked_budget,PendingPartialWithdrawal_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def PendingPartialWithdrawal_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>: PendingPartialWithdrawal_dcb(Bool.and(U32.is_lt(PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_le(PendingPartialWithdrawal_dcost(size), budget)), buf, size)
++def PendingPartialWithdrawal_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>: PendingPartialWithdrawal_dcb(Bool.and(U32.is_lt(PendingPartialWithdrawal_dcost(size), 4294967295), U32.is_lt(PendingPartialWithdrawal_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluProposerSlashing
+ops: decode
+file: types/FuluProposerSlashing_decode_ssz_generated.bend
+sym: ProposerSlashing_decode_checked_budget,ProposerSlashing_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ProposerSlashing_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>: ProposerSlashing_dcb(Bool.and(U32.is_lt(ProposerSlashing_dcost(size), 4294967295), U32.is_le(ProposerSlashing_dcost(size), budget)), buf, size)
++def ProposerSlashing_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>: ProposerSlashing_dcb(Bool.and(U32.is_lt(ProposerSlashing_dcost(size), 4294967295), U32.is_lt(ProposerSlashing_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluRowIndex
+ops: decode
+file: types/FuluRowIndex_decode_ssz_generated.bend
+sym: RowIndex_decode_checked_budget,RowIndex_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def RowIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: RowIndex_dcb(Bool.and(U32.is_lt(RowIndex_dcost(size), 4294967295), U32.is_le(RowIndex_dcost(size), budget)), buf, size)
++def RowIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: RowIndex_dcb(Bool.and(U32.is_lt(RowIndex_dcost(size), 4294967295), U32.is_lt(RowIndex_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSignedBLSToExecutionChange
+ops: decode
+file: types/FuluSignedBLSToExecutionChange_decode_ssz_generated.bend
+sym: SignedBLSToExecutionChange_decode_checked_budget,SignedBLSToExecutionChange_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SignedBLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>: SignedBLSToExecutionChange_dcb(Bool.and(U32.is_lt(SignedBLSToExecutionChange_dcost(size), 4294967295), U32.is_le(SignedBLSToExecutionChange_dcost(size), budget)), buf, size)
++def SignedBLSToExecutionChange_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>: SignedBLSToExecutionChange_dcb(Bool.and(U32.is_lt(SignedBLSToExecutionChange_dcost(size), 4294967295), U32.is_lt(SignedBLSToExecutionChange_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSignedBeaconBlock
+ops: decode
+file: types/FuluSignedBeaconBlock_decode_ssz_generated.bend
+sym: SignedBeaconBlock_decode_checked_budget,SignedBeaconBlock_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SignedBeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>: SignedBeaconBlock_dcb(Bool.and(U32.is_lt(SignedBeaconBlock_dcost(size), 4294967295), U32.is_le(SignedBeaconBlock_dcost(size), budget)), buf, size)
++def SignedBeaconBlock_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>: SignedBeaconBlock_dcb(Bool.and(U32.is_lt(SignedBeaconBlock_dcost(size), 4294967295), U32.is_lt(SignedBeaconBlock_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSignedVoluntaryExit
+ops: decode
+file: types/FuluSignedVoluntaryExit_decode_ssz_generated.bend
+sym: SignedVoluntaryExit_decode_checked_budget,SignedVoluntaryExit_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SignedVoluntaryExit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>: SignedVoluntaryExit_dcb(Bool.and(U32.is_lt(SignedVoluntaryExit_dcost(size), 4294967295), U32.is_le(SignedVoluntaryExit_dcost(size), budget)), buf, size)
++def SignedVoluntaryExit_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>: SignedVoluntaryExit_dcb(Bool.and(U32.is_lt(SignedVoluntaryExit_dcost(size), 4294967295), U32.is_lt(SignedVoluntaryExit_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSingleAttestation
+ops: decode
+file: types/FuluSingleAttestation_decode_ssz_generated.bend
+sym: SingleAttestation_decode_checked_budget,SingleAttestation_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SingleAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>: SingleAttestation_dcb(Bool.and(U32.is_lt(SingleAttestation_dcost(size), 4294967295), U32.is_le(SingleAttestation_dcost(size), budget)), buf, size)
++def SingleAttestation_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSingleAttestation_d.SingleAttestation>: SingleAttestation_dcb(Bool.and(U32.is_lt(SingleAttestation_dcost(size), 4294967295), U32.is_lt(SingleAttestation_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSubnetID
+ops: decode
+file: types/FuluSubnetID_decode_ssz_generated.bend
+sym: SubnetID_decode_checked_budget,SubnetID_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SubnetID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dcb(Bool.and(U32.is_lt(SubnetID_dcost(size), 4294967295), U32.is_le(SubnetID_dcost(size), budget)), buf, size)
++def SubnetID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dcb(Bool.and(U32.is_lt(SubnetID_dcost(size), 4294967295), U32.is_lt(SubnetID_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSyncAggregatorSelectionData
+ops: decode
+file: types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend
+sym: SyncAggregatorSelectionData_decode_checked_budget,SyncAggregatorSelectionData_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SyncAggregatorSelectionData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dcb(Bool.and(U32.is_lt(SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_le(SyncAggregatorSelectionData_dcost(size), budget)), buf, size)
++def SyncAggregatorSelectionData_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncAggregatorSelectionData_d.SyncAggregatorSelectionData>: SyncAggregatorSelectionData_dcb(Bool.and(U32.is_lt(SyncAggregatorSelectionData_dcost(size), 4294967295), U32.is_lt(SyncAggregatorSelectionData_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluSyncCommitteeMessage
+ops: decode
+file: types/FuluSyncCommitteeMessage_decode_ssz_generated.bend
+sym: SyncCommitteeMessage_decode_checked_budget,SyncCommitteeMessage_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def SyncCommitteeMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>: SyncCommitteeMessage_dcb(Bool.and(U32.is_lt(SyncCommitteeMessage_dcost(size), 4294967295), U32.is_le(SyncCommitteeMessage_dcost(size), budget)), buf, size)
++def SyncCommitteeMessage_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluSyncCommitteeMessage_d.SyncCommitteeMessage>: SyncCommitteeMessage_dcb(Bool.and(U32.is_lt(SyncCommitteeMessage_dcost(size), 4294967295), U32.is_lt(SyncCommitteeMessage_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluTransaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: Transaction_decode_checked_budget,Transaction_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(Bool.and(U32.is_lt(Transaction_dcost(size), 4294967295), U32.is_le(Transaction_dcost(size), budget)), buf, size)
++def Transaction_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: Transaction_dcb(Bool.and(U32.is_lt(Transaction_dcost(size), 4294967295), U32.is_lt(Transaction_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluValidator
+ops: decode
+file: types/FuluValidator_decode_ssz_generated.bend
+sym: Validator_decode_checked_budget,Validator_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Validator_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dcb(Bool.and(U32.is_lt(Validator_dcost(size), 4294967295), U32.is_le(Validator_dcost(size), budget)), buf, size)
++def Validator_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluValidator_d.Validator>: Validator_dcb(Bool.and(U32.is_lt(Validator_dcost(size), 4294967295), U32.is_lt(Validator_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluVersionedHash
+ops: decode
+file: types/FuluVersionedHash_decode_ssz_generated.bend
+sym: VersionedHash_decode_checked_budget,VersionedHash_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def VersionedHash_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dcb(Bool.and(U32.is_lt(VersionedHash_dcost(size), 4294967295), U32.is_le(VersionedHash_dcost(size), budget)), buf, size)
++def VersionedHash_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: VersionedHash_dcb(Bool.and(U32.is_lt(VersionedHash_dcost(size), 4294967295), U32.is_lt(VersionedHash_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluWithdrawalIndex
+ops: decode
+file: types/FuluWithdrawalIndex_decode_ssz_generated.bend
+sym: WithdrawalIndex_decode_checked_budget,WithdrawalIndex_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def WithdrawalIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: WithdrawalIndex_dcb(Bool.and(U32.is_lt(WithdrawalIndex_dcost(size), 4294967295), U32.is_le(WithdrawalIndex_dcost(size), budget)), buf, size)
++def WithdrawalIndex_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: WithdrawalIndex_dcb(Bool.and(U32.is_lt(WithdrawalIndex_dcost(size), 4294967295), U32.is_lt(WithdrawalIndex_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: FuluWithdrawal
+ops: decode
+file: types/FuluWithdrawal_decode_ssz_generated.bend
+sym: Withdrawal_decode_checked_budget,Withdrawal_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def Withdrawal_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>: Withdrawal_dcb(Bool.and(U32.is_lt(Withdrawal_dcost(size), 4294967295), U32.is_le(Withdrawal_dcost(size), budget)), buf, size)
++def Withdrawal_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluWithdrawal_d.Withdrawal>: Withdrawal_dcb(Bool.and(U32.is_lt(Withdrawal_dcost(size), 4294967295), U32.is_lt(Withdrawal_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: ProgressiveComplexTestStruct
+ops: decode
+file: types/ProgressiveComplexTestStruct_decode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_decode_checked_budget,ProgressiveComplexTestStruct_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ProgressiveComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveComplexTestStruct_dcost(size), budget)), buf, size)
++def ProgressiveComplexTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct>: ProgressiveComplexTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveComplexTestStruct_dcost(size), 4294967295), U32.is_lt(ProgressiveComplexTestStruct_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: ProgressiveSingleListContainerTestStruct
+ops: decode
+file: types/ProgressiveSingleListContainerTestStruct_decode_ssz_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_decode_checked_budget,ProgressiveSingleListContainerTestStruct_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ProgressiveSingleListContainerTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>: ProgressiveSingleListContainerTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveSingleListContainerTestStruct_dcost(size), budget)), buf, size)
++def ProgressiveSingleListContainerTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct>: ProgressiveSingleListContainerTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveSingleListContainerTestStruct_dcost(size), 4294967295), U32.is_lt(ProgressiveSingleListContainerTestStruct_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: ProgressiveVarTestStruct
+ops: decode
+file: types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+sym: ProgressiveVarTestStruct_decode_checked_budget,ProgressiveVarTestStruct_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def ProgressiveVarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>: ProgressiveVarTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_le(ProgressiveVarTestStruct_dcost(size), budget)), buf, size)
++def ProgressiveVarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>: ProgressiveVarTestStruct_dcb(Bool.and(U32.is_lt(ProgressiveVarTestStruct_dcost(size), 4294967295), U32.is_lt(ProgressiveVarTestStruct_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+sym: VarTestStruct_decode_checked_budget,VarTestStruct_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def VarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dcb(Bool.and(U32.is_lt(VarTestStruct_dcost(size), 4294967295), U32.is_le(VarTestStruct_dcost(size), budget)), buf, size)
++def VarTestStruct_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, VarTestStruct_d.VarTestStruct>: VarTestStruct_dcb(Bool.and(U32.is_lt(VarTestStruct_dcost(size), 4294967295), U32.is_lt(VarTestStruct_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_16
+ops: decode
+file: types/bitvector_16_decode_ssz_generated.bend
+sym: bitvector_16_decode_checked_budget,bitvector_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>: bitvector_16_dcb(Bool.and(U32.is_lt(bitvector_16_dcost(size), 4294967295), U32.is_le(bitvector_16_dcost(size), budget)), buf, size)
++def bitvector_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>: bitvector_16_dcb(Bool.and(U32.is_lt(bitvector_16_dcost(size), 4294967295), U32.is_lt(bitvector_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_31
+ops: decode
+file: types/bitvector_31_decode_ssz_generated.bend
+sym: bitvector_31_decode_checked_budget,bitvector_31_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_31_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>: bitvector_31_dcb(Bool.and(U32.is_lt(bitvector_31_dcost(size), 4294967295), U32.is_le(bitvector_31_dcost(size), budget)), buf, size)
++def bitvector_31_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_31_d.Bitvector31>: bitvector_31_dcb(Bool.and(U32.is_lt(bitvector_31_dcost(size), 4294967295), U32.is_lt(bitvector_31_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_33
+ops: decode
+file: types/bitvector_33_decode_ssz_generated.bend
+sym: bitvector_33_decode_checked_budget,bitvector_33_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_33_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>: bitvector_33_dcb(Bool.and(U32.is_lt(bitvector_33_dcost(size), 4294967295), U32.is_le(bitvector_33_dcost(size), budget)), buf, size)
++def bitvector_33_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_33_d.Bitvector33>: bitvector_33_dcb(Bool.and(U32.is_lt(bitvector_33_dcost(size), 4294967295), U32.is_lt(bitvector_33_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_511
+ops: decode
+file: types/bitvector_511_decode_ssz_generated.bend
+sym: bitvector_511_decode_checked_budget,bitvector_511_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_511_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>: bitvector_511_dcb(Bool.and(U32.is_lt(bitvector_511_dcost(size), 4294967295), U32.is_le(bitvector_511_dcost(size), budget)), buf, size)
++def bitvector_511_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_511_d.Bitvector511>: bitvector_511_dcb(Bool.and(U32.is_lt(bitvector_511_dcost(size), 4294967295), U32.is_lt(bitvector_511_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_5
+ops: decode
+file: types/bitvector_5_decode_ssz_generated.bend
+sym: bitvector_5_decode_checked_budget,bitvector_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>: bitvector_5_dcb(Bool.and(U32.is_lt(bitvector_5_dcost(size), 4294967295), U32.is_le(bitvector_5_dcost(size), budget)), buf, size)
++def bitvector_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_5_d.Bitvector5>: bitvector_5_dcb(Bool.and(U32.is_lt(bitvector_5_dcost(size), 4294967295), U32.is_lt(bitvector_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: bitvector_7
+ops: decode
+file: types/bitvector_7_decode_ssz_generated.bend
+sym: bitvector_7_decode_checked_budget,bitvector_7_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def bitvector_7_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>: bitvector_7_dcb(Bool.and(U32.is_lt(bitvector_7_dcost(size), 4294967295), U32.is_le(bitvector_7_dcost(size), budget)), buf, size)
++def bitvector_7_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, bitvector_7_d.Bitvector7>: bitvector_7_dcb(Bool.and(U32.is_lt(bitvector_7_dcost(size), 4294967295), U32.is_lt(bitvector_7_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: proglist_uint128
+ops: decode
+file: types/proglist_uint128_decode_ssz_generated.bend
+sym: proglist_uint128_decode_checked_budget,proglist_uint128_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def proglist_uint128_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint128_dcb(Bool.and(U32.is_lt(proglist_uint128_dcost(size), 4294967295), U32.is_le(proglist_uint128_dcost(size), budget)), buf, size)
++def proglist_uint128_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint128_dcb(Bool.and(U32.is_lt(proglist_uint128_dcost(size), 4294967295), U32.is_lt(proglist_uint128_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: proglist_uint32
+ops: decode
+file: types/proglist_uint32_decode_ssz_generated.bend
+sym: proglist_uint32_decode_checked_budget,proglist_uint32_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def proglist_uint32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint32_dcb(Bool.and(U32.is_lt(proglist_uint32_dcost(size), 4294967295), U32.is_le(proglist_uint32_dcost(size), budget)), buf, size)
++def proglist_uint32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: proglist_uint32_dcb(Bool.and(U32.is_lt(proglist_uint32_dcost(size), 4294967295), U32.is_lt(proglist_uint32_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_bool_16
+ops: decode
+file: types/vec_bool_16_decode_ssz_generated.bend
+sym: vec_bool_16_decode_checked_budget,vec_bool_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_bool_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_16_dcb(Bool.and(U32.is_lt(vec_bool_16_dcost(size), 4294967295), U32.is_le(vec_bool_16_dcost(size), budget)), buf, size)
++def vec_bool_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_16_dcb(Bool.and(U32.is_lt(vec_bool_16_dcost(size), 4294967295), U32.is_lt(vec_bool_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_bool_2
+ops: decode
+file: types/vec_bool_2_decode_ssz_generated.bend
+sym: vec_bool_2_decode_checked_budget,vec_bool_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_bool_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_2_dcb(Bool.and(U32.is_lt(vec_bool_2_dcost(size), 4294967295), U32.is_le(vec_bool_2_dcost(size), budget)), buf, size)
++def vec_bool_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_2_dcb(Bool.and(U32.is_lt(vec_bool_2_dcost(size), 4294967295), U32.is_lt(vec_bool_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_bool_3
+ops: decode
+file: types/vec_bool_3_decode_ssz_generated.bend
+sym: vec_bool_3_decode_checked_budget,vec_bool_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_bool_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_3_dcb(Bool.and(U32.is_lt(vec_bool_3_dcost(size), 4294967295), U32.is_le(vec_bool_3_dcost(size), budget)), buf, size)
++def vec_bool_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_3_dcb(Bool.and(U32.is_lt(vec_bool_3_dcost(size), 4294967295), U32.is_lt(vec_bool_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_bool_512
+ops: decode
+file: types/vec_bool_512_decode_ssz_generated.bend
+sym: vec_bool_512_decode_checked_budget,vec_bool_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_bool_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_512_dcb(Bool.and(U32.is_lt(vec_bool_512_dcost(size), 4294967295), U32.is_le(vec_bool_512_dcost(size), budget)), buf, size)
++def vec_bool_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_512_dcb(Bool.and(U32.is_lt(vec_bool_512_dcost(size), 4294967295), U32.is_lt(vec_bool_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: vec_bool_5_decode_checked_budget,vec_bool_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_bool_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dcb(Bool.and(U32.is_lt(vec_bool_5_dcost(size), 4294967295), U32.is_le(vec_bool_5_dcost(size), budget)), buf, size)
++def vec_bool_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_bool_5_dcb(Bool.and(U32.is_lt(vec_bool_5_dcost(size), 4294967295), U32.is_lt(vec_bool_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint128_16
+ops: decode
+file: types/vec_uint128_16_decode_ssz_generated.bend
+sym: vec_uint128_16_decode_checked_budget,vec_uint128_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint128_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_16_dcb(Bool.and(U32.is_lt(vec_uint128_16_dcost(size), 4294967295), U32.is_le(vec_uint128_16_dcost(size), budget)), buf, size)
++def vec_uint128_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_16_dcb(Bool.and(U32.is_lt(vec_uint128_16_dcost(size), 4294967295), U32.is_lt(vec_uint128_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint128_2
+ops: decode
+file: types/vec_uint128_2_decode_ssz_generated.bend
+sym: vec_uint128_2_decode_checked_budget,vec_uint128_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint128_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_2_dcb(Bool.and(U32.is_lt(vec_uint128_2_dcost(size), 4294967295), U32.is_le(vec_uint128_2_dcost(size), budget)), buf, size)
++def vec_uint128_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_2_dcb(Bool.and(U32.is_lt(vec_uint128_2_dcost(size), 4294967295), U32.is_lt(vec_uint128_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint128_3
+ops: decode
+file: types/vec_uint128_3_decode_ssz_generated.bend
+sym: vec_uint128_3_decode_checked_budget,vec_uint128_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint128_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_3_dcb(Bool.and(U32.is_lt(vec_uint128_3_dcost(size), 4294967295), U32.is_le(vec_uint128_3_dcost(size), budget)), buf, size)
++def vec_uint128_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_3_dcb(Bool.and(U32.is_lt(vec_uint128_3_dcost(size), 4294967295), U32.is_lt(vec_uint128_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint128_512
+ops: decode
+file: types/vec_uint128_512_decode_ssz_generated.bend
+sym: vec_uint128_512_decode_checked_budget,vec_uint128_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint128_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_512_dcb(Bool.and(U32.is_lt(vec_uint128_512_dcost(size), 4294967295), U32.is_le(vec_uint128_512_dcost(size), budget)), buf, size)
++def vec_uint128_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_512_dcb(Bool.and(U32.is_lt(vec_uint128_512_dcost(size), 4294967295), U32.is_lt(vec_uint128_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint128_5
+ops: decode
+file: types/vec_uint128_5_decode_ssz_generated.bend
+sym: vec_uint128_5_decode_checked_budget,vec_uint128_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint128_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_5_dcb(Bool.and(U32.is_lt(vec_uint128_5_dcost(size), 4294967295), U32.is_le(vec_uint128_5_dcost(size), budget)), buf, size)
++def vec_uint128_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint128_5_dcb(Bool.and(U32.is_lt(vec_uint128_5_dcost(size), 4294967295), U32.is_lt(vec_uint128_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint16_16
+ops: decode
+file: types/vec_uint16_16_decode_ssz_generated.bend
+sym: vec_uint16_16_decode_checked_budget,vec_uint16_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint16_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_16_dcb(Bool.and(U32.is_lt(vec_uint16_16_dcost(size), 4294967295), U32.is_le(vec_uint16_16_dcost(size), budget)), buf, size)
++def vec_uint16_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_16_dcb(Bool.and(U32.is_lt(vec_uint16_16_dcost(size), 4294967295), U32.is_lt(vec_uint16_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint16_2
+ops: decode
+file: types/vec_uint16_2_decode_ssz_generated.bend
+sym: vec_uint16_2_decode_checked_budget,vec_uint16_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint16_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_2_dcb(Bool.and(U32.is_lt(vec_uint16_2_dcost(size), 4294967295), U32.is_le(vec_uint16_2_dcost(size), budget)), buf, size)
++def vec_uint16_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_2_dcb(Bool.and(U32.is_lt(vec_uint16_2_dcost(size), 4294967295), U32.is_lt(vec_uint16_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint16_3
+ops: decode
+file: types/vec_uint16_3_decode_ssz_generated.bend
+sym: vec_uint16_3_decode_checked_budget,vec_uint16_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint16_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_3_dcb(Bool.and(U32.is_lt(vec_uint16_3_dcost(size), 4294967295), U32.is_le(vec_uint16_3_dcost(size), budget)), buf, size)
++def vec_uint16_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_3_dcb(Bool.and(U32.is_lt(vec_uint16_3_dcost(size), 4294967295), U32.is_lt(vec_uint16_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint16_512
+ops: decode
+file: types/vec_uint16_512_decode_ssz_generated.bend
+sym: vec_uint16_512_decode_checked_budget,vec_uint16_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint16_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_512_dcb(Bool.and(U32.is_lt(vec_uint16_512_dcost(size), 4294967295), U32.is_le(vec_uint16_512_dcost(size), budget)), buf, size)
++def vec_uint16_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_512_dcb(Bool.and(U32.is_lt(vec_uint16_512_dcost(size), 4294967295), U32.is_lt(vec_uint16_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint16_5
+ops: decode
+file: types/vec_uint16_5_decode_ssz_generated.bend
+sym: vec_uint16_5_decode_checked_budget,vec_uint16_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint16_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_5_dcb(Bool.and(U32.is_lt(vec_uint16_5_dcost(size), 4294967295), U32.is_le(vec_uint16_5_dcost(size), budget)), buf, size)
++def vec_uint16_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint16_5_dcb(Bool.and(U32.is_lt(vec_uint16_5_dcost(size), 4294967295), U32.is_lt(vec_uint16_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint256_16
+ops: decode
+file: types/vec_uint256_16_decode_ssz_generated.bend
+sym: vec_uint256_16_decode_checked_budget,vec_uint256_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint256_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_16_dcb(Bool.and(U32.is_lt(vec_uint256_16_dcost(size), 4294967295), U32.is_le(vec_uint256_16_dcost(size), budget)), buf, size)
++def vec_uint256_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_16_dcb(Bool.and(U32.is_lt(vec_uint256_16_dcost(size), 4294967295), U32.is_lt(vec_uint256_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint256_2
+ops: decode
+file: types/vec_uint256_2_decode_ssz_generated.bend
+sym: vec_uint256_2_decode_checked_budget,vec_uint256_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint256_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_2_dcb(Bool.and(U32.is_lt(vec_uint256_2_dcost(size), 4294967295), U32.is_le(vec_uint256_2_dcost(size), budget)), buf, size)
++def vec_uint256_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_2_dcb(Bool.and(U32.is_lt(vec_uint256_2_dcost(size), 4294967295), U32.is_lt(vec_uint256_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint256_3
+ops: decode
+file: types/vec_uint256_3_decode_ssz_generated.bend
+sym: vec_uint256_3_decode_checked_budget,vec_uint256_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint256_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_3_dcb(Bool.and(U32.is_lt(vec_uint256_3_dcost(size), 4294967295), U32.is_le(vec_uint256_3_dcost(size), budget)), buf, size)
++def vec_uint256_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_3_dcb(Bool.and(U32.is_lt(vec_uint256_3_dcost(size), 4294967295), U32.is_lt(vec_uint256_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint256_512
+ops: decode
+file: types/vec_uint256_512_decode_ssz_generated.bend
+sym: vec_uint256_512_decode_checked_budget,vec_uint256_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint256_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_512_dcb(Bool.and(U32.is_lt(vec_uint256_512_dcost(size), 4294967295), U32.is_le(vec_uint256_512_dcost(size), budget)), buf, size)
++def vec_uint256_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_512_dcb(Bool.and(U32.is_lt(vec_uint256_512_dcost(size), 4294967295), U32.is_lt(vec_uint256_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint256_5
+ops: decode
+file: types/vec_uint256_5_decode_ssz_generated.bend
+sym: vec_uint256_5_decode_checked_budget,vec_uint256_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint256_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_5_dcb(Bool.and(U32.is_lt(vec_uint256_5_dcost(size), 4294967295), U32.is_le(vec_uint256_5_dcost(size), budget)), buf, size)
++def vec_uint256_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint256_5_dcb(Bool.and(U32.is_lt(vec_uint256_5_dcost(size), 4294967295), U32.is_lt(vec_uint256_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint32_16
+ops: decode
+file: types/vec_uint32_16_decode_ssz_generated.bend
+sym: vec_uint32_16_decode_checked_budget,vec_uint32_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint32_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_16_dcb(Bool.and(U32.is_lt(vec_uint32_16_dcost(size), 4294967295), U32.is_le(vec_uint32_16_dcost(size), budget)), buf, size)
++def vec_uint32_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_16_dcb(Bool.and(U32.is_lt(vec_uint32_16_dcost(size), 4294967295), U32.is_lt(vec_uint32_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint32_2
+ops: decode
+file: types/vec_uint32_2_decode_ssz_generated.bend
+sym: vec_uint32_2_decode_checked_budget,vec_uint32_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint32_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_2_dcb(Bool.and(U32.is_lt(vec_uint32_2_dcost(size), 4294967295), U32.is_le(vec_uint32_2_dcost(size), budget)), buf, size)
++def vec_uint32_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_2_dcb(Bool.and(U32.is_lt(vec_uint32_2_dcost(size), 4294967295), U32.is_lt(vec_uint32_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint32_3
+ops: decode
+file: types/vec_uint32_3_decode_ssz_generated.bend
+sym: vec_uint32_3_decode_checked_budget,vec_uint32_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint32_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_3_dcb(Bool.and(U32.is_lt(vec_uint32_3_dcost(size), 4294967295), U32.is_le(vec_uint32_3_dcost(size), budget)), buf, size)
++def vec_uint32_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_3_dcb(Bool.and(U32.is_lt(vec_uint32_3_dcost(size), 4294967295), U32.is_lt(vec_uint32_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint32_512
+ops: decode
+file: types/vec_uint32_512_decode_ssz_generated.bend
+sym: vec_uint32_512_decode_checked_budget,vec_uint32_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint32_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_512_dcb(Bool.and(U32.is_lt(vec_uint32_512_dcost(size), 4294967295), U32.is_le(vec_uint32_512_dcost(size), budget)), buf, size)
++def vec_uint32_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_512_dcb(Bool.and(U32.is_lt(vec_uint32_512_dcost(size), 4294967295), U32.is_lt(vec_uint32_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint32_5
+ops: decode
+file: types/vec_uint32_5_decode_ssz_generated.bend
+sym: vec_uint32_5_decode_checked_budget,vec_uint32_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint32_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_5_dcb(Bool.and(U32.is_lt(vec_uint32_5_dcost(size), 4294967295), U32.is_le(vec_uint32_5_dcost(size), budget)), buf, size)
++def vec_uint32_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint32_5_dcb(Bool.and(U32.is_lt(vec_uint32_5_dcost(size), 4294967295), U32.is_lt(vec_uint32_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint64_16
+ops: decode
+file: types/vec_uint64_16_decode_ssz_generated.bend
+sym: vec_uint64_16_decode_checked_budget,vec_uint64_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint64_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_16_dcb(Bool.and(U32.is_lt(vec_uint64_16_dcost(size), 4294967295), U32.is_le(vec_uint64_16_dcost(size), budget)), buf, size)
++def vec_uint64_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_16_dcb(Bool.and(U32.is_lt(vec_uint64_16_dcost(size), 4294967295), U32.is_lt(vec_uint64_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint64_2
+ops: decode
+file: types/vec_uint64_2_decode_ssz_generated.bend
+sym: vec_uint64_2_decode_checked_budget,vec_uint64_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint64_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_2_dcb(Bool.and(U32.is_lt(vec_uint64_2_dcost(size), 4294967295), U32.is_le(vec_uint64_2_dcost(size), budget)), buf, size)
++def vec_uint64_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_2_dcb(Bool.and(U32.is_lt(vec_uint64_2_dcost(size), 4294967295), U32.is_lt(vec_uint64_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint64_3
+ops: decode
+file: types/vec_uint64_3_decode_ssz_generated.bend
+sym: vec_uint64_3_decode_checked_budget,vec_uint64_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint64_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_3_dcb(Bool.and(U32.is_lt(vec_uint64_3_dcost(size), 4294967295), U32.is_le(vec_uint64_3_dcost(size), budget)), buf, size)
++def vec_uint64_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_3_dcb(Bool.and(U32.is_lt(vec_uint64_3_dcost(size), 4294967295), U32.is_lt(vec_uint64_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint64_512
+ops: decode
+file: types/vec_uint64_512_decode_ssz_generated.bend
+sym: vec_uint64_512_decode_checked_budget,vec_uint64_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint64_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_512_dcb(Bool.and(U32.is_lt(vec_uint64_512_dcost(size), 4294967295), U32.is_le(vec_uint64_512_dcost(size), budget)), buf, size)
++def vec_uint64_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_512_dcb(Bool.and(U32.is_lt(vec_uint64_512_dcost(size), 4294967295), U32.is_lt(vec_uint64_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint64_5
+ops: decode
+file: types/vec_uint64_5_decode_ssz_generated.bend
+sym: vec_uint64_5_decode_checked_budget,vec_uint64_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint64_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_5_dcb(Bool.and(U32.is_lt(vec_uint64_5_dcost(size), 4294967295), U32.is_le(vec_uint64_5_dcost(size), budget)), buf, size)
++def vec_uint64_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_5_dcb(Bool.and(U32.is_lt(vec_uint64_5_dcost(size), 4294967295), U32.is_lt(vec_uint64_5_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint8_16
+ops: decode
+file: types/vec_uint8_16_decode_ssz_generated.bend
+sym: vec_uint8_16_decode_checked_budget,vec_uint8_16_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint8_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_16_dcb(Bool.and(U32.is_lt(vec_uint8_16_dcost(size), 4294967295), U32.is_le(vec_uint8_16_dcost(size), budget)), buf, size)
++def vec_uint8_16_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_16_dcb(Bool.and(U32.is_lt(vec_uint8_16_dcost(size), 4294967295), U32.is_lt(vec_uint8_16_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint8_2
+ops: decode
+file: types/vec_uint8_2_decode_ssz_generated.bend
+sym: vec_uint8_2_decode_checked_budget,vec_uint8_2_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint8_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_2_dcb(Bool.and(U32.is_lt(vec_uint8_2_dcost(size), 4294967295), U32.is_le(vec_uint8_2_dcost(size), budget)), buf, size)
++def vec_uint8_2_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_2_dcb(Bool.and(U32.is_lt(vec_uint8_2_dcost(size), 4294967295), U32.is_lt(vec_uint8_2_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint8_3
+ops: decode
+file: types/vec_uint8_3_decode_ssz_generated.bend
+sym: vec_uint8_3_decode_checked_budget,vec_uint8_3_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint8_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_3_dcb(Bool.and(U32.is_lt(vec_uint8_3_dcost(size), 4294967295), U32.is_le(vec_uint8_3_dcost(size), budget)), buf, size)
++def vec_uint8_3_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_3_dcb(Bool.and(U32.is_lt(vec_uint8_3_dcost(size), 4294967295), U32.is_lt(vec_uint8_3_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint8_512
+ops: decode
+file: types/vec_uint8_512_decode_ssz_generated.bend
+sym: vec_uint8_512_decode_checked_budget,vec_uint8_512_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint8_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_512_dcb(Bool.and(U32.is_lt(vec_uint8_512_dcost(size), 4294967295), U32.is_le(vec_uint8_512_dcost(size), budget)), buf, size)
++def vec_uint8_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_512_dcb(Bool.and(U32.is_lt(vec_uint8_512_dcost(size), 4294967295), U32.is_lt(vec_uint8_512_dcost(size), budget)), buf, size)
+=== r11-h01-budget-strict
+type: vec_uint8_5
+ops: decode
+file: types/vec_uint8_5_decode_ssz_generated.bend
+sym: vec_uint8_5_decode_checked_budget,vec_uint8_5_dcb
+spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+fault: a budget equal to the cost is refused (cost < budget)
+why: boundary of the budget test
+-def vec_uint8_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_5_dcb(Bool.and(U32.is_lt(vec_uint8_5_dcost(size), 4294967295), U32.is_le(vec_uint8_5_dcost(size), budget)), buf, size)
++def vec_uint8_5_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint8_5_dcb(Bool.and(U32.is_lt(vec_uint8_5_dcost(size), 4294967295), U32.is_lt(vec_uint8_5_dcost(size), budget)), buf, size)

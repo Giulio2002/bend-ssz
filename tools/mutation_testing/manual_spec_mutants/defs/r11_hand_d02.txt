@@ -1,0 +1,61 @@
+## round 11 hand-designed: r11-d02-cache-grow-window
+=== r11-d02-cache-grow-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_capp_fit,l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp,l16_ProposerSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l16_ProposerSlashing_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l16_ProposerSlashing_dfill(2n+d), 0, n}
+=== r11-d02-cache-grow-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_capp_fit,l16_Deposit_cache,l16_Deposit_cached_root,l16_Deposit_cset,l16_Deposit_capp,l16_Deposit_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l16_Deposit_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l16_Deposit_dfill(2n+d), 0, n}
+=== r11-d02-cache-grow-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_capp_fit,l8_Attestation_cache,l8_Attestation_cached_root,l8_Attestation_cset,l8_Attestation_capp,l8_Attestation_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l8_Attestation_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l8_Attestation_dfill(2n+d), 0, n}
+=== r11-d02-cache-grow-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+sym: l1_AttesterSlashing_capp_fit,l1_AttesterSlashing_cache,l1_AttesterSlashing_cached_root,l1_AttesterSlashing_cset,l1_AttesterSlashing_capp,l1_AttesterSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l1_AttesterSlashing_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l1_AttesterSlashing_dfill(2n+d), 0, n}
+=== r11-d02-cache-grow-window
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+sym: l1048576_bl1073741824_capp_fit,l1048576_bl1073741824_cache,l1048576_bl1073741824_cached_root,l1048576_bl1073741824_cset,l1048576_bl1073741824_capp,l1048576_bl1073741824_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l1048576_bl1073741824_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l1048576_bl1073741824_dfill(2n+d), 0, n}
+=== r11-d02-cache-grow-window
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_capp_fit,l10_ProgressiveSingleFieldContainerTestStruct_cache,l10_ProgressiveSingleFieldContainerTestStruct_cached_root,l10_ProgressiveSingleFieldContainerTestStruct_cset,l10_ProgressiveSingleFieldContainerTestStruct_capp,l10_ProgressiveSingleFieldContainerTestStruct_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+why: dirty window after growth sized by the count
+-l10_ProgressiveSingleFieldContainerTestStruct_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++l10_ProgressiveSingleFieldContainerTestStruct_dfill(2n+d), 0, n}

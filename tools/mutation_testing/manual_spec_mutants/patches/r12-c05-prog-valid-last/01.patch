@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c05-prog-valid-last/01
+# type: ProgressiveTestStruct
+# ops: encode
+# spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+# fault: ProgressiveTestStruct_valid: the last field's validity dropped
+# why: accumulator slip in the last step
+# file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveTestStruct_va3,ProgressiveTestStruct_valid_f,ProgressiveTestStruct_valid
+--- a/types/ProgressiveTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveTestStruct_encode_ssz_generated.bend
+@@ -92,3 +92,3 @@
+   (f_D, ok) = pair
+-  (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, Bool.and(acc, ok))
++  (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, acc)
+ 

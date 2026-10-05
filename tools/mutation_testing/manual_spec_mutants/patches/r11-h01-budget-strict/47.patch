@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/47
+# type: FuluSubnetID
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluSubnetID_decode_ssz_generated.bend
+# sym: SubnetID_decode_checked_budget,SubnetID_dcb
+--- a/types/FuluSubnetID_decode_ssz_generated.bend
++++ b/types/FuluSubnetID_decode_ssz_generated.bend
+@@ -60,3 +60,3 @@
+ 
+-def SubnetID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dcb(Bool.and(U32.is_lt(SubnetID_dcost(size), 4294967295), U32.is_le(SubnetID_dcost(size), budget)), buf, size)
++def SubnetID_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.U64>: SubnetID_dcb(Bool.and(U32.is_lt(SubnetID_dcost(size), 4294967295), U32.is_lt(SubnetID_dcost(size), budget)), buf, size)
+ 

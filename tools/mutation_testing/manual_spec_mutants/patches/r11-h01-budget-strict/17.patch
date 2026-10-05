@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/17
+# type: FuluContributionAndProof
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluContributionAndProof_decode_ssz_generated.bend
+# sym: ContributionAndProof_decode_checked_budget,ContributionAndProof_dcb
+--- a/types/FuluContributionAndProof_decode_ssz_generated.bend
++++ b/types/FuluContributionAndProof_decode_ssz_generated.bend
+@@ -88,3 +88,3 @@
+ 
+-def ContributionAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dcb(Bool.and(U32.is_lt(ContributionAndProof_dcost(size), 4294967295), U32.is_le(ContributionAndProof_dcost(size), budget)), buf, size)
++def ContributionAndProof_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluContributionAndProof_d.ContributionAndProof>: ContributionAndProof_dcb(Bool.and(U32.is_lt(ContributionAndProof_dcost(size), 4294967295), U32.is_lt(ContributionAndProof_dcost(size), budget)), buf, size)
+ 

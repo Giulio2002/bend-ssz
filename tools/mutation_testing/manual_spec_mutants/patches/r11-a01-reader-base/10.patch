@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/10
+# type: FuluExecutionPayload
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 512 is read at absolute byte 512 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluExecutionPayload_decode_ssz_generated.bend
+# sym: ExecutionPayload_g1_rd9,ExecutionPayload_g1_read,ExecutionPayload_decode
+--- a/types/FuluExecutionPayload_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_decode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+   (buf, withdrawals) = pair
+-  ExecutionPayload_g1_rd10(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, uint64_r.u64_read(buf, (off + 512 : U32), 8))
++  ExecutionPayload_g1_rd10(off, len, vend, o_extra_data, o_transactions, o_withdrawals, gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, uint64_r.u64_read(buf, (512 : U32), 8))
+ 

@@ -1,0 +1,41 @@
+{
+ "baseline": {
+  "1": "c1 l1_AttesterSlashing cached=3102059698,4249427706,2878587621 plain_uncache=3102059698,4249427706,2878587621 plain_fresh=3102059698,4249427706,2878587621 len_uncache=1",
+  "2": "c2 l2_ConsolidationRequest cached=23566629,1203379096,2111062874 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2",
+  "3": "c3 l16_Withdrawal cached=1927001765,1018094560,2822242428 plain_uncache=1927001765,1018094560,2822242428 plain_fresh=1927001765,1018094560,2822242428 len_uncache=2"
+ },
+ "r12-d01-cache-lo/02": {
+  "B2": "KILLED",
+  "diff": {
+   "1": [
+    "c1 l1_AttesterSlashing cached=3102059698,4249427706,2878587621 plain_uncache=3102059698,4249427706,2878587621 plain_fresh=3102059698,4249427706,2878587621 len_uncache=1",
+    "c1 l1_AttesterSlashing cached=3411617860,303927919,2699607030 plain_uncache=3102059698,4249427706,2878587621 plain_fresh=3102059698,4249427706,2878587621 len_uncache=1"
+   ]
+  }
+ },
+ "r12-d01-cache-lo/03": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 l2_ConsolidationRequest cached=23566629,1203379096,2111062874 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2",
+    "c2 l2_ConsolidationRequest cached=2493962254,4112426301,1006744965 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2"
+   ]
+  }
+ },
+ "r12-d02-cache-depth0/02": {
+  "B2": "SURVIVED",
+  "diff": {}
+ },
+ "r12-d02-cache-depth0/03": {
+  "B2": "KILLED",
+  "diff": {
+   "2": [
+    "c2 l2_ConsolidationRequest cached=23566629,1203379096,2111062874 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2",
+    "c2 l2_ConsolidationRequest cached=2807177708,1053936587,1741432579 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2"
+   ]
+  }
+ },
+ "r12-d01-cache-lo/16": {
+  "B2": "NOTAPPLICABLE"
+ }
+}

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d03-cset-lo/06
+# type: ProgressiveComplexTestStruct
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: cset does not lower the dirty window's low end to i (a set below the window is never rehashed)
+# why: only the high end of the window widened
+# file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+# sym: l10_ProgressiveSingleFieldContainerTestStruct_cset_in,l10_ProgressiveSingleFieldContainerTestStruct_cache,l10_ProgressiveSingleFieldContainerTestStruct_cached_root,l10_ProgressiveSingleFieldContainerTestStruct_cset,l10_ProgressiveSingleFieldContainerTestStruct_capp,l10_ProgressiveSingleFieldContainerTestStruct_uncache
+--- a/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
++++ b/types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+@@ -183,3 +183,3 @@
+   match ok:
+-    case True{}: (l10_ProgressiveSingleFieldContainerTestStruct_Cached{Array.set(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, i, v), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l10_ProgressiveSingleFieldContainerTestStruct_Cached{Array.set(ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct, arr, i, v), n, d, nodes, lo, O.pick(U32.is_le(i, hi), hi, i)}, True{})
+     case False{}: (l10_ProgressiveSingleFieldContainerTestStruct_Cached{arr, n, d, nodes, lo, hi}, False{})

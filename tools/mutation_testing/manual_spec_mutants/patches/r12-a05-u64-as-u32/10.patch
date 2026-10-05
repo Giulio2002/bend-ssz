@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/10
+# type: FuluExecutionPayload
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluExecutionPayload: the uint64 field `gas_limit` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluExecutionPayload_hashtreeroot_generated.bend
+# sym: ExecutionPayload_g0_rt6,u64_root
+--- a/types/FuluExecutionPayload_hashtreeroot_generated.bend
++++ b/types/FuluExecutionPayload_hashtreeroot_generated.bend
+@@ -29,3 +29,3 @@
+   (h, d_block_number) = pair
+-  ExecutionPayload_g0_rt7(hl, seg, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit, d_parent_hash, d_fee_recipient, d_state_root, d_receipts_root, d_logs_bloom, d_prev_randao, d_block_number, uint64_h.u64_root(hl, h, gas_limit, seg))
++  ExecutionPayload_g0_rt7(hl, seg, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit, d_parent_hash, d_fee_recipient, d_state_root, d_receipts_root, d_logs_bloom, d_prev_randao, d_block_number, (h, O.u32_chunk(O.u64_lo_of(gas_limit))))
+ 

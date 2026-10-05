@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/71
+# type: vec_bool_8
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls vec_bool_8_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/vec_bool_8_decode_ssz_generated.bend
+# sym: vec_bool_8_dcb,vec_bool_8_decode_checked_budget
+--- a/types/vec_bool_8_decode_ssz_generated.bend
++++ b/types/vec_bool_8_decode_ssz_generated.bend
+@@ -82,3 +82,3 @@
+   match ok:
+-    case True{}: vec_bool_8_decode_checked(buf, size)
++    case True{}: vec_bool_8_decode(buf, size)
+     case False{}: (buf, None{})

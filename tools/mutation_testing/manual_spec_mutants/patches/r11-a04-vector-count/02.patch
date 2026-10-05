@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a04-vector-count/02
+# type: vec_bool_2
+# ops: decode
+# spec: deserialize(Vector[T, N]) reads N elements of size(T)
+# fault: the copy takes 1 bytes instead of 2 (the last element is left zero)
+# why: element count off by one (range(N - 1))
+# file: types/vec_bool_2_decode_ssz_generated.bend
+# sym: v2_bool_read,vec_bool_2_decode
+--- a/types/vec_bool_2_decode_ssz_generated.bend
++++ b/types/vec_bool_2_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v2_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
++def v2_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 1, Array.new(U32, 4n, 0))
+ 

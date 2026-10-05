@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-e01-prog-append-len/04
+# type: proglist_uint64
+# ops: encode,root
+# spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+# fault: append grows the storage but leaves the byte length at n * 8 (the appended element is written past the length and lost)
+# why: resize to the old length
+# file: types/proglist_uint64_def_generated.bend
+# sym: pl_u64_grow,pl_u64_append
+--- a/types/proglist_uint64_def_generated.bend
++++ b/types/proglist_uint64_def_generated.bend
+@@ -51,3 +51,3 @@
+   match ok:
+-    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n + 1 : U32) * 8 : U32)), n, v)
++    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), (n * 8 : U32)), n, v)
+     case False{}: (o, False{})

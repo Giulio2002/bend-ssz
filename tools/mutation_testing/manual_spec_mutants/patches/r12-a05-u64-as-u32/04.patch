@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/04
+# type: FuluBeaconState
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluBeaconState: the uint64 field `slot` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluBeaconState_hashtreeroot_generated.bend
+# sym: BeaconState_g0_rt1,u64_root
+--- a/types/FuluBeaconState_hashtreeroot_generated.bend
++++ b/types/FuluBeaconState_hashtreeroot_generated.bend
+@@ -75,3 +75,3 @@
+   (h, d_genesis_validators_root) = pair
+-  BeaconState_g0_rt2(hl, seg, genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots, d_genesis_time, d_genesis_validators_root, uint64_h.u64_root(hl, h, slot, seg))
++  BeaconState_g0_rt2(hl, seg, genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots, d_genesis_time, d_genesis_validators_root, (h, O.u32_chunk(O.u64_lo_of(slot))))
+ 

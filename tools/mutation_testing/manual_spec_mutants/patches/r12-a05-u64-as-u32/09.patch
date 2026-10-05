@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/09
+# type: FuluEth1Data
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluEth1Data: the uint64 field `deposit_count` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluEth1Data_hashtreeroot_generated.bend
+# sym: Eth1Data_rt0,u64_root
+--- a/types/FuluEth1Data_hashtreeroot_generated.bend
++++ b/types/FuluEth1Data_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (h, d_deposit_root) = pair
+-  Eth1Data_rt1(hl, seg, deposit_root, deposit_count, block_hash, d_deposit_root, uint64_h.u64_root(hl, h, deposit_count, seg))
++  Eth1Data_rt1(hl, seg, deposit_root, deposit_count, block_hash, d_deposit_root, (h, O.u32_chunk(O.u64_lo_of(deposit_count))))
+ 

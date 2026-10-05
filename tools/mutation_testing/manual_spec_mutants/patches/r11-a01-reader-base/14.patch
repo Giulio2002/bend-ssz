@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/14
+# type: FuluHistoricalBatch
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 262144 is read at absolute byte 262144 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluHistoricalBatch_decode_ssz_generated.bend
+# sym: HistoricalBatch_rd0,HistoricalBatch_read,HistoricalBatch_decode
+--- a/types/FuluHistoricalBatch_decode_ssz_generated.bend
++++ b/types/FuluHistoricalBatch_decode_ssz_generated.bend
+@@ -17,3 +17,3 @@
+   (buf, block_roots) = pair
+-  HistoricalBatch_rd1(off, len, block_roots, Fulu_vec_bytevec_32_8192_r.v8192_b32_read(buf, (off + 262144 : U32), 262144))
++  HistoricalBatch_rd1(off, len, block_roots, Fulu_vec_bytevec_32_8192_r.v8192_b32_read(buf, (262144 : U32), 262144))
+ 

@@ -1,0 +1,426 @@
+[
+ {
+  "id": "r11-a01-reader-base/01",
+  "type": "FuluBlobIdentifier",
+  "cases": 272,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 69.0
+ },
+ {
+  "id": "r11-a01-reader-base/04",
+  "type": "FuluEth1Block",
+  "cases": 277,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 11.9
+ },
+ {
+  "id": "r11-a01-reader-base/05",
+  "type": "FuluExecutionPayloadHeader",
+  "cases": 368,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.1
+ },
+ {
+  "id": "r11-a01-reader-base/09",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 43,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 43
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2691: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 67.6
+ },
+ {
+  "id": "r11-b03-bx-ok/01",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 4,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 4
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2816: ref rejects, mutant accepts",
+   "BeaconBlockBody#2970: ref rejects, mutant accepts",
+   "BeaconBlockBody#3025: ref rejects, mutant accepts",
+   "BeaconBlockBody#3069: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 82.5
+ },
+ {
+  "id": "r11-f01-union-same-type/02",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 0,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6613: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.9
+ },
+ {
+  "id": "r11-b03-bx-ok/09",
+  "type": "FuluExecutionPayload",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 24.4
+ },
+ {
+  "id": "r11-b03-bx-ok/11",
+  "type": "ComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 85,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 85
+  },
+  "timeouts": 0,
+  "examples": [
+   "ComplexTestStruct#6893: ref rejects, mutant accepts",
+   "ComplexTestStruct#6898: ref rejects, mutant accepts",
+   "ComplexTestStruct#6904: ref rejects, mutant accepts",
+   "ComplexTestStruct#6910: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 108.0
+ },
+ {
+  "id": "r11-a04-vector-count/01",
+  "type": "vec_bool_16",
+  "cases": 196,
+  "official": 0,
+  "corpus_bad": 60,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 60
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_bool_16#34371: re-encoding differs",
+   "vec_bool_16#34372: re-encoding differs",
+   "vec_bool_16#34373: re-encoding differs",
+   "vec_bool_16#34374: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 13.7
+ },
+ {
+  "id": "r11-a01-reader-base/10",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 39,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 39
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2691: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 68.2
+ },
+ {
+  "id": "r11-a01-reader-base/11",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 24,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 24
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2752: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 68.5
+ },
+ {
+  "id": "r11-a01-reader-base/12",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 40,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 40
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2691: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 66.3
+ },
+ {
+  "id": "r11-b03-bx-ok/10",
+  "type": "ProgressiveComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 25,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 25
+  },
+  "timeouts": 0,
+  "examples": [
+   "ProgressiveComplexTestStruct#21392: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21416: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21422: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21441: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 98.1
+ },
+ {
+  "id": "r11-b03-bx-ok/12",
+  "type": "ProgressiveComplexTestStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 5,
+  "official_bad": 0,
+  "kinds": {
+   "timeout": 2,
+   "ref rejects, mutant accepts": 5
+  },
+  "timeouts": 2,
+  "examples": [
+   "ProgressiveComplexTestStruct#21548: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21564: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21574: ref rejects, mutant accepts",
+   "ProgressiveComplexTestStruct#21642: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 293.0
+ },
+ {
+  "id": "r11-a02-word-readback/01",
+  "type": "FuluBytes8",
+  "cases": 206,
+  "official": 0,
+  "corpus_bad": 179,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 179
+  },
+  "timeouts": 0,
+  "examples": [
+   "Bytes8#5076: re-encoding differs",
+   "Bytes8#5077: re-encoding differs",
+   "Bytes8#5078: re-encoding differs",
+   "Bytes8#5084: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.5
+ },
+ {
+  "id": "r11-a03-tail-keep/01",
+  "type": "FuluBytes1",
+  "cases": 26,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.6
+ },
+ {
+  "id": "r11-a05-vector-storage/01",
+  "type": "vec_bool_3",
+  "cases": 40,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.6
+ },
+ {
+  "id": "r11-b02-ok-pad/01",
+  "type": "ProgressiveBitsStruct",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 18.3
+ },
+ {
+  "id": "r11-c01-group-acc/01",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 70.8
+ },
+ {
+  "id": "r11-e01-prog-append-len/01",
+  "type": "proglist_uint8",
+  "cases": 58,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.7
+ },
+ {
+  "id": "r11-f01-union-same-type/01",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 0,
+  "corpus_bad": 1,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 1
+  },
+  "timeouts": 0,
+  "examples": [
+   "CompatibleUnionABCA#6613: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 9.0
+ },
+ {
+  "id": "r11-f01-union-same-type/03",
+  "type": "CompatibleUnionABCA",
+  "cases": 81,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 10.2
+ },
+ {
+  "id": "r11-h01-budget-strict/11",
+  "type": "FuluBytes32",
+  "cases": 276,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.3
+ },
+ {
+  "id": "r11-h02-budget-unchecked/11",
+  "type": "FuluBytes48",
+  "cases": 290,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.5
+ },
+ {
+  "id": "r11-c01-group-acc/11",
+  "type": "FuluExecutionPayload",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 24.0
+ },
+ {
+  "id": "r11-b03-bx-ok/04",
+  "type": "FuluAttesterSlashing",
+  "cases": 394,
+  "official": 0,
+  "corpus_bad": 155,
+  "official_bad": 0,
+  "kinds": {
+   "ref rejects, mutant accepts": 155
+  },
+  "timeouts": 0,
+  "examples": [
+   "AttesterSlashing#1043: ref rejects, mutant accepts",
+   "AttesterSlashing#1046: ref rejects, mutant accepts",
+   "AttesterSlashing#1047: ref rejects, mutant accepts",
+   "AttesterSlashing#1050: ref rejects, mutant accepts"
+  ],
+  "B": "KILLED",
+  "secs": 129.9
+ }
+]

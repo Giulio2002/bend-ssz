@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-d01-cache-lo/15
+# type: Fulu_list_Withdrawal_16
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+# fault: l16_Withdrawal_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)
+# why: window initialised with a 1-based index
+# file: types/Fulu_list_Withdrawal_16_def_generated.bend
+# sym: l16_Withdrawal_cache_fin,l16_Withdrawal_cache
+# proofs: proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_3_generated.bend
+--- a/types/Fulu_list_Withdrawal_16_def_generated.bend
++++ b/types/Fulu_list_Withdrawal_16_def_generated.bend
+@@ -148,3 +148,3 @@
+ def l16_Withdrawal_cache_fin(arr: Array<FuluWithdrawal_d.Withdrawal>, +n: U32, +d: Nat) -> l16_Withdrawal_Cached:
+-  l16_Withdrawal_Cached{arr, n, d, l16_Withdrawal_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l16_Withdrawal_Cached{arr, n, d, l16_Withdrawal_dfill(1n+d), 1, (O.pow2u(d) - 1 : U32)}
+ 

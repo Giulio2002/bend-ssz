@@ -1,0 +1,76 @@
+=== r12-c04-union-sel-index
+type: CompatibleUnionA
+ops: encode
+file: types/CompatibleUnionA_encode_ssz_generated.bend
+sym: CompatibleUnionA_pt0,CompatibleUnionA_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionA: option 0 written with selector byte 0 (its index) instead of 1
+why: selector = position in the option list, not the declared selector
+-  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v), CompatibleUnionA_d.CompatibleUnionA_c0{v})
++  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 0), (pos + 1 : U32), v), CompatibleUnionA_d.CompatibleUnionA_c0{v})
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_pt0,CompatibleUnionBC_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionBC: option 0 written with selector byte 0 (its index) instead of 2
+why: selector = position in the option list, not the declared selector
+-  CompatibleUnionBC_pb0(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
++  CompatibleUnionBC_pb0(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 0), (pos + 1 : U32), v))
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_pt1,CompatibleUnionBC_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionBC: option 1 written with selector byte 1 (its index) instead of 3
+why: selector = position in the option list, not the declared selector
+-  CompatibleUnionBC_pb1(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v))
++  CompatibleUnionBC_pb1(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v))
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt0,CompatibleUnionABCA_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionABCA: option 0 written with selector byte 0 (its index) instead of 1
+why: selector = position in the option list, not the declared selector
+-  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v), CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v})
++  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 0), (pos + 1 : U32), v), CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v})
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt1,CompatibleUnionABCA_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionABCA: option 1 written with selector byte 1 (its index) instead of 2
+why: selector = position in the option list, not the declared selector
+-  CompatibleUnionABCA_pb1(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
++  CompatibleUnionABCA_pb1(ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_put(O.w8(out, pos, 1), (pos + 1 : U32), v))
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt2,CompatibleUnionABCA_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionABCA: option 2 written with selector byte 2 (its index) instead of 3
+why: selector = position in the option list, not the declared selector
+-  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v))
++  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
+
+=== r12-c04-union-sel-index
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt3,CompatibleUnionABCA_put
+spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+fault: CompatibleUnionABCA: option 3 written with selector byte 3 (its index) instead of 4
+why: selector = position in the option list, not the declared selector
+-  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 4), (pos + 1 : U32), v), CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v})
++  (ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v), CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v})

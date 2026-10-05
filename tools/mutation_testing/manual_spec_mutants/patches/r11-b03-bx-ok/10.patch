@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/10
+# type: ProgressiveVarTestStruct
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed ProgressiveVarTestStruct field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+# sym: ProgressiveVarTestStruct_bx_ok,ProgressiveVarTestStruct_decode
+--- a/types/ProgressiveVarTestStruct_decode_ssz_generated.bend
++++ b/types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+@@ -84,3 +84,3 @@
+ 
+-def ProgressiveVarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveVarTestStruct_ok(buf, off, len)
++def ProgressiveVarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

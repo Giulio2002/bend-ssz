@@ -1,0 +1,250 @@
+[
+ {
+  "id": "r9-d01-getter-neighbour/09",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 84.9
+ },
+ {
+  "id": "r9-d01-getter-neighbour/13",
+  "type": "FuluExecutionPayload",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 32.3
+ },
+ {
+  "id": "r9-d02-setter-neighbour/02",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 82.9
+ },
+ {
+  "id": "r9-d03-swap-noop/11",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 85.1
+ },
+ {
+  "id": "r9-d04-top-getter-route/01",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 120.8
+ },
+ {
+  "id": "r9-e01-group-validity/02",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 107.0
+ },
+ {
+  "id": "r9-e01-group-validity/10",
+  "type": "FuluExecutionPayload",
+  "cases": 400,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.7
+ },
+ {
+  "id": "r9-e01-group-validity/18",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 70.7
+ },
+ {
+  "id": "r9-e02-state-serialize/01",
+  "type": "FuluBeaconState",
+  "cases": 0,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 63.0
+ },
+ {
+  "id": "r9-f02-vector-root-depth/01",
+  "type": "vec_uint8_513",
+  "cases": 289,
+  "official": 0,
+  "corpus_bad": 264,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 264
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint8_513#47784: root differs",
+   "vec_uint8_513#47785: root differs",
+   "vec_uint8_513#47786: root differs",
+   "vec_uint8_513#47787: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 7.8
+ },
+ {
+  "id": "r9-f02-vector-root-depth/04",
+  "type": "vec_uint64_3",
+  "cases": 236,
+  "official": 0,
+  "corpus_bad": 209,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 209
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint64_3#44774: root differs",
+   "vec_uint64_3#44775: root differs",
+   "vec_uint64_3#44776: root differs",
+   "vec_uint64_3#44777: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.5
+ },
+ {
+  "id": "r9-f02-vector-root-depth/06",
+  "type": "vec_uint256_5",
+  "cases": 261,
+  "official": 0,
+  "corpus_bad": 234,
+  "official_bad": 0,
+  "kinds": {
+   "root differs": 234
+  },
+  "timeouts": 0,
+  "examples": [
+   "vec_uint256_5#41209: root differs",
+   "vec_uint256_5#41210: root differs",
+   "vec_uint256_5#41211: root differs",
+   "vec_uint256_5#41212: root differs"
+  ],
+  "B": "KILLED",
+  "secs": 8.7
+ },
+ {
+  "id": "r9-f02-vector-root-depth/08",
+  "type": "bitvector_1281",
+  "B": "ERROR",
+  "msg": "'bitvector_1281'"
+ },
+ {
+  "id": "r9-a05-len-unit/11",
+  "type": "proglist_uint32",
+  "cases": 229,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 9.1
+ },
+ {
+  "id": "r9-a05-len-unit/15",
+  "type": "proglist_bool",
+  "cases": 57,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 13.8
+ },
+ {
+  "id": "r9-a05-len-unit/01",
+  "type": "vec_uint8_513",
+  "cases": 289,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.8
+ },
+ {
+  "id": "r9-f01-union-selector/02",
+  "type": "CompatibleUnionBC",
+  "cases": 190,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 8.7
+ },
+ {
+  "id": "r9-a01-get-bound/02",
+  "type": "vec_uint16_5",
+  "cases": 208,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 7.3
+ }
+]

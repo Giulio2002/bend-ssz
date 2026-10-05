@@ -1,0 +1,723 @@
+[
+ {
+  "id": "r12-c02-ser-unchecked/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/01.patch",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "CompatibleUnionBC_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "CompatibleUnionBC_serialize(c1{ProgressiveVarTestStruct_set_f_B(default, O.Words{Array.new(U32, 0n, 0), 5})}): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     17.9
+    ],
+    [
+     "proofs/gate/slop/constants/CompatibleUnionBC_generated.bend",
+     "SURVIVED",
+     1.0
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+  "fix_location": "CompatibleUnionBC_serialize_vwriter_checked",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.64 s"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/02.patch",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "CompatibleUnionABCA_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "CompatibleUnionABCA_serialize(c2{ProgressiveVarTestStruct_set_f_B(default, O.Words{Array.new(U32, 0n, 0), 5})}): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     17.3
+    ],
+    [
+     "proofs/gate/slop/constants/CompatibleUnionABCA_generated.bend",
+     "SURVIVED",
+     0.8
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+  "fix_location": "CompatibleUnionABCA_serialize_vwriter_checked",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.58 s"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/03.patch",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "ProgressiveTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "ProgressiveTestStruct_serialize(set_f_A(default, O.Words{Array.new(U32, 0n, 0), 5})): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     20.8
+    ],
+    [
+     "proofs/gate/slop/constants/ProgressiveTestStruct_generated.bend",
+     "SURVIVED",
+     1.2
+    ]
+   ],
+   "corpus": {
+    "id": "r12-c02-ser-unchecked/03",
+    "type": "ProgressiveTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 16.3
+   }
+  },
+  "fix_status": "equivalent",
+  "fix_note": "X_putk is defined as X_putn for this kind (the validity is carried by the field writers): the mutant is the same function; X_serialize_vwriter_checked states the checked writer for every kind where the two differ"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/04.patch",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "ProgressiveVarTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "ProgressiveVarTestStruct_serialize(set_f_B(default, O.Words{Array.new(U32, 0n, 0), 5})): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveVarTestStruct_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     18.7
+    ],
+    [
+     "proofs/gate/slop/constants/ProgressiveVarTestStruct_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ]
+  },
+  "fix_status": "equivalent",
+  "fix_note": "X_putk is defined as X_putn for this kind (the validity is carried by the field writers): the mutant is the same function; X_serialize_vwriter_checked states the checked writer for every kind where the two differ"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/05.patch",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "ProgressiveComplexTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "ProgressiveComplexTestStruct_serialize(set_f_A(default, O.Words{Array.new(U32, 0n, 0), 5})): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     23.8
+    ],
+    [
+     "proofs/gate/slop/constants/ProgressiveComplexTestStruct_generated.bend",
+     "SURVIVED",
+     1.5
+    ]
+   ]
+  },
+  "fix_status": "equivalent",
+  "fix_note": "X_putk is defined as X_putn for this kind (the validity is carried by the field writers): the mutant is the same function; X_serialize_vwriter_checked states the checked writer for every kind where the two differ"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/06.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "ProgressiveBitsStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "ProgressiveBitsStruct_serialize(a field set to a raw O.Bits / O.Words with no storage): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     25.9
+    ],
+    [
+     "proofs/gate/slop/constants/ProgressiveBitsStruct_generated.bend",
+     "SURVIVED",
+     2.5
+    ]
+   ]
+  },
+  "fix_status": "equivalent",
+  "fix_note": "X_putk is defined as X_putn for this kind (the validity is carried by the field writers): the mutant is the same function; X_serialize_vwriter_checked states the checked writer for every kind where the two differ"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/07",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/07.patch",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "ProgressiveSingleListContainerTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "ProgressiveSingleListContainerTestStruct_serialize(set_f_C(default, raw O.Words with no storage)): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveSingleListContainerTestStruct_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     11.8
+    ],
+    [
+     "proofs/gate/slop/constants/ProgressiveSingleListContainerTestStruct_generated.bend",
+     "SURVIVED",
+     1.0
+    ]
+   ]
+  },
+  "fix_status": "equivalent",
+  "fix_note": "X_putk is defined as X_putn for this kind (the validity is carried by the field writers): the mutant is the same function; X_serialize_vwriter_checked states the checked writer for every kind where the two differ"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/08.patch",
+  "type": "proglist_uint64",
+  "file": "types/proglist_uint64_encode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)",
+  "fault": "proglist_uint64_serialize writes with the unchecked writer (putn): no validity check on the serialize path",
+  "A": "SURVIVED",
+  "counterexample": "proglist_uint64_serialize(O.Words{Array.new(U32, 0n, 0), 8}): ok = True with bytes (spec / docs/API_CONTRACTS.md: refused); input needs a hand-built O.Words",
+  "reachability": "X_serialize -> X_senc_sized -> X_senc_go -> (mutant) X_putn instead of X_putk: the value's validity (X_valid) is no longer consulted on the serialize path. The facade has X_serialize_vreject_* (X_valid(bad) = False) and X_serialize_vrefuse_* (ser_done of a poisoned writer length is refused), but no law that X_serialize of an invalid value returns ok = False, so the wiring senc_go -> putk is not pinned. Every invalid value of this type the facade exhibits is built from a raw record (O.Words{Array.new(U32, 0n, 0), 5}: a length with no storage, or a list longer than its limit) that no public setter, append or decoder produces; through public calls only every value is valid and putn = putk.",
+  "verdict": "gap-unreachable-through-api (contract gap: no law states X_serialize(invalid) = refused end to end)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/proglist_uint64_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     4.8
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_proglist_uint64_fields_generated.bend",
+  "fix_location": "proglist_uint64_serialize_vwriter_checked",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.47 s"
+ },
+ {
+  "id": "r12-d01-cache-lo/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d01-cache-lo/02.patch",
+  "type": "Fulu_list_AttesterSlashing_1",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "rule": "ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)",
+  "fault": "l1_AttesterSlashing_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)",
+  "A": "SURVIVED",
+  "counterexample": "probe p12a case 1: l1_AttesterSlashing_cache([AttesterSlashing_default()]) then cached_root = 3411617860,... while hash_tree_root of the same list = 3102059698,... (leaf 0 never hashed: the cached root is the root of [zero chunk])",
+  "reachability": "public: l1_AttesterSlashing_append (or the list field of a decoded container: BeaconBlockBody.attester_slashings, ExecutionRequests.consolidations) -> l1_AttesterSlashing_cache(list) -> l1_AttesterSlashing_cache_at -> l1_AttesterSlashing_cache_sz -> l1_AttesterSlashing_cache_fin -> l1_AttesterSlashing_cached_root (the cached-tree API, types/runtime_index.json). No law caches a NON-EMPTY list of this kind: the kind has only the cache_app_* / cache_limit / cache_take laws, which start from l1_AttesterSlashing_cache(l1_AttesterSlashing_default()); the other kinds have cache_set_0 / cache_set_1_3 (cache of a 4-element list), which kill the same fault on them",
+  "verdict": "critical",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     1.2
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.3
+    ]
+   ],
+   "probe_p12a": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 l1_AttesterSlashing cached=3102059698,4249427706,2878587621 plain_uncache=3102059698,4249427706,2878587621 plain_fresh=3102059698,4249427706,2878587621 len_uncache=1",
+      "c1 l1_AttesterSlashing cached=3411617860,303927919,2699607030 plain_uncache=3102059698,4249427706,2878587621 plain_fresh=3102059698,4249427706,2878587621 len_uncache=1"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1_generated.bend",
+  "fix_location": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.88 s"
+ },
+ {
+  "id": "r12-d01-cache-lo/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d01-cache-lo/03.patch",
+  "type": "Fulu_list_ConsolidationRequest_2",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "rule": "ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)",
+  "fault": "l2_ConsolidationRequest_cache: the fresh cache's dirty window starts at leaf 1 (leaf 0 is never hashed until it is set or appended)",
+  "A": "SURVIVED",
+  "counterexample": "probe p12a case 2: l2_ConsolidationRequest_cache([d, d]) then cached_root = 2493962254,... while hash_tree_root = 23566629,...",
+  "reachability": "public: l2_ConsolidationRequest_append (or the list field of a decoded container: BeaconBlockBody.attester_slashings, ExecutionRequests.consolidations) -> l2_ConsolidationRequest_cache(list) -> l2_ConsolidationRequest_cache_at -> l2_ConsolidationRequest_cache_sz -> l2_ConsolidationRequest_cache_fin -> l2_ConsolidationRequest_cached_root (the cached-tree API, types/runtime_index.json). No law caches a NON-EMPTY list of this kind: the kind has only the cache_app_* / cache_limit / cache_take laws, which start from l2_ConsolidationRequest_cache(l2_ConsolidationRequest_default()); the other kinds have cache_set_0 / cache_set_1_3 (cache of a 4-element list), which kill the same fault on them",
+  "verdict": "critical",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p12a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 l2_ConsolidationRequest cached=23566629,1203379096,2111062874 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2",
+      "c2 l2_ConsolidationRequest cached=2493962254,4112426301,1006744965 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1_generated.bend",
+  "fix_location": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.96 s"
+ },
+ {
+  "id": "r12-d02-cache-depth0/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d02-cache-depth0/02.patch",
+  "type": "Fulu_list_AttesterSlashing_1",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "rule": "ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)",
+  "fault": "l1_AttesterSlashing_cache: the tree depth taken for an empty list (cap(0)), not for the list's length",
+  "A": "SURVIVED",
+  "counterexample": "none (probe p12a case 1: same line as the unmutated build)",
+  "reachability": "List[AttesterSlashing, 1]: cap(n) = words_depth(n) is 0 for n = 0 and n = 1, the only lengths the list can have, so cap(0) = cap(n)",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p12a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r12-d02-cache-depth0/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d02-cache-depth0/03.patch",
+  "type": "Fulu_list_ConsolidationRequest_2",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "rule": "ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)",
+  "fault": "l2_ConsolidationRequest_cache: the tree depth taken for an empty list (cap(0)), not for the list's length",
+  "A": "SURVIVED",
+  "counterexample": "probe p12a case 2: l2_ConsolidationRequest_cache([d, d]) then cached_root = 2807177708,... while hash_tree_root = 23566629,...",
+  "reachability": "public: l2_ConsolidationRequest_append (or the list field of a decoded container: BeaconBlockBody.attester_slashings, ExecutionRequests.consolidations) -> l2_ConsolidationRequest_cache(list) -> l2_ConsolidationRequest_cache_at -> l2_ConsolidationRequest_cache_sz -> l2_ConsolidationRequest_cache_fin -> l2_ConsolidationRequest_cached_root (the cached-tree API, types/runtime_index.json). No law caches a NON-EMPTY list of this kind: the kind has only the cache_app_* / cache_limit / cache_take laws, which start from l2_ConsolidationRequest_cache(l2_ConsolidationRequest_default()); the other kinds have cache_set_0 / cache_set_1_3 (cache of a 4-element list), which kill the same fault on them (depth cap(0) = 0 for a 2-element list)",
+  "verdict": "critical",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p12a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 l2_ConsolidationRequest cached=23566629,1203379096,2111062874 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2",
+      "c2 l2_ConsolidationRequest cached=2807177708,1053936587,1741432579 plain_uncache=23566629,1203379096,2111062874 plain_fresh=23566629,1203379096,2111062874 len_uncache=2"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2_generated.bend",
+  "fix_location": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.67 s"
+ },
+ {
+  "id": "r12-e02-vlist-ck/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/01.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: boolean: only 0x00 and 0x01 are valid; a container is valid when every field is",
+  "fault": "List[Validator] decode: the validity of elements 0..n-2 dropped (only the last element is checked)",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconState_decode of a state whose validators[0].slashed byte is 2 and which has >= 2 validators: accepted (spec: rejected). No corpus case: no BeaconState under the corpus size cap; the valid-only corpus cannot reach a refusal",
+  "reachability": "BeaconState_decode -> BeaconState_ok -> l1099511627776_Validator_ok -> l1099511627776_Validator_ok_nz / _ck (the validators field window)",
+  "verdict": "unjudged (proof: checker stack overflow twice at the pinned settings on every root that holds the file); refusal path",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.6
+    ],
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.8
+    ],
+    [
+     "proofs/obj/var_winx_l1099511627776_Validator_generated.bend",
+     "CRASH",
+     5.4
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+  "fix_location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_step",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.62 s"
+ },
+ {
+  "id": "r12-e02-vlist-ck/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/02.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: boolean: only 0x00 and 0x01 are valid; a container is valid when every field is",
+  "fault": "List[Validator] decode: element i + 1 checked at stride 120",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconState_decode of a valid state with >= 2 validators where byte 88 + 120 i of the list window (a byte of validators[i-1].withdrawable_epoch... ) is > 1: rejected (spec: accepted); invalid slashed bytes past element 0 accepted",
+  "reachability": "BeaconState_decode -> BeaconState_ok -> l1099511627776_Validator_ok -> l1099511627776_Validator_ok_nz / _ck (the validators field window)",
+  "verdict": "unjudged (proof: checker stack overflow twice at the pinned settings on every root that holds the file)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     8.0
+    ],
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.8
+    ],
+    [
+     "proofs/obj/var_winx_l1099511627776_Validator_generated.bend",
+     "CRASH",
+     5.5
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+  "fix_location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_step",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.6 s"
+ },
+ {
+  "id": "r12-e02-vlist-ck/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/03.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: boolean: only 0x00 and 0x01 are valid; a container is valid when every field is",
+  "fault": "List[Validator] decode: the first element unchecked",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconState_decode with validators[0].slashed = 2: accepted (spec: rejected)",
+  "reachability": "BeaconState_decode -> BeaconState_ok -> l1099511627776_Validator_ok -> l1099511627776_Validator_ok_nz / _ck (the validators field window)",
+  "verdict": "unjudged (proof: checker stack overflow twice at the pinned settings on every root that holds the file); refusal path",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.5
+    ],
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.8
+    ],
+    [
+     "proofs/obj/var_winx_l1099511627776_Validator_generated.bend",
+     "CRASH",
+     5.7
+    ]
+   ]
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+  "fix_location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_first",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.54 s"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/01.patch",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero",
+  "fault": "BitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position",
+  "A": "UNJUDGED",
+  "counterexample": "BitsStruct_decode: B (Bitvector[2], byte 4) checked with the 1-bit rule, C (Bitvector[1], byte 5) unchecked: a valid value with B = 0x02 rejected, an invalid one with C = 0x02 accepted",
+  "reachability": "BitsStruct_decode -> BitsStruct_ok -> BitsStruct_ok_at -> the bit vector field check at the neighbouring field's offset",
+  "verdict": "corpus-gap-only (unjudged by the proofs; reachable: the corpus disagrees with the reference on 17 cases)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/BitsStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     9.2
+    ],
+    [
+     "proofs/gate/slop/offsets/generic_BitsStruct_first_offset_generated.bend",
+     "SURVIVED",
+     0.8
+    ]
+   ],
+   "corpus": {
+    "id": "r12-e03-bv-pad-pos/01",
+    "type": "BitsStruct",
+    "cases": 350,
+    "official": 0,
+    "corpus_bad": 17,
+    "official_bad": 0,
+    "kinds": {
+     "ref accepts, mutant rejects": 12,
+     "ref rejects, mutant accepts": 5
+    },
+    "timeouts": 0,
+    "examples": [
+     "BitsStruct#3367: ref accepts, mutant rejects",
+     "BitsStruct#3370: ref accepts, mutant rejects",
+     "BitsStruct#3397: ref rejects, mutant accepts",
+     "BitsStruct#3431: ref accepts, mutant rejects"
+    ],
+    "B": "KILLED",
+    "secs": 16.4
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend",
+  "fix_location": "BitsStruct_decode_vlit_vwin_c2",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.53 s"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/02.patch",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero",
+  "fault": "BitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position",
+  "A": "UNJUDGED",
+  "counterexample": "BitsStruct_decode: B (Bitvector[2], byte 4) padding unchecked (the 2-bit rule applied to C's byte 5, already held to the 1-bit rule): an invalid value with B = 0x04 accepted",
+  "reachability": "BitsStruct_decode -> BitsStruct_ok -> BitsStruct_ok_at -> the bit vector field check at the neighbouring field's offset",
+  "verdict": "corpus-gap-only (unjudged by the proofs; reachable: the corpus disagrees with the reference on 10 cases)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/BitsStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     9.3
+    ],
+    [
+     "proofs/gate/slop/offsets/generic_BitsStruct_first_offset_generated.bend",
+     "SURVIVED",
+     1.0
+    ]
+   ],
+   "corpus": {
+    "id": "r12-e03-bv-pad-pos/02",
+    "type": "BitsStruct",
+    "cases": 350,
+    "official": 0,
+    "corpus_bad": 10,
+    "official_bad": 0,
+    "kinds": {
+     "ref rejects, mutant accepts": 10
+    },
+    "timeouts": 0,
+    "examples": [
+     "BitsStruct#3414: ref rejects, mutant accepts",
+     "BitsStruct#3418: ref rejects, mutant accepts",
+     "BitsStruct#3452: ref rejects, mutant accepts",
+     "BitsStruct#3504: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 15.9
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend",
+  "fix_location": "BitsStruct_decode_vlit_vwin_c1",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.6 s"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/03.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero",
+  "fault": "ProgressiveBitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position",
+  "A": "UNJUDGED",
+  "counterexample": "ProgressiveBitsStruct_decode: the Bitvector[257] padding byte checked one byte late (byte 41, inside the next field): valid values with that byte > 1 rejected, a non-zero padding byte 40 accepted",
+  "reachability": "ProgressiveBitsStruct_decode -> ProgressiveBitsStruct_ok -> ProgressiveBitsStruct_ok_at -> the bit vector field check at the neighbouring field's offset",
+  "verdict": "corpus-gap-only (unjudged by the proofs; reachable: the corpus disagrees with the reference on 239 cases)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     9.3
+    ],
+    [
+     "proofs/gate/slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend",
+     "SURVIVED",
+     1.0
+    ]
+   ],
+   "corpus": {
+    "id": "r12-e03-bv-pad-pos/03",
+    "type": "ProgressiveBitsStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 239,
+    "official_bad": 0,
+    "kinds": {
+     "ref accepts, mutant rejects": 239
+    },
+    "timeouts": 0,
+    "examples": [
+     "ProgressiveBitsStruct#20870: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20871: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20872: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20873: ref accepts, mutant rejects"
+    ],
+    "B": "KILLED",
+    "secs": 15.7
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend",
+  "fix_location": "ProgressiveBitsStruct_decode_vlit_vwin_c7",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.58 s"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/04.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_decode_ssz_generated.bend",
+  "rule": "ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero",
+  "fault": "ProgressiveBitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position",
+  "A": "UNJUDGED",
+  "counterexample": "ProgressiveBitsStruct_decode: the Bitvector[1281] padding checked at byte 248 (a data byte of the vector): valid values rejected, non-zero padding accepted",
+  "reachability": "ProgressiveBitsStruct_decode -> ProgressiveBitsStruct_ok -> ProgressiveBitsStruct_ok_at -> the bit vector field check at the neighbouring field's offset",
+  "verdict": "corpus-gap-only (unjudged by the proofs; reachable: the corpus disagrees with the reference on 39 cases)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     9.4
+    ],
+    [
+     "proofs/gate/slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend",
+     "SURVIVED",
+     0.9
+    ]
+   ],
+   "corpus": {
+    "id": "r12-e03-bv-pad-pos/04",
+    "type": "ProgressiveBitsStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 39,
+    "official_bad": 0,
+    "kinds": {
+     "ref accepts, mutant rejects": 39
+    },
+    "timeouts": 0,
+    "examples": [
+     "ProgressiveBitsStruct#20871: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20872: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20873: ref accepts, mutant rejects",
+     "ProgressiveBitsStruct#20874: ref accepts, mutant rejects"
+    ],
+    "B": "KILLED",
+    "secs": 15.6
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend",
+  "fix_location": "ProgressiveBitsStruct_decode_vlit_vwin_c8",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.64 s"
+ }
+]

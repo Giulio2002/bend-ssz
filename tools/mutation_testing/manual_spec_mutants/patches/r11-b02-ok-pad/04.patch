@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b02-ok-pad/04
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: Bitvector[N] deserialize: the padding bits live in the LAST byte (byte ceil(N/8) - 1)
+# fault: the padding is checked on byte 31 instead of byte 32
+# why: last-byte index off by one
+# file: types/bitvector_257_decode_ssz_generated.bend
+# sym: bv257_ok_at,bv257_ok
+--- a/types/bitvector_257_decode_ssz_generated.bend
++++ b/types/bitvector_257_decode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+ 
+-def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 1)
++def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 31 : U32), 1)
+ 

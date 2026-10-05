@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/95
+# type: vec_uint64_512
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/vec_uint64_512_decode_ssz_generated.bend
+# sym: vec_uint64_512_decode_checked_budget,vec_uint64_512_dcb
+--- a/types/vec_uint64_512_decode_ssz_generated.bend
++++ b/types/vec_uint64_512_decode_ssz_generated.bend
+@@ -70,3 +70,3 @@
+ 
+-def vec_uint64_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_512_dcb(Bool.and(U32.is_lt(vec_uint64_512_dcost(size), 4294967295), U32.is_le(vec_uint64_512_dcost(size), budget)), buf, size)
++def vec_uint64_512_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, O.Words>: vec_uint64_512_dcb(Bool.and(U32.is_lt(vec_uint64_512_dcost(size), 4294967295), U32.is_lt(vec_uint64_512_dcost(size), budget)), buf, size)
+ 

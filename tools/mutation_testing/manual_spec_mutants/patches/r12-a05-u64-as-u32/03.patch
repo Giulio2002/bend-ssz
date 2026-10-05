@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/03
+# type: FuluBeaconBlockHeader
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluBeaconBlockHeader: the uint64 field `proposer_index` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+# sym: BeaconBlockHeader_rt0,u64_root
+--- a/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
++++ b/types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+@@ -35,3 +35,3 @@
+   (h, d_slot) = pair
+-  BeaconBlockHeader_rt1(hl, seg, slot, proposer_index, parent_root, state_root, body_root, d_slot, uint64_h.u64_root(hl, h, proposer_index, seg))
++  BeaconBlockHeader_rt1(hl, seg, slot, proposer_index, parent_root, state_root, body_root, d_slot, (h, O.u32_chunk(O.u64_lo_of(proposer_index))))
+ 

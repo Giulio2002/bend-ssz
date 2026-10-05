@@ -1,0 +1,6 @@
+r11-f01-union-same-type/03 SURVIVED 0 0 
+r11-h01-budget-strict/11 SURVIVED 0 0 
+r11-h02-budget-unchecked/11 SURVIVED 0 0 
+r11-c01-group-acc/11 SURVIVED 0 0 
+r11-b03-bx-ok/04 KILLED 155 0 
+done

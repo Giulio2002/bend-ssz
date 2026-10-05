@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-f01-union-same-type/02
+# type: CompatibleUnionABCA
+# ops: decode
+# spec: deserialize(CompatibleUnion): selector 4 decodes to the fourth option
+# fault: selector 4 builds option 1 (same payload type, same bytes)
+# why: option constructor picked by type
+# file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+# sym: CompatibleUnionABCA_decode
+--- a/types/CompatibleUnionABCA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_decode_ssz_generated.bend
+@@ -61,3 +61,3 @@
+   (buf, +v) = pair
+-  (buf, CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v})
++  (buf, CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v})
+ 

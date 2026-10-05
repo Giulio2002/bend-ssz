@@ -26,6 +26,8 @@ structs; the Fulu containers have none) proofs/slop/validity/<runtime>_<X>_field
   <X>_serialize_vreject_bx_present_default() / _bx_present_<tag>()   (round 7: c03/01; every boxed X with a cheap invalid value) a present box is
       valid exactly when its value is: `X_bx_valid(X_bx_wrap(X_default()))` is True, `X_bx_valid(X_bx_wrap(v))` is False for the invalid value v of
       `invalid_value` (one invalid field, the others at their default).
+  <X>_serialize_vwriter_checked(n, o)   (round 12: c02; every name with a checked serializer) `X_senc_go(False, n, o)` writes with the checked
+      writer `X_putk`: the size pass fuses the same verdict, so the refusal witnesses above cannot tell `X_putk` from the unchecked `X_putn`.
 
 They are named so that api_gate files them under serialize_valid (the facade of X's encoder).
 """
@@ -274,6 +276,26 @@ def union_laws(tx, X, t):
     return laws
 
 
+SENC = re.compile(r'def (\w+)_senc_go\(bad: Bool, \+n: U32, o: ([\w.<>]+)\) -> (.*):\n  match bad:\n    case True\{\}: .*\n    case False\{\}: (.*)')
+
+
+def writer_laws(tx, X):
+    """(round 12: c02/01..08) [law]: the checked serializer writes with the CHECKED writer: `X_senc_go(False, n, o)` hands the output of
+    `X_putk` (which carries the validity verdict into the poison flag) to `X_senc_put`, symbolic in n and o. The invalid witnesses above
+    (`_vrefuse_*`) are refused before the writer runs (round 12: c02, X_putn in place of X_putk, survived every one of them), so this law
+    pins the writer itself."""
+    m = SENC.fullmatch(tx.blk.get(f'{X}_senc_go', ''))
+    if not m:
+        return []
+    _, ty, ret, body = m.groups()
+    w = re.fullmatch(rf'{re.escape(X)}_senc_put\(n, (\w+)_putk\(O\.out_new\(n\), 0, o\)\)', body)
+    if not w:
+        raise SystemExit(f'{X}_senc_go writes `{body}`, not with a checked writer `<p>_putk(O.out_new(n), 0, o)`')
+    p = w.group(1)
+    rt = ' & '.join(qual(x) for x in ret.split(' & '))
+    return [f'def {X}_serialize_vwriter_checked(+n: U32, o: {qual(ty)})\n    -> {{T.{X}_senc_go(False{{}}, n, o) == T.{X}_senc_put(n, T.{p}_putk(O.out_new(n), 0, o)) : {rt}}}:\n  {{==}}']
+
+
 def module(tmod, laws, X):
     L = ['import Base', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '',
          writer.header('container_field_validity'),
@@ -291,13 +313,16 @@ def outputs():
         tx = MC.Text(runtime)
         for X, t in names.items():
             if t.kind == 'cunion':
-                laws = union_laws(tx, X, t)
+                laws = union_laws(tx, X, t) + writer_laws(tx, X)
                 if laws:
                     out[LAYOUT.module_path('validity', f'{runtime}_{X}_fields')] = module(tmod, laws, X)
                 continue
             if t.kind not in ('container', 'pcontainer'):
+                laws = writer_laws(tx, X)
+                if laws:
+                    out[LAYOUT.module_path('validity', f'{runtime}_{X}_fields')] = module(tmod, laws, X)
                 continue
-            laws = laws_of(tx, X, t) + witness_laws(tx, X, t) + box_laws(tx, X, t)
+            laws = laws_of(tx, X, t) + witness_laws(tx, X, t) + box_laws(tx, X, t) + writer_laws(tx, X)
             if laws:
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_fields')] = module(tmod, laws, X)
     return out

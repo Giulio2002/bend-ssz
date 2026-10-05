@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/05
+# type: FuluProposerSlashing
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed ProposerSlashing field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluProposerSlashing_decode_ssz_generated.bend
+# sym: ProposerSlashing_bx_ok,ProposerSlashing_decode
+--- a/types/FuluProposerSlashing_decode_ssz_generated.bend
++++ b/types/FuluProposerSlashing_decode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+ 
+-def ProposerSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProposerSlashing_ok(buf, off, len)
++def ProposerSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

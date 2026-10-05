@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/13
+# type: FuluPendingAttestation
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluPendingAttestation: the uint64 field `proposer_index` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluPendingAttestation_hashtreeroot_generated.bend
+# sym: PendingAttestation_rt2,u64_root
+--- a/types/FuluPendingAttestation_hashtreeroot_generated.bend
++++ b/types/FuluPendingAttestation_hashtreeroot_generated.bend
+@@ -20,3 +20,3 @@
+   (h, d_inclusion_delay) = pair
+-  PendingAttestation_rt3(hl, seg, aggregation_bits, data, inclusion_delay, proposer_index, d_aggregation_bits, d_data, d_inclusion_delay, uint64_h.u64_root(hl, h, proposer_index, seg))
++  PendingAttestation_rt3(hl, seg, aggregation_bits, data, inclusion_delay, proposer_index, d_aggregation_bits, d_data, d_inclusion_delay, (h, O.u32_chunk(O.u64_lo_of(proposer_index))))
+ 

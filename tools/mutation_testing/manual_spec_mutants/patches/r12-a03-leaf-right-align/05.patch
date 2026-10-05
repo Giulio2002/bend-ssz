@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a03-leaf-right-align/05
+# type: bitvector_31
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: bitvector_31: the bytes right-aligned in the chunk (zero padding on the left)
+# why: big-endian intuition: padding a short value on the left, as a number
+# file: types/bitvector_31_hashtreeroot_generated.bend
+# sym: bv31_root
+--- a/types/bitvector_31_hashtreeroot_generated.bend
++++ b/types/bitvector_31_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_31_d.Bitvector31{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++    case bitvector_31_d.Bitvector31{+w0}: (h, D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)})
+ 

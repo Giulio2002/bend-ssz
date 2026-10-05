@@ -1,0 +1,11 @@
+## round 11 hand-designed: r11-d07-croot-reset
+=== r11-d07-croot-reset
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_croot_fin,l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: after a root the window is reset to (0, 0) instead of empty (n, 0): leaf 0 is rehashed on every later root (EXPECTED EQUIVALENT: rehashing a clean leaf rewrites the same digest)
+why: empty window spelled as lo = hi = 0
+-(h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
++(h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, 0, 0}, O.mix_len(hl, r, n)))

@@ -1,0 +1,141 @@
+## round 11 generated: r11-a04-vector-count
+=== r11-a04-vector-count
+type: vec_bool_16
+ops: decode
+file: types/vec_bool_16_decode_ssz_generated.bend
+sym: v16_bool_read,vec_bool_16_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 15 bytes instead of 16 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 15, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_2
+ops: decode
+file: types/vec_bool_2_decode_ssz_generated.bend
+sym: v2_bool_read,vec_bool_2_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 1 bytes instead of 2 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 1, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_31
+ops: decode
+file: types/vec_bool_31_decode_ssz_generated.bend
+sym: v31_bool_read,vec_bool_31_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 30 bytes instead of 31 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 31, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 30, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_3
+ops: decode
+file: types/vec_bool_3_decode_ssz_generated.bend
+sym: v3_bool_read,vec_bool_3_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 2 bytes instead of 3 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 3, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_4
+ops: decode
+file: types/vec_bool_4_decode_ssz_generated.bend
+sym: v4_bool_read,vec_bool_4_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 3 bytes instead of 4 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 3, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_512
+ops: decode
+file: types/vec_bool_512_decode_ssz_generated.bend
+sym: v512_bool_read,vec_bool_512_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 511 bytes instead of 512 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
++O.copy_into(buf, off, 511, Array.new(U32, 8n, 0))
+=== r11-a04-vector-count
+type: vec_bool_513
+ops: decode
+file: types/vec_bool_513_decode_ssz_generated.bend
+sym: v513_bool_read,vec_bool_513_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 512 bytes instead of 513 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
++O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
+=== r11-a04-vector-count
+type: vec_bool_5
+ops: decode
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: v5_bool_read,vec_bool_5_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 4 bytes instead of 5 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 5, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_bool_8
+ops: decode
+file: types/vec_bool_8_decode_ssz_generated.bend
+sym: v8_bool_read,vec_bool_8_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 7 bytes instead of 8 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 7, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_uint128_16
+ops: decode
+file: types/vec_uint128_16_decode_ssz_generated.bend
+sym: v16_u128_read,vec_uint128_16_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 240 bytes instead of 256 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 256, Array.new(U32, 7n, 0))
++O.copy_into(buf, off, 240, Array.new(U32, 7n, 0))
+=== r11-a04-vector-count
+type: vec_uint128_2
+ops: decode
+file: types/vec_uint128_2_decode_ssz_generated.bend
+sym: v2_u128_read,vec_uint128_2_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 16 bytes instead of 32 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
+=== r11-a04-vector-count
+type: vec_uint128_31
+ops: decode
+file: types/vec_uint128_31_decode_ssz_generated.bend
+sym: v31_u128_read,vec_uint128_31_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 480 bytes instead of 496 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 496, Array.new(U32, 8n, 0))
++O.copy_into(buf, off, 480, Array.new(U32, 8n, 0))
+=== r11-a04-vector-count
+type: vec_uint128_3
+ops: decode
+file: types/vec_uint128_3_decode_ssz_generated.bend
+sym: v3_u128_read,vec_uint128_3_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 32 bytes instead of 48 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))
++O.copy_into(buf, off, 32, Array.new(U32, 5n, 0))
+=== r11-a04-vector-count
+type: vec_uint128_4
+ops: decode
+file: types/vec_uint128_4_decode_ssz_generated.bend
+sym: v4_u128_read,vec_uint128_4_decode
+spec: deserialize(Vector[T, N]) reads N elements of size(T)
+fault: the copy takes 48 bytes instead of 64 (the last element is left zero)
+why: element count off by one (range(N - 1))
+-O.copy_into(buf, off, 64, Array.new(U32, 5n, 0))
++O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))

@@ -1,0 +1,43 @@
+=== r12-e03-bv-pad-pos
+type: BitsStruct
+ops: decode
+file: types/BitsStruct_decode_ssz_generated.bend
+sym: BitsStruct_c2,BitsStruct_ok
+spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+fault: BitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+why: field offset slip in the validity pass
+-bv1_ok_at(buf, (off + 5 : U32)
++bv1_ok_at(buf, (off + 4 : U32)
+
+=== r12-e03-bv-pad-pos
+type: BitsStruct
+ops: decode
+file: types/BitsStruct_decode_ssz_generated.bend
+sym: BitsStruct_c1,BitsStruct_ok
+spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+fault: BitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+why: field offset slip in the validity pass
+-bv2_ok_at(buf, (off + 4 : U32)
++bv2_ok_at(buf, (off + 5 : U32)
+
+=== r12-e03-bv-pad-pos
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_c7,ProgressiveBitsStruct_ok
+spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+fault: ProgressiveBitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+why: field offset slip in the validity pass
+-bv257_ok_at(buf, (off + 40 : U32)
++bv257_ok_at(buf, (off + 41 : U32)
+
+=== r12-e03-bv-pad-pos
+type: ProgressiveBitsStruct
+ops: decode
+file: types/ProgressiveBitsStruct_decode_ssz_generated.bend
+sym: ProgressiveBitsStruct_c8,ProgressiveBitsStruct_ok
+spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+fault: ProgressiveBitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+why: field offset slip in the validity pass
+-bv1281_ok_at(buf, (off + 249 : U32)
++bv1281_ok_at(buf, (off + 248 : U32)

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/02
+# type: FuluDepositData
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed DepositData field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluDepositData_decode_ssz_generated.bend
+# sym: DepositData_bx_ok,DepositData_decode
+--- a/types/FuluDepositData_decode_ssz_generated.bend
++++ b/types/FuluDepositData_decode_ssz_generated.bend
+@@ -48,3 +48,3 @@
+ 
+-def DepositData_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: DepositData_ok(buf, off, len)
++def DepositData_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

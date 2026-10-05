@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a07-shared-chunks/01
+# type: uint64
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: src/obj.bend u64_chunk: the two words of a uint64 chunk exchanged (big-endian word order)
+# why: the shared leaf chunk helper used by every container root
+# file: src/obj.bend
+# sym: u64_chunk
+# proofs: proofs/api/FuluCheckpoint_hashtreeroot_proof_generated.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1239,3 +1239,3 @@
+   match v:
+-    case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
++    case U64{+lo, +hi}: D.D{B.swap32(hi), B.swap32(lo), 0, 0, 0, 0, 0, 0}
+ 

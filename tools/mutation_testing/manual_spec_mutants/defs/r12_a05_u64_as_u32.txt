@@ -1,0 +1,197 @@
+=== r12-a05-u64-as-u32
+type: FixedTestStruct
+ops: root
+file: types/FixedTestStruct_hashtreeroot_generated.bend
+sym: FixedTestStruct_rt0,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FixedTestStruct: the uint64 field `f_B` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, f_B, seg)
++(h, O.u32_chunk(O.u64_lo_of(f_B)))
+
+=== r12-a05-u64-as-u32
+type: FuluAttestationData
+ops: root
+file: types/FuluAttestationData_hashtreeroot_generated.bend
+sym: AttestationData_rt0,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluAttestationData: the uint64 field `index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, index, seg)
++(h, O.u32_chunk(O.u64_lo_of(index)))
+
+=== r12-a05-u64-as-u32
+type: FuluBeaconBlockHeader
+ops: root
+file: types/FuluBeaconBlockHeader_hashtreeroot_generated.bend
+sym: BeaconBlockHeader_rt0,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluBeaconBlockHeader: the uint64 field `proposer_index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, proposer_index, seg)
++(h, O.u32_chunk(O.u64_lo_of(proposer_index)))
+
+=== r12-a05-u64-as-u32
+type: FuluBeaconState
+ops: root
+file: types/FuluBeaconState_hashtreeroot_generated.bend
+sym: BeaconState_g0_rt1,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluBeaconState: the uint64 field `slot` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, slot, seg)
++(h, O.u32_chunk(O.u64_lo_of(slot)))
+
+=== r12-a05-u64-as-u32
+type: FuluBlobSidecar
+ops: root
+file: types/FuluBlobSidecar_hashtreeroot_generated.bend
+sym: BlobSidecar_root,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluBlobSidecar: the uint64 field `index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, index, seg)
++(h, O.u32_chunk(O.u64_lo_of(index)))
+
+=== r12-a05-u64-as-u32
+type: FuluContributionAndProof
+ops: root
+file: types/FuluContributionAndProof_hashtreeroot_generated.bend
+sym: ContributionAndProof_root,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluContributionAndProof: the uint64 field `aggregator_index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, aggregator_index, seg)
++(h, O.u32_chunk(O.u64_lo_of(aggregator_index)))
+
+=== r12-a05-u64-as-u32
+type: FuluDepositData
+ops: root
+file: types/FuluDepositData_hashtreeroot_generated.bend
+sym: DepositData_rt1,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluDepositData: the uint64 field `amount` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, amount, seg)
++(h, O.u32_chunk(O.u64_lo_of(amount)))
+
+=== r12-a05-u64-as-u32
+type: FuluDepositRequest
+ops: root
+file: types/FuluDepositRequest_hashtreeroot_generated.bend
+sym: DepositRequest_rt3,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluDepositRequest: the uint64 field `index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, index, seg)
++(h, O.u32_chunk(O.u64_lo_of(index)))
+
+=== r12-a05-u64-as-u32
+type: FuluEth1Data
+ops: root
+file: types/FuluEth1Data_hashtreeroot_generated.bend
+sym: Eth1Data_rt0,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluEth1Data: the uint64 field `deposit_count` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, deposit_count, seg)
++(h, O.u32_chunk(O.u64_lo_of(deposit_count)))
+
+=== r12-a05-u64-as-u32
+type: FuluExecutionPayload
+ops: root
+file: types/FuluExecutionPayload_hashtreeroot_generated.bend
+sym: ExecutionPayload_g0_rt6,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluExecutionPayload: the uint64 field `gas_limit` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, gas_limit, seg)
++(h, O.u32_chunk(O.u64_lo_of(gas_limit)))
+
+=== r12-a05-u64-as-u32
+type: FuluLightClientFinalityUpdate
+ops: root
+file: types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
+sym: LightClientFinalityUpdate_rt3,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluLightClientFinalityUpdate: the uint64 field `signature_slot` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, signature_slot, seg)
++(h, O.u32_chunk(O.u64_lo_of(signature_slot)))
+
+=== r12-a05-u64-as-u32
+type: FuluLightClientUpdate
+ops: root
+file: types/FuluLightClientUpdate_hashtreeroot_generated.bend
+sym: LightClientUpdate_rt5,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluLightClientUpdate: the uint64 field `signature_slot` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, signature_slot, seg)
++(h, O.u32_chunk(O.u64_lo_of(signature_slot)))
+
+=== r12-a05-u64-as-u32
+type: FuluPendingAttestation
+ops: root
+file: types/FuluPendingAttestation_hashtreeroot_generated.bend
+sym: PendingAttestation_rt2,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluPendingAttestation: the uint64 field `proposer_index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, proposer_index, seg)
++(h, O.u32_chunk(O.u64_lo_of(proposer_index)))
+
+=== r12-a05-u64-as-u32
+type: FuluPendingDeposit
+ops: root
+file: types/FuluPendingDeposit_hashtreeroot_generated.bend
+sym: PendingDeposit_rt3,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluPendingDeposit: the uint64 field `slot` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, slot, seg)
++(h, O.u32_chunk(O.u64_lo_of(slot)))
+
+=== r12-a05-u64-as-u32
+type: FuluSingleAttestation
+ops: root
+file: types/FuluSingleAttestation_hashtreeroot_generated.bend
+sym: SingleAttestation_rt0,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluSingleAttestation: the uint64 field `attester_index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, attester_index, seg)
++(h, O.u32_chunk(O.u64_lo_of(attester_index)))
+
+=== r12-a05-u64-as-u32
+type: FuluSyncCommitteeContribution
+ops: root
+file: types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+sym: SyncCommitteeContribution_rt1,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluSyncCommitteeContribution: the uint64 field `subcommittee_index` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, subcommittee_index, seg)
++(h, O.u32_chunk(O.u64_lo_of(subcommittee_index)))
+
+=== r12-a05-u64-as-u32
+type: FuluValidator
+ops: root
+file: types/FuluValidator_hashtreeroot_generated.bend
+sym: Validator_rt6,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluValidator: the uint64 field `withdrawable_epoch` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, withdrawable_epoch, seg)
++(h, O.u32_chunk(O.u64_lo_of(withdrawable_epoch)))
+
+=== r12-a05-u64-as-u32
+type: FuluWithdrawalRequest
+ops: root
+file: types/FuluWithdrawalRequest_hashtreeroot_generated.bend
+sym: WithdrawalRequest_rt1,u64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: FuluWithdrawalRequest: the uint64 field `amount` hashed as its low 32 bits (packed like a uint32)
+why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+-uint64_h.u64_root(hl, h, amount, seg)
++(h, O.u32_chunk(O.u64_lo_of(amount)))

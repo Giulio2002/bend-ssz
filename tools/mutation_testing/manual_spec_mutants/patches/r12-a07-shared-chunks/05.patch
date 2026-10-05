@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a07-shared-chunks/05
+# type: uint32
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: src/obj.bend u32_chunk: a uint8/16/32 packed into limb 1 (bytes 4..7)
+# why: the shared leaf chunk helper used by every container root
+# file: src/obj.bend
+# sym: u32_chunk
+# proofs: proofs/api/FixedTestStruct_hashtreeroot_proof_generated.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1235,3 +1235,3 @@
+ 
+-def u32_chunk(+v: U32) -> D.Digest: D.D{B.swap32(v), 0, 0, 0, 0, 0, 0, 0}
++def u32_chunk(+v: U32) -> D.Digest: D.D{0, B.swap32(v), 0, 0, 0, 0, 0, 0}
+ 

@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/59
+# type: bitvector_17
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls bitvector_17_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/bitvector_17_decode_ssz_generated.bend
+# sym: bitvector_17_dcb,bitvector_17_decode_checked_budget
+--- a/types/bitvector_17_decode_ssz_generated.bend
++++ b/types/bitvector_17_decode_ssz_generated.bend
+@@ -72,3 +72,3 @@
+   match ok:
+-    case True{}: bitvector_17_decode_checked(buf, size)
++    case True{}: bitvector_17_decode(buf, size)
+     case False{}: (buf, None{})

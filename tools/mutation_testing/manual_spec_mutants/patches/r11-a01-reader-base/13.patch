@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/13
+# type: FuluForkData
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 4 is read at absolute byte 4 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluForkData_decode_ssz_generated.bend
+# sym: ForkData_rd0,ForkData_read,ForkData_decode
+--- a/types/FuluForkData_decode_ssz_generated.bend
++++ b/types/FuluForkData_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +current_version) = pair
+-  ForkData_rd1(off, len, current_version, FuluBytes32_r.b32_read(buf, (off + 4 : U32), 32))
++  ForkData_rd1(off, len, current_version, FuluBytes32_r.b32_read(buf, (4 : U32), 32))
+ 

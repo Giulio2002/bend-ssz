@@ -1,0 +1,11 @@
+## round 11 hand-designed: r11-d06-capp-lo
+=== r11-d06-capp-lo
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_capp_fit,l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: an append inside the tree does not lower the window's low end to n (EXPECTED EQUIVALENT: after a root the window is (n, 0) and lo <= n always)
+why: only the high end widened
+-(n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
++(n + 1 : U32), d, nodes, lo, O.pick(U32.is_le(n, hi), hi, n)}

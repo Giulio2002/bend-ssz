@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/15
+# type: FuluMatrixEntry
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 2104 is read at absolute byte 2104 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluMatrixEntry_decode_ssz_generated.bend
+# sym: MatrixEntry_rd2,MatrixEntry_read,MatrixEntry_decode
+--- a/types/FuluMatrixEntry_decode_ssz_generated.bend
++++ b/types/FuluMatrixEntry_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+   (buf, +column_index) = pair
+-  MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (off + 2104 : U32), 8))
++  MatrixEntry_rd3(off, len, cell, kzg_proof, column_index, uint64_r.u64_read(buf, (2104 : U32), 8))
+ 

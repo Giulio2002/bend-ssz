@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d04-cset-hi/03
+# type: FuluExecutionPayload
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: cset does not raise the dirty window's high end to i (a set above the window is never rehashed)
+# why: only the low end of the window widened
+# file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+# sym: l1048576_bl1073741824_cset_in,l1048576_bl1073741824_cache,l1048576_bl1073741824_cached_root,l1048576_bl1073741824_cset,l1048576_bl1073741824_capp,l1048576_bl1073741824_uncache
+--- a/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+@@ -190,3 +190,3 @@
+   match ok:
+-    case True{}: (l1048576_bl1073741824_Cached{Array.set(O.Boxed<O.Words>, arr, i, FuluTransaction_d.bl1073741824_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l1048576_bl1073741824_Cached{Array.set(O.Boxed<O.Words>, arr, i, FuluTransaction_d.bl1073741824_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), hi}, True{})
+     case False{}: (l1048576_bl1073741824_Cached{arr, n, d, nodes, lo, hi}, False{})

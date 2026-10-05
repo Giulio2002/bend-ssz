@@ -46,6 +46,21 @@ for a variable-size container or union, one per kind otherwise: a mutated valida
                                r10-r01/11: proposer_lookahead read at the previous field's position; no literal of the 2.7 MB default fits a law)
   <X>_decode_vlit_bad_order_<f>  the out-of-order literal of the container rule above for every variable-size container up to ORDER_MAX bytes,
                                above the byte and law caps of the other literals (r10-l02/09: LightClientUpdate, LightClientFinalityUpdate)
+  (round 11, manual audit a01/09..12, b03/01, /10..12, f01/02)
+  <X>_decode_vlit_fwin_<step>            symbolic: for every container X that a parent reads (a field, a list element: X is read at a non-zero
+                               offset), each step of X's reader that reads a fixed field reads it at off + its position (the gate: every fixed field)
+  <X>_decode_vlit_bad_box_<field>        X's default with one variable field holding an invalid boxed value (its own check fails) or a list / vector
+                               field of variable elements holding one invalid element; X a list / vector of variable elements: one invalid
+                               element (`_bad_box_elem`). The gate: every type in a boxed position anywhere is refused inside some parent
+                               (the transaction byte list is exempt: an invalid one is over 2^30 bytes)
+  <X>_decode_vlit_ok_sel_<s>             (every compatible union) the selector s with its option's default payload decodes to the option of s
+                               (`X_selector` answers s); `_bad_sel_<s>`: 0, 255 and every selector next to a declared one are refused
+  (round 12, manual audit e02/01..03, e03/01..04)
+  <X>_decode_vlit_vwin_<step>            symbolic: each step of the container X's validator that checks a fixed field in place (`F_ok_at`: a bit vector's
+                               padding, a boolean) restates the step, the position checked against the schema
+  <X>_decode_vlit_ck_<p>_step / _end / _first   symbolic: the element loop of every list / vector kind p of fixed checked elements (List[Validator]):
+                               the verdict kept, element i + 1 at off + (i + 1) * size, the first at off (the gate: every such loop, under the
+                               first decoder that reaches it)
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vlit_` form).
 """
@@ -405,8 +420,10 @@ def laws_of(X, V, t, ser_pair):
 
     def law(kind, tag, data, wide=False, r7=False, cap=MAX_BYTES):
         # the round-7 laws (r7) come after the cap of the earlier ones, which they do not displace
-        if len(data) > cap or (kind, data) in seen or (len(out) >= MAX_LAWS and not r7):
-            return
+        if (kind, data) in seen:
+            return True
+        if len(data) > cap or (len(out) >= MAX_LAWS and not r7):
+            return False
         seen.add((kind, data))
         tag = re.sub(r'\W', '_', tag)
         if kind == 'rt' and wide:
@@ -424,6 +441,7 @@ def laws_of(X, V, t, ser_pair):
             return
         want = 'True' if kind == 'ok' else 'False'
         out.append(f'def {X}_decode_vlit_{kind}_{tag}()\n    -> {{some1({dec(data)}) == {want}{{}} : Bool}}:\n  {{==}}')
+        return True
     good = goods(t)
     for tag, g in good:
         law('ok', tag, g)
@@ -450,9 +468,33 @@ def laws_of(X, V, t, ser_pair):
         for tag, b in bads(t):
             if tag.startswith('order_'):
                 law('bad', tag, b, r7=True, cap=ORDER_MAX)
+    # (round 11: b03/01, /10, /11, /12) one invalid boxed value in a variable field or one invalid element in a list of variable elements: refused
+    for tag, b, e in box_laws(t):
+        if law('bad', f'box_{tag}', b, r7=True):
+            COVER.add(e)
+    sel = []
+    if t.kind == 'cunion' and t.selectors and t.fields:
+        # (round 11: f01/02) every declared selector decodes to its own option (two options of the same payload type: a reader that builds the
+        # first for both decodes, but answers the other selector); the selectors next to the declared ones, 0 and 255 are refused
+        for s, (_, c) in zip(t.selectors, t.fields):
+            a = enc0(c)
+            if a is not None and 1 + len(a) <= MAX_BYTES:
+                seen.add(('sel', bytes([s]) + a))
+                out.append(f'def {X}_decode_vlit_ok_sel_{s}()\n    -> {{selof({dec(bytes([s]) + a)}) == {s} : U32}}:\n  {{==}}')
+                sel.append(s)
+        arm = enc0(t.fields[0][1])
+        declared = set(t.selectors)
+        if arm is not None:
+            for s in sorted(({0, 255} | {x + d for x in declared for d in (-1, 1)}) - declared):
+                if 0 <= s <= 255:
+                    law('bad', f'sel_{s}', bytes([s]) + arm, r7=True)
+        if set(sel) != declared:
+            raise SystemExit(f'{X}: no selector law for {sorted(declared - set(sel))}')
     ser = f'Pair.snd({val}, O.Encoded, T.{X}_serialize(v))' if ser_pair else f'T.{X}_serialize(v)'
     helper = [f'def some1(m: {M}) -> Bool:\n  match m:\n    case Some{{v}}: True{{}}\n    case None{{}}: False{{}}\n',
               f'def rt(m: {M}) -> B.Buf:\n  match m:\n    case Some{{v}}: O.ser_out({ser})\n    case None{{}}: B.empty()\n']
+    if sel:
+        helper.append(f'def selof(m: {M}) -> U32:\n  match m:\n    case Some{{v}}: Pair.snd({val}, U32, T.{X}_selector(v))\n    case None{{}}: 0\n')
     return '\n'.join(helper), out
 
 
@@ -619,6 +661,182 @@ def window_laws(tx, X, t, names):
     return out
 
 
+FREAD = re.compile(r'\(buf, \(off \+ (\d+) : U32\)')     # a read at the container's offset plus a literal position
+FREAD_ABS = re.compile(r'\(buf, \((\d+) : U32\)')         # a read at an absolute literal position (the container's offset dropped)
+
+
+def nested(tx, X):
+    """True when a definition of another name reads X (`X_read` / `X_bx_read`): X is read at a non-zero offset (a field of a parent, an element)"""
+    pat = re.compile(rf'(?<![\w.]){re.escape(X)}_(?:bx_)?read\(buf')
+    return any(not n.startswith(X + '_') and pat.search(b) for n, b in tx.blk.items())
+
+
+def field_window_laws(tx, X, t, names):
+    """(round 11: a01/09..12) [law]: for every container X that a parent reads (a field of another container, an element of a list), each step of
+    X's reader that reads a fixed field reads it at off + the field's position in X (symbolic in the buffer, the offset and every argument). A
+    reader written for a top-level container (a position without `off`) is right at off = 0 only: the decode literal laws, which decode X at
+    offset 0, cannot see it. The generator checks every such read against the schema and stops on a difference; the gate asks a law for every
+    fixed field of a nested container."""
+    if t.kind not in ('container', 'pcontainer') or f'{X}_read' not in tx.blk or not nested(tx, X):
+        return []
+    pos, at = {}, 0
+    for fn, c in t.fields:
+        if c.fixed():
+            pos[fn] = at
+        at += c.fixed_size() if c.fixed() else 4
+    steps = {}
+    for name, b in tx.blk.items():
+        if re.fullmatch(rf'{re.escape(X)}(_g\d+)?_rd\d+', name):
+            m = RD.fullmatch(b)
+            if m:
+                steps[name] = m.groups()
+    out, seen = [], set()
+    for name, b in sorted(tx.blk.items()):
+        entry = re.fullmatch(rf'{re.escape(X)}(_g\d+)?_read', name)
+        if not (entry or name in steps):
+            continue
+        if entry:
+            m = re.fullmatch(r'def \w+\((.*)\) -> (.*?): (.*)', b)
+            if not m:
+                continue
+            prm, ret, body = m.groups()
+        else:
+            _, prm, pty, ret, plus, v, body = steps[name]
+        if FREAD_ABS.search(body):
+            raise SystemExit(f'{name}: reads at an absolute position ({body}): a nested reader reads at off + the position')
+        nm = re.match(r'(\w+)\(', body)
+        rd = FREAD.findall(body)
+        if not (nm and nm.group(1) in steps and len(rd) == 1):
+            continue
+        f = steps[nm.group(1)][5]       # the field the next step receives
+        if f not in pos:
+            continue
+        if int(rd[0]) != pos[f]:
+            raise SystemExit(f'{name}: reads {f} at off + {rd[0]}, the schema says off + {pos[f]}')
+        seen.add(f)
+        args = ', '.join(p.split(':')[0].strip().lstrip('+') for p in MC.split_top_args(prm))
+        tag = name[len(X) + 1:]
+        if entry:
+            stmt = f'{name}({args}) == {body} : {ret}'
+            params = prm
+        else:
+            stmt = f'{name}({args}, (buf, {v})) == {body} : {ret}'
+            params = f'buf: B.Buf, {prm}, {plus}{v}: {pty}'
+        out.append(qualify(f'def {X}_decode_vlit_fwin_{tag}({params})\n    -> {{{stmt}}}:\n  {{==}}', names))
+    if set(pos) - seen:
+        raise SystemExit(f'{X}: no reader step found for the fixed fields {sorted(set(pos) - seen)} (field window laws)')
+    return out
+
+
+VSTEP = re.compile(r'def (\w+)\(ok: Bool, (.*)\) -> (.*):\n  match ok:\n    case True\{\}: (.*)\n    case False\{\}: .*')
+OKAT = re.compile(r'_ok_at\(buf, \(off \+ (\d+) : U32\)\)')
+
+
+def validator_window_laws(tx, X, t, names):
+    """(round 12: e03/01..04) [law]: each step of the container X's validator that checks a fixed field in place (`F_ok_at(buf, (off + N))`: a
+    bit vector's padding, a boolean, a nested container's own checks) checks it at off + the field's position (N one of the schema's
+    positions; the statement restates the step, so a check at a neighbour's byte fails it). Symbolic in the buffer and every argument."""
+    if t.kind not in ('container', 'pcontainer'):
+        return []
+    pos, at = set(), 0
+    for _, c in t.fields:
+        if c.fixed():
+            pos.add(at)
+        at += c.fixed_size() if c.fixed() else 4
+    out = []
+    for name, b in sorted(tx.blk.items()):
+        if not re.fullmatch(rf'{re.escape(X)}(_g\d+)?_(c\d+|ok_len)', name):
+            continue
+        m = VSTEP.fullmatch(b)
+        if not m:
+            continue
+        _, prm, ret, body = m.groups()
+        ns = OKAT.findall(body)
+        if len(ns) != 1:
+            continue
+        if int(ns[0]) not in pos:
+            raise SystemExit(f'{name}: checks a fixed field at off + {ns[0]}, which starts no fixed field of {X}')
+        args = ', '.join(p.split(':')[0].strip().lstrip('+') for p in MC.split_top_args(prm))
+        out.append(qualify(f'def {X}_decode_vlit_vwin_{name[len(X) + 1:]}({prm})\n    -> {{{name}(True{{}}, {args}) == {body} : {ret}}}:\n  {{==}}', names))
+    return out
+
+
+CK = re.compile(r'def (\w+)_ck\(\+k: Nat, \+i: U32, \+off: U32, \+acc: Bool, pair: B\.Buf & Bool\) -> B\.Buf & Bool:\n  match k:\n'
+                r'    case 0n: O\.and_pair\(acc, pair\)\n    case 1n\+q:\n      \(buf, ok\) = pair\n      (.*)')
+NZ = re.compile(r'def (\w+)_ok_nz\(empty: Bool, buf: B\.Buf, \+off: U32, \+n: U32\) -> B\.Buf & Bool:\n  match empty:\n'
+                r'    case True\{\}: \(buf, True\{\}\)\n    case False\{\}: (.*)')
+
+
+def elem_check_laws(tx, p, X, names):
+    """(round 12: e02/01..03) [law]: the element loop of the list / vector kind p of fixed checked elements (List[Validator] in BeaconState):
+    one step keeps the running verdict (`Bool.and(acc, ok)`) and checks element i + 1 at off + (i + 1) * size; the first element is checked
+    at off. Symbolic in the buffer, the offset, the index and the verdicts: each statement unfolds one step (the stride is checked here
+    against the length test `U32.div(len, size)`)."""
+    m = CK.fullmatch(tx.blk.get(f'{p}_ck', ''))
+    if not m:
+        return []
+    step = m.group(2)
+    es = re.search(r'U32\.div\(len, (\d+)\)', tx.blk.get(f'{p}_ok_len', '') + tx.blk.get(f'{p}_ok', ''))
+    st = re.search(r'(?:_ok_at|O\.ok_bool)\(buf, \(off \+ \(i \+ 1 : U32\) \* (\d+) : U32\)\)', step)
+    if not st or 'Bool.and(acc, ok)' not in step or (es and es.group(1) != st.group(1)):
+        raise SystemExit(f'{p}_ck: the step `{step}` is not: verdict kept, element i + 1 at off + (i + 1) * {es.group(1) if es else "size"}')
+    out = [qualify(f'def {X}_decode_vlit_ck_{p}_step(+q: Nat, +i: U32, +off: U32, +acc: Bool, buf: B.Buf, ok: Bool)\n'
+                   f'    -> {{{p}_ck(1n+q, i, off, acc, (buf, ok)) == {step} : B.Buf & Bool}}:\n  {{==}}', names),
+           qualify(f'def {X}_decode_vlit_ck_{p}_end(+i: U32, +off: U32, +acc: Bool, buf: B.Buf, ok: Bool)\n'
+                   f'    -> {{{p}_ck(0n, i, off, acc, (buf, ok)) == O.and_pair(acc, (buf, ok)) : B.Buf & Bool}}:\n  {{==}}', names)]
+    nz = NZ.fullmatch(tx.blk.get(f'{p}_ok_nz', ''))
+    if nz:
+        first = nz.group(2)
+        if not re.search(r'(?:_ok_at|O\.ok_bool)\(buf, off\)\)$', first):
+            raise SystemExit(f'{p}_ok_nz: the first element is not checked at off ({first})')
+        out.append(qualify(f'def {X}_decode_vlit_ck_{p}_first(buf: B.Buf, +off: U32, +n: U32)\n'
+                           f'    -> {{{p}_ok_nz(False{{}}, buf, off, n) == {first} : B.Buf & Bool}}:\n  {{==}}', names))
+    return out
+
+
+def box_bad(c):
+    """(round 11: b03) an invalid encoding of the variable-size value c whose fault is c's own (or, for a list / vector of variable elements,
+    one element's own): the check a boxed element's validator `E_bx_ok` makes. (bytes, the type whose own check refuses it) or None"""
+    if c.fixed() or c.kind in ('bytelist', 'bitlist', 'pbits') or (c.kind in ('list', 'plist', 'vector') and c.elem.fixed()):
+        return None     # validated in place (no boxed value): a list of fixed elements checks its elements at known positions
+    if c.kind in ('list', 'plist', 'vector') and not c.elem.fixed():
+        e = c.elem
+        bad = child_bads(e, 0)[:1]
+        if not bad:
+            return None
+        if c.kind == 'vector':
+            d = enc0(e)
+            if d is None:
+                return None
+            return elems(e, [bad[0][1]] + [d] * (c.size - 1)), e
+        return elems(e, [bad[0][1]]), e
+    bad = child_bads(c, 0)[:1]
+    return (bad[0][1], c) if bad else None
+
+
+def box_laws(t):
+    """(round 11: b03/01, /10, /11, /12) [(tag, bytes, the type of the invalid boxed value)]: X's default with one variable field holding an
+    invalid boxed value (a container, a list whose own check fails) or a list / vector of variable elements holding one invalid element (the
+    element's own validator refuses it); X itself a list / vector of variable elements: one invalid element. Each must not decode."""
+    out = []
+    if t.kind in ('list', 'plist', 'vector') and not t.elem.fixed():
+        r = box_bad(t)
+        if r:
+            out.append(('elem', r[0], r[1]))
+    elif t.kind in ('container', 'pcontainer') and not t.fixed():
+        kids = kids_of(t)
+        base = [enc0(c) for _, c in kids]
+        if any(b is None for b in base):
+            return out
+        for i, (fn, c) in enumerate(kids):
+            r = box_bad(c)
+            if r:
+                encs = list(base)
+                encs[i] = r[0]
+                out.append((fn, compose(kids, encs), r[1]))
+    return out
+
+
 def module(tmod, X, helper, laws):
     L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', f'import ../../types/{tmod}.bend as T', '', writer.header('decode_literal_laws'),
          f'# {X}: literal encodings that decode and literal encodings that do not (manual spec-mutation audit, round 5; docs/mutation_testing/MUTATION_PROOFS.md).', '', helper]
@@ -637,6 +855,7 @@ def outputs():
     for runtime, tmod, names in (('fulu', 'fulu_obj', fu), ('generic', 'generic_obj', gen)):
         tx = MC.Text(runtime)
         rtnames = set(tx.blk) | set(re.findall(r'^type (\w+)', tx.text, re.M))
+        ck_done = set()
         for m in DECODE.finditer(tx.text):
             X, V = m.group(1), m.group(2)
             t = names.get(X)
@@ -657,12 +876,59 @@ def outputs():
             wlaws = window_laws(tx, X, t, rtnames)
             if wlaws:
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_win')] = module(tmod, X, '', wlaws)
+            flaws = field_window_laws(tx, X, t, rtnames)
+            if flaws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_fwin')] = module(tmod, X, '', flaws)
+            vlaws = validator_window_laws(tx, X, t, rtnames)
+            if vlaws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_vwin')] = module(tmod, X, '', vlaws)
+            # (round 12) the element loops X's validator reaches (directly, or X itself), each stated once (under the first name that reaches it)
+            own = '\n'.join(b for n, b in tx.blk.items() if n.startswith(X + '_'))
+            for p in sorted({q for q in re.findall(r'\b(\w+)_ok(?:_at|_n)?\(buf', own) if f'{q}_ck' in tx.blk} - ck_done):
+                claws = elem_check_laws(tx, p, X, rtnames)
+                if claws:
+                    ck_done.add(p)
+                    out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_ck_{p}')] = module(tmod, X, '', claws)
             olaws = order_laws(tx, X)
             if olaws:
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_order_sym')] = module(tmod, X, '', olaws)
             for p, text in count_laws(tx, X):
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_count_{p}')] = module(tmod, X, '', [text])
+            boxed_positions(t, NEED, set())
+        # (round 12) the gate of the element-loop laws: every element loop of fixed checked elements is reached from a decoder
+        left_ck = sorted(m.group(1) for b in tx.blk.values() for m in [CK.fullmatch(b)] if m and m.group(1) not in ck_done)
+        if left_ck:
+            raise SystemExit(f'decode_literal_laws: element loops with no step law ({runtime}): ' + ', '.join(left_ck))
+    # (round 11: b03) the coverage gate of the boxed-value laws: every variable-size value that sits in a boxed position (a container field of a
+    # container, an element of a list / vector of variable elements) and has an invalid encoding of its own is refused, by some law, inside a parent
+    left = sorted({e.name or repr(e) for e in NEED - COVER})
+    if left:
+        raise SystemExit('decode_literal_laws: boxed values with no reject law: ' + '; '.join(left))
     return out
+
+
+COVER = set()      # the types an invalid boxed value of which some `_bad_box_` law refuses
+NEED = set()       # the types that sit in a boxed position somewhere (and have an invalid encoding of their own)
+
+
+def boxed_positions(t, need, seen):
+    """the types in a boxed position anywhere below t (see box_laws): a variable container / union field, an element of a list / vector of
+    variable elements; only those whose own invalid encoding box_bad can build"""
+    if t in seen or t.fixed():
+        return
+    seen.add(t)
+    if t.kind in ('list', 'plist', 'vector'):
+        r = box_bad(t)
+        if r:
+            need.add(r[1])
+        boxed_positions(t.elem, need, seen)
+    elif t.kind in ('container', 'pcontainer', 'cunion'):
+        for _, c in t.fields:
+            if t.kind != 'cunion' and not c.fixed() and c.kind in ('container', 'pcontainer', 'cunion'):
+                r = box_bad(c)
+                if r:
+                    need.add(r[1])
+            boxed_positions(c, need, seen)
 
 
 def main():

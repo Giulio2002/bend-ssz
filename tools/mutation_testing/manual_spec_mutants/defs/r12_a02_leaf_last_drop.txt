@@ -1,0 +1,93 @@
+=== r12-a02-leaf-last-drop
+type: FuluBytes8
+ops: root
+file: types/FuluBytes8_hashtreeroot_generated.bend
+sym: b8_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes8: the last word (w1) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluPayloadId_hashtreeroot_proof_generated.bend
+-B.swap32(w1)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluBytes20
+ops: root
+file: types/FuluBytes20_hashtreeroot_generated.bend
+sym: b20_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes20: the last word (w4) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluExecutionAddress_hashtreeroot_proof_generated.bend,proofs/api/FuluWithdrawalRequest_hashtreeroot_proof_generated.bend
+-B.swap32(w4)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluBytes32
+ops: root
+file: types/FuluBytes32_hashtreeroot_generated.bend
+sym: b32_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes32: the last word (w7) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluRoot_hashtreeroot_proof_generated.bend,proofs/api/FuluDomain_hashtreeroot_proof_generated.bend
+-B.swap32(w7)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluBytes48
+ops: root
+file: types/FuluBytes48_hashtreeroot_generated.bend
+sym: b48_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes48: the last word (w11) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluG1Point_hashtreeroot_proof_generated.bend,proofs/api/FuluKZGProof_hashtreeroot_proof_generated.bend
+-B.swap32(w11)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluBytes96
+ops: root
+file: types/FuluBytes96_hashtreeroot_generated.bend
+sym: b96_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: FuluBytes96: the last word (w23) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluG2Point_hashtreeroot_proof_generated.bend,proofs/api/FuluBLSSignature_hashtreeroot_proof_generated.bend
+-B.swap32(w23)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluAttestation
+ops: root
+file: types/Fulu_bitvector_64_hashtreeroot_generated.bend
+sym: bv64_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_64: the last word (w1) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+-B.swap32(w1)
++0
+
+=== r12-a02-leaf-last-drop
+type: FuluSyncCommitteeContribution
+ops: root
+file: types/Fulu_bitvector_128_hashtreeroot_generated.bend
+sym: bv128_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_128: the last word (w3) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+-B.swap32(w3)
++0
+
+=== r12-a02-leaf-last-drop
+type: bitvector_512
+ops: root
+file: types/Fulu_bitvector_512_hashtreeroot_generated.bend
+sym: bv512_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+fault: Fulu_bitvector_512: the last word (w15) left out of the chunk (zero)
+why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+proofs: proofs/api/FuluSyncAggregate_hashtreeroot_proof_generated.bend
+-B.swap32(w15)
++0

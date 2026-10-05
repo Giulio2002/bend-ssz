@@ -1,0 +1,2162 @@
+[
+ {
+  "id": "r12-d01-cache-lo/01",
+  "type": "Fulu_list_Attestation_8",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 4.5,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/02",
+  "type": "Fulu_list_AttesterSlashing_1",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-d01-cache-lo/03",
+  "type": "Fulu_list_ConsolidationRequest_2",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-d01-cache-lo/04",
+  "type": "Fulu_list_DepositRequest_8192",
+  "file": "types/Fulu_list_DepositRequest_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 3.8,
+    "laws": [
+     "ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/05",
+  "type": "Fulu_list_Deposit_16",
+  "file": "types/Fulu_list_Deposit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 9.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 33.3,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/06",
+  "type": "Fulu_list_Eth1Data_2048",
+  "file": "types/Fulu_list_Eth1Data_2048_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "BeaconState_vroot_l2048_Eth1Data_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/07",
+  "type": "Fulu_list_HistoricalSummary_16777216",
+  "file": "types/Fulu_list_HistoricalSummary_16777216_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/08",
+  "type": "Fulu_list_PendingConsolidation_262144",
+  "file": "types/Fulu_list_PendingConsolidation_262144_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_vroot_l262144_PendingConsolidation_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/09",
+  "type": "Fulu_list_PendingDeposit_134217728",
+  "file": "types/Fulu_list_PendingDeposit_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.6,
+    "laws": [
+     "BeaconState_vroot_l134217728_PendingDeposit_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/10",
+  "type": "Fulu_list_PendingPartialWithdrawal_134217728",
+  "file": "types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/11",
+  "type": "Fulu_list_SignedBLSToExecutionChange_16",
+  "file": "types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 3.4,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/12",
+  "type": "Fulu_list_SignedVoluntaryExit_16",
+  "file": "types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/13",
+  "type": "Fulu_list_Validator_1099511627776",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_vroot_l1099511627776_Validator_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/14",
+  "type": "Fulu_list_WithdrawalRequest_16",
+  "file": "types/Fulu_list_WithdrawalRequest_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/15",
+  "type": "Fulu_list_Withdrawal_16",
+  "file": "types/Fulu_list_Withdrawal_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.1,
+    "laws": [
+     "ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/16",
+  "type": "Fulu_list_bytelist_1073741824_1048576",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d01-cache-lo/17",
+  "type": "list_ProgressiveSingleFieldContainerTestStruct_10",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/01",
+  "type": "Fulu_list_Attestation_8",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 3.4,
+    "laws": [
+     "BeaconBlockBody_vroot_l8_Attestation_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/02",
+  "type": "Fulu_list_AttesterSlashing_1",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/03",
+  "type": "Fulu_list_ConsolidationRequest_2",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/04",
+  "type": "Fulu_list_DepositRequest_8192",
+  "file": "types/Fulu_list_DepositRequest_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.6,
+    "laws": [
+     "ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/05",
+  "type": "Fulu_list_Deposit_16",
+  "file": "types/Fulu_list_Deposit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 21.2,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_Deposit_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/06",
+  "type": "Fulu_list_Eth1Data_2048",
+  "file": "types/Fulu_list_Eth1Data_2048_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "BeaconState_vroot_l2048_Eth1Data_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/07",
+  "type": "Fulu_list_HistoricalSummary_16777216",
+  "file": "types/Fulu_list_HistoricalSummary_16777216_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/08",
+  "type": "Fulu_list_PendingConsolidation_262144",
+  "file": "types/Fulu_list_PendingConsolidation_262144_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_vroot_l262144_PendingConsolidation_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/09",
+  "type": "Fulu_list_PendingDeposit_134217728",
+  "file": "types/Fulu_list_PendingDeposit_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "BeaconState_vroot_l134217728_PendingDeposit_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/10",
+  "type": "Fulu_list_PendingPartialWithdrawal_134217728",
+  "file": "types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/11",
+  "type": "Fulu_list_ProposerSlashing_16",
+  "file": "types/Fulu_list_ProposerSlashing_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 4.8,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/12",
+  "type": "Fulu_list_SignedBLSToExecutionChange_16",
+  "file": "types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/13",
+  "type": "Fulu_list_SignedVoluntaryExit_16",
+  "file": "types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/14",
+  "type": "Fulu_list_Validator_1099511627776",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 2.2,
+    "laws": [
+     "BeaconState_vroot_l1099511627776_Validator_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/15",
+  "type": "Fulu_list_WithdrawalRequest_16",
+  "file": "types/Fulu_list_WithdrawalRequest_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.5,
+    "laws": [
+     "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/16",
+  "type": "Fulu_list_Withdrawal_16",
+  "file": "types/Fulu_list_Withdrawal_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.4,
+    "laws": [
+     "ExecutionPayload_vroot_l16_Withdrawal_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/17",
+  "type": "Fulu_list_bytelist_1073741824_1048576",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d02-cache-depth0/18",
+  "type": "list_ProgressiveSingleFieldContainerTestStruct_10",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0"
+    ],
+    "msg": "- expected : D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/01",
+  "type": "Fulu_list_Attestation_8",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l8_Attestation_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_Attestation_8_d.l8_Attestation_Seq{[O.BNone{}], 0}\n- observed : Fulu_list_Attestation_8_d.l8_Attestation_Seq{[O.BSome{FuluAttestation_d.Attestation{O.Bits{[0, 0, 0, 0, 0, 0, 0, 0], 0}, FuluAttestationData_d.AttestationData{O.U64{1, 0}, O.U64{0, 0}, ../../../types/FuluBytes32_d",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l8_Attestation_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/02",
+  "type": "Fulu_list_AttesterSlashing_1",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 0.8,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l1_AttesterSlashing_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{[O.BNone{}], 0}\n- observed : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{[O.BSome{FuluAttesterSlashing_d.AttesterSlashing{O.BSome{FuluIndexedAttestation_d.IndexedAttestation{O.Words{[0, 0, 0, 0, 0, 0, 0, 0], 0}, FuluAttes",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l1_AttesterSlashing_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/03",
+  "type": "Fulu_list_ConsolidationRequest_2",
+  "file": "types/Fulu_list_ConsolidationRequest_2_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "ExecutionRequests_serialize_vcoll_l2_ConsolidationRequest_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{[FuluConsolidationRequest_d.ConsolidationRequest{FuluBytes20_d.Bytes20{0, 0, 0, 0, 0}, ../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ../../../types/FuluBytes48_def_generated.Bytes48{0,",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_api_l2_ConsolidationRequest_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/04",
+  "type": "Fulu_list_DepositRequest_8192",
+  "file": "types/Fulu_list_DepositRequest_8192_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "ExecutionRequests_serialize_vcoll_l8192_DepositRequest_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{[FuluDepositRequest_d.DepositRequest{../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ../../../types/FuluBytes32_def_generated.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}, O.U64{0, 0}, ../../../types/FuluB",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_api_l8192_DepositRequest_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/05",
+  "type": "Fulu_list_Deposit_16",
+  "file": "types/Fulu_list_Deposit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 3.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 5.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 7.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 12.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 10.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l16_Deposit_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_Deposit_16_d.l16_Deposit_Seq{[O.BNone{}], 0}\n- observed : Fulu_list_Deposit_16_d.l16_Deposit_Seq{[O.BSome{FuluDeposit_d.Deposit{O.Words{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l16_Deposit_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/06",
+  "type": "Fulu_list_Eth1Data_2048",
+  "file": "types/Fulu_list_Eth1Data_2048_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconState_serialize_vcoll_l2048_Eth1Data_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{[FuluEth1Data_d.Eth1Data{../../../types/FuluBytes32_def_generated.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}, O.U64{0, 0}, ../../../types/FuluBytes32_def_generated.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}}], 0}\n- observed : Fulu_list_Eth1Data_2048_d.l2048_Eth1Da",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l2048_Eth1Data_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/07",
+  "type": "Fulu_list_HistoricalSummary_16777216",
+  "file": "types/Fulu_list_HistoricalSummary_16777216_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_serialize_vcoll_l16777216_HistoricalSummary_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq{[FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}, FuluBytes32_d.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}}], 0}\n- observed : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSu",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l16777216_HistoricalSummary_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/08",
+  "type": "Fulu_list_PendingConsolidation_262144",
+  "file": "types/Fulu_list_PendingConsolidation_262144_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "BeaconState_serialize_vcoll_l262144_PendingConsolidation_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{[FuluPendingConsolidation_d.PendingConsolidation{O.U64{0, 0}, O.U64{0, 0}}], 0}\n- observed : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{[FuluPendingConsolidation_d.PendingConsolidation",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l262144_PendingConsolidation_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/09",
+  "type": "Fulu_list_PendingDeposit_134217728",
+  "file": "types/Fulu_list_PendingDeposit_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 0.9,
+    "laws": [
+     "BeaconState_serialize_vcoll_l134217728_PendingDeposit_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq{[FuluPendingDeposit_d.PendingDeposit{../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ../../../types/FuluBytes32_def_generated.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}, O.U64{0, 0}, ../../../t",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l134217728_PendingDeposit_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/10",
+  "type": "Fulu_list_PendingPartialWithdrawal_134217728",
+  "file": "types/Fulu_list_PendingPartialWithdrawal_134217728_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "BeaconState_serialize_vcoll_l134217728_PendingPartialWithdrawal_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq{[FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal{O.U64{0, 0}, O.U64{0, 0}, O.U64{0, 0}}], 0}\n- observed : Fulu_list_PendingPartialWithdrawal_134217728_d.l134217728_PendingPartialWithdrawal_Seq",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l134217728_PendingPartialWithdrawal_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/11",
+  "type": "Fulu_list_ProposerSlashing_16",
+  "file": "types/Fulu_list_ProposerSlashing_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.3,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l16_ProposerSlashing_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{[O.BNone{}], 0}\n- observed : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{[O.BSome{FuluProposerSlashing_d.ProposerSlashing{O.BSome{FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlo",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l16_ProposerSlashing_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/12",
+  "type": "Fulu_list_SignedBLSToExecutionChange_16",
+  "file": "types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l16_SignedBLSToExecutionChange_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{[FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange{FuluBLSToExecutionChange_d.BLSToExecutionChange{O.U64{0, 0}, ../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ..",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l16_SignedBLSToExecutionChange_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/13",
+  "type": "Fulu_list_SignedVoluntaryExit_16",
+  "file": "types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.1,
+    "laws": [
+     "BeaconBlockBody_serialize_vcoll_l16_SignedVoluntaryExit_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{[FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{0, 0}, O.U64{0, 0}}, ../../../types/FuluBytes96_def_generated.Bytes96{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+    "root": "proofs/slop/validity/fulu_BeaconBlockBody_api_l16_SignedVoluntaryExit_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/14",
+  "type": "Fulu_list_Validator_1099511627776",
+  "file": "types/Fulu_list_Validator_1099511627776_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.0,
+    "laws": [
+     "BeaconState_serialize_vcoll_l1099511627776_Validator_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{[FuluValidator_d.Validator{../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ../../../types/FuluBytes32_def_generated.Bytes32{0, 0, 0, 0, 0, 0, 0, 0}, O.U64{0, 0}, False{}, O.U64{0, 0}, ",
+    "root": "proofs/slop/validity/fulu_BeaconState_api_l1099511627776_Validator_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/15",
+  "type": "Fulu_list_WithdrawalRequest_16",
+  "file": "types/Fulu_list_WithdrawalRequest_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ExecutionRequests_serialize_vcoll_l16_WithdrawalRequest_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{[FuluWithdrawalRequest_d.WithdrawalRequest{../../../types/FuluBytes20_def_generated.Bytes20{0, 0, 0, 0, 0}, ../../../types/FuluBytes48_def_generated.Bytes48{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, O.U64{0, 0}}], 0}\n- observed : Ful",
+    "root": "proofs/slop/validity/fulu_ExecutionRequests_api_l16_WithdrawalRequest_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/16",
+  "type": "Fulu_list_Withdrawal_16",
+  "file": "types/Fulu_list_Withdrawal_16_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ExecutionPayload_serialize_vcoll_l16_Withdrawal_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{[FuluWithdrawal_d.Withdrawal{O.U64{0, 0}, O.U64{0, 0}, ../../../types/FuluBytes20_def_generated.Bytes20{0, 0, 0, 0, 0}, O.U64{0, 0}}], 0}\n- observed : Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{[FuluWithdrawal_d.Withdrawal{O.U64{1, 0}, O.U6",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_api_l16_Withdrawal_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/17",
+  "type": "Fulu_list_bytelist_1073741824_1048576",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ExecutionPayload_serialize_vcoll_l1048576_bl1073741824_api_uncache"
+    ],
+    "msg": "- expected : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{[O.BNone{}], 0}\n- observed : Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{[O.BSome{O.Words{[7], 1}, O.BNone{}}, O.BSome{O.Words{[0, 0, 0, 0, 0, 0, 0, 0], 0}, O.BNone{}}, O.BSome{O.Words{[7], 1}, O.BNo",
+    "root": "proofs/slop/validity/fulu_ExecutionPayload_api_l1048576_bl1073741824_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-d03-uncache-drop/18",
+  "type": "list_ProgressiveSingleFieldContainerTestStruct_10",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_2_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.4,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_1_3_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_3_generated.bend"
+   },
+   {
+    "verdict": "KILLED",
+    "secs": 1.2,
+    "laws": [
+     "ProgressiveComplexTestStruct_serialize_vcoll_l10_ProgressiveSingleFieldContainerTestStruct_api_uncache"
+    ],
+    "msg": "- expected : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFieldContainerTestStruct_Seq{[ProgressiveSingleFieldContainerTestStruct_d.ProgressiveSingleFieldContainerTestStruct{0}], 0}\n- observed : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_ProgressiveSingleFiel",
+    "root": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_api_l10_ProgressiveSingleFieldContainerTestStruct_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ }
+]

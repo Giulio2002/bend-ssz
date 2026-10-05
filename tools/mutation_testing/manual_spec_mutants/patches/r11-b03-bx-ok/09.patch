@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/09
+# type: FuluTransaction
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed bl1073741824 field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluTransaction_decode_ssz_generated.bend
+# sym: bl1073741824_bx_ok,Transaction_decode
+--- a/types/FuluTransaction_decode_ssz_generated.bend
++++ b/types/FuluTransaction_decode_ssz_generated.bend
+@@ -20,3 +20,3 @@
+ 
+-def bl1073741824_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bl1073741824_ok(buf, off, len)
++def bl1073741824_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

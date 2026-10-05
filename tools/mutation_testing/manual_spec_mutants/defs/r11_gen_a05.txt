@@ -1,0 +1,51 @@
+## round 11 generated: r11-a05-vector-storage
+=== r11-a05-vector-storage
+type: vec_bool_3
+ops: decode,root
+file: types/vec_bool_3_decode_ssz_generated.bend
+sym: v3_bool_read,vec_bool_3_decode
+spec: Vector[T, N] holds N * size(T) bytes
+fault: the word storage is allocated with 3 words instead of 4
+why: storage sized by floor instead of the chunk-padded ceiling
+-O.copy_into(buf, off, 3, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 3, Array.new(U32, 3n, 0))
+=== r11-a05-vector-storage
+type: vec_bool_513
+ops: decode,root
+file: types/vec_bool_513_decode_ssz_generated.bend
+sym: v513_bool_read,vec_bool_513_decode
+spec: Vector[T, N] holds N * size(T) bytes
+fault: the word storage is allocated with 7 words instead of 8
+why: storage sized by floor instead of the chunk-padded ceiling
+-O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
++O.copy_into(buf, off, 513, Array.new(U32, 7n, 0))
+=== r11-a05-vector-storage
+type: vec_bool_5
+ops: decode,root
+file: types/vec_bool_5_decode_ssz_generated.bend
+sym: v5_bool_read,vec_bool_5_decode
+spec: Vector[T, N] holds N * size(T) bytes
+fault: the word storage is allocated with 3 words instead of 4
+why: storage sized by floor instead of the chunk-padded ceiling
+-O.copy_into(buf, off, 5, Array.new(U32, 4n, 0))
++O.copy_into(buf, off, 5, Array.new(U32, 3n, 0))
+=== r11-a05-vector-storage
+type: vec_uint128_3
+ops: decode,root
+file: types/vec_uint128_3_decode_ssz_generated.bend
+sym: v3_u128_read,vec_uint128_3_decode
+spec: Vector[T, N] holds N * size(T) bytes
+fault: the word storage is allocated with 4 words instead of 5
+why: storage sized by floor instead of the chunk-padded ceiling
+-O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))
++O.copy_into(buf, off, 48, Array.new(U32, 4n, 0))
+=== r11-a05-vector-storage
+type: vec_uint128_513
+ops: decode,root
+file: types/vec_uint128_513_decode_ssz_generated.bend
+sym: v513_u128_read,vec_uint128_513_decode
+spec: Vector[T, N] holds N * size(T) bytes
+fault: the word storage is allocated with 11 words instead of 12
+why: storage sized by floor instead of the chunk-padded ceiling
+-O.copy_into(buf, off, 8208, Array.new(U32, 12n, 0))
++O.copy_into(buf, off, 8208, Array.new(U32, 11n, 0))

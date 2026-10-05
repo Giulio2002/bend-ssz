@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a03-tail-keep/03
+# type: bitvector_16
+# ops: decode
+# spec: Bitvector[N] occupies (N + 7) // 8 bytes; the bytes after it belong to the next field
+# fault: the last word keeps all 4 bytes read (bytes past the 2-byte tail read into the value)
+# why: a 32-bit read not masked to the value's width
+# file: types/bitvector_16_decode_ssz_generated.bend
+# sym: bv16_r0,bv16_read,bitvector_16_decode
+--- a/types/bitvector_16_decode_ssz_generated.bend
++++ b/types/bitvector_16_decode_ssz_generated.bend
+@@ -12,3 +12,3 @@
+   (buf, +x) = pair
+-  (buf, bitvector_16_d.Bitvector16{O.keep(2, x)})
++  (buf, bitvector_16_d.Bitvector16{x})
+ 

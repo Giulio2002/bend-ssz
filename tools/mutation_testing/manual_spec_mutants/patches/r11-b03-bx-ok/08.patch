@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/08
+# type: FuluSyncCommitteeContribution
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed SyncCommitteeContribution field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+# sym: SyncCommitteeContribution_bx_ok,SyncCommitteeContribution_decode
+--- a/types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
++++ b/types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+@@ -52,3 +52,3 @@
+ 
+-def SyncCommitteeContribution_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncCommitteeContribution_ok(buf, off, len)
++def SyncCommitteeContribution_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

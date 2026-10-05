@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a02-leaf-last-drop/03
+# type: FuluBytes32
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: FuluBytes32: the last word (w7) left out of the chunk (zero)
+# why: an off-by-one in the word count of a byte vector whose size is not a multiple of 32 (or whose last chunk is partial)
+# file: types/FuluBytes32_hashtreeroot_generated.bend
+# sym: b32_root
+# proofs: proofs/api/FuluRoot_hashtreeroot_proof_generated.bend,proofs/api/FuluDomain_hashtreeroot_proof_generated.bend
+--- a/types/FuluBytes32_hashtreeroot_generated.bend
++++ b/types/FuluBytes32_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case FuluBytes32_d.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
++    case FuluBytes32_d.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), 0})
+ 

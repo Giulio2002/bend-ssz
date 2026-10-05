@@ -1,0 +1,1060 @@
+=== r9-a01-get-bound
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_get_n,v513_u8_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v513_u8_get_in(U32.is_lt(i, n), o, i)
++  v513_u8_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_set_n,v513_u8_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v513_u8_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  v513_u8_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 255)), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_set_n,v513_u8_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v513_u8_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  v513_u8_put_at(U32.is_le(v, 255), o, i, v)
+=== r9-a04-set-value-range
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_set_n,v513_u8_set
+spec: uint8 values are below 2^8; a checked setter refuses a larger word
+fault: the range test admits 2^k (is_le(v, 2^k) instead of 2^k - 1): the setter writes a truncated value and answers ok
+why: off-by-one range
+-  v513_u8_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 255)), o, i, v)
++  v513_u8_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 256)), o, i, v)
+=== r9-a05-len-unit
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_len_of,v513_u8_len,v513_u8_get,v513_u8_set
+spec: Vector length is counted in elements of 1 bytes
+fault: the element count is the byte count (the division by the element size 1 is missing)
+why: unit slip
+-  (o, U32.div(n, 1))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_at,v513_u8_get_in,v513_u8_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader takes the byte after the element
+why: stride / width slip
+-def v513_u8_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 1 : U32), 1)
++def v513_u8_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, ((i + 1) * 1 : U32), 1)
+=== r9-a07-set-position
+type: vec_uint8_513
+ops: encode,root
+file: types/vec_uint8_513_def_generated.bend
+sym: v513_u8_put_at,v513_u8_set_n,v513_u8_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores the byte at i + 1
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, (i * 1 : U32), v, 1), True{})
++    case True{}: (O.words_write(o, ((i + 1) * 1 : U32), v, 1), True{})
+=== r9-a01-get-bound
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_get_n,v5_u16_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v5_u16_get_in(U32.is_lt(i, n), o, i)
++  v5_u16_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_set_n,v5_u16_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v5_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v5_u16_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 65535)), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_set_n,v5_u16_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v5_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v5_u16_put_at(U32.is_le(v, 65535), o, i, v)
+=== r9-a04-set-value-range
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_set_n,v5_u16_set
+spec: uint16 values are below 2^16; a checked setter refuses a larger word
+fault: the range test admits 2^k (is_le(v, 2^k) instead of 2^k - 1): the setter writes a truncated value and answers ok
+why: off-by-one range
+-  v5_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v5_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65536)), o, i, v)
+=== r9-a05-len-unit
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_len_of,v5_u16_len,v5_u16_get,v5_u16_set
+spec: Vector length is counted in elements of 2 bytes
+fault: the element count is the byte count (the division by the element size 2 is missing)
+why: unit slip
+-  (o, U32.div(n, 2))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_at,v5_u16_get_in,v5_u16_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader takes 1 byte(s) of the element (the high bytes are lost)
+why: stride / width slip
+-def v5_u16_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 2 : U32), 2)
++def v5_u16_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 2 : U32), 1)
+=== r9-a07-set-position
+type: vec_uint16_5
+ops: encode,root
+file: types/vec_uint16_5_def_generated.bend
+sym: v5_u16_put_at,v5_u16_set_n,v5_u16_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores only 1 byte(s) of the value
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, (i * 2 : U32), v, 2), True{})
++    case True{}: (O.words_write(o, (i * 2 : U32), v, 1), True{})
+=== r9-a01-get-bound
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_get_n,v513_u16_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v513_u16_get_in(U32.is_lt(i, n), o, i)
++  v513_u16_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_set_n,v513_u16_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v513_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v513_u16_put_at(Bool.and(U32.is_le(i, n), U32.is_le(v, 65535)), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_set_n,v513_u16_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v513_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v513_u16_put_at(U32.is_le(v, 65535), o, i, v)
+=== r9-a04-set-value-range
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_set_n,v513_u16_set
+spec: uint16 values are below 2^16; a checked setter refuses a larger word
+fault: the range test admits 2^k (is_le(v, 2^k) instead of 2^k - 1): the setter writes a truncated value and answers ok
+why: off-by-one range
+-  v513_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65535)), o, i, v)
++  v513_u16_put_at(Bool.and(U32.is_lt(i, n), U32.is_le(v, 65536)), o, i, v)
+=== r9-a05-len-unit
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_len_of,v513_u16_len,v513_u16_get,v513_u16_set
+spec: Vector length is counted in elements of 2 bytes
+fault: the element count is the byte count (the division by the element size 2 is missing)
+why: unit slip
+-  (o, U32.div(n, 2))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_at,v513_u16_get_in,v513_u16_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader takes 1 byte(s) of the element (the high bytes are lost)
+why: stride / width slip
+-def v513_u16_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 2 : U32), 2)
++def v513_u16_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 2 : U32), 1)
+=== r9-a07-set-position
+type: vec_uint16_513
+ops: encode,root
+file: types/vec_uint16_513_def_generated.bend
+sym: v513_u16_put_at,v513_u16_set_n,v513_u16_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores only 1 byte(s) of the value
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, (i * 2 : U32), v, 2), True{})
++    case True{}: (O.words_write(o, (i * 2 : U32), v, 1), True{})
+=== r9-a01-get-bound
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_get_n,v31_u32_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v31_u32_get_in(U32.is_lt(i, n), o, i)
++  v31_u32_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_set_n,v31_u32_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v31_u32_put_at(U32.is_lt(i, n), o, i, v)
++  v31_u32_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_set_n,v31_u32_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v31_u32_put_at(U32.is_lt(i, n), o, i, v)
++  v31_u32_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_len_of,v31_u32_len,v31_u32_get,v31_u32_set
+spec: Vector length is counted in elements of 4 bytes
+fault: the element count is the byte count (the division by the element size 4 is missing)
+why: unit slip
+-  (o, U32.div(n, 4))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_at,v31_u32_get_in,v31_u32_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader takes 2 byte(s) of the element (the high bytes are lost)
+why: stride / width slip
+-def v31_u32_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 4 : U32), 4)
++def v31_u32_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 4 : U32), 2)
+=== r9-a07-set-position
+type: vec_uint32_31
+ops: encode,root
+file: types/vec_uint32_31_def_generated.bend
+sym: v31_u32_put_at,v31_u32_set_n,v31_u32_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores only 2 byte(s) of the value
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, (i * 4 : U32), v, 4), True{})
++    case True{}: (O.words_write(o, (i * 4 : U32), v, 2), True{})
+=== r9-a01-get-bound
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_get_n,v3_u64_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v3_u64_get_in(U32.is_lt(i, n), o, i)
++  v3_u64_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_set_n,v3_u64_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v3_u64_put_at(U32.is_lt(i, n), o, i, v)
++  v3_u64_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_set_n,v3_u64_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v3_u64_put_at(U32.is_lt(i, n), o, i, v)
++  v3_u64_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_len_of,v3_u64_len,v3_u64_get,v3_u64_set
+spec: Vector length is counted in elements of 8 bytes
+fault: the element count is the byte count (the division by the element size 8 is missing)
+why: unit slip
+-  (o, U32.div(n, 8))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_at,v3_u64_get_in,v3_u64_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 4 bytes per element (uint32 stride)
+why: stride / width slip
+-def v3_u64_at(o: O.Words, +i: U32) -> O.Words & O.U64: O.words_u64_at(o, (i * 8 : U32))
++def v3_u64_at(o: O.Words, +i: U32) -> O.Words & O.U64: O.words_u64_at(o, (i * 4 : U32))
+=== r9-a07-set-position
+type: vec_uint64_3
+ops: encode,root
+file: types/vec_uint64_3_def_generated.bend
+sym: v3_u64_put_at,v3_u64_set_n,v3_u64_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 4 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (O.words_write_u64(o, (i * 8 : U32), v), True{})
++    case True{}: (O.words_write_u64(o, (i * 4 : U32), v), True{})
+=== r9-a01-get-bound
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_get_n,v3_u128_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v3_u128_get_in(U32.is_lt(i, n), o, i)
++  v3_u128_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_set_n,v3_u128_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v3_u128_put_at(U32.is_lt(i, n), o, i, v)
++  v3_u128_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_set_n,v3_u128_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v3_u128_put_at(U32.is_lt(i, n), o, i, v)
++  v3_u128_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_len_of,v3_u128_len,v3_u128_get,v3_u128_set
+spec: Vector length is counted in elements of 16 bytes
+fault: the element count is the byte count (the division by the element size 16 is missing)
+why: unit slip
+-  (o, U32.div(n, 16))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_at,v3_u128_get_in,v3_u128_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 8 bytes per element (uint64 stride)
+why: stride / width slip
+-def v3_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 16 : U32))
++def v3_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 8 : U32))
+=== r9-a07-set-position
+type: vec_uint128_3
+ops: encode,root
+file: types/vec_uint128_3_def_generated.bend
+sym: v3_u128_put_at,v3_u128_set_n,v3_u128_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 8 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (uint128_d.Uint128_into_words(o, (i * 16 : U32), v), True{})
++    case True{}: (uint128_d.Uint128_into_words(o, (i * 8 : U32), v), True{})
+=== r9-a01-get-bound
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_get_n,v31_u128_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v31_u128_get_in(U32.is_lt(i, n), o, i)
++  v31_u128_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_set_n,v31_u128_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v31_u128_put_at(U32.is_lt(i, n), o, i, v)
++  v31_u128_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_set_n,v31_u128_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v31_u128_put_at(U32.is_lt(i, n), o, i, v)
++  v31_u128_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_len_of,v31_u128_len,v31_u128_get,v31_u128_set
+spec: Vector length is counted in elements of 16 bytes
+fault: the element count is the byte count (the division by the element size 16 is missing)
+why: unit slip
+-  (o, U32.div(n, 16))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_at,v31_u128_get_in,v31_u128_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 8 bytes per element (uint64 stride)
+why: stride / width slip
+-def v31_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 16 : U32))
++def v31_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 8 : U32))
+=== r9-a07-set-position
+type: vec_uint128_31
+ops: encode,root
+file: types/vec_uint128_31_def_generated.bend
+sym: v31_u128_put_at,v31_u128_set_n,v31_u128_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 8 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (uint128_d.Uint128_into_words(o, (i * 16 : U32), v), True{})
++    case True{}: (uint128_d.Uint128_into_words(o, (i * 8 : U32), v), True{})
+=== r9-a01-get-bound
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_get_n,v5_u256_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v5_u256_get_in(U32.is_lt(i, n), o, i)
++  v5_u256_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_set_n,v5_u256_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v5_u256_put_at(U32.is_lt(i, n), o, i, v)
++  v5_u256_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_set_n,v5_u256_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v5_u256_put_at(U32.is_lt(i, n), o, i, v)
++  v5_u256_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_len_of,v5_u256_len,v5_u256_get,v5_u256_set
+spec: Vector length is counted in elements of 32 bytes
+fault: the element count is the byte count (the division by the element size 32 is missing)
+why: unit slip
+-  (o, U32.div(n, 32))
++  (o, n)
+=== r9-a06-get-position
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_at,v5_u256_get_in,v5_u256_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 16 bytes per element (uint128 stride)
+why: stride / width slip
+-def v5_u256_at(o: O.Words, +i: U32) -> O.Words & uint256_d.Uint256: uint256_d.Uint256_of_words(o, (i * 32 : U32))
++def v5_u256_at(o: O.Words, +i: U32) -> O.Words & uint256_d.Uint256: uint256_d.Uint256_of_words(o, (i * 16 : U32))
+=== r9-a07-set-position
+type: vec_uint256_5
+ops: encode,root
+file: types/vec_uint256_5_def_generated.bend
+sym: v5_u256_put_at,v5_u256_set_n,v5_u256_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 16 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (uint256_d.Uint256_into_words(o, (i * 32 : U32), v), True{})
++    case True{}: (uint256_d.Uint256_into_words(o, (i * 16 : U32), v), True{})
+=== r9-a01-get-bound
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_get_n,v5_bool_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v5_bool_get_in(U32.is_lt(i, n), o, i)
++  v5_bool_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_set_n,v5_bool_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v5_bool_put_at(U32.is_lt(i, n), o, i, v)
++  v5_bool_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_set_n,v5_bool_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v5_bool_put_at(U32.is_lt(i, n), o, i, v)
++  v5_bool_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_len_of,v5_bool_len,v5_bool_get,v5_bool_set
+spec: Vector length is counted in elements of 1 bytes
+fault: the element count of a boolean collection is computed as bytes / 2 (an element taken as 2 bytes)
+why: unit slip
+-  (o, U32.div(n, 1))
++  (o, U32.div(n, 2))
+=== r9-a07-set-position
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_put_at,v5_bool_set_n,v5_bool_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores 1 for False and 0 for True
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, i, O.pick(v, 1, 0), 1), True{})
++    case True{}: (O.words_write(o, i, O.pick(v, 0, 1), 1), True{})
+=== r9-a08-bool-read
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_bool_at,v5_bool_at,v5_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False
+fault: the getter answers True for a byte 0 (is_eq(x, 0))
+why: inverted polarity
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_eq(x, 0))
+=== r9-a08-bool-read
+type: vec_bool_5
+ops: encode,root
+file: types/vec_bool_5_def_generated.bend
+sym: v5_bool_bool_at,v5_bool_at,v5_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False (only those bytes occur)
+fault: the getter answers True for any non-zero byte (lt(0, x))
+why: lenient decode habit (equivalent on valid objects)
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_lt(0, x))
+=== r9-a01-get-bound
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_get_n,v513_bool_get
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  v513_bool_get_in(U32.is_lt(i, n), o, i)
++  v513_bool_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_set_n,v513_bool_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  v513_bool_put_at(U32.is_lt(i, n), o, i, v)
++  v513_bool_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_set_n,v513_bool_set
+spec: Vector element access: index i is valid iff i < length (N)
+fault: the setter does not test the index at all
+why: missing guard
+-  v513_bool_put_at(U32.is_lt(i, n), o, i, v)
++  v513_bool_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_len_of,v513_bool_len,v513_bool_get,v513_bool_set
+spec: Vector length is counted in elements of 1 bytes
+fault: the element count of a boolean collection is computed as bytes / 2 (an element taken as 2 bytes)
+why: unit slip
+-  (o, U32.div(n, 1))
++  (o, U32.div(n, 2))
+=== r9-a07-set-position
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_put_at,v513_bool_set_n,v513_bool_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores 1 for False and 0 for True
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, i, O.pick(v, 1, 0), 1), True{})
++    case True{}: (O.words_write(o, i, O.pick(v, 0, 1), 1), True{})
+=== r9-a08-bool-read
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_bool_at,v513_bool_at,v513_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False
+fault: the getter answers True for a byte 0 (is_eq(x, 0))
+why: inverted polarity
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_eq(x, 0))
+=== r9-a08-bool-read
+type: vec_bool_513
+ops: encode,root
+file: types/vec_bool_513_def_generated.bend
+sym: v513_bool_bool_at,v513_bool_at,v513_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False (only those bytes occur)
+fault: the getter answers True for any non-zero byte (lt(0, x))
+why: lenient decode habit (equivalent on valid objects)
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_lt(0, x))
+=== r9-a01-get-bound
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_get_n,pl_u32_get
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  pl_u32_get_in(U32.is_lt(i, n), o, i)
++  pl_u32_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_set_n,pl_u32_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  pl_u32_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u32_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_set_n,pl_u32_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter does not test the index at all
+why: missing guard
+-  pl_u32_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u32_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_len_of,pl_u32_len,pl_u32_get,pl_u32_set
+spec: ProgressiveList length is counted in elements of 4 bytes
+fault: the element count is the byte count (the division by the element size 4 is missing)
+why: unit slip
+-  (o, U32.div(n, 4))
++  (o, n)
+=== r9-a06-get-position
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_at,pl_u32_get_in,pl_u32_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader takes 2 byte(s) of the element (the high bytes are lost)
+why: stride / width slip
+-def pl_u32_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 4 : U32), 4)
++def pl_u32_at(o: O.Words, +i: U32) -> O.Words & U32: O.words_byte_at(o, (i * 4 : U32), 2)
+=== r9-a07-set-position
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_put_at,pl_u32_set_n,pl_u32_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores only 2 byte(s) of the value
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, (i * 4 : U32), v, 4), True{})
++    case True{}: (O.words_write(o, (i * 4 : U32), v, 2), True{})
+=== r9-a09-append-slot
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_grow,pl_u32_app_c,pl_u32_append
+spec: append(l, x) adds x as element len(l)
+fault: the new element is written at index n - 1 (over the last element)
+why: off-by-one slot
+-    case True{}: pl_u32_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), ((n + 1 : U32) * 4 : U32)), n, v)
++    case True{}: pl_u32_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), ((n + 1 : U32) * 4 : U32)), (n - 1 : U32), v)
+=== r9-a09-append-slot
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_grow,pl_u32_app_c,pl_u32_append
+spec: append(l, x) grows the length by one element
+fault: the length grows by one byte, not one element
+why: unit slip
+-    case True{}: pl_u32_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), ((n + 1 : U32) * 4 : U32)), n, v)
++    case True{}: pl_u32_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), ((n * 4 : U32) + 1 : U32)), n, v)
+=== r9-a01-get-bound
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_get_n,pl_u64_get
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  pl_u64_get_in(U32.is_lt(i, n), o, i)
++  pl_u64_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_set_n,pl_u64_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  pl_u64_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u64_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_set_n,pl_u64_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter does not test the index at all
+why: missing guard
+-  pl_u64_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u64_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_len_of,pl_u64_len,pl_u64_get,pl_u64_set
+spec: ProgressiveList length is counted in elements of 8 bytes
+fault: the element count is the byte count (the division by the element size 8 is missing)
+why: unit slip
+-  (o, U32.div(n, 8))
++  (o, n)
+=== r9-a06-get-position
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_at,pl_u64_get_in,pl_u64_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 4 bytes per element (uint32 stride)
+why: stride / width slip
+-def pl_u64_at(o: O.Words, +i: U32) -> O.Words & O.U64: O.words_u64_at(o, (i * 8 : U32))
++def pl_u64_at(o: O.Words, +i: U32) -> O.Words & O.U64: O.words_u64_at(o, (i * 4 : U32))
+=== r9-a07-set-position
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_put_at,pl_u64_set_n,pl_u64_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 4 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (O.words_write_u64(o, (i * 8 : U32), v), True{})
++    case True{}: (O.words_write_u64(o, (i * 4 : U32), v), True{})
+=== r9-a09-append-slot
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_grow,pl_u64_app_c,pl_u64_append
+spec: append(l, x) adds x as element len(l)
+fault: the new element is written at index n - 1 (over the last element)
+why: off-by-one slot
+-    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n + 1 : U32) * 8 : U32)), n, v)
++    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n + 1 : U32) * 8 : U32)), (n - 1 : U32), v)
+=== r9-a09-append-slot
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_grow,pl_u64_app_c,pl_u64_append
+spec: append(l, x) grows the length by one element
+fault: the length grows by one byte, not one element
+why: unit slip
+-    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n + 1 : U32) * 8 : U32)), n, v)
++    case True{}: pl_u64_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n * 8 : U32) + 1 : U32)), n, v)
+=== r9-a01-get-bound
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_get_n,pl_u128_get
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  pl_u128_get_in(U32.is_lt(i, n), o, i)
++  pl_u128_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_set_n,pl_u128_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  pl_u128_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u128_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_set_n,pl_u128_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter does not test the index at all
+why: missing guard
+-  pl_u128_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u128_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_len_of,pl_u128_len,pl_u128_get,pl_u128_set
+spec: ProgressiveList length is counted in elements of 16 bytes
+fault: the element count is the byte count (the division by the element size 16 is missing)
+why: unit slip
+-  (o, U32.div(n, 16))
++  (o, n)
+=== r9-a06-get-position
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_at,pl_u128_get_in,pl_u128_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 8 bytes per element (uint64 stride)
+why: stride / width slip
+-def pl_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 16 : U32))
++def pl_u128_at(o: O.Words, +i: U32) -> O.Words & uint128_d.Uint128: uint128_d.Uint128_of_words(o, (i * 8 : U32))
+=== r9-a07-set-position
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_put_at,pl_u128_set_n,pl_u128_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 8 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (uint128_d.Uint128_into_words(o, (i * 16 : U32), v), True{})
++    case True{}: (uint128_d.Uint128_into_words(o, (i * 8 : U32), v), True{})
+=== r9-a09-append-slot
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_grow,pl_u128_app_c,pl_u128_append
+spec: append(l, x) adds x as element len(l)
+fault: the new element is written at index n - 1 (over the last element)
+why: off-by-one slot
+-    case True{}: pl_u128_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n + 1 : U32) * 16 : U32)), n, v)
++    case True{}: pl_u128_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n + 1 : U32) * 16 : U32)), (n - 1 : U32), v)
+=== r9-a09-append-slot
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_grow,pl_u128_app_c,pl_u128_append
+spec: append(l, x) grows the length by one element
+fault: the length grows by one byte, not one element
+why: unit slip
+-    case True{}: pl_u128_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n + 1 : U32) * 16 : U32)), n, v)
++    case True{}: pl_u128_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n * 16 : U32) + 1 : U32)), n, v)
+=== r9-a01-get-bound
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_get_n,pl_u256_get
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  pl_u256_get_in(U32.is_lt(i, n), o, i)
++  pl_u256_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_set_n,pl_u256_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  pl_u256_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u256_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_set_n,pl_u256_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter does not test the index at all
+why: missing guard
+-  pl_u256_put_at(U32.is_lt(i, n), o, i, v)
++  pl_u256_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_len_of,pl_u256_len,pl_u256_get,pl_u256_set
+spec: ProgressiveList length is counted in elements of 32 bytes
+fault: the element count is the byte count (the division by the element size 32 is missing)
+why: unit slip
+-  (o, U32.div(n, 32))
++  (o, n)
+=== r9-a06-get-position
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_at,pl_u256_get_in,pl_u256_get
+spec: element i occupies bytes [i*size, (i+1)*size) of the packed serialization (little-endian)
+fault: the reader steps 16 bytes per element (uint128 stride)
+why: stride / width slip
+-def pl_u256_at(o: O.Words, +i: U32) -> O.Words & uint256_d.Uint256: uint256_d.Uint256_of_words(o, (i * 32 : U32))
++def pl_u256_at(o: O.Words, +i: U32) -> O.Words & uint256_d.Uint256: uint256_d.Uint256_of_words(o, (i * 16 : U32))
+=== r9-a07-set-position
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_put_at,pl_u256_set_n,pl_u256_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer steps 16 bytes per element
+why: stride / width / polarity slip
+-    case True{}: (uint256_d.Uint256_into_words(o, (i * 32 : U32), v), True{})
++    case True{}: (uint256_d.Uint256_into_words(o, (i * 16 : U32), v), True{})
+=== r9-a09-append-slot
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_grow,pl_u256_app_c,pl_u256_append
+spec: append(l, x) adds x as element len(l)
+fault: the new element is written at index n - 1 (over the last element)
+why: off-by-one slot
+-    case True{}: pl_u256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), ((n + 1 : U32) * 32 : U32)), n, v)
++    case True{}: pl_u256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), ((n + 1 : U32) * 32 : U32)), (n - 1 : U32), v)
+=== r9-a09-append-slot
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_grow,pl_u256_app_c,pl_u256_append
+spec: append(l, x) grows the length by one element
+fault: the length grows by one byte, not one element
+why: unit slip
+-    case True{}: pl_u256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), ((n + 1 : U32) * 32 : U32)), n, v)
++    case True{}: pl_u256_put_at(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), ((n * 32 : U32) + 1 : U32)), n, v)
+=== r9-a01-get-bound
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_get_n,pl_bool_get
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the getter accepts i == length (is_le instead of is_lt): get(v, len) answers Some of the bytes past the end
+why: off-by-one bound
+-  pl_bool_get_in(U32.is_lt(i, n), o, i)
++  pl_bool_get_in(U32.is_le(i, n), o, i)
+=== r9-a02-set-bound
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_set_n,pl_bool_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter accepts i == length (is_le): set(v, len, x) answers ok and writes past the last element
+why: off-by-one bound
+-  pl_bool_put_at(U32.is_lt(i, n), o, i, v)
++  pl_bool_put_at(U32.is_le(i, n), o, i, v)
+=== r9-a03-set-no-index-check
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_set_n,pl_bool_set
+spec: ProgressiveList element access: index i is valid iff i < length (the list length)
+fault: the setter does not test the index at all
+why: missing guard
+-  pl_bool_put_at(U32.is_lt(i, n), o, i, v)
++  pl_bool_put_at(True{}, o, i, v)
+=== r9-a05-len-unit
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_len_of,pl_bool_len,pl_bool_get,pl_bool_set
+spec: ProgressiveList length is counted in elements of 1 bytes
+fault: the element count of a boolean collection is computed as bytes / 2 (an element taken as 2 bytes)
+why: unit slip
+-  (o, U32.div(n, 1))
++  (o, U32.div(n, 2))
+=== r9-a07-set-position
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_put_at,pl_bool_set_n,pl_bool_set
+spec: set(v, i, x) changes exactly element i to x
+fault: the writer stores 1 for False and 0 for True
+why: stride / width / polarity slip
+-    case True{}: (O.words_write(o, i, O.pick(v, 1, 0), 1), True{})
++    case True{}: (O.words_write(o, i, O.pick(v, 0, 1), 1), True{})
+=== r9-a08-bool-read
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_bool_at,pl_bool_at,pl_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False
+fault: the getter answers True for a byte 0 (is_eq(x, 0))
+why: inverted polarity
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_eq(x, 0))
+=== r9-a08-bool-read
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_bool_at,pl_bool_at,pl_bool_get
+spec: boolean byte 0x01 is True, 0x00 is False (only those bytes occur)
+fault: the getter answers True for any non-zero byte (lt(0, x))
+why: lenient decode habit (equivalent on valid objects)
+-  (o, U32.is_eq(x, 1))
++  (o, U32.is_lt(0, x))
+=== r9-a09-append-slot
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_grow,pl_bool_app_c,pl_bool_append
+spec: append(l, x) adds x as element len(l)
+fault: the new element is written at index n - 1 (over the last element)
+why: off-by-one slot
+-    case True{}: pl_bool_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: pl_bool_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), (n - 1 : U32), v)
+=== r9-a09-append-slot
+type: proglist_bool
+ops: encode,root
+file: types/proglist_bool_def_generated.bend
+sym: pl_bool_grow,pl_bool_app_c,pl_bool_append
+spec: append(l, x) grows the length by one element
+fault: the length grows by one byte, not one element
+why: unit slip
+-    case True{}: pl_bool_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++    case True{}: pl_bool_put_app(True{}, O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n * 1 : U32) + 1 : U32)), n, v)

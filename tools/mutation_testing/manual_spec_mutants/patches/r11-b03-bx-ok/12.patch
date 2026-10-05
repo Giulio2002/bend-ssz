@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/12
+# type: proglist_VarTestStruct
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed pl_VarTestStruct field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+# sym: pl_VarTestStruct_bx_ok
+--- a/types/proglist_VarTestStruct_decode_ssz_generated.bend
++++ b/types/proglist_VarTestStruct_decode_ssz_generated.bend
+@@ -107,3 +107,3 @@
+ 
+-def pl_VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: pl_VarTestStruct_ok(buf, off, len)
++def pl_VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

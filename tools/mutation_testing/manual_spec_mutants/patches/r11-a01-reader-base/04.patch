@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/04
+# type: FuluEth1Block
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 40 is read at absolute byte 40 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluEth1Block_decode_ssz_generated.bend
+# sym: Eth1Block_rd1,Eth1Block_read,Eth1Block_decode
+--- a/types/FuluEth1Block_decode_ssz_generated.bend
++++ b/types/FuluEth1Block_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +deposit_root) = pair
+-  Eth1Block_rd2(off, len, timestamp, deposit_root, uint64_r.u64_read(buf, (off + 40 : U32), 8))
++  Eth1Block_rd2(off, len, timestamp, deposit_root, uint64_r.u64_read(buf, (40 : U32), 8))
+ 

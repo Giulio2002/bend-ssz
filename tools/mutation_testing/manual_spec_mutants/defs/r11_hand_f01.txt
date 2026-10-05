@@ -1,0 +1,41 @@
+## round 11 hand-designed: r11-f01-union-same-type
+=== r11-f01-union-same-type
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_pt3,CompatibleUnionABCA_serialize,CompatibleUnionABCA_encode
+spec: serialize(CompatibleUnion): the selector byte is the option index of the value (4 for the fourth option)
+fault: option 4 is written with selector 1 (the first option of the same payload type)
+why: option looked up by payload type, not index
+-O.w8(out, pos, 4)
++O.w8(out, pos, 1)
+=== r11-f01-union-same-type
+type: CompatibleUnionABCA
+ops: root
+file: types/CompatibleUnionABCA_hashtreeroot_generated.bend
+sym: CompatibleUnionABCA_rt3,CompatibleUnionABCA_hash_tree_root
+spec: hash_tree_root(CompatibleUnion) = mix_in_selector(hash_tree_root(value), selector)
+fault: option 4 mixes in selector 1
+why: option looked up by payload type
+-(h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 4)))
++(h, (CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, O.mix_len(hl, d, 1)))
+=== r11-f01-union-same-type
+type: CompatibleUnionABCA
+ops: decode
+file: types/CompatibleUnionABCA_decode_ssz_generated.bend
+sym: CompatibleUnionABCA_decode
+spec: deserialize(CompatibleUnion): selector 4 decodes to the fourth option
+fault: selector 4 builds option 1 (same payload type, same bytes)
+why: option constructor picked by type
+-(buf, CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v})
++(buf, CompatibleUnionABCA_d.CompatibleUnionABCA_c0{v})
+=== r11-f01-union-same-type
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_valid,CompatibleUnionABCA_serialize
+spec: a union value is valid iff its payload is valid
+fault: option 4 is valid without checking its payload
+why: validity case left as a stub
+-(CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, ProgressiveSingleFieldContainerTestStruct_e.ProgressiveSingleFieldContainerTestStruct_valid(v))
++(CompatibleUnionABCA_d.CompatibleUnionABCA_c3{v}, True{})

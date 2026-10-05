@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c05-prog-valid-last/04
+# type: ProgressiveBitsStruct
+# ops: encode
+# spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+# fault: ProgressiveBitsStruct_valid: the last field's validity dropped
+# why: accumulator slip in the last step
+# file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_va1,ProgressiveBitsStruct_valid_f,ProgressiveBitsStruct_valid
+--- a/types/ProgressiveBitsStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_encode_ssz_generated.bend
+@@ -231,3 +231,3 @@
+   (g1, ok) = pair
+-  (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, Bool.and(acc, ok))
++  (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, acc)
+ 

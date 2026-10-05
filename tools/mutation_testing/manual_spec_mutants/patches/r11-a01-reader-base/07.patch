@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/07
+# type: FuluExecutionPayloadHeader
+# ops: decode
+# spec: deserialize(Container): a variable field's offset is relative to the start of the container
+# fault: the variable field extra_data is read at the raw offset o_extra_data (not rebased on off)
+# why: offsets taken as absolute buffer positions
+# file: types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
+# sym: ExecutionPayloadHeader_g1_rd2,ExecutionPayloadHeader_g1_read,ExecutionPayloadHeader_decode
+--- a/types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
+@@ -79,3 +79,3 @@
+   (buf, +timestamp) = pair
+-  ExecutionPayloadHeader_g1_rd3(off, len, vend, o_extra_data, gas_used, timestamp, Fulu_bytelist_32_r.bl32_read(buf, (off + o_extra_data : U32), (vend - o_extra_data : U32)))
++  ExecutionPayloadHeader_g1_rd3(off, len, vend, o_extra_data, gas_used, timestamp, Fulu_bytelist_32_r.bl32_read(buf, (o_extra_data : U32), (vend - o_extra_data : U32)))
+ 

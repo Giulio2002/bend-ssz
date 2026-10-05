@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c02-ser-unchecked/02
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: CompatibleUnionABCA_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+# why: the serialize path wired to the encode path's writer
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_senc_go,CompatibleUnionABCA_serialize
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -122,3 +122,3 @@
+     case True{}: (o, O.refused())
+-    case False{}: CompatibleUnionABCA_senc_put(n, CompatibleUnionABCA_putk(O.out_new(n), 0, o))
++    case False{}: CompatibleUnionABCA_senc_put(n, CompatibleUnionABCA_putn(O.out_new(n), 0, o))
+ 

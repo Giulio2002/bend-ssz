@@ -1,0 +1,597 @@
+[
+ {
+  "id": "r11-d02/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/01.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5_generated.bend",
+    "status": "KILLED",
+    "secs": 9.33,
+    "location": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d02/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_5_generated.bend",
+    "status": "KILLED",
+    "secs": 39.96,
+    "location": "BeaconBlockBody_vroot_l16_Deposit_cache_app_5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d02/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_5_generated.bend",
+    "status": "KILLED",
+    "secs": 5.65,
+    "location": "BeaconBlockBody_vroot_l8_Attestation_cache_app_5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d02/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/05.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5_generated.bend",
+    "status": "KILLED",
+    "secs": 1.96,
+    "location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d02/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/06.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5_generated.bend",
+    "status": "KILLED",
+    "secs": 1.9,
+    "location": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d03/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d03-cset-lo/04.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0_generated.bend",
+    "status": "KILLED",
+    "secs": 3.21,
+    "location": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d03/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d03-cset-lo/05.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend",
+    "status": "KILLED",
+    "secs": 1.03,
+    "location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-d04/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d04-cset-hi/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend",
+    "status": "KILLED",
+    "secs": 1.01,
+    "location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-a01/09",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/09.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.69,
+    "location": "ExecutionPayload_decode_vlit_fwin_g0_rd6",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-a01/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/10.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.71,
+    "location": "ExecutionPayload_decode_vlit_fwin_g1_rd9",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-a01/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/11.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_win_generated.bend",
+    "status": "KILLED",
+    "secs": 0.68,
+    "location": "ExecutionPayload_decode_vlit_win_g1_rd4",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-a01/12",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/12.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.7,
+    "location": "ExecutionPayload_decode_vlit_fwin_g2_read",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-b03/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/01.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_attestation_1_off_plus_generated.bend",
+    "status": "KILLED",
+    "secs": 6.19,
+    "location": "BeaconBlockBody_decode_vlit_bad_attester_slashings_elem_attestation_1_off_plus",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-b03/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/10.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_f_B_ragged_1_generated.bend",
+    "status": "KILLED",
+    "secs": 1.4,
+    "location": "ProgressiveComplexTestStruct_decode_vlit_bad_f_H_elem_f_B_ragged_1",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-b03/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/11.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_over_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.03,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_ragged_1_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.06,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_B_ragged_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.02,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_D_over_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.07,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_f_B_ragged_1_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.07,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_f_B_ragged_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.03,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_off_minus_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.19,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_E_off_plus_generated.bend",
+    "status": "SURVIVED",
+    "secs": 0.92,
+    "location": null,
+    "tail": ""
+   },
+   {
+    "law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_f_B_ragged_1_generated.bend",
+    "status": "KILLED",
+    "secs": 1.26,
+    "location": "ComplexTestStruct_decode_vlit_bad_f_G_e0_f_B_ragged_1",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-b03/12",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/12.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_first_past_generated.bend",
+    "status": "UNJUDGED",
+    "secs": null,
+    "location": null,
+    "tail": "CHECK_STACK ulimit_kb=16384 jsc_bytes=10485760\n"
+   },
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off0_generated.bend",
+    "status": "UNJUDGED",
+    "secs": null,
+    "location": null,
+    "tail": "CHECK_STACK ulimit_kb=16384 jsc_bytes=10485760\n"
+   },
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off5_generated.bend",
+    "status": "KILLED",
+    "secs": 0.83,
+    "location": "ProgressiveTestStruct_decode_vlit_bad_f_D_elem_off5",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r11-f01/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-f01-union-same-type/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_4_generated.bend",
+    "status": "KILLED",
+    "secs": 0.68,
+    "location": "CompatibleUnionABCA_decode_vlit_ok_sel_4",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-d01/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d01-cache-lo/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1_generated.bend",
+    "status": "KILLED",
+    "secs": 1.88,
+    "location": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-d01/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d01-cache-lo/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1_generated.bend",
+    "status": "KILLED",
+    "secs": 0.96,
+    "location": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-d02/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-d02-cache-depth0/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2_generated.bend",
+    "status": "KILLED",
+    "secs": 1.67,
+    "location": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-c02/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/01.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_CompatibleUnionBC_fields_generated.bend",
+    "status": "KILLED",
+    "secs": 0.64,
+    "location": "CompatibleUnionBC_serialize_vwriter_checked",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-c02/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_CompatibleUnionABCA_fields_generated.bend",
+    "status": "KILLED",
+    "secs": 0.58,
+    "location": "CompatibleUnionABCA_serialize_vwriter_checked",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-c02/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveTestStruct_fields_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.01,
+    "location": null,
+    "tail": ""
+   }
+  ],
+  "verdict": "SURVIVED"
+ },
+ {
+  "id": "r12-c02/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/04.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveVarTestStruct_fields_generated.bend",
+    "status": "SURVIVED",
+    "secs": 0.9,
+    "location": null,
+    "tail": ""
+   }
+  ],
+  "verdict": "SURVIVED"
+ },
+ {
+  "id": "r12-c02/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/05.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_fields_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.47,
+    "location": null,
+    "tail": ""
+   }
+  ],
+  "verdict": "SURVIVED"
+ },
+ {
+  "id": "r12-c02/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/06.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveBitsStruct_fields_generated.bend",
+    "status": "SURVIVED",
+    "secs": 1.37,
+    "location": null,
+    "tail": ""
+   }
+  ],
+  "verdict": "SURVIVED"
+ },
+ {
+  "id": "r12-c02/07",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/07.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveSingleListContainerTestStruct_fields_generated.bend",
+    "status": "SURVIVED",
+    "secs": 0.85,
+    "location": null,
+    "tail": ""
+   }
+  ],
+  "verdict": "SURVIVED"
+ },
+ {
+  "id": "r12-c02/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-c02-ser-unchecked/08.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_proglist_uint64_fields_generated.bend",
+    "status": "KILLED",
+    "secs": 0.47,
+    "location": "proglist_uint64_serialize_vwriter_checked",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e03/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/01.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.53,
+    "location": "BitsStruct_decode_vlit_vwin_c2",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e03/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.6,
+    "location": "BitsStruct_decode_vlit_vwin_c1",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e03/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.58,
+    "location": "ProgressiveBitsStruct_decode_vlit_vwin_c7",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e03/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e03-bv-pad-pos/04.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend",
+    "status": "KILLED",
+    "secs": 0.64,
+    "location": "ProgressiveBitsStruct_decode_vlit_vwin_c8",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e02/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/01.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+    "status": "KILLED",
+    "secs": 0.62,
+    "location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_step",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e02/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/02.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+    "status": "KILLED",
+    "secs": 0.6,
+    "location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_step",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ },
+ {
+  "id": "r12-e02/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r12-e02-vlist-ck/03.patch",
+  "applied": true,
+  "laws": [
+   {
+    "law": "proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+    "status": "KILLED",
+    "secs": 0.54,
+    "location": "BeaconState_decode_vlit_ck_l1099511627776_Validator_first",
+    "tail": ""
+   }
+  ],
+  "verdict": "KILLED"
+ }
+]

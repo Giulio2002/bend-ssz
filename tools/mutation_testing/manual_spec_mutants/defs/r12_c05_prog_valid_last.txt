@@ -1,0 +1,54 @@
+=== r12-c05-prog-valid-last
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_va3,ProgressiveTestStruct_valid_f,ProgressiveTestStruct_valid
+spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+fault: ProgressiveTestStruct_valid: the last field's validity dropped
+why: accumulator slip in the last step
+-  (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, Bool.and(acc, ok))
++  (ProgressiveTestStruct_d.ProgressiveTestStruct{f_A, f_B, f_C, f_D}, acc)
+
+=== r12-c05-prog-valid-last
+type: ProgressiveVarTestStruct
+ops: encode
+file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+sym: ProgressiveVarTestStruct_va1,ProgressiveVarTestStruct_valid_f,ProgressiveVarTestStruct_valid
+spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+fault: ProgressiveVarTestStruct_valid: the last field's validity dropped
+why: accumulator slip in the last step
+-  (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, Bool.and(acc, ok))
++  (ProgressiveVarTestStruct_d.ProgressiveVarTestStruct{f_A, f_B, f_C}, acc)
+
+=== r12-c05-prog-valid-last
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_va6,ProgressiveComplexTestStruct_valid_f,ProgressiveComplexTestStruct_valid
+spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+fault: ProgressiveComplexTestStruct_valid: the last field's validity dropped
+why: accumulator slip in the last step
+-  (ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
++  (ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, acc)
+
+=== r12-c05-prog-valid-last
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_va1,ProgressiveBitsStruct_valid_f,ProgressiveBitsStruct_valid
+spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+fault: ProgressiveBitsStruct_valid: the last field's validity dropped
+why: accumulator slip in the last step
+-  (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, Bool.and(acc, ok))
++  (ProgressiveBitsStruct_d.ProgressiveBitsStruct{g0, g1}, acc)
+
+=== r12-c05-prog-valid-last
+type: ProgressiveSingleListContainerTestStruct
+ops: encode
+file: types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_va0,ProgressiveSingleListContainerTestStruct_valid_f,ProgressiveSingleListContainerTestStruct_valid
+spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+fault: ProgressiveSingleListContainerTestStruct_valid: the last field's validity dropped
+why: accumulator slip in the last step
+-  (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, Bool.and(acc, ok))
++  (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, acc)

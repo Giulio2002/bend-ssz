@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-d03-uncache-drop/15
+# type: Fulu_list_WithdrawalRequest_16
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)); the cached root must equal it after any public sequence (X_cache of a decoded list, X_uncache)
+# fault: l16_WithdrawalRequest_uncache: returns the empty list (the items are dropped)
+# why: uncache written as a reset
+# file: types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+# sym: l16_WithdrawalRequest_uncache
+# proofs: proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_1_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_2_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_1_3_generated.bend,proofs/slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_3_generated.bend
+--- a/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
++++ b/types/Fulu_list_WithdrawalRequest_16_def_generated.bend
+@@ -162,3 +162,3 @@
+   match c:
+-    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_Seq{arr, n}
++    case l16_WithdrawalRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: l16_WithdrawalRequest_default()
+ 

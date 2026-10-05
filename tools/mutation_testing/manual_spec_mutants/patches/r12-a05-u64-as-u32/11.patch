@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/11
+# type: FuluLightClientFinalityUpdate
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluLightClientFinalityUpdate: the uint64 field `signature_slot` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
+# sym: LightClientFinalityUpdate_rt3,u64_root
+--- a/types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
++++ b/types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend
+@@ -27,3 +27,3 @@
+   (sync_aggregate, d_sync_aggregate) = r
+-  LightClientFinalityUpdate_rt4(hl, seg, attested_header, finalized_header, finality_branch, sync_aggregate, signature_slot, d_attested_header, d_finalized_header, d_finality_branch, d_sync_aggregate, uint64_h.u64_root(hl, h, signature_slot, seg))
++  LightClientFinalityUpdate_rt4(hl, seg, attested_header, finalized_header, finality_branch, sync_aggregate, signature_slot, d_attested_header, d_finalized_header, d_finality_branch, d_sync_aggregate, (h, O.u32_chunk(O.u64_lo_of(signature_slot))))
+ 

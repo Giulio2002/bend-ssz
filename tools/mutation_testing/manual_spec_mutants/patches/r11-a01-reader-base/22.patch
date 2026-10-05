@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/22
+# type: FuluSyncCommitteeMessage
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 48 is read at absolute byte 48 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluSyncCommitteeMessage_decode_ssz_generated.bend
+# sym: SyncCommitteeMessage_rd2,SyncCommitteeMessage_read,SyncCommitteeMessage_decode
+--- a/types/FuluSyncCommitteeMessage_decode_ssz_generated.bend
++++ b/types/FuluSyncCommitteeMessage_decode_ssz_generated.bend
+@@ -21,3 +21,3 @@
+   (buf, +validator_index) = pair
+-  SyncCommitteeMessage_rd3(off, len, slot, beacon_block_root, validator_index, FuluBytes96_r.b96_read(buf, (off + 48 : U32), 96))
++  SyncCommitteeMessage_rd3(off, len, slot, beacon_block_root, validator_index, FuluBytes96_r.b96_read(buf, (48 : U32), 96))
+ 

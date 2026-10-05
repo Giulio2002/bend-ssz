@@ -1,0 +1,2613 @@
+[
+ {
+  "id": "r11-a01-reader-base/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/01.patch",
+  "type": "FuluBlobIdentifier",
+  "file": "types/FuluBlobIdentifier_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 32 is read at absolute byte 32 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBlobIdentifier_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     7.2
+    ],
+    [
+     "proofs/gate/slop/offsets/BlobIdentifier_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BlobIdentifier_decode_literal_bad_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/codec_5_generated.bend",
+     "SURVIVED",
+     1.6
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/01",
+    "type": "FuluBlobIdentifier",
+    "cases": 272,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 69.0
+   }
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/02.patch",
+  "type": "FuluBlobSidecar",
+  "file": "types/FuluBlobSidecar_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 131384 is read at absolute byte 131384 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBlobSidecar_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     17.2
+    ],
+    [
+     "proofs/gate/slop/offsets/BlobSidecar_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/slop/offsets/BlobSidecar_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/fixrej_BlobSidecar_generated.bend",
+     "SURVIVED",
+     3.5
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/03.patch",
+  "type": "FuluDepositMessage",
+  "file": "types/FuluDepositMessage_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 80 is read at absolute byte 80 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluDepositMessage_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     9.5
+    ],
+    [
+     "proofs/gate/slop/offsets/DepositMessage_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_DepositMessage_decode_literal_rt_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/spec_codec_DepositMessage_generated.bend",
+     "SURVIVED",
+     2.4
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/04.patch",
+  "type": "FuluEth1Block",
+  "file": "types/FuluEth1Block_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 40 is read at absolute byte 40 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluEth1Block_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.2
+    ],
+    [
+     "proofs/gate/slop/offsets/Eth1Block_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_Eth1Block_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/g__spec_codec_Eth1Block_generated.bend",
+     "SURVIVED",
+     1.9
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/04",
+    "type": "FuluEth1Block",
+    "cases": 277,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 11.9
+   }
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/09",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/09.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 412 is read at absolute byte 412 (the container's own offset off is not added)",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconBlockBody_decode(bytes of any valid body): the execution payload field is read from the absolute byte instead of the payload's own window (any body; the payload starts at offset >= 396)",
+  "reachability": "ExecutionPayload_gK_read is reached with off != 0 through BeaconBlockBody_decode -> BeaconBlockBody_g1_read -> FuluExecutionPayload_r.ExecutionPayload_bx_read(buf, off + o_execution_payload, ...) -> ExecutionPayload_read -> ExecutionPayload_gK_read (also BeaconBlock_decode, SignedBeaconBlock_decode)",
+  "verdict": "unjudged (proof: stack overflow on every facade that reaches it); reachable, the corpus shows wrong answers",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.5
+    ],
+    [
+     "proofs/gate/slop/offsets/ExecutionPayload_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/var_codec_ExecutionPayload_generated.bend",
+     "CRASH",
+     7.4
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.9
+    ],
+    [
+     "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.3
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/09",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 43,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 43
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs",
+     "BeaconBlockBody#2691: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 67.6
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+  "fix_location": "ExecutionPayload_decode_vlit_fwin_g0_rd6",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.69 s"
+ },
+ {
+  "id": "r11-a01-reader-base/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/10.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 512 is read at absolute byte 512 (the container's own offset off is not added)",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconBlockBody_decode(bytes of any valid body): the execution payload field is read from the absolute byte instead of the payload's own window (any body; the payload starts at offset >= 396)",
+  "reachability": "ExecutionPayload_gK_read is reached with off != 0 through BeaconBlockBody_decode -> BeaconBlockBody_g1_read -> FuluExecutionPayload_r.ExecutionPayload_bx_read(buf, off + o_execution_payload, ...) -> ExecutionPayload_read -> ExecutionPayload_gK_read (also BeaconBlock_decode, SignedBeaconBlock_decode)",
+  "verdict": "unjudged (proof: stack overflow on every facade that reaches it); reachable, the corpus shows wrong answers",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "CRASH",
+     8.6
+    ],
+    [
+     "proofs/gate/slop/offsets/ExecutionPayload_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+     "SURVIVED",
+     1.2
+    ],
+    [
+     "proofs/obj/var_codec_ExecutionPayload_generated.bend",
+     "CRASH",
+     7.3
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     16.3
+    ],
+    [
+     "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.3
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/10",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 39,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 39
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs",
+     "BeaconBlockBody#2691: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 68.2
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+  "fix_location": "ExecutionPayload_decode_vlit_fwin_g1_rd9",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.71 s"
+ },
+ {
+  "id": "r11-a01-reader-base/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/11.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): a variable field's offset is relative to the start of the container",
+  "fault": "the variable field extra_data is read at the raw offset o_extra_data (not rebased on off)",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconBlockBody_decode(bytes of any valid body): the execution payload field is read from the absolute byte instead of the payload's own window (any body; the payload starts at offset >= 396)",
+  "reachability": "ExecutionPayload_gK_read is reached with off != 0 through BeaconBlockBody_decode -> BeaconBlockBody_g1_read -> FuluExecutionPayload_r.ExecutionPayload_bx_read(buf, off + o_execution_payload, ...) -> ExecutionPayload_read -> ExecutionPayload_gK_read (also BeaconBlock_decode, SignedBeaconBlock_decode)",
+  "verdict": "unjudged (proof: stack overflow on every facade that reaches it); reachable, the corpus shows wrong answers",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "CRASH",
+     8.3
+    ],
+    [
+     "proofs/gate/slop/offsets/ExecutionPayload_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/var_codec_ExecutionPayload_generated.bend",
+     "CRASH",
+     7.0
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     16.5
+    ],
+    [
+     "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.0
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/11",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 24,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 24
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs",
+     "BeaconBlockBody#2752: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 68.5
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_win_generated.bend",
+  "fix_location": "ExecutionPayload_decode_vlit_win_g1_rd4",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.68 s"
+ },
+ {
+  "id": "r11-a01-reader-base/12",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/12.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 520 is read at absolute byte 520 (the container's own offset off is not added)",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconBlockBody_decode(bytes of any valid body): the execution payload field is read from the absolute byte instead of the payload's own window (any body; the payload starts at offset >= 396)",
+  "reachability": "ExecutionPayload_gK_read is reached with off != 0 through BeaconBlockBody_decode -> BeaconBlockBody_g1_read -> FuluExecutionPayload_r.ExecutionPayload_bx_read(buf, off + o_execution_payload, ...) -> ExecutionPayload_read -> ExecutionPayload_gK_read (also BeaconBlock_decode, SignedBeaconBlock_decode)",
+  "verdict": "unjudged (proof: stack overflow on every facade that reaches it); reachable, the corpus shows wrong answers",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "CRASH",
+     7.6
+    ],
+    [
+     "proofs/gate/slop/offsets/ExecutionPayload_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_decode_literal_bad_withdrawals_ragged_46_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/var_codec_ExecutionPayload_generated.bend",
+     "CRASH",
+     8.0
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     17.6
+    ],
+    [
+     "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.7
+    ]
+   ],
+   "corpus": {
+    "id": "r11-a01-reader-base/12",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 40,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 40
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2687: re-encoding differs",
+     "BeaconBlockBody#2688: re-encoding differs",
+     "BeaconBlockBody#2689: re-encoding differs",
+     "BeaconBlockBody#2691: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 66.3
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend",
+  "fix_location": "ExecutionPayload_decode_vlit_fwin_g2_read",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.7 s"
+ },
+ {
+  "id": "r11-a01-reader-base/13",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/13.patch",
+  "type": "FuluForkData",
+  "file": "types/FuluForkData_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 4 is read at absolute byte 4 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluForkData_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.9
+    ],
+    [
+     "proofs/gate/slop/offsets/ForkData_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ForkData_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/g__spec_codec_ForkData_generated.bend",
+     "SURVIVED",
+     1.8
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/14.patch",
+  "type": "FuluHistoricalBatch",
+  "file": "types/FuluHistoricalBatch_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 262144 is read at absolute byte 262144 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluHistoricalBatch_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.7
+    ],
+    [
+     "proofs/gate/slop/offsets/HistoricalBatch_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/slop/offsets/HistoricalBatch_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/obj/fixrej_HistoricalBatch_generated.bend",
+     "SURVIVED",
+     3.3
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/15",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/15.patch",
+  "type": "FuluMatrixEntry",
+  "file": "types/FuluMatrixEntry_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 2104 is read at absolute byte 2104 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluMatrixEntry_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     10.7
+    ],
+    [
+     "proofs/gate/slop/offsets/MatrixEntry_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/slop/offsets/MatrixEntry_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/g__fixrej_f5_generated.bend",
+     "SURVIVED",
+     3.7
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/16",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/16.patch",
+  "type": "FuluPowBlock",
+  "file": "types/FuluPowBlock_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 64 is read at absolute byte 64 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluPowBlock_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.3
+    ],
+    [
+     "proofs/gate/slop/offsets/PowBlock_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_PowBlock_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/codec_1_generated.bend",
+     "SURVIVED",
+     2.0
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/17",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/17.patch",
+  "type": "FuluSignedContributionAndProof",
+  "file": "types/FuluSignedContributionAndProof_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 264 is read at absolute byte 264 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSignedContributionAndProof_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.5
+    ],
+    [
+     "proofs/gate/slop/offsets/SignedContributionAndProof_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SignedContributionAndProof_decode_literal_bad_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/spec_codec_SignedContributionAndProof_generated.bend",
+     "SURVIVED",
+     3.0
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/18",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/18.patch",
+  "type": "FuluSigningData",
+  "file": "types/FuluSigningData_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 32 is read at absolute byte 32 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSigningData_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.9
+    ],
+    [
+     "proofs/gate/slop/offsets/SigningData_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SigningData_decode_literal_rt_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/spec_codec_SigningData_generated.bend",
+     "SURVIVED",
+     1.8
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/19",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/19.patch",
+  "type": "FuluSingleAttestation",
+  "file": "types/FuluSingleAttestation_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 144 is read at absolute byte 144 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSingleAttestation_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     12.1
+    ],
+    [
+     "proofs/gate/slop/offsets/SingleAttestation_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SingleAttestation_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/spec_codec_SingleAttestation_generated.bend",
+     "SURVIVED",
+     2.7
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/20",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/20.patch",
+  "type": "FuluSyncAggregatorSelectionData",
+  "file": "types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 8 is read at absolute byte 8 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncAggregatorSelectionData_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     6.8
+    ],
+    [
+     "proofs/gate/slop/offsets/SyncAggregatorSelectionData_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SyncAggregatorSelectionData_decode_literal_bad_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/obj/spec_codec_SyncAggregatorSelectionData_generated.bend",
+     "SURVIVED",
+     1.8
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-a01-reader-base/22",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-a01-reader-base/22.patch",
+  "type": "FuluSyncCommitteeMessage",
+  "file": "types/FuluSyncCommitteeMessage_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window",
+  "fault": "the field at container byte 48 is read at absolute byte 48 (the container's own offset off is not added)",
+  "A": "SURVIVED",
+  "counterexample": "none: every public path reads this container at offset 0",
+  "reachability": "X_read is called only by X_decode / X_build of its own file with off = 0 (no X_bx_read or X_read caller in types/ or src/: grep); at off = 0 the absolute and the rebased offsets coincide",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncCommitteeMessage_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     9.1
+    ],
+    [
+     "proofs/gate/slop/offsets/SyncCommitteeMessage_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SyncCommitteeMessage_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/codec_2_generated.bend",
+     "SURVIVED",
+     2.5
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-b01-ok-len/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/01.patch",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/Fulu_bitvector_128_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 16 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncCommitteeContribution_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     10.0
+    ],
+    [
+     "proofs/gate/slop/offsets/SyncCommitteeContribution_generated.bend",
+     "SURVIVED",
+     1.0
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/02.patch",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 8 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluAttestation_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     14.7
+    ],
+    [
+     "proofs/obj/var_fix_types_generated.bend",
+     "SURVIVED",
+     3.8
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/03.patch",
+  "type": "FuluExecutionPayloadHeader,FuluExecutionPayload",
+  "file": "types/Fulu_bytevec_256_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 256 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayloadHeader_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     18.6
+    ],
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     26.2
+    ],
+    [
+     "proofs/obj/var_bytes_ExecutionPayloadHeader_win_generated.bend",
+     "SURVIVED",
+     7.1
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/04.patch",
+  "type": "FuluBlobSidecar",
+  "file": "types/Fulu_vec_bytevec_32_17_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 544 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBlobSidecar_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     16.5
+    ],
+    [
+     "proofs/gate/slop/offsets/BlobSidecar_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/05.patch",
+  "type": "FuluDeposit",
+  "file": "types/Fulu_vec_bytevec_32_33_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 1056 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluDeposit_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     14.2
+    ],
+    [
+     "proofs/obj/vua_fixb_generated.bend",
+     "SURVIVED",
+     10.3
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/06.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_bytevec_32_65536_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 2097152 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     32.3
+    ],
+    [
+     "proofs/obj/vfx_v65536_b32_generated.bend",
+     "SURVIVED",
+     13.6
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/07",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/07.patch",
+  "type": "FuluBeaconState,FuluHistoricalBatch",
+  "file": "types/Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 262144 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     25.9
+    ],
+    [
+     "proofs/api/FuluHistoricalBatch_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     10.3
+    ],
+    [
+     "proofs/obj/vfx_v8192_b32_generated.bend",
+     "SURVIVED",
+     10.1
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/08.patch",
+  "type": "FuluSyncCommittee",
+  "file": "types/Fulu_vec_bytevec_48_512_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 24576 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncCommittee_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     7.2
+    ],
+    [
+     "proofs/obj/vfx_SyncCommittee_generated.bend",
+     "SURVIVED",
+     11.2
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/09",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/09.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_uint64_64_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 512 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     31.5
+    ],
+    [
+     "proofs/obj/vfx_v64_u64_generated.bend",
+     "SURVIVED",
+     13.0
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/10.patch",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_vec_uint64_8192_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 65536 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     31.1
+    ],
+    [
+     "proofs/obj/vfx_v8192_u64_generated.bend",
+     "SURVIVED",
+     12.7
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/11.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 160 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     38.0
+    ],
+    [
+     "proofs/obj/vfx_bv1280_generated.bend",
+     "SURVIVED",
+     12.4
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/12",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/12.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 161 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     35.2
+    ],
+    [
+     "proofs/obj/vfx_bv1281_generated.bend",
+     "SURVIVED",
+     11.4
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/13",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/13.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_256_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 32 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     34.7
+    ],
+    [
+     "proofs/obj/vfx_bv256_generated.bend",
+     "SURVIVED",
+     10.8
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/14",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/14.patch",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_257_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 33 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     35.3
+    ],
+    [
+     "proofs/obj/vfx_bv257_generated.bend",
+     "SURVIVED",
+     11.4
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b01-ok-len/15",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b01-ok-len/15.patch",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_FixedTestStruct_4_decode_ssz_generated.bend",
+  "rule": "deserialize of a fixed-size type: the input must be exactly size(T) bytes",
+  "fault": "the validator accepts any window of at least 52 bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     34.8
+    ],
+    [
+     "proofs/obj/vfx_v4_FixedTestStruct_generated.bend",
+     "SURVIVED",
+     12.6
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_ok (and X_ok_len) of a fixed-size kind no decoder or union option takes is no longer emitted (typed_object_runtime WINDOW_OK)"
+ },
+ {
+  "id": "r11-b03-bx-ok/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/01.patch",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed AttesterSlashing field's validator returns True without checking the bytes",
+  "A": "UNJUDGED",
+  "counterexample": "BeaconBlockBody_decode of a body whose attester_slashings element has a bad inner offset: accepted (spec: rejected)",
+  "reachability": "BeaconBlockBody_decode -> l1_AttesterSlashing_ok (list element windows) -> AttesterSlashing_bx_ok: the element's own validity check is skipped",
+  "verdict": "unjudged (refusal path); reachable: the corpus disagrees with the reference on 4 cases",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluAttesterSlashing_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     17.3
+    ],
+    [
+     "proofs/gate/slop/offsets/AttesterSlashing_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_AttesterSlashing_decode_literal_bad_attestation_1_attesting_indices_ragged_4_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/var_winx_AttesterSlashing_generated.bend",
+     "SURVIVED",
+     9.6
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     12.2
+    ],
+    [
+     "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend",
+     "CRASH",
+     13.2
+    ]
+   ],
+   "corpus": {
+    "id": "r11-b03-bx-ok/01",
+    "type": "FuluBeaconBlockBody",
+    "cases": 397,
+    "official": 0,
+    "corpus_bad": 4,
+    "official_bad": 0,
+    "kinds": {
+     "ref rejects, mutant accepts": 4
+    },
+    "timeouts": 0,
+    "examples": [
+     "BeaconBlockBody#2816: ref rejects, mutant accepts",
+     "BeaconBlockBody#2970: ref rejects, mutant accepts",
+     "BeaconBlockBody#3025: ref rejects, mutant accepts",
+     "BeaconBlockBody#3069: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 82.5
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_attestation_1_off_plus_generated.bend",
+  "fix_location": "BeaconBlockBody_decode_vlit_bad_attester_slashings_elem_attestation_1_off_plus",
+  "fix_note": "replayed on agent/r11-fixes: killed in 6.19 s"
+ },
+ {
+  "id": "r11-b03-bx-ok/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/02.patch",
+  "type": "FuluDepositData",
+  "file": "types/FuluDepositData_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed DepositData field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluDepositData_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     10.4
+    ],
+    [
+     "proofs/gate/slop/offsets/DepositData_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_DepositData_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/g__spec_codec_DepositData_generated.bend",
+     "SURVIVED",
+     2.4
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/03.patch",
+  "type": "FuluDeposit",
+  "file": "types/FuluDeposit_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed Deposit field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluDeposit_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     12.7
+    ],
+    [
+     "proofs/gate/slop/offsets/Deposit_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_Deposit_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     2.5
+    ],
+    [
+     "proofs/obj/fixrej_f3_generated.bend",
+     "SURVIVED",
+     3.7
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/05.patch",
+  "type": "FuluProposerSlashing",
+  "file": "types/FuluProposerSlashing_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed ProposerSlashing field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluProposerSlashing_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     9.7
+    ],
+    [
+     "proofs/gate/slop/offsets/ProposerSlashing_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ProposerSlashing_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/g__spec_codec_ProposerSlashing_generated.bend",
+     "SURVIVED",
+     3.6
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/06.patch",
+  "type": "FuluSignedBeaconBlockHeader",
+  "file": "types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed SignedBeaconBlockHeader field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSignedBeaconBlockHeader_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     11.3
+    ],
+    [
+     "proofs/gate/slop/offsets/SignedBeaconBlockHeader_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SignedBeaconBlockHeader_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/obj/spec_codec_SignedBeaconBlockHeader_generated.bend",
+     "SURVIVED",
+     2.6
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/07",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/07.patch",
+  "type": "FuluSyncAggregate",
+  "file": "types/FuluSyncAggregate_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed SyncAggregate field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncAggregate_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.9
+    ],
+    [
+     "proofs/gate/slop/offsets/SyncAggregate_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SyncAggregate_decode_literal_bad_generated.bend",
+     "SURVIVED",
+     1.2
+    ],
+    [
+     "proofs/obj/codec_1_generated.bend",
+     "SURVIVED",
+     2.6
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/08.patch",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/FuluSyncCommitteeContribution_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed SyncCommitteeContribution field's validator returns True without checking the bytes",
+  "A": "SURVIVED",
+  "counterexample": "none: no public entry point reaches the faulty line",
+  "reachability": "the mutated validator has no caller in types/ or src/ (grep: the only occurrence is its definition); containers validate this field kind with X_ok_at (fixed window) and the kind has no public X_decode of its own",
+  "verdict": "equivalent (in context: dead code)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluSyncCommitteeContribution_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     8.9
+    ],
+    [
+     "proofs/gate/slop/offsets/SyncCommitteeContribution_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_SyncCommitteeContribution_decode_literal_bad_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/codec_2_generated.bend",
+     "SURVIVED",
+     3.0
+    ]
+   ]
+  },
+  "fix_status": "removed",
+  "fix_note": "dead code: the window validator X_bx_ok of a box of a fixed-size value is no longer emitted (parents call X_bx_ok_at)"
+ },
+ {
+  "id": "r11-b03-bx-ok/09",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/09.patch",
+  "type": "FuluTransaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed bl1073741824 field's validator returns True without checking the bytes",
+  "A": "UNJUDGED",
+  "counterexample": "ExecutionPayload_decode with a transaction longer than 2^30 bytes cannot be built under the size cap; a ByteList element has no other validity condition, so the skipped check only matters for the limit",
+  "reachability": "ExecutionPayload_decode -> l1048576_bl1073741824_ok -> bl1073741824_bx_ok (each transaction window)",
+  "verdict": "unjudged (refusal path; argued critical only for inputs over 2^30 bytes)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluTransaction_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     10.0
+    ],
+    [
+     "proofs/gate/slop/offsets/Transaction_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_Transaction_decode_literal_ok_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/obj/vvlb_bl1073741824_generated.bend",
+     "SURVIVED",
+     5.1
+    ],
+    [
+     "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend",
+     "CRASH",
+     8.2
+    ],
+    [
+     "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.8
+    ]
+   ],
+   "corpus": {
+    "id": "r11-b03-bx-ok/09",
+    "type": "FuluExecutionPayload",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 0,
+    "official_bad": 0,
+    "kinds": {},
+    "timeouts": 0,
+    "examples": [],
+    "B": "SURVIVED",
+    "secs": 24.4
+   }
+  },
+  "fix_status": "documented",
+  "fix_note": "unreachable in practice: the only invalid element of the transactions list is a byte list over 2^30 bytes (a 1 GiB input); its root or literal unfolds 2^25 chunks in the checker, so no law states it; the list validator calls bl1073741824_bx_ok by the same generated template the bad_box laws pin for every other boxed kind"
+ },
+ {
+  "id": "r11-b03-bx-ok/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/10.patch",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed ProgressiveVarTestStruct field's validator returns True without checking the bytes",
+  "A": "UNJUDGED",
+  "counterexample": "decode of a ProgressiveComplexTestStruct whose ProgressiveVarTestStruct element has a bad inner offset: accepted",
+  "reachability": "ProgressiveComplexTestStruct_decode / CompatibleUnionBC_decode -> pl_ProgressiveVarTestStruct_ok -> ProgressiveVarTestStruct_bx_ok",
+  "verdict": "unjudged (refusal path); reachable: the corpus disagrees with the reference on 25 cases",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveVarTestStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     22.4
+    ],
+    [
+     "proofs/gate/slop/offsets/ProgressiveVarTestStruct_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_all_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/var_codec_ProgressiveVarTestStruct_generated.bend",
+     "SURVIVED",
+     11.3
+    ],
+    [
+     "proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     10.9
+    ],
+    [
+     "proofs/api/CompatibleUnionBC_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     27.5
+    ]
+   ],
+   "corpus": {
+    "id": "r11-b03-bx-ok/10",
+    "type": "ProgressiveComplexTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 25,
+    "official_bad": 0,
+    "kinds": {
+     "ref rejects, mutant accepts": 25
+    },
+    "timeouts": 0,
+    "examples": [
+     "ProgressiveComplexTestStruct#21392: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21416: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21422: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21441: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 98.1
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_f_B_ragged_1_generated.bend",
+  "fix_location": "ProgressiveComplexTestStruct_decode_vlit_bad_f_H_elem_f_B_ragged_1",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.4 s"
+ },
+ {
+  "id": "r11-b03-bx-ok/11",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/11.patch",
+  "type": "VarTestStruct",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed VarTestStruct field's validator returns True without checking the bytes",
+  "A": "UNJUDGED",
+  "counterexample": "ComplexTestStruct_decode with a VarTestStruct element whose offset is past its window: accepted",
+  "reachability": "ComplexTestStruct_decode / ProgressiveTestStruct_decode -> v2_VarTestStruct_ok / pl_VarTestStruct_ok -> VarTestStruct_bx_ok",
+  "verdict": "unjudged (refusal path); reachable: the corpus disagrees with the reference on 85 cases",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/VarTestStruct_decode_ssz_proof_generated.bend",
+     "SURVIVED",
+     21.6
+    ],
+    [
+     "proofs/gate/slop/offsets/VarTestStruct_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/generic_VarTestStruct_decode_literal_rt_default_generated.bend",
+     "SURVIVED",
+     1.2
+    ],
+    [
+     "proofs/gate/g__var_codec_VarTestStruct_generated.bend",
+     "SURVIVED",
+     11.8
+    ],
+    [
+     "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     11.5
+    ],
+    [
+     "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     12.6
+    ],
+    [
+     "proofs/obj/vvl_v2_VarTestStruct_generated.bend",
+     "CRASH",
+     11.4
+    ]
+   ],
+   "corpus": {
+    "id": "r11-b03-bx-ok/11",
+    "type": "ComplexTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 85,
+    "official_bad": 0,
+    "kinds": {
+     "ref rejects, mutant accepts": 85
+    },
+    "timeouts": 0,
+    "examples": [
+     "ComplexTestStruct#6893: ref rejects, mutant accepts",
+     "ComplexTestStruct#6898: ref rejects, mutant accepts",
+     "ComplexTestStruct#6904: ref rejects, mutant accepts",
+     "ComplexTestStruct#6910: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 108.0
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_f_B_ragged_1_generated.bend",
+  "fix_location": "ComplexTestStruct_decode_vlit_bad_f_G_e0_f_B_ragged_1",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.26 s"
+ },
+ {
+  "id": "r11-b03-bx-ok/12",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-b03-bx-ok/12.patch",
+  "type": "proglist_VarTestStruct",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend",
+  "rule": "deserialize(Container): every field (here a boxed container field) must itself deserialize validly",
+  "fault": "the boxed pl_VarTestStruct field's validator returns True without checking the bytes",
+  "A": "UNJUDGED",
+  "counterexample": "decode with a nested progressive list element whose inner offsets are bad: accepted",
+  "reachability": "ProgressiveTestStruct_decode -> pl_pl_VarTestStruct_ok -> pl_VarTestStruct_bx_ok",
+  "verdict": "unjudged (refusal path); reachable: the corpus disagrees with the reference on 5 cases",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/obj/vvl_pl_VarTestStruct_generated.bend",
+     "SURVIVED",
+     12.7
+    ],
+    [
+     "proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     16.0
+    ],
+    [
+     "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.8
+    ],
+    [
+     "proofs/obj/vvl_pl_pl_VarTestStruct_generated.bend",
+     "CRASH",
+     14.0
+    ]
+   ],
+   "corpus": {
+    "id": "r11-b03-bx-ok/12",
+    "type": "ProgressiveComplexTestStruct",
+    "cases": 400,
+    "official": 0,
+    "corpus_bad": 5,
+    "official_bad": 0,
+    "kinds": {
+     "timeout": 2,
+     "ref rejects, mutant accepts": 5
+    },
+    "timeouts": 2,
+    "examples": [
+     "ProgressiveComplexTestStruct#21548: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21564: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21574: ref rejects, mutant accepts",
+     "ProgressiveComplexTestStruct#21642: ref rejects, mutant accepts"
+    ],
+    "B": "KILLED",
+    "secs": 293.0
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off5_generated.bend",
+  "fix_location": "ProgressiveTestStruct_decode_vlit_bad_f_D_elem_off5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.83 s"
+ },
+ {
+  "id": "r11-c01-group-acc/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-c01-group-acc/05.patch",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_encode_ssz_generated.bend",
+  "rule": "a container is valid iff every field is valid (is_valid of each field type, conjunction)",
+  "fault": "the group BeaconState_g2 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)",
+  "A": "SURVIVED",
+  "counterexample": "BeaconState with justification_bits = Bitvector4{0xF0} (raw constructor): serialize answers ok (spec: invalid). No law kills it: the facade has vreject laws for g0, g1, g3, g4 fields but none for a g2 field before the last",
+  "reachability": "BeaconState_serialize / _encode -> BeaconState_valid_f -> BeaconState_g2_valid: with the accumulator dropped only next_sync_committee's validity counts; the other validated fields of g2 (current_epoch_participation, inactivity_scores: limit 2^40 > any U32 count; justification_bits: padding bits; current_sync_committee: storage length) can be invalid only through a raw value (a Bitvector4 word with bits 4..31 set, an O.Words of the wrong length) that no public setter writes",
+  "verdict": "gap-unreachable (through the API)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconState_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     69.7
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconState_api_tight_generated.bend",
+     "SURVIVED",
+     2.1
+    ],
+    [
+     "proofs/slop/validity/fulu_BeaconState_api_tight_generated.bend",
+     "SURVIVED",
+     2.2
+    ],
+    [
+     "native_bench/driver.bend",
+     "SURVIVED",
+     2.4
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-c01-group-acc/08",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-c01-group-acc/08.patch",
+  "type": "FuluExecutionPayloadHeader",
+  "file": "types/FuluExecutionPayloadHeader_encode_ssz_generated.bend",
+  "rule": "a container is valid iff every field is valid (is_valid of each field type, conjunction)",
+  "fault": "the group ExecutionPayloadHeader_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "the group validates exactly one field (logs_bloom / extra_data): the accumulator passed to the last step is the literal True{}, so Bool.and(True{}, ok) = ok",
+  "verdict": "equivalent",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayloadHeader_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     11.6
+    ],
+    [
+     "proofs/gate/slop/constants/ExecutionPayloadHeader_generated.bend",
+     "SURVIVED",
+     1.8
+    ],
+    [
+     "proofs/gate/slop/capacity/ExecutionPayloadHeader_generated.bend",
+     "SURVIVED",
+     1.5
+    ],
+    [
+     "proofs/obj/var_bytes_ExecutionPayloadHeader_enc_generated.bend",
+     "SURVIVED",
+     7.0
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-c01-group-acc/09",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-c01-group-acc/09.patch",
+  "type": "FuluExecutionPayloadHeader",
+  "file": "types/FuluExecutionPayloadHeader_encode_ssz_generated.bend",
+  "rule": "a container is valid iff every field is valid (is_valid of each field type, conjunction)",
+  "fault": "the group ExecutionPayloadHeader_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "the group validates exactly one field (logs_bloom / extra_data): the accumulator passed to the last step is the literal True{}, so Bool.and(True{}, ok) = ok",
+  "verdict": "equivalent",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayloadHeader_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     11.2
+    ],
+    [
+     "proofs/gate/slop/constants/ExecutionPayloadHeader_generated.bend",
+     "SURVIVED",
+     1.7
+    ],
+    [
+     "proofs/gate/slop/capacity/ExecutionPayloadHeader_generated.bend",
+     "SURVIVED",
+     1.7
+    ],
+    [
+     "proofs/obj/var_bytes_ExecutionPayloadHeader_enc_generated.bend",
+     "SURVIVED",
+     6.9
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-c01-group-acc/10",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-c01-group-acc/10.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_encode_ssz_generated.bend",
+  "rule": "a container is valid iff every field is valid (is_valid of each field type, conjunction)",
+  "fault": "the group ExecutionPayload_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "the group validates exactly one field (logs_bloom / extra_data): the accumulator passed to the last step is the literal True{}, so Bool.and(True{}, ok) = ok",
+  "verdict": "equivalent",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     21.0
+    ],
+    [
+     "proofs/gate/slop/constants/ExecutionPayload_generated.bend",
+     "SURVIVED",
+     2.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_fields_generated.bend",
+     "SURVIVED",
+     1.9
+    ],
+    [
+     "proofs/obj/encx_ExecutionPayload_generated.bend",
+     "SURVIVED",
+     14.2
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-d02-cache-grow-window/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/01.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_ProposerSlashing_16_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "UNJUDGED",
+  "counterexample": "List[ProposerSlashing, 16]: cache(default), capp x5, cached_root != plain root (same generated code as d02/03; probe cases 2 and 3 for transactions and the l10 list)",
+  "reachability": "public: X_cache(X_default()) then X_capp five times, then X_cached_root (the cached-tree API, docs/API_CONTRACTS.md); the growth branch of X_capp_fit runs at n = 1, 2, 4; at n = 4 -> 5 (depth 2 -> 3) leaves 5..7 and node 7 are never swept",
+  "verdict": "critical (argued: the generated code is identical to d02/03, which the probe demonstrates; the probe has no case for this list; the proofs timed out (unjudged) on the body root facade for 01 and 02)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "TIMEOUT",
+     120.5
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     1.7
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.6
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5_generated.bend",
+  "fix_location": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 9.33 s"
+ },
+ {
+  "id": "r11-d02-cache-grow-window/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/02.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Deposit_16_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "UNJUDGED",
+  "counterexample": "List[Deposit, 16]: cache(default), capp x5, cached_root != plain root (same generated code as d02/03; probe cases 2 and 3 for transactions and the l10 list)",
+  "reachability": "public: X_cache(X_default()) then X_capp five times, then X_cached_root (the cached-tree API, docs/API_CONTRACTS.md); the growth branch of X_capp_fit runs at n = 1, 2, 4; at n = 4 -> 5 (depth 2 -> 3) leaves 5..7 and node 7 are never swept",
+  "verdict": "critical (argued: the generated code is identical to d02/03, which the probe demonstrates; the probe has no case for this list; the proofs timed out (unjudged) on the body root facade for 01 and 02)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "TIMEOUT",
+     120.5
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_take_0_generated.bend",
+     "SURVIVED",
+     9.2
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_clean_generated.bend",
+     "SURVIVED",
+     8.7
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.3
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "NOTAPPLICABLE"
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_5_generated.bend",
+  "fix_location": "BeaconBlockBody_vroot_l16_Deposit_cache_app_5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 39.96 s"
+ },
+ {
+  "id": "r11-d02-cache-grow-window/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/03.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_Attestation_8_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "SURVIVED",
+  "counterexample": "probe p11a case 1 (List[Attestation, 8]): cached root differs from hash_tree_root(uncache(c))",
+  "reachability": "public: X_cache(X_default()) then X_capp five times, then X_cached_root (the cached-tree API, docs/API_CONTRACTS.md); the growth branch of X_capp_fit runs at n = 1, 2, 4; at n = 4 -> 5 (depth 2 -> 3) leaves 5..7 and node 7 are never swept",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     111.3
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_take_2_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_3_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "1": [
+      "c1 cached=3832707015,2298662018,1822818431 plain=3832707015,2298662018,1822818431",
+      "c1 cached=2048410452,460569936,597720670 plain=3832707015,2298662018,1822818431"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_5_generated.bend",
+  "fix_location": "BeaconBlockBody_vroot_l8_Attestation_cache_app_5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 5.65 s"
+ },
+ {
+  "id": "r11-d02-cache-grow-window/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/04.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "List[AttesterSlashing, 1]: capp admits only n = 0, where the depth-0 tree has room (pow2(0) = 1 > 0); the growth branch never runs",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     117.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.4
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r11-d02-cache-grow-window/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/05.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "SURVIVED",
+  "counterexample": "transactions: cache(default), capp x5, cached_root != plain root (same generated code as d02/03; probe cases 2 and 3 for transactions and the l10 list)",
+  "reachability": "public: X_cache(X_default()) then X_capp five times, then X_cached_root (the cached-tree API, docs/API_CONTRACTS.md); the growth branch of X_capp_fit runs at n = 1, 2, 4; at n = 4 -> 5 (depth 2 -> 3) leaves 5..7 and node 7 are never swept",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     30.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/collections_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "2": [
+      "c2 cached=3932456843,374097767,1046083927 plain=3932456843,374097767,1046083927",
+      "c2 cached=3416030,38179785,3579183248 plain=3932456843,374097767,1046083927"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5_generated.bend",
+  "fix_location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.96 s"
+ },
+ {
+  "id": "r11-d02-cache-grow-window/06",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d02-cache-grow-window/06.patch",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)",
+  "A": "SURVIVED",
+  "counterexample": "List[ProgressiveSingleFieldContainerTestStruct, 10]: cache(default), capp x5, cached_root != plain root (same generated code as d02/03; probe cases 2 and 3 for transactions and the l10 list)",
+  "reachability": "public: X_cache(X_default()) then X_capp five times, then X_cached_root (the cached-tree API, docs/API_CONTRACTS.md); the growth branch of X_capp_fit runs at n = 1, 2, 4; at n = 4 -> 5 (depth 2 -> 3) leaves 5..7 and node 7 are never swept",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/ProgressiveComplexTestStruct_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     19.8
+    ],
+    [
+     "proofs/gate/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_end_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/prep_setters_g2_generated.bend",
+     "SURVIVED",
+     5.5
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "3": [
+      "c3 cached=918831642,405688440,1477338954 plain=918831642,405688440,1477338954",
+      "c3 cached=3044474605,1119671186,377114004 plain=918831642,405688440,1477338954"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5_generated.bend",
+  "fix_location": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.9 s"
+ },
+ {
+  "id": "r11-d03-cset-lo/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d03-cset-lo/04.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "cset does not lower the dirty window's low end to i (a set below the window is never rehashed)",
+  "A": "SURVIVED",
+  "counterexample": "probe p11a case 4: [default] -> cache, root, cset(0, slashing with slot 7): cached root = the old root",
+  "reachability": "l1_AttesterSlashing_cache -> cached_root (window reset to (n, 0) = (1, 0)) -> cset(0, v): lo stays 1 > hi = 0, the sweep is skipped",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     106.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.2
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "4": [
+      "c4 cached=3015355932,4105751367,1610167283 plain=3015355932,4105751367,1610167283",
+      "c4 cached=3102059698,4249427706,2878587621 plain=3015355932,4105751367,1610167283"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0_generated.bend",
+  "fix_location": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0",
+  "fix_note": "replayed on agent/r11-fixes: killed in 3.21 s"
+ },
+ {
+  "id": "r11-d03-cset-lo/05",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d03-cset-lo/05.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "cset does not lower the dirty window's low end to i (a set below the window is never rehashed)",
+  "A": "SURVIVED",
+  "counterexample": "probe p11a case 5: [01, 02] -> cset(0, [03]): cached root stale",
+  "reachability": "transactions: cache -> cached_root -> cset(0, tx): lo stays 2 > hi = 0, no rehash",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     24.3
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/collections_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "5": [
+      "c5 cached=2699311004,2481461009,2784170003 plain=2699311004,2481461009,2784170003",
+      "c5 cached=1473557429,1093106169,821198693 plain=2699311004,2481461009,2784170003"
+     ],
+     "6": [
+      "c6 cached=740312117,405507618,2979212361 plain=740312117,405507618,2979212361",
+      "c6 cached=1473557429,1093106169,821198693 plain=740312117,405507618,2979212361"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend",
+  "fix_location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.03 s"
+ },
+ {
+  "id": "r11-d04-cset-hi/03",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d04-cset-hi/03.patch",
+  "type": "FuluExecutionPayload",
+  "file": "types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "cset does not raise the dirty window's high end to i (a set above the window is never rehashed)",
+  "A": "SURVIVED",
+  "counterexample": "probe p11a case 6: [01, 02] -> cset(1, [03]): cached root stale",
+  "reachability": "transactions: cache -> cached_root -> cset(1, tx): hi stays 0 < lo = 1, no rehash",
+  "verdict": "critical; probe p11a prints a different line",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     24.4
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_take_0_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_3_generated.bend",
+     "SURVIVED",
+     1.0
+    ],
+    [
+     "proofs/obj/collections_0_generated.bend",
+     "SURVIVED",
+     1.3
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "6": [
+      "c6 cached=740312117,405507618,2979212361 plain=740312117,405507618,2979212361",
+      "c6 cached=1473557429,1093106169,821198693 plain=740312117,405507618,2979212361"
+     ]
+    }
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend",
+  "fix_location": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3",
+  "fix_note": "replayed on agent/r11-fixes: killed in 1.01 s"
+ },
+ {
+  "id": "r11-d05-cache-depth/04",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d05-cache-depth/04.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_AttesterSlashing_1_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "the cached tree is built at depth bit_length(n) = capacity(n + 1) instead of ceil(log2 n) (one level too deep when n is a power of two; past the limit depth for a full list)",
+  "A": "SURVIVED",
+  "counterexample": "none (probe p11a case 7: same line)",
+  "reachability": "l1_AttesterSlashing_cache_sz clamps the depth with O.cache_dok(pow2(d) <= storage slots): a List[AttesterSlashing, 1] holds at most 1 slot (append and decode size the storage by capacity(n) = 0), so the depth-1 request falls back to 0",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     101.0
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     0.8
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r11-d06-capp-lo/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d06-capp-lo/01.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_ProposerSlashing_16_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "an append inside the tree does not lower the window's low end to n (EXPECTED EQUIVALENT: after a root the window is (n, 0) and lo <= n always)",
+  "A": "SURVIVED",
+  "counterexample": "none (probe p11a case 8: same line)",
+  "reachability": "the window's low end is n after X_cached_root (croot_fin) and 0 after X_cache; every update keeps lo <= n, so min(lo, n) = lo whenever capp runs",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     101.6
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.2
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r11-d07-croot-reset/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-d07-croot-reset/01.patch",
+  "type": "FuluBeaconBlockBody",
+  "file": "types/Fulu_list_ProposerSlashing_16_def_generated.bend",
+  "rule": "hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)",
+  "fault": "after a root the window is reset to (0, 0) instead of empty (n, 0): leaf 0 is rehashed on every later root (EXPECTED EQUIVALENT: rehashing a clean leaf rewrites the same digest)",
+  "A": "SURVIVED",
+  "counterexample": "none (probe p11a case 8: same line)",
+  "reachability": "the reset window (0, 0) rehashes leaf 0 (or stores the zero chunk at slot 2^d when n = 0) on the next root: the same digest is rewritten, every other node is unchanged",
+  "verdict": "equivalent",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/FuluBeaconBlockBody_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     103.5
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_take_0_generated.bend",
+     "SURVIVED",
+     1.2
+    ],
+    [
+     "proofs/gate/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
+     "SURVIVED",
+     1.1
+    ],
+    [
+     "proofs/obj/collections_1_generated.bend",
+     "SURVIVED",
+     1.1
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "SURVIVED",
+    "diff": {}
+   }
+  }
+ },
+ {
+  "id": "r11-e02-prog-len/01",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-e02-prog-len/01.patch",
+  "type": "proglist_uint64",
+  "file": "types/proglist_uint64_def_generated.bend",
+  "rule": "len(ProgressiveList[uint64]) = byte length / 8",
+  "fault": "len computed as n >> 3 (EXPECTED EQUIVALENT: same value for every U32)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "U32.shrn(n, 3) = U32.div(n, 8) for every U32",
+  "verdict": "equivalent",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/proglist_uint64_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     3.2
+    ],
+    [
+     "proofs/api/proglist_uint64_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     20.6
+    ],
+    [
+     "proofs/gate/slop/validity/generic_proglist_uint64_appb_pl_u64_generated.bend",
+     "SURVIVED",
+     0.9
+    ],
+    [
+     "proofs/gate/slop/validity/generic_proglist_uint64_api_pl_u64_generated.bend",
+     "SURVIVED",
+     1.6
+    ],
+    [
+     "e2e/proglist_uint64_e2e_witness_generated.bend",
+     "SURVIVED",
+     44.7
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-e02-prog-len/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-e02-prog-len/02.patch",
+  "type": "proglist_uint128",
+  "file": "types/proglist_uint128_def_generated.bend",
+  "rule": "len(ProgressiveList[uint128]) = byte length / 16",
+  "fault": "len rounds up: (n + 15) / 16 (EXPECTED EQUIVALENT in context: every public writer keeps the byte length a multiple of 16)",
+  "A": "SURVIVED",
+  "counterexample": "none",
+  "reachability": "the byte length of a proglist_uint128 is always a multiple of 16: pl_u128_ok refuses len mod 16 != 0, pl_u128_default is empty and append grows by 16",
+  "verdict": "equivalent (in context)",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/proglist_uint128_encode_ssz_proof_generated.bend",
+     "SURVIVED",
+     4.3
+    ],
+    [
+     "proofs/api/proglist_uint128_hashtreeroot_proof_generated.bend",
+     "SURVIVED",
+     21.4
+    ],
+    [
+     "proofs/gate/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend",
+     "SURVIVED",
+     3.1
+    ],
+    [
+     "proofs/slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend",
+     "SURVIVED",
+     3.0
+    ],
+    [
+     "e2e/proglist_uint128_e2e_witness_generated.bend",
+     "SURVIVED",
+     45.1
+    ]
+   ]
+  }
+ },
+ {
+  "id": "r11-f01-union-same-type/02",
+  "patch": "tools/mutation_testing/manual_spec_mutants/patches/r11-f01-union-same-type/02.patch",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend",
+  "rule": "deserialize(CompatibleUnion): selector 4 decodes to the fourth option",
+  "fault": "selector 4 builds option 1 (same payload type, same bytes)",
+  "A": "UNJUDGED",
+  "counterexample": "probe p11a case 9: serialize(c3{default}) then decode: selector 1 instead of 4",
+  "reachability": "CompatibleUnionABCA_decode(bytes with selector 4) -> CompatibleUnionABCA_rd3 builds option c0",
+  "verdict": "unjudged (proof: stack overflow); reachable, probe p11a and the corpus show the wrong answer",
+  "evidence": {
+   "proofs": [
+    [
+     "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.1
+    ],
+    [
+     "proofs/gate/slop/offsets/CompatibleUnionABCA_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_default_generated.bend",
+     "SURVIVED",
+     1.3
+    ],
+    [
+     "proofs/gate/g__var_codec_CompatibleUnionABCA_generated.bend",
+     "CRASH",
+     11.4
+    ],
+    [
+     "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend",
+     "CRASH",
+     15.8
+    ]
+   ],
+   "probe_p11a": {
+    "B2": "KILLED",
+    "diff": {
+     "9": [
+      "c9 decoded selector=4",
+      "c9 decoded selector=1"
+     ]
+    }
+   },
+   "corpus": {
+    "id": "r11-f01-union-same-type/02",
+    "type": "CompatibleUnionABCA",
+    "cases": 81,
+    "official": 0,
+    "corpus_bad": 1,
+    "official_bad": 0,
+    "kinds": {
+     "re-encoding differs": 1
+    },
+    "timeouts": 0,
+    "examples": [
+     "CompatibleUnionABCA#6613: re-encoding differs"
+    ],
+    "B": "KILLED",
+    "secs": 8.9
+   }
+  },
+  "fix_status": "closed",
+  "fix_law": "proofs/slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_4_generated.bend",
+  "fix_location": "CompatibleUnionABCA_decode_vlit_ok_sel_4",
+  "fix_note": "replayed on agent/r11-fixes: killed in 0.68 s"
+ }
+]

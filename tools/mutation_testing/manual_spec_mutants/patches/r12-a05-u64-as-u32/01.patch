@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/01
+# type: FixedTestStruct
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FixedTestStruct: the uint64 field `f_B` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FixedTestStruct_hashtreeroot_generated.bend
+# sym: FixedTestStruct_rt0,u64_root
+--- a/types/FixedTestStruct_hashtreeroot_generated.bend
++++ b/types/FixedTestStruct_hashtreeroot_generated.bend
+@@ -23,3 +23,3 @@
+   (h, d_f_A) = pair
+-  FixedTestStruct_rt1(hl, seg, f_A, f_B, f_C, d_f_A, uint64_h.u64_root(hl, h, f_B, seg))
++  FixedTestStruct_rt1(hl, seg, f_A, f_B, f_C, d_f_A, (h, O.u32_chunk(O.u64_lo_of(f_B))))
+ 

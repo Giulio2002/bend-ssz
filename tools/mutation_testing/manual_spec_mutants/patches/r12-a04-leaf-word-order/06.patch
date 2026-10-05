@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a04-leaf-word-order/06
+# type: bitvector_512
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: Fulu_bitvector_512: words 8 and 9 exchanged in the chunk
+# why: a word-order slip in the generated chunk literal
+# file: types/Fulu_bitvector_512_hashtreeroot_generated.bend
+# sym: bv512_root
+# proofs: proofs/api/FuluSyncAggregate_hashtreeroot_proof_generated.bend
+--- a/types/Fulu_bitvector_512_hashtreeroot_generated.bend
++++ b/types/Fulu_bitvector_512_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
++    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w9), B.swap32(w8), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
+ 

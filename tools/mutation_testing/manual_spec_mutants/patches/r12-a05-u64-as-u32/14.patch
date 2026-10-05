@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/14
+# type: FuluPendingDeposit
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluPendingDeposit: the uint64 field `slot` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluPendingDeposit_hashtreeroot_generated.bend
+# sym: PendingDeposit_rt3,u64_root
+--- a/types/FuluPendingDeposit_hashtreeroot_generated.bend
++++ b/types/FuluPendingDeposit_hashtreeroot_generated.bend
+@@ -27,3 +27,3 @@
+   (h, d_signature) = pair
+-  PendingDeposit_rt4(hl, seg, pubkey, withdrawal_credentials, amount, signature, slot, d_pubkey, d_withdrawal_credentials, d_amount, d_signature, uint64_h.u64_root(hl, h, slot, seg))
++  PendingDeposit_rt4(hl, seg, pubkey, withdrawal_credentials, amount, signature, slot, d_pubkey, d_withdrawal_credentials, d_amount, d_signature, (h, O.u32_chunk(O.u64_lo_of(slot))))
+ 

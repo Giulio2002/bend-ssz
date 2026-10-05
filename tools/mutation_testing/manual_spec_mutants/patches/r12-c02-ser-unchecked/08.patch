@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c02-ser-unchecked/08
+# type: proglist_uint64
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: proglist_uint64_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+# why: the serialize path wired to the encode path's writer
+# file: types/proglist_uint64_encode_ssz_generated.bend
+# sym: pl_u64_senc_go,pl_u64_serialize
+--- a/types/proglist_uint64_encode_ssz_generated.bend
++++ b/types/proglist_uint64_encode_ssz_generated.bend
+@@ -63,3 +63,3 @@
+     case True{}: (o, O.refused())
+-    case False{}: proglist_uint64_senc_put(n, pl_u64_putk(O.out_new(n), 0, o))
++    case False{}: proglist_uint64_senc_put(n, pl_u64_putn(O.out_new(n), 0, o))
+ 

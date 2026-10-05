@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c03-union-payload-ok/04
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+# fault: CompatibleUnionABCA_valid: option 2's payload validity dropped (the union is valid whatever its payload)
+# why: the union validity reduced to the selector being known
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_va2,CompatibleUnionABCA_valid
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -81,3 +81,3 @@
+   (v, ok) = pair
+-  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, ok)
++  (CompatibleUnionABCA_d.CompatibleUnionABCA_c2{v}, True{})
+ 

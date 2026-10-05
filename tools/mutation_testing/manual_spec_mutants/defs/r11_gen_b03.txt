@@ -1,0 +1,121 @@
+## round 11 generated: r11-b03-bx-ok
+=== r11-b03-bx-ok
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluAttesterSlashing_decode_ssz_generated.bend
+sym: AttesterSlashing_bx_ok,AttesterSlashing_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed AttesterSlashing field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def AttesterSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: AttesterSlashing_ok(buf, off, len)
++def AttesterSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluDepositData
+ops: decode
+file: types/FuluDepositData_decode_ssz_generated.bend
+sym: DepositData_bx_ok,DepositData_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed DepositData field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def DepositData_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: DepositData_ok(buf, off, len)
++def DepositData_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluDeposit
+ops: decode
+file: types/FuluDeposit_decode_ssz_generated.bend
+sym: Deposit_bx_ok,Deposit_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed Deposit field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def Deposit_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Deposit_ok(buf, off, len)
++def Deposit_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluAttesterSlashing
+ops: decode
+file: types/FuluIndexedAttestation_decode_ssz_generated.bend
+sym: IndexedAttestation_bx_ok,IndexedAttestation_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed IndexedAttestation field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def IndexedAttestation_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: IndexedAttestation_ok(buf, off, len)
++def IndexedAttestation_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluProposerSlashing
+ops: decode
+file: types/FuluProposerSlashing_decode_ssz_generated.bend
+sym: ProposerSlashing_bx_ok,ProposerSlashing_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed ProposerSlashing field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def ProposerSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProposerSlashing_ok(buf, off, len)
++def ProposerSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluSignedBeaconBlockHeader
+ops: decode
+file: types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend
+sym: SignedBeaconBlockHeader_bx_ok,SignedBeaconBlockHeader_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed SignedBeaconBlockHeader field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def SignedBeaconBlockHeader_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlockHeader_ok(buf, off, len)
++def SignedBeaconBlockHeader_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluSyncAggregate
+ops: decode
+file: types/FuluSyncAggregate_decode_ssz_generated.bend
+sym: SyncAggregate_bx_ok,SyncAggregate_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed SyncAggregate field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def SyncAggregate_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncAggregate_ok(buf, off, len)
++def SyncAggregate_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluSyncCommitteeContribution
+ops: decode
+file: types/FuluSyncCommitteeContribution_decode_ssz_generated.bend
+sym: SyncCommitteeContribution_bx_ok,SyncCommitteeContribution_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed SyncCommitteeContribution field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def SyncCommitteeContribution_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncCommitteeContribution_ok(buf, off, len)
++def SyncCommitteeContribution_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: FuluTransaction
+ops: decode
+file: types/FuluTransaction_decode_ssz_generated.bend
+sym: bl1073741824_bx_ok,Transaction_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed bl1073741824 field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def bl1073741824_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bl1073741824_ok(buf, off, len)
++def bl1073741824_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: ProgressiveVarTestStruct
+ops: decode
+file: types/ProgressiveVarTestStruct_decode_ssz_generated.bend
+sym: ProgressiveVarTestStruct_bx_ok,ProgressiveVarTestStruct_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed ProgressiveVarTestStruct field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def ProgressiveVarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProgressiveVarTestStruct_ok(buf, off, len)
++def ProgressiveVarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: VarTestStruct
+ops: decode
+file: types/VarTestStruct_decode_ssz_generated.bend
+sym: VarTestStruct_bx_ok,VarTestStruct_decode
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed VarTestStruct field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: VarTestStruct_ok(buf, off, len)
++def VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+=== r11-b03-bx-ok
+type: proglist_VarTestStruct
+ops: decode
+file: types/proglist_VarTestStruct_decode_ssz_generated.bend
+sym: pl_VarTestStruct_bx_ok
+spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+fault: the boxed pl_VarTestStruct field's validator returns True without checking the bytes
+why: validation skipped for boxed (heap) fields
+-def pl_VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: pl_VarTestStruct_ok(buf, off, len)
++def pl_VarTestStruct_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})

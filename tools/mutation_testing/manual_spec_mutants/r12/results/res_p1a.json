@@ -1,0 +1,2076 @@
+[
+ {
+  "id": "r12-a01-leaf-noswap/01",
+  "type": "FuluBytes1",
+  "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 1.9,
+    "laws": [
+     "Bytes1_root_correct"
+    ],
+    "msg": "- expected : Sigma<&1, &1, Nat, depth => Sigma<&1, &1, {Bool.and(Cmp.is_le(Nat.cmp(1n, ../../spec/tree.capacity(depth))), ../../spec/limits.lower(1n, depth)) == True{} : Bool}, _ => {../../spec/byte_root.gate(Bool.and(Cmp.is_lt(Word.cmp(32n, WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(w0)), WCon{Fal",
+    "root": "proofs/api/FuluBytes1_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/02",
+  "type": "FuluBytes4",
+  "file": "types/FuluBytes4_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.6,
+    "laws": [
+     "st_b4"
+    ],
+    "msg": "- expected : (h, D.D{w0, 0, 0, 0, 0, 0, 0, 0})\n- observed : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))",
+    "root": "proofs/api/FuluBytes4_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/03",
+  "type": "FuluBytes8",
+  "file": "types/FuluBytes8_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.7,
+    "laws": [
+     "st_b8"
+    ],
+    "msg": "- expected : (h, D.D{w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.",
+    "root": "proofs/api/FuluBytes8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/04",
+  "type": "FuluBytes20",
+  "file": "types/FuluBytes20_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.1,
+    "laws": [
+     "st_b20"
+    ],
+    "msg": "- expected : (h, D.D{w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.",
+    "root": "proofs/api/FuluBytes20_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/05",
+  "type": "FuluBytes32",
+  "file": "types/FuluBytes32_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.5,
+    "laws": [
+     "st_b32"
+    ],
+    "msg": "- expected : (h, D.D{w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.",
+    "root": "proofs/api/FuluBytes32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/06",
+  "type": "FuluBytes48",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.8,
+    "laws": [
+     "st_b48"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U",
+    "root": "proofs/api/FuluBytes48_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/07",
+  "type": "FuluBytes96",
+  "file": "types/FuluBytes96_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.5,
+    "laws": [
+     "st_b96"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluBytes96_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/08",
+  "type": "bitvector_4",
+  "file": "types/Fulu_bitvector_4_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.1,
+    "laws": [
+     "bitvector_4_st"
+    ],
+    "msg": "- expected : (h, D.D{U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, W",
+    "root": "proofs/api/bitvector_4_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/09",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.6,
+    "laws": [
+     "st_bv64"
+    ],
+    "msg": "- expected : (h, D.D{w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.",
+    "root": "proofs/api/FuluAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/10",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/Fulu_bitvector_128_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.0,
+    "laws": [
+     "st_bv128"
+    ],
+    "msg": "- expected : (h, D.D{w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.",
+    "root": "proofs/api/FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/11",
+  "type": "bitvector_512",
+  "file": "types/Fulu_bitvector_512_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.3,
+    "laws": [
+     "st_bv512"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [w0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U",
+    "root": "proofs/api/bitvector_512_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/12",
+  "type": "bitvector_15",
+  "file": "types/bitvector_15_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.9,
+    "laws": [
+     "bitvector_15_st"
+    ],
+    "msg": "- expected : (h, D.D{U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{Fals",
+    "root": "proofs/api/bitvector_15_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a01-leaf-noswap/13",
+  "type": "bitvector_31",
+  "file": "types/bitvector_31_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.9,
+    "laws": [
+     "bitvector_31_st"
+    ],
+    "msg": "- expected : (h, D.D{U32{WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{",
+    "root": "proofs/api/bitvector_31_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/01",
+  "type": "FuluBytes8",
+  "file": "types/FuluBytes8_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.6,
+    "laws": [
+     "st_b8"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/02",
+  "type": "FuluBytes20",
+  "file": "types/FuluBytes20_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.7,
+    "laws": [
+     "st_b20"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes20_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/03",
+  "type": "FuluBytes32",
+  "file": "types/FuluBytes32_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 8.6,
+    "laws": [
+     "st_b32"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/04",
+  "type": "FuluBytes48",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.3,
+    "laws": [
+     "st_b48"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/FuluBytes48_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/05",
+  "type": "FuluBytes96",
+  "file": "types/FuluBytes96_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.8,
+    "laws": [
+     "st_b96"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluBytes96_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/06",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.7,
+    "laws": [
+     "st_bv64"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/07",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/Fulu_bitvector_128_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.8,
+    "laws": [
+     "st_bv128"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a02-leaf-last-drop/08",
+  "type": "bitvector_512",
+  "file": "types/Fulu_bitvector_512_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.7,
+    "laws": [
+     "st_bv512"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/bitvector_512_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a03-leaf-right-align/01",
+  "type": "FuluBytes1",
+  "file": "types/FuluBytes1_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.0,
+    "laws": [
+     "Bytes1_root_correct"
+    ],
+    "msg": "- expected : Sigma<&1, &1, Nat, depth => Sigma<&1, &1, {Bool.and(Cmp.is_le(Nat.cmp(1n, ../../spec/tree.capacity(depth))), ../../spec/limits.lower(1n, depth)) == True{} : Bool}, _ => {../../spec/byte_root.gate(Bool.and(Cmp.is_lt(Word.cmp(32n, WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(w0)), WCon{Fal",
+    "root": "proofs/api/FuluBytes1_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a03-leaf-right-align/02",
+  "type": "FuluBytes4",
+  "file": "types/FuluBytes4_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.4,
+    "laws": [
+     "st_b4"
+    ],
+    "msg": "- expected : (h, D.D{0, 0, 0, 0, 0, 0, 0, U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32",
+    "root": "proofs/api/FuluBytes4_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a03-leaf-right-align/03",
+  "type": "bitvector_4",
+  "file": "types/Fulu_bitvector_4_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.7,
+    "laws": [
+     "bitvector_4_st"
+    ],
+    "msg": "- expected : (h, D.D{0, 0, 0, 0, 0, 0, 0, U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WC",
+    "root": "proofs/api/bitvector_4_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a03-leaf-right-align/04",
+  "type": "bitvector_15",
+  "file": "types/bitvector_15_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.7,
+    "laws": [
+     "bitvector_15_st"
+    ],
+    "msg": "- expected : (h, D.D{0, 0, 0, 0, 0, 0, 0, U32{WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{Bool.or(Bool.or(Bool.and(",
+    "root": "proofs/api/bitvector_15_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a03-leaf-right-align/05",
+  "type": "bitvector_31",
+  "file": "types/bitvector_31_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.1,
+    "laws": [
+     "bitvector_31_st"
+    ],
+    "msg": "- expected : (h, D.D{0, 0, 0, 0, 0, 0, 0, U32{WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WCon{False{}, WCon{Bool.or(Bool.and(a16, True{}), False{}), WCon{Bool.or(Bool.and(a17, True{}), False{}), WCon{Bool.or(Bool.and(a18, True{}), False{}), WCon{Bool.or(Bool.and(a19, True{",
+    "root": "proofs/api/bitvector_31_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/01",
+  "type": "FuluBytes8",
+  "file": "types/FuluBytes8_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.4,
+    "laws": [
+     "st_b8"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/02",
+  "type": "FuluBytes20",
+  "file": "types/FuluBytes20_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.1,
+    "laws": [
+     "st_b20"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes20_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/03",
+  "type": "FuluBytes32",
+  "file": "types/FuluBytes32_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.8,
+    "laws": [
+     "st_b32"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w0, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluBytes32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/04",
+  "type": "FuluBytes48",
+  "file": "types/FuluBytes48_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.2,
+    "laws": [
+     "st_b48"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/FuluBytes48_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/05",
+  "type": "FuluAttestation",
+  "file": "types/Fulu_bitvector_64_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.1,
+    "laws": [
+     "st_bv64"
+    ],
+    "msg": "- expected : (h, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(w1, 255))))))))))))))))))))))))), U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a04-leaf-word-order/06",
+  "type": "bitvector_512",
+  "file": "types/Fulu_bitvector_512_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.7,
+    "laws": [
+     "st_bv512"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.checked(Cmp.is_le(Nat.cmp(hl, 64n)), [U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/bitvector_512_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/01",
+  "type": "FixedTestStruct",
+  "file": "types/FixedTestStruct_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.3,
+    "laws": [
+     "st_FixedTestStruct"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FixedTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/02",
+  "type": "FuluAttestationData",
+  "file": "types/FuluAttestationData_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.1,
+    "laws": [
+     "st_AttestationData"
+    ],
+    "msg": "- expected : {FuluAttestationData_h.AttestationData_rt2(hl, seg, x0, x1, x2, x3, x4, O.u64_chunk(x0), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/FuluAttestationData_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/03",
+  "type": "FuluBeaconBlockHeader",
+  "file": "types/FuluBeaconBlockHeader_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.2,
+    "laws": [
+     "st_BeaconBlockHeader"
+    ],
+    "msg": "- expected : {FuluBeaconBlockHeader_h.BeaconBlockHeader_rt2(hl, seg, x0, x1, x2, x3, x4, O.u64_chunk(x0), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U",
+    "root": "proofs/api/FuluBeaconBlockHeader_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/04",
+  "type": "FuluBeaconState",
+  "file": "types/FuluBeaconState_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.9,
+    "laws": [
+     "stg_BeaconState_0"
+    ],
+    "msg": "- expected : {FuluBeaconState_h.BeaconState_g0_rt3(hl, seg, x0, x1, x2, x3, x4, x5, x6, x7, O.u64_chunk(x0), RN.c0_b32(x1), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl",
+    "root": "proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/05",
+  "type": "FuluBlobSidecar",
+  "file": "types/FuluBlobSidecar_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.8,
+    "laws": [
+     "st_BlobSidecar"
+    ],
+    "msg": "- expected : {FuluBlobSidecar_h.BlobSidecar_rt1(hl, seg, x0, x2, x3, LV.pj_BlobSidecar_4(o), LV.pj_BlobSidecar_5(o), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.sh",
+    "root": "proofs/api/FuluBlobSidecar_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/06",
+  "type": "FuluContributionAndProof",
+  "file": "types/FuluContributionAndProof_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.1,
+    "laws": [
+     "st_ContributionAndProof"
+    ],
+    "msg": "- expected : {FuluContributionAndProof_h.ContributionAndProof_rt1(hl, seg, x0, x2, D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(",
+    "root": "proofs/api/FuluContributionAndProof_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/07",
+  "type": "FuluDepositData",
+  "file": "types/FuluDepositData_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.0,
+    "laws": [
+     "st_DepositData"
+    ],
+    "msg": "- expected : {FuluDepositData_h.DepositData_rt3(hl, seg, x0, x1, x2, x3, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(c0_b48(x0), c1_b48(x0)))))), c0_b32(x1), ",
+    "root": "proofs/api/FuluDepositData_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/08",
+  "type": "FuluDepositRequest",
+  "file": "types/FuluDepositRequest_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.2,
+    "laws": [
+     "st_DepositRequest"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluDepositRequest_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/09",
+  "type": "FuluEth1Data",
+  "file": "types/FuluEth1Data_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.3,
+    "laws": [
+     "st_Eth1Data"
+    ],
+    "msg": "- expected : {FuluEth1Data_h.Eth1Data_rt2(hl, seg, x0, x1, x2, c0_b32(x0), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.and(",
+    "root": "proofs/api/FuluEth1Data_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/10",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "stg_ExecutionPayload_0"
+    ],
+    "msg": "- expected : {(h, FuluExecutionPayload_d.ExecutionPayload_g0{x0, x1, x2, x3, x4, x5, x6, x7}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fa",
+    "root": "proofs/api/FuluExecutionPayload_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/11",
+  "type": "FuluLightClientFinalityUpdate",
+  "file": "types/FuluLightClientFinalityUpdate_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.4,
+    "laws": [
+     "st_LightClientFinalityUpdate"
+    ],
+    "msg": "- expected : {(h, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{LV.pj_LightClientFinalityUpdate_0(o), LV.pj_LightClientFinalityUpdate_1(o), LV.pj_LightClientFinalityUpdate_2(o), LV.pj_LightClientFinalityUpdate_3(o), x4}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packe",
+    "root": "proofs/api/FuluLightClientFinalityUpdate_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/12",
+  "type": "FuluLightClientUpdate",
+  "file": "types/FuluLightClientUpdate_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.9,
+    "laws": [
+     "st_LightClientUpdate"
+    ],
+    "msg": "- expected : {(h, FuluLightClientUpdate_d.LightClientUpdate{LV.pj_LightClientUpdate_0(o), LV.pj_LightClientUpdate_1(o), LV.pj_LightClientUpdate_2(o), LV.pj_LightClientUpdate_3(o), LV.pj_LightClientUpdate_4(o), LV.pj_LightClientUpdate_5(o), x6}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/cryp",
+    "root": "proofs/api/FuluLightClientUpdate_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/13",
+  "type": "FuluPendingAttestation",
+  "file": "types/FuluPendingAttestation_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.0,
+    "laws": [
+     "st_PendingAttestation"
+    ],
+    "msg": "- expected : {(h, FuluPendingAttestation_d.PendingAttestation{LV.pj_PendingAttestation_0(o), x1, x2, x3}, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_res",
+    "root": "proofs/api/FuluPendingAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/14",
+  "type": "FuluPendingDeposit",
+  "file": "types/FuluPendingDeposit_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.9,
+    "laws": [
+     "st_PendingDeposit"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluPendingDeposit_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/15",
+  "type": "FuluSingleAttestation",
+  "file": "types/FuluSingleAttestation_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.8,
+    "laws": [
+     "st_SingleAttestation"
+    ],
+    "msg": "- expected : {FuluSingleAttestation_h.SingleAttestation_rt2(hl, seg, x0, x1, x2, x3, O.u64_chunk(x0), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/FuluSingleAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/16",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.6,
+    "laws": [
+     "st_SyncCommitteeContribution"
+    ],
+    "msg": "- expected : {FuluSyncCommitteeContribution_h.SyncCommitteeContribution_rt3(hl, seg, x0, x1, x2, x3, x4, O.u64_chunk(x0), c0_b32(x1), D.D{U32.or(U32.or(U32.or(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.shl(U32.s",
+    "root": "proofs/api/FuluSyncCommitteeContribution_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/17",
+  "type": "FuluValidator",
+  "file": "types/FuluValidator_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.8,
+    "laws": [
+     "st_Validator"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluValidator_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a05-u64-as-u32/18",
+  "type": "FuluWithdrawalRequest",
+  "file": "types/FuluWithdrawalRequest_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 9.3,
+    "laws": [
+     "st_WithdrawalRequest"
+    ],
+    "msg": "- expected : (h, D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/packed.sized(hl, Array.size(U32, D.pair_words(D.of_result(0xd9a2fae439ac7ff9e21e0853948f94fe/src/crypto/sha/packed/buffer.result(0xd9a2fae439ac",
+    "root": "proofs/api/FuluWithdrawalRequest_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a06-uint-width-mask/01",
+  "type": "uint16",
+  "file": "types/uint16_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.8,
+    "laws": [
+     "uint16_root_correct"
+    ],
+    "msg": "- expected : {../../spec/primitives.optional(Bool.and(Cmp.is_eq(U32.cmp(U32.mod(U32.div.fin(U32.divmod.go(32n, WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(o)), WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}",
+    "root": "proofs/api/uint16_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a06-uint-width-mask/02",
+  "type": "uint32",
+  "file": "types/uint32_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "uint32_root_correct"
+    ],
+    "msg": "- expected : {Some{[U32.mod(o, 256), U32.mod(U32.div(o, 256), 256), U32.mod(U32.div(o, 65536), 256), U32.div(o, 16777216), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} == Some{[U32.and(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32",
+    "root": "proofs/api/uint32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a06-uint-width-mask/03",
+  "type": "uint8",
+  "file": "types/uint8_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "uint8_root_correct"
+    ],
+    "msg": "- expected : {../../spec/primitives.optional(Bool.and(Cmp.is_eq(U32.cmp(U32.mod(U32.div.fin(U32.divmod.go(32n, WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(o)), WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, ",
+    "root": "proofs/api/uint8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a07-shared-chunks/01",
+  "type": "uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.5,
+    "laws": [
+     "u64_root"
+    ],
+    "msg": "- expected : {Some{[U32.mod(lo, 256), U32.mod(U32.div(lo, 256), 256), U32.mod(U32.div(lo, 65536), 256), U32.div(lo, 16777216), U32.mod(hi, 256), U32.mod(U32.div(hi, 256), 256), U32.mod(U32.div(hi, 65536), 256), U32.div(hi, 16777216), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/api/uint64_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a07-shared-chunks/02",
+  "type": "uint64",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "u64_root"
+    ],
+    "msg": "- expected : {Some{[U32.mod(lo, 256), U32.mod(U32.div(lo, 256), 256), U32.mod(U32.div(lo, 65536), 256), U32.div(lo, 16777216), U32.mod(hi, 256), U32.mod(U32.div(hi, 256), 256), U32.mod(U32.div(hi, 65536), 256), U32.div(hi, 16777216), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ",
+    "root": "proofs/api/uint64_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a07-shared-chunks/03",
+  "type": "boolean",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "bool_root"
+    ],
+    "msg": "- expected : Some{[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}\n- observed : Some{[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}",
+    "root": "proofs/api/boolean_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a07-shared-chunks/04",
+  "type": "boolean",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.4,
+    "laws": [
+     "bool_root"
+    ],
+    "msg": "- expected : Some{[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}\n- observed : Some{[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]}",
+    "root": "proofs/api/boolean_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-a07-shared-chunks/05",
+  "type": "uint32",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 2.3,
+    "laws": [
+     "u32_root"
+    ],
+    "msg": "- expected : {Some{[U32.mod(o, 256), U32.mod(U32.div(o, 256), 256), U32.mod(U32.div(o, 65536), 256), U32.div(o, 16777216), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]} == Some{[0, 0, 0, 0, U32.and(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr(U32.shr",
+    "root": "proofs/api/uint32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/01",
+  "type": "bitlist_1",
+  "file": "types/bitlist_1_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.0,
+    "laws": [
+     "bitlist_1_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_1_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/02",
+  "type": "bitlist_2",
+  "file": "types/bitlist_2_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.7,
+    "laws": [
+     "bitlist_2_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_2_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/03",
+  "type": "bitlist_8",
+  "file": "types/bitlist_8_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.0,
+    "laws": [
+     "bitlist_8_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_8_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/04",
+  "type": "bitlist_15",
+  "file": "types/bitlist_15_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.9,
+    "laws": [
+     "bitlist_15_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_15_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/05",
+  "type": "bitlist_16",
+  "file": "types/bitlist_16_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.8,
+    "laws": [
+     "bitlist_16_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_16_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/06",
+  "type": "bitlist_17",
+  "file": "types/bitlist_17_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.3,
+    "laws": [
+     "bitlist_17_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_17_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/07",
+  "type": "bitlist_31",
+  "file": "types/bitlist_31_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.1,
+    "laws": [
+     "bitlist_31_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_31_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/08",
+  "type": "bitlist_32",
+  "file": "types/bitlist_32_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.0,
+    "laws": [
+     "bitlist_32_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_32_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/09",
+  "type": "bitlist_33",
+  "file": "types/bitlist_33_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 15.7,
+    "laws": [
+     "bitlist_33_root_correct"
+    ],
+    "msg": "- expected : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigma<&1, &1, O.Bits, _ => D.Digest>, O.bits_root(64n, h, o, 1, 0))), [])])\n- observed : RR.roots(S.BitsValue{BO_L.bview(o)}, s, [D.bytes_onto(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, Sigm",
+    "root": "proofs/api/bitlist_33_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/10",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitlist_1280_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.3,
+    "laws": [
+     "stg_ProgressiveBitsStruct_0"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, x7, 4, seg) == (h, x7, BO.bdig(hl, x7, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, x7, 3, seg) == (h, x7, BO.bdig(hl, x7, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/11",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitlist_1280_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 14.7,
+    "laws": [
+     "stg_ProgressiveBitsStruct_0"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, x7, 2, seg) == (h, x7, BO.bdig(hl, x7, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, x7, 3, seg) == (h, x7, BO.bdig(hl, x7, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/12",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitlist_1281_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.5,
+    "laws": [
+     "stg_ProgressiveBitsStruct_1"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, x10, 4, seg) == (h, x10, BO.bdig(hl, x10, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, x10, 3, seg) == (h, x10, BO.bdig(hl, x10, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/13",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitlist_1281_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 16.8,
+    "laws": [
+     "stg_ProgressiveBitsStruct_1"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, x10, 2, seg) == (h, x10, BO.bdig(hl, x10, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, x10, 3, seg) == (h, x10, BO.bdig(hl, x10, 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/14",
+  "type": "FuluPendingAttestation",
+  "file": "types/Fulu_bitlist_2048_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.6,
+    "laws": [
+     "st_PendingAttestation"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, LV.pj_PendingAttestation_0(o), 4, seg) == (h, LV.pj_PendingAttestation_0(o), BO.bdig(hl, LV.pj_PendingAttestation_0(o), 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, LV.pj_PendingAttestation_0(o), 3, seg) == ",
+    "root": "proofs/api/FuluPendingAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b01-bitlist-depth/15",
+  "type": "FuluPendingAttestation",
+  "file": "types/Fulu_bitlist_2048_hashtreeroot_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.3,
+    "laws": [
+     "st_PendingAttestation"
+    ],
+    "msg": "- expected : {O.bits_root(hl, h, LV.pj_PendingAttestation_0(o), 2, seg) == (h, LV.pj_PendingAttestation_0(o), BO.bdig(hl, LV.pj_PendingAttestation_0(o), 3n)) : Sigma<&1, &1, B.Buf, _ => Sigma<&1, &1, O.Bits, _ => D.Digest>>}\n- observed : {O.bits_root(hl, h, LV.pj_PendingAttestation_0(o), 3, seg) == ",
+    "root": "proofs/api/FuluPendingAttestation_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-b02-delimiter/01",
+  "type": "bitlist_9",
+  "file": "src/obj.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.3,
+    "laws": [
+     "rd_go"
+    ],
+    "msg": "- expected : {O.bits_clear(U32.sub(U32.add(U32.mul(8, n), O.pick(Cmp.is_ge(U32.cmp(B.byte_sel(U32.and(U32.sub(U32.add(0, n), 1), 3), FD.flat__nthc(FD.array__slots(U32, t), U32.to_nat(U32.shr(U32.shr(U32.sub(U32.add(0, n), 1)))))), 128)), 7, O.pick(Cmp.is_ge(U32.cmp(B.byte_sel(U32.and(U32.sub(U32.add",
+    "root": "proofs/api/bitlist_9_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/01",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.4,
+    "laws": [
+     "CompatibleUnionBC_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/02",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "CompatibleUnionABCA_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/03",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 13.7,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/04",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.7,
+    "laws": [
+     "ProgressiveVarTestStruct_serialize_vrefuse_f_A"
+    ],
+    "msg": "- expected : O.Encoded{True{}, ../../src/buffer.Buf{[2304, 2304, 256, 0], 10}}\n- observed : O.Encoded{False{}, ../../src/buffer.Buf{[0], 0}}",
+    "root": "proofs/api/ProgressiveVarTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/05",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 14.9,
+    "laws": [
+     "ProgressiveComplexTestStruct_serialize_vrefuse_f_A"
+    ],
+    "msg": "- expected : O.Encoded{True{}, ../../src/buffer.Buf{[7424, 7424, 7680, 7680, 7680, 7680, 7680, 256], 30}}\n- observed : O.Encoded{False{}, ../../src/buffer.Buf{[0], 0}}",
+    "root": "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/06",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/07",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 7.7,
+    "laws": [
+     "ProgressiveSingleListContainerTestStruct_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/ProgressiveSingleListContainerTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c01-ser-flag/08",
+  "type": "proglist_uint64",
+  "file": "types/proglist_uint64_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.8,
+    "laws": [
+     "proglist_uint64_serialize_vrefuse_writer_marker"
+    ],
+    "msg": "- expected : O.Encoded{True{}, B.Buf{[0], 0}}\n- observed : O.Encoded{False{}, B.Buf{[0], 0}}",
+    "root": "proofs/api/proglist_uint64_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/01",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 17.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/CompatibleUnionBC_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/02",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 17.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/CompatibleUnionABCA_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/03",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/ProgressiveTestStruct_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/04",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 18.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveVarTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/ProgressiveVarTestStruct_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/05",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 23.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/ProgressiveComplexTestStruct_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/06",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 2.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/ProgressiveBitsStruct_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/07",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 11.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveSingleListContainerTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/constants/ProgressiveSingleListContainerTestStruct_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c02-ser-unchecked/08",
+  "type": "proglist_uint64",
+  "file": "types/proglist_uint64_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 4.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/proglist_uint64_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r12-c03-union-payload-ok/01",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.5,
+    "laws": [
+     "CompatibleUnionBC_serialize_vreject_c0_f_C"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c03-union-payload-ok/02",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "CompatibleUnionBC_serialize_vreject_c1_f_B"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c03-union-payload-ok/03",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.5,
+    "laws": [
+     "CompatibleUnionABCA_serialize_vreject_c1_f_C"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c03-union-payload-ok/04",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.0,
+    "laws": [
+     "CompatibleUnionABCA_serialize_vreject_c2_f_B"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/01",
+  "type": "CompatibleUnionA",
+  "file": "types/CompatibleUnionA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.8,
+    "laws": [
+     "rt0"
+    ],
+    "msg": "- expected : {(O.or_at(U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), O.shl_bytes(U32.and(x, 255), U32.and(U32.add(U32.add(X, 1), 0), 3)), Array.get.at(U32, U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), Array.size(U32, O.or_at(U32.shr(U32.shr(X)), O.shl_bytes(0, U32.and(X, 3)), Array.get.at(U32, U32.sh",
+    "root": "proofs/api/CompatibleUnionA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/02",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "rt0"
+    ],
+    "msg": "- expected : {CompatibleUnionBC_e.CompatibleUnionBC_putn_fin(O.pick(Bool.and(Cmp.is_le(U32.cmp(EA_ProgressiveSingleListContainerTestStruct.SZ(x), U32.add(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1))), Cmp.is_lt(U32.cmp(U32.add(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1), 42949672",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/03",
+  "type": "CompatibleUnionBC",
+  "file": "types/CompatibleUnionBC_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.5,
+    "laws": [
+     "rt1"
+    ],
+    "msg": "- expected : {CompatibleUnionBC_e.CompatibleUnionBC_putn_fin(O.pick(Bool.and(Cmp.is_le(U32.cmp(EA_ProgressiveVarTestStruct.SZ(x), U32.add(EA_ProgressiveVarTestStruct.SZ(x), 1))), Cmp.is_lt(U32.cmp(U32.add(EA_ProgressiveVarTestStruct.SZ(x), 1), 4294967295))), U32.add(EA_ProgressiveVarTestStruct.SZ(x)",
+    "root": "proofs/api/CompatibleUnionBC_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/04",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 10.6,
+    "laws": [
+     "rt0"
+    ],
+    "msg": "- expected : {(O.or_at(U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), O.shl_bytes(U32.and(x, 255), U32.and(U32.add(U32.add(X, 1), 0), 3)), Array.get.at(U32, U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), Array.size(U32, O.or_at(U32.shr(U32.shr(X)), O.shl_bytes(0, U32.and(X, 3)), Array.get.at(U32, U32.sh",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/05",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.2,
+    "laws": [
+     "rt1"
+    ],
+    "msg": "- expected : {CompatibleUnionABCA_e.CompatibleUnionABCA_putn_fin(O.pick(Bool.and(Cmp.is_le(U32.cmp(EA_ProgressiveSingleListContainerTestStruct.SZ(x), U32.add(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1))), Cmp.is_lt(U32.cmp(U32.add(EA_ProgressiveSingleListContainerTestStruct.SZ(x), 1), 4294",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/06",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.3,
+    "laws": [
+     "rt2"
+    ],
+    "msg": "- expected : {CompatibleUnionABCA_e.CompatibleUnionABCA_putn_fin(O.pick(Bool.and(Cmp.is_le(U32.cmp(EA_ProgressiveVarTestStruct.SZ(x), U32.add(EA_ProgressiveVarTestStruct.SZ(x), 1))), Cmp.is_lt(U32.cmp(U32.add(EA_ProgressiveVarTestStruct.SZ(x), 1), 4294967295))), U32.add(EA_ProgressiveVarTestStruct.S",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c04-union-sel-index/07",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 11.1,
+    "laws": [
+     "rt3"
+    ],
+    "msg": "- expected : {(O.or_at(U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), O.shl_bytes(U32.and(x, 255), U32.and(U32.add(U32.add(X, 1), 0), 3)), Array.get.at(U32, U32.shr(U32.shr(U32.add(U32.add(X, 1), 0))), Array.size(U32, O.or_at(U32.shr(U32.shr(X)), O.shl_bytes(3, U32.and(X, 3)), Array.get.at(U32, U32.sh",
+    "root": "proofs/api/CompatibleUnionABCA_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c05-prog-valid-last/01",
+  "type": "ProgressiveTestStruct",
+  "file": "types/ProgressiveTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.6,
+    "laws": [
+     "ProgressiveTestStruct_serialize_vreject_f_D_elem"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c05-prog-valid-last/02",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 12.7,
+    "laws": [
+     "ProgressiveVarTestStruct_serialize_vreject_f_C"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/ProgressiveVarTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c05-prog-valid-last/03",
+  "type": "ProgressiveComplexTestStruct",
+  "file": "types/ProgressiveComplexTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 14.3,
+    "laws": [
+     "ProgressiveComplexTestStruct_serialize_vreject_f_H_elem"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/ProgressiveComplexTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c05-prog-valid-last/04",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 17.9,
+    "laws": [
+     "ProgressiveBitsStruct_serialize_vreject_f_I"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-c05-prog-valid-last/05",
+  "type": "ProgressiveSingleListContainerTestStruct",
+  "file": "types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 7.6,
+    "laws": [
+     "ProgressiveSingleListContainerTestStruct_serialize_vreject_f_C"
+    ],
+    "msg": "- expected : True{}\n- observed : False{}",
+    "root": "proofs/api/ProgressiveSingleListContainerTestStruct_encode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-e01-bool-pos/01",
+  "type": "FuluValidator",
+  "file": "types/FuluValidator_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 5.0,
+    "laws": [
+     "Validator_at"
+    ],
+    "msg": "- expected : {FuluValidator_r.Validator_v0(off, O.bool_ok_pick(B.byte_pick(U32.and(U32.add(off, 87), 3), B.rewrap(n, Array.get.at(U32, U32.shr(U32.shr(U32.add(off, 87))), Array.size(U32, FD.array__thaw(U32, t))))))) == (B.Buf{FD.array__thaw(U32, t), n}, Cmp.is_le(U32.cmp(VBL.nthb(VS.bt(121n, VS.bdr(",
+    "root": "proofs/api/FuluValidator_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-e01-bool-pos/02",
+  "type": "FuluValidator",
+  "file": "types/FuluValidator_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 4.7,
+    "laws": [
+     "Validator_at"
+    ],
+    "msg": "- expected : {FuluValidator_r.Validator_v0(off, O.bool_ok_pick(B.byte_pick(U32.and(U32.add(off, 89), 3), B.rewrap(n, Array.get.at(U32, U32.shr(U32.shr(U32.add(off, 89))), Array.size(U32, FD.array__thaw(U32, t))))))) == (B.Buf{FD.array__thaw(U32, t), n}, Cmp.is_le(U32.cmp(VBL.nthb(VS.bt(121n, VS.bdr(",
+    "root": "proofs/api/FuluValidator_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-e01-bool-pos/03",
+  "type": "FuluValidator",
+  "file": "types/FuluValidator_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 3.9,
+    "laws": [
+     "Validator_at"
+    ],
+    "msg": "- expected : {FuluValidator_r.Validator_v0(off, O.bool_ok_pick(B.byte_pick(U32.and(off, 3), B.rewrap(n, Array.get.at(U32, U32.shr(U32.shr(off)), Array.size(U32, FD.array__thaw(U32, t))))))) == (B.Buf{FD.array__thaw(U32, t), n}, Cmp.is_le(U32.cmp(VBL.nthb(VS.bt(121n, VS.bdr(x, ../obj/spec_fixed.limbs",
+    "root": "proofs/api/FuluValidator_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r12-e02-vlist-ck/01",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 7.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_l1099511627776_Validator_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e02-vlist-ck/02",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 8.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_l1099511627776_Validator_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e02-vlist-ck/03",
+  "type": "FuluBeaconState",
+  "file": "types/Fulu_list_Validator_1099511627776_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 7.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 7.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconState_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 5.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/var_winx_l1099511627776_Validator_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/01",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 9.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/BitsStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/offsets/generic_BitsStruct_first_offset_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/02",
+  "type": "BitsStruct",
+  "file": "types/BitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 9.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/BitsStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/offsets/generic_BitsStruct_first_offset_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/03",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 9.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 1.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r12-e03-bv-pad-pos/04",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/ProgressiveBitsStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 9.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveBitsStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 0.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/gate/slop/offsets/generic_ProgressiveBitsStruct_first_offset_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ }
+]

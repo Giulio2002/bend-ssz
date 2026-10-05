@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-e01-bool-pos/02
+# type: FuluValidator
+# ops: decode
+# spec: ssz/simple-serialize.md Deserialization: boolean: only 0x00 and 0x01 are valid; a container is valid when every field is
+# fault: Validator decode: the `slashed` boolean check reads byte 89 (the first byte of activation_eligibility_epoch)
+# why: field offset slip in the validity pass only (the reader is right)
+# file: types/FuluValidator_decode_ssz_generated.bend
+# sym: Validator_ok_at,Validator_ok
+--- a/types/FuluValidator_decode_ssz_generated.bend
++++ b/types/FuluValidator_decode_ssz_generated.bend
+@@ -59,3 +59,3 @@
+ 
+-def Validator_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: Validator_v0(off, boolean_r.bool_ok_at(buf, (off + 88 : U32)))
++def Validator_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: Validator_v0(off, boolean_r.bool_ok_at(buf, (off + 89 : U32)))
+ 

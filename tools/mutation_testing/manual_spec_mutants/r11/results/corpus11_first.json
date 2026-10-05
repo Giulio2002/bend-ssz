@@ -1,0 +1,61 @@
+[
+ {
+  "id": "r11-a01-reader-base/01",
+  "type": "FuluBlobIdentifier",
+  "cases": 272,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 69.0
+ },
+ {
+  "id": "r11-a01-reader-base/04",
+  "type": "FuluEth1Block",
+  "cases": 277,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 11.9
+ },
+ {
+  "id": "r11-a01-reader-base/05",
+  "type": "FuluExecutionPayloadHeader",
+  "cases": 368,
+  "official": 0,
+  "corpus_bad": 0,
+  "official_bad": 0,
+  "kinds": {},
+  "timeouts": 0,
+  "examples": [],
+  "B": "SURVIVED",
+  "secs": 23.1
+ },
+ {
+  "id": "r11-a01-reader-base/09",
+  "type": "FuluBeaconBlockBody",
+  "cases": 397,
+  "official": 0,
+  "corpus_bad": 43,
+  "official_bad": 0,
+  "kinds": {
+   "re-encoding differs": 43
+  },
+  "timeouts": 0,
+  "examples": [
+   "BeaconBlockBody#2687: re-encoding differs",
+   "BeaconBlockBody#2688: re-encoding differs",
+   "BeaconBlockBody#2689: re-encoding differs",
+   "BeaconBlockBody#2691: re-encoding differs"
+  ],
+  "B": "KILLED",
+  "secs": 67.7
+ }
+]

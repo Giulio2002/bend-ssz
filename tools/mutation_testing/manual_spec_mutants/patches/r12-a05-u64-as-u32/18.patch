@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/18
+# type: FuluWithdrawalRequest
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluWithdrawalRequest: the uint64 field `amount` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluWithdrawalRequest_hashtreeroot_generated.bend
+# sym: WithdrawalRequest_rt1,u64_root
+--- a/types/FuluWithdrawalRequest_hashtreeroot_generated.bend
++++ b/types/FuluWithdrawalRequest_hashtreeroot_generated.bend
+@@ -21,3 +21,3 @@
+   (h, d_validator_pubkey) = pair
+-  WithdrawalRequest_rt2(hl, seg, source_address, validator_pubkey, amount, d_source_address, d_validator_pubkey, uint64_h.u64_root(hl, h, amount, seg))
++  WithdrawalRequest_rt2(hl, seg, source_address, validator_pubkey, amount, d_source_address, d_validator_pubkey, (h, O.u32_chunk(O.u64_lo_of(amount))))
+ 

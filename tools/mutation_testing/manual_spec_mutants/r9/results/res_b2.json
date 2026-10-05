@@ -1,0 +1,442 @@
+[
+ {
+  "id": "r9-b01-bitvec-get/01",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b01-bitvec-get/02",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/01",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/02",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/03",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/04",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/05",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b02-bitvec-set/06",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b03-bitvec-write/01",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 24.9,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b03-bitvec-write/02",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b04-bitvec-read/01",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1280_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 26.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-b04-bitvec-read/02",
+  "type": "ProgressiveBitsStruct",
+  "file": "types/bitvector_1281_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 25.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveBitsStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c01-composite-get/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.0,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c01-composite-get/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.6,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c02-composite-set/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c02-composite-set/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c03-composite-read/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.8,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c03-composite-read/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.1,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c04-composite-write/01",
+  "type": "ComplexTestStruct",
+  "file": "types/vec_FixedTestStruct_4_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 22.3,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 21.7,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ComplexTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ },
+ {
+  "id": "r9-c04-composite-write/02",
+  "type": "ProgressiveTestStruct",
+  "file": "types/proglist_SmallTestStruct_def_generated.bend",
+  "checks": [
+   {
+    "verdict": "SURVIVED",
+    "secs": 20.2,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_encode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 19.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/ProgressiveTestStruct_hashtreeroot_proof_generated.bend"
+   }
+  ],
+  "A": "SURVIVED"
+ }
+]

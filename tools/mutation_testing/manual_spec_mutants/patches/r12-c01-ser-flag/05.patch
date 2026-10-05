@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c01-ser-flag/05
+# type: ProgressiveComplexTestStruct
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: ProgressiveComplexTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+# why: the serialize result taken from the byte count alone
+# file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveComplexTestStruct_senc_out,ProgressiveComplexTestStruct_serialize
+--- a/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+@@ -167,3 +167,3 @@
+ def ProgressiveComplexTestStruct_senc_out(+n: U32, out: Array<U32>, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, +m: U32) -> ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

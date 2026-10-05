@@ -1,0 +1,1121 @@
+{
+"vec_uint8_4_def_generated.bend": [
+"v4_u8_get_in",
+"v4_u8_get_n",
+"v4_u8_set_n"
+],
+"FuluDepositData_decode_ssz_generated.bend": [
+"DepositData_bx_ok"
+],
+"Fulu_list_bytevec_48_4096_def_generated.bend": [
+"l4096_b48_get_n",
+"l4096_b48_set_n"
+],
+"bitvector_9_decode_ssz_generated.bend": [
+"bv9_read"
+],
+"ProgressiveVarTestStruct_decode_ssz_generated.bend": [
+"ProgressiveVarTestStruct_bx_ok"
+],
+"vec_uint256_4_def_generated.bend": [
+"v4_u256_get_in",
+"v4_u256_get_n",
+"v4_u256_set_n"
+],
+"FuluSignedBeaconBlockHeader_decode_ssz_generated.bend": [
+"SignedBeaconBlockHeader_bx_ok"
+],
+"proglist_uint128_def_generated.bend": [
+"pl_u128_get_in",
+"pl_u128_get_n",
+"pl_u128_set_n"
+],
+"FuluBlob_def_generated.bend": [
+"b131072_get_n",
+"b131072_set_n"
+],
+"vec_uint32_512_decode_ssz_generated.bend": [
+"v512_u32_read"
+],
+"Fulu_vec_bytevec_48_512_decode_ssz_generated.bend": [
+"v512_b48_ok"
+],
+"vec_bool_4_def_generated.bend": [
+"v4_bool_get_in",
+"v4_bool_get_n",
+"v4_bool_set_n"
+],
+"vec_uint64_8_def_generated.bend": [
+"v8_u64_get_in",
+"v8_u64_get_n",
+"v8_u64_set_n"
+],
+"vec_uint32_3_decode_ssz_generated.bend": [
+"v3_u32_read"
+],
+"Fulu_vec_bytevec_48_512_def_generated.bend": [
+"v512_b48_get_n",
+"v512_b48_set_n"
+],
+"vec_uint128_5_def_generated.bend": [
+"v5_u128_get_in",
+"v5_u128_get_n",
+"v5_u128_set_n"
+],
+"Fulu_bitvector_128_decode_ssz_generated.bend": [
+"bv128_ok"
+],
+"vec_bool_16_def_generated.bend": [
+"v16_bool_get_in",
+"v16_bool_get_n",
+"v16_bool_set_n"
+],
+"FuluExecutionPayloadHeader_decode_ssz_generated.bend": [
+"ExecutionPayloadHeader_g0_read",
+"ExecutionPayloadHeader_g1_read",
+"ExecutionPayloadHeader_g2_read"
+],
+"vec_uint8_512_def_generated.bend": [
+"v512_u8_get_in",
+"v512_u8_get_n",
+"v512_u8_set_n"
+],
+"vec_uint64_3_decode_ssz_generated.bend": [
+"v3_u64_read"
+],
+"bitlist_15_def_generated.bend": [
+"bits15_get_in",
+"bits15_get_n",
+"bits15_set_n"
+],
+"vec_uint32_8_def_generated.bend": [
+"v8_u32_get_in",
+"v8_u32_get_n",
+"v8_u32_set_n"
+],
+"vec_bool_8_decode_ssz_generated.bend": [
+"v8_bool_read"
+],
+"vec_uint32_513_decode_ssz_generated.bend": [
+"v513_u32_read"
+],
+"Fulu_vec_bytevec_32_17_def_generated.bend": [
+"v17_b32_get_n",
+"v17_b32_set_n"
+],
+"vec_uint256_1_def_generated.bend": [
+"v1_u256_get_in",
+"v1_u256_get_n",
+"v1_u256_set_n"
+],
+"vec_uint16_1_def_generated.bend": [
+"v1_u16_get_in",
+"v1_u16_get_n",
+"v1_u16_set_n"
+],
+"vec_bool_31_def_generated.bend": [
+"v31_bool_get_in",
+"v31_bool_get_n",
+"v31_bool_set_n"
+],
+"bitlist_16_def_generated.bend": [
+"bits16_get_in",
+"bits16_get_n",
+"bits16_set_n"
+],
+"vec_bool_5_def_generated.bend": [
+"v5_bool_get_in",
+"v5_bool_get_n",
+"v5_bool_set_n"
+],
+"vec_uint8_513_def_generated.bend": [
+"v513_u8_get_in",
+"v513_u8_get_n",
+"v513_u8_set_n"
+],
+"vec_uint8_5_def_generated.bend": [
+"v5_u8_get_in",
+"v5_u8_get_n",
+"v5_u8_set_n"
+],
+"bitvector_256_encode_ssz_generated.bend": [
+"bv256_valid"
+],
+"vec_uint256_31_def_generated.bend": [
+"v31_u256_get_in",
+"v31_u256_get_n",
+"v31_u256_set_n"
+],
+"vec_FixedTestStruct_4_def_generated.bend": [
+"v4_FixedTestStruct_get_in"
+],
+"vec_uint128_2_def_generated.bend": [
+"v2_u128_get_in",
+"v2_u128_get_n",
+"v2_u128_set_n"
+],
+"vec_uint128_1_decode_ssz_generated.bend": [
+"v1_u128_read"
+],
+"FuluTransaction_decode_ssz_generated.bend": [
+"bl1073741824_bx_ok"
+],
+"bitlist_4_def_generated.bend": [
+"bits4_get_in",
+"bits4_get_n",
+"bits4_set_n"
+],
+"vec_uint256_513_decode_ssz_generated.bend": [
+"v513_u256_read"
+],
+"bitlist_256_def_generated.bend": [
+"bits256_get_in",
+"bits256_get_n",
+"bits256_set_n"
+],
+"vec_uint16_16_def_generated.bend": [
+"v16_u16_get_in",
+"v16_u16_get_n",
+"v16_u16_set_n"
+],
+"vec_uint16_16_decode_ssz_generated.bend": [
+"v16_u16_read"
+],
+"bitlist_1280_def_generated.bend": [
+"bits1280_get_in",
+"bits1280_get_n",
+"bits1280_set_n"
+],
+"vec_uint64_16_def_generated.bend": [
+"v16_u64_get_in",
+"v16_u64_get_n",
+"v16_u64_set_n"
+],
+"FuluBlobIdentifier_decode_ssz_generated.bend": [
+"BlobIdentifier_read"
+],
+"vec_uint8_8_def_generated.bend": [
+"v8_u8_get_in",
+"v8_u8_get_n",
+"v8_u8_set_n"
+],
+"bitlist_1281_def_generated.bend": [
+"bits1281_get_in",
+"bits1281_get_n",
+"bits1281_set_n"
+],
+"Fulu_list_AttesterSlashing_1_def_generated.bend": [
+"l1_AttesterSlashing_croot_read"
+],
+"vec_uint32_3_def_generated.bend": [
+"v3_u32_get_in",
+"v3_u32_get_n",
+"v3_u32_set_n"
+],
+"bitvector_31_decode_ssz_generated.bend": [
+"bv31_read"
+],
+"FuluSingleAttestation_decode_ssz_generated.bend": [
+"SingleAttestation_read"
+],
+"vec_bool_4_decode_ssz_generated.bend": [
+"v4_bool_read"
+],
+"vec_bool_3_decode_ssz_generated.bend": [
+"v3_bool_read"
+],
+"vec_uint64_512_def_generated.bend": [
+"v512_u64_get_in",
+"v512_u64_get_n",
+"v512_u64_set_n"
+],
+"vec_uint128_8_def_generated.bend": [
+"v8_u128_get_in",
+"v8_u128_get_n",
+"v8_u128_set_n"
+],
+"FuluMatrixEntry_decode_ssz_generated.bend": [
+"MatrixEntry_read"
+],
+"vec_uint128_31_def_generated.bend": [
+"v31_u128_get_in",
+"v31_u128_get_n",
+"v31_u128_set_n"
+],
+"FuluBeaconState_encode_ssz_generated.bend": [
+"BeaconState_g0_valid",
+"BeaconState_g1_valid",
+"BeaconState_g2_valid",
+"BeaconState_g3_valid",
+"BeaconState_g4_valid"
+],
+"vec_uint64_512_decode_ssz_generated.bend": [
+"v512_u64_read"
+],
+"uint128_decode_ssz_generated.bend": [
+"u128_read"
+],
+"bitlist_9_def_generated.bend": [
+"bits9_get_in",
+"bits9_get_n",
+"bits9_set_n"
+],
+"FuluSyncCommitteeContribution_decode_ssz_generated.bend": [
+"SyncCommitteeContribution_read",
+"SyncCommitteeContribution_bx_ok"
+],
+"Fulu_bytevec_256_def_generated.bend": [
+"b256_get_n",
+"b256_set_n"
+],
+"vec_uint32_5_def_generated.bend": [
+"v5_u32_get_in",
+"v5_u32_get_n",
+"v5_u32_set_n"
+],
+"vec_uint32_512_def_generated.bend": [
+"v512_u32_get_in",
+"v512_u32_get_n",
+"v512_u32_set_n"
+],
+"FuluSyncAggregate_decode_ssz_generated.bend": [
+"SyncAggregate_bx_read",
+"SyncAggregate_bx_ok"
+],
+"FuluForkData_decode_ssz_generated.bend": [
+"ForkData_read"
+],
+"Fulu_list_bytevec_32_16777216_def_generated.bend": [
+"l16777216_b32_get_n",
+"l16777216_b32_set_n"
+],
+"bitlist_6_def_generated.bend": [
+"bits6_get_in",
+"bits6_get_n",
+"bits6_set_n"
+],
+"vec_uint64_2_def_generated.bend": [
+"v2_u64_get_in",
+"v2_u64_get_n",
+"v2_u64_set_n"
+],
+"vec_uint32_4_decode_ssz_generated.bend": [
+"v4_u32_read"
+],
+"vec_uint8_3_decode_ssz_generated.bend": [
+"v3_u8_read"
+],
+"Fulu_list_uint8_1099511627776_def_generated.bend": [
+"l1099511627776_u8_get_n",
+"l1099511627776_u8_set_n"
+],
+"Fulu_vec_bytevec_32_65536_def_generated.bend": [
+"v65536_b32_get_n",
+"v65536_b32_set_n"
+],
+"vec_uint128_16_def_generated.bend": [
+"v16_u128_get_in",
+"v16_u128_get_n",
+"v16_u128_set_n"
+],
+"FuluBeaconBlockBody_encode_ssz_generated.bend": [
+"BeaconBlockBody_g0_valid",
+"BeaconBlockBody_g1_valid"
+],
+"vec_uint8_31_def_generated.bend": [
+"v31_u8_get_in",
+"v31_u8_get_n",
+"v31_u8_set_n"
+],
+"vec_uint256_16_decode_ssz_generated.bend": [
+"v16_u256_read"
+],
+"Fulu_list_bytevec_2048_4096_decode_ssz_generated.bend": [
+"l4096_b2048_ok"
+],
+"vec_uint64_2_decode_ssz_generated.bend": [
+"v2_u64_read"
+],
+"bitvector_6_decode_ssz_generated.bend": [
+"bv6_read"
+],
+"vec_uint128_3_decode_ssz_generated.bend": [
+"v3_u128_read"
+],
+"Fulu_list_uint64_128_def_generated.bend": [
+"l128_u64_get_n",
+"l128_u64_set_n"
+],
+"Fulu_vec_bytevec_32_65536_decode_ssz_generated.bend": [
+"v65536_b32_ok"
+],
+"proglist_uint32_decode_ssz_generated.bend": [
+"pl_u32_read"
+],
+"vec_uint128_513_def_generated.bend": [
+"v513_u128_get_in",
+"v513_u128_get_n",
+"v513_u128_set_n"
+],
+"bitlist_257_def_generated.bend": [
+"bits257_get_in",
+"bits257_get_n",
+"bits257_set_n"
+],
+"bitlist_32_def_generated.bend": [
+"bits32_get_in",
+"bits32_get_n",
+"bits32_set_n"
+],
+"vec_uint8_2_def_generated.bend": [
+"v2_u8_get_in",
+"v2_u8_get_n",
+"v2_u8_set_n"
+],
+"vec_uint128_4_def_generated.bend": [
+"v4_u128_get_in",
+"v4_u128_get_n",
+"v4_u128_set_n"
+],
+"vec_uint16_31_decode_ssz_generated.bend": [
+"v31_u16_read"
+],
+"proglist_uint64_def_generated.bend": [
+"pl_u64_get_in",
+"pl_u64_get_n",
+"pl_u64_set_n"
+],
+"vec_uint64_1_def_generated.bend": [
+"v1_u64_get_in",
+"v1_u64_get_n",
+"v1_u64_set_n"
+],
+"vec_uint128_2_decode_ssz_generated.bend": [
+"v2_u128_read"
+],
+"bitvector_16_decode_ssz_generated.bend": [
+"bv16_read"
+],
+"vec_bool_513_decode_ssz_generated.bend": [
+"v513_bool_read"
+],
+"vec_uint8_3_def_generated.bend": [
+"v3_u8_get_in",
+"v3_u8_get_n",
+"v3_u8_set_n"
+],
+"vec_bool_2_def_generated.bend": [
+"v2_bool_get_in",
+"v2_bool_get_n",
+"v2_bool_set_n"
+],
+"vec_uint16_5_decode_ssz_generated.bend": [
+"v5_u16_read"
+],
+"vec_uint8_16_def_generated.bend": [
+"v16_u8_get_in",
+"v16_u8_get_n",
+"v16_u8_set_n"
+],
+"bitvector_3_decode_ssz_generated.bend": [
+"bv3_read"
+],
+"proglist_uint16_def_generated.bend": [
+"pl_u16_get_in",
+"pl_u16_get_n",
+"pl_u16_set_n"
+],
+"FuluEth1Block_decode_ssz_generated.bend": [
+"Eth1Block_read"
+],
+"proglist_SmallTestStruct_def_generated.bend": [
+"pl_SmallTestStruct_get_in"
+],
+"vec_uint16_5_def_generated.bend": [
+"v5_u16_get_in",
+"v5_u16_get_n",
+"v5_u16_set_n"
+],
+"vec_uint16_1_decode_ssz_generated.bend": [
+"v1_u16_read"
+],
+"vec_uint32_16_def_generated.bend": [
+"v16_u32_get_in",
+"v16_u32_get_n",
+"v16_u32_set_n"
+],
+"Fulu_vec_bytevec_32_8192_def_generated.bend": [
+"v8192_b32_get_n",
+"v8192_b32_set_n"
+],
+"FuluExecutionPayload_decode_ssz_generated.bend": [
+"ExecutionPayload_g0_read",
+"ExecutionPayload_g1_read",
+"ExecutionPayload_g2_read"
+],
+"vec_uint128_4_decode_ssz_generated.bend": [
+"v4_u128_read"
+],
+"bitvector_1281_def_generated.bend": [
+"bv1281_get_in",
+"bv1281_get_n",
+"bv1281_set_n"
+],
+"vec_uint256_3_def_generated.bend": [
+"v3_u256_get_in",
+"v3_u256_get_n",
+"v3_u256_set_n"
+],
+"vec_uint64_5_decode_ssz_generated.bend": [
+"v5_u64_read"
+],
+"vec_uint256_31_decode_ssz_generated.bend": [
+"v31_u256_read"
+],
+"vec_uint8_8_decode_ssz_generated.bend": [
+"v8_u8_read"
+],
+"vec_uint8_1_def_generated.bend": [
+"v1_u8_get_in",
+"v1_u8_get_n",
+"v1_u8_set_n"
+],
+"bitlist_3_def_generated.bend": [
+"bits3_get_in",
+"bits3_get_n",
+"bits3_set_n"
+],
+"bitlist_31_def_generated.bend": [
+"bits31_get_in",
+"bits31_get_n",
+"bits31_set_n"
+],
+"vec_bool_512_def_generated.bend": [
+"v512_bool_get_in",
+"v512_bool_get_n",
+"v512_bool_set_n"
+],
+"SingleFieldTestStruct_decode_ssz_generated.bend": [
+"SingleFieldTestStruct_read"
+],
+"bitvector_5_decode_ssz_generated.bend": [
+"bv5_read"
+],
+"vec_uint8_2_decode_ssz_generated.bend": [
+"v2_u8_read"
+],
+"vec_uint16_2_def_generated.bend": [
+"v2_u16_get_in",
+"v2_u16_get_n",
+"v2_u16_set_n"
+],
+"vec_uint64_3_def_generated.bend": [
+"v3_u64_get_in",
+"v3_u64_get_n",
+"v3_u64_set_n"
+],
+"bitvector_511_decode_ssz_generated.bend": [
+"bv511_read"
+],
+"list_uint16_128_def_generated.bend": [
+"l128_u16_get_n",
+"l128_u16_set_n"
+],
+"vec_uint128_8_decode_ssz_generated.bend": [
+"v8_u128_read"
+],
+"vec_uint256_5_def_generated.bend": [
+"v5_u256_get_in",
+"v5_u256_get_n",
+"v5_u256_set_n"
+],
+"FuluSigningData_decode_ssz_generated.bend": [
+"SigningData_read"
+],
+"vec_uint64_5_def_generated.bend": [
+"v5_u64_get_in",
+"v5_u64_get_n",
+"v5_u64_set_n"
+],
+"vec_bool_16_decode_ssz_generated.bend": [
+"v16_bool_read"
+],
+"Fulu_vec_uint64_8192_decode_ssz_generated.bend": [
+"v8192_u64_ok"
+],
+"vec_uint128_5_decode_ssz_generated.bend": [
+"v5_u128_read"
+],
+"Fulu_list_ProposerSlashing_16_def_generated.bend": [
+"l16_ProposerSlashing_croot_read"
+],
+"Fulu_vec_bytevec_32_17_decode_ssz_generated.bend": [
+"v17_b32_ok"
+],
+"vec_uint256_5_decode_ssz_generated.bend": [
+"v5_u256_read"
+],
+"vec_uint32_8_decode_ssz_generated.bend": [
+"v8_u32_read"
+],
+"Fulu_vec_uint64_64_def_generated.bend": [
+"v64_u64_get_n",
+"v64_u64_set_n"
+],
+"vec_uint16_512_def_generated.bend": [
+"v512_u16_get_in",
+"v512_u16_get_n",
+"v512_u16_set_n"
+],
+"VarTestStruct_decode_ssz_generated.bend": [
+"VarTestStruct_bx_ok"
+],
+"FuluSyncCommitteeMessage_decode_ssz_generated.bend": [
+"SyncCommitteeMessage_read"
+],
+"FuluBytes8_decode_ssz_generated.bend": [
+"b8_read"
+],
+"FuluAttesterSlashing_decode_ssz_generated.bend": [
+"AttesterSlashing_bx_ok"
+],
+"bitvector_1281_decode_ssz_generated.bend": [
+"bv1281_ok"
+],
+"vec_uint128_512_decode_ssz_generated.bend": [
+"v512_u128_read"
+],
+"bitvector_7_decode_ssz_generated.bend": [
+"bv7_read"
+],
+"vec_uint32_2_decode_ssz_generated.bend": [
+"v2_u32_read"
+],
+"FuluExecutionPayloadHeader_def_generated.bend": [
+"ExecutionPayloadHeader_g2_valid"
+],
+"vec_uint32_5_decode_ssz_generated.bend": [
+"v5_u32_read"
+],
+"list_uint16_123_def_generated.bend": [
+"l123_u16_get_n",
+"l123_u16_set_n"
+],
+"bitvector_513_decode_ssz_generated.bend": [
+"bv513_read"
+],
+"vec_uint64_1_decode_ssz_generated.bend": [
+"v1_u64_read"
+],
+"vec_uint32_1_def_generated.bend": [
+"v1_u32_get_in",
+"v1_u32_get_n",
+"v1_u32_set_n"
+],
+"Fulu_vec_bytevec_32_17_encode_ssz_generated.bend": [
+"v17_b32_pk_ok"
+],
+"FuluDeposit_decode_ssz_generated.bend": [
+"Deposit_bx_ok"
+],
+"bitvector_1280_def_generated.bend": [
+"bv1280_get_in",
+"bv1280_get_n",
+"bv1280_set_n"
+],
+"vec_uint16_512_decode_ssz_generated.bend": [
+"v512_u16_read"
+],
+"vec_uint32_31_decode_ssz_generated.bend": [
+"v31_u32_read"
+],
+"FuluSyncCommitteeContribution_encode_ssz_generated.bend": [
+"SyncCommitteeContribution_bx_valid"
+],
+"Fulu_list_uint64_128_decode_ssz_generated.bend": [
+"l128_u64_ok"
+],
+"bitlist_7_def_generated.bend": [
+"bits7_get_in",
+"bits7_get_n",
+"bits7_set_n"
+],
+"vec_uint8_5_decode_ssz_generated.bend": [
+"v5_u8_read"
+],
+"proglist_uint32_def_generated.bend": [
+"pl_u32_get_in",
+"pl_u32_get_n",
+"pl_u32_set_n"
+],
+"proglist_proglist_VarTestStruct_def_generated.bend": [
+"pl_pl_VarTestStruct_get_in"
+],
+"vec_FixedTestStruct_4_decode_ssz_generated.bend": [
+"v4_FixedTestStruct_ok"
+],
+"vec_uint128_31_decode_ssz_generated.bend": [
+"v31_u128_read"
+],
+"vec_uint64_4_decode_ssz_generated.bend": [
+"v4_u64_read"
+],
+"ProgressiveBitsStruct_encode_ssz_generated.bend": [
+"ProgressiveBitsStruct_g0_valid",
+"ProgressiveBitsStruct_g1_valid"
+],
+"vec_uint32_513_def_generated.bend": [
+"v513_u32_get_in",
+"v513_u32_get_n",
+"v513_u32_set_n"
+],
+"Fulu_vec_uint64_64_decode_ssz_generated.bend": [
+"v64_u64_ok"
+],
+"FuluSignedContributionAndProof_decode_ssz_generated.bend": [
+"SignedContributionAndProof_read"
+],
+"bitlist_511_def_generated.bend": [
+"bits511_get_in",
+"bits511_get_n",
+"bits511_set_n"
+],
+"bitvector_1280_decode_ssz_generated.bend": [
+"bv1280_ok"
+],
+"vec_uint8_4_decode_ssz_generated.bend": [
+"v4_u8_read"
+],
+"vec_uint128_3_def_generated.bend": [
+"v3_u128_get_in",
+"v3_u128_get_n",
+"v3_u128_set_n"
+],
+"FuluCurrentSyncCommitteeBranch_def_generated.bend": [
+"v6_b32_get_n",
+"v6_b32_set_n"
+],
+"vec_uint256_513_def_generated.bend": [
+"v513_u256_get_in",
+"v513_u256_get_n",
+"v513_u256_set_n"
+],
+"vec_uint16_4_decode_ssz_generated.bend": [
+"v4_u16_read"
+],
+"FuluBytes1_decode_ssz_generated.bend": [
+"b1_read"
+],
+"Fulu_bitlist_131072_def_generated.bend": [
+"bits131072_get_n",
+"bits131072_set_n"
+],
+"bitlist_1_def_generated.bend": [
+"bits1_get_in",
+"bits1_get_n",
+"bits1_set_n"
+],
+"bytelist_256_def_generated.bend": [
+"bl256_get_in",
+"bl256_get_n",
+"bl256_set_n"
+],
+"vec_uint128_512_def_generated.bend": [
+"v512_u128_get_in",
+"v512_u128_get_n",
+"v512_u128_set_n"
+],
+"vec_uint16_4_def_generated.bend": [
+"v4_u16_get_in",
+"v4_u16_get_n",
+"v4_u16_set_n"
+],
+"vec_uint16_31_def_generated.bend": [
+"v31_u16_get_in",
+"v31_u16_get_n",
+"v31_u16_set_n"
+],
+"vec_uint8_513_decode_ssz_generated.bend": [
+"v513_u8_read"
+],
+"vec_bool_8_def_generated.bend": [
+"v8_bool_get_in",
+"v8_bool_get_n",
+"v8_bool_set_n"
+],
+"vec_bool_2_decode_ssz_generated.bend": [
+"v2_bool_read"
+],
+"vec_uint256_1_decode_ssz_generated.bend": [
+"v1_u256_read"
+],
+"bitvector_32_decode_ssz_generated.bend": [
+"bv32_read"
+],
+"FuluFinalityBranch_def_generated.bend": [
+"v7_b32_get_n",
+"v7_b32_set_n"
+],
+"vec_uint256_16_def_generated.bend": [
+"v16_u256_get_in",
+"v16_u256_get_n",
+"v16_u256_set_n"
+],
+"FuluSignedBeaconBlockHeader_encode_ssz_generated.bend": [
+"SignedBeaconBlockHeader_bx_valid"
+],
+"vec_uint64_8_decode_ssz_generated.bend": [
+"v8_u64_read"
+],
+"proglist_uint256_decode_ssz_generated.bend": [
+"pl_u256_read"
+],
+"progbitlist_def_generated.bend": [
+"pbits_get_in",
+"pbits_get_n",
+"pbits_set_n"
+],
+"vec_VarTestStruct_2_def_generated.bend": [
+"v2_VarTestStruct_get_in"
+],
+"Fulu_vec_uint64_8192_def_generated.bend": [
+"v8192_u64_get_n",
+"v8192_u64_set_n"
+],
+"vec_uint256_2_decode_ssz_generated.bend": [
+"v2_u256_read"
+],
+"vec_uint32_1_decode_ssz_generated.bend": [
+"v1_u32_read"
+],
+"vec_bool_5_decode_ssz_generated.bend": [
+"v5_bool_read"
+],
+"Fulu_vec_bytevec_32_33_decode_ssz_generated.bend": [
+"v33_b32_ok"
+],
+"Fulu_list_bytevec_2048_4096_def_generated.bend": [
+"l4096_b2048_get_n",
+"l4096_b2048_set_v",
+"l4096_b2048_set_n"
+],
+"Fulu_bitvector_128_encode_ssz_generated.bend": [
+"bv128_valid"
+],
+"vec_uint256_512_def_generated.bend": [
+"v512_u256_get_in",
+"v512_u256_get_n",
+"v512_u256_set_n"
+],
+"vec_uint256_2_def_generated.bend": [
+"v2_u256_get_in",
+"v2_u256_get_n",
+"v2_u256_set_n"
+],
+"vec_uint16_513_def_generated.bend": [
+"v513_u16_get_in",
+"v513_u16_get_n",
+"v513_u16_set_n"
+],
+"list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend": [
+"l10_ProgressiveSingleFieldContainerTestStruct_get_in",
+"l10_ProgressiveSingleFieldContainerTestStruct_croot_read"
+],
+"vec_uint8_1_decode_ssz_generated.bend": [
+"v1_u8_read"
+],
+"vec_bool_31_decode_ssz_generated.bend": [
+"v31_bool_read"
+],
+"FuluCell_def_generated.bend": [
+"b2048_get_n",
+"b2048_set_n"
+],
+"bitvector_257_decode_ssz_generated.bend": [
+"bv257_ok"
+],
+"vec_uint64_513_decode_ssz_generated.bend": [
+"v513_u64_read"
+],
+"proglist_uint256_def_generated.bend": [
+"pl_u256_get_in",
+"pl_u256_get_n",
+"pl_u256_set_n"
+],
+"vec_uint64_31_def_generated.bend": [
+"v31_u64_get_in",
+"v31_u64_get_n",
+"v31_u64_set_n"
+],
+"vec_bool_512_decode_ssz_generated.bend": [
+"v512_bool_read"
+],
+"vec_uint8_16_decode_ssz_generated.bend": [
+"v16_u8_read"
+],
+"Fulu_bitlist_2048_def_generated.bend": [
+"bits2048_get_n",
+"bits2048_set_n"
+],
+"vec_uint32_31_def_generated.bend": [
+"v31_u32_get_in",
+"v31_u32_get_n",
+"v31_u32_set_n"
+],
+"bitvector_17_decode_ssz_generated.bend": [
+"bv17_read"
+],
+"Fulu_list_uint64_131072_def_generated.bend": [
+"l131072_u64_get_n",
+"l131072_u64_set_n"
+],
+"FuluDepositData_encode_ssz_generated.bend": [
+"DepositData_bx_valid"
+],
+"vec_uint32_2_def_generated.bend": [
+"v2_u32_get_in",
+"v2_u32_get_n",
+"v2_u32_set_n"
+],
+"proglist_VarTestStruct_def_generated.bend": [
+"pl_VarTestStruct_get_in"
+],
+"proglist_bool_def_generated.bend": [
+"pl_bool_get_in",
+"pl_bool_get_n",
+"pl_bool_set_n"
+],
+"bitlist_512_def_generated.bend": [
+"bits512_get_in",
+"bits512_get_n",
+"bits512_set_n"
+],
+"FuluSyncAggregatorSelectionData_decode_ssz_generated.bend": [
+"SyncAggregatorSelectionData_read"
+],
+"bitlist_2_def_generated.bend": [
+"bits2_get_in",
+"bits2_get_n",
+"bits2_set_n"
+],
+"vec_uint64_16_decode_ssz_generated.bend": [
+"v16_u64_read"
+],
+"Fulu_bitvector_64_encode_ssz_generated.bend": [
+"bv64_valid"
+],
+"Fulu_list_uint64_1099511627776_def_generated.bend": [
+"l1099511627776_u64_get_n",
+"l1099511627776_u64_set_n"
+],
+"vec_uint8_512_decode_ssz_generated.bend": [
+"v512_u8_read"
+],
+"vec_uint16_3_decode_ssz_generated.bend": [
+"v3_u16_read"
+],
+"vec_bool_513_def_generated.bend": [
+"v513_bool_get_in",
+"v513_bool_get_n",
+"v513_bool_set_n"
+],
+"bitlist_513_def_generated.bend": [
+"bits513_get_in",
+"bits513_get_n",
+"bits513_set_n"
+],
+"FuluProposerSlashing_decode_ssz_generated.bend": [
+"ProposerSlashing_bx_ok"
+],
+"Fulu_bitvector_64_decode_ssz_generated.bend": [
+"bv64_ok"
+],
+"Fulu_list_Attestation_8_def_generated.bend": [
+"l8_Attestation_croot_read"
+],
+"vec_uint256_4_decode_ssz_generated.bend": [
+"v4_u256_read"
+],
+"FuluExecutionBranch_def_generated.bend": [
+"v4_b32_get_n",
+"v4_b32_set_n"
+],
+"vec_uint128_513_decode_ssz_generated.bend": [
+"v513_u128_read"
+],
+"vec_bool_3_def_generated.bend": [
+"v3_bool_get_in",
+"v3_bool_get_n",
+"v3_bool_set_n"
+],
+"vec_uint256_8_def_generated.bend": [
+"v8_u256_get_in",
+"v8_u256_get_n",
+"v8_u256_set_n"
+],
+"vec_uint256_3_decode_ssz_generated.bend": [
+"v3_u256_read"
+],
+"FuluDepositMessage_decode_ssz_generated.bend": [
+"DepositMessage_read"
+],
+"vec_bool_1_decode_ssz_generated.bend": [
+"v1_bool_read"
+],
+"vec_uint64_513_def_generated.bend": [
+"v513_u64_get_in",
+"v513_u64_get_n",
+"v513_u64_set_n"
+],
+"proglist_uint8_def_generated.bend": [
+"pl_u8_get_in",
+"pl_u8_get_n",
+"pl_u8_set_n"
+],
+"vec_uint128_1_def_generated.bend": [
+"v1_u128_get_in",
+"v1_u128_get_n",
+"v1_u128_set_n"
+],
+"vec_uint16_8_decode_ssz_generated.bend": [
+"v8_u16_read"
+],
+"vec_uint256_512_decode_ssz_generated.bend": [
+"v512_u256_read"
+],
+"Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend": [
+"v8192_b32_ok"
+],
+"bitvector_15_decode_ssz_generated.bend": [
+"bv15_read"
+],
+"vec_uint16_8_def_generated.bend": [
+"v8_u16_get_in",
+"v8_u16_get_n",
+"v8_u16_set_n"
+],
+"vec_uint32_16_decode_ssz_generated.bend": [
+"v16_u32_read"
+],
+"FuluExecutionPayload_encode_ssz_generated.bend": [
+"ExecutionPayload_g0_valid",
+"ExecutionPayload_g1_valid"
+],
+"FuluIndexedAttestation_decode_ssz_generated.bend": [
+"IndexedAttestation_bx_ok"
+],
+"vec_uint16_2_decode_ssz_generated.bend": [
+"v2_u16_read"
+],
+"list_uint16_1024_def_generated.bend": [
+"l1024_u16_get_n",
+"l1024_u16_set_n"
+],
+"FuluExecutionPayloadHeader_encode_ssz_generated.bend": [
+"ExecutionPayloadHeader_g0_valid",
+"ExecutionPayloadHeader_g1_valid"
+],
+"vec_uint8_31_decode_ssz_generated.bend": [
+"v31_u8_read"
+],
+"Fulu_list_Deposit_16_def_generated.bend": [
+"l16_Deposit_croot_read"
+],
+"vec_uint128_16_decode_ssz_generated.bend": [
+"v16_u128_read"
+],
+"FuluPowBlock_decode_ssz_generated.bend": [
+"PowBlock_read"
+],
+"proglist_ProgressiveVarTestStruct_def_generated.bend": [
+"pl_ProgressiveVarTestStruct_get_in"
+],
+"bitvector_256_decode_ssz_generated.bend": [
+"bv256_ok"
+],
+"vec_uint64_31_decode_ssz_generated.bend": [
+"v31_u64_read"
+],
+"FuluHistoricalBatch_decode_ssz_generated.bend": [
+"HistoricalBatch_read"
+],
+"vec_uint16_3_def_generated.bend": [
+"v3_u16_get_in",
+"v3_u16_get_n",
+"v3_u16_set_n"
+],
+"Fulu_vec_bytevec_32_33_def_generated.bend": [
+"v33_b32_get_n",
+"v33_b32_set_n"
+],
+"FuluTransaction_def_generated.bend": [
+"bl1073741824_get_n",
+"bl1073741824_set_n"
+],
+"vec_uint64_4_def_generated.bend": [
+"v4_u64_get_in",
+"v4_u64_get_n",
+"v4_u64_set_n"
+],
+"Fulu_list_bytelist_1073741824_1048576_def_generated.bend": [
+"l1048576_bl1073741824_croot_read"
+],
+"vec_uint256_8_decode_ssz_generated.bend": [
+"v8_u256_read"
+],
+"FuluExecutionPayload_def_generated.bend": [
+"ExecutionPayload_g2_valid"
+],
+"bitlist_5_def_generated.bend": [
+"bits5_get_in",
+"bits5_get_n",
+"bits5_set_n"
+],
+"Fulu_bytelist_32_def_generated.bend": [
+"bl32_get_n",
+"bl32_set_n"
+],
+"bitvector_33_decode_ssz_generated.bend": [
+"bv33_read"
+],
+"bitlist_17_def_generated.bend": [
+"bits17_get_in",
+"bits17_get_n",
+"bits17_set_n"
+],
+"proglist_VarTestStruct_decode_ssz_generated.bend": [
+"pl_VarTestStruct_bx_ok"
+],
+"FuluBlobSidecar_decode_ssz_generated.bend": [
+"BlobSidecar_read"
+],
+"vec_bool_1_def_generated.bend": [
+"v1_bool_get_in",
+"v1_bool_get_n",
+"v1_bool_set_n"
+],
+"vec_uint32_4_def_generated.bend": [
+"v4_u32_get_in",
+"v4_u32_get_n",
+"v4_u32_set_n"
+],
+"bitlist_33_def_generated.bend": [
+"bits33_get_in",
+"bits33_get_n",
+"bits33_set_n"
+],
+"Fulu_bytevec_256_decode_ssz_generated.bend": [
+"b256_ok"
+],
+"proglist_uint128_decode_ssz_generated.bend": [
+"pl_u128_read"
+],
+"bitlist_8_def_generated.bend": [
+"bits8_get_in",
+"bits8_get_n",
+"bits8_set_n"
+],
+"vec_uint16_513_decode_ssz_generated.bend": [
+"v513_u16_read"
+]
+}

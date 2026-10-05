@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/41
+# type: FuluRoot
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls Root_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/FuluRoot_decode_ssz_generated.bend
+# sym: Root_dcb,Root_decode_checked_budget
+--- a/types/FuluRoot_decode_ssz_generated.bend
++++ b/types/FuluRoot_decode_ssz_generated.bend
+@@ -58,3 +58,3 @@
+   match ok:
+-    case True{}: Root_decode_checked(buf, size)
++    case True{}: Root_decode(buf, size)
+     case False{}: (buf, None{})

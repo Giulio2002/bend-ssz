@@ -1,0 +1,23 @@
+=== r12-b02-delimiter
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: bits_from,bits_in
+spec: ssz/simple-serialize.md Deserialization: Bitlist[N]: the last byte holds the delimiter (its highest set bit), which is not part of the value
+fault: src/obj.bend bits_from: the bit count includes the delimiter bit
+why: delimiter handling at decode
+proofs: proofs/api/FuluAttestation_decode_ssz_proof_generated.bend
+-bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++bits_clear((8 * (len - 1 : U32) + high_bit(last) + 1 : U32), copy_in(buf, off, len))
+
+=== r12-b02-delimiter
+type: bitlist_9
+ops: decode,root
+file: src/obj.bend
+sym: bits_from,bits_in
+spec: ssz/simple-serialize.md Deserialization: Bitlist[N]: the last byte holds the delimiter (its highest set bit), which is not part of the value
+fault: src/obj.bend bits_from: the bit count from 8 * len - 8 + high bit (equal for len >= 1; designed as equivalent)
+why: delimiter handling at decode
+proofs: proofs/api/FuluAttestation_decode_ssz_proof_generated.bend
+-bits_clear((8 * (len - 1 : U32) + high_bit(last) : U32), copy_in(buf, off, len))
++bits_clear((8 * len + high_bit(last) - 8 : U32), copy_in(buf, off, len))

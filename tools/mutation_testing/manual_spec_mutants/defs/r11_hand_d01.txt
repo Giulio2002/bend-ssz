@@ -1,0 +1,71 @@
+## round 11 hand-designed: r11-d01-cache-window
+=== r11-d01-cache-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+sym: l16_ProposerSlashing_cache_fin,l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp,l16_ProposerSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l16_ProposerSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_ProposerSlashing_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Deposit_16_def_generated.bend
+sym: l16_Deposit_cache_fin,l16_Deposit_cache,l16_Deposit_cached_root,l16_Deposit_cset,l16_Deposit_capp,l16_Deposit_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l16_Deposit_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l16_Deposit_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_Attestation_8_def_generated.bend
+sym: l8_Attestation_cache_fin,l8_Attestation_cache,l8_Attestation_cached_root,l8_Attestation_cset,l8_Attestation_capp,l8_Attestation_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l8_Attestation_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: FuluBeaconBlockBody
+ops: root
+file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+sym: l1_AttesterSlashing_cache_fin,l1_AttesterSlashing_cache,l1_AttesterSlashing_cached_root,l1_AttesterSlashing_cset,l1_AttesterSlashing_capp,l1_AttesterSlashing_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l1_AttesterSlashing_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1_AttesterSlashing_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: FuluExecutionPayload
+ops: root
+file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+sym: l1048576_bl1073741824_cache_fin,l1048576_bl1073741824_cache,l1048576_bl1073741824_cached_root,l1048576_bl1073741824_cset,l1048576_bl1073741824_capp,l1048576_bl1073741824_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l1048576_bl1073741824_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1048576_bl1073741824_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: ProgressiveComplexTestStruct
+ops: root
+file: types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend
+sym: l10_ProgressiveSingleFieldContainerTestStruct_cache_fin,l10_ProgressiveSingleFieldContainerTestStruct_cache,l10_ProgressiveSingleFieldContainerTestStruct_cached_root,l10_ProgressiveSingleFieldContainerTestStruct_cset,l10_ProgressiveSingleFieldContainerTestStruct_capp,l10_ProgressiveSingleFieldContainerTestStruct_uncache
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+why: dirty window sized by the element count instead of the tree width
+-l10_ProgressiveSingleFieldContainerTestStruct_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l10_ProgressiveSingleFieldContainerTestStruct_dfill(1n+d), 0, (n - 1 : U32)}
+=== r11-d01-cache-window
+type: FuluBeaconState
+ops: root
+file: types/Fulu_list_Validator_1099511627776_def_generated.bend
+sym: l1099511627776_Validator_cache_fin,l1099511627776_Validator_cache,l1099511627776_Validator_cached_root
+spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+fault: a fresh cache marks only the leaves 0..n-1 dirty (validators: the hand-proved instance)
+why: dirty window sized by the count
+-l1099511627776_Validator_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++l1099511627776_Validator_dfill(1n+d), 0, (n - 1 : U32)}

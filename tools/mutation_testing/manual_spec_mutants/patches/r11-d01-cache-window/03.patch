@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d01-cache-window/03
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: a fresh cache marks only the leaves 0..n-1 dirty (the padding leaves and their parents are never computed: they keep D.zero, not the zero-subtree roots)
+# why: dirty window sized by the element count instead of the tree width
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_cache_fin,l8_Attestation_cache,l8_Attestation_cached_root,l8_Attestation_cset,l8_Attestation_capp,l8_Attestation_uncache
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -155,3 +155,3 @@
+ def l8_Attestation_cache_fin(arr: Array<O.Boxed<FuluAttestation_d.Attestation>>, +n: U32, +d: Nat) -> l8_Attestation_Cached:
+-  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(1n+d), 0, (O.pow2u(d) - 1 : U32)}
++  l8_Attestation_Cached{arr, n, d, l8_Attestation_dfill(1n+d), 0, (n - 1 : U32)}
+ 

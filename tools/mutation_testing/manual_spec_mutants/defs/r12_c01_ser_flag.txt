@@ -1,0 +1,87 @@
+=== r12-c01-ser-flag
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_senc_out,CompatibleUnionBC_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: CompatibleUnionBC_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_senc_out,CompatibleUnionABCA_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: CompatibleUnionABCA_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_senc_out,ProgressiveTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: ProgressiveVarTestStruct
+ops: encode
+file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+sym: ProgressiveVarTestStruct_senc_out,ProgressiveVarTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveVarTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_senc_out,ProgressiveComplexTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveComplexTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_senc_out,ProgressiveBitsStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveBitsStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: ProgressiveSingleListContainerTestStruct
+ops: encode
+file: types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_senc_out,ProgressiveSingleListContainerTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveSingleListContainerTestStruct_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))
+
+=== r12-c01-ser-flag
+type: proglist_uint64
+ops: encode
+file: types/proglist_uint64_encode_ssz_generated.bend
+sym: proglist_uint64_senc_out,proglist_uint64_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: proglist_uint64_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+why: the serialize result taken from the byte count alone
+-(o, O.ser_done(O.is_poisoned(m), n, out))
++(o, O.ser_done(False{}, n, out))

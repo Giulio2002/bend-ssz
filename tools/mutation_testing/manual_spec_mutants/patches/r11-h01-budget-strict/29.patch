@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/29
+# type: FuluG1Point
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluG1Point_decode_ssz_generated.bend
+# sym: G1Point_decode_checked_budget,G1Point_dcb
+--- a/types/FuluG1Point_decode_ssz_generated.bend
++++ b/types/FuluG1Point_decode_ssz_generated.bend
+@@ -61,3 +61,3 @@
+ 
+-def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(Bool.and(U32.is_lt(G1Point_dcost(size), 4294967295), U32.is_le(G1Point_dcost(size), budget)), buf, size)
++def G1Point_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>: G1Point_dcb(Bool.and(U32.is_lt(G1Point_dcost(size), 4294967295), U32.is_lt(G1Point_dcost(size), budget)), buf, size)
+ 

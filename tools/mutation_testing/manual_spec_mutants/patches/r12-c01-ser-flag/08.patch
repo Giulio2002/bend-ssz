@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c01-ser-flag/08
+# type: proglist_uint64
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: proglist_uint64_serialize: the checked writer's validity flag ignored (an invalid value is serialized, not refused)
+# why: the serialize result taken from the byte count alone
+# file: types/proglist_uint64_encode_ssz_generated.bend
+# sym: proglist_uint64_senc_out,proglist_uint64_serialize
+--- a/types/proglist_uint64_encode_ssz_generated.bend
++++ b/types/proglist_uint64_encode_ssz_generated.bend
+@@ -53,3 +53,3 @@
+ def proglist_uint64_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+-  (o, O.ser_done(O.is_poisoned(m), n, out))
++  (o, O.ser_done(False{}, n, out))
+ 

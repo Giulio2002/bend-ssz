@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a01-leaf-noswap/13
+# type: bitvector_31
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: bitvector_31: word 0 of the bytes put into the chunk without the byte swap (bytes 0..3 reversed in the chunk)
+# why: the record words are little-endian loads of the bytes; SHA-256 reads the chunk big-endian, so every word must be swapped
+# file: types/bitvector_31_hashtreeroot_generated.bend
+# sym: bv31_root
+--- a/types/bitvector_31_hashtreeroot_generated.bend
++++ b/types/bitvector_31_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case bitvector_31_d.Bitvector31{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++    case bitvector_31_d.Bitvector31{+w0}: (h, D.D{w0, 0, 0, 0, 0, 0, 0, 0})
+ 

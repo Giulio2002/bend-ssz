@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/17
+# type: FuluCurrentSyncCommitteeBranch
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls CurrentSyncCommitteeBranch_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend
+# sym: CurrentSyncCommitteeBranch_dcb,CurrentSyncCommitteeBranch_decode_checked_budget
+--- a/types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend
++++ b/types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend
+@@ -67,3 +67,3 @@
+   match ok:
+-    case True{}: CurrentSyncCommitteeBranch_decode_checked(buf, size)
++    case True{}: CurrentSyncCommitteeBranch_decode(buf, size)
+     case False{}: (buf, None{})

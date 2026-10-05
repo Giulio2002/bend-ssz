@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a01-leaf-noswap/06
+# type: FuluBytes48
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: FuluBytes48: word 0 of the bytes put into the chunk without the byte swap (bytes 0..3 reversed in the chunk)
+# why: the record words are little-endian loads of the bytes; SHA-256 reads the chunk big-endian, so every word must be swapped
+# file: types/FuluBytes48_hashtreeroot_generated.bend
+# sym: b48_root
+# proofs: proofs/api/FuluG1Point_hashtreeroot_proof_generated.bend,proofs/api/FuluKZGProof_hashtreeroot_proof_generated.bend
+--- a/types/FuluBytes48_hashtreeroot_generated.bend
++++ b/types/FuluBytes48_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case FuluBytes48_d.Bytes48{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), 0, 0, 0, 0}))
++    case FuluBytes48_d.Bytes48{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11}: (h, D.node(hl, D.D{w0, B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), 0, 0, 0, 0}))
+ 

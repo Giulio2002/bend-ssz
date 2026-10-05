@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a04-vector-count/12
+# type: vec_uint128_31
+# ops: decode
+# spec: deserialize(Vector[T, N]) reads N elements of size(T)
+# fault: the copy takes 480 bytes instead of 496 (the last element is left zero)
+# why: element count off by one (range(N - 1))
+# file: types/vec_uint128_31_decode_ssz_generated.bend
+# sym: v31_u128_read,vec_uint128_31_decode
+--- a/types/vec_uint128_31_decode_ssz_generated.bend
++++ b/types/vec_uint128_31_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v31_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 496, Array.new(U32, 8n, 0))
++def v31_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 480, Array.new(U32, 8n, 0))
+ 

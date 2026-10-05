@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-c01-group-acc/10
+# type: FuluExecutionPayload
+# ops: encode
+# spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+# fault: the group ExecutionPayload_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+# why: accumulator overwritten instead of and-ed
+# file: types/FuluExecutionPayload_encode_ssz_generated.bend
+# sym: ExecutionPayload_g0_va0,ExecutionPayload_g0_valid,ExecutionPayload_encode,ExecutionPayload_serialize
+--- a/types/FuluExecutionPayload_encode_ssz_generated.bend
++++ b/types/FuluExecutionPayload_encode_ssz_generated.bend
+@@ -182,3 +182,3 @@
+   (logs_bloom, ok) = pair
+-  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, Bool.and(acc, ok))
++  (FuluExecutionPayload_d.ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, ok)
+ 

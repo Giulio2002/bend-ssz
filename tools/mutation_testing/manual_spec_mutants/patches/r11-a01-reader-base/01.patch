@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/01
+# type: FuluBlobIdentifier
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 32 is read at absolute byte 32 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluBlobIdentifier_decode_ssz_generated.bend
+# sym: BlobIdentifier_rd0,BlobIdentifier_read,BlobIdentifier_decode
+--- a/types/FuluBlobIdentifier_decode_ssz_generated.bend
++++ b/types/FuluBlobIdentifier_decode_ssz_generated.bend
+@@ -19,3 +19,3 @@
+   (buf, +block_root) = pair
+-  BlobIdentifier_rd1(off, len, block_root, uint64_r.u64_read(buf, (off + 32 : U32), 8))
++  BlobIdentifier_rd1(off, len, block_root, uint64_r.u64_read(buf, (32 : U32), 8))
+ 

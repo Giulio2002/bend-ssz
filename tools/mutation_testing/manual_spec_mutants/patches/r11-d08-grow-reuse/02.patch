@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d08-grow-reuse/02
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: growing the cached tree one level keeps the old node array (2^(d+1) slots for a depth-(d+1) tree that needs 2^(d+2))
+# why: node array not reallocated on growth
+# file: types/Fulu_list_Attestation_8_def_generated.bend
+# sym: l8_Attestation_capp_fit,l8_Attestation_cache,l8_Attestation_cached_root,l8_Attestation_capp
+--- a/types/Fulu_list_Attestation_8_def_generated.bend
++++ b/types/Fulu_list_Attestation_8_def_generated.bend
+@@ -200,3 +200,3 @@
+     case True{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, arr, n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, l8_Attestation_room(arr, n), n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), 1n+d, l8_Attestation_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l8_Attestation_Cached{Array.set(O.Boxed<FuluAttestation_d.Attestation>, l8_Attestation_room(arr, n), n, FuluAttestation_d.Attestation_bx_wrap(v)), (n + 1 : U32), 1n+d, nodes, 0, (O.pow2u(1n+d) - 1 : U32)}
+ 

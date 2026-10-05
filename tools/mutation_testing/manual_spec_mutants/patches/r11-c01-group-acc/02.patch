@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-c01-group-acc/02
+# type: FuluBeaconBlockBody
+# ops: encode
+# spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+# fault: the group BeaconBlockBody_g1 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+# why: accumulator overwritten instead of and-ed
+# file: types/FuluBeaconBlockBody_encode_ssz_generated.bend
+# sym: BeaconBlockBody_g1_va4,BeaconBlockBody_g1_valid,BeaconBlockBody_encode,BeaconBlockBody_serialize
+--- a/types/FuluBeaconBlockBody_encode_ssz_generated.bend
++++ b/types/FuluBeaconBlockBody_encode_ssz_generated.bend
+@@ -270,3 +270,3 @@
+   (execution_requests, ok) = pair
+-  (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, Bool.and(acc, ok))
++  (FuluBeaconBlockBody_d.BeaconBlockBody_g1{sync_aggregate, execution_payload, bls_to_execution_changes, blob_kzg_commitments, execution_requests}, ok)
+ 

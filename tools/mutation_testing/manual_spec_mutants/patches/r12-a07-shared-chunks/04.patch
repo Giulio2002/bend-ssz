@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a07-shared-chunks/04
+# type: boolean
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: src/obj.bend bool_chunk: True packed into the last limb of the chunk
+# why: the shared leaf chunk helper used by every container root
+# file: src/obj.bend
+# sym: bool_chunk
+# proofs: proofs/api/FuluValidator_hashtreeroot_proof_generated.bend
+--- a/src/obj.bend
++++ b/src/obj.bend
+@@ -1232,3 +1232,3 @@
+   match b:
+-    case True{}: D.D{16777216, 0, 0, 0, 0, 0, 0, 0}
++    case True{}: D.D{0, 0, 0, 0, 0, 0, 0, 16777216}
+     case False{}: D.zero()

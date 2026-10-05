@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/65
+# type: proglist_uint256
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls proglist_uint256_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/proglist_uint256_decode_ssz_generated.bend
+# sym: proglist_uint256_dcb,proglist_uint256_decode_checked_budget
+--- a/types/proglist_uint256_decode_ssz_generated.bend
++++ b/types/proglist_uint256_decode_ssz_generated.bend
+@@ -60,3 +60,3 @@
+   match ok:
+-    case True{}: proglist_uint256_decode_checked(buf, size)
++    case True{}: proglist_uint256_decode(buf, size)
+     case False{}: (buf, None{})

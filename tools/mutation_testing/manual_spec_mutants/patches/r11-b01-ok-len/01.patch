@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b01-ok-len/01
+# type: FuluSyncCommitteeContribution
+# ops: decode
+# spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+# fault: the validator accepts any window of at least 16 bytes
+# why: length test written as a bound
+# file: types/Fulu_bitvector_128_decode_ssz_generated.bend
+# sym: bv128_ok
+--- a/types/Fulu_bitvector_128_decode_ssz_generated.bend
++++ b/types/Fulu_bitvector_128_decode_ssz_generated.bend
+@@ -35,3 +35,3 @@
+ 
+-def bv128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv128_ok_len(U32.is_eq(len, 16), buf, off)
++def bv128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv128_ok_len(U32.is_le(16, len), buf, off)
+ 

@@ -1,0 +1,151 @@
+## round 11 generated: r11-b01-ok-len
+=== r11-b01-ok-len
+type: FuluSyncCommitteeContribution
+ops: decode
+file: types/Fulu_bitvector_128_decode_ssz_generated.bend
+sym: bv128_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 16 bytes
+why: length test written as a bound
+-def bv128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv128_ok_len(U32.is_eq(len, 16), buf, off)
++def bv128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv128_ok_len(U32.is_le(16, len), buf, off)
+=== r11-b01-ok-len
+type: FuluAttestation
+ops: decode
+file: types/Fulu_bitvector_64_decode_ssz_generated.bend
+sym: bv64_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 8 bytes
+why: length test written as a bound
+-def bv64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv64_ok_len(U32.is_eq(len, 8), buf, off)
++def bv64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv64_ok_len(U32.is_le(8, len), buf, off)
+=== r11-b01-ok-len
+type: FuluExecutionPayloadHeader,FuluExecutionPayload
+ops: decode
+file: types/Fulu_bytevec_256_decode_ssz_generated.bend
+sym: b256_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 256 bytes
+why: length test written as a bound
+-def b256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: b256_ok_len(U32.is_eq(len, 256), buf, off)
++def b256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: b256_ok_len(U32.is_le(256, len), buf, off)
+=== r11-b01-ok-len
+type: FuluBlobSidecar
+ops: decode
+file: types/Fulu_vec_bytevec_32_17_decode_ssz_generated.bend
+sym: v17_b32_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 544 bytes
+why: length test written as a bound
+-def v17_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v17_b32_ok_len(U32.is_eq(len, 544), buf, off)
++def v17_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v17_b32_ok_len(U32.is_le(544, len), buf, off)
+=== r11-b01-ok-len
+type: FuluDeposit
+ops: decode
+file: types/Fulu_vec_bytevec_32_33_decode_ssz_generated.bend
+sym: v33_b32_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 1056 bytes
+why: length test written as a bound
+-def v33_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v33_b32_ok_len(U32.is_eq(len, 1056), buf, off)
++def v33_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v33_b32_ok_len(U32.is_le(1056, len), buf, off)
+=== r11-b01-ok-len
+type: FuluBeaconState
+ops: decode
+file: types/Fulu_vec_bytevec_32_65536_decode_ssz_generated.bend
+sym: v65536_b32_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 2097152 bytes
+why: length test written as a bound
+-def v65536_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v65536_b32_ok_len(U32.is_eq(len, 2097152), buf, off)
++def v65536_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v65536_b32_ok_len(U32.is_le(2097152, len), buf, off)
+=== r11-b01-ok-len
+type: FuluBeaconState,FuluHistoricalBatch
+ops: decode
+file: types/Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend
+sym: v8192_b32_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 262144 bytes
+why: length test written as a bound
+-def v8192_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_b32_ok_len(U32.is_eq(len, 262144), buf, off)
++def v8192_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_b32_ok_len(U32.is_le(262144, len), buf, off)
+=== r11-b01-ok-len
+type: FuluSyncCommittee
+ops: decode
+file: types/Fulu_vec_bytevec_48_512_decode_ssz_generated.bend
+sym: v512_b48_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 24576 bytes
+why: length test written as a bound
+-def v512_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v512_b48_ok_len(U32.is_eq(len, 24576), buf, off)
++def v512_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v512_b48_ok_len(U32.is_le(24576, len), buf, off)
+=== r11-b01-ok-len
+type: FuluBeaconState
+ops: decode
+file: types/Fulu_vec_uint64_64_decode_ssz_generated.bend
+sym: v64_u64_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 512 bytes
+why: length test written as a bound
+-def v64_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v64_u64_ok_len(U32.is_eq(len, 512), buf, off)
++def v64_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v64_u64_ok_len(U32.is_le(512, len), buf, off)
+=== r11-b01-ok-len
+type: FuluBeaconState
+ops: decode
+file: types/Fulu_vec_uint64_8192_decode_ssz_generated.bend
+sym: v8192_u64_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 65536 bytes
+why: length test written as a bound
+-def v8192_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_u64_ok_len(U32.is_eq(len, 65536), buf, off)
++def v8192_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_u64_ok_len(U32.is_le(65536, len), buf, off)
+=== r11-b01-ok-len
+type: ProgressiveBitsStruct
+ops: decode
+file: types/bitvector_1280_decode_ssz_generated.bend
+sym: bv1280_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 160 bytes
+why: length test written as a bound
+-def bv1280_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1280_ok_len(U32.is_eq(len, 160), buf, off)
++def bv1280_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1280_ok_len(U32.is_le(160, len), buf, off)
+=== r11-b01-ok-len
+type: ProgressiveBitsStruct
+ops: decode
+file: types/bitvector_1281_decode_ssz_generated.bend
+sym: bv1281_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 161 bytes
+why: length test written as a bound
+-def bv1281_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1281_ok_len(U32.is_eq(len, 161), buf, off)
++def bv1281_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1281_ok_len(U32.is_le(161, len), buf, off)
+=== r11-b01-ok-len
+type: ProgressiveBitsStruct
+ops: decode
+file: types/bitvector_256_decode_ssz_generated.bend
+sym: bv256_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 32 bytes
+why: length test written as a bound
+-def bv256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv256_ok_len(U32.is_eq(len, 32), buf, off)
++def bv256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv256_ok_len(U32.is_le(32, len), buf, off)
+=== r11-b01-ok-len
+type: ProgressiveBitsStruct
+ops: decode
+file: types/bitvector_257_decode_ssz_generated.bend
+sym: bv257_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 33 bytes
+why: length test written as a bound
+-def bv257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv257_ok_len(U32.is_eq(len, 33), buf, off)
++def bv257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv257_ok_len(U32.is_le(33, len), buf, off)
+=== r11-b01-ok-len
+type: ComplexTestStruct
+ops: decode
+file: types/vec_FixedTestStruct_4_decode_ssz_generated.bend
+sym: v4_FixedTestStruct_ok
+spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+fault: the validator accepts any window of at least 52 bytes
+why: length test written as a bound
+-def v4_FixedTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v4_FixedTestStruct_ok_len(U32.is_eq(len, 52), buf, off)
++def v4_FixedTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v4_FixedTestStruct_ok_len(U32.is_le(52, len), buf, off)

@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a06-uint-width-mask/03
+# type: uint8
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: uint8 root: uint8 masked to 7 bits before packing
+# why: a width table off by one size
+# file: types/uint8_hashtreeroot_generated.bend
+# sym: u8_root
+# proofs: proofs/api/FuluParticipationFlags_hashtreeroot_proof_generated.bend,proofs/api/SingleFieldTestStruct_hashtreeroot_proof_generated.bend
+--- a/types/uint8_hashtreeroot_generated.bend
++++ b/types/uint8_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def u8_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
++def u8_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk((o .&. 127 : U32)))
+ 

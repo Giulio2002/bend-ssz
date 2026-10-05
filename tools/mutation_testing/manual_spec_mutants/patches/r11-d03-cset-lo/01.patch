@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d03-cset-lo/01
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: cset does not lower the dirty window's low end to i (a set below the window is never rehashed)
+# why: only the high end of the window widened
+# file: types/Fulu_list_ProposerSlashing_16_def_generated.bend
+# sym: l16_ProposerSlashing_cset_in,l16_ProposerSlashing_cache,l16_ProposerSlashing_cached_root,l16_ProposerSlashing_cset,l16_ProposerSlashing_capp,l16_ProposerSlashing_uncache
+--- a/types/Fulu_list_ProposerSlashing_16_def_generated.bend
++++ b/types/Fulu_list_ProposerSlashing_16_def_generated.bend
+@@ -190,3 +190,3 @@
+   match ok:
+-    case True{}: (l16_ProposerSlashing_Cached{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), n, d, nodes, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
++    case True{}: (l16_ProposerSlashing_Cached{Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, arr, i, FuluProposerSlashing_d.ProposerSlashing_bx_wrap(v)), n, d, nodes, lo, O.pick(U32.is_le(i, hi), hi, i)}, True{})
+     case False{}: (l16_ProposerSlashing_Cached{arr, n, d, nodes, lo, hi}, False{})

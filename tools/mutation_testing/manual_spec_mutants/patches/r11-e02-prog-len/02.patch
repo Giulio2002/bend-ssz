@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-e02-prog-len/02
+# type: proglist_uint128
+# ops: encode,root
+# spec: len(ProgressiveList[uint128]) = byte length / 16
+# fault: len rounds up: (n + 15) / 16 (EXPECTED EQUIVALENT in context: every public writer keeps the byte length a multiple of 16)
+# why: ceiling for floor
+# file: types/proglist_uint128_def_generated.bend
+# sym: pl_u128_len_of,pl_u128_len,pl_u128_append
+--- a/types/proglist_uint128_def_generated.bend
++++ b/types/proglist_uint128_def_generated.bend
+@@ -18,3 +18,3 @@
+   (o, +n) = pair
+-  (o, U32.div(n, 16))
++  (o, U32.div((n + 15 : U32), 16))
+ 

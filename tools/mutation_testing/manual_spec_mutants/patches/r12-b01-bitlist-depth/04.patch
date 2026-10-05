@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-b01-bitlist-depth/04
+# type: bitlist_15
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+# fault: bitlist_15: the bit chunk tree of depth 1 instead of 0
+# why: chunk_count of the limit rounded the wrong way / counted in bytes
+# file: types/bitlist_15_hashtreeroot_generated.bend
+# sym: bits15_root
+--- a/types/bitlist_15_hashtreeroot_generated.bend
++++ b/types/bitlist_15_hashtreeroot_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def bits15_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
++def bits15_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
+ 

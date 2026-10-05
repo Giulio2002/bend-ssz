@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c05-prog-valid-last/05
+# type: ProgressiveSingleListContainerTestStruct
+# ops: encode
+# spec: ssz/simple-serialize.md ProgressiveContainer (EIP-7495): a value is valid when every field value is valid
+# fault: ProgressiveSingleListContainerTestStruct_valid: the last field's validity dropped
+# why: accumulator slip in the last step
+# file: types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveSingleListContainerTestStruct_va0,ProgressiveSingleListContainerTestStruct_valid_f,ProgressiveSingleListContainerTestStruct_valid
+--- a/types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+@@ -41,3 +41,3 @@
+   (f_C, ok) = pair
+-  (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, Bool.and(acc, ok))
++  (ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct{f_C}, acc)
+ 

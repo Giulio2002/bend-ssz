@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b01-ok-len/07
+# type: FuluBeaconState,FuluHistoricalBatch
+# ops: decode
+# spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+# fault: the validator accepts any window of at least 262144 bytes
+# why: length test written as a bound
+# file: types/Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend
+# sym: v8192_b32_ok
+--- a/types/Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend
++++ b/types/Fulu_vec_bytevec_32_8192_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def v8192_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_b32_ok_len(U32.is_eq(len, 262144), buf, off)
++def v8192_b32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_b32_ok_len(U32.is_le(262144, len), buf, off)
+ 

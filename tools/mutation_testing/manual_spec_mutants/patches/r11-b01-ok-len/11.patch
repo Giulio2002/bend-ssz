@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b01-ok-len/11
+# type: ProgressiveBitsStruct
+# ops: decode
+# spec: deserialize of a fixed-size type: the input must be exactly size(T) bytes
+# fault: the validator accepts any window of at least 160 bytes
+# why: length test written as a bound
+# file: types/bitvector_1280_decode_ssz_generated.bend
+# sym: bv1280_ok
+--- a/types/bitvector_1280_decode_ssz_generated.bend
++++ b/types/bitvector_1280_decode_ssz_generated.bend
+@@ -18,3 +18,3 @@
+ 
+-def bv1280_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1280_ok_len(U32.is_eq(len, 160), buf, off)
++def bv1280_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv1280_ok_len(U32.is_le(160, len), buf, off)
+ 

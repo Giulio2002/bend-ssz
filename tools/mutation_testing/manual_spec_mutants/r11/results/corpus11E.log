@@ -1,0 +1,5 @@
+r11-b02-ok-pad/01 SURVIVED 0 0 
+r11-c01-group-acc/01 SURVIVED 0 0 
+r11-e01-prog-append-len/01 SURVIVED 0 0 
+r11-f01-union-same-type/01 KILLED 1 0 
+done

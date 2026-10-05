@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a04-vector-count/07
+# type: vec_bool_513
+# ops: decode
+# spec: deserialize(Vector[T, N]) reads N elements of size(T)
+# fault: the copy takes 512 bytes instead of 513 (the last element is left zero)
+# why: element count off by one (range(N - 1))
+# file: types/vec_bool_513_decode_ssz_generated.bend
+# sym: v513_bool_read,vec_bool_513_decode
+--- a/types/vec_bool_513_decode_ssz_generated.bend
++++ b/types/vec_bool_513_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
++def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
+ 

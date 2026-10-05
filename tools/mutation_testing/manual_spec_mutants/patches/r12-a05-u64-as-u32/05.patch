@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/05
+# type: FuluBlobSidecar
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluBlobSidecar: the uint64 field `index` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluBlobSidecar_hashtreeroot_generated.bend
+# sym: BlobSidecar_root,u64_root
+--- a/types/FuluBlobSidecar_hashtreeroot_generated.bend
++++ b/types/FuluBlobSidecar_hashtreeroot_generated.bend
+@@ -50,3 +50,3 @@
+   match o:
+-    case FuluBlobSidecar_d.BlobSidecar{+index, blob, +kzg_commitment, +kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}: BlobSidecar_rt0(hl, seg, index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof, uint64_h.u64_root(hl, h, index, seg))
++    case FuluBlobSidecar_d.BlobSidecar{+index, blob, +kzg_commitment, +kzg_proof, signed_block_header, kzg_commitment_inclusion_proof}: BlobSidecar_rt0(hl, seg, index, blob, kzg_commitment, kzg_proof, signed_block_header, kzg_commitment_inclusion_proof, (h, O.u32_chunk(O.u64_lo_of(index))))
+ 

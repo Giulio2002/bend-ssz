@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c02-ser-unchecked/04
+# type: ProgressiveVarTestStruct
+# ops: encode
+# spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+# fault: ProgressiveVarTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+# why: the serialize path wired to the encode path's writer
+# file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+# sym: ProgressiveVarTestStruct_senc_go,ProgressiveVarTestStruct_serialize
+--- a/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+@@ -146,3 +146,3 @@
+     case True{}: (o, O.refused())
+-    case False{}: ProgressiveVarTestStruct_senc_put(n, ProgressiveVarTestStruct_putk(O.out_new(n), 0, o))
++    case False{}: ProgressiveVarTestStruct_senc_put(n, ProgressiveVarTestStruct_putn(O.out_new(n), 0, o))
+ 

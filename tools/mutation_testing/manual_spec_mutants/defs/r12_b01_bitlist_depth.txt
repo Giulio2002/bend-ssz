@@ -1,0 +1,175 @@
+=== r12-b01-bitlist-depth
+type: bitlist_1
+ops: root
+file: types/bitlist_1_hashtreeroot_generated.bend
+sym: bits1_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_1: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_2
+ops: root
+file: types/bitlist_2_hashtreeroot_generated.bend
+sym: bits2_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_2: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_8
+ops: root
+file: types/bitlist_8_hashtreeroot_generated.bend
+sym: bits8_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_8: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_15
+ops: root
+file: types/bitlist_15_hashtreeroot_generated.bend
+sym: bits15_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_15: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_16
+ops: root
+file: types/bitlist_16_hashtreeroot_generated.bend
+sym: bits16_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_16: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_17
+ops: root
+file: types/bitlist_17_hashtreeroot_generated.bend
+sym: bits17_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_17: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_31
+ops: root
+file: types/bitlist_31_hashtreeroot_generated.bend
+sym: bits31_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_31: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_32
+ops: root
+file: types/bitlist_32_hashtreeroot_generated.bend
+sym: bits32_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_32: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: bitlist_33
+ops: root
+file: types/bitlist_33_hashtreeroot_generated.bend
+sym: bits33_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_33: the bit chunk tree of depth 1 instead of 0
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 0, seg)
++O.bits_root(hl, h, o, 1, seg)
+
+=== r12-b01-bitlist-depth
+type: ProgressiveBitsStruct
+ops: root
+file: types/bitlist_1280_hashtreeroot_generated.bend
+sym: bits1280_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_1280: the bit chunk tree of depth 4 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 4, seg)
+
+=== r12-b01-bitlist-depth
+type: ProgressiveBitsStruct
+ops: root
+file: types/bitlist_1280_hashtreeroot_generated.bend
+sym: bits1280_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_1280: the bit chunk tree of depth 2 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 2, seg)
+
+=== r12-b01-bitlist-depth
+type: ProgressiveBitsStruct
+ops: root
+file: types/bitlist_1281_hashtreeroot_generated.bend
+sym: bits1281_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_1281: the bit chunk tree of depth 4 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 4, seg)
+
+=== r12-b01-bitlist-depth
+type: ProgressiveBitsStruct
+ops: root
+file: types/bitlist_1281_hashtreeroot_generated.bend
+sym: bits1281_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: bitlist_1281: the bit chunk tree of depth 2 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 2, seg)
+
+=== r12-b01-bitlist-depth
+type: FuluPendingAttestation
+ops: root
+file: types/Fulu_bitlist_2048_hashtreeroot_generated.bend
+sym: bits2048_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: Fulu_bitlist_2048: the bit chunk tree of depth 4 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 4, seg)
+
+=== r12-b01-bitlist-depth
+type: FuluPendingAttestation
+ops: root
+file: types/Fulu_bitlist_2048_hashtreeroot_generated.bend
+sym: bits2048_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: Fulu_bitlist_2048: the bit chunk tree of depth 2 instead of 3
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 3, seg)
++O.bits_root(hl, h, o, 2, seg)
+
+=== r12-b01-bitlist-depth
+type: FuluAttestation
+ops: root
+file: types/Fulu_bitlist_131072_hashtreeroot_generated.bend
+sym: bits131072_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(Bitlist[N]) = mix_in_length(merkleize(pack_bits(value), limit=chunk_count(type)), len(value)), chunk_count = (N + 255) // 256
+fault: Fulu_bitlist_131072: the bit chunk tree of depth 10 instead of 9
+why: chunk_count of the limit rounded the wrong way / counted in bytes
+-O.bits_root(hl, h, o, 9, seg)
++O.bits_root(hl, h, o, 10, seg)

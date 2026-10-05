@@ -1,0 +1,61 @@
+## round 11 hand-designed: r11-e01-prog-append-len
+=== r11-e01-prog-append-len
+type: proglist_uint8
+ops: encode,root
+file: types/proglist_uint8_def_generated.bend
+sym: pl_u8_grow,pl_u8_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 1 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), ((n + 1 : U32) * 1 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 1 : U32)), (n * 1 : U32)), n, v)
+=== r11-e01-prog-append-len
+type: proglist_uint16
+ops: encode,root
+file: types/proglist_uint16_def_generated.bend
+sym: pl_u16_grow,pl_u16_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 2 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2 : U32)), ((n + 1 : U32) * 2 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 2 : U32)), (n * 2 : U32)), n, v)
+=== r11-e01-prog-append-len
+type: proglist_uint32
+ops: encode,root
+file: types/proglist_uint32_def_generated.bend
+sym: pl_u32_grow,pl_u32_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 4 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), ((n + 1 : U32) * 4 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 4 : U32)), (n * 4 : U32)), n, v)
+=== r11-e01-prog-append-len
+type: proglist_uint64
+ops: encode,root
+file: types/proglist_uint64_def_generated.bend
+sym: pl_u64_grow,pl_u64_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 8 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), ((n + 1 : U32) * 8 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 8 : U32)), (n * 8 : U32)), n, v)
+=== r11-e01-prog-append-len
+type: proglist_uint128
+ops: encode,root
+file: types/proglist_uint128_def_generated.bend
+sym: pl_u128_grow,pl_u128_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 16 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), ((n + 1 : U32) * 16 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 16 : U32)), (n * 16 : U32)), n, v)
+=== r11-e01-prog-append-len
+type: proglist_uint256
+ops: encode,root
+file: types/proglist_uint256_def_generated.bend
+sym: pl_u256_grow,pl_u256_append
+spec: ProgressiveList append: the list holds n + 1 elements after appending to n (serialize / hash_tree_root see it)
+fault: append grows the storage but leaves the byte length at n * 32 (the appended element is written past the length and lost)
+why: resize to the old length
+-O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), ((n + 1 : U32) * 32 : U32)), n, v)
++O.words_resize(O.words_fit(o, ((n + 1 : U32) * 32 : U32)), (n * 32 : U32)), n, v)

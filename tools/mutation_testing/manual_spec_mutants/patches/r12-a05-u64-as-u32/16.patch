@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/16
+# type: FuluSyncCommitteeContribution
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluSyncCommitteeContribution: the uint64 field `subcommittee_index` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+# sym: SyncCommitteeContribution_rt1,u64_root
+--- a/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
++++ b/types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend
+@@ -35,3 +35,3 @@
+   (h, d_beacon_block_root) = pair
+-  SyncCommitteeContribution_rt2(hl, seg, slot, beacon_block_root, subcommittee_index, aggregation_bits, signature, d_slot, d_beacon_block_root, uint64_h.u64_root(hl, h, subcommittee_index, seg))
++  SyncCommitteeContribution_rt2(hl, seg, slot, beacon_block_root, subcommittee_index, aggregation_bits, signature, d_slot, d_beacon_block_root, (h, O.u32_chunk(O.u64_lo_of(subcommittee_index))))
+ 

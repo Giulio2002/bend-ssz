@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d02-cache-grow-window/04
+# type: FuluBeaconBlockBody
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+# why: dirty window after growth sized by the count
+# file: types/Fulu_list_AttesterSlashing_1_def_generated.bend
+# sym: l1_AttesterSlashing_capp_fit,l1_AttesterSlashing_cache,l1_AttesterSlashing_cached_root,l1_AttesterSlashing_cset,l1_AttesterSlashing_capp,l1_AttesterSlashing_uncache
+--- a/types/Fulu_list_AttesterSlashing_1_def_generated.bend
++++ b/types/Fulu_list_AttesterSlashing_1_def_generated.bend
+@@ -200,3 +200,3 @@
+     case True{}: l1_AttesterSlashing_Cached{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, arr, n, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l1_AttesterSlashing_Cached{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, l1_AttesterSlashing_room(arr, n), n, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), (n + 1 : U32), 1n+d, l1_AttesterSlashing_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l1_AttesterSlashing_Cached{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, l1_AttesterSlashing_room(arr, n), n, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(v)), (n + 1 : U32), 1n+d, l1_AttesterSlashing_dfill(2n+d), 0, n}
+ 

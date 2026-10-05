@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-c04-union-sel-index/06
+# type: CompatibleUnionABCA
+# ops: encode
+# spec: ssz/simple-serialize.md (EIP-8016 CompatibleUnion): serialize = selector byte || serialize(value); the value must be a valid value of the selected option
+# fault: CompatibleUnionABCA: option 2 written with selector byte 2 (its index) instead of 3
+# why: selector = position in the option list, not the declared selector
+# file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+# sym: CompatibleUnionABCA_pt2,CompatibleUnionABCA_put
+--- a/types/CompatibleUnionABCA_encode_ssz_generated.bend
++++ b/types/CompatibleUnionABCA_encode_ssz_generated.bend
+@@ -46,3 +46,3 @@
+ def CompatibleUnionABCA_pt2(+pos: U32, v: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct, out: Array<U32>) -> Array<U32> & CompatibleUnionABCA_d.CompatibleUnionABCA:
+-  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 3), (pos + 1 : U32), v))
++  CompatibleUnionABCA_pb2(ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_put(O.w8(out, pos, 2), (pos + 1 : U32), v))
+ 

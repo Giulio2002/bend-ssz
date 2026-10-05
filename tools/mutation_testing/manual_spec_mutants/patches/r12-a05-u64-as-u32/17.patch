@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-a05-u64-as-u32/17
+# type: FuluValidator
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+# fault: FuluValidator: the uint64 field `withdrawable_epoch` hashed as its low 32 bits (packed like a uint32)
+# why: width confusion for an Epoch / Slot / Gwei field: the high word is dropped from the chunk
+# file: types/FuluValidator_hashtreeroot_generated.bend
+# sym: Validator_rt6,u64_root
+--- a/types/FuluValidator_hashtreeroot_generated.bend
++++ b/types/FuluValidator_hashtreeroot_generated.bend
+@@ -22,3 +22,3 @@
+   (h, d_exit_epoch) = pair
+-  Validator_rt7(hl, seg, pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch, d_pubkey, d_withdrawal_credentials, d_effective_balance, d_slashed, d_activation_eligibility_epoch, d_activation_epoch, d_exit_epoch, uint64_h.u64_root(hl, h, withdrawable_epoch, seg))
++  Validator_rt7(hl, seg, pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch, d_pubkey, d_withdrawal_credentials, d_effective_balance, d_slashed, d_activation_eligibility_epoch, d_activation_epoch, d_exit_epoch, (h, O.u32_chunk(O.u64_lo_of(withdrawable_epoch))))
+ 

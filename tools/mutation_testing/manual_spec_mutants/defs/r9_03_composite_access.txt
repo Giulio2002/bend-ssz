@@ -1,0 +1,80 @@
+=== r9-c01-composite-get
+type: ComplexTestStruct
+ops: encode,root
+file: types/vec_FixedTestStruct_4_def_generated.bend
+sym: v4_FixedTestStruct_get
+spec: element i exists iff i < length
+fault: the getter accepts i == length (reads the slot after the last element: for a vector the array has exactly N slots)
+why: off-by-one
+-    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
++    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_get_in(U32.is_le(i, n), arr, n, i)
+=== r9-c02-composite-set
+type: ComplexTestStruct
+ops: encode,root
+file: types/vec_FixedTestStruct_4_def_generated.bend
+sym: v4_FixedTestStruct_set
+spec: element i exists iff i < length
+fault: the setter accepts i == length
+why: off-by-one
+-    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case v4_FixedTestStruct_Seq{arr, +n}: v4_FixedTestStruct_put_in(U32.is_le(i, n), arr, n, i, v)
+=== r9-c03-composite-read
+type: ComplexTestStruct
+ops: encode,root
+file: types/vec_FixedTestStruct_4_def_generated.bend
+sym: v4_FixedTestStruct_at,v4_FixedTestStruct_get
+spec: get(l, i) is element i
+fault: the getter reads element 0 whatever i
+why: index ignored
+-  v4_FixedTestStruct_took(n, Array.get(FixedTestStruct_d.FixedTestStruct, arr, i))
++  v4_FixedTestStruct_took(n, Array.get(FixedTestStruct_d.FixedTestStruct, arr, 0))
+=== r9-c04-composite-write
+type: ComplexTestStruct
+ops: encode,root
+file: types/vec_FixedTestStruct_4_def_generated.bend
+sym: v4_FixedTestStruct_put_in,v4_FixedTestStruct_set
+spec: set(l, i, x) replaces element i
+fault: the setter writes element 0 whatever i
+why: index ignored
+-    case True{}: (v4_FixedTestStruct_Seq{Array.set(FixedTestStruct_d.FixedTestStruct, arr, i, v), n}, True{})
++    case True{}: (v4_FixedTestStruct_Seq{Array.set(FixedTestStruct_d.FixedTestStruct, arr, 0, v), n}, True{})
+=== r9-c01-composite-get
+type: ProgressiveTestStruct
+ops: encode,root
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_get
+spec: element i exists iff i < length
+fault: the getter accepts i == length (reads the slot after the last element: for a vector the array has exactly N slots)
+why: off-by-one
+-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_get_in(U32.is_lt(i, n), arr, n, i)
++    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_get_in(U32.is_le(i, n), arr, n, i)
+=== r9-c02-composite-set
+type: ProgressiveTestStruct
+ops: encode,root
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_set
+spec: element i exists iff i < length
+fault: the setter accepts i == length
+why: off-by-one
+-    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_put_in(U32.is_lt(i, n), arr, n, i, v)
++    case pl_SmallTestStruct_Seq{arr, +n}: pl_SmallTestStruct_put_in(U32.is_le(i, n), arr, n, i, v)
+=== r9-c03-composite-read
+type: ProgressiveTestStruct
+ops: encode,root
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_at,pl_SmallTestStruct_get
+spec: get(l, i) is element i
+fault: the getter reads element 0 whatever i
+why: index ignored
+-  pl_SmallTestStruct_took(n, Array.get(SmallTestStruct_d.SmallTestStruct, arr, i))
++  pl_SmallTestStruct_took(n, Array.get(SmallTestStruct_d.SmallTestStruct, arr, 0))
+=== r9-c04-composite-write
+type: ProgressiveTestStruct
+ops: encode,root
+file: types/proglist_SmallTestStruct_def_generated.bend
+sym: pl_SmallTestStruct_put_in,pl_SmallTestStruct_set
+spec: set(l, i, x) replaces element i
+fault: the setter writes element 0 whatever i
+why: index ignored
+-    case True{}: (pl_SmallTestStruct_Seq{Array.set(SmallTestStruct_d.SmallTestStruct, arr, i, v), n}, True{})
++    case True{}: (pl_SmallTestStruct_Seq{Array.set(SmallTestStruct_d.SmallTestStruct, arr, 0, v), n}, True{})

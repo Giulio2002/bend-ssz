@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/23
+# type: FuluEth1Block
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluEth1Block_decode_ssz_generated.bend
+# sym: Eth1Block_decode_checked_budget,Eth1Block_dcb
+--- a/types/FuluEth1Block_decode_ssz_generated.bend
++++ b/types/FuluEth1Block_decode_ssz_generated.bend
+@@ -86,3 +86,3 @@
+ 
+-def Eth1Block_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dcb(Bool.and(U32.is_lt(Eth1Block_dcost(size), 4294967295), U32.is_le(Eth1Block_dcost(size), budget)), buf, size)
++def Eth1Block_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluEth1Block_d.Eth1Block>: Eth1Block_dcb(Bool.and(U32.is_lt(Eth1Block_dcost(size), 4294967295), U32.is_lt(Eth1Block_dcost(size), budget)), buf, size)
+ 

@@ -1,0 +1,730 @@
+=== r9-d01-getter-neighbour
+type: FixedTestStruct
+ops: encode,root
+file: types/FixedTestStruct_def_generated.bend
+sym: FixedTestStruct_get_f_A,FixedTestStruct_get_f_A
+spec: a container getter returns the field it names (fields are distinct values)
+fault: FixedTestStruct_get_f_A returns the neighbour field f_C of the same type
+why: copy-paste of the neighbour getter
+-    case FixedTestStruct{+f_A, +f_B, +f_C}: (FixedTestStruct{f_A, f_B, f_C}, f_A)
++    case FixedTestStruct{+f_A, +f_B, +f_C}: (FixedTestStruct{f_A, f_B, f_C}, f_C)
+=== r9-d01-getter-neighbour
+type: FixedTestStruct
+ops: encode,root
+file: types/FixedTestStruct_def_generated.bend
+sym: FixedTestStruct_get_f_C,FixedTestStruct_get_f_C
+spec: a container getter returns the field it names (fields are distinct values)
+fault: FixedTestStruct_get_f_C returns the neighbour field f_A of the same type
+why: copy-paste of the neighbour getter
+-    case FixedTestStruct{+f_A, +f_B, +f_C}: (FixedTestStruct{f_A, f_B, f_C}, f_C)
++    case FixedTestStruct{+f_A, +f_B, +f_C}: (FixedTestStruct{f_A, f_B, f_C}, f_A)
+=== r9-d02-setter-neighbour
+type: FixedTestStruct
+ops: encode,root
+file: types/FixedTestStruct_def_generated.bend
+sym: FixedTestStruct_set_f_C,FixedTestStruct_set_f_C
+spec: a container setter replaces the field it names and no other
+fault: FixedTestStruct_set_f_C writes the neighbour field f_A (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case FixedTestStruct{+f_A, +f_B, +f_C}: FixedTestStruct{f_A, f_B, v}
++    case FixedTestStruct{+f_A, +f_B, +f_C}: FixedTestStruct{v, f_B, f_C}
+=== r9-d01-getter-neighbour
+type: SmallTestStruct
+ops: encode,root
+file: types/SmallTestStruct_def_generated.bend
+sym: SmallTestStruct_get_f_A,SmallTestStruct_get_f_A
+spec: a container getter returns the field it names (fields are distinct values)
+fault: SmallTestStruct_get_f_A returns the neighbour field f_B of the same type
+why: copy-paste of the neighbour getter
+-    case SmallTestStruct{+f_A, +f_B}: (SmallTestStruct{f_A, f_B}, f_A)
++    case SmallTestStruct{+f_A, +f_B}: (SmallTestStruct{f_A, f_B}, f_B)
+=== r9-d01-getter-neighbour
+type: SmallTestStruct
+ops: encode,root
+file: types/SmallTestStruct_def_generated.bend
+sym: SmallTestStruct_get_f_B,SmallTestStruct_get_f_B
+spec: a container getter returns the field it names (fields are distinct values)
+fault: SmallTestStruct_get_f_B returns the neighbour field f_A of the same type
+why: copy-paste of the neighbour getter
+-    case SmallTestStruct{+f_A, +f_B}: (SmallTestStruct{f_A, f_B}, f_B)
++    case SmallTestStruct{+f_A, +f_B}: (SmallTestStruct{f_A, f_B}, f_A)
+=== r9-d01-getter-neighbour
+type: VarTestStruct
+ops: encode,root
+file: types/VarTestStruct_def_generated.bend
+sym: VarTestStruct_get_f_A,VarTestStruct_get_f_A
+spec: a container getter returns the field it names (fields are distinct values)
+fault: VarTestStruct_get_f_A returns the neighbour field f_C of the same type
+why: copy-paste of the neighbour getter
+-    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, f_B, f_C}, f_A)
++    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, f_B, f_C}, f_C)
+=== r9-d01-getter-neighbour
+type: VarTestStruct
+ops: encode,root
+file: types/VarTestStruct_def_generated.bend
+sym: VarTestStruct_get_f_C,VarTestStruct_get_f_C
+spec: a container getter returns the field it names (fields are distinct values)
+fault: VarTestStruct_get_f_C returns the neighbour field f_A of the same type
+why: copy-paste of the neighbour getter
+-    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, f_B, f_C}, f_C)
++    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, f_B, f_C}, f_A)
+=== r9-d03-swap-noop
+type: VarTestStruct
+ops: encode,root
+file: types/VarTestStruct_def_generated.bend
+sym: VarTestStruct_swap_f_B,VarTestStruct_swap_f_B
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: VarTestStruct_swap_f_B leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, v, f_C}, f_B)
++    case VarTestStruct{+f_A, f_B, +f_C}: (VarTestStruct{f_A, f_B, f_C}, v)
+=== r9-d01-getter-neighbour
+type: ComplexTestStruct
+ops: encode,root
+file: types/ComplexTestStruct_def_generated.bend
+sym: ComplexTestStruct_get_f_A,ComplexTestStruct_get_f_A
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ComplexTestStruct_get_f_A returns the neighbour field f_C of the same type
+why: copy-paste of the neighbour getter
+-    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, f_A)
++    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, f_C)
+=== r9-d01-getter-neighbour
+type: ComplexTestStruct
+ops: encode,root
+file: types/ComplexTestStruct_def_generated.bend
+sym: ComplexTestStruct_get_f_C,ComplexTestStruct_get_f_C
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ComplexTestStruct_get_f_C returns the neighbour field f_A of the same type
+why: copy-paste of the neighbour getter
+-    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, f_C)
++    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, f_A)
+=== r9-d03-swap-noop
+type: ComplexTestStruct
+ops: encode,root
+file: types/ComplexTestStruct_def_generated.bend
+sym: ComplexTestStruct_swap_f_B,ComplexTestStruct_swap_f_B
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ComplexTestStruct_swap_f_B leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, v, f_C, f_D, f_E, f_F, f_G}, f_B)
++    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, v)
+=== r9-d03-swap-noop
+type: ComplexTestStruct
+ops: encode,root
+file: types/ComplexTestStruct_def_generated.bend
+sym: ComplexTestStruct_swap_f_D,ComplexTestStruct_swap_f_D
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ComplexTestStruct_swap_f_D leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, v, f_E, f_F, f_G}, f_D)
++    case ComplexTestStruct{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: (ComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, v)
+=== r9-d03-swap-noop
+type: BitsStruct
+ops: encode,root
+file: types/BitsStruct_def_generated.bend
+sym: BitsStruct_swap_f_A,BitsStruct_swap_f_A
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BitsStruct_swap_f_A leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: (BitsStruct{v, f_B, f_C, f_D, f_E}, f_A)
++    case BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: (BitsStruct{f_A, f_B, f_C, f_D, f_E}, v)
+=== r9-d03-swap-noop
+type: BitsStruct
+ops: encode,root
+file: types/BitsStruct_def_generated.bend
+sym: BitsStruct_swap_f_D,BitsStruct_swap_f_D
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BitsStruct_swap_f_D leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: (BitsStruct{f_A, f_B, f_C, v, f_E}, f_D)
++    case BitsStruct{f_A, +f_B, +f_C, f_D, +f_E}: (BitsStruct{f_A, f_B, f_C, f_D, f_E}, v)
+=== r9-d03-swap-noop
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/ProgressiveBitsStruct_def_generated.bend
+sym: ProgressiveBitsStruct_g0_swap_f_B,ProgressiveBitsStruct_swap_f_B
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ProgressiveBitsStruct_g0_swap_f_B leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: (ProgressiveBitsStruct_g0{f_A, v, f_C, f_D, f_E, f_F, f_G, f_H}, f_B)
++    case ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: (ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, v)
+=== r9-d03-swap-noop
+type: ProgressiveBitsStruct
+ops: encode,root
+file: types/ProgressiveBitsStruct_def_generated.bend
+sym: ProgressiveBitsStruct_g0_swap_f_C,ProgressiveBitsStruct_swap_f_C
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ProgressiveBitsStruct_g0_swap_f_C leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: (ProgressiveBitsStruct_g0{f_A, f_B, v, f_D, f_E, f_F, f_G, f_H}, f_C)
++    case ProgressiveBitsStruct_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: (ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, v)
+=== r9-d03-swap-noop
+type: ProgressiveComplexTestStruct
+ops: encode,root
+file: types/ProgressiveComplexTestStruct_def_generated.bend
+sym: ProgressiveComplexTestStruct_swap_f_B,ProgressiveComplexTestStruct_swap_f_B
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ProgressiveComplexTestStruct_swap_f_B leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: (ProgressiveComplexTestStruct{f_A, v, f_C, f_D, f_E, f_F, f_G, f_H}, f_B)
++    case ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: (ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, v)
+=== r9-d03-swap-noop
+type: ProgressiveComplexTestStruct
+ops: encode,root
+file: types/ProgressiveComplexTestStruct_def_generated.bend
+sym: ProgressiveComplexTestStruct_swap_f_C,ProgressiveComplexTestStruct_swap_f_C
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ProgressiveComplexTestStruct_swap_f_C leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: (ProgressiveComplexTestStruct{f_A, f_B, v, f_D, f_E, f_F, f_G, f_H}, f_C)
++    case ProgressiveComplexTestStruct{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: (ProgressiveComplexTestStruct{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, v)
+=== r9-d01-getter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_get_genesis_time,BeaconState_get_genesis_time
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconState_g0_get_genesis_time returns the neighbour field slot of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, genesis_time)
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, slot)
+=== r9-d01-getter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_get_slot,BeaconState_get_slot
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconState_g0_get_slot returns the neighbour field genesis_time of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, slot)
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, genesis_time)
+=== r9-d01-getter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_get_previous_justified_checkpoint,BeaconState_get_previous_justified_checkpoint
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconState_g2_get_previous_justified_checkpoint returns the neighbour field current_justified_checkpoint of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, previous_justified_checkpoint)
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, current_justified_checkpoint)
+=== r9-d01-getter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_get_current_justified_checkpoint,BeaconState_get_current_justified_checkpoint
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconState_g2_get_current_justified_checkpoint returns the neighbour field finalized_checkpoint of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, current_justified_checkpoint)
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: (BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}, finalized_checkpoint)
+=== r9-d02-setter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_set_genesis_time,BeaconState_set_genesis_time
+spec: a container setter replaces the field it names and no other
+fault: BeaconState_g0_set_genesis_time writes the neighbour field slot (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{v, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{genesis_time, genesis_validators_root, v, fork, latest_block_header, block_roots, state_roots, historical_roots}
+=== r9-d02-setter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_set_slot,BeaconState_set_slot
+spec: a container setter replaces the field it names and no other
+fault: BeaconState_g0_set_slot writes the neighbour field genesis_time (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{genesis_time, genesis_validators_root, v, fork, latest_block_header, block_roots, state_roots, historical_roots}
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: BeaconState_g0{v, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}
+=== r9-d02-setter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_set_previous_justified_checkpoint,BeaconState_set_previous_justified_checkpoint
+spec: a container setter replaces the field it names and no other
+fault: BeaconState_g2_set_previous_justified_checkpoint writes the neighbour field current_justified_checkpoint (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, v, current_justified_checkpoint, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, v, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
+=== r9-d02-setter-neighbour
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g2_set_current_justified_checkpoint,BeaconState_set_current_justified_checkpoint
+spec: a container setter replaces the field it names and no other
+fault: BeaconState_g2_set_current_justified_checkpoint writes the neighbour field finalized_checkpoint (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, v, finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}
++    case BeaconState_g2{current_epoch_participation, +justification_bits, +previous_justified_checkpoint, +current_justified_checkpoint, +finalized_checkpoint, inactivity_scores, current_sync_committee, next_sync_committee}: BeaconState_g2{current_epoch_participation, justification_bits, previous_justified_checkpoint, current_justified_checkpoint, v, inactivity_scores, current_sync_committee, next_sync_committee}
+=== r9-d03-swap-noop
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_swap_block_roots,BeaconState_swap_block_roots
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BeaconState_g0_swap_block_roots leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, v, state_roots, historical_roots}, block_roots)
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, v)
+=== r9-d03-swap-noop
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_g0_swap_state_roots,BeaconState_swap_state_roots
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BeaconState_g0_swap_state_roots leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, v, historical_roots}, state_roots)
++    case BeaconState_g0{+genesis_time, +genesis_validators_root, +slot, +fork, +latest_block_header, block_roots, state_roots, historical_roots}: (BeaconState_g0{genesis_time, genesis_validators_root, slot, fork, latest_block_header, block_roots, state_roots, historical_roots}, v)
+=== r9-d04-top-getter-route
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_get_genesis_time,BeaconState_got_genesis_time
+spec: a container getter returns the field it names
+fault: the top-level getter of genesis_time calls the group getter of slot
+why: routing slip in the grouped representation
+-BeaconState_got_genesis_time(g1, g2, g3, g4, BeaconState_g0_get_genesis_time(g0))
++BeaconState_got_genesis_time(g1, g2, g3, g4, BeaconState_g0_get_slot(g0))
+=== r9-d05-top-setter-route
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_set_genesis_time
+spec: a container setter replaces the field it names
+fault: the top-level setter of genesis_time calls the group setter of slot
+why: routing slip in the grouped representation
+-BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_genesis_time(g0, v)
++BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_slot(g0, v)
+=== r9-d04-top-getter-route
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_get_slot,BeaconState_got_slot
+spec: a container getter returns the field it names
+fault: the top-level getter of slot calls the group getter of genesis_time
+why: routing slip in the grouped representation
+-BeaconState_got_slot(g1, g2, g3, g4, BeaconState_g0_get_slot(g0))
++BeaconState_got_slot(g1, g2, g3, g4, BeaconState_g0_get_genesis_time(g0))
+=== r9-d05-top-setter-route
+type: FuluBeaconState
+ops: encode,root
+file: types/FuluBeaconState_def_generated.bend
+sym: BeaconState_set_slot
+spec: a container setter replaces the field it names
+fault: the top-level setter of slot calls the group setter of genesis_time
+why: routing slip in the grouped representation
+-BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_slot(g0, v)
++BeaconState{g0, g1, g2, g3, g4}: BeaconState{BeaconState_g0_set_genesis_time(g0, v)
+=== r9-d01-getter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_get_parent_hash,ExecutionPayload_get_parent_hash
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ExecutionPayload_g0_get_parent_hash returns the neighbour field state_root of the same type
+why: copy-paste of the neighbour getter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, parent_hash)
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, state_root)
+=== r9-d01-getter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_get_state_root,ExecutionPayload_get_state_root
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ExecutionPayload_g0_get_state_root returns the neighbour field receipts_root of the same type
+why: copy-paste of the neighbour getter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, state_root)
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, receipts_root)
+=== r9-d01-getter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_get_receipts_root,ExecutionPayload_get_receipts_root
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ExecutionPayload_g0_get_receipts_root returns the neighbour field prev_randao of the same type
+why: copy-paste of the neighbour getter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, receipts_root)
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, prev_randao)
+=== r9-d02-setter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_set_parent_hash,ExecutionPayload_set_parent_hash
+spec: a container setter replaces the field it names and no other
+fault: ExecutionPayload_g0_set_parent_hash writes the neighbour field state_root (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{v, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
+=== r9-d02-setter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_set_state_root,ExecutionPayload_set_state_root
+spec: a container setter replaces the field it names and no other
+fault: ExecutionPayload_g0_set_state_root writes the neighbour field receipts_root (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, state_root, v, logs_bloom, prev_randao, block_number, gas_limit}
+=== r9-d02-setter-neighbour
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_set_receipts_root,ExecutionPayload_set_receipts_root
+spec: a container setter replaces the field it names and no other
+fault: ExecutionPayload_g0_set_receipts_root writes the neighbour field prev_randao (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, state_root, v, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, v, block_number, gas_limit}
+=== r9-d03-swap-noop
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g0_swap_logs_bloom,ExecutionPayload_swap_logs_bloom
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ExecutionPayload_g0_swap_logs_bloom leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, v, prev_randao, block_number, gas_limit}, logs_bloom)
++    case ExecutionPayload_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayload_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, v)
+=== r9-d03-swap-noop
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_g1_swap_extra_data,ExecutionPayload_swap_extra_data
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ExecutionPayload_g1_swap_extra_data leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: (ExecutionPayload_g1{gas_used, timestamp, v, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, extra_data)
++    case ExecutionPayload_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, transactions, withdrawals, +blob_gas_used}: (ExecutionPayload_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions, withdrawals, blob_gas_used}, v)
+=== r9-d04-top-getter-route
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_get_parent_hash,ExecutionPayload_got_parent_hash
+spec: a container getter returns the field it names
+fault: the top-level getter of parent_hash calls the group getter of state_root
+why: routing slip in the grouped representation
+-ExecutionPayload_got_parent_hash(g1, g2, ExecutionPayload_g0_get_parent_hash(g0))
++ExecutionPayload_got_parent_hash(g1, g2, ExecutionPayload_g0_get_state_root(g0))
+=== r9-d05-top-setter-route
+type: FuluExecutionPayload
+ops: encode,root
+file: types/FuluExecutionPayload_def_generated.bend
+sym: ExecutionPayload_set_parent_hash
+spec: a container setter replaces the field it names
+fault: the top-level setter of parent_hash calls the group setter of state_root
+why: routing slip in the grouped representation
+-ExecutionPayload{g0, g1, +g2}: ExecutionPayload{ExecutionPayload_g0_set_parent_hash(g0, v)
++ExecutionPayload{g0, g1, +g2}: ExecutionPayload{ExecutionPayload_g0_set_state_root(g0, v)
+=== r9-d01-getter-neighbour
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g0_get_parent_hash,ExecutionPayloadHeader_get_parent_hash
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ExecutionPayloadHeader_g0_get_parent_hash returns the neighbour field state_root of the same type
+why: copy-paste of the neighbour getter
+-    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, parent_hash)
++    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, state_root)
+=== r9-d01-getter-neighbour
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g0_get_state_root,ExecutionPayloadHeader_get_state_root
+spec: a container getter returns the field it names (fields are distinct values)
+fault: ExecutionPayloadHeader_g0_get_state_root returns the neighbour field receipts_root of the same type
+why: copy-paste of the neighbour getter
+-    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, state_root)
++    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, receipts_root)
+=== r9-d02-setter-neighbour
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g0_set_parent_hash,ExecutionPayloadHeader_set_parent_hash
+spec: a container setter replaces the field it names and no other
+fault: ExecutionPayloadHeader_g0_set_parent_hash writes the neighbour field state_root (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0{v, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
+=== r9-d02-setter-neighbour
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g0_set_state_root,ExecutionPayloadHeader_set_state_root
+spec: a container setter replaces the field it names and no other
+fault: ExecutionPayloadHeader_g0_set_state_root writes the neighbour field receipts_root (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0{parent_hash, fee_recipient, v, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}
++    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, v, logs_bloom, prev_randao, block_number, gas_limit}
+=== r9-d03-swap-noop
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g0_swap_logs_bloom,ExecutionPayloadHeader_swap_logs_bloom
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ExecutionPayloadHeader_g0_swap_logs_bloom leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, v, prev_randao, block_number, gas_limit}, logs_bloom)
++    case ExecutionPayloadHeader_g0{+parent_hash, +fee_recipient, +state_root, +receipts_root, logs_bloom, +prev_randao, +block_number, +gas_limit}: (ExecutionPayloadHeader_g0{parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, gas_limit}, v)
+=== r9-d03-swap-noop
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_g1_swap_extra_data,ExecutionPayloadHeader_swap_extra_data
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: ExecutionPayloadHeader_g1_swap_extra_data leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case ExecutionPayloadHeader_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, +transactions_root, +withdrawals_root, +blob_gas_used}: (ExecutionPayloadHeader_g1{gas_used, timestamp, v, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, extra_data)
++    case ExecutionPayloadHeader_g1{+gas_used, +timestamp, extra_data, +base_fee_per_gas, +block_hash, +transactions_root, +withdrawals_root, +blob_gas_used}: (ExecutionPayloadHeader_g1{gas_used, timestamp, extra_data, base_fee_per_gas, block_hash, transactions_root, withdrawals_root, blob_gas_used}, v)
+=== r9-d04-top-getter-route
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_get_parent_hash,ExecutionPayloadHeader_got_parent_hash
+spec: a container getter returns the field it names
+fault: the top-level getter of parent_hash calls the group getter of state_root
+why: routing slip in the grouped representation
+-ExecutionPayloadHeader_got_parent_hash(g1, g2, ExecutionPayloadHeader_g0_get_parent_hash(g0))
++ExecutionPayloadHeader_got_parent_hash(g1, g2, ExecutionPayloadHeader_g0_get_state_root(g0))
+=== r9-d05-top-setter-route
+type: FuluExecutionPayloadHeader
+ops: encode,root
+file: types/FuluExecutionPayloadHeader_def_generated.bend
+sym: ExecutionPayloadHeader_set_parent_hash
+spec: a container setter replaces the field it names
+fault: the top-level setter of parent_hash calls the group setter of state_root
+why: routing slip in the grouped representation
+-ExecutionPayloadHeader{g0, g1, +g2}: ExecutionPayloadHeader{ExecutionPayloadHeader_g0_set_parent_hash(g0, v)
++ExecutionPayloadHeader{g0, g1, +g2}: ExecutionPayloadHeader{ExecutionPayloadHeader_g0_set_state_root(g0, v)
+=== r9-d03-swap-noop
+type: FuluLightClientUpdate
+ops: encode,root
+file: types/FuluLightClientUpdate_def_generated.bend
+sym: LightClientUpdate_swap_attested_header,LightClientUpdate_swap_attested_header
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: LightClientUpdate_swap_attested_header leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: (LightClientUpdate{v, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, attested_header)
++    case LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: (LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, v)
+=== r9-d03-swap-noop
+type: FuluLightClientUpdate
+ops: encode,root
+file: types/FuluLightClientUpdate_def_generated.bend
+sym: LightClientUpdate_swap_next_sync_committee,LightClientUpdate_swap_next_sync_committee
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: LightClientUpdate_swap_next_sync_committee leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: (LightClientUpdate{attested_header, v, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, next_sync_committee)
++    case LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, +signature_slot}: (LightClientUpdate{attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, signature_slot}, v)
+=== r9-d03-swap-noop
+type: FuluLightClientHeader
+ops: encode,root
+file: types/FuluLightClientHeader_def_generated.bend
+sym: LightClientHeader_swap_execution_branch,LightClientHeader_swap_execution_branch
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: LightClientHeader_swap_execution_branch leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case LightClientHeader{+beacon, execution, execution_branch}: (LightClientHeader{beacon, execution, v}, execution_branch)
++    case LightClientHeader{+beacon, execution, execution_branch}: (LightClientHeader{beacon, execution, execution_branch}, v)
+=== r9-d01-getter-neighbour
+type: FuluValidator
+ops: encode,root
+file: types/FuluValidator_def_generated.bend
+sym: Validator_get_effective_balance,Validator_get_effective_balance
+spec: a container getter returns the field it names (fields are distinct values)
+fault: Validator_get_effective_balance returns the neighbour field activation_eligibility_epoch of the same type
+why: copy-paste of the neighbour getter
+-    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: (Validator{pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch}, effective_balance)
++    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: (Validator{pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch}, activation_eligibility_epoch)
+=== r9-d01-getter-neighbour
+type: FuluValidator
+ops: encode,root
+file: types/FuluValidator_def_generated.bend
+sym: Validator_get_activation_eligibility_epoch,Validator_get_activation_eligibility_epoch
+spec: a container getter returns the field it names (fields are distinct values)
+fault: Validator_get_activation_eligibility_epoch returns the neighbour field activation_epoch of the same type
+why: copy-paste of the neighbour getter
+-    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: (Validator{pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch}, activation_eligibility_epoch)
++    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: (Validator{pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch}, activation_epoch)
+=== r9-d02-setter-neighbour
+type: FuluValidator
+ops: encode,root
+file: types/FuluValidator_def_generated.bend
+sym: Validator_set_effective_balance,Validator_set_effective_balance
+spec: a container setter replaces the field it names and no other
+fault: Validator_set_effective_balance writes the neighbour field activation_eligibility_epoch (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: Validator{pubkey, withdrawal_credentials, v, slashed, activation_eligibility_epoch, activation_epoch, exit_epoch, withdrawable_epoch}
++    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: Validator{pubkey, withdrawal_credentials, effective_balance, slashed, v, activation_epoch, exit_epoch, withdrawable_epoch}
+=== r9-d02-setter-neighbour
+type: FuluValidator
+ops: encode,root
+file: types/FuluValidator_def_generated.bend
+sym: Validator_set_activation_eligibility_epoch,Validator_set_activation_eligibility_epoch
+spec: a container setter replaces the field it names and no other
+fault: Validator_set_activation_eligibility_epoch writes the neighbour field activation_epoch (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: Validator{pubkey, withdrawal_credentials, effective_balance, slashed, v, activation_epoch, exit_epoch, withdrawable_epoch}
++    case Validator{+pubkey, +withdrawal_credentials, +effective_balance, +slashed, +activation_eligibility_epoch, +activation_epoch, +exit_epoch, +withdrawable_epoch}: Validator{pubkey, withdrawal_credentials, effective_balance, slashed, activation_eligibility_epoch, v, exit_epoch, withdrawable_epoch}
+=== r9-d01-getter-neighbour
+type: FuluBeaconBlockHeader
+ops: encode,root
+file: types/FuluBeaconBlockHeader_def_generated.bend
+sym: BeaconBlockHeader_get_slot,BeaconBlockHeader_get_slot
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconBlockHeader_get_slot returns the neighbour field proposer_index of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: (BeaconBlockHeader{slot, proposer_index, parent_root, state_root, body_root}, slot)
++    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: (BeaconBlockHeader{slot, proposer_index, parent_root, state_root, body_root}, proposer_index)
+=== r9-d01-getter-neighbour
+type: FuluBeaconBlockHeader
+ops: encode,root
+file: types/FuluBeaconBlockHeader_def_generated.bend
+sym: BeaconBlockHeader_get_proposer_index,BeaconBlockHeader_get_proposer_index
+spec: a container getter returns the field it names (fields are distinct values)
+fault: BeaconBlockHeader_get_proposer_index returns the neighbour field slot of the same type
+why: copy-paste of the neighbour getter
+-    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: (BeaconBlockHeader{slot, proposer_index, parent_root, state_root, body_root}, proposer_index)
++    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: (BeaconBlockHeader{slot, proposer_index, parent_root, state_root, body_root}, slot)
+=== r9-d02-setter-neighbour
+type: FuluBeaconBlockHeader
+ops: encode,root
+file: types/FuluBeaconBlockHeader_def_generated.bend
+sym: BeaconBlockHeader_set_slot,BeaconBlockHeader_set_slot
+spec: a container setter replaces the field it names and no other
+fault: BeaconBlockHeader_set_slot writes the neighbour field proposer_index (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: BeaconBlockHeader{v, proposer_index, parent_root, state_root, body_root}
++    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: BeaconBlockHeader{slot, v, parent_root, state_root, body_root}
+=== r9-d02-setter-neighbour
+type: FuluBeaconBlockHeader
+ops: encode,root
+file: types/FuluBeaconBlockHeader_def_generated.bend
+sym: BeaconBlockHeader_set_proposer_index,BeaconBlockHeader_set_proposer_index
+spec: a container setter replaces the field it names and no other
+fault: BeaconBlockHeader_set_proposer_index writes the neighbour field slot (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: BeaconBlockHeader{slot, v, parent_root, state_root, body_root}
++    case BeaconBlockHeader{+slot, +proposer_index, +parent_root, +state_root, +body_root}: BeaconBlockHeader{v, proposer_index, parent_root, state_root, body_root}
+=== r9-d01-getter-neighbour
+type: FuluAttestationData
+ops: encode,root
+file: types/FuluAttestationData_def_generated.bend
+sym: AttestationData_get_slot,AttestationData_get_slot
+spec: a container getter returns the field it names (fields are distinct values)
+fault: AttestationData_get_slot returns the neighbour field index of the same type
+why: copy-paste of the neighbour getter
+-    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: (AttestationData{slot, index, beacon_block_root, source, target}, slot)
++    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: (AttestationData{slot, index, beacon_block_root, source, target}, index)
+=== r9-d01-getter-neighbour
+type: FuluAttestationData
+ops: encode,root
+file: types/FuluAttestationData_def_generated.bend
+sym: AttestationData_get_index,AttestationData_get_index
+spec: a container getter returns the field it names (fields are distinct values)
+fault: AttestationData_get_index returns the neighbour field slot of the same type
+why: copy-paste of the neighbour getter
+-    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: (AttestationData{slot, index, beacon_block_root, source, target}, index)
++    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: (AttestationData{slot, index, beacon_block_root, source, target}, slot)
+=== r9-d02-setter-neighbour
+type: FuluAttestationData
+ops: encode,root
+file: types/FuluAttestationData_def_generated.bend
+sym: AttestationData_set_slot,AttestationData_set_slot
+spec: a container setter replaces the field it names and no other
+fault: AttestationData_set_slot writes the neighbour field index (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: AttestationData{v, index, beacon_block_root, source, target}
++    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: AttestationData{slot, v, beacon_block_root, source, target}
+=== r9-d02-setter-neighbour
+type: FuluAttestationData
+ops: encode,root
+file: types/FuluAttestationData_def_generated.bend
+sym: AttestationData_set_index,AttestationData_set_index
+spec: a container setter replaces the field it names and no other
+fault: AttestationData_set_index writes the neighbour field slot (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: AttestationData{slot, v, beacon_block_root, source, target}
++    case AttestationData{+slot, +index, +beacon_block_root, +source, +target}: AttestationData{v, index, beacon_block_root, source, target}
+=== r9-d01-getter-neighbour
+type: FuluPendingDeposit
+ops: encode,root
+file: types/FuluPendingDeposit_def_generated.bend
+sym: PendingDeposit_get_amount,PendingDeposit_get_amount
+spec: a container getter returns the field it names (fields are distinct values)
+fault: PendingDeposit_get_amount returns the neighbour field slot of the same type
+why: copy-paste of the neighbour getter
+-    case PendingDeposit{+pubkey, +withdrawal_credentials, +amount, +signature, +slot}: (PendingDeposit{pubkey, withdrawal_credentials, amount, signature, slot}, amount)
++    case PendingDeposit{+pubkey, +withdrawal_credentials, +amount, +signature, +slot}: (PendingDeposit{pubkey, withdrawal_credentials, amount, signature, slot}, slot)
+=== r9-d02-setter-neighbour
+type: FuluPendingDeposit
+ops: encode,root
+file: types/FuluPendingDeposit_def_generated.bend
+sym: PendingDeposit_set_amount,PendingDeposit_set_amount
+spec: a container setter replaces the field it names and no other
+fault: PendingDeposit_set_amount writes the neighbour field slot (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case PendingDeposit{+pubkey, +withdrawal_credentials, +amount, +signature, +slot}: PendingDeposit{pubkey, withdrawal_credentials, v, signature, slot}
++    case PendingDeposit{+pubkey, +withdrawal_credentials, +amount, +signature, +slot}: PendingDeposit{pubkey, withdrawal_credentials, amount, signature, v}
+=== r9-d01-getter-neighbour
+type: FuluWithdrawal
+ops: encode,root
+file: types/FuluWithdrawal_def_generated.bend
+sym: Withdrawal_get_index,Withdrawal_get_index
+spec: a container getter returns the field it names (fields are distinct values)
+fault: Withdrawal_get_index returns the neighbour field validator_index of the same type
+why: copy-paste of the neighbour getter
+-    case Withdrawal{+index, +validator_index, +address, +amount}: (Withdrawal{index, validator_index, address, amount}, index)
++    case Withdrawal{+index, +validator_index, +address, +amount}: (Withdrawal{index, validator_index, address, amount}, validator_index)
+=== r9-d02-setter-neighbour
+type: FuluWithdrawal
+ops: encode,root
+file: types/FuluWithdrawal_def_generated.bend
+sym: Withdrawal_set_index,Withdrawal_set_index
+spec: a container setter replaces the field it names and no other
+fault: Withdrawal_set_index writes the neighbour field validator_index (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case Withdrawal{+index, +validator_index, +address, +amount}: Withdrawal{v, validator_index, address, amount}
++    case Withdrawal{+index, +validator_index, +address, +amount}: Withdrawal{index, v, address, amount}
+=== r9-d01-getter-neighbour
+type: FuluSyncCommitteeContribution
+ops: encode,root
+file: types/FuluSyncCommitteeContribution_def_generated.bend
+sym: SyncCommitteeContribution_get_slot,SyncCommitteeContribution_get_slot
+spec: a container getter returns the field it names (fields are distinct values)
+fault: SyncCommitteeContribution_get_slot returns the neighbour field subcommittee_index of the same type
+why: copy-paste of the neighbour getter
+-    case SyncCommitteeContribution{+slot, +beacon_block_root, +subcommittee_index, +aggregation_bits, +signature}: (SyncCommitteeContribution{slot, beacon_block_root, subcommittee_index, aggregation_bits, signature}, slot)
++    case SyncCommitteeContribution{+slot, +beacon_block_root, +subcommittee_index, +aggregation_bits, +signature}: (SyncCommitteeContribution{slot, beacon_block_root, subcommittee_index, aggregation_bits, signature}, subcommittee_index)
+=== r9-d02-setter-neighbour
+type: FuluSyncCommitteeContribution
+ops: encode,root
+file: types/FuluSyncCommitteeContribution_def_generated.bend
+sym: SyncCommitteeContribution_set_slot,SyncCommitteeContribution_set_slot
+spec: a container setter replaces the field it names and no other
+fault: SyncCommitteeContribution_set_slot writes the neighbour field subcommittee_index (the named field keeps its value)
+why: copy-paste of the neighbour setter
+-    case SyncCommitteeContribution{+slot, +beacon_block_root, +subcommittee_index, +aggregation_bits, +signature}: SyncCommitteeContribution{v, beacon_block_root, subcommittee_index, aggregation_bits, signature}
++    case SyncCommitteeContribution{+slot, +beacon_block_root, +subcommittee_index, +aggregation_bits, +signature}: SyncCommitteeContribution{slot, beacon_block_root, v, aggregation_bits, signature}
+=== r9-d03-swap-noop
+type: FuluBeaconBlockBody
+ops: encode,root
+file: types/FuluBeaconBlockBody_def_generated.bend
+sym: BeaconBlockBody_g0_swap_proposer_slashings,BeaconBlockBody_swap_proposer_slashings
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BeaconBlockBody_g0_swap_proposer_slashings leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, v, attester_slashings, attestations, deposits, voluntary_exits}, proposer_slashings)
++    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, v)
+=== r9-d03-swap-noop
+type: FuluBeaconBlockBody
+ops: encode,root
+file: types/FuluBeaconBlockBody_def_generated.bend
+sym: BeaconBlockBody_g0_swap_attester_slashings,BeaconBlockBody_swap_attester_slashings
+spec: swap_f(o, v) puts v in field f and hands back the old value
+fault: BeaconBlockBody_g0_swap_attester_slashings leaves the object unchanged and hands back v
+why: swap written as a peek
+-    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, v, attestations, deposits, voluntary_exits}, attester_slashings)
++    case BeaconBlockBody_g0{+randao_reveal, +eth1_data, +graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}: (BeaconBlockBody_g0{randao_reveal, eth1_data, graffiti, proposer_slashings, attester_slashings, attestations, deposits, voluntary_exits}, v)

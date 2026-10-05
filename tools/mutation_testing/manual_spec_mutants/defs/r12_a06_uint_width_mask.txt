@@ -1,0 +1,35 @@
+=== r12-a06-uint-width-mask
+type: uint16
+ops: root
+file: types/uint16_hashtreeroot_generated.bend
+sym: u16_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: uint16 root: uint16 masked to its low byte before packing
+why: a width table off by one size
+proofs: proofs/api/SmallTestStruct_hashtreeroot_proof_generated.bend,proofs/api/VarTestStruct_hashtreeroot_proof_generated.bend
+-O.u32_chunk(o)
++O.u32_chunk((o .&. 255 : U32))
+
+=== r12-a06-uint-width-mask
+type: uint32
+ops: root
+file: types/uint32_hashtreeroot_generated.bend
+sym: u32_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: uint32 root: uint32 masked to its low 16 bits before packing
+why: a width table off by one size
+proofs: proofs/api/FixedTestStruct_hashtreeroot_proof_generated.bend
+-O.u32_chunk(o)
++O.u32_chunk((o .&. 65535 : U32))
+
+=== r12-a06-uint-width-mask
+type: uint8
+ops: root
+file: types/uint8_hashtreeroot_generated.bend
+sym: u8_root
+spec: ssz/simple-serialize.md Merkleization: hash_tree_root(uintN / boolean) = pack: serialize(value) little-endian, right-padded with zeros to 32 bytes
+fault: uint8 root: uint8 masked to 7 bits before packing
+why: a width table off by one size
+proofs: proofs/api/FuluParticipationFlags_hashtreeroot_proof_generated.bend,proofs/api/SingleFieldTestStruct_hashtreeroot_proof_generated.bend
+-O.u32_chunk(o)
++O.u32_chunk((o .&. 127 : U32))

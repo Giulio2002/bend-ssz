@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a05-vector-storage/02
+# type: vec_bool_513
+# ops: decode,root
+# spec: Vector[T, N] holds N * size(T) bytes
+# fault: the word storage is allocated with 7 words instead of 8
+# why: storage sized by floor instead of the chunk-padded ceiling
+# file: types/vec_bool_513_decode_ssz_generated.bend
+# sym: v513_bool_read,vec_bool_513_decode
+--- a/types/vec_bool_513_decode_ssz_generated.bend
++++ b/types/vec_bool_513_decode_ssz_generated.bend
+@@ -9,3 +9,3 @@
+ 
+-def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
++def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 513, Array.new(U32, 7n, 0))
+ 

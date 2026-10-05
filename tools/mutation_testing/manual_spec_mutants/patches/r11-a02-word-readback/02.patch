@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a02-word-readback/02
+# type: bitvector_33
+# ops: decode
+# spec: deserialize of a basic value / bit vector: little-endian bytes [off, off + size)
+# fault: word 1 (byte 4) is read at byte 0 (the previous word read twice)
+# why: reader cursor not advanced
+# file: types/bitvector_33_decode_ssz_generated.bend
+# sym: bv33_r0,bv33_read,bitvector_33_decode
+--- a/types/bitvector_33_decode_ssz_generated.bend
++++ b/types/bitvector_33_decode_ssz_generated.bend
+@@ -16,3 +16,3 @@
+   (buf, +x) = pair
+-  bv33_r1(off, x, B.read32(buf, (off + 4 : U32)))
++  bv33_r1(off, x, B.read32(buf, (off + 0 : U32)))
+ 

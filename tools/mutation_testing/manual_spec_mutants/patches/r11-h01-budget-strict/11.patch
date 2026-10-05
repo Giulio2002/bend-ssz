@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h01-budget-strict/11
+# type: FuluBytes32
+# ops: decode
+# spec: API contract (docs/API_CONTRACTS.md): decode_checked_budget decodes when cost(size) <= budget
+# fault: a budget equal to the cost is refused (cost < budget)
+# why: boundary of the budget test
+# file: types/FuluBytes32_decode_ssz_generated.bend
+# sym: Bytes32_decode_checked_budget,Bytes32_dcb
+--- a/types/FuluBytes32_decode_ssz_generated.bend
++++ b/types/FuluBytes32_decode_ssz_generated.bend
+@@ -103,3 +103,3 @@
+ 
+-def Bytes32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dcb(Bool.and(U32.is_lt(Bytes32_dcost(size), 4294967295), U32.is_le(Bytes32_dcost(size), budget)), buf, size)
++def Bytes32_decode_checked_budget(buf: B.Buf, +size: U32, +budget: U32) -> B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>: Bytes32_dcb(Bool.and(U32.is_lt(Bytes32_dcost(size), 4294967295), U32.is_lt(Bytes32_dcost(size), budget)), buf, size)
+ 

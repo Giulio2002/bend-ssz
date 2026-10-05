@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-d02-cache-grow-window/05
+# type: FuluExecutionPayload
+# ops: root
+# spec: hash_tree_root(List[T, N]) = mix_in_length(merkleize([hash_tree_root(e) for e in value], limit=N), len(value)) (cached-tree API must equal it after any sequence of cache / cset / capp / cached_root)
+# fault: when an append grows the cached tree one level, only leaves 0..n are marked dirty in the fresh node array (padding subtrees stay D.zero)
+# why: dirty window after growth sized by the count
+# file: types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+# sym: l1048576_bl1073741824_capp_fit,l1048576_bl1073741824_cache,l1048576_bl1073741824_cached_root,l1048576_bl1073741824_cset,l1048576_bl1073741824_capp,l1048576_bl1073741824_uncache
+--- a/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
++++ b/types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend
+@@ -200,3 +200,3 @@
+     case True{}: l1048576_bl1073741824_Cached{Array.set(O.Boxed<O.Words>, arr, n, FuluTransaction_d.bl1073741824_bx_wrap(v)), (n + 1 : U32), d, nodes, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+-    case False{}: l1048576_bl1073741824_Cached{Array.set(O.Boxed<O.Words>, l1048576_bl1073741824_room(arr, n), n, FuluTransaction_d.bl1073741824_bx_wrap(v)), (n + 1 : U32), 1n+d, l1048576_bl1073741824_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}
++    case False{}: l1048576_bl1073741824_Cached{Array.set(O.Boxed<O.Words>, l1048576_bl1073741824_room(arr, n), n, FuluTransaction_d.bl1073741824_bx_wrap(v)), (n + 1 : U32), 1n+d, l1048576_bl1073741824_dfill(2n+d), 0, n}
+ 

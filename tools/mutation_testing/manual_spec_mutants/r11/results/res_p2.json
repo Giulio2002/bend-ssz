@@ -1,0 +1,266 @@
+[
+ {
+  "id": "r11-a01-reader-base/09",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 15.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-a01-reader-base/10",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 16.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.3,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-a01-reader-base/11",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 16.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-a01-reader-base/12",
+  "type": "FuluExecutionPayload",
+  "file": "types/FuluExecutionPayload_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 17.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.7,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-a01-reader-base/21",
+  "type": "FuluSyncCommitteeContribution",
+  "file": "types/FuluSyncCommitteeContribution_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "KILLED",
+    "secs": 5.0,
+    "laws": [
+     "ContributionAndProof_spec_decode"
+    ],
+    "msg": "- expected : (B.Buf{[x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, x52, x53, x54, x55, x56, x57,",
+    "root": "proofs/api/FuluContributionAndProof_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "KILLED"
+ },
+ {
+  "id": "r11-b03-bx-ok/01",
+  "type": "FuluAttesterSlashing",
+  "file": "types/FuluAttesterSlashing_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 12.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 13.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-b03-bx-ok/09",
+  "type": "FuluTransaction",
+  "file": "types/FuluTransaction_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 8.2,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-b03-bx-ok/10",
+  "type": "ProgressiveVarTestStruct",
+  "file": "types/ProgressiveVarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 10.9,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "SURVIVED",
+    "secs": 27.5,
+    "laws": [],
+    "msg": "",
+    "root": "proofs/api/CompatibleUnionBC_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-b03-bx-ok/11",
+  "type": "VarTestStruct",
+  "file": "types/VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 11.5,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 12.6,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 11.4,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/vvl_v2_VarTestStruct_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-b03-bx-ok/12",
+  "type": "proglist_VarTestStruct",
+  "file": "types/proglist_VarTestStruct_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 16.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 15.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend"
+   },
+   {
+    "verdict": "CRASH",
+    "secs": 14.0,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/obj/vvl_pl_pl_VarTestStruct_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ },
+ {
+  "id": "r11-f01-union-same-type/02",
+  "type": "CompatibleUnionABCA",
+  "file": "types/CompatibleUnionABCA_decode_ssz_generated.bend",
+  "checks": [
+   {
+    "verdict": "CRASH",
+    "secs": 15.8,
+    "laws": [],
+    "msg": "",
+    "first_try": "STACK",
+    "root": "proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend"
+   }
+  ],
+  "A": "UNJUDGED"
+ }
+]

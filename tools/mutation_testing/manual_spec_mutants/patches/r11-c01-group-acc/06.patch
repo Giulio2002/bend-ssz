@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-c01-group-acc/06
+# type: FuluBeaconState
+# ops: encode
+# spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+# fault: the group BeaconState_g3 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+# why: accumulator overwritten instead of and-ed
+# file: types/FuluBeaconState_encode_ssz_generated.bend
+# sym: BeaconState_g3_va1,BeaconState_g3_valid,BeaconState_encode,BeaconState_serialize
+--- a/types/FuluBeaconState_encode_ssz_generated.bend
++++ b/types/FuluBeaconState_encode_ssz_generated.bend
+@@ -393,3 +393,3 @@
+   (historical_summaries, ok) = pair
+-  (FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, Bool.and(acc, ok))
++  (FuluBeaconState_d.BeaconState_g3{latest_execution_payload_header, next_withdrawal_index, next_withdrawal_validator_index, historical_summaries, deposit_requests_start_index, deposit_balance_to_consume, exit_balance_to_consume, earliest_exit_epoch}, ok)
+ 

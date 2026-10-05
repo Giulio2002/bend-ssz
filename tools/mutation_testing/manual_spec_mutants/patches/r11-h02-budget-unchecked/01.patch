@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-h02-budget-unchecked/01
+# type: CompatibleUnionA
+# ops: decode
+# spec: API contract: decode_checked_budget = decode_checked when the budget admits the size (the storage test included)
+# fault: the admitted branch calls CompatibleUnionA_decode (the size <= stored-words test of decode_checked is skipped)
+# why: wrapper composed with the unchecked decoder
+# file: types/CompatibleUnionA_decode_ssz_generated.bend
+# sym: CompatibleUnionA_dcb,CompatibleUnionA_decode_checked_budget
+--- a/types/CompatibleUnionA_decode_ssz_generated.bend
++++ b/types/CompatibleUnionA_decode_ssz_generated.bend
+@@ -90,3 +90,3 @@
+   match ok:
+-    case True{}: CompatibleUnionA_decode_checked(buf, size)
++    case True{}: CompatibleUnionA_decode(buf, size)
+     case False{}: (buf, None{})

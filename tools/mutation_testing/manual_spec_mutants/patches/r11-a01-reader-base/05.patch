@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-a01-reader-base/05
+# type: FuluExecutionPayloadHeader
+# ops: decode
+# spec: deserialize(Container): field i occupies bytes [start + sum(sizes before i), ...) of the CONTAINER's window
+# fault: the field at container byte 412 is read at absolute byte 412 (the container's own offset off is not added)
+# why: reader written for a top-level container: correct at off = 0, wrong for a nested container or a list element
+# file: types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
+# sym: ExecutionPayloadHeader_g0_rd6,ExecutionPayloadHeader_g0_read,ExecutionPayloadHeader_decode
+--- a/types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
++++ b/types/FuluExecutionPayloadHeader_decode_ssz_generated.bend
+@@ -25,3 +25,3 @@
+   (buf, +block_number) = pair
+-  ExecutionPayloadHeader_g0_rd7(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, uint64_r.u64_read(buf, (off + 412 : U32), 8))
++  ExecutionPayloadHeader_g0_rd7(off, len, vend, parent_hash, fee_recipient, state_root, receipts_root, logs_bloom, prev_randao, block_number, uint64_r.u64_read(buf, (412 : U32), 8))
+ 

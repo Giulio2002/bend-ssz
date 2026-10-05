@@ -1,0 +1,170 @@
+=== r9-f01-union-selector
+type: CompatibleUnionA
+ops: encode,root
+file: types/CompatibleUnionA_def_generated.bend
+sym: CompatibleUnionA_selector
+spec: CompatibleUnion: the selector of a value is the index its option was declared with (1..127)
+fault: the selector accessor answers 2 for option 0 (declared 1)
+why: selector table slip
+-    case CompatibleUnionA_c0{+v}: (CompatibleUnionA_c0{v}, 1)
++    case CompatibleUnionA_c0{+v}: (CompatibleUnionA_c0{v}, 2)
+=== r9-f01-union-selector
+type: CompatibleUnionBC
+ops: encode,root
+file: types/CompatibleUnionBC_def_generated.bend
+sym: CompatibleUnionBC_selector
+spec: CompatibleUnion: the selector of a value is the index its option was declared with (1..127)
+fault: the selector accessor answers 3 for option 0 (declared 2)
+why: selector table slip
+-    case CompatibleUnionBC_c0{v}: (CompatibleUnionBC_c0{v}, 2)
++    case CompatibleUnionBC_c0{v}: (CompatibleUnionBC_c0{v}, 3)
+=== r9-f01-union-selector
+type: CompatibleUnionBC
+ops: encode,root
+file: types/CompatibleUnionBC_def_generated.bend
+sym: CompatibleUnionBC_selector
+spec: CompatibleUnion: the selector of a value is the index its option was declared with (1..127)
+fault: the selector accessor answers 2 for option 1 (declared 3)
+why: selector table slip
+-    case CompatibleUnionBC_c1{v}: (CompatibleUnionBC_c1{v}, 3)
++    case CompatibleUnionBC_c1{v}: (CompatibleUnionBC_c1{v}, 2)
+=== r9-f01-union-selector
+type: CompatibleUnionABCA
+ops: encode,root
+file: types/CompatibleUnionABCA_def_generated.bend
+sym: CompatibleUnionABCA_selector
+spec: CompatibleUnion: the selector of a value is the index its option was declared with (1..127)
+fault: the selector accessor answers 2 for option 0 (declared 1)
+why: selector table slip
+-    case CompatibleUnionABCA_c0{+v}: (CompatibleUnionABCA_c0{v}, 1)
++    case CompatibleUnionABCA_c0{+v}: (CompatibleUnionABCA_c0{v}, 2)
+=== r9-f01-union-selector
+type: CompatibleUnionABCA
+ops: encode,root
+file: types/CompatibleUnionABCA_def_generated.bend
+sym: CompatibleUnionABCA_selector
+spec: CompatibleUnion: the selector of a value is the index its option was declared with (1..127)
+fault: the selector accessor answers 3 for option 1 (declared 2)
+why: selector table slip
+-    case CompatibleUnionABCA_c1{v}: (CompatibleUnionABCA_c1{v}, 2)
++    case CompatibleUnionABCA_c1{v}: (CompatibleUnionABCA_c1{v}, 3)
+=== r9-f02-vector-root-depth
+type: vec_uint8_513
+ops: root
+file: types/vec_uint8_513_hashtreeroot_generated.bend
+sym: v513_u8_root,vec_uint8_513_hash_tree_root
+spec: merkleize(pack(v)) pads the 17 chunk(s) to the next power of two (depth 5)
+fault: the tree depth is 4 (one level too shallow)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 5, seg)
++O.words_root(hl, h, o, 4, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint16_5
+ops: root
+file: types/vec_uint16_5_hashtreeroot_generated.bend
+sym: v5_u16_root,vec_uint16_5_hash_tree_root
+spec: merkleize(pack(v)) pads the 1 chunk(s) to the next power of two (depth 0)
+fault: the tree depth is 1 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 0, seg)
++O.words_root(hl, h, o, 1, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint16_513
+ops: root
+file: types/vec_uint16_513_hashtreeroot_generated.bend
+sym: v513_u16_root,vec_uint16_513_hash_tree_root
+spec: merkleize(pack(v)) pads the 33 chunk(s) to the next power of two (depth 6)
+fault: the tree depth is 5 (one level too shallow)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 6, seg)
++O.words_root(hl, h, o, 5, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint32_31
+ops: root
+file: types/vec_uint32_31_hashtreeroot_generated.bend
+sym: v31_u32_root,vec_uint32_31_hash_tree_root
+spec: merkleize(pack(v)) pads the 4 chunk(s) to the next power of two (depth 2)
+fault: the tree depth is 3 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 2, seg)
++O.words_root(hl, h, o, 3, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint64_3
+ops: root
+file: types/vec_uint64_3_hashtreeroot_generated.bend
+sym: v3_u64_root,vec_uint64_3_hash_tree_root
+spec: merkleize(pack(v)) pads the 1 chunk(s) to the next power of two (depth 0)
+fault: the tree depth is 1 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 0, seg)
++O.words_root(hl, h, o, 1, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint128_31
+ops: root
+file: types/vec_uint128_31_hashtreeroot_generated.bend
+sym: v31_u128_root,vec_uint128_31_hash_tree_root
+spec: merkleize(pack(v)) pads the 16 chunk(s) to the next power of two (depth 4)
+fault: the tree depth is 5 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 4, seg)
++O.words_root(hl, h, o, 5, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint256_5
+ops: root
+file: types/vec_uint256_5_hashtreeroot_generated.bend
+sym: v5_u256_root,vec_uint256_5_hash_tree_root
+spec: merkleize(pack(v)) pads the 5 chunk(s) to the next power of two (depth 3)
+fault: the tree depth is 2 (one level too shallow)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r9-f02-vector-root-depth
+type: vec_bool_513
+ops: root
+file: types/vec_bool_513_hashtreeroot_generated.bend
+sym: v513_bool_root,vec_bool_513_hash_tree_root
+spec: merkleize(pack(v)) pads the 17 chunk(s) to the next power of two (depth 5)
+fault: the tree depth is 6 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 5, seg)
++O.words_root(hl, h, o, 6, seg)
+=== r9-f02-vector-root-depth
+type: bitvector_1281
+ops: root
+file: types/bitvector_1281_hashtreeroot_generated.bend
+sym: bv1281_root,bitvector_1281_hash_tree_root
+spec: merkleize(pack(v)) pads the 6 chunk(s) to the next power of two (depth 3)
+fault: the tree depth is 2 (one level too shallow)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 2, seg)
+=== r9-f02-vector-root-depth
+type: bitvector_1280
+ops: root
+file: types/bitvector_1280_hashtreeroot_generated.bend
+sym: bv1280_root,bitvector_1280_hash_tree_root
+spec: merkleize(pack(v)) pads the 5 chunk(s) to the next power of two (depth 3)
+fault: the tree depth is 4 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 3, seg)
++O.words_root(hl, h, o, 4, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint256_3
+ops: root
+file: types/vec_uint256_3_hashtreeroot_generated.bend
+sym: v3_u256_root,vec_uint256_3_hash_tree_root
+spec: merkleize(pack(v)) pads the 3 chunk(s) to the next power of two (depth 2)
+fault: the tree depth is 1 (one level too shallow)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 2, seg)
++O.words_root(hl, h, o, 1, seg)
+=== r9-f02-vector-root-depth
+type: vec_uint128_3
+ops: root
+file: types/vec_uint128_3_hashtreeroot_generated.bend
+sym: v3_u128_root,vec_uint128_3_hash_tree_root
+spec: merkleize(pack(v)) pads the 2 chunk(s) to the next power of two (depth 1)
+fault: the tree depth is 2 (one level too deep)
+why: ceil/floor log2 slip
+-O.words_root(hl, h, o, 1, seg)
++O.words_root(hl, h, o, 2, seg)

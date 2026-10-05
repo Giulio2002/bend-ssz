@@ -1,0 +1,35 @@
+r11-d02/01       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5_generated.bend BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5 9.33
+r11-d02/02       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_5_generated.bend BeaconBlockBody_vroot_l16_Deposit_cache_app_5 39.96
+r11-d02/03       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_5_generated.bend BeaconBlockBody_vroot_l8_Attestation_cache_app_5 5.65
+r11-d02/05       KILLED    proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5_generated.bend ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5 1.96
+r11-d02/06       KILLED    proofs/slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5_generated.bend ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5 1.9
+r11-d03/04       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0_generated.bend BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0 3.21
+r11-d03/05       KILLED    proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0 1.03
+r11-d04/03       KILLED    proofs/slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3_generated.bend ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_3 1.01
+r11-a01/09       KILLED    proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend ExecutionPayload_decode_vlit_fwin_g0_rd6 0.69
+r11-a01/10       KILLED    proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend ExecutionPayload_decode_vlit_fwin_g1_rd9 0.71
+r11-a01/11       KILLED    proofs/slop/validity/fulu_ExecutionPayload_decode_literal_win_generated.bend ExecutionPayload_decode_vlit_win_g1_rd4 0.68
+r11-a01/12       KILLED    proofs/slop/validity/fulu_ExecutionPayload_decode_literal_fwin_generated.bend ExecutionPayload_decode_vlit_fwin_g2_read 0.7
+r11-b03/01       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_decode_literal_bad_attester_slashings_elem_attestation_1_off_plus_generated.bend BeaconBlockBody_decode_vlit_bad_attester_slashings_elem_attestation_1_off_plus 6.19
+r11-b03/10       KILLED    proofs/slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_bad_f_H_elem_f_B_ragged_1_generated.bend ProgressiveComplexTestStruct_decode_vlit_bad_f_H_elem_f_B_ragged_1 1.4
+r11-b03/11       KILLED    proofs/slop/validity/generic_ComplexTestStruct_decode_literal_bad_f_G_e0_f_B_ragged_1_generated.bend ComplexTestStruct_decode_vlit_bad_f_G_e0_f_B_ragged_1 1.26
+r11-b03/12       KILLED    proofs/slop/validity/generic_ProgressiveTestStruct_decode_literal_bad_f_D_elem_off5_generated.bend ProgressiveTestStruct_decode_vlit_bad_f_D_elem_off5 0.83
+r11-f01/02       KILLED    proofs/slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_4_generated.bend CompatibleUnionABCA_decode_vlit_ok_sel_4 0.68
+r12-d01/02       KILLED    proofs/slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1_generated.bend BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1 1.88
+r12-d01/03       KILLED    proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1_generated.bend ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1 0.96
+r12-d02/03       KILLED    proofs/slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2_generated.bend ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2 1.67
+r12-c02/01       KILLED    proofs/slop/validity/generic_CompatibleUnionBC_fields_generated.bend CompatibleUnionBC_serialize_vwriter_checked 0.64
+r12-c02/02       KILLED    proofs/slop/validity/generic_CompatibleUnionABCA_fields_generated.bend CompatibleUnionABCA_serialize_vwriter_checked 0.58
+r12-c02/03       SURVIVED    
+r12-c02/04       SURVIVED    
+r12-c02/05       SURVIVED    
+r12-c02/06       SURVIVED    
+r12-c02/07       SURVIVED    
+r12-c02/08       KILLED    proofs/slop/validity/generic_proglist_uint64_fields_generated.bend proglist_uint64_serialize_vwriter_checked 0.47
+r12-e03/01       KILLED    proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend BitsStruct_decode_vlit_vwin_c2 0.53
+r12-e03/02       KILLED    proofs/slop/validity/generic_BitsStruct_decode_literal_vwin_generated.bend BitsStruct_decode_vlit_vwin_c1 0.6
+r12-e03/03       KILLED    proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend ProgressiveBitsStruct_decode_vlit_vwin_c7 0.58
+r12-e03/04       KILLED    proofs/slop/validity/generic_ProgressiveBitsStruct_decode_literal_vwin_generated.bend ProgressiveBitsStruct_decode_vlit_vwin_c8 0.64
+r12-e02/01       KILLED    proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend BeaconState_decode_vlit_ck_l1099511627776_Validator_step 0.62
+r12-e02/02       KILLED    proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend BeaconState_decode_vlit_ck_l1099511627776_Validator_step 0.6
+r12-e02/03       KILLED    proofs/slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend BeaconState_decode_vlit_ck_l1099511627776_Validator_first 0.54

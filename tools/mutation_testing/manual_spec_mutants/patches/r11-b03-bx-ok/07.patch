@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-b03-bx-ok/07
+# type: FuluSyncAggregate
+# ops: decode
+# spec: deserialize(Container): every field (here a boxed container field) must itself deserialize validly
+# fault: the boxed SyncAggregate field's validator returns True without checking the bytes
+# why: validation skipped for boxed (heap) fields
+# file: types/FuluSyncAggregate_decode_ssz_generated.bend
+# sym: SyncAggregate_bx_ok,SyncAggregate_decode
+--- a/types/FuluSyncAggregate_decode_ssz_generated.bend
++++ b/types/FuluSyncAggregate_decode_ssz_generated.bend
+@@ -37,3 +37,3 @@
+ 
+-def SyncAggregate_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncAggregate_ok(buf, off, len)
++def SyncAggregate_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, True{})
+ 

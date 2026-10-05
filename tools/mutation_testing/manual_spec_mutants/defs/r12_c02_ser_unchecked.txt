@@ -1,0 +1,87 @@
+=== r12-c02-ser-unchecked
+type: CompatibleUnionBC
+ops: encode
+file: types/CompatibleUnionBC_encode_ssz_generated.bend
+sym: CompatibleUnionBC_senc_go,CompatibleUnionBC_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: CompatibleUnionBC_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-CompatibleUnionBC_putk(O.out_new(n), 0, o)
++CompatibleUnionBC_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: CompatibleUnionABCA
+ops: encode
+file: types/CompatibleUnionABCA_encode_ssz_generated.bend
+sym: CompatibleUnionABCA_senc_go,CompatibleUnionABCA_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: CompatibleUnionABCA_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-CompatibleUnionABCA_putk(O.out_new(n), 0, o)
++CompatibleUnionABCA_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: ProgressiveTestStruct
+ops: encode
+file: types/ProgressiveTestStruct_encode_ssz_generated.bend
+sym: ProgressiveTestStruct_senc_go,ProgressiveTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-ProgressiveTestStruct_putk(O.out_new(n), 0, o)
++ProgressiveTestStruct_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: ProgressiveVarTestStruct
+ops: encode
+file: types/ProgressiveVarTestStruct_encode_ssz_generated.bend
+sym: ProgressiveVarTestStruct_senc_go,ProgressiveVarTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveVarTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-ProgressiveVarTestStruct_putk(O.out_new(n), 0, o)
++ProgressiveVarTestStruct_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: ProgressiveComplexTestStruct
+ops: encode
+file: types/ProgressiveComplexTestStruct_encode_ssz_generated.bend
+sym: ProgressiveComplexTestStruct_senc_go,ProgressiveComplexTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveComplexTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-ProgressiveComplexTestStruct_putk(O.out_new(n), 0, o)
++ProgressiveComplexTestStruct_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: ProgressiveBitsStruct
+ops: encode
+file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+sym: ProgressiveBitsStruct_senc_go,ProgressiveBitsStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveBitsStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-ProgressiveBitsStruct_putk(O.out_new(n), 0, o)
++ProgressiveBitsStruct_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: ProgressiveSingleListContainerTestStruct
+ops: encode
+file: types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend
+sym: ProgressiveSingleListContainerTestStruct_senc_go,ProgressiveSingleListContainerTestStruct_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: ProgressiveSingleListContainerTestStruct_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-ProgressiveSingleListContainerTestStruct_putk(O.out_new(n), 0, o)
++ProgressiveSingleListContainerTestStruct_putn(O.out_new(n), 0, o)
+
+=== r12-c02-ser-unchecked
+type: proglist_uint64
+ops: encode
+file: types/proglist_uint64_encode_ssz_generated.bend
+sym: pl_u64_senc_go,pl_u64_serialize
+spec: ssz/simple-serialize.md Serialization: only values of the type are serialized; the object API refuses a value outside the type (docs/API_CONTRACTS.md X_serialize)
+fault: proglist_uint64_serialize writes with the unchecked writer (putn): no validity check on the serialize path
+why: the serialize path wired to the encode path's writer
+-pl_u64_putk(O.out_new(n), 0, o)
++pl_u64_putn(O.out_new(n), 0, o)

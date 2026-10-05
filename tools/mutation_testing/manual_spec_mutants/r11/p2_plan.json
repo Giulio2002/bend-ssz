@@ -1,0 +1,13 @@
+{
+"r11-a01-reader-base/09": ["proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"],
+"r11-a01-reader-base/10": ["proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"],
+"r11-a01-reader-base/11": ["proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"],
+"r11-a01-reader-base/12": ["proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"],
+"r11-a01-reader-base/21": ["proofs/api/FuluContributionAndProof_decode_ssz_proof_generated.bend", "proofs/api/FuluSignedContributionAndProof_decode_ssz_proof_generated.bend"],
+"r11-b03-bx-ok/01": ["proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlock_decode_ssz_proof_generated.bend"],
+"r11-b03-bx-ok/09": ["proofs/api/FuluExecutionPayload_decode_ssz_proof_generated.bend", "proofs/api/FuluBeaconBlockBody_decode_ssz_proof_generated.bend"],
+"r11-b03-bx-ok/10": ["proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend", "proofs/api/CompatibleUnionBC_decode_ssz_proof_generated.bend"],
+"r11-b03-bx-ok/11": ["proofs/api/ComplexTestStruct_decode_ssz_proof_generated.bend", "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend", "proofs/obj/vvl_v2_VarTestStruct_generated.bend"],
+"r11-b03-bx-ok/12": ["proofs/api/ProgressiveComplexTestStruct_decode_ssz_proof_generated.bend", "proofs/api/ProgressiveTestStruct_decode_ssz_proof_generated.bend", "proofs/obj/vvl_pl_pl_VarTestStruct_generated.bend"],
+"r11-f01-union-same-type/02": ["proofs/api/CompatibleUnionABCA_decode_ssz_proof_generated.bend"]
+}

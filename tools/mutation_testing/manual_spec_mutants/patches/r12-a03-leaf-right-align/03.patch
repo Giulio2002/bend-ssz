@@ -1,0 +1,16 @@
+# MANUAL SPEC MUTANT r12-a03-leaf-right-align/03
+# type: bitvector_4
+# ops: root
+# spec: ssz/simple-serialize.md Merkleization: hash_tree_root(ByteVector / Bitvector) = merkleize(pack(bytes)): the bytes in order, little-endian chunk layout, zero right padding
+# fault: Fulu_bitvector_4: the bytes right-aligned in the chunk (zero padding on the left)
+# why: big-endian intuition: padding a short value on the left, as a number
+# file: types/Fulu_bitvector_4_hashtreeroot_generated.bend
+# sym: bv4_root
+# proofs: proofs/api/FuluBeaconState_hashtreeroot_proof_generated.bend
+--- a/types/Fulu_bitvector_4_hashtreeroot_generated.bend
++++ b/types/Fulu_bitvector_4_hashtreeroot_generated.bend
+@@ -12,3 +12,3 @@
+   match o:
+-    case Fulu_bitvector_4_d.Bitvector4{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
++    case Fulu_bitvector_4_d.Bitvector4{+w0}: (h, D.D{0, 0, 0, 0, 0, 0, 0, B.swap32(w0)})
+ 

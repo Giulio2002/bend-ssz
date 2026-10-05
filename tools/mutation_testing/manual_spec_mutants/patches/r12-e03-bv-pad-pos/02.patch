@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r12-e03-bv-pad-pos/02
+# type: BitsStruct
+# ops: decode
+# spec: ssz/simple-serialize.md Deserialization: Bitvector[N]: the padding bits of the last byte (bits N mod 8 .. 7) must be zero
+# fault: BitsStruct decode: a bit vector field's validity (padding) checked at the neighbouring field's position
+# why: field offset slip in the validity pass
+# file: types/BitsStruct_decode_ssz_generated.bend
+# sym: BitsStruct_c1,BitsStruct_ok
+--- a/types/BitsStruct_decode_ssz_generated.bend
++++ b/types/BitsStruct_decode_ssz_generated.bend
+@@ -86,3 +86,3 @@
+   match ok:
+-    case True{}: BitsStruct_v2(off, len, o0, o1, bitvector_2_r.bv2_ok_at(buf, (off + 4 : U32)))
++    case True{}: BitsStruct_v2(off, len, o0, o1, bitvector_2_r.bv2_ok_at(buf, (off + 5 : U32)))
+     case False{}: (buf, False{})

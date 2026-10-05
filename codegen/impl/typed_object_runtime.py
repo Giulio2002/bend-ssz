@@ -277,6 +277,7 @@ class Shape:
 # Code emitted after everything else in a module: the validity predicates and
 # the checked serialize stages (`reorder` still puts callees first).
 TAIL = []
+WINDOW_OK = set()
 
 
 def emit_all(g, names, title=None, with_fuzz=True):
@@ -284,6 +285,11 @@ def emit_all(g, names, title=None, with_fuzz=True):
     TAIL.clear()
     for n, t in names.items():
         g.shape(t)
+    # (round 11) the fixed-size kinds validated as a whole window: a decoder's own and a union option's; every other fixed kind is
+    # validated at a known position by its parent (`_ok_at`) and gets no `_ok` (it would have no caller)
+    WINDOW_OK.clear()
+    WINDOW_OK.update(g.shape(t).p for t in names.values())
+    WINDOW_OK.update(o.p for s in g.order if s.kind == 'cunion' for _, o in s.options)
     lines = []
     w = lines.append
     w('import Base')
@@ -476,9 +482,12 @@ def emit_ok(s, w):
     p, k, t = s.p, s.kind, s.t
     if k == 'box':
         i = s.inner
-        w(f'def {p}_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: {i.p}_ok(buf, off, len)')
+        # a box of a fixed-size value is validated at a known position (`_ok_at`) by its parent; its window validator would have no
+        # caller (round 11: b03, removed as dead code)
         if i.fixed:
             w(f'def {p}_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: {i.p}_ok_at(buf, off)')
+        else:
+            w(f'def {p}_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: {i.p}_ok(buf, off, len)')
         return
     if s.fixed:
         # content checks at a known position
@@ -495,6 +504,10 @@ def emit_ok(s, w):
             return
         else:
             w(f'def {p}_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{{}})')
+        if p not in WINDOW_OK:
+            # a fixed-size kind no decoder and no union option takes as a whole window: its parents call `_ok_at`, so `_ok` / `_ok_len`
+            # would have no caller (round 11: b01, removed as dead code)
+            return
         w(f'def {p}_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:')
         w('  match ok:')
         w(f'    case True{{}}: {p}_ok_at(buf, off)')
@@ -645,6 +658,8 @@ def emit_container_ok(s, w, fixed):
             w(f'def {p}_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: {p}_v0(off, {call(steps[0])})')
         else:
             w(f'def {p}_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{{}})')
+        if p not in WINDOW_OK:
+            return    # (round 11) no caller takes it as a whole window (see emit_ok)
         w(f'def {p}_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:')
         w('  match ok:')
         w(f'    case True{{}}: {p}_ok_at(buf, off)')

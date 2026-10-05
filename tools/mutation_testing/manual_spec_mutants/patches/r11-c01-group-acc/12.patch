@@ -1,0 +1,15 @@
+# MANUAL SPEC MUTANT r11-c01-group-acc/12
+# type: ProgressiveBitsStruct
+# ops: encode
+# spec: a container is valid iff every field is valid (is_valid of each field type, conjunction)
+# fault: the group ProgressiveBitsStruct_g0 returns only its last field's validity (the accumulated validity of the earlier fields is dropped)
+# why: accumulator overwritten instead of and-ed
+# file: types/ProgressiveBitsStruct_encode_ssz_generated.bend
+# sym: ProgressiveBitsStruct_g0_va5,ProgressiveBitsStruct_g0_valid,ProgressiveBitsStruct_encode,ProgressiveBitsStruct_serialize
+--- a/types/ProgressiveBitsStruct_encode_ssz_generated.bend
++++ b/types/ProgressiveBitsStruct_encode_ssz_generated.bend
+@@ -183,3 +183,3 @@
+   (f_H, ok) = pair
+-  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
++  (ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, ok)
+ 
