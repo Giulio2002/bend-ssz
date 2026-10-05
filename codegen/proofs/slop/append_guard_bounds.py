@@ -18,7 +18,13 @@ objects whose storage is an array of 2^d slots (`Array.new` builds it lazily: a 
   <X>_serialize_vcoll_<p>_appb_fit      the storage holds exactly the count                accepted (the storage test is `<=`)
   <X>_serialize_vcoll_<p>_appb_short    one more than the storage holds                    refused (the storage test exists, and counts words, not bytes)
 
+  <X>_serialize_vcoll_<p>_appb_at_sz / _below_sz  (a list of composites whose bound G is 2^32 - 1: no array of 2^32 slots exists) the guard step
+                                                   `p_app_sz(n, v, (storage, G))` at n = G refused, at n = G - 1 accepted
+
 where G is the bound printed in the guard (`U32.is_lt(n, G)`). Filed by api_gate under serialize_valid (the `vcoll_` form).
+Round 13 (p01/03, 04, 06, 07): every progressive list kind has these laws. An element type whose default is not `<T>_default` (Uint128's
+`u128_default`, the inner list's `pl_VarTestStruct_default`) uses the type's one zero-argument default, and a collection that is only an element of
+another collection (proglist_VarTestStruct) is filed under the owners of the collection that holds it.
 """
 import sys as _sys
 import pathlib as _pathlib
@@ -56,7 +62,17 @@ def element(tx, ty):
     if ty in simple:
         return simple[ty]
     name = ty.split('.')[-1].split('_d.')[-1]
-    return f'T.{name}_default()' if f'{name}_default' in tx.blk else None
+    if f'{name}_default' in tx.blk:
+        return f'T.{name}_default()'
+    d = default_of(tx, name)
+    return f'T.{d}()' if d else None
+
+
+def default_of(tx, name):
+    """(round 13: p01/03, 04) the runtime's default of the type `name` when it is not `<name>_default` (Uint128: `u128_default`,
+    pl_VarTestStruct_Seq: `pl_VarTestStruct_default`): the one zero-argument `*_default` definition returning that type"""
+    found = sorted(set(re.findall(rf'^def (\w+_default)\(\) -> (?:\w+\.)?{re.escape(name)}:', tx.text, re.M)))
+    return found[0] if len(found) == 1 else None
 
 
 class Laws:
@@ -83,7 +99,9 @@ def packed_laws(tx, X, p, ty):
         arr = f'Array.new(U32, {depth(words) if log is None else log}n, 0)'
         return f'Pair.snd(O.Words, Bool, T.{p}_append(O.Words{{{arr}, {n * U}}}, {v}))'
     for tag, n, want in (('below', G - 1, 'True'), ('at', G, 'False'), ('above', G + 1, 'False')):
-        if n >= 0 and (n + 1) * U < U32_MAX:
+        # (round 13: p01/04) a refused count whose size n * U still fits is stated even when (n + 1) * U wraps (proglist_uint256 at
+        # n = 134217727: a guard `n <= G` would accept it and the grown size wrap to 0)
+        if n >= 0 and ((n + 1) * U < U32_MAX or (want == 'False' and n * U < U32_MAX)):
             L.add(tag, flag(n), want)
     fit = 32 // U
     if 1 <= fit < G:
@@ -130,10 +148,10 @@ def seq_laws(tx, X, p, ty, cached):
     blk = tx.blk[f'{p}_capp_sz' if cached else f'{p}_app_sz']
     G = bound(blk)
     name = ty.split('.')[-1].split('_d.')[-1]
-    if G is None or f'{name}_default' not in tx.blk or f'{p}_fill' not in tx.blk:
+    if G is None or element(tx, name) is None or f'{p}_fill' not in tx.blk:
         return None
     L = Laws(X, p)
-    v = f'T.{name}_default()' if ty == name else None
+    v = element(tx, ty)
     if v is None:
         return None
     seq = f'T.{p}_Seq'
@@ -147,10 +165,26 @@ def seq_laws(tx, X, p, ty, cached):
     for tag, n, want in (('below', G - 1, 'True'), ('at', G, 'False'), ('above', G + 1, 'False')):
         if 0 <= n < U32_MAX - 1 and (want == 'False' or n < (1 << 31)):     # an array of 2^32 slots has no U32 size: the bound below it cannot be held
             L.add(tag, flag(n, n + 2), want)
+    if not cached and not 0 <= G < U32_MAX - 1:
+        # (round 13: p01/06, 07) the guard's bound is 2^32 - 1: no array holds that many slots, so the guard's step `_app_sz` is asked
+        # directly with storage claiming G slots: the count G is refused by the bound alone (a guard `n <= G` accepts it)
+        L.add('at_sz', f'Pair.snd({seq}, Bool, T.{p}_app_sz({G}, {v}, (T.{p}_fill(0n), {G})))', 'False')
+        L.add('below_sz', f'Pair.snd({seq}, Bool, T.{p}_app_sz({G - 1}, {v}, (T.{p}_fill(0n), {G})))', 'True')
     if G >= 6:      # the storage cases need counts below the limit
         L.add('fit', flag(3, 4), 'True')
         L.add('short', flag(5, 4), 'False')
     return L.out
+
+
+def nested_owners(tx, p, prefixes):
+    """(round 13: p01/06) a collection no API name's encoder calls directly (proglist_VarTestStruct, only an element of proglist_proglist_VarTestStruct):
+    the owners of the collections whose definitions call it"""
+    pat = re.compile(rf'\b{re.escape(p)}_[a-z]\w*\(')
+    out = set()
+    for q in prefixes:
+        if q != p and any(n.startswith(q + '_') and not n.startswith(p + '_') and pat.search(b) for n, b in tx.blk.items()):
+            out.update(owners_of(tx, q))
+    return sorted(out)
 
 
 def module(tmod, X, p, laws):
@@ -178,9 +212,10 @@ def outputs():
             ty = re.search(rf'^def {re.escape(m.group(1))}_capp\(c: \w+, v: ([\w.]+)\)', tx.text, re.M)
             if ty:
                 found.append((m.group(1) + '#c', lambda X, p=m.group(1), t=ty.group(1): seq_laws(tx, X, p, t, True)))
+        prefixes = sorted({key.split('#')[0] for key, _ in found}, key=len, reverse=True)
         for key, build in found:
             p = key.split('#')[0]
-            for X in owners_of(tx, p):
+            for X in owners_of(tx, p) or nested_owners(tx, p, prefixes):
                 laws = build(X)
                 if laws:
                     suffix = '_c' if key.endswith('#c') else ''

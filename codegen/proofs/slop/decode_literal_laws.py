@@ -61,6 +61,13 @@ for a variable-size container or union, one per kind otherwise: a mutated valida
   <X>_decode_vlit_ck_<p>_step / _end / _first   symbolic: the element loop of every list / vector kind p of fixed checked elements (List[Validator]):
                                the verdict kept, element i + 1 at off + (i + 1) * size, the first at off (the gate: every such loop, under the
                                first decoder that reaches it)
+  (round 13: r2-random-api/16, /17) <X>_decode_vlit_count_at_<p> / _count_over_<p>   (every list p that X validates, symbolic; count_at_laws)
+                               the count check accepts exactly the limit N and refuses N + 1, stated on the length (and for a bit list the last
+                               byte) only, so a BeaconState list of 262144 pending consolidations is pinned without a 4 MiB literal
+  (round 13: s01-copy/09, /10) <X>_decode_vlit_rt_ua<s>_<f>   (every variable-size container X, every variable field f decoded by a byte copy:
+                               a byte list or a list of fixed elements any bytes of which are valid) a literal whose field f holds marked bytes
+                               starting at a byte offset s = 1, 2, 3 mod 4 (an earlier variable field padded to shift it), every other variable
+                               part empty: decodes, and serializes back to the same size and words (copy_in's dispatch on off & 3)
 
 By computation; filed by api_gate under decode_offsets (the `_decode_vlit_` form).
 """
@@ -84,6 +91,7 @@ MAX_LAWS = 64
 RT_MAX = 128     # bytes: the literal a round-trip law re-encodes word by word
 RT_WIDE = 192    # words: a round-trip law of the round-7 literals (`fixed`, `wide`) compares the size and at most this many words from byte 0
 ORDER_MAX = 65536  # bytes: the out-of-order offset literals (round 10), every container but BeaconState (2.7 MB; its order law is symbolic)
+U32_MAX = 1 << 32
 DEEP = 3         # nesting levels the `wide` literal fills (deeper variable parts stay empty)
 DECODE = re.compile(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\) -> B\.Buf & Maybe<&1, ([\w.]+)>:', re.M)
 
@@ -246,6 +254,103 @@ def size_bad(t, depth=0):
                 out.append((f'{fn}_{tag}', compose(kids, encs)))
         return out if depth == 0 else out[:1]
     return []
+
+
+def free(t):
+    """every byte string of t's fixed size is a valid t (uints and byte vectors, and vectors / containers of them)"""
+    if t.kind in ('uint', 'bytes'):
+        return True
+    if t.kind in ('vector', 'container') and t.fixed():
+        return all(free(c) for _, c in kids_of(t))
+    return False
+
+
+def mbytes(n, seed=0):
+    """n marked bytes, none zero, no two neighbours equal: a copy shifted by one, two or three bytes reads other values"""
+    return bytes(((seed + 37 * j) % 251) + 1 for j in range(n))
+
+
+UA_LEN = 9      # bytes a copied field holds: three words at every shift, a partial last word
+
+
+def payload(c, depth=0):
+    """(round 13) a valid encoding of the variable type c holding about UA_LEN marked bytes that its decoder copies (a byte list, a list of
+    free fixed elements, a bit list, or one level down a list of such variable elements / a container with such a field), or None"""
+    k = c.kind
+    if k == 'bytelist':
+        return mbytes(min(c.size, UA_LEN)) if c.size >= 1 else None
+    if k in ('list', 'plist'):
+        lim = c.size if k == 'list' else 1 << 30
+        e = c.elem
+        if lim < 1:
+            return None
+        if e.fixed() and free(e):
+            es = e.fixed_size()
+            return mbytes(min(lim, -(-UA_LEN // es)) * es)
+        if not e.fixed() and depth < 2:
+            p = payload(e, depth + 1)
+            return None if p is None else elems(e, [p])
+        return None
+    if k in ('bitlist', 'pbits'):
+        m = min(UA_LEN, (c.size if k == 'bitlist' else 1 << 30) // 8 + 1)
+        return mbytes(m - 1) + b'\x01' if m >= 2 else None
+    if k in ('container', 'pcontainer', 'vector') and not c.fixed() and depth < 2:
+        kids = kids_of(c)
+        base = [enc0(x) for _, x in kids]
+        if any(b is None for b in base):
+            return None
+        for i, (_, x) in enumerate(kids):
+            if not x.fixed():
+                p = payload(x, depth + 1)
+                if p is not None:
+                    encs = list(base)
+                    encs[i] = p
+                    return compose(kids, encs)
+    return None
+
+
+def pads(c):
+    """(round 13) valid encodings of the variable type c of 0 to 3 more bytes than the least (to shift the fields after it)"""
+    k = c.kind
+    if k == 'bytelist':
+        return [mbytes(n, 5) for n in range(1, min(3, c.size) + 1)]
+    if k in ('list', 'plist') and c.elem.fixed() and free(c.elem):
+        lim = c.size if k == 'list' else 3
+        return [mbytes(n * c.elem.fixed_size(), 5) for n in range(1, min(3, lim) + 1)]
+    if k in ('bitlist', 'pbits'):
+        N = c.size if k == 'bitlist' else 1 << 30
+        return [mbytes(m - 1, 5) + b'\x01' for m in range(2, 5) if 8 * (m - 1) <= N]
+    return []
+
+
+def ua_literals(t):
+    """(round 13: s01-copy/09, /10) [(tag, bytes)]: for every variable field f of the container t whose decoder copies bytes (payload) and every
+    s = 1, 2, 3 that some padding of an earlier variable field reaches, an encoding whose field f starts at a byte offset s mod 4 and holds
+    marked bytes, every other variable part empty (the default's) or the padding"""
+    if t.kind not in ('container', 'pcontainer') or t.fixed():
+        return []
+    kids = kids_of(t)
+    base = [enc0(c) for _, c in kids]
+    if any(b is None for b in base):
+        return []
+    head = sum(c.fixed_size() if c.fixed() else 4 for _, c in kids)
+    var = [i for i, (_, c) in enumerate(kids) if not c.fixed()]
+    out = []
+    for i in var:
+        p = payload(kids[i][1])
+        if p is None:
+            continue
+        cands = [None] + [(j, pb) for j in var if j < i for pb in pads(kids[j][1])]
+        for s in (1, 2, 3):
+            for cand in cands:
+                encs = list(base)
+                encs[i] = p
+                if cand:
+                    encs[cand[0]] = cand[1]
+                if (head + sum(len(encs[j]) for j in var if j < i)) % 4 == s:
+                    out.append((f'ua{s}_{kids[i][0]}', compose(kids, encs)))
+                    break
+    return out
 
 
 def goods(t, depth=0):
@@ -468,6 +573,12 @@ def laws_of(X, V, t, ser_pair):
         for tag, b in bads(t):
             if tag.startswith('order_'):
                 law('bad', tag, b, r7=True, cap=ORDER_MAX)
+        # (round 13: s01-copy/09, /10) a copied field at each unaligned start: decodes and serializes back word for word
+        for tag, d in ua_literals(t):
+            if ser_pair is not None:
+                law('rt', tag, d, wide=True, r7=True)
+            else:
+                law('ok', tag, d, r7=True)
     # (round 11: b03/01, /10, /11, /12) one invalid boxed value in a variable field or one invalid element in a list of variable elements: refused
     for tag, b, e in box_laws(t):
         if law('bad', f'box_{tag}', b, r7=True):
@@ -547,6 +658,79 @@ def count_laws(tx, X):
   %Equal.sym(Bool, {Lb}, True{{}}, hl) : {{{lhs('True{}', '_', F4, C)}}}
   %Equal.sym(Bool, {F4}, True{{}}, h4) : {{{lhs('True{}', 'True{}', '_', C)}}}
   %Equal.sym(Bool, {C}, False{{}}, hn) : {{{lhs('True{}', 'True{}', 'True{}', '_')}}}
+  {{==}}'''))
+    return out
+
+
+FIXED_OK = re.compile(r'\(buf, Bool\.and\(U32\.is_eq\(len, \(U32\.div\(len, (\d+)\) \* \1 : U32\)\), U32\.is_le\(U32\.div\(len, \1\), (\d+)\)\)\)')
+BYTES_OK = re.compile(r'\(buf, U32\.is_le\(len, (\d+)\)\)')
+BITS_OK = re.compile(r'O\.ok_bitlist\(buf, off, len, (\d+), False\{\}\)')
+BITS_EVAL = 1 << 20  # bits: the bit-list check compares 8 (len - 1) + high bit with the limit as Nats; at the largest limit (Attestation's 131072)
+                     # the law checks in 2 s, also at a quarter of the pinned stack budget (4 MB / 2.5 MB JSC): the literals are not unfolded
+
+
+def count_at_laws(tx, X):
+    """(round 13: r2-random-api/16, /17) [(p, law)]: for every list p that X's own definitions validate (`p_ok`), the count check accepts a
+    list of exactly the limit N and refuses N + 1, symbolic in the buffer and the position (no literal of the list's bytes: the check reads
+    only the length, or, for a bit list, the last byte, given as a premise):
+
+      list of fixed elements of S bytes  `p_ok(buf, off, N * S)` is (buf, True), `p_ok(buf, off, (N + 1) * S)` is (buf, False)   (when (N + 1) * S < 2^32)
+      byte list                          `p_ok(buf, off, N)` accepted, `N + 1` refused
+      bit list (N <= BITS_EVAL)          the last byte the delimiter of exactly N bits: accepted; of N + 1 bits: refused
+      list of variable elements          the head with the first offset 4 N (a table of N elements) inside the window is the head's
+                                         accepting branch `p_first(True, ..)` (count N + 1 is `_decode_vlit_bad_count_<p>`)
+
+    A list whose limit times its element size passes 2^32 (BeaconState's validators, balances, ...) has no count test (NMAX bounds it) and no law.
+    A check that refuses a full list (`<` for `<=`) fails `_count_at_`; one that admits N + 1 fails `_count_over_`."""
+    out = []
+    for name, b in sorted(tx.blk.items()):
+        if not name.endswith('_ok'):
+            continue
+        p = name[:-3]
+        if not any(n.startswith(X + '_') and re.search(rf'\b{re.escape(p)}_ok\(', bb) for n, bb in tx.blk.items()):
+            continue
+        body = b.split(' -> B.Buf & Bool: ', 1)[1] if b.startswith(f'def {p}_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ') else ''
+        laws = []
+        m = FIXED_OK.fullmatch(body)
+        if m:
+            S, N = int(m.group(1)), int(m.group(2))
+            for tag, n, want in (('at', N, 'True'), ('over', N + 1, 'False')):
+                if n * S < U32_MAX:
+                    laws.append(f'def {X}_decode_vlit_count_{tag}_{p}(buf: B.Buf, +off: U32)\n    -> {{T.{p}_ok(buf, off, {n * S}) == (buf, {want}{{}}) : B.Buf & Bool}}:\n  {{==}}')
+        m = BYTES_OK.fullmatch(body)
+        if m:
+            N = int(m.group(1))
+            for tag, n, want in (('at', N, 'True'), ('over', N + 1, 'False')):
+                if n < U32_MAX:
+                    laws.append(f'def {X}_decode_vlit_count_{tag}_{p}(buf: B.Buf, +off: U32)\n    -> {{T.{p}_ok(buf, off, {n}) == (buf, {want}{{}}) : B.Buf & Bool}}:\n  {{==}}')
+        m = BITS_OK.fullmatch(body)
+        if m and int(m.group(1)) <= BITS_EVAL:
+            N = int(m.group(1))
+            for tag, n, want in (('at', N, 'True'), ('over', N + 1, 'False')):
+                L, D = n // 8 + 1, 1 << (n % 8)       # n bits and the delimiter: bit n % 8 of byte n // 8, the last
+                rd = f'B.byte_at(buf, (off + {L} - 1 : U32))'
+                laws.append(f'''def {X}_decode_vlit_count_{tag}_{p}(buf: B.Buf, +off: U32,
+    hb: {{{rd} == (buf, {D}) : B.Buf & U32}})
+    -> {{T.{p}_ok(buf, off, {L}) == (buf, {want}{{}}) : B.Buf & Bool}}:
+  %Equal.sym(B.Buf & U32, {rd}, (buf, {D}), hb) : {{O.bitlist_pick({L}, {N}, False{{}}, _) == (buf, {want}{{}}) : B.Buf & Bool}}
+  {{==}}''')
+        out += [(p, t) for t in laws]
+    for name, b in sorted(tx.blk.items()):
+        m = HEAD.match(b)
+        if not m:
+            continue
+        p, g = m.group(1), m.group(2)
+        lim = re.fullmatch(r'Bool\.and\(Bool\.and\(U32\.is_eq\(\(first \.&\. 3 : U32\), 0\), U32\.is_le\(first, len\)\), Bool\.and\(U32\.is_le\(4, first\), U32\.is_le\(U32\.shrn\(first, 2n\), (\d+)\)\)\)', g)
+        if not lim or not any(n.startswith(X + '_') and re.search(rf'\b{re.escape(p)}_ok\(', bb) for n, bb in tx.blk.items()):
+            continue
+        F = 4 * int(lim.group(1))
+        if F >= U32_MAX:
+            continue
+        Lb = f'U32.is_le({F}, len)'
+        out.append((p, f'''def {X}_decode_vlit_count_at_{p}(buf: B.Buf, +off: U32, +len: U32,
+    hl: {{{Lb} == True{{}} : Bool}})
+    -> {{T.{p}_head(len, off, (buf, {F})) == T.{p}_first(True{{}}, buf, off, len, {F}) : B.Buf & Bool}}:
+  %Equal.sym(Bool, {Lb}, True{{}}, hl) : {{T.{p}_first(Bool.and(Bool.and(True{{}}, _), Bool.and(True{{}}, True{{}})), buf, off, len, {F}) == T.{p}_first(True{{}}, buf, off, len, {F}) : B.Buf & Bool}}
   {{==}}'''))
     return out
 
@@ -894,6 +1078,9 @@ def outputs():
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_order_sym')] = module(tmod, X, '', olaws)
             for p, text in count_laws(tx, X):
                 out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_count_{p}')] = module(tmod, X, '', [text])
+            alaws = [text for _, text in count_at_laws(tx, X)]
+            if alaws:
+                out[LAYOUT.module_path('validity', f'{runtime}_{X}_decode_literal_count_at')] = module(tmod, X, '', alaws)
             boxed_positions(t, NEED, set())
         # (round 12) the gate of the element-loop laws: every element loop of fixed checked elements is reached from a decoder
         left_ck = sorted(m.group(1) for b in tx.blk.values() for m in [CK.fullmatch(b)] if m and m.group(1) not in ck_done)
