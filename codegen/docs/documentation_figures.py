@@ -285,6 +285,8 @@ def main():
     stale = []
     for d in DOCS:
         p = ROOT / d
+        if not p.exists():   # a document the tree does not carry (docs/ is optional): nothing to update
+            continue
         old = p.read_text()
         new = render(old, fig, d)
         if new != old:
