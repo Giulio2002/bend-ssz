@@ -27,6 +27,10 @@ def is_none(m: Maybe<&1, O.Words>) -> Bool:
     case Some{v}: False{}
     case None{}: True{}
 
+def win(c: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Cached) -> U32 & U32:
+  match c:
+    case Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Cached{arr, +n, +d, nodes, +lo, +hi}: (lo, hi)
+
 def ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_1_3(+hl: Nat)
-    -> {rd(hl, cs(cs(rc(hl, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_cache(sa(sa(sa(sa(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_default(), O.words_new(0)), O.words_new(0)), O.words_new(0)), O.words_new(0)))), 1, O.words_new(0)), 3, O.words_new(0))) == rd(hl, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_cache(ss(ss(sa(sa(sa(sa(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_default(), O.words_new(0)), O.words_new(0)), O.words_new(0)), O.words_new(0)), 1, O.words_new(0)), 3, O.words_new(0)))) : D.Digest}:
+    -> {win(cs(cs(rc(hl, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_cache(sa(sa(sa(sa(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_default(), O.words_new(0)), O.words_new(0)), O.words_new(0)), O.words_new(0)))), 1, O.words_new(0)), 3, O.words_new(0))) == (1, 3) : U32 & U32}:
   {==}

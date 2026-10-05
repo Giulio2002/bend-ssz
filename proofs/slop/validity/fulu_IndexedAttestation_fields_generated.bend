@@ -49,3 +49,7 @@ def IndexedAttestation_serialize_vpoison_bx_ok()
 def IndexedAttestation_serialize_vpoison_bx_invalid()
     -> {O.is_poisoned(Pair.snd(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_putk(Array.new(U32, 4n, 0), 0, FuluIndexedAttestation_d.IndexedAttestation_bx_wrap(FuluIndexedAttestation_d.IndexedAttestation_set_attesting_indices(FuluIndexedAttestation_d.IndexedAttestation_default(), O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
   {==}
+
+def IndexedAttestation_serialize_vwriter_checked(+n: U32, o: FuluIndexedAttestation_d.IndexedAttestation)
+    -> {FuluIndexedAttestation_e.IndexedAttestation_senc_go(False{}, n, o) == FuluIndexedAttestation_e.IndexedAttestation_senc_put(n, FuluIndexedAttestation_e.IndexedAttestation_putk(O.out_new(n), 0, o)) : FuluIndexedAttestation_d.IndexedAttestation & O.Encoded}:
+  {==}

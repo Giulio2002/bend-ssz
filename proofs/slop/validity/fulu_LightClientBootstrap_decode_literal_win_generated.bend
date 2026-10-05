@@ -1,6 +1,10 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../../types/FuluSyncCommittee_decode_ssz_generated.bend as FuluSyncCommittee_r
+import ../../../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
+import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
 import ../../../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
 import ../../../types/FuluLightClientBootstrap_decode_ssz_generated.bend as FuluLightClientBootstrap_r
@@ -11,4 +15,12 @@ import ../../../types/FuluLightClientBootstrap_decode_ssz_generated.bend as Fulu
 
 def LightClientBootstrap_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_header: U32)
     -> {FuluLightClientBootstrap_r.LightClientBootstrap_rd0(off, len, (buf, o_header)) == FuluLightClientBootstrap_r.LightClientBootstrap_rd1(off, len, o_header, FuluLightClientHeader_r.LightClientHeader_read(buf, (off + o_header : U32), (len - o_header : U32))) : B.Buf & FuluLightClientBootstrap_d.LightClientBootstrap}:
+  {==}
+
+def LightClientBootstrap_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_header: U32, header: FuluLightClientHeader_d.LightClientHeader)
+    -> {FuluLightClientBootstrap_r.LightClientBootstrap_rd1(off, len, o_header, (buf, header)) == FuluLightClientBootstrap_r.LightClientBootstrap_rd2(off, len, o_header, header, FuluSyncCommittee_r.SyncCommittee_read(buf, (off + 4 : U32), 24624)) : B.Buf & FuluLightClientBootstrap_d.LightClientBootstrap}:
+  {==}
+
+def LightClientBootstrap_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_header: U32, header: FuluLightClientHeader_d.LightClientHeader, current_sync_committee: FuluSyncCommittee_d.SyncCommittee)
+    -> {FuluLightClientBootstrap_r.LightClientBootstrap_rd2(off, len, o_header, header, (buf, current_sync_committee)) == FuluLightClientBootstrap_r.LightClientBootstrap_rd3(off, len, o_header, header, current_sync_committee, FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, (off + 24628 : U32), 192)) : B.Buf & FuluLightClientBootstrap_d.LightClientBootstrap}:
   {==}

@@ -1,6 +1,8 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
 import ../../../types/FuluAggregateAndProof_decode_ssz_generated.bend as FuluAggregateAndProof_r
 import ../../../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
 import ../../../types/FuluSignedAggregateAndProof_decode_ssz_generated.bend as FuluSignedAggregateAndProof_r
@@ -11,4 +13,8 @@ import ../../../types/FuluSignedAggregateAndProof_decode_ssz_generated.bend as F
 
 def SignedAggregateAndProof_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_message: U32)
     -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd0(off, len, (buf, o_message)) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd1(off, len, o_message, FuluAggregateAndProof_r.AggregateAndProof_read(buf, (off + o_message : U32), (len - o_message : U32))) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}:
+  {==}
+
+def SignedAggregateAndProof_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_message: U32, message: FuluAggregateAndProof_d.AggregateAndProof)
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd1(off, len, o_message, (buf, message)) == FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 4 : U32), 96)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}:
   {==}

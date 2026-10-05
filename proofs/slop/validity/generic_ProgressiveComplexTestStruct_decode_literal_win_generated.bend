@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint8_decode_ssz_generated.bend as uint8_r
 import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../../types/list_uint16_123_decode_ssz_generated.bend as list_uint16_123_r
 import ../../../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
@@ -60,6 +61,10 @@ def ProgressiveComplexTestStruct_decode_vlit_win_rd4(buf: B.Buf, +off: U32, +len
 
 def ProgressiveComplexTestStruct_decode_vlit_win_rd5(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_C: U32, +o_f_D: U32, +o_f_E: U32, +o_f_F: U32, +o_f_G: U32)
     -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_rd5(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, (buf, o_f_G)) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_rd6(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, o_f_G, B.read32(buf, (off + 25 : U32))) : B.Buf & ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct}:
+  {==}
+
+def ProgressiveComplexTestStruct_decode_vlit_win_rd6(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_C: U32, +o_f_D: U32, +o_f_E: U32, +o_f_F: U32, +o_f_G: U32, +o_f_H: U32)
+    -> {ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_rd6(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, o_f_G, (buf, o_f_H)) == ProgressiveComplexTestStruct_r.ProgressiveComplexTestStruct_rd7(off, len, o_f_B, o_f_C, o_f_D, o_f_E, o_f_F, o_f_G, o_f_H, uint8_r.u8_read(buf, (off + 0 : U32), 1)) : B.Buf & ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct}:
   {==}
 
 def ProgressiveComplexTestStruct_decode_vlit_win_rd7(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_C: U32, +o_f_D: U32, +o_f_E: U32, +o_f_F: U32, +o_f_G: U32, +o_f_H: U32, +f_A: U32)

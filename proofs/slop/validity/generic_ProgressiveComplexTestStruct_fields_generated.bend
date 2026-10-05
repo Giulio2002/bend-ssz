@@ -89,3 +89,7 @@ def ProgressiveComplexTestStruct_serialize_vreject_f_H()
 def ProgressiveComplexTestStruct_serialize_vreject_f_H_elem()
     -> {Pair.snd(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct, Bool, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_valid(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_set_f_H(ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct_default(), proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_Seq{proglist_ProgressiveVarTestStruct_d.pl_ProgressiveVarTestStruct_fill(0n), 1}))) == False{} : Bool}:
   {==}
+
+def ProgressiveComplexTestStruct_serialize_vwriter_checked(+n: U32, o: ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct)
+    -> {ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_go(False{}, n, o) == ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_senc_put(n, ProgressiveComplexTestStruct_e.ProgressiveComplexTestStruct_putk(O.out_new(n), 0, o)) : ProgressiveComplexTestStruct_d.ProgressiveComplexTestStruct & O.Encoded}:
+  {==}

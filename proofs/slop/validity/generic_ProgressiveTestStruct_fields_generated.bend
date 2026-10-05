@@ -39,3 +39,7 @@ def ProgressiveTestStruct_serialize_vreject_f_D()
 def ProgressiveTestStruct_serialize_vreject_f_D_elem()
     -> {Pair.snd(ProgressiveTestStruct_d.ProgressiveTestStruct, Bool, ProgressiveTestStruct_e.ProgressiveTestStruct_valid(ProgressiveTestStruct_d.ProgressiveTestStruct_set_f_D(ProgressiveTestStruct_d.ProgressiveTestStruct_default(), proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_Seq{proglist_proglist_VarTestStruct_d.pl_pl_VarTestStruct_fill(0n), 1}))) == False{} : Bool}:
   {==}
+
+def ProgressiveTestStruct_serialize_vwriter_checked(+n: U32, o: ProgressiveTestStruct_d.ProgressiveTestStruct)
+    -> {ProgressiveTestStruct_e.ProgressiveTestStruct_senc_go(False{}, n, o) == ProgressiveTestStruct_e.ProgressiveTestStruct_senc_put(n, ProgressiveTestStruct_e.ProgressiveTestStruct_putk(O.out_new(n), 0, o)) : ProgressiveTestStruct_d.ProgressiveTestStruct & O.Encoded}:
+  {==}

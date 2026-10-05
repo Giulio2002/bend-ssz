@@ -9,6 +9,7 @@ import ../../types/bitvector_17_decode_ssz_generated.bend as bitvector_17_r
 import ../../types/bitvector_31_decode_ssz_generated.bend as bitvector_31_r
 import ../../types/bitvector_33_decode_ssz_generated.bend as bitvector_33_r
 import ../../types/bitvector_3_decode_ssz_generated.bend as bitvector_3_r
+import ../../types/bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ../../types/bitvector_511_decode_ssz_generated.bend as bitvector_511_r
 import ../../types/bitvector_513_decode_ssz_generated.bend as bitvector_513_r
 import ../../types/bitvector_5_decode_ssz_generated.bend as bitvector_5_r
@@ -769,7 +770,7 @@ def bitvector_4_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat
 def bitvector_4_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {Fulu_bitvector_4_r.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {bitvector_4_r.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   match b:
     case True{}: bitvector_4_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -778,7 +779,7 @@ def bitvector_4_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def bitvector_4_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {Fulu_bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   bitvector_4_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 def bitvector_4_atD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
@@ -804,7 +805,7 @@ def bitvector_4_atD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def bitvector_4_oklD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {Fulu_bitvector_4_r.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {bitvector_4_r.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   match b:
     case True{}: bitvector_4_atD(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -813,7 +814,7 @@ def bitvector_4_oklD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def bitvector_4_ok_evalD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {Fulu_bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   bitvector_4_oklD(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[4]: its padding bits clear

@@ -3,8 +3,12 @@ import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
 import ../../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
 import ../../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
 import ../../../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
+import ../../../types/FuluEth1Data_decode_ssz_generated.bend as FuluEth1Data_r
 import ../../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
 import ../../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
@@ -55,6 +59,18 @@ def BeaconBlockBody_decode_vlit_win_g0_rd3(buf: B.Buf, +off: U32, +len: U32, +ve
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd3(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, (buf, o_deposits)) == FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd4(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, B.read32(buf, (off + 216 : U32))) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g0}:
   {==}
 
+def BeaconBlockBody_decode_vlit_win_g0_rd4(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_proposer_slashings: U32, +o_attester_slashings: U32, +o_attestations: U32, +o_deposits: U32, +o_voluntary_exits: U32)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd4(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, (buf, o_voluntary_exits)) == FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd5(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, FuluBytes96_r.b96_read(buf, (off + 0 : U32), 96)) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g0}:
+  {==}
+
+def BeaconBlockBody_decode_vlit_win_g0_rd5(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_proposer_slashings: U32, +o_attester_slashings: U32, +o_attestations: U32, +o_deposits: U32, +o_voluntary_exits: U32, +randao_reveal: FuluBytes96_d.Bytes96)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd5(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, (buf, randao_reveal)) == FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd6(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, FuluEth1Data_r.Eth1Data_read(buf, (off + 96 : U32), 72)) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g0}:
+  {==}
+
+def BeaconBlockBody_decode_vlit_win_g0_rd6(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_proposer_slashings: U32, +o_attester_slashings: U32, +o_attestations: U32, +o_deposits: U32, +o_voluntary_exits: U32, +randao_reveal: FuluBytes96_d.Bytes96, +eth1_data: FuluEth1Data_d.Eth1Data)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd6(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, (buf, eth1_data)) == FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd7(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, eth1_data, FuluBytes32_r.b32_read(buf, (off + 168 : U32), 32)) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g0}:
+  {==}
+
 def BeaconBlockBody_decode_vlit_win_g0_rd7(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_proposer_slashings: U32, +o_attester_slashings: U32, +o_attestations: U32, +o_deposits: U32, +o_voluntary_exits: U32, +randao_reveal: FuluBytes96_d.Bytes96, +eth1_data: FuluEth1Data_d.Eth1Data, +graffiti: FuluBytes32_d.Bytes32)
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd7(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, eth1_data, (buf, graffiti)) == FuluBeaconBlockBody_r.BeaconBlockBody_g0_rd8(off, len, vend, o_proposer_slashings, o_attester_slashings, o_attestations, o_deposits, o_voluntary_exits, randao_reveal, eth1_data, graffiti, Fulu_list_ProposerSlashing_16_r.l16_ProposerSlashing_read(buf, (off + o_proposer_slashings : U32), (o_attester_slashings - o_proposer_slashings : U32))) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g0}:
   {==}
@@ -77,6 +93,10 @@ def BeaconBlockBody_decode_vlit_win_g1_rd1(buf: B.Buf, +off: U32, +len: U32, +ve
 
 def BeaconBlockBody_decode_vlit_win_g1_rd2(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_execution_payload: U32, +o_bls_to_execution_changes: U32, +o_blob_kzg_commitments: U32)
     -> {FuluBeaconBlockBody_r.BeaconBlockBody_g1_rd2(off, len, vend, o_execution_payload, o_bls_to_execution_changes, (buf, o_blob_kzg_commitments)) == FuluBeaconBlockBody_r.BeaconBlockBody_g1_rd3(off, len, vend, o_execution_payload, o_bls_to_execution_changes, o_blob_kzg_commitments, B.read32(buf, (off + 392 : U32))) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g1}:
+  {==}
+
+def BeaconBlockBody_decode_vlit_win_g1_rd3(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_execution_payload: U32, +o_bls_to_execution_changes: U32, +o_blob_kzg_commitments: U32, +o_execution_requests: U32)
+    -> {FuluBeaconBlockBody_r.BeaconBlockBody_g1_rd3(off, len, vend, o_execution_payload, o_bls_to_execution_changes, o_blob_kzg_commitments, (buf, o_execution_requests)) == FuluBeaconBlockBody_r.BeaconBlockBody_g1_rd4(off, len, vend, o_execution_payload, o_bls_to_execution_changes, o_blob_kzg_commitments, o_execution_requests, FuluSyncAggregate_r.SyncAggregate_bx_read(buf, (off + 220 : U32), 160)) : B.Buf & FuluBeaconBlockBody_d.BeaconBlockBody_g1}:
   {==}
 
 def BeaconBlockBody_decode_vlit_win_g1_rd4(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_execution_payload: U32, +o_bls_to_execution_changes: U32, +o_blob_kzg_commitments: U32, +o_execution_requests: U32, sync_aggregate: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)

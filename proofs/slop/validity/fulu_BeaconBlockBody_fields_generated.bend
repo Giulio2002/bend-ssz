@@ -155,3 +155,7 @@ def BeaconBlockBody_serialize_vpoison_bx_absent()
 def BeaconBlockBody_serialize_vpoison_bx_ok()
     -> {O.is_poisoned(Pair.snd(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, U32, Pair.snd(Array<U32>, O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody> & U32, FuluBeaconBlockBody_e.BeaconBlockBody_bx_putk(Array.new(U32, 4n, 0), 0, FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody_default()))))) == False{} : Bool}:
   {==}
+
+def BeaconBlockBody_serialize_vwriter_checked(+n: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody)
+    -> {FuluBeaconBlockBody_e.BeaconBlockBody_senc_go(False{}, n, o) == FuluBeaconBlockBody_e.BeaconBlockBody_senc_put(n, FuluBeaconBlockBody_e.BeaconBlockBody_putk(O.out_new(n), 0, o)) : FuluBeaconBlockBody_d.BeaconBlockBody & O.Encoded}:
+  {==}

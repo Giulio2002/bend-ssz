@@ -81,3 +81,7 @@ def VarTestStruct_serialize_vpoison_bx_ok()
 def VarTestStruct_serialize_vpoison_bx_invalid()
     -> {O.is_poisoned(Pair.snd(O.Boxed<VarTestStruct_d.VarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<VarTestStruct_d.VarTestStruct> & U32, VarTestStruct_e.VarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, VarTestStruct_d.VarTestStruct_bx_wrap(VarTestStruct_d.VarTestStruct_set_f_B(VarTestStruct_d.VarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
   {==}
+
+def VarTestStruct_serialize_vwriter_checked(+n: U32, o: VarTestStruct_d.VarTestStruct)
+    -> {VarTestStruct_e.VarTestStruct_senc_go(False{}, n, o) == VarTestStruct_e.VarTestStruct_senc_put(n, VarTestStruct_e.VarTestStruct_putk(O.out_new(n), 0, o)) : VarTestStruct_d.VarTestStruct & O.Encoded}:
+  {==}

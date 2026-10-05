@@ -78,3 +78,7 @@ def AttesterSlashing_serialize_vpoison_bx_ok()
 def AttesterSlashing_serialize_vpoison_bx_invalid()
     -> {O.is_poisoned(Pair.snd(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttesterSlashing_d.AttesterSlashing_bx_wrap(FuluAttesterSlashing_d.AttesterSlashing_set_attestation_1(FuluAttesterSlashing_d.AttesterSlashing_default(), O.BNone{})))))) == True{} : Bool}:
   {==}
+
+def AttesterSlashing_serialize_vwriter_checked(+n: U32, o: FuluAttesterSlashing_d.AttesterSlashing)
+    -> {FuluAttesterSlashing_e.AttesterSlashing_senc_go(False{}, n, o) == FuluAttesterSlashing_e.AttesterSlashing_senc_put(n, FuluAttesterSlashing_e.AttesterSlashing_putk(O.out_new(n), 0, o)) : FuluAttesterSlashing_d.AttesterSlashing & O.Encoded}:
+  {==}

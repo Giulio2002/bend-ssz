@@ -50,8 +50,6 @@ def SyncCommitteeContribution_bx_rd(pair: B.Buf & FuluSyncCommitteeContribution_
 
 def SyncCommitteeContribution_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>: SyncCommitteeContribution_bx_rd(SyncCommitteeContribution_read(buf, off, len))
 
-def SyncCommitteeContribution_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncCommitteeContribution_ok(buf, off, len)
-
 def SyncCommitteeContribution_some(pair: B.Buf & FuluSyncCommitteeContribution_d.SyncCommitteeContribution) -> B.Buf & Maybe<&1, FuluSyncCommitteeContribution_d.SyncCommitteeContribution>:
   (buf, +v) = pair
   (buf, Some{v})

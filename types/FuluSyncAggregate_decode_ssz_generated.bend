@@ -35,8 +35,6 @@ def SyncAggregate_bx_rd(pair: B.Buf & FuluSyncAggregate_d.SyncAggregate) -> B.Bu
 
 def SyncAggregate_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<FuluSyncAggregate_d.SyncAggregate>: SyncAggregate_bx_rd(SyncAggregate_read(buf, off, len))
 
-def SyncAggregate_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SyncAggregate_ok(buf, off, len)
-
 def SyncAggregate_some(pair: B.Buf & FuluSyncAggregate_d.SyncAggregate) -> B.Buf & Maybe<&1, FuluSyncAggregate_d.SyncAggregate>:
   (buf, +v) = pair
   (buf, Some{v})

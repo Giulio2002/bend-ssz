@@ -19,10 +19,3 @@ def bv64_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Fulu_bitvector_64_d.Bitvect
 def bv64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Fulu_bitvector_64_d.Bitvector64: bv64_r0(off, B.read32(buf, off))
 
 def bv64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def bv64_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: bv64_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def bv64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv64_ok_len(U32.is_eq(len, 8), buf, off)

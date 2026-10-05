@@ -21,3 +21,7 @@ def PendingAttestation_serialize_vrefuse_poisoned_size()
 def PendingAttestation_serialize_vreject_aggregation_bits()
     -> {Pair.snd(FuluPendingAttestation_d.PendingAttestation, Bool, FuluPendingAttestation_e.PendingAttestation_valid(FuluPendingAttestation_d.PendingAttestation_set_aggregation_bits(FuluPendingAttestation_d.PendingAttestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   {==}
+
+def PendingAttestation_serialize_vwriter_checked(+n: U32, o: FuluPendingAttestation_d.PendingAttestation)
+    -> {FuluPendingAttestation_e.PendingAttestation_senc_go(False{}, n, o) == FuluPendingAttestation_e.PendingAttestation_senc_put(n, FuluPendingAttestation_e.PendingAttestation_putk(O.out_new(n), 0, o)) : FuluPendingAttestation_d.PendingAttestation & O.Encoded}:
+  {==}

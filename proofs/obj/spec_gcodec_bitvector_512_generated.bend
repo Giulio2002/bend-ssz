@@ -2,7 +2,6 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../types/Fulu_bitvector_512_decode_ssz_generated.bend as Fulu_bitvector_512_r
 import ../../types/bitvector_512_decode_ssz_generated.bend as bitvector_512_r
 import ../../types/bitvector_512_encode_ssz_generated.bend as bitvector_512_e
 import ../../types/schema.bend as S
@@ -41,7 +40,7 @@ def bitvector_512_spec_view(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x
 # decode window: the proof is on the decoder of a window inside the buffer
 def bitvector_512_spec_reject_in(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 64) == False{} : Bool})
     -> {bitvector_512_r.bitvector_512_decode_in(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
-  %Equal.sym(Bool, U32.is_eq(m, 64), False{}, e) : {bitvector_512_r.bitvector_512_built(m, Fulu_bitvector_512_r.bv512_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}
+  %Equal.sym(Bool, U32.is_eq(m, 64), False{}, e) : {bitvector_512_r.bitvector_512_built(m, bitvector_512_r.bv512_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}
   {==}
 
 def bitvector_512_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 64) == False{} : Bool})

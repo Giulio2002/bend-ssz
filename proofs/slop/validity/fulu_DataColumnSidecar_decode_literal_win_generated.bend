@@ -1,6 +1,10 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../../../types/FuluSignedBeaconBlockHeader_decode_ssz_generated.bend as FuluSignedBeaconBlockHeader_r
+import ../../../types/FuluExecutionBranch_decode_ssz_generated.bend as FuluExecutionBranch_r
 import ../../../types/Fulu_list_bytevec_48_4096_decode_ssz_generated.bend as Fulu_list_bytevec_48_4096_r
 import ../../../types/Fulu_list_bytevec_2048_4096_decode_ssz_generated.bend as Fulu_list_bytevec_2048_4096_r
 import ../../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
@@ -18,6 +22,10 @@ def DataColumnSidecar_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_c
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd1(off, len, o_column, (buf, o_kzg_commitments)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd2(off, len, o_column, o_kzg_commitments, B.read32(buf, (off + 16 : U32))) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
   {==}
 
+def DataColumnSidecar_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_column: U32, +o_kzg_commitments: U32, +o_kzg_proofs: U32)
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd2(off, len, o_column, o_kzg_commitments, (buf, o_kzg_proofs)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd3(off, len, o_column, o_kzg_commitments, o_kzg_proofs, uint64_r.u64_read(buf, (off + 0 : U32), 8)) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
+  {==}
+
 def DataColumnSidecar_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_column: U32, +o_kzg_commitments: U32, +o_kzg_proofs: U32, +index: O.U64)
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd3(off, len, o_column, o_kzg_commitments, o_kzg_proofs, (buf, index)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd4(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, Fulu_list_bytevec_2048_4096_r.l4096_b2048_read(buf, (off + o_column : U32), (o_kzg_commitments - o_column : U32))) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
   {==}
@@ -28,4 +36,12 @@ def DataColumnSidecar_decode_vlit_win_rd4(buf: B.Buf, +off: U32, +len: U32, +o_c
 
 def DataColumnSidecar_decode_vlit_win_rd5(buf: B.Buf, +off: U32, +len: U32, +o_column: U32, +o_kzg_commitments: U32, +o_kzg_proofs: U32, +index: O.U64, column: O.Words, kzg_commitments: O.Words)
     -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd5(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, (buf, kzg_commitments)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd6(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, Fulu_list_bytevec_48_4096_r.l4096_b48_read(buf, (off + o_kzg_proofs : U32), (len - o_kzg_proofs : U32))) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
+  {==}
+
+def DataColumnSidecar_decode_vlit_win_rd6(buf: B.Buf, +off: U32, +len: U32, +o_column: U32, +o_kzg_commitments: U32, +o_kzg_proofs: U32, +index: O.U64, column: O.Words, kzg_commitments: O.Words, kzg_proofs: O.Words)
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd6(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, (buf, kzg_proofs)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd7(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, kzg_proofs, FuluSignedBeaconBlockHeader_r.SignedBeaconBlockHeader_bx_read(buf, (off + 20 : U32), 208)) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
+  {==}
+
+def DataColumnSidecar_decode_vlit_win_rd7(buf: B.Buf, +off: U32, +len: U32, +o_column: U32, +o_kzg_commitments: U32, +o_kzg_proofs: U32, +index: O.U64, column: O.Words, kzg_commitments: O.Words, kzg_proofs: O.Words, signed_block_header: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>)
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_rd7(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, kzg_proofs, (buf, signed_block_header)) == FuluDataColumnSidecar_r.DataColumnSidecar_rd8(off, len, o_column, o_kzg_commitments, o_kzg_proofs, index, column, kzg_commitments, kzg_proofs, signed_block_header, FuluExecutionBranch_r.v4_b32_read(buf, (off + 228 : U32), 128)) : B.Buf & FuluDataColumnSidecar_d.DataColumnSidecar}:
   {==}

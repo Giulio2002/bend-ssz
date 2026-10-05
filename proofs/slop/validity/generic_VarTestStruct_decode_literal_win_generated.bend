@@ -1,6 +1,8 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../../types/uint16_decode_ssz_generated.bend as uint16_r
 import ../../../types/list_uint16_1024_decode_ssz_generated.bend as list_uint16_1024_r
 import ../../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../../../types/VarTestStruct_decode_ssz_generated.bend as VarTestStruct_r
@@ -9,6 +11,14 @@ import ../../../types/VarTestStruct_decode_ssz_generated.bend as VarTestStruct_r
 # VarTestStruct: literal encodings that decode and literal encodings that do not (manual spec-mutation audit, round 5; docs/mutation_testing/MUTATION_PROOFS.md).
 
 
+def VarTestStruct_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32)
+    -> {VarTestStruct_r.VarTestStruct_rd0(off, len, (buf, o_f_B)) == VarTestStruct_r.VarTestStruct_rd1(off, len, o_f_B, uint16_r.u16_read(buf, (off + 0 : U32), 2)) : B.Buf & VarTestStruct_d.VarTestStruct}:
+  {==}
+
 def VarTestStruct_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +f_A: U32)
     -> {VarTestStruct_r.VarTestStruct_rd1(off, len, o_f_B, (buf, f_A)) == VarTestStruct_r.VarTestStruct_rd2(off, len, o_f_B, f_A, list_uint16_1024_r.l1024_u16_read(buf, (off + o_f_B : U32), (len - o_f_B : U32))) : B.Buf & VarTestStruct_d.VarTestStruct}:
+  {==}
+
+def VarTestStruct_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +f_A: U32, f_B: O.Words)
+    -> {VarTestStruct_r.VarTestStruct_rd2(off, len, o_f_B, f_A, (buf, f_B)) == VarTestStruct_r.VarTestStruct_rd3(off, len, o_f_B, f_A, f_B, uint8_r.u8_read(buf, (off + 6 : U32), 1)) : B.Buf & VarTestStruct_d.VarTestStruct}:
   {==}

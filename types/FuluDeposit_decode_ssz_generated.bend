@@ -34,8 +34,6 @@ def Deposit_bx_rd(pair: B.Buf & FuluDeposit_d.Deposit) -> B.Buf & O.Boxed<FuluDe
 
 def Deposit_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<FuluDeposit_d.Deposit>: Deposit_bx_rd(Deposit_read(buf, off, len))
 
-def Deposit_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Deposit_ok(buf, off, len)
-
 def Deposit_some(pair: B.Buf & FuluDeposit_d.Deposit) -> B.Buf & Maybe<&1, FuluDeposit_d.Deposit>:
   (buf, v) = pair
   (buf, Some{v})

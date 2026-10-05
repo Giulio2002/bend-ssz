@@ -1,7 +1,12 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../../types/FuluAttestationData_decode_ssz_generated.bend as FuluAttestationData_r
 import ../../../types/Fulu_bitlist_131072_decode_ssz_generated.bend as Fulu_bitlist_131072_r
+import ../../../types/Fulu_bitvector_64_decode_ssz_generated.bend as Fulu_bitvector_64_r
 import ../../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
 import ../../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
 
@@ -11,4 +16,16 @@ import ../../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestati
 
 def Attestation_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32)
     -> {FuluAttestation_r.Attestation_rd0(off, len, (buf, o_aggregation_bits)) == FuluAttestation_r.Attestation_rd1(off, len, o_aggregation_bits, Fulu_bitlist_131072_r.bits131072_read(buf, (off + o_aggregation_bits : U32), (len - o_aggregation_bits : U32))) : B.Buf & FuluAttestation_d.Attestation}:
+  {==}
+
+def Attestation_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits)
+    -> {FuluAttestation_r.Attestation_rd1(off, len, o_aggregation_bits, (buf, aggregation_bits)) == FuluAttestation_r.Attestation_rd2(off, len, o_aggregation_bits, aggregation_bits, FuluAttestationData_r.AttestationData_read(buf, (off + 4 : U32), 128)) : B.Buf & FuluAttestation_d.Attestation}:
+  {==}
+
+def Attestation_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits, +data: FuluAttestationData_d.AttestationData)
+    -> {FuluAttestation_r.Attestation_rd2(off, len, o_aggregation_bits, aggregation_bits, (buf, data)) == FuluAttestation_r.Attestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, FuluBytes96_r.b96_read(buf, (off + 132 : U32), 96)) : B.Buf & FuluAttestation_d.Attestation}:
+  {==}
+
+def Attestation_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96)
+    -> {FuluAttestation_r.Attestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, (buf, signature)) == FuluAttestation_r.Attestation_rd4(off, len, o_aggregation_bits, aggregation_bits, data, signature, Fulu_bitvector_64_r.bv64_read(buf, (off + 228 : U32), 8)) : B.Buf & FuluAttestation_d.Attestation}:
   {==}

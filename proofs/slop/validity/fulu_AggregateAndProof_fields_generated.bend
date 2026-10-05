@@ -34,3 +34,7 @@ def AggregateAndProof_serialize_vreject_aggregate_aggregation_bits()
 def AggregateAndProof_serialize_vrefuse_aggregate_aggregation_bits()
     -> {Pair.snd(FuluAggregateAndProof_d.AggregateAndProof, O.Encoded, FuluAggregateAndProof_e.AggregateAndProof_serialize(FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64}))))) == O.refused() : O.Encoded}:
   {==}
+
+def AggregateAndProof_serialize_vwriter_checked(+n: U32, o: FuluAggregateAndProof_d.AggregateAndProof)
+    -> {FuluAggregateAndProof_e.AggregateAndProof_senc_go(False{}, n, o) == FuluAggregateAndProof_e.AggregateAndProof_senc_put(n, FuluAggregateAndProof_e.AggregateAndProof_putk(O.out_new(n), 0, o)) : FuluAggregateAndProof_d.AggregateAndProof & O.Encoded}:
+  {==}

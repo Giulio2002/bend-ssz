@@ -10,10 +10,3 @@ import ../src/obj.bend as O
 def v512_b48_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 24576, Array.new(U32, 13n, 0))
 
 def v512_b48_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def v512_b48_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: v512_b48_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def v512_b48_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v512_b48_ok_len(U32.is_eq(len, 24576), buf, off)

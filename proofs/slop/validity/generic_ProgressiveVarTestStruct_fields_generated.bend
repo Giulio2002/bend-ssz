@@ -77,3 +77,7 @@ def ProgressiveVarTestStruct_serialize_vpoison_bx_ok()
 def ProgressiveVarTestStruct_serialize_vpoison_bx_invalid()
     -> {O.is_poisoned(Pair.snd(O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct>, U32, Pair.snd(Array<U32>, O.Boxed<ProgressiveVarTestStruct_d.ProgressiveVarTestStruct> & U32, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_bx_putk(Array.new(U32, 4n, 0), 0, ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_bx_wrap(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})))))) == True{} : Bool}:
   {==}
+
+def ProgressiveVarTestStruct_serialize_vwriter_checked(+n: U32, o: ProgressiveVarTestStruct_d.ProgressiveVarTestStruct)
+    -> {ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_senc_go(False{}, n, o) == ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_senc_put(n, ProgressiveVarTestStruct_e.ProgressiveVarTestStruct_putk(O.out_new(n), 0, o)) : ProgressiveVarTestStruct_d.ProgressiveVarTestStruct & O.Encoded}:
+  {==}

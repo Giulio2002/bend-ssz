@@ -22,16 +22,16 @@ import ./bitvector_33_hashtreeroot_generated.bend as bitvector_33_h
 import ./bitvector_3_decode_ssz_generated.bend as bitvector_3_r
 import ./bitvector_3_encode_ssz_generated.bend as bitvector_3_e
 import ./bitvector_3_hashtreeroot_generated.bend as bitvector_3_h
+import ./bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ./bitvector_511_decode_ssz_generated.bend as bitvector_511_r
 import ./bitvector_511_encode_ssz_generated.bend as bitvector_511_e
 import ./bitvector_511_hashtreeroot_generated.bend as bitvector_511_h
+import ./bitvector_512_decode_ssz_generated.bend as bitvector_512_r
 import ./bitvector_513_decode_ssz_generated.bend as bitvector_513_r
 import ./bitvector_513_encode_ssz_generated.bend as bitvector_513_e
 import ./bitvector_513_hashtreeroot_generated.bend as bitvector_513_h
-import ./bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ./bitvector_4_encode_ssz_generated.bend as bitvector_4_e
 import ./bitvector_4_hashtreeroot_generated.bend as bitvector_4_h
-import ./bitvector_512_decode_ssz_generated.bend as bitvector_512_r
 import ./bitvector_512_encode_ssz_generated.bend as bitvector_512_e
 import ./bitvector_512_hashtreeroot_generated.bend as bitvector_512_h
 

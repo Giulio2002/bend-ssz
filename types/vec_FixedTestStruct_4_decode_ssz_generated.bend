@@ -31,10 +31,3 @@ def v4_FixedTestStruct_rd_start(empty: Bool, +off: U32, +n: U32, buf: B.Buf) -> 
 def v4_FixedTestStruct_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq: v4_FixedTestStruct_rd_start(False{}, off, 4, buf)
 
 def v4_FixedTestStruct_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def v4_FixedTestStruct_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: v4_FixedTestStruct_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def v4_FixedTestStruct_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v4_FixedTestStruct_ok_len(U32.is_eq(len, 52), buf, off)

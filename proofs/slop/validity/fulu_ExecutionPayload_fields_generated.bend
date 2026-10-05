@@ -75,3 +75,7 @@ def ExecutionPayload_serialize_vpoison_bx_absent()
 def ExecutionPayload_serialize_vpoison_bx_ok()
     -> {O.is_poisoned(Pair.snd(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, U32, Pair.snd(Array<U32>, O.Boxed<FuluExecutionPayload_d.ExecutionPayload> & U32, FuluExecutionPayload_e.ExecutionPayload_bx_putk(Array.new(U32, 4n, 0), 0, FuluExecutionPayload_d.ExecutionPayload_bx_wrap(FuluExecutionPayload_d.ExecutionPayload_default()))))) == False{} : Bool}:
   {==}
+
+def ExecutionPayload_serialize_vwriter_checked(+n: U32, o: FuluExecutionPayload_d.ExecutionPayload)
+    -> {FuluExecutionPayload_e.ExecutionPayload_senc_go(False{}, n, o) == FuluExecutionPayload_e.ExecutionPayload_senc_put(n, FuluExecutionPayload_e.ExecutionPayload_putk(O.out_new(n), 0, o)) : FuluExecutionPayload_d.ExecutionPayload & O.Encoded}:
+  {==}

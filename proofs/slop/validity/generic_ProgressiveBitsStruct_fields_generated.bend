@@ -57,3 +57,7 @@ def ProgressiveBitsStruct_serialize_vreject_f_K()
 def ProgressiveBitsStruct_serialize_vreject_f_L()
     -> {Pair.snd(ProgressiveBitsStruct_d.ProgressiveBitsStruct, Bool, ProgressiveBitsStruct_e.ProgressiveBitsStruct_valid(ProgressiveBitsStruct_d.ProgressiveBitsStruct{ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0_default(), ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1_set_f_L(ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1_default(), O.Bits{Array.new(U32, 0n, 0), 64})})) == False{} : Bool}:
   {==}
+
+def ProgressiveBitsStruct_serialize_vwriter_checked(+n: U32, o: ProgressiveBitsStruct_d.ProgressiveBitsStruct)
+    -> {ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_go(False{}, n, o) == ProgressiveBitsStruct_e.ProgressiveBitsStruct_senc_put(n, ProgressiveBitsStruct_e.ProgressiveBitsStruct_putk(O.out_new(n), 0, o)) : ProgressiveBitsStruct_d.ProgressiveBitsStruct & O.Encoded}:
+  {==}

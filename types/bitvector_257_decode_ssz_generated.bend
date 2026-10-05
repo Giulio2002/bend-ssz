@@ -47,10 +47,3 @@ def bv257_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & bitvector_257_d.Bitvector2
 def bv257_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & bitvector_257_d.Bitvector257: bv257_r0(off, B.read32(buf, off))
 
 def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 1)
-
-def bv257_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: bv257_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def bv257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv257_ok_len(U32.is_eq(len, 33), buf, off)

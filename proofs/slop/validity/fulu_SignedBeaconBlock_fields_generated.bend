@@ -26,3 +26,7 @@ def SignedBeaconBlock_serialize_vreject_message_body()
 def SignedBeaconBlock_serialize_vrefuse_message_body()
     -> {Pair.snd(FuluSignedBeaconBlock_d.SignedBeaconBlock, O.Encoded, FuluSignedBeaconBlock_e.SignedBeaconBlock_serialize(FuluSignedBeaconBlock_d.SignedBeaconBlock_set_message(FuluSignedBeaconBlock_d.SignedBeaconBlock_default(), FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), O.BNone{})))) == O.refused() : O.Encoded}:
   {==}
+
+def SignedBeaconBlock_serialize_vwriter_checked(+n: U32, o: FuluSignedBeaconBlock_d.SignedBeaconBlock)
+    -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_go(False{}, n, o) == FuluSignedBeaconBlock_e.SignedBeaconBlock_senc_put(n, FuluSignedBeaconBlock_e.SignedBeaconBlock_putk(O.out_new(n), 0, o)) : FuluSignedBeaconBlock_d.SignedBeaconBlock & O.Encoded}:
+  {==}

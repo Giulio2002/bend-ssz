@@ -21,3 +21,7 @@ def DataColumnsByRootIdentifier_serialize_vrefuse_poisoned_size()
 def DataColumnsByRootIdentifier_serialize_vreject_columns()
     -> {Pair.snd(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, Bool, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_valid(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_set_columns(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}
+
+def DataColumnsByRootIdentifier_serialize_vwriter_checked(+n: U32, o: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier)
+    -> {FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_go(False{}, n, o) == FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_senc_put(n, FuluDataColumnsByRootIdentifier_e.DataColumnsByRootIdentifier_putk(O.out_new(n), 0, o)) : FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier & O.Encoded}:
+  {==}

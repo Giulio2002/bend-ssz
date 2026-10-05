@@ -1,11 +1,14 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../../types/uint16_decode_ssz_generated.bend as uint16_r
 import ../../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../../../types/VarTestStruct_decode_ssz_generated.bend as VarTestStruct_r
 import ../../../types/list_uint16_128_decode_ssz_generated.bend as list_uint16_128_r
 import ../../../types/bytelist_256_decode_ssz_generated.bend as bytelist_256_r
 import ../../../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
+import ../../../types/vec_FixedTestStruct_4_decode_ssz_generated.bend as vec_FixedTestStruct_4_r
 import ../../../types/vec_VarTestStruct_2_decode_ssz_generated.bend as vec_VarTestStruct_2_r
 import ../../../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
 import ../../../types/ComplexTestStruct_decode_ssz_generated.bend as ComplexTestStruct_r
@@ -26,8 +29,16 @@ def ComplexTestStruct_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_f
     -> {ComplexTestStruct_r.ComplexTestStruct_rd2(off, len, o_f_B, o_f_D, (buf, o_f_E)) == ComplexTestStruct_r.ComplexTestStruct_rd3(off, len, o_f_B, o_f_D, o_f_E, B.read32(buf, (off + 67 : U32))) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
   {==}
 
+def ComplexTestStruct_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32)
+    -> {ComplexTestStruct_r.ComplexTestStruct_rd3(off, len, o_f_B, o_f_D, o_f_E, (buf, o_f_G)) == ComplexTestStruct_r.ComplexTestStruct_rd4(off, len, o_f_B, o_f_D, o_f_E, o_f_G, uint16_r.u16_read(buf, (off + 0 : U32), 2)) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
+  {==}
+
 def ComplexTestStruct_decode_vlit_win_rd4(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32)
     -> {ComplexTestStruct_r.ComplexTestStruct_rd4(off, len, o_f_B, o_f_D, o_f_E, o_f_G, (buf, f_A)) == ComplexTestStruct_r.ComplexTestStruct_rd5(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, list_uint16_128_r.l128_u16_read(buf, (off + o_f_B : U32), (o_f_D - o_f_B : U32))) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
+  {==}
+
+def ComplexTestStruct_decode_vlit_win_rd5(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32, f_B: O.Words)
+    -> {ComplexTestStruct_r.ComplexTestStruct_rd5(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, (buf, f_B)) == ComplexTestStruct_r.ComplexTestStruct_rd6(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, uint8_r.u8_read(buf, (off + 6 : U32), 1)) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
   {==}
 
 def ComplexTestStruct_decode_vlit_win_rd6(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32, f_B: O.Words, +f_C: U32)
@@ -36,6 +47,10 @@ def ComplexTestStruct_decode_vlit_win_rd6(buf: B.Buf, +off: U32, +len: U32, +o_f
 
 def ComplexTestStruct_decode_vlit_win_rd7(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words)
     -> {ComplexTestStruct_r.ComplexTestStruct_rd7(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, (buf, f_D)) == ComplexTestStruct_r.ComplexTestStruct_rd8(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, f_D, VarTestStruct_r.VarTestStruct_read(buf, (off + o_f_E : U32), (o_f_G - o_f_E : U32))) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
+  {==}
+
+def ComplexTestStruct_decode_vlit_win_rd8(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: VarTestStruct_d.VarTestStruct)
+    -> {ComplexTestStruct_r.ComplexTestStruct_rd8(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, f_D, (buf, f_E)) == ComplexTestStruct_r.ComplexTestStruct_rd9(off, len, o_f_B, o_f_D, o_f_E, o_f_G, f_A, f_B, f_C, f_D, f_E, vec_FixedTestStruct_4_r.v4_FixedTestStruct_read(buf, (off + 15 : U32), 52)) : B.Buf & ComplexTestStruct_d.ComplexTestStruct}:
   {==}
 
 def ComplexTestStruct_decode_vlit_win_rd9(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_D: U32, +o_f_E: U32, +o_f_G: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: VarTestStruct_d.VarTestStruct, f_F: vec_FixedTestStruct_4_d.v4_FixedTestStruct_Seq)

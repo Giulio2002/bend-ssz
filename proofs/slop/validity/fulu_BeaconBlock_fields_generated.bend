@@ -35,3 +35,7 @@ def BeaconBlock_serialize_vreject_body_proposer_slashings()
 def BeaconBlock_serialize_vrefuse_body_proposer_slashings()
     -> {Pair.snd(FuluBeaconBlock_d.BeaconBlock, O.Encoded, FuluBeaconBlock_e.BeaconBlock_serialize(FuluBeaconBlock_d.BeaconBlock_set_body(FuluBeaconBlock_d.BeaconBlock_default(), FuluBeaconBlockBody_d.BeaconBlockBody_bx_wrap(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0_set_proposer_slashings(FuluBeaconBlockBody_d.BeaconBlockBody_g0_default(), Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_fill(0n), 2}), FuluBeaconBlockBody_d.BeaconBlockBody_g1_default()})))) == O.refused() : O.Encoded}:
   {==}
+
+def BeaconBlock_serialize_vwriter_checked(+n: U32, o: FuluBeaconBlock_d.BeaconBlock)
+    -> {FuluBeaconBlock_e.BeaconBlock_senc_go(False{}, n, o) == FuluBeaconBlock_e.BeaconBlock_senc_put(n, FuluBeaconBlock_e.BeaconBlock_putk(O.out_new(n), 0, o)) : FuluBeaconBlock_d.BeaconBlock & O.Encoded}:
+  {==}

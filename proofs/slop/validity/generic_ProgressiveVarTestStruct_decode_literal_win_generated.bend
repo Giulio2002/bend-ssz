@@ -1,6 +1,7 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint8_decode_ssz_generated.bend as uint8_r
 import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../../types/list_uint16_123_decode_ssz_generated.bend as list_uint16_123_r
 import ../../../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
@@ -12,6 +13,10 @@ import ../../../types/ProgressiveVarTestStruct_decode_ssz_generated.bend as Prog
 
 def ProgressiveVarTestStruct_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32)
     -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_rd0(off, len, (buf, o_f_B)) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_rd1(off, len, o_f_B, B.read32(buf, (off + 5 : U32))) : B.Buf & ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
+  {==}
+
+def ProgressiveVarTestStruct_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_C: U32)
+    -> {ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_rd1(off, len, o_f_B, (buf, o_f_C)) == ProgressiveVarTestStruct_r.ProgressiveVarTestStruct_rd2(off, len, o_f_B, o_f_C, uint8_r.u8_read(buf, (off + 0 : U32), 1)) : B.Buf & ProgressiveVarTestStruct_d.ProgressiveVarTestStruct}:
   {==}
 
 def ProgressiveVarTestStruct_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_f_B: U32, +o_f_C: U32, +f_A: U32)

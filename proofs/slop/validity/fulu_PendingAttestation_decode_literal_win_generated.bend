@@ -1,6 +1,9 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../../types/FuluAttestationData_decode_ssz_generated.bend as FuluAttestationData_r
 import ../../../types/Fulu_bitlist_2048_decode_ssz_generated.bend as Fulu_bitlist_2048_r
 import ../../../types/FuluPendingAttestation_def_generated.bend as FuluPendingAttestation_d
 import ../../../types/FuluPendingAttestation_decode_ssz_generated.bend as FuluPendingAttestation_r
@@ -11,4 +14,16 @@ import ../../../types/FuluPendingAttestation_decode_ssz_generated.bend as FuluPe
 
 def PendingAttestation_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32)
     -> {FuluPendingAttestation_r.PendingAttestation_rd0(off, len, (buf, o_aggregation_bits)) == FuluPendingAttestation_r.PendingAttestation_rd1(off, len, o_aggregation_bits, Fulu_bitlist_2048_r.bits2048_read(buf, (off + o_aggregation_bits : U32), (len - o_aggregation_bits : U32))) : B.Buf & FuluPendingAttestation_d.PendingAttestation}:
+  {==}
+
+def PendingAttestation_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits)
+    -> {FuluPendingAttestation_r.PendingAttestation_rd1(off, len, o_aggregation_bits, (buf, aggregation_bits)) == FuluPendingAttestation_r.PendingAttestation_rd2(off, len, o_aggregation_bits, aggregation_bits, FuluAttestationData_r.AttestationData_read(buf, (off + 4 : U32), 128)) : B.Buf & FuluPendingAttestation_d.PendingAttestation}:
+  {==}
+
+def PendingAttestation_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits, +data: FuluAttestationData_d.AttestationData)
+    -> {FuluPendingAttestation_r.PendingAttestation_rd2(off, len, o_aggregation_bits, aggregation_bits, (buf, data)) == FuluPendingAttestation_r.PendingAttestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, uint64_r.u64_read(buf, (off + 132 : U32), 8)) : B.Buf & FuluPendingAttestation_d.PendingAttestation}:
+  {==}
+
+def PendingAttestation_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_aggregation_bits: U32, aggregation_bits: O.Bits, +data: FuluAttestationData_d.AttestationData, +inclusion_delay: O.U64)
+    -> {FuluPendingAttestation_r.PendingAttestation_rd3(off, len, o_aggregation_bits, aggregation_bits, data, (buf, inclusion_delay)) == FuluPendingAttestation_r.PendingAttestation_rd4(off, len, o_aggregation_bits, aggregation_bits, data, inclusion_delay, uint64_r.u64_read(buf, (off + 140 : U32), 8)) : B.Buf & FuluPendingAttestation_d.PendingAttestation}:
   {==}

@@ -10,10 +10,3 @@ import ../src/obj.bend as O
 def v64_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
 
 def v64_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def v64_u64_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: v64_u64_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def v64_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v64_u64_ok_len(U32.is_eq(len, 512), buf, off)

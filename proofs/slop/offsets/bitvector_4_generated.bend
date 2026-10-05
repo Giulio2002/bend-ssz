@@ -2,7 +2,6 @@ import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
 import ../../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
-import ../../../types/Fulu_bitvector_4_decode_ssz_generated.bend as Fulu_bitvector_4_r
 import ../../../types/bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ../../obj/decode_window_library_generated.bend as DWL
 
@@ -12,10 +11,10 @@ import ../../obj/decode_window_library_generated.bend as DWL
 # decode window
 
 # ---- bitvector_4: decode is some(build) of the validated buffer ----
-def bitvector_4_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {Fulu_bitvector_4_r.bv4_ok(buf, 0, size) == (b2, True{}) : B.Buf & Bool}, hwin: {U32.is_le(size, DWL.bsz(buf)) == True{} : Bool})
+def bitvector_4_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {bitvector_4_r.bv4_ok(buf, 0, size) == (b2, True{}) : B.Buf & Bool}, hwin: {U32.is_le(size, DWL.bsz(buf)) == True{} : Bool})
     -> {bitvector_4_r.bitvector_4_decode(buf, size) == bitvector_4_r.bitvector_4_some(bitvector_4_r.bitvector_4_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
   match buf:
     case B.Buf{ws, +n}:
       %Equal.sym(Bool, U32.is_le(size, n), True{}, hwin) : {bitvector_4_r.bitvector_4_dwgo(_, B.Buf{ws, n}, size) == bitvector_4_r.bitvector_4_some(bitvector_4_r.bitvector_4_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
-      %Equal.sym(B.Buf & Bool, Fulu_bitvector_4_r.bv4_ok(B.Buf{ws, n}, 0, size), (b2, True{}), e) : {bitvector_4_r.bitvector_4_built(size, _) == bitvector_4_r.bitvector_4_some(bitvector_4_r.bitvector_4_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
+      %Equal.sym(B.Buf & Bool, bitvector_4_r.bv4_ok(B.Buf{ws, n}, 0, size), (b2, True{}), e) : {bitvector_4_r.bitvector_4_built(size, _) == bitvector_4_r.bitvector_4_some(bitvector_4_r.bitvector_4_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
       {==}

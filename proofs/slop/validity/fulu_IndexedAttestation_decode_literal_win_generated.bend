@@ -1,6 +1,9 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../../types/FuluAttestationData_decode_ssz_generated.bend as FuluAttestationData_r
 import ../../../types/Fulu_list_uint64_131072_decode_ssz_generated.bend as Fulu_list_uint64_131072_r
 import ../../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
 import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
@@ -11,4 +14,12 @@ import ../../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIn
 
 def IndexedAttestation_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_attesting_indices: U32)
     -> {FuluIndexedAttestation_r.IndexedAttestation_rd0(off, len, (buf, o_attesting_indices)) == FuluIndexedAttestation_r.IndexedAttestation_rd1(off, len, o_attesting_indices, Fulu_list_uint64_131072_r.l131072_u64_read(buf, (off + o_attesting_indices : U32), (len - o_attesting_indices : U32))) : B.Buf & FuluIndexedAttestation_d.IndexedAttestation}:
+  {==}
+
+def IndexedAttestation_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_attesting_indices: U32, attesting_indices: O.Words)
+    -> {FuluIndexedAttestation_r.IndexedAttestation_rd1(off, len, o_attesting_indices, (buf, attesting_indices)) == FuluIndexedAttestation_r.IndexedAttestation_rd2(off, len, o_attesting_indices, attesting_indices, FuluAttestationData_r.AttestationData_read(buf, (off + 4 : U32), 128)) : B.Buf & FuluIndexedAttestation_d.IndexedAttestation}:
+  {==}
+
+def IndexedAttestation_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_attesting_indices: U32, attesting_indices: O.Words, +data: FuluAttestationData_d.AttestationData)
+    -> {FuluIndexedAttestation_r.IndexedAttestation_rd2(off, len, o_attesting_indices, attesting_indices, (buf, data)) == FuluIndexedAttestation_r.IndexedAttestation_rd3(off, len, o_attesting_indices, attesting_indices, data, FuluBytes96_r.b96_read(buf, (off + 132 : U32), 96)) : B.Buf & FuluIndexedAttestation_d.IndexedAttestation}:
   {==}

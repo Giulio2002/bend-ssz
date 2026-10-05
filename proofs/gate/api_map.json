@@ -10228,6 +10228,14 @@
      "law": "Attestation_decode_vlit_bad_off_plus"
     },
     {
+     "file": "slop/validity/fulu_Attestation_decode_literal_count_at_generated.bend",
+     "law": "Attestation_decode_vlit_count_at_bits131072"
+    },
+    {
+     "file": "slop/validity/fulu_Attestation_decode_literal_count_at_generated.bend",
+     "law": "Attestation_decode_vlit_count_over_bits131072"
+    },
+    {
      "file": "slop/validity/fulu_Attestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
      "law": "Attestation_decode_vlit_ok_aggregation_bits_n1"
     },
@@ -10943,6 +10951,14 @@
      "law": "PendingAttestation_decode_vlit_bad_off_plus"
     },
     {
+     "file": "slop/validity/fulu_PendingAttestation_decode_literal_count_at_generated.bend",
+     "law": "PendingAttestation_decode_vlit_count_at_bits2048"
+    },
+    {
+     "file": "slop/validity/fulu_PendingAttestation_decode_literal_count_at_generated.bend",
+     "law": "PendingAttestation_decode_vlit_count_over_bits2048"
+    },
+    {
      "file": "slop/validity/fulu_PendingAttestation_decode_literal_ok_aggregation_bits_n1_generated.bend",
      "law": "PendingAttestation_decode_vlit_ok_aggregation_bits_n1"
     },
@@ -11297,6 +11313,14 @@
     {
      "file": "slop/validity/fulu_IndexedAttestation_decode_literal_bad_off_plus_generated.bend",
      "law": "IndexedAttestation_decode_vlit_bad_off_plus"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_literal_count_at_generated.bend",
+     "law": "IndexedAttestation_decode_vlit_count_at_l131072_u64"
+    },
+    {
+     "file": "slop/validity/fulu_IndexedAttestation_decode_literal_count_at_generated.bend",
+     "law": "IndexedAttestation_decode_vlit_count_over_l131072_u64"
     },
     {
      "file": "slop/validity/fulu_IndexedAttestation_decode_literal_ok_attesting_indices_n1_generated.bend",
@@ -15667,6 +15691,14 @@
      "law": "Transaction_decode_vchecked_budget_agree"
     },
     {
+     "file": "slop/validity/fulu_Transaction_decode_literal_count_at_generated.bend",
+     "law": "Transaction_decode_vlit_count_at_bl1073741824"
+    },
+    {
+     "file": "slop/validity/fulu_Transaction_decode_literal_count_at_generated.bend",
+     "law": "Transaction_decode_vlit_count_over_bl1073741824"
+    },
+    {
      "file": "slop/validity/fulu_Transaction_decode_literal_ok_generated.bend",
      "law": "Transaction_decode_vlit_ok_default"
     },
@@ -16307,6 +16339,10 @@
      "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_5_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_clean_generated.bend",
      "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_app_clean"
     },
@@ -16319,8 +16355,40 @@
      "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_end"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_4_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_5_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_limit_generated.bend",
      "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l16_WithdrawalRequest_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l16_WithdrawalRequest_cache_set_0_generated.bend",
@@ -16351,8 +16419,32 @@
      "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_end"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_grow_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_grow_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_grow_2"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_limit_generated.bend",
      "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_set_0_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_set_0"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l2_ConsolidationRequest_cache_set_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l2_ConsolidationRequest_cache_set_1"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_1_generated.bend",
@@ -16371,6 +16463,10 @@
      "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_5_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_app_clean_generated.bend",
      "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_app_clean"
     },
@@ -16381,6 +16477,38 @@
     {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_end_generated.bend",
      "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_4_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_5_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_1_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_2_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_3_generated.bend",
+     "law": "ExecutionRequests_vroot_l8192_DepositRequest_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_vroot_l8192_DepositRequest_cache_set_0_generated.bend",
@@ -16879,6 +17007,30 @@
     {
      "file": "slop/validity/fulu_ExecutionRequests_decode_literal_bad_withdrawals_ragged_78_generated.bend",
      "law": "ExecutionRequests_decode_vlit_bad_withdrawals_ragged_78"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_at_l16_WithdrawalRequest"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_over_l16_WithdrawalRequest"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_at_l2_ConsolidationRequest"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_over_l2_ConsolidationRequest"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_at_l8192_DepositRequest"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionRequests_decode_literal_count_at_generated.bend",
+     "law": "ExecutionRequests_decode_vlit_count_over_l8192_DepositRequest"
     },
     {
      "file": "slop/validity/fulu_ExecutionRequests_decode_literal_ok_all_generated.bend",
@@ -17786,6 +17938,14 @@
      "law": "ExecutionPayloadHeader_decode_vlit_bad_off_plus"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vlit_count_at_bl32"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayloadHeader_decode_vlit_count_over_bl32"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayloadHeader_decode_literal_ok_default_generated.bend",
      "law": "ExecutionPayloadHeader_decode_vlit_ok_default"
     },
@@ -18426,6 +18586,10 @@
      "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_clean_generated.bend",
      "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_app_clean"
     },
@@ -18440,6 +18604,38 @@
     {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_end_generated.bend",
      "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_4_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_5_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l1048576_bl1073741824_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l1048576_bl1073741824_cache_set_0_generated.bend",
@@ -18478,6 +18674,10 @@
      "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_5_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_app_clean_generated.bend",
      "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_app_clean"
     },
@@ -18490,8 +18690,40 @@
      "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_end"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_grow_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_grow_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_grow_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_grow_4_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_grow_5_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_limit_generated.bend",
      "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_1_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_2_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_3_generated.bend",
+     "law": "ExecutionPayload_vroot_l16_Withdrawal_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_ExecutionPayload_vroot_l16_Withdrawal_cache_set_0_generated.bend",
@@ -18948,6 +19180,22 @@
      "law": "ExecutionPayload_decode_vlit_bad_withdrawals_ragged_46"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_count_at_bl32"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_count_over_bl32"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_count_at_l16_Withdrawal"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_count_at_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_count_over_l16_Withdrawal"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_decode_literal_ok_all_generated.bend",
      "law": "ExecutionPayload_decode_vlit_ok_all"
     },
@@ -18992,6 +19240,30 @@
      "law": "ExecutionPayload_decode_vlit_rt_fixed"
     },
     {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua1_transactions_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua1_transactions"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua1_withdrawals_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua1_withdrawals"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua2_transactions_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua2_transactions"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua2_withdrawals_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua2_withdrawals"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua3_transactions_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua3_transactions"
+    },
+    {
+     "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_ua3_withdrawals_generated.bend",
+     "law": "ExecutionPayload_decode_vlit_rt_ua3_withdrawals"
+    },
+    {
      "file": "slop/validity/fulu_ExecutionPayload_decode_literal_rt_wide_generated.bend",
      "law": "ExecutionPayload_decode_vlit_rt_wide"
     },
@@ -19030,6 +19302,10 @@
      "law": "BeaconState_vroot_l1099511627776_Validator_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l1099511627776_Validator_cache_app_clean"
     },
@@ -19044,6 +19320,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_end_generated.bend",
      "law": "BeaconState_vroot_l1099511627776_Validator_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l1099511627776_Validator_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l1099511627776_Validator_cache_set_0_generated.bend",
@@ -19074,6 +19382,10 @@
      "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_app_clean"
     },
@@ -19088,6 +19400,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_end_generated.bend",
      "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingDeposit_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingDeposit_cache_set_0_generated.bend",
@@ -19118,6 +19462,10 @@
      "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_app_clean"
     },
@@ -19132,6 +19480,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end_generated.bend",
      "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l134217728_PendingPartialWithdrawal_cache_set_0_generated.bend",
@@ -19162,6 +19542,10 @@
      "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_app_clean"
     },
@@ -19176,6 +19560,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_end_generated.bend",
      "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l16777216_HistoricalSummary_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l16777216_HistoricalSummary_cache_set_0_generated.bend",
@@ -19206,6 +19622,10 @@
      "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l2048_Eth1Data_cache_app_clean"
     },
@@ -19216,6 +19636,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_end_generated.bend",
      "law": "BeaconState_vroot_l2048_Eth1Data_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l2048_Eth1Data_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l2048_Eth1Data_cache_set_0_generated.bend",
@@ -19246,6 +19698,10 @@
      "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_5_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_app_clean_generated.bend",
      "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_app_clean"
     },
@@ -19260,6 +19716,38 @@
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_end_generated.bend",
      "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_grow_1_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_grow_2_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_grow_3_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_grow_4_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_grow_5_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_grow_5"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_1_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_2_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_3_generated.bend",
+     "law": "BeaconState_vroot_l262144_PendingConsolidation_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconState_vroot_l262144_PendingConsolidation_cache_set_0_generated.bend",
@@ -19890,6 +20378,26 @@
      "law": "BeaconState_serialize_vcoll_l16777216_HistoricalSummary_appb_short"
     },
     {
+     "file": "slop/validity/fulu_BeaconState_appb_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_b32_appb_below"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_appb_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_b32_appb_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_appb_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_b32_appb_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_appb_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_b32_appb_fit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_appb_l16777216_b32_generated.bend",
+     "law": "BeaconState_serialize_vcoll_l16777216_b32_appb_short"
+    },
+    {
      "file": "slop/validity/fulu_BeaconState_appb_l2048_Eth1Data_generated.bend",
      "law": "BeaconState_serialize_vcoll_l2048_Eth1Data_appb_below"
     },
@@ -20398,6 +20906,50 @@
     {
      "file": "slop/validity/fulu_BeaconState_decode_checked_generated.bend",
      "law": "BeaconState_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_ck_l1099511627776_Validator_generated.bend",
+     "law": "BeaconState_decode_vlit_ck_l1099511627776_Validator_end"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_at_l134217728_PendingPartialWithdrawal"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_over_l134217728_PendingPartialWithdrawal"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_at_l16777216_HistoricalSummary"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_over_l16777216_HistoricalSummary"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_at_l16777216_b32"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_over_l16777216_b32"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_at_l2048_Eth1Data"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_over_l2048_Eth1Data"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_at_l262144_PendingConsolidation"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconState_decode_literal_count_at_generated.bend",
+     "law": "BeaconState_decode_vlit_count_over_l262144_PendingConsolidation"
     },
     {
      "file": "slop/offsets/BeaconState_generated.bend",
@@ -21304,6 +21856,10 @@
      "law": "LightClientFinalityUpdate_decode_vchecked_budget_agree"
     },
     {
+     "file": "slop/validity/fulu_LightClientFinalityUpdate_decode_literal_bad_order_finalized_header_generated.bend",
+     "law": "LightClientFinalityUpdate_decode_vlit_bad_order_finalized_header"
+    },
+    {
      "file": "slop/offsets/LightClientFinalityUpdate_generated.bend",
      "law": "LightClientFinalityUpdate_decode_build"
     }
@@ -21489,6 +22045,10 @@
     {
      "file": "slop/validity/fulu_LightClientUpdate_decode_checked_generated.bend",
      "law": "LightClientUpdate_decode_vchecked_budget_agree"
+    },
+    {
+     "file": "slop/validity/fulu_LightClientUpdate_decode_literal_bad_order_finalized_header_generated.bend",
+     "law": "LightClientUpdate_decode_vlit_bad_order_finalized_header"
     },
     {
      "file": "slop/offsets/LightClientUpdate_generated.bend",
@@ -22270,6 +22830,10 @@
      "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_app_clean_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_Deposit_cache_app_clean"
     },
@@ -22282,8 +22846,40 @@
      "law": "BeaconBlockBody_vroot_l16_Deposit_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_grow_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_grow_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_grow_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_grow_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_Deposit_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_Deposit_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_Deposit_cache_set_0_generated.bend",
@@ -22322,6 +22918,10 @@
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_clean_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_app_clean"
     },
@@ -22334,8 +22934,40 @@
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_ProposerSlashing_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_ProposerSlashing_cache_set_0_generated.bend",
@@ -22374,6 +23006,10 @@
      "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_clean_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_app_clean"
     },
@@ -22386,8 +23022,40 @@
      "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedBLSToExecutionChange_cache_set_0_generated.bend",
@@ -22418,6 +23086,10 @@
      "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_clean_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_app_clean"
     },
@@ -22430,8 +23102,40 @@
      "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l16_SignedVoluntaryExit_cache_set_0_generated.bend",
@@ -22458,8 +23162,20 @@
      "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_grow_1"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0_generated.bend",
+     "law": "BeaconBlockBody_vroot_l1_AttesterSlashing_cache_set_0"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l1_AttesterSlashing_cache_take_0_generated.bend",
@@ -22482,6 +23198,10 @@
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_4"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_app_clean_generated.bend",
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_app_clean"
     },
@@ -22494,8 +23214,40 @@
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_end"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_grow_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_grow_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_grow_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_grow_4_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_grow_5_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_grow_5"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_limit_generated.bend",
      "law": "BeaconBlockBody_vroot_l8_Attestation_cache_limit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_1_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_2_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_3_generated.bend",
+     "law": "BeaconBlockBody_vroot_l8_Attestation_cache_nonempty_3"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_vroot_l8_Attestation_cache_set_0_generated.bend",
@@ -22868,6 +23620,18 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_appb_l1_AttesterSlashing_generated.bend",
      "law": "BeaconBlockBody_serialize_vcoll_l1_AttesterSlashing_appb_above"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_appb_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l4096_b48_appb_below"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_appb_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l4096_b48_appb_at"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_appb_l4096_b48_generated.bend",
+     "law": "BeaconBlockBody_serialize_vcoll_l4096_b48_appb_above"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_appb_l8_Attestation_generated.bend",
@@ -23332,6 +24096,10 @@
      "law": "BeaconBlockBody_decode_vlit_bad_attester_slashings_over"
     },
     {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_box_execution_requests_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_bad_box_execution_requests"
+    },
+    {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_deposits_ragged_1_generated.bend",
      "law": "BeaconBlockBody_decode_vlit_bad_deposits_ragged_1"
     },
@@ -23474,6 +24242,46 @@
     {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_bad_voluntary_exits_ragged_56_generated.bend",
      "law": "BeaconBlockBody_decode_vlit_bad_voluntary_exits_ragged_56"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_at_l16_Deposit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_over_l16_Deposit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_at_l16_ProposerSlashing"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_over_l16_ProposerSlashing"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_at_l16_SignedBLSToExecutionChange"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_over_l16_SignedBLSToExecutionChange"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_at_l16_SignedVoluntaryExit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_over_l16_SignedVoluntaryExit"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_at_l4096_b48"
+    },
+    {
+     "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_count_at_generated.bend",
+     "law": "BeaconBlockBody_decode_vlit_count_over_l4096_b48"
     },
     {
      "file": "slop/validity/fulu_BeaconBlockBody_decode_literal_ok_attestations_n1_generated.bend",
@@ -25917,6 +26725,14 @@
      "law": "DataColumnsByRootIdentifier_decode_vlit_bad_off_plus"
     },
     {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_count_at_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vlit_count_at_l128_u64"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_count_at_generated.bend",
+     "law": "DataColumnsByRootIdentifier_decode_vlit_count_over_l128_u64"
+    },
+    {
      "file": "slop/validity/fulu_DataColumnsByRootIdentifier_decode_literal_ok_columns_n1_generated.bend",
      "law": "DataColumnsByRootIdentifier_decode_vlit_ok_columns_n1"
     },
@@ -26271,6 +27087,18 @@
      "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_appb_short"
     },
     {
+     "file": "slop/validity/fulu_DataColumnSidecar_appb_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b48_appb_below"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_appb_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b48_appb_at"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_appb_l4096_b48_generated.bend",
+     "law": "DataColumnSidecar_serialize_vcoll_l4096_b48_appb_above"
+    },
+    {
      "file": "slop/validity/fulu_DataColumnSidecar_cells_l4096_b2048_blit_generated.bend",
      "law": "DataColumnSidecar_serialize_vcoll_l4096_b2048_cell_blit"
     },
@@ -26599,6 +27427,22 @@
     {
      "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_bad_order_kzg_proofs_generated.bend",
      "law": "DataColumnSidecar_decode_vlit_bad_order_kzg_proofs"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_count_at_generated.bend",
+     "law": "DataColumnSidecar_decode_vlit_count_at_l4096_b2048"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_count_at_generated.bend",
+     "law": "DataColumnSidecar_decode_vlit_count_over_l4096_b2048"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_count_at_generated.bend",
+     "law": "DataColumnSidecar_decode_vlit_count_at_l4096_b48"
+    },
+    {
+     "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_count_at_generated.bend",
+     "law": "DataColumnSidecar_decode_vlit_count_over_l4096_b48"
     },
     {
      "file": "slop/validity/fulu_DataColumnSidecar_decode_literal_ok_default_generated.bend",
@@ -27067,6 +27911,10 @@
      "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_4"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_5"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_clean_generated.bend",
      "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_app_clean"
     },
@@ -27079,8 +27927,40 @@
      "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_end"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_1_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_2_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_3_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_3"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_4_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_4"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_5_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_grow_5"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_limit_generated.bend",
      "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_limit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_1_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_1"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_2_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_2"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_3_generated.bend",
+     "law": "ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_nonempty_3"
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_vroot_l10_ProgressiveSingleFieldContainerTestStruct_cache_set_0_generated.bend",
@@ -27305,6 +28185,22 @@
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_SmallTestStruct_generated.bend",
      "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_VarTestStruct_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_VarTestStruct_appb_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_pl_VarTestStruct_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveComplexTestStruct_serialize_vcoll_pl_pl_VarTestStruct_appb_short"
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_appb_pl_u64_generated.bend",
@@ -27781,6 +28677,22 @@
      "law": "ProgressiveComplexTestStruct_decode_vlit_bad_size_f_F_elem_elem_f_B_ragged"
     },
     {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_count_at_l10_ProgressiveSingleFieldContainerTestStruct"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_count_over_l10_ProgressiveSingleFieldContainerTestStruct"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_count_at_l123_u16"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_count_over_l123_u16"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_ok_all_generated.bend",
      "law": "ProgressiveComplexTestStruct_decode_vlit_ok_all"
     },
@@ -27871,6 +28783,54 @@
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_fixed_generated.bend",
      "law": "ProgressiveComplexTestStruct_decode_vlit_rt_fixed"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua1_f_B_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua1_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua1_f_C_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua1_f_D_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua1_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua1_f_E_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua1_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua1_f_H_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua1_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua2_f_D_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua2_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua2_f_E_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua2_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua2_f_H_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua2_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua3_f_C_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua3_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua3_f_D_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua3_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua3_f_E_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua3_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_ua3_f_H_generated.bend",
+     "law": "ProgressiveComplexTestStruct_decode_vlit_rt_ua3_f_H"
     },
     {
      "file": "slop/validity/generic_ProgressiveComplexTestStruct_decode_literal_rt_wide_generated.bend",
@@ -28312,6 +29272,14 @@
      "law": "ProgressiveVarTestStruct_decode_vlit_bad_order_f_C"
     },
     {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vlit_count_at_l123_u16"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vlit_count_over_l123_u16"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_ok_all_generated.bend",
      "law": "ProgressiveVarTestStruct_decode_vlit_ok_all"
     },
@@ -28370,6 +29338,18 @@
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_marked_generated.bend",
      "law": "ProgressiveVarTestStruct_decode_vlit_rt_marked"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_ua1_f_B_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vlit_rt_ua1_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_ua1_f_C_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vlit_rt_ua1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_ua3_f_C_generated.bend",
+     "law": "ProgressiveVarTestStruct_decode_vlit_rt_ua3_f_C"
     },
     {
      "file": "slop/validity/generic_ProgressiveVarTestStruct_decode_literal_rt_wide_generated.bend",
@@ -28911,6 +29891,10 @@
      "law": "proglist_bool_decode_vlit_bad_elem_bool2"
     },
     {
+     "file": "slop/validity/generic_proglist_bool_decode_literal_ck_pl_bool_generated.bend",
+     "law": "proglist_bool_decode_vlit_ck_pl_bool_end"
+    },
+    {
      "file": "slop/validity/generic_proglist_bool_decode_literal_ok_generated.bend",
      "law": "proglist_bool_decode_vlit_ok_default"
     },
@@ -29334,6 +30318,10 @@
      "law": "vec_bool_16_decode_vlit_bad_e15_bool2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_16_decode_literal_ck_v16_bool_generated.bend",
+     "law": "vec_bool_16_decode_vlit_ck_v16_bool_end"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_16_decode_literal_ok_generated.bend",
      "law": "vec_bool_16_decode_vlit_ok_default"
     },
@@ -29653,6 +30641,10 @@
      "law": "vec_bool_1_decode_vlit_bad_e0_bool2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_1_decode_literal_ck_v1_bool_generated.bend",
+     "law": "vec_bool_1_decode_vlit_ck_v1_bool_end"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_1_decode_literal_ok_generated.bend",
      "law": "vec_bool_1_decode_vlit_ok_default"
     },
@@ -29966,6 +30958,10 @@
     {
      "file": "slop/validity/generic_vec_bool_2_decode_literal_bad_generated.bend",
      "law": "vec_bool_2_decode_vlit_bad_e1_bool2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_2_decode_literal_ck_v2_bool_generated.bend",
+     "law": "vec_bool_2_decode_vlit_ck_v2_bool_end"
     },
     {
      "file": "slop/validity/generic_vec_bool_2_decode_literal_ok_generated.bend",
@@ -30427,6 +31423,10 @@
      "law": "vec_bool_31_decode_vlit_bad_e30_bool2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_31_decode_literal_ck_v31_bool_generated.bend",
+     "law": "vec_bool_31_decode_vlit_ck_v31_bool_end"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_31_decode_literal_ok_generated.bend",
      "law": "vec_bool_31_decode_vlit_ok_default"
     },
@@ -30744,6 +31744,10 @@
     {
      "file": "slop/validity/generic_vec_bool_3_decode_literal_bad_generated.bend",
      "law": "vec_bool_3_decode_vlit_bad_e2_bool2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_3_decode_literal_ck_v3_bool_generated.bend",
+     "law": "vec_bool_3_decode_vlit_ck_v3_bool_end"
     },
     {
      "file": "slop/validity/generic_vec_bool_3_decode_literal_ok_generated.bend",
@@ -31075,6 +32079,10 @@
     {
      "file": "slop/validity/generic_vec_bool_4_decode_literal_bad_generated.bend",
      "law": "vec_bool_4_decode_vlit_bad_e3_bool2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_4_decode_literal_ck_v4_bool_generated.bend",
+     "law": "vec_bool_4_decode_vlit_ck_v4_bool_end"
     },
     {
      "file": "slop/validity/generic_vec_bool_4_decode_literal_ok_generated.bend",
@@ -31638,6 +32646,10 @@
     {
      "file": "slop/validity/generic_vec_bool_512_decode_literal_bad_generated.bend",
      "law": "vec_bool_512_decode_vlit_bad_e60_bool2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_512_decode_literal_ck_v512_bool_generated.bend",
+     "law": "vec_bool_512_decode_vlit_ck_v512_bool_end"
     },
     {
      "file": "slop/validity/generic_vec_bool_512_decode_literal_ok_generated.bend",
@@ -32243,6 +33255,10 @@
      "law": "vec_bool_513_decode_vlit_bad_e60_bool2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_513_decode_literal_ck_v513_bool_generated.bend",
+     "law": "vec_bool_513_decode_vlit_ck_v513_bool_end"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_513_decode_literal_ok_generated.bend",
      "law": "vec_bool_513_decode_vlit_ok_default"
     },
@@ -32616,6 +33632,10 @@
     {
      "file": "slop/validity/generic_vec_bool_5_decode_literal_bad_generated.bend",
      "law": "vec_bool_5_decode_vlit_bad_e4_bool2"
+    },
+    {
+     "file": "slop/validity/generic_vec_bool_5_decode_literal_ck_v5_bool_generated.bend",
+     "law": "vec_bool_5_decode_vlit_ck_v5_bool_end"
     },
     {
      "file": "slop/validity/generic_vec_bool_5_decode_literal_ok_generated.bend",
@@ -32993,6 +34013,10 @@
      "law": "vec_bool_8_decode_vlit_bad_e7_bool2"
     },
     {
+     "file": "slop/validity/generic_vec_bool_8_decode_literal_ck_v8_bool_generated.bend",
+     "law": "vec_bool_8_decode_vlit_ck_v8_bool_end"
+    },
+    {
      "file": "slop/validity/generic_vec_bool_8_decode_literal_ok_generated.bend",
      "law": "vec_bool_8_decode_vlit_ok_default"
     },
@@ -33120,6 +34144,26 @@
     {
      "file": "slop/validity/generic_proglist_uint128_api_pl_u128_generated.bend",
      "law": "proglist_uint128_serialize_vcoll_pl_u128_api_append"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_appb_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vcoll_pl_u128_appb_below"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_appb_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vcoll_pl_u128_appb_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_appb_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vcoll_pl_u128_appb_above"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_appb_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vcoll_pl_u128_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint128_appb_pl_u128_generated.bend",
+     "law": "proglist_uint128_serialize_vcoll_pl_u128_appb_short"
     },
     {
      "file": "slop/validity/generic_proglist_uint128_senc_generated.bend",
@@ -41847,6 +42891,22 @@
      "law": "proglist_uint256_serialize_vcoll_pl_u256_api_append"
     },
     {
+     "file": "slop/validity/generic_proglist_uint256_appb_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vcoll_pl_u256_appb_below"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_appb_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vcoll_pl_u256_appb_at"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_appb_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vcoll_pl_u256_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_proglist_uint256_appb_pl_u256_generated.bend",
+     "law": "proglist_uint256_serialize_vcoll_pl_u256_appb_short"
+    },
+    {
      "file": "slop/validity/generic_proglist_uint256_senc_generated.bend",
      "law": "proglist_uint256_serialize_vrefuse_writer_marker"
     },
@@ -50268,6 +51328,22 @@
      "law": "ProgressiveTestStruct_serialize_vcoll_pl_SmallTestStruct_appb_short"
     },
     {
+     "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_VarTestStruct_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_VarTestStruct_appb_short"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_pl_VarTestStruct_appb_fit"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_pl_VarTestStruct_generated.bend",
+     "law": "ProgressiveTestStruct_serialize_vcoll_pl_pl_VarTestStruct_appb_short"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveTestStruct_appb_pl_u64_generated.bend",
      "law": "ProgressiveTestStruct_serialize_vcoll_pl_u64_appb_below"
     },
@@ -50698,6 +51774,30 @@
      "law": "ProgressiveTestStruct_decode_vlit_rt_marked"
     },
     {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua1_f_B_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua1_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua1_f_C_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua2_f_B_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua2_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua2_f_C_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua2_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua3_f_B_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua3_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_ua3_f_C_generated.bend",
+     "law": "ProgressiveTestStruct_decode_vlit_rt_ua3_f_C"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveTestStruct_decode_literal_rt_wide_generated.bend",
      "law": "ProgressiveTestStruct_decode_vlit_rt_wide"
     },
@@ -50956,6 +52056,22 @@
     {
      "file": "slop/validity/generic_BitsStruct_decode_literal_bad_order_f_D_generated.bend",
      "law": "BitsStruct_decode_vlit_bad_order_f_D"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_literal_count_at_generated.bend",
+     "law": "BitsStruct_decode_vlit_count_at_bits5"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_literal_count_at_generated.bend",
+     "law": "BitsStruct_decode_vlit_count_over_bits5"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_literal_count_at_generated.bend",
+     "law": "BitsStruct_decode_vlit_count_at_bits6"
+    },
+    {
+     "file": "slop/validity/generic_BitsStruct_decode_literal_count_at_generated.bend",
+     "law": "BitsStruct_decode_vlit_count_over_bits6"
     },
     {
      "file": "slop/validity/generic_BitsStruct_decode_literal_ok_all_generated.bend",
@@ -51818,6 +52934,38 @@
      "law": "ProgressiveBitsStruct_decode_vlit_bad_order_f_L"
     },
     {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_at_bits1280"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_over_bits1280"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_at_bits1281"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_over_bits1281"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_at_bits256"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_over_bits256"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_at_bits257"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_count_at_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_count_over_bits257"
+    },
+    {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_ok_all_generated.bend",
      "law": "ProgressiveBitsStruct_decode_vlit_ok_all"
     },
@@ -51868,6 +53016,94 @@
     {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_fixed_generated.bend",
      "law": "ProgressiveBitsStruct_decode_vlit_rt_fixed"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_C_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_E_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_F_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_H_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_I_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_I"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_K_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_K"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua1_f_L_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua1_f_L"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_B_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_C_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_E_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_F_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_H_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_I_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_I"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_K_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_K"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua2_f_L_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua2_f_L"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_C_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_C"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_E_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_F_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_F"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_H_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_H"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_I_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_I"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_K_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_K"
+    },
+    {
+     "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_ua3_f_L_generated.bend",
+     "law": "ProgressiveBitsStruct_decode_vlit_rt_ua3_f_L"
     },
     {
      "file": "slop/validity/generic_ProgressiveBitsStruct_decode_literal_rt_wide_generated.bend",
@@ -52642,6 +53878,14 @@
      "law": "VarTestStruct_decode_vlit_bad_off_plus"
     },
     {
+     "file": "slop/validity/generic_VarTestStruct_decode_literal_count_at_generated.bend",
+     "law": "VarTestStruct_decode_vlit_count_at_l1024_u16"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_literal_count_at_generated.bend",
+     "law": "VarTestStruct_decode_vlit_count_over_l1024_u16"
+    },
+    {
      "file": "slop/validity/generic_VarTestStruct_decode_literal_ok_default_generated.bend",
      "law": "VarTestStruct_decode_vlit_ok_default"
     },
@@ -52676,6 +53920,10 @@
     {
      "file": "slop/validity/generic_VarTestStruct_decode_literal_rt_fixed_generated.bend",
      "law": "VarTestStruct_decode_vlit_rt_fixed"
+    },
+    {
+     "file": "slop/validity/generic_VarTestStruct_decode_literal_rt_ua3_f_B_generated.bend",
+     "law": "VarTestStruct_decode_vlit_rt_ua3_f_B"
     },
     {
      "file": "slop/validity/generic_VarTestStruct_decode_literal_rt_wide_generated.bend",
@@ -53450,6 +54698,22 @@
      "law": "ComplexTestStruct_decode_vlit_bad_order_f_G"
     },
     {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_count_at_bl256"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_count_over_bl256"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_count_at_l128_u16"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_count_at_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_count_over_l128_u16"
+    },
+    {
      "file": "slop/validity/generic_ComplexTestStruct_decode_literal_ok_all_generated.bend",
      "law": "ComplexTestStruct_decode_vlit_ok_all"
     },
@@ -53508,6 +54772,42 @@
     {
      "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_marked_generated.bend",
      "law": "ComplexTestStruct_decode_vlit_rt_marked"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua1_f_D_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua1_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua1_f_E_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua1_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua1_f_G_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua1_f_G"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua2_f_E_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua2_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua2_f_G_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua2_f_G"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua3_f_B_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua3_f_B"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua3_f_D_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua3_f_D"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua3_f_E_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua3_f_E"
+    },
+    {
+     "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_ua3_f_G_generated.bend",
+     "law": "ComplexTestStruct_decode_vlit_rt_ua3_f_G"
     },
     {
      "file": "slop/validity/generic_ComplexTestStruct_decode_literal_rt_wide_generated.bend",
@@ -54110,6 +55410,14 @@
      "law": "bitlist_15_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_15_decode_literal_count_at_generated.bend",
+     "law": "bitlist_15_decode_vlit_count_at_bits15"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_15_decode_literal_count_at_generated.bend",
+     "law": "bitlist_15_decode_vlit_count_over_bits15"
+    },
+    {
      "file": "slop/validity/generic_bitlist_15_decode_literal_ok_generated.bend",
      "law": "bitlist_15_decode_vlit_ok_default"
     },
@@ -54523,6 +55831,14 @@
     {
      "file": "slop/validity/generic_bitlist_16_decode_literal_bad_generated.bend",
      "law": "bitlist_16_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_decode_literal_count_at_generated.bend",
+     "law": "bitlist_16_decode_vlit_count_at_bits16"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_16_decode_literal_count_at_generated.bend",
+     "law": "bitlist_16_decode_vlit_count_over_bits16"
     },
     {
      "file": "slop/validity/generic_bitlist_16_decode_literal_ok_generated.bend",
@@ -54940,6 +56256,14 @@
      "law": "bitlist_17_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_17_decode_literal_count_at_generated.bend",
+     "law": "bitlist_17_decode_vlit_count_at_bits17"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_17_decode_literal_count_at_generated.bend",
+     "law": "bitlist_17_decode_vlit_count_over_bits17"
+    },
+    {
      "file": "slop/validity/generic_bitlist_17_decode_literal_ok_generated.bend",
      "law": "bitlist_17_decode_vlit_ok_default"
     },
@@ -55337,6 +56661,14 @@
     {
      "file": "slop/validity/generic_bitlist_1_decode_literal_bad_generated.bend",
      "law": "bitlist_1_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_literal_count_at_generated.bend",
+     "law": "bitlist_1_decode_vlit_count_at_bits1"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_1_decode_literal_count_at_generated.bend",
+     "law": "bitlist_1_decode_vlit_count_over_bits1"
     },
     {
      "file": "slop/validity/generic_bitlist_1_decode_literal_ok_generated.bend",
@@ -55744,6 +57076,14 @@
     {
      "file": "slop/validity/generic_bitlist_2_decode_literal_bad_generated.bend",
      "law": "bitlist_2_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_literal_count_at_generated.bend",
+     "law": "bitlist_2_decode_vlit_count_at_bits2"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_2_decode_literal_count_at_generated.bend",
+     "law": "bitlist_2_decode_vlit_count_over_bits2"
     },
     {
      "file": "slop/validity/generic_bitlist_2_decode_literal_ok_generated.bend",
@@ -56161,6 +57501,14 @@
      "law": "bitlist_31_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_31_decode_literal_count_at_generated.bend",
+     "law": "bitlist_31_decode_vlit_count_at_bits31"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_31_decode_literal_count_at_generated.bend",
+     "law": "bitlist_31_decode_vlit_count_over_bits31"
+    },
+    {
      "file": "slop/validity/generic_bitlist_31_decode_literal_ok_generated.bend",
      "law": "bitlist_31_decode_vlit_ok_default"
     },
@@ -56568,6 +57916,14 @@
      "law": "bitlist_32_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_32_decode_literal_count_at_generated.bend",
+     "law": "bitlist_32_decode_vlit_count_at_bits32"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_32_decode_literal_count_at_generated.bend",
+     "law": "bitlist_32_decode_vlit_count_over_bits32"
+    },
+    {
      "file": "slop/validity/generic_bitlist_32_decode_literal_ok_generated.bend",
      "law": "bitlist_32_decode_vlit_ok_default"
     },
@@ -56973,6 +58329,14 @@
     {
      "file": "slop/validity/generic_bitlist_33_decode_literal_bad_generated.bend",
      "law": "bitlist_33_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_literal_count_at_generated.bend",
+     "law": "bitlist_33_decode_vlit_count_at_bits33"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_33_decode_literal_count_at_generated.bend",
+     "law": "bitlist_33_decode_vlit_count_over_bits33"
     },
     {
      "file": "slop/validity/generic_bitlist_33_decode_literal_ok_generated.bend",
@@ -57390,6 +58754,14 @@
      "law": "bitlist_3_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_3_decode_literal_count_at_generated.bend",
+     "law": "bitlist_3_decode_vlit_count_at_bits3"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_3_decode_literal_count_at_generated.bend",
+     "law": "bitlist_3_decode_vlit_count_over_bits3"
+    },
+    {
      "file": "slop/validity/generic_bitlist_3_decode_literal_ok_generated.bend",
      "law": "bitlist_3_decode_vlit_ok_default"
     },
@@ -57803,6 +59175,14 @@
     {
      "file": "slop/validity/generic_bitlist_4_decode_literal_bad_generated.bend",
      "law": "bitlist_4_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_decode_literal_count_at_generated.bend",
+     "law": "bitlist_4_decode_vlit_count_at_bits4"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_4_decode_literal_count_at_generated.bend",
+     "law": "bitlist_4_decode_vlit_count_over_bits4"
     },
     {
      "file": "slop/validity/generic_bitlist_4_decode_literal_ok_generated.bend",
@@ -58220,6 +59600,14 @@
      "law": "bitlist_511_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_511_decode_literal_count_at_generated.bend",
+     "law": "bitlist_511_decode_vlit_count_at_bits511"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_511_decode_literal_count_at_generated.bend",
+     "law": "bitlist_511_decode_vlit_count_over_bits511"
+    },
+    {
      "file": "slop/validity/generic_bitlist_511_decode_literal_ok_generated.bend",
      "law": "bitlist_511_decode_vlit_ok_default"
     },
@@ -58633,6 +60021,14 @@
     {
      "file": "slop/validity/generic_bitlist_512_decode_literal_bad_generated.bend",
      "law": "bitlist_512_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_decode_literal_count_at_generated.bend",
+     "law": "bitlist_512_decode_vlit_count_at_bits512"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_512_decode_literal_count_at_generated.bend",
+     "law": "bitlist_512_decode_vlit_count_over_bits512"
     },
     {
      "file": "slop/validity/generic_bitlist_512_decode_literal_ok_generated.bend",
@@ -59050,6 +60446,14 @@
      "law": "bitlist_513_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_513_decode_literal_count_at_generated.bend",
+     "law": "bitlist_513_decode_vlit_count_at_bits513"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_513_decode_literal_count_at_generated.bend",
+     "law": "bitlist_513_decode_vlit_count_over_bits513"
+    },
+    {
      "file": "slop/validity/generic_bitlist_513_decode_literal_ok_generated.bend",
      "law": "bitlist_513_decode_vlit_ok_default"
     },
@@ -59463,6 +60867,14 @@
     {
      "file": "slop/validity/generic_bitlist_5_decode_literal_bad_generated.bend",
      "law": "bitlist_5_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_decode_literal_count_at_generated.bend",
+     "law": "bitlist_5_decode_vlit_count_at_bits5"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_5_decode_literal_count_at_generated.bend",
+     "law": "bitlist_5_decode_vlit_count_over_bits5"
     },
     {
      "file": "slop/validity/generic_bitlist_5_decode_literal_ok_generated.bend",
@@ -59880,6 +61292,14 @@
      "law": "bitlist_6_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_6_decode_literal_count_at_generated.bend",
+     "law": "bitlist_6_decode_vlit_count_at_bits6"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_6_decode_literal_count_at_generated.bend",
+     "law": "bitlist_6_decode_vlit_count_over_bits6"
+    },
+    {
      "file": "slop/validity/generic_bitlist_6_decode_literal_ok_generated.bend",
      "law": "bitlist_6_decode_vlit_ok_default"
     },
@@ -60293,6 +61713,14 @@
     {
      "file": "slop/validity/generic_bitlist_7_decode_literal_bad_generated.bend",
      "law": "bitlist_7_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_decode_literal_count_at_generated.bend",
+     "law": "bitlist_7_decode_vlit_count_at_bits7"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_7_decode_literal_count_at_generated.bend",
+     "law": "bitlist_7_decode_vlit_count_over_bits7"
     },
     {
      "file": "slop/validity/generic_bitlist_7_decode_literal_ok_generated.bend",
@@ -60710,6 +62138,14 @@
      "law": "bitlist_8_decode_vlit_bad_over"
     },
     {
+     "file": "slop/validity/generic_bitlist_8_decode_literal_count_at_generated.bend",
+     "law": "bitlist_8_decode_vlit_count_at_bits8"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_8_decode_literal_count_at_generated.bend",
+     "law": "bitlist_8_decode_vlit_count_over_bits8"
+    },
+    {
      "file": "slop/validity/generic_bitlist_8_decode_literal_ok_generated.bend",
      "law": "bitlist_8_decode_vlit_ok_default"
     },
@@ -61123,6 +62559,14 @@
     {
      "file": "slop/validity/generic_bitlist_9_decode_literal_bad_generated.bend",
      "law": "bitlist_9_decode_vlit_bad_over"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_decode_literal_count_at_generated.bend",
+     "law": "bitlist_9_decode_vlit_count_at_bits9"
+    },
+    {
+     "file": "slop/validity/generic_bitlist_9_decode_literal_count_at_generated.bend",
+     "law": "bitlist_9_decode_vlit_count_over_bits9"
     },
     {
      "file": "slop/validity/generic_bitlist_9_decode_literal_ok_generated.bend",
@@ -64554,12 +65998,32 @@
      "law": "CompatibleUnionBC_decode_vlit_bad_arm_off_plus"
     },
     {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_sel_1_generated.bend",
+     "law": "CompatibleUnionBC_decode_vlit_bad_sel_1"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_sel_255_generated.bend",
+     "law": "CompatibleUnionBC_decode_vlit_bad_sel_255"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_sel_4_generated.bend",
+     "law": "CompatibleUnionBC_decode_vlit_bad_sel_4"
+    },
+    {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_bad_selector_generated.bend",
      "law": "CompatibleUnionBC_decode_vlit_bad_selector"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_ok_default_generated.bend",
      "law": "CompatibleUnionBC_decode_vlit_ok_default"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_ok_sel_2_generated.bend",
+     "law": "CompatibleUnionBC_decode_vlit_ok_sel_2"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_ok_sel_3_generated.bend",
+     "law": "CompatibleUnionBC_decode_vlit_ok_sel_3"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionBC_decode_literal_rt_default_generated.bend",
@@ -64806,12 +66270,36 @@
      "law": "CompatibleUnionABCA_decode_vchecked_budget_accept"
     },
     {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_bad_sel_255_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_bad_sel_255"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_bad_sel_5_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_bad_sel_5"
+    },
+    {
      "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_bad_selector_generated.bend",
      "law": "CompatibleUnionABCA_decode_vlit_bad_selector"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_default_generated.bend",
      "law": "CompatibleUnionABCA_decode_vlit_ok_default"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_1_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_ok_sel_1"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_2_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_ok_sel_2"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_3_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_ok_sel_3"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_ok_sel_4_generated.bend",
+     "law": "CompatibleUnionABCA_decode_vlit_ok_sel_4"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionABCA_decode_literal_rt_default_generated.bend",
@@ -65006,12 +66494,24 @@
      "law": "CompatibleUnionA_decode_vchecked_budget_accept"
     },
     {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_literal_bad_sel_2_generated.bend",
+     "law": "CompatibleUnionA_decode_vlit_bad_sel_2"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_literal_bad_sel_255_generated.bend",
+     "law": "CompatibleUnionA_decode_vlit_bad_sel_255"
+    },
+    {
      "file": "slop/validity/generic_CompatibleUnionA_decode_literal_bad_selector_generated.bend",
      "law": "CompatibleUnionA_decode_vlit_bad_selector"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_literal_ok_default_generated.bend",
      "law": "CompatibleUnionA_decode_vlit_ok_default"
+    },
+    {
+     "file": "slop/validity/generic_CompatibleUnionA_decode_literal_ok_sel_1_generated.bend",
+     "law": "CompatibleUnionA_decode_vlit_ok_sel_1"
     },
     {
      "file": "slop/validity/generic_CompatibleUnionA_decode_literal_rt_default_generated.bend",

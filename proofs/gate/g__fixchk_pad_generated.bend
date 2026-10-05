@@ -1,7 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/Fulu_bitvector_4_decode_ssz_generated.bend as Fulu_bitvector_4_r
 import ../../types/bitvector_2_decode_ssz_generated.bend as bitvector_2_r
 import ../../types/bitvector_1_decode_ssz_generated.bend as bitvector_1_r
 import ../../types/bitvector_15_decode_ssz_generated.bend as bitvector_15_r
@@ -9,6 +8,7 @@ import ../../types/bitvector_17_decode_ssz_generated.bend as bitvector_17_r
 import ../../types/bitvector_31_decode_ssz_generated.bend as bitvector_31_r
 import ../../types/bitvector_33_decode_ssz_generated.bend as bitvector_33_r
 import ../../types/bitvector_3_decode_ssz_generated.bend as bitvector_3_r
+import ../../types/bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ../../types/bitvector_511_decode_ssz_generated.bend as bitvector_511_r
 import ../../types/bitvector_513_decode_ssz_generated.bend as bitvector_513_r
 import ../../types/bitvector_5_decode_ssz_generated.bend as bitvector_5_r
@@ -81,7 +81,7 @@ def bitvector_33__ok_eval__bitvector_33_ok_eval(+d: Nat, +t: FD.array__Tree<U32>
 def bitvector_33__decode_reject__bitvector_33_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 5n), VRP.PADK(bs, 4n, 1)) == False{} : Bool}) -> Decoding.outside_image(GS.bitvector_33(), bs):
   PRV.bitvector_33_decode_reject(bs, h)
 
-def bitvector_4__ok_eval__bitvector_4_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32) -> {Fulu_bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+def bitvector_4__ok_eval__bitvector_4_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32) -> {bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   PRV.bitvector_4_ok_eval(d, t, n, off, x, e, hd, pf, hb, len)
 
 def bitvector_4__decode_reject__bitvector_4_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 1n), VRP.PADK(bs, 0n, 4)) == False{} : Bool}) -> Decoding.outside_image(GS.bitvector_4(), bs):

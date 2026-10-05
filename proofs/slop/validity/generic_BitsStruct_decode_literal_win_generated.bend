@@ -4,7 +4,10 @@ import ../../../src/obj.bend as O
 import ../../../types/bitvector_1_def_generated.bend as bitvector_1_d
 import ../../../types/bitvector_2_def_generated.bend as bitvector_2_d
 import ../../../types/bitlist_5_decode_ssz_generated.bend as bitlist_5_r
+import ../../../types/bitvector_2_decode_ssz_generated.bend as bitvector_2_r
+import ../../../types/bitvector_1_decode_ssz_generated.bend as bitvector_1_r
 import ../../../types/bitlist_6_decode_ssz_generated.bend as bitlist_6_r
+import ../../../types/bitvector_8_decode_ssz_generated.bend as bitvector_8_r
 import ../../../types/BitsStruct_def_generated.bend as BitsStruct_d
 import ../../../types/BitsStruct_decode_ssz_generated.bend as BitsStruct_r
 
@@ -20,6 +23,18 @@ def BitsStruct_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_f_A: U32
     -> {BitsStruct_r.BitsStruct_rd1(off, len, o_f_A, (buf, o_f_D)) == BitsStruct_r.BitsStruct_rd2(off, len, o_f_A, o_f_D, bitlist_5_r.bits5_read(buf, (off + o_f_A : U32), (o_f_D - o_f_A : U32))) : B.Buf & BitsStruct_d.BitsStruct}:
   {==}
 
+def BitsStruct_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_f_A: U32, +o_f_D: U32, f_A: O.Bits)
+    -> {BitsStruct_r.BitsStruct_rd2(off, len, o_f_A, o_f_D, (buf, f_A)) == BitsStruct_r.BitsStruct_rd3(off, len, o_f_A, o_f_D, f_A, bitvector_2_r.bv2_read(buf, (off + 4 : U32), 1)) : B.Buf & BitsStruct_d.BitsStruct}:
+  {==}
+
+def BitsStruct_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_f_A: U32, +o_f_D: U32, f_A: O.Bits, +f_B: bitvector_2_d.Bitvector2)
+    -> {BitsStruct_r.BitsStruct_rd3(off, len, o_f_A, o_f_D, f_A, (buf, f_B)) == BitsStruct_r.BitsStruct_rd4(off, len, o_f_A, o_f_D, f_A, f_B, bitvector_1_r.bv1_read(buf, (off + 5 : U32), 1)) : B.Buf & BitsStruct_d.BitsStruct}:
+  {==}
+
 def BitsStruct_decode_vlit_win_rd4(buf: B.Buf, +off: U32, +len: U32, +o_f_A: U32, +o_f_D: U32, f_A: O.Bits, +f_B: bitvector_2_d.Bitvector2, +f_C: bitvector_1_d.Bitvector1)
     -> {BitsStruct_r.BitsStruct_rd4(off, len, o_f_A, o_f_D, f_A, f_B, (buf, f_C)) == BitsStruct_r.BitsStruct_rd5(off, len, o_f_A, o_f_D, f_A, f_B, f_C, bitlist_6_r.bits6_read(buf, (off + o_f_D : U32), (len - o_f_D : U32))) : B.Buf & BitsStruct_d.BitsStruct}:
+  {==}
+
+def BitsStruct_decode_vlit_win_rd5(buf: B.Buf, +off: U32, +len: U32, +o_f_A: U32, +o_f_D: U32, f_A: O.Bits, +f_B: bitvector_2_d.Bitvector2, +f_C: bitvector_1_d.Bitvector1, f_D: O.Bits)
+    -> {BitsStruct_r.BitsStruct_rd5(off, len, o_f_A, o_f_D, f_A, f_B, f_C, (buf, f_D)) == BitsStruct_r.BitsStruct_rd6(off, len, o_f_A, o_f_D, f_A, f_B, f_C, f_D, bitvector_8_r.bv8_read(buf, (off + 10 : U32), 1)) : B.Buf & BitsStruct_d.BitsStruct}:
   {==}

@@ -10,10 +10,3 @@ import ../src/obj.bend as O
 def b256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 256, Array.new(U32, 7n, 0))
 
 def b256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def b256_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: b256_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def b256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: b256_ok_len(U32.is_eq(len, 256), buf, off)

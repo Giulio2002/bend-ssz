@@ -35,8 +35,6 @@ def SignedBeaconBlockHeader_bx_rd(pair: B.Buf & FuluSignedBeaconBlockHeader_d.Si
 
 def SignedBeaconBlockHeader_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>: SignedBeaconBlockHeader_bx_rd(SignedBeaconBlockHeader_read(buf, off, len))
 
-def SignedBeaconBlockHeader_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: SignedBeaconBlockHeader_ok(buf, off, len)
-
 def SignedBeaconBlockHeader_some(pair: B.Buf & FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> B.Buf & Maybe<&1, FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>:
   (buf, +v) = pair
   (buf, Some{v})

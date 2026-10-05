@@ -43,10 +43,3 @@ def bv256_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & bitvector_256_d.Bitvector2
 def bv256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & bitvector_256_d.Bitvector256: bv256_r0(off, B.read32(buf, off))
 
 def bv256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def bv256_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: bv256_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def bv256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv256_ok_len(U32.is_eq(len, 32), buf, off)

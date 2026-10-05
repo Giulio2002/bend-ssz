@@ -27,10 +27,3 @@ def bv128_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Fulu_bitvector_128_d.Bitve
 def bv128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Fulu_bitvector_128_d.Bitvector128: bv128_r0(off, B.read32(buf, off))
 
 def bv128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def bv128_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: bv128_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def bv128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv128_ok_len(U32.is_eq(len, 16), buf, off)

@@ -56,3 +56,7 @@ def ExecutionRequests_serialize_vreject_consolidations_limit()
 def ExecutionRequests_serialize_vrefuse_consolidations_limit()
     -> {Pair.snd(FuluExecutionRequests_d.ExecutionRequests, O.Encoded, FuluExecutionRequests_e.ExecutionRequests_serialize(FuluExecutionRequests_d.ExecutionRequests_set_consolidations(FuluExecutionRequests_d.ExecutionRequests_default(), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_fill(2n), 3}))) == O.refused() : O.Encoded}:
   {==}
+
+def ExecutionRequests_serialize_vwriter_checked(+n: U32, o: FuluExecutionRequests_d.ExecutionRequests)
+    -> {FuluExecutionRequests_e.ExecutionRequests_senc_go(False{}, n, o) == FuluExecutionRequests_e.ExecutionRequests_senc_put(n, FuluExecutionRequests_e.ExecutionRequests_putk(O.out_new(n), 0, o)) : FuluExecutionRequests_d.ExecutionRequests & O.Encoded}:
+  {==}

@@ -2,7 +2,6 @@ import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
 import ../../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
-import ../../../types/Fulu_bitvector_512_decode_ssz_generated.bend as Fulu_bitvector_512_r
 import ../../../types/bitvector_512_decode_ssz_generated.bend as bitvector_512_r
 import ../../obj/decode_window_library_generated.bend as DWL
 
@@ -12,10 +11,10 @@ import ../../obj/decode_window_library_generated.bend as DWL
 # decode window
 
 # ---- bitvector_512: decode is some(build) of the validated buffer ----
-def bitvector_512_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {Fulu_bitvector_512_r.bv512_ok(buf, 0, size) == (b2, True{}) : B.Buf & Bool}, hwin: {U32.is_le(size, DWL.bsz(buf)) == True{} : Bool})
+def bitvector_512_decode_build(buf: B.Buf, +size: U32, b2: B.Buf, e: {bitvector_512_r.bv512_ok(buf, 0, size) == (b2, True{}) : B.Buf & Bool}, hwin: {U32.is_le(size, DWL.bsz(buf)) == True{} : Bool})
     -> {bitvector_512_r.bitvector_512_decode(buf, size) == bitvector_512_r.bitvector_512_some(bitvector_512_r.bitvector_512_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}:
   match buf:
     case B.Buf{ws, +n}:
       %Equal.sym(Bool, U32.is_le(size, n), True{}, hwin) : {bitvector_512_r.bitvector_512_dwgo(_, B.Buf{ws, n}, size) == bitvector_512_r.bitvector_512_some(bitvector_512_r.bitvector_512_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}
-      %Equal.sym(B.Buf & Bool, Fulu_bitvector_512_r.bv512_ok(B.Buf{ws, n}, 0, size), (b2, True{}), e) : {bitvector_512_r.bitvector_512_built(size, _) == bitvector_512_r.bitvector_512_some(bitvector_512_r.bitvector_512_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}
+      %Equal.sym(B.Buf & Bool, bitvector_512_r.bv512_ok(B.Buf{ws, n}, 0, size), (b2, True{}), e) : {bitvector_512_r.bitvector_512_built(size, _) == bitvector_512_r.bitvector_512_some(bitvector_512_r.bitvector_512_build(b2, size)) : B.Buf & Maybe<&1, Fulu_bitvector_512_d.Bitvector512>}
       {==}

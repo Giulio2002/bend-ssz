@@ -1,6 +1,10 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
+import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
 import ../../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
 import ../../../types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend as FuluLightClientOptimisticUpdate_r
@@ -11,4 +15,12 @@ import ../../../types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend 
 
 def LightClientOptimisticUpdate_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32)
     -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd0(off, len, (buf, o_attested_header)) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd1(off, len, o_attested_header, FuluLightClientHeader_r.LightClientHeader_read(buf, (off + o_attested_header : U32), (len - o_attested_header : U32))) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}:
+  {==}
+
+def LightClientOptimisticUpdate_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader)
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd1(off, len, o_attested_header, (buf, attested_header)) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd2(off, len, o_attested_header, attested_header, FuluSyncAggregate_r.SyncAggregate_bx_read(buf, (off + 4 : U32), 160)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}:
+  {==}
+
+def LightClientOptimisticUpdate_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, sync_aggregate: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd2(off, len, o_attested_header, attested_header, (buf, sync_aggregate)) == FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd3(off, len, o_attested_header, attested_header, sync_aggregate, uint64_r.u64_read(buf, (off + 164 : U32), 8)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}:
   {==}

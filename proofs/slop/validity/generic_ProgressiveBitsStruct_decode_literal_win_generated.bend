@@ -4,9 +4,13 @@ import ../../../src/obj.bend as O
 import ../../../types/bitvector_256_def_generated.bend as bitvector_256_d
 import ../../../types/bitvector_257_def_generated.bend as bitvector_257_d
 import ../../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
+import ../../../types/bitvector_256_decode_ssz_generated.bend as bitvector_256_r
 import ../../../types/bitlist_256_decode_ssz_generated.bend as bitlist_256_r
+import ../../../types/bitvector_257_decode_ssz_generated.bend as bitvector_257_r
 import ../../../types/bitlist_257_decode_ssz_generated.bend as bitlist_257_r
+import ../../../types/bitvector_1280_decode_ssz_generated.bend as bitvector_1280_r
 import ../../../types/bitlist_1280_decode_ssz_generated.bend as bitlist_1280_r
+import ../../../types/bitvector_1281_decode_ssz_generated.bend as bitvector_1281_r
 import ../../../types/bitlist_1281_decode_ssz_generated.bend as bitlist_1281_r
 import ../../../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
 import ../../../types/ProgressiveBitsStruct_decode_ssz_generated.bend as ProgressiveBitsStruct_r
@@ -23,6 +27,10 @@ def ProgressiveBitsStruct_decode_vlit_win_g0_rd1(buf: B.Buf, +off: U32, +len: U3
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd1(off, len, vend, o_f_B, (buf, o_f_C)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd2(off, len, vend, o_f_B, o_f_C, B.read32(buf, (off + 73 : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
   {==}
 
+def ProgressiveBitsStruct_decode_vlit_win_g0_rd10(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: bitvector_257_d.Bitvector257, f_E: O.Bits, f_F: O.Bits)
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd10(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, f_C, f_D, f_E, (buf, f_F)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd11(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, f_C, f_D, f_E, f_F, bitvector_1280_r.bv1280_read(buf, (off + 81 : U32), 160)) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
+  {==}
+
 def ProgressiveBitsStruct_decode_vlit_win_g0_rd11(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: bitvector_257_d.Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words)
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd11(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, f_C, f_D, f_E, f_F, (buf, f_G)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd12(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, f_C, f_D, f_E, f_F, f_G, bitlist_1280_r.bits1280_read(buf, (off + o_f_H : U32), (vend - o_f_H : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
   {==}
@@ -35,12 +43,20 @@ def ProgressiveBitsStruct_decode_vlit_win_g0_rd3(buf: B.Buf, +off: U32, +len: U3
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd3(off, len, vend, o_f_B, o_f_C, o_f_E, (buf, o_f_F)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd4(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, B.read32(buf, (off + 241 : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
   {==}
 
+def ProgressiveBitsStruct_decode_vlit_win_g0_rd4(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32)
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd4(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, (buf, o_f_H)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd5(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, bitvector_256_r.bv256_read(buf, (off + 0 : U32), 32)) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
+  {==}
+
 def ProgressiveBitsStruct_decode_vlit_win_g0_rd5(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256)
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd5(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, (buf, f_A)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd6(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, bitlist_256_r.bits256_read(buf, (off + o_f_B : U32), (o_f_C - o_f_B : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
   {==}
 
 def ProgressiveBitsStruct_decode_vlit_win_g0_rd6(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256, f_B: O.Bits)
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd6(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, (buf, f_B)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd7(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, progbitlist_r.pbits_read(buf, (off + o_f_C : U32), (o_f_E - o_f_C : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vlit_win_g0_rd7(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256, f_B: O.Bits, f_C: O.Bits)
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd7(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, (buf, f_C)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g0_rd8(off, len, vend, o_f_B, o_f_C, o_f_E, o_f_F, o_f_H, f_A, f_B, f_C, bitvector_257_r.bv257_read(buf, (off + 40 : U32), 33)) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g0}:
   {==}
 
 def ProgressiveBitsStruct_decode_vlit_win_g0_rd8(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_B: U32, +o_f_C: U32, +o_f_E: U32, +o_f_F: U32, +o_f_H: U32, +f_A: bitvector_256_d.Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: bitvector_257_d.Bitvector257)
@@ -61,6 +77,10 @@ def ProgressiveBitsStruct_decode_vlit_win_g1_rd1(buf: B.Buf, +off: U32, +len: U3
 
 def ProgressiveBitsStruct_decode_vlit_win_g1_rd2(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_I: U32, +o_f_K: U32, +o_f_L: U32)
     -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g1_rd2(off, len, vend, o_f_I, o_f_K, (buf, o_f_L)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g1_rd3(off, len, vend, o_f_I, o_f_K, o_f_L, progbitlist_r.pbits_read(buf, (off + o_f_I : U32), (o_f_K - o_f_I : U32))) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1}:
+  {==}
+
+def ProgressiveBitsStruct_decode_vlit_win_g1_rd3(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_I: U32, +o_f_K: U32, +o_f_L: U32, f_I: O.Bits)
+    -> {ProgressiveBitsStruct_r.ProgressiveBitsStruct_g1_rd3(off, len, vend, o_f_I, o_f_K, o_f_L, (buf, f_I)) == ProgressiveBitsStruct_r.ProgressiveBitsStruct_g1_rd4(off, len, vend, o_f_I, o_f_K, o_f_L, f_I, bitvector_1281_r.bv1281_read(buf, (off + 249 : U32), 161)) : B.Buf & ProgressiveBitsStruct_d.ProgressiveBitsStruct_g1}:
   {==}
 
 def ProgressiveBitsStruct_decode_vlit_win_g1_rd4(buf: B.Buf, +off: U32, +len: U32, +vend: U32, +o_f_I: U32, +o_f_K: U32, +o_f_L: U32, f_I: O.Bits, f_J: O.Words)

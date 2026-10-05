@@ -21,3 +21,7 @@ def ProgressiveSingleListContainerTestStruct_serialize_vrefuse_poisoned_size()
 def ProgressiveSingleListContainerTestStruct_serialize_vreject_f_C()
     -> {Pair.snd(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct, Bool, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_valid(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_set_f_C(ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct_default(), O.Bits{Array.new(U32, 0n, 0), 64}))) == False{} : Bool}:
   {==}
+
+def ProgressiveSingleListContainerTestStruct_serialize_vwriter_checked(+n: U32, o: ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct)
+    -> {ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_go(False{}, n, o) == ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_senc_put(n, ProgressiveSingleListContainerTestStruct_e.ProgressiveSingleListContainerTestStruct_putk(O.out_new(n), 0, o)) : ProgressiveSingleListContainerTestStruct_d.ProgressiveSingleListContainerTestStruct & O.Encoded}:
+  {==}

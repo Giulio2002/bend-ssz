@@ -49,3 +49,7 @@ def Attestation_serialize_vpoison_bx_ok()
 def Attestation_serialize_vpoison_bx_invalid()
     -> {O.is_poisoned(Pair.snd(O.Boxed<FuluAttestation_d.Attestation>, U32, Pair.snd(Array<U32>, O.Boxed<FuluAttestation_d.Attestation> & U32, FuluAttestation_e.Attestation_bx_putk(Array.new(U32, 4n, 0), 0, FuluAttestation_d.Attestation_bx_wrap(FuluAttestation_d.Attestation_set_aggregation_bits(FuluAttestation_d.Attestation_default(), O.Bits{Array.new(U32, 0n, 0), 64})))))) == True{} : Bool}:
   {==}
+
+def Attestation_serialize_vwriter_checked(+n: U32, o: FuluAttestation_d.Attestation)
+    -> {FuluAttestation_e.Attestation_senc_go(False{}, n, o) == FuluAttestation_e.Attestation_senc_put(n, FuluAttestation_e.Attestation_putk(O.out_new(n), 0, o)) : FuluAttestation_d.Attestation & O.Encoded}:
+  {==}

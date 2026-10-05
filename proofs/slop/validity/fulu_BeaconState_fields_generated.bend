@@ -99,3 +99,7 @@ def BeaconState_serialize_vreject_pending_consolidations_limit()
 def BeaconState_serialize_vreject_proposer_lookahead()
     -> {Pair.snd(FuluBeaconState_d.BeaconState, Bool, FuluBeaconState_e.BeaconState_valid(FuluBeaconState_d.BeaconState{FuluBeaconState_d.BeaconState_g0_default(), FuluBeaconState_d.BeaconState_g1_default(), FuluBeaconState_d.BeaconState_g2_default(), FuluBeaconState_d.BeaconState_g3_default(), FuluBeaconState_d.BeaconState_g4_set_proposer_lookahead(FuluBeaconState_d.BeaconState_g4_default(), O.Words{Array.new(U32, 0n, 0), 5})})) == False{} : Bool}:
   {==}
+
+def BeaconState_serialize_vwriter_checked(+n: U32, o: FuluBeaconState_d.BeaconState)
+    -> {FuluBeaconState_e.BeaconState_senc_go(False{}, n, o) == FuluBeaconState_e.BeaconState_senc_put(n, FuluBeaconState_e.BeaconState_putk(O.out_new(n), 0, o)) : FuluBeaconState_d.BeaconState & O.Encoded}:
+  {==}

@@ -33,8 +33,6 @@ def ProposerSlashing_bx_rd(pair: B.Buf & FuluProposerSlashing_d.ProposerSlashing
 
 def ProposerSlashing_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>: ProposerSlashing_bx_rd(ProposerSlashing_read(buf, off, len))
 
-def ProposerSlashing_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: ProposerSlashing_ok(buf, off, len)
-
 def ProposerSlashing_some(pair: B.Buf & FuluProposerSlashing_d.ProposerSlashing) -> B.Buf & Maybe<&1, FuluProposerSlashing_d.ProposerSlashing>:
   (buf, v) = pair
   (buf, Some{v})

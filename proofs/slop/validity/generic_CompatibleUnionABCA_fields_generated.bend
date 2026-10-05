@@ -23,3 +23,7 @@ def CompatibleUnionABCA_serialize_vreject_c2_f_B()
 def CompatibleUnionABCA_serialize_vrefuse_c2_f_B()
     -> {Pair.snd(CompatibleUnionABCA_d.CompatibleUnionABCA, O.Encoded, CompatibleUnionABCA_e.CompatibleUnionABCA_serialize(CompatibleUnionABCA_d.CompatibleUnionABCA_c2{ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_set_f_B(ProgressiveVarTestStruct_d.ProgressiveVarTestStruct_default(), O.Words{Array.new(U32, 0n, 0), 5})})) == O.refused() : O.Encoded}:
   {==}
+
+def CompatibleUnionABCA_serialize_vwriter_checked(+n: U32, o: CompatibleUnionABCA_d.CompatibleUnionABCA)
+    -> {CompatibleUnionABCA_e.CompatibleUnionABCA_senc_go(False{}, n, o) == CompatibleUnionABCA_e.CompatibleUnionABCA_senc_put(n, CompatibleUnionABCA_e.CompatibleUnionABCA_putk(O.out_new(n), 0, o)) : CompatibleUnionABCA_d.CompatibleUnionABCA & O.Encoded}:
+  {==}

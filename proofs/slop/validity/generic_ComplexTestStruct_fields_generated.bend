@@ -80,3 +80,7 @@ def ComplexTestStruct_serialize_vreject_f_G()
 def ComplexTestStruct_serialize_vreject_f_G_elem()
     -> {Pair.snd(ComplexTestStruct_d.ComplexTestStruct, Bool, ComplexTestStruct_e.ComplexTestStruct_valid(ComplexTestStruct_d.ComplexTestStruct_set_f_G(ComplexTestStruct_d.ComplexTestStruct_default(), vec_VarTestStruct_2_d.v2_VarTestStruct_Seq{vec_VarTestStruct_2_d.v2_VarTestStruct_fill(0n), 1}))) == False{} : Bool}:
   {==}
+
+def ComplexTestStruct_serialize_vwriter_checked(+n: U32, o: ComplexTestStruct_d.ComplexTestStruct)
+    -> {ComplexTestStruct_e.ComplexTestStruct_senc_go(False{}, n, o) == ComplexTestStruct_e.ComplexTestStruct_senc_put(n, ComplexTestStruct_e.ComplexTestStruct_putk(O.out_new(n), 0, o)) : ComplexTestStruct_d.ComplexTestStruct & O.Encoded}:
+  {==}

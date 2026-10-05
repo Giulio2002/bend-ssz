@@ -2,7 +2,10 @@ import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
 import ../../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../../../types/FuluBeaconBlockHeader_decode_ssz_generated.bend as FuluBeaconBlockHeader_r
+import ../../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../../../types/FuluExecutionPayloadHeader_decode_ssz_generated.bend as FuluExecutionPayloadHeader_r
+import ../../../types/FuluExecutionBranch_decode_ssz_generated.bend as FuluExecutionBranch_r
 import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
 
@@ -10,6 +13,14 @@ import ../../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLig
 # LightClientHeader: literal encodings that decode and literal encodings that do not (manual spec-mutation audit, round 5; docs/mutation_testing/MUTATION_PROOFS.md).
 
 
+def LightClientHeader_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_execution: U32)
+    -> {FuluLightClientHeader_r.LightClientHeader_rd0(off, len, (buf, o_execution)) == FuluLightClientHeader_r.LightClientHeader_rd1(off, len, o_execution, FuluBeaconBlockHeader_r.BeaconBlockHeader_read(buf, (off + 0 : U32), 112)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}:
+  {==}
+
 def LightClientHeader_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_execution: U32, +beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader)
     -> {FuluLightClientHeader_r.LightClientHeader_rd1(off, len, o_execution, (buf, beacon)) == FuluLightClientHeader_r.LightClientHeader_rd2(off, len, o_execution, beacon, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_bx_read(buf, (off + o_execution : U32), (len - o_execution : U32))) : B.Buf & FuluLightClientHeader_d.LightClientHeader}:
+  {==}
+
+def LightClientHeader_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_execution: U32, +beacon: FuluBeaconBlockHeader_d.BeaconBlockHeader, execution: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>)
+    -> {FuluLightClientHeader_r.LightClientHeader_rd2(off, len, o_execution, beacon, (buf, execution)) == FuluLightClientHeader_r.LightClientHeader_rd3(off, len, o_execution, beacon, execution, FuluExecutionBranch_r.v4_b32_read(buf, (off + 116 : U32), 128)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}:
   {==}

@@ -41,3 +41,7 @@ def DataColumnSidecar_serialize_vrefuse_signed_block_header()
 def DataColumnSidecar_serialize_vreject_kzg_commitments_inclusion_proof()
     -> {Pair.snd(FuluDataColumnSidecar_d.DataColumnSidecar, Bool, FuluDataColumnSidecar_e.DataColumnSidecar_valid(FuluDataColumnSidecar_d.DataColumnSidecar_set_kzg_commitments_inclusion_proof(FuluDataColumnSidecar_d.DataColumnSidecar_default(), O.Words{Array.new(U32, 0n, 0), 5}))) == False{} : Bool}:
   {==}
+
+def DataColumnSidecar_serialize_vwriter_checked(+n: U32, o: FuluDataColumnSidecar_d.DataColumnSidecar)
+    -> {FuluDataColumnSidecar_e.DataColumnSidecar_senc_go(False{}, n, o) == FuluDataColumnSidecar_e.DataColumnSidecar_senc_put(n, FuluDataColumnSidecar_e.DataColumnSidecar_putk(O.out_new(n), 0, o)) : FuluDataColumnSidecar_d.DataColumnSidecar & O.Encoded}:
+  {==}

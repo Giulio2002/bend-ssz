@@ -1,6 +1,5 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/Fulu_bitvector_512_decode_ssz_generated.bend as Fulu_bitvector_512_r
 import ../../types/SmallTestStruct_decode_ssz_generated.bend as SmallTestStruct_r
 import ../../types/vec_uint64_1_decode_ssz_generated.bend as vec_uint64_1_r
 import ../../types/vec_uint64_2_decode_ssz_generated.bend as vec_uint64_2_r
@@ -16,6 +15,7 @@ import ../../types/FixedTestStruct_decode_ssz_generated.bend as FixedTestStruct_
 import ../../types/SingleFieldTestStruct_decode_ssz_generated.bend as SingleFieldTestStruct_r
 import ../../types/bitvector_16_decode_ssz_generated.bend as bitvector_16_r
 import ../../types/bitvector_32_decode_ssz_generated.bend as bitvector_32_r
+import ../../types/bitvector_512_decode_ssz_generated.bend as bitvector_512_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -58,7 +58,7 @@ def bitvector_32__ok_eval__bitvector_32_ok_eval(buf: B.Buf, +off: U32, +len: U32
 def bitvector_32__decode_reject__bitvector_32_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}) -> Decoding.outside_image(GS.bitvector_32(), bs):
   PRV.bitvector_32_decode_reject(bs, hn)
 
-def bitvector_512__ok_eval__bitvector_512_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {Fulu_bitvector_512_r.bv512_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
+def bitvector_512__ok_eval__bitvector_512_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {bitvector_512_r.bv512_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
   PRV.bitvector_512_ok_eval(buf, off, len)
 
 def bitvector_512__decode_reject__bitvector_512_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}) -> Decoding.outside_image(GS.bitvector_512(), bs):

@@ -2,7 +2,6 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
 import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
-import ../../types/Fulu_bitvector_4_decode_ssz_generated.bend as Fulu_bitvector_4_r
 import ../../types/bitvector_4_decode_ssz_generated.bend as bitvector_4_r
 import ../../types/bitvector_4_encode_ssz_generated.bend as bitvector_4_e
 import ../../types/schema.bend as S
@@ -78,7 +77,7 @@ def bitvector_4_spec_bytes(+y0: U32)
 # decode window: the proof is on the decoder of a window inside the buffer
 def bitvector_4_spec_reject_in(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
     -> {bitvector_4_r.bitvector_4_decode_in(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {bitvector_4_r.bitvector_4_built(m, Fulu_bitvector_4_r.bv4_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {bitvector_4_r.bitvector_4_built(m, bitvector_4_r.bv4_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Fulu_bitvector_4_d.Bitvector4>}
   {==}
 
 def bitvector_4_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})

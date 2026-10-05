@@ -15,10 +15,3 @@ def bv4_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Fulu_bitvector_4_d.Bitvector
 def bv4_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Fulu_bitvector_4_d.Bitvector4: bv4_r0(off, B.read32(buf, off))
 
 def bv4_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 4)
-
-def bv4_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: bv4_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def bv4_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: bv4_ok_len(U32.is_eq(len, 1), buf, off)

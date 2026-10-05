@@ -10,10 +10,3 @@ import ../src/obj.bend as O
 def v8192_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 65536, Array.new(U32, 15n, 0))
 
 def v8192_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
-
-def v8192_u64_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
-  match ok:
-    case True{}: v8192_u64_ok_at(buf, off)
-    case False{}: (buf, False{})
-
-def v8192_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: v8192_u64_ok_len(U32.is_eq(len, 65536), buf, off)

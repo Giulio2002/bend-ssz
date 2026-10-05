@@ -1,6 +1,8 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
 import ../../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
 import ../../../types/FuluSignedBeaconBlock_decode_ssz_generated.bend as FuluSignedBeaconBlock_r
@@ -11,4 +13,8 @@ import ../../../types/FuluSignedBeaconBlock_decode_ssz_generated.bend as FuluSig
 
 def SignedBeaconBlock_decode_vlit_win_rd0(buf: B.Buf, +off: U32, +len: U32, +o_message: U32)
     -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_rd0(off, len, (buf, o_message)) == FuluSignedBeaconBlock_r.SignedBeaconBlock_rd1(off, len, o_message, FuluBeaconBlock_r.BeaconBlock_read(buf, (off + o_message : U32), (len - o_message : U32))) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}:
+  {==}
+
+def SignedBeaconBlock_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_message: U32, message: FuluBeaconBlock_d.BeaconBlock)
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_rd1(off, len, o_message, (buf, message)) == FuluSignedBeaconBlock_r.SignedBeaconBlock_rd2(off, len, o_message, message, FuluBytes96_r.b96_read(buf, (off + 4 : U32), 96)) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}:
   {==}

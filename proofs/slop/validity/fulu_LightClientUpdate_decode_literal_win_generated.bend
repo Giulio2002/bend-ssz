@@ -1,7 +1,13 @@
 import Base
 import ../../../src/buffer.bend as B
 import ../../../src/obj.bend as O
+import ../../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../../types/FuluFinalityBranch_decode_ssz_generated.bend as FuluFinalityBranch_r
+import ../../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
 import ../../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../../types/FuluSyncCommittee_decode_ssz_generated.bend as FuluSyncCommittee_r
+import ../../../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
 import ../../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
 import ../../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
@@ -19,6 +25,26 @@ def LightClientUpdate_decode_vlit_win_rd1(buf: B.Buf, +off: U32, +len: U32, +o_a
     -> {FuluLightClientUpdate_r.LightClientUpdate_rd1(off, len, o_attested_header, (buf, o_finalized_header)) == FuluLightClientUpdate_r.LightClientUpdate_rd2(off, len, o_attested_header, o_finalized_header, FuluLightClientHeader_r.LightClientHeader_read(buf, (off + o_attested_header : U32), (o_finalized_header - o_attested_header : U32))) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
   {==}
 
+def LightClientUpdate_decode_vlit_win_rd2(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_rd2(off, len, o_attested_header, o_finalized_header, (buf, attested_header)) == FuluLightClientUpdate_r.LightClientUpdate_rd3(off, len, o_attested_header, o_finalized_header, attested_header, FuluSyncCommittee_r.SyncCommittee_read(buf, (off + 4 : U32), 24624)) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
+  {==}
+
+def LightClientUpdate_decode_vlit_win_rd3(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, next_sync_committee: FuluSyncCommittee_d.SyncCommittee)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_rd3(off, len, o_attested_header, o_finalized_header, attested_header, (buf, next_sync_committee)) == FuluLightClientUpdate_r.LightClientUpdate_rd4(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, FuluCurrentSyncCommitteeBranch_r.v6_b32_read(buf, (off + 24628 : U32), 192)) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
+  {==}
+
 def LightClientUpdate_decode_vlit_win_rd4(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, next_sync_committee: FuluSyncCommittee_d.SyncCommittee, next_sync_committee_branch: O.Words)
     -> {FuluLightClientUpdate_r.LightClientUpdate_rd4(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, (buf, next_sync_committee_branch)) == FuluLightClientUpdate_r.LightClientUpdate_rd5(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, FuluLightClientHeader_r.LightClientHeader_read(buf, (off + o_finalized_header : U32), (len - o_finalized_header : U32))) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
+  {==}
+
+def LightClientUpdate_decode_vlit_win_rd5(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, next_sync_committee: FuluSyncCommittee_d.SyncCommittee, next_sync_committee_branch: O.Words, finalized_header: FuluLightClientHeader_d.LightClientHeader)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_rd5(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, (buf, finalized_header)) == FuluLightClientUpdate_r.LightClientUpdate_rd6(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, FuluFinalityBranch_r.v7_b32_read(buf, (off + 24824 : U32), 224)) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
+  {==}
+
+def LightClientUpdate_decode_vlit_win_rd6(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, next_sync_committee: FuluSyncCommittee_d.SyncCommittee, next_sync_committee_branch: O.Words, finalized_header: FuluLightClientHeader_d.LightClientHeader, finality_branch: O.Words)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_rd6(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, (buf, finality_branch)) == FuluLightClientUpdate_r.LightClientUpdate_rd7(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, FuluSyncAggregate_r.SyncAggregate_bx_read(buf, (off + 25048 : U32), 160)) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
+  {==}
+
+def LightClientUpdate_decode_vlit_win_rd7(buf: B.Buf, +off: U32, +len: U32, +o_attested_header: U32, +o_finalized_header: U32, attested_header: FuluLightClientHeader_d.LightClientHeader, next_sync_committee: FuluSyncCommittee_d.SyncCommittee, next_sync_committee_branch: O.Words, finalized_header: FuluLightClientHeader_d.LightClientHeader, finality_branch: O.Words, sync_aggregate: O.Boxed<FuluSyncAggregate_d.SyncAggregate>)
+    -> {FuluLightClientUpdate_r.LightClientUpdate_rd7(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, (buf, sync_aggregate)) == FuluLightClientUpdate_r.LightClientUpdate_rd8(off, len, o_attested_header, o_finalized_header, attested_header, next_sync_committee, next_sync_committee_branch, finalized_header, finality_branch, sync_aggregate, uint64_r.u64_read(buf, (off + 25208 : U32), 8)) : B.Buf & FuluLightClientUpdate_d.LightClientUpdate}:
   {==}

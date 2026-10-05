@@ -26,3 +26,7 @@ def SignedAggregateAndProof_serialize_vreject_message_aggregate()
 def SignedAggregateAndProof_serialize_vrefuse_message_aggregate()
     -> {Pair.snd(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, O.Encoded, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_serialize(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_set_message(FuluSignedAggregateAndProof_d.SignedAggregateAndProof_default(), FuluAggregateAndProof_d.AggregateAndProof_set_aggregate(FuluAggregateAndProof_d.AggregateAndProof_default(), O.BNone{})))) == O.refused() : O.Encoded}:
   {==}
+
+def SignedAggregateAndProof_serialize_vwriter_checked(+n: U32, o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof)
+    -> {FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_go(False{}, n, o) == FuluSignedAggregateAndProof_e.SignedAggregateAndProof_senc_put(n, FuluSignedAggregateAndProof_e.SignedAggregateAndProof_putk(O.out_new(n), 0, o)) : FuluSignedAggregateAndProof_d.SignedAggregateAndProof & O.Encoded}:
+  {==}
